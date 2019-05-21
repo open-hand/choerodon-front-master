@@ -16,6 +16,10 @@ const siderPrefixCls = `${prefixCls}-sider`;
 const reg = /\n|&nbsp;|&lt|&gt|<[^a\/][^>]*>|<\/[^a][^>]*>/g;
 const { TabPane } = Tabs;
 const { Meta } = Card;
+const iconMap = {
+  'msg': 'textsms',
+  'notice': 'volume_up'
+}
 
 @inject('HeaderStore', 'AppState')
 @observer
@@ -76,10 +80,10 @@ export default class Inbox extends Component {
                 showPicUrl = content.slice(content.indexOf('<img src="') + '<img src="'.length, content.indexOf('">', content.indexOf('<img src="')));
               }
               return (
-                <li className={`${prefixCls}-sider-content-list`}>
+                <li className={`${prefixCls}-sider-content-list`} key={data.id}>
                   <div className={`${prefixCls}-sider-content-list-title`}>
                     <span>
-                      <Icon type="textsms" style={{ marginRight: 10 }} />
+                      <Icon type={iconMap[data.type]} style={{ marginRight: 10 }} />
                       {title}
                     </span>
                     <Icon
@@ -140,7 +144,7 @@ export default class Inbox extends Component {
             />
           </div>
           <div className={`${prefixCls}-sider-header-action`}>
-            <span role="none" onClick={() => window.open('/#/iam/user-msg?type=site')}>
+            <span role="none" onClick={() => window.open('/#/notify/user-msg?type=site')}>
               查看所有消息
             </span>
             <span role="none" onClick={this.cleanAllMsg}>
