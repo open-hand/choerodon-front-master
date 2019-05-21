@@ -3,8 +3,6 @@
 
 $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
 
-$c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
-
 .#{$c7n-boot-header-inbox} {
   transform: scale(.8);
   button {
@@ -225,12 +223,11 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
     bottom: 0;
     background: #FFFFFF;
     box-shadow: 0 9px 30px 1px rgba(0, 0, 0, 0.14), 0 3px 16px 2px rgba(0, 0, 0, 0.12), 0 5px 6px -3px;
-    transition:right .7s;
+    transition: transform .7s;
     padding: 18px 24px;
 
     &-visible {
-      right: 0px;
-      transition:right .7s; 
+      transform: translateX(-550px)
     }
 
     &-header {
