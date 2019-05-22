@@ -62,6 +62,12 @@ export default class Inbox extends Component {
     this.handleVisibleChange(false);
   };
 
+  handleMessageTitleClick = (e, data) => {
+    // set as read && go to message detail
+    this.cleanMsg(e, data)
+    window.open(`/#/notify/user-msg?type=site&msgId=${data.id}&msgType=${data.type}`);
+  }
+
   handleVisibleChange = (visible) => {
     const { HeaderStore } = this.props;
     HeaderStore.setInboxVisible(visible);
@@ -84,7 +90,7 @@ export default class Inbox extends Component {
                   <div className={`${prefixCls}-sider-content-list-title`}>
                     <span>
                       <Icon type={iconMap[data.type]} style={{ marginRight: 10 }} />
-                      {title}
+                      <a onClick={(e) => this.handleMessageTitleClick(e, data)}>{ title }</a>
                     </span>
                     <Icon
                       type="close"
