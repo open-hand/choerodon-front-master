@@ -150,10 +150,10 @@ export default class Inbox extends Component {
             />
           </div>
           <div className={`${prefixCls}-sider-header-action`}>
-            <span role="none" onClick={() => window.open('/#/notify/user-msg?type=site')}>
+            <span role="none" style={{ cursor: 'pointer' }} onClick={() => window.open('/#/notify/user-msg?type=site')}>
               查看所有消息
             </span>
-            <span role="none" onClick={this.cleanAllMsg}>
+            <span role="none" style={{ cursor: 'pointer' }} onClick={this.cleanAllMsg}>
               全部清除
             </span>
           </div>
