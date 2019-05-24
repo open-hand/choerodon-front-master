@@ -6,6 +6,7 @@ import { Badge, Button, Icon, Popover, Spin, Tabs, Card, Avatar, Tooltip } from 
 import { WSHandler } from '@choerodon/boot';
 import MouseOverWrapper from '../mouseOverWrapper';
 import { PREFIX_CLS } from '@choerodon/boot/lib/containers/common/constants';
+import onClickOutside from "react-onclickoutside";
 
 const prefixCls = `${PREFIX_CLS}-boot-header-inbox`;
 const popoverPrefixCls = `${prefixCls}-popover`;
@@ -22,6 +23,7 @@ const iconMap = {
 }
 
 @inject('HeaderStore', 'AppState')
+@onClickOutside
 @observer
 export default class Inbox extends Component {
   cleanMsg = (e, data) => {
@@ -71,6 +73,10 @@ export default class Inbox extends Component {
   handleVisibleChange = (visible) => {
     const { HeaderStore } = this.props;
     HeaderStore.setInboxVisible(visible);
+  };
+
+  handleClickOutside = evt => {
+    this.handleVisibleChange(false);
   };
 
   renderMessages(inboxData) {
