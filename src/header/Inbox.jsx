@@ -25,6 +25,46 @@ const iconMap = {
 @inject('HeaderStore', 'AppState')
 @onClickOutside
 @observer
+class RenderPopoverContentClass extends Component {
+  handleClickOutside = evt => {
+    this.props.handleVisibleChange(false);
+  };
+  render () {
+    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange  } = this.props;
+    return (
+      <div className={!inboxData.length ? 'is-empty' : null} style={{ disable: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div className={`${prefixCls}-sider-header`}>
+          <div className={`${prefixCls}-sider-header-title`}>
+            <h3>消息通知</h3>
+            <Button
+              funcType="flat"
+              type="primary"
+              icon="close"
+              shape="circle"
+              onClick={() => handleVisibleChange(!HeaderStore.inboxVisible)}
+            />
+          </div>
+          <div className={`${prefixCls}-sider-header-action`}>
+            <span role="none" style={{ cursor: 'pointer' }} onClick={() => window.open('/#/notify/user-msg?type=site')}>
+              查看所有消息
+                </span>
+            <span role="none" style={{ cursor: 'pointer' }} onClick={this.cleanAllMsg}>
+              全部清除
+                </span>
+          </div>
+        </div>
+        <div className={`${prefixCls}-sider-content`}>
+          <Spin spinning={inboxLoading}>
+            {renderMessages(HeaderStore.getUnreadAll)}
+          </Spin>
+        </div>
+      </div>
+    )
+  }
+}
+
+@inject('HeaderStore', 'AppState')
+@observer
 export default class Inbox extends Component {
   cleanMsg = (e, data) => {
     e.stopPropagation();
@@ -75,11 +115,7 @@ export default class Inbox extends Component {
     HeaderStore.setInboxVisible(visible);
   };
 
-  handleClickOutside = evt => {
-    this.handleVisibleChange(false);
-  };
-
-  renderMessages(inboxData) {
+  renderMessages = (inboxData) => {
     const { AppState } = this.props;
     if (inboxData.length > 0) {
       return (
@@ -140,42 +176,10 @@ export default class Inbox extends Component {
     }
   }
 
-  renderPopoverContent(inboxData, inboxLoading) {
-    const { HeaderStore } = this.props;
-    return (
-      <div className={!inboxData.length ? 'is-empty' : null} style={{ disable: 'flex', flexDirection: 'column', height: '100%' }}>
-        <div className={`${prefixCls}-sider-header`}>
-          <div className={`${prefixCls}-sider-header-title`}>
-            <h3>消息通知</h3>
-            <Button
-              funcType="flat"
-              type="primary"
-              icon="close"
-              shape="circle"
-              onClick={() => this.handleVisibleChange(!HeaderStore.inboxVisible)}
-            />
-          </div>
-          <div className={`${prefixCls}-sider-header-action`}>
-            <span role="none" style={{ cursor: 'pointer' }} onClick={() => window.open('/#/notify/user-msg?type=site')}>
-              查看所有消息
-            </span>
-            <span role="none" style={{ cursor: 'pointer' }} onClick={this.cleanAllMsg}>
-              全部清除
-            </span>
-          </div>
-        </div>
-        <div className={`${prefixCls}-sider-content`}>
-          <Spin spinning={inboxLoading}>
-            {this.renderMessages(HeaderStore.getUnreadAll)}
-          </Spin>
-        </div>
-      </div>
-    );
-  }
-
   render() {
     const { AppState, HeaderStore } = this.props;
     const { inboxVisible, inboxLoaded, inboxData, inboxLoading } = HeaderStore;
+    const popOverContent = { inboxData, inboxLoading }
     return (
       <React.Fragment>
         <WSHandler
@@ -184,7 +188,7 @@ export default class Inbox extends Component {
         >
           {
             data => (
-              <Badge onClick={this.handleButtonClick} className={prefixCls} count={data || 0}>
+              <Badge onClick={this.handleButtonClick} className={`${prefixCls} ignore-react-onclickoutside`} count={data || 0}>
                 <Button functype="flat" shape="circle">
                   <Icon type="notifications" />
                 </Button>
@@ -193,7 +197,8 @@ export default class Inbox extends Component {
           }
         </WSHandler>
         <div className={`${prefixCls}-sider ${inboxVisible ? `${prefixCls}-sider-visible` : ''}`}>
-          {this.renderPopoverContent(inboxData, inboxLoading)}
+          <RenderPopoverContentClass {...popOverContent} 
+            renderMessages={this.renderMessages} handleVisibleChange={this.handleVisibleChange}/>
         </div>
       </React.Fragment>
     );
