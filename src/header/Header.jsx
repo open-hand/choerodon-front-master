@@ -8,9 +8,8 @@ import Setting from './Setting';
 import User from './User';
 import Inbox from './Inbox';
 import { PREFIX_CLS } from '@choerodon/boot/lib/containers/common/constants';
-// import Favorites from '../favorites';
+import Favorites from '../favorites';
 import './style';
-
 
 const prefixCls = `${PREFIX_CLS}-boot-header`;
 
@@ -55,7 +54,7 @@ class Header extends Component {
         </ul>
         <ul className={`${prefixCls}-right`}>
           <li>
-            {/* <Favorites /> */}
+            <Favorites />
           </li>
           <li>
             <Button functype="flat" shape="circle" onClick={() => this.handleGuideClick()}>
