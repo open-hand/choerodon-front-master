@@ -151,10 +151,10 @@ export default class MenuType extends Component {
     });
   };
 
-  getIconType = (record) => {
+  getIconType = (record, isOut) => {
     if (record && record.type === 'project') {
       switch (record.category) {
-        case 'AGILE': return 'project_line';
+        case 'AGILE': return isOut ? 'project_filled' : 'project_line';
         case 'PROGRAM': return 'project_group';
         case 'ANALYTICAL': return 'project_program_analyze';
         default: return 'project_line';
@@ -421,7 +421,7 @@ export default class MenuType extends Component {
           funcType="flat"
           onClick={this.showModal}
         >
-          {buttonIcon && <Icon type={this.getIconType({ category, type })} />}
+          {buttonIcon && <Icon type={this.getIconType({ category, type }, true)} />}
           {selectTitle}
           <Icon type="arrow_drop_down" />
         </Button>
