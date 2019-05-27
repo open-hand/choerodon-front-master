@@ -30,7 +30,7 @@ class RenderPopoverContentClass extends Component {
     this.props.handleVisibleChange(false);
   };
   render () {
-    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange  } = this.props;
+    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg  } = this.props;
     return (
       <div className={!inboxData.length ? 'is-empty' : null} style={{ disable: 'flex', flexDirection: 'column', height: '100%' }}>
         <div className={`${prefixCls}-sider-header`}>
@@ -48,7 +48,7 @@ class RenderPopoverContentClass extends Component {
             <span role="none" style={{ cursor: 'pointer' }} onClick={() => window.open('/#/notify/user-msg?type=site')}>
               查看所有消息
                 </span>
-            <span role="none" style={{ cursor: 'pointer' }} onClick={this.cleanAllMsg}>
+            <span role="none" style={{ cursor: 'pointer' }} onClick={cleanAllMsg}>
               全部清除
                 </span>
           </div>
@@ -197,7 +197,7 @@ export default class Inbox extends Component {
           }
         </WSHandler>
         <div className={`${prefixCls}-sider ${inboxVisible ? `${prefixCls}-sider-visible` : ''}`}>
-          <RenderPopoverContentClass {...popOverContent} 
+          <RenderPopoverContentClass {...popOverContent} cleanAllMsg={this.cleanAllMsg}
             renderMessages={this.renderMessages} handleVisibleChange={this.handleVisibleChange}/>
         </div>
       </React.Fragment>
