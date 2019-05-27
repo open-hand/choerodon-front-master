@@ -32,25 +32,27 @@ class RenderPopoverContentClass extends Component {
   render () {
     const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg  } = this.props;
     return (
-      <div className={!inboxData.length ? 'is-empty' : null} style={{ disable: 'flex', flexDirection: 'column', height: '100%' }}>
-        <div className={`${prefixCls}-sider-header`}>
-          <div className={`${prefixCls}-sider-header-title`}>
-            <h3>消息通知</h3>
-            <Button
-              funcType="flat"
-              type="primary"
-              icon="close"
-              shape="circle"
-              onClick={() => handleVisibleChange(!HeaderStore.inboxVisible)}
-            />
-          </div>
-          <div className={`${prefixCls}-sider-header-action`}>
-            <span role="none" style={{ cursor: 'pointer' }} onClick={() => window.open('/#/notify/user-msg?type=site')}>
-              查看所有消息
-                </span>
-            <span role="none" style={{ cursor: 'pointer' }} onClick={cleanAllMsg}>
-              全部清除
-                </span>
+      <React.Fragment>
+        <div className={`${prefixCls}-sider-header-wrap !${inboxData.length} ? 'is-empty' : null`} style={{ disable: 'flex', flexDirection: 'column' }}>
+          <div className={`${prefixCls}-sider-header`}>
+            <div className={`${prefixCls}-sider-header-title`}>
+              <span className="msgTitle">消息通知</span>
+              <Button
+                funcType="flat"
+                type="primary"
+                icon="close"
+                shape="circle"
+                onClick={() => handleVisibleChange(!HeaderStore.inboxVisible)}
+              />
+            </div>
+            <div className={`${prefixCls}-sider-header-action`}>
+              <span role="none" style={{ cursor: 'pointer' }} onClick={() => window.open('/#/notify/user-msg?type=site')}>
+                查看所有消息
+                  </span>
+              <span role="none" style={{ cursor: 'pointer' }} onClick={cleanAllMsg}>
+                全部清除
+                  </span>
+            </div>
           </div>
         </div>
         <div className={`${prefixCls}-sider-content`}>
@@ -58,7 +60,7 @@ class RenderPopoverContentClass extends Component {
             {renderMessages(HeaderStore.getUnreadAll)}
           </Spin>
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 }
