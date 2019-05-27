@@ -157,7 +157,7 @@ export default class MenuType extends Component {
         case 'AGILE': return isOut ? 'project_filled' : 'project_line';
         case 'PROGRAM': return 'project_group';
         case 'ANALYTICAL': return 'project_program_analyze';
-        default: return 'project_line';
+        default: return isOut ? 'project_filled' : 'project_line';
       }
     } else {
       return 'domain';
