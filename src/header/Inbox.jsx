@@ -31,8 +31,9 @@ class RenderPopoverContentClass extends Component {
   };
   render () {
     const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg  } = this.props;
+    const { inboxVisible, getUnreadAll } = HeaderStore
     return (
-      <React.Fragment>
+      <div className={`${prefixCls}-sider ${inboxVisible ? `${prefixCls}-sider-visible` : ''}`}>
         <div className={`${prefixCls}-sider-header-wrap !${inboxData.length} ? 'is-empty' : null`} style={{ disable: 'flex', flexDirection: 'column' }}>
           <div className={`${prefixCls}-sider-header`}>
             <div className={`${prefixCls}-sider-header-title`}>
@@ -42,7 +43,7 @@ class RenderPopoverContentClass extends Component {
                 type="primary"
                 icon="close"
                 shape="circle"
-                onClick={() => handleVisibleChange(!HeaderStore.inboxVisible)}
+                onClick={() => handleVisibleChange(!inboxVisible)}
               />
             </div>
             <div className={`${prefixCls}-sider-header-action`}>
@@ -57,10 +58,10 @@ class RenderPopoverContentClass extends Component {
         </div>
         <div className={`${prefixCls}-sider-content`}>
           <Spin spinning={inboxLoading}>
-            {renderMessages(HeaderStore.getUnreadAll)}
+            {renderMessages(getUnreadAll)}
           </Spin>
         </div>
-      </React.Fragment>
+      </div>
     )
   }
 }
@@ -198,10 +199,8 @@ export default class Inbox extends Component {
             )
           }
         </WSHandler>
-        <div className={`${prefixCls}-sider ${inboxVisible ? `${prefixCls}-sider-visible` : ''}`}>
-          <RenderPopoverContentClass {...popOverContent} cleanAllMsg={this.cleanAllMsg}
-            renderMessages={this.renderMessages} handleVisibleChange={this.handleVisibleChange}/>
-        </div>
+        <RenderPopoverContentClass {...popOverContent} cleanAllMsg={this.cleanAllMsg}
+          renderMessages={this.renderMessages} handleVisibleChange={this.handleVisibleChange}/>
       </React.Fragment>
     );
   }
