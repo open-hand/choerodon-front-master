@@ -34,7 +34,7 @@ class RenderPopoverContentClass extends Component {
     const { inboxVisible, getUnreadAll } = HeaderStore
     return (
       <div className={`${prefixCls}-sider ${inboxVisible ? `${prefixCls}-sider-visible` : ''}`}>
-        <div className={`${prefixCls}-sider-header-wrap !${inboxData.length} ? 'is-empty' : null`} style={{ disable: 'flex', flexDirection: 'column' }}>
+        <div className={`${prefixCls}-sider-header-wrap ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
           <div className={`${prefixCls}-sider-header`}>
             <div className={`${prefixCls}-sider-header-title`}>
               <span className="msgTitle">消息通知</span>
@@ -144,7 +144,7 @@ export default class Inbox extends Component {
                     />
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
-                    <div style={{ maxHeight: 63, overflow: 'hidden' }}>
+                    <div style={{ maxHeight: 57, overflow: 'hidden' }}>
                       <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(reg, '')}` }} />
                       {document.querySelector(`#li-${id}`) && document.querySelector(`#li-${id}`).offsetHeight > 63 ? (
                         <a href={'#'} target="_blank" rel="noreferrer noopener">

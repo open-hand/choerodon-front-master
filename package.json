@@ -3,16 +3,14 @@
   "routeName": "master",
   "version": "0.17.1",
   "description": "A package of Master for choerodon platform.",
-  "main": "./react/master/index.js",
+  "main": "./src/master/index.js",
   "files": [
     "lib"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "choerodon-front-boot start --config ./src/config.js",
-    "compile": "gulp compile",
-    "prepublish": "choerodon-front-boot prepublish",
-    "postpublish": "choerodon-front-boot postpublish"
+    "compile": "gulp compile"
   },
   "keywords": [
     "choerodon",

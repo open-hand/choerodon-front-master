@@ -231,8 +231,8 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
     }
 
     &-header-wrap{
-      padding: 18px 24px 9.6px 24px;
-      &-header {  
+      padding: 18px 24px 0 24px;
+      .#{$c7n-boot-header-inbox}-sider-header {  
         &-title {
           display: flex;
           justify-content: space-between;
@@ -241,7 +241,12 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
           margin-bottom: 18px;
           .msgTitle {
             font-size: 16px;
-            font-weight: bold;
+            line-height: 22px;
+          }
+          .c7n-btn {
+            width: 22px !important;
+            height: 22px !important;
+            margin-top: -6px;
           }
         }
   
@@ -250,7 +255,7 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
           justify-content: space-between;
           align-items: center;
           color: #3f51b5;
-          > span {
+          span {
             font-size: 13px;
             line-height: 20px;
           }
@@ -278,7 +283,7 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
         padding: 9px 12px;
         padding-right: 32px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.20);
-        width: 100% !important;
+        width: 472px !important;
         margin: 0 !important;
 
         &-title {
@@ -297,6 +302,7 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
           p {
             margin: 0;
             color: rgba(0, 0, 0, 0.87);
+            font-size: 13px;
           }
         }
 
