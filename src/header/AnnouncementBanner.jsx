@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { Button, Icon } from 'choerodon-ui';
 import { inject, observer } from 'mobx-react';
-import { PREFIX_CLS } from '../../../common/constants';
+import { PREFIX_CLS } from '@choerodon/boot/lib/containers/common/constants';
 import './style';
-
 
 const prefixCls = `${PREFIX_CLS}-boot-header-banner`;
 const imgPartten = /<img(.*?)>/g;
@@ -22,7 +21,7 @@ export default class AnnouncementBanner extends Component {
   };
 
   handleInfo = () => {
-    window.open('/#/iam/user-msg?type=site&msgType=announcement');
+    window.open('/#/notify/user-msg?type=site&msgType=announcement');
   };
 
   render() {
