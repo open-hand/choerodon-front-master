@@ -23,6 +23,9 @@ $c7n-boot-header-menu-type: #{$c7n-prefix}-boot-header-menu-type;
   }
   &-modal {
     .c7n-table {
+      table {
+        table-layout: fixed;
+      }
       .c7n-table-row-level-0 {
         a {
           max-width: 250px;
@@ -52,7 +55,7 @@ $c7n-boot-header-menu-type: #{$c7n-prefix}-boot-header-menu-type;
         }
       }
       &-selection-column {
-        display: none;
+        // display: none;
       }
       &-row {
         .c7n-table-row-expand-icon + .c7n-table-row-expand-icon {

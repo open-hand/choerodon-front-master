@@ -235,14 +235,14 @@ export default class MenuType extends Component {
         },
       }];
       const selected = HeaderStore.getSelected;
-      const rowSelection = {
-        type: 'radio',
-        onSelect: (record) => {
-          HeaderStore.setSelected(record);
-        },
-        selectedRowKeys: selected ? [selected.key] : [],
-        hideDefaultSelections: true,
-      };
+      // const rowSelection = {
+      //   type: 'radio',
+      //   onSelect: (record) => {
+      //     HeaderStore.setSelected(record);
+      //   },
+      //   selectedRowKeys: selected ? [selected.key] : [],
+      //   hideDefaultSelections: true,
+      // };
       let props = {};
       if (isNotRecent) {
         props = {
@@ -277,7 +277,6 @@ export default class MenuType extends Component {
           pagination={isNotRecent && dataSource.length > 30 ? { defaultPageSize: 30 } : false}
           scroll={{ y: isNotRecent && dataSource.length > 30 ? 300 : 330 }}
           fixed
-          rowSelection={rowSelection}
           {...props}
         />
       );
