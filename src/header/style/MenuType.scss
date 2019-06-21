@@ -43,6 +43,8 @@ $c7n-boot-header-menu-type: #{$c7n-prefix}-boot-header-menu-type;
         // max-width: 250px;
         display: inline-block;
         color: #000;
+        line-height: 1;
+        vertical-align: top;
         &:hover {
           text-decoration: underline;
           color: $primary-color;

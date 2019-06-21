@@ -3,4 +3,5 @@ module.exports = {
   master: './src/master',
   projectType: 'choerodon',
   buildType: 'single',
+  dashboard: {},
 };
