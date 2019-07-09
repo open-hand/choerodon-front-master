@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TimeAgo from 'timeago-react';
 import { inject, observer } from 'mobx-react';
 // import timeago from 'timeago-react';
+import classNames from 'classnames';
 import { Badge, Button, Icon, Popover, Spin, Tabs, Card, Avatar, Tooltip } from 'choerodon-ui';
 import { WSHandler } from '@choerodon/boot';
 import MouseOverWrapper from '../mouseOverWrapper';
@@ -29,11 +30,16 @@ class RenderPopoverContentClass extends Component {
   handleClickOutside = evt => {
     this.props.handleVisibleChange(false);
   };
-  render () {
-    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg  } = this.props;
-    const { inboxVisible, getUnreadAll } = HeaderStore
+  render() {
+    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg } = this.props;
+    const { inboxVisible, getUnreadAll, announcementClosed } = HeaderStore;
+    const siderClasses = classNames({
+      [`${prefixCls}-sider`]: true,
+      [`${prefixCls}-sider-visible`]: inboxVisible,
+      [`${prefixCls}-sider-move-down`]: !announcementClosed,
+    });
     return (
-      <div className={`${prefixCls}-sider ${inboxVisible ? `${prefixCls}-sider-visible` : ''}`}>
+      <div className={siderClasses}>
         <div className={`${prefixCls}-sider-header-wrap ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
           <div className={`${prefixCls}-sider-header`}>
             <div className={`${prefixCls}-sider-header-title`}>
@@ -135,7 +141,7 @@ export default class Inbox extends Component {
                   <div className={`${prefixCls}-sider-content-list-title`}>
                     <span>
                       <Icon type={iconMap[data.type]} style={{ marginRight: 10 }} />
-                      <a onClick={(e) => this.handleMessageTitleClick(e, data)}>{ title }</a>
+                      <a onClick={(e) => this.handleMessageTitleClick(e, data)}>{title}</a>
                     </span>
                     <Icon
                       type="close"
@@ -200,7 +206,7 @@ export default class Inbox extends Component {
           }
         </WSHandler>
         <RenderPopoverContentClass {...popOverContent} cleanAllMsg={this.cleanAllMsg}
-          renderMessages={this.renderMessages} handleVisibleChange={this.handleVisibleChange}/>
+          renderMessages={this.renderMessages} handleVisibleChange={this.handleVisibleChange} />
       </React.Fragment>
     );
   }

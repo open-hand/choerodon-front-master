@@ -1,7 +1,9 @@
+@import "./constants";
+
 $c7n-boot-header-banner: #{$c7n-prefix}-boot-header-banner;
 
 .#{$c7n-boot-header-banner} {
-  height: 52px;
+  height: $banner-height;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

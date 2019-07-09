@@ -1,5 +1,6 @@
 @import "../../style/theme/default";
 @import "../../style/mixin/link";
+@import "./constants";
 
 $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
 
@@ -228,6 +229,11 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
 
     &-visible {
       transform: translateX(-550px)
+    }
+
+    &-move-down {
+      // move the Inbox down when annoucement banner is shown
+      height: calc(100vh - 48px - #{$banner-height});
     }
 
     &-header-wrap{
