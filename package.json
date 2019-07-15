@@ -1,7 +1,7 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "0.18.1",
+  "version": "0.19.1",
   "description": "A package of Master for choerodon platform.",
   "main": "./lib/master/index.js",
   "files": [
@@ -24,7 +24,7 @@
     "@choerodon/boot": "0.18.x"
   },
   "devDependencies": {
-    "@choerodon/boot": "0.18.x",
+    "@choerodon/boot": "^0.19.1",
     "babel-preset-env": "^1.7.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",

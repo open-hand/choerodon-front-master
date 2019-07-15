@@ -7,9 +7,11 @@ import Logo from './Logo';
 import Setting from './Setting';
 import User from './User';
 import Inbox from './Inbox';
+import HeaderSetting from './HeaderSetting';
 import { PREFIX_CLS } from '@choerodon/boot/lib/containers/common/constants';
 import Favorites from '../favorites';
 import './style';
+import OrgSelect from './OrgSelect';
 
 const prefixCls = `${PREFIX_CLS}-boot-header`;
 
@@ -41,24 +43,33 @@ class Header extends Component {
           <Logo history={history} />
         </div>
         <ul className={`${prefixCls}-center`}>
-          <li>
+          <li><HeaderSetting /></li>
+          {/* <li>
             <MenuType />
-          </li>
-          {
-            getSiteMenuData.length > 0 && (
-              <li>
-                <Setting />
-              </li>
-            )
-          }
+          </li> */}
         </ul>
         <ul className={`${prefixCls}-right`}>
-          <li>
+          {/* <li>
             <Favorites />
           </li>
           <li>
             <Button functype="flat" shape="circle" onClick={() => this.handleGuideClick()}>
               <Icon type="school" />
+            </Button>
+          </li> */}
+          <li style={{ width: 'auto' }}>
+            <OrgSelect />
+          </li>
+          {
+            getSiteMenuData.length > 0 && (
+              <li style={{ width: 'auto' }}>
+                <Setting />
+              </li>
+            )
+          }
+          <li>
+            <Button functype="flat" shape="circle" onClick={() => this.handleGuideClick()}>
+              <Icon type="help" />
             </Button>
           </li>
           <li>

@@ -27,8 +27,8 @@ export default class Setting extends Component {
     });
     return (
       <Button className={classString} onClick={this.getGlobalMenuData}>
-        {getMessage('管理', 'Manage')}
         <Icon className="manager-icon" type="settings " style={{ marginLeft: '5px' }} />
+        {getMessage('管理中心', 'Manage')}
       </Button>
     );
   }
