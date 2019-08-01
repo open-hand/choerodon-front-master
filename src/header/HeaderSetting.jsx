@@ -35,7 +35,7 @@ export default class Setting extends Component {
       <React.Fragment>
         <Button className={classString}>
           <Icon className="manager-icon" type="sync_user " style={{ marginLeft: '5px' }} />
-          {getMessage('协作连接', 'Manage')}
+          {getMessage('协作分享', 'Manage')}
         </Button>
         <Button className={classString} onClick={this.gotoProjects}>
           <Icon className="manager-icon" type="project_line " style={{ marginLeft: '5px' }} />
