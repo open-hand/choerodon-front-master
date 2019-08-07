@@ -1,9 +1,9 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "0.19.1",
+  "version": "0.20.3",
   "description": "A package of Master for choerodon platform.",
-  "main": "./lib/master/index.js",
+  "main": "./lib/index.js",
   "files": [
     "lib"
   ],
@@ -21,10 +21,10 @@
   "author": "qyellow",
   "license": "ISC",
   "peerDependencies": {
-    "@choerodon/boot": "0.18.x"
+    "@choerodon/boot": "0.20.x"
   },
   "devDependencies": {
-    "@choerodon/boot": "^0.19.1",
+    "@choerodon/boot": "0.20.x",
     "babel-preset-env": "^1.7.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
