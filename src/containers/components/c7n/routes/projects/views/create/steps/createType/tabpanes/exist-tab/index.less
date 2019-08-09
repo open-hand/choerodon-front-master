@@ -1,0 +1,53 @@
+.create-project-tab-card-block {
+  display: flex;
+  flex-direction: row;
+  padding-left: .02rem;
+  padding-top: .08rem;
+
+  .card {
+    background: #fff;
+    border: 2px solid transparent;
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.12), 0 2px 1px -1px rgba(0,0,0,0.12);
+    border-radius: 2px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    width: 2.22rem;
+    height: 1.6rem;
+    margin-right: .24rem;
+    cursor: pointer;
+    position: relative;
+
+    .card-body {
+      height: 1.2rem;
+      border-bottom: 1px solid rgba(0,0,0,0.12);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .card-footer {
+      padding: .09rem .16rem;
+      font-size: 14px;
+      color: #000;
+    }
+
+    .check-icon {
+      height: .3rem;
+      width: .3rem;
+      border-radius: 50%;
+      background: #3F51B5;
+      position: absolute;
+      top: -.15rem;
+      right: -.15rem;
+      color: #fff;
+      line-height: .23rem;
+      text-align: center;
+    }
+  }
+
+  .active {
+    border: 2px solid #3F51B5;
+    box-shadow: 0 1px 3px -2px rgba(0,0,0,0.20), 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12);
+  }
+}

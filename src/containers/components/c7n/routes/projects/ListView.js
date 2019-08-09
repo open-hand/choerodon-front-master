@@ -7,22 +7,28 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { observer } from 'mobx-react-lite';
 import { action } from 'mobx';
 import { toJS } from 'mobx';
-import { Button, Icon } from 'choerodon-ui';
+import { Icon, Button } from 'choerodon-ui';
 import { Modal, Stores, Table, Select } from 'choerodon-ui/pro';
 import { HEADER_TITLE_NAME } from '@choerodon/boot/lib/containers/common/constants';
 import Store from './stores';
 import List from './List';
 import findFirstLeafMenu from '../../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../../../common';
+import FormView from './FormView';
+import CreateView from './views/create';
 import { Action, Content, Header, Page, Permission, Breadcrumb } from '../../../../../index';
 import './style/index.less';
 
 const { Column } = Table;
 const { Option } = Select;
 const modalKey = Modal.key();
+const createModalKey = Modal.key();
 
 const modalStyle = {
-  width: 'calc(100vw - 350px)',
+  width: '3.8rem',
+};
+const largeModalStyle = {
+  width: 'calc(100% - 3.5rem)',
 };
 const contentStyle = {
   width: 512,
@@ -38,20 +44,81 @@ const iconStyle = {
 };
 
 const ListView = observer(() => {
+  const context = useContext(Store);
   const {
-    dataSet, AppState, showType, toggleShowType,
-    HeaderStore, MenuStore, history,
-  } = useContext(Store);
+    dataSet, AppState, showType, toggleShowType, isNotRecent, toggleRecent,
+    HeaderStore, MenuStore, history, intl,
+  } = context;
 
-  useEffect(() => {
+  function changeData() {
     const { orgId } = queryString.parse(history.location.search);
-    const proData = HeaderStore.getProData || [];
+    let proData;
+    if (isNotRecent) {
+      proData = HeaderStore.getProData || [];
+    } else {
+      proData = HeaderStore.getRecentItem || [];
+    }
     const pros = proData.filter(v => String(v.organizationId) === orgId);
     dataSet.loadData(toJS(pros));
-  }, []);
+  }
 
-  function handleClickProject() {
-    const record = dataSet.current;
+  useEffect(() => {
+    changeData();
+  }, [isNotRecent]);
+
+  async function handleCreate() {
+    try {
+      if ((await dataSet.submit()) !== false) {
+        dataSet.query();
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function handleCancel() {
+    const { current } = dataSet;
+    if (current.status === 'add') {
+      dataSet.remove(current);
+    } else {
+      current.reset();
+    }
+  }
+
+  function handleCreateProject() {
+    dataSet.create();
+    Modal.open({
+      key: createModalKey,
+      drawer: true,
+      title: '创建项目',
+      className: 'c7n-projects-modal-create-project',
+      children: <CreateView context={context} handleCancelCreateProject={handleCancel} />,
+      footer: null,
+      style: largeModalStyle,
+    });
+  }
+
+  function handleEditProject() {
+    // dataSet.create();
+    Modal.open({
+      key: modalKey,
+      drawer: true,
+      title: '创建项目',
+      children: <FormView context={context} />,
+      // onOk: handleCreate,
+      onCancel: handleCancel,
+      style: modalStyle,
+    });
+  }
+
+  function handleChangeRecent(value) {
+    toggleRecent(value === 'all');
+  }
+
+  function handleClickProject(record) {
+    // const record = dataSet.current;
     const { id, name, type, organizationId, category } = record.toData();
     MenuStore.loadMenuData({ type, id }, false).then((menus) => {
       let route;
@@ -62,24 +129,35 @@ const ListView = observer(() => {
         route = menuRoute;
         domain = menuDomain;
       }
-      if (route) {
-        path = `/?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
-        if (organizationId) {
-          path += `&organizationId=${organizationId}&orgId=${organizationId}`;
-        }
+      // if (route) {
+      path = `/?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
+      if (organizationId) {
+        path += `&organizationId=${organizationId}&orgId=${organizationId}`;
       }
+      // }
       if (path) {
         historyPushMenu(history, path, domain);
       }
     });
   }
 
+  function renderHeader() {
+    const { orgId } = queryString.parse(history.location.search);
+    const org = (HeaderStore.getOrgData || []).find(v => String(v.id) === orgId) || {};
+    return (
+      <div className="c7n-projects-header">
+        <div className="c7n-projects-title">{`${org.name}中的项目`}</div>
+        <Button type="primary" funcType="raised" onClick={handleCreateProject}>创建项目</Button>
+      </div>
+    );
+  }
+
   function renderTool() {
     return (
       <div className="c7n-projects-tool">
-        <Select label="项目" clearButton={false}>
-          <Option>最近使用</Option>
-          <Option>全部项目</Option>
+        <Select labelLayout="float" label="项目" clearButton={false} value={isNotRecent ? 'all' : 'recent'} onChange={handleChangeRecent}>
+          <Option key="recent" value="recent">最近使用</Option>
+          <Option key="all" value="all">全部项目</Option>
         </Select>
         <div className="c7n-projects-tool-icon-group">
           <Icon type="dashboard" style={iconStyle} className={showType === 'block' ? 'active' : null} onClick={() => toggleShowType('block')} />
@@ -91,13 +169,13 @@ const ListView = observer(() => {
 
   return (
     <Page>
-      <Header>
-        <Button icon="refresh">创建项目</Button>
-      </Header>
-      <Breadcrumb title="项目" />
+      {renderHeader()}
       <Content>
         {renderTool()}
-        <List />
+        <List
+          handleClickProject={handleClickProject}
+          handleEditProject={handleEditProject}
+        />
       </Content>
     </Page>
   );

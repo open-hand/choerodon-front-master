@@ -245,8 +245,9 @@ class HeaderStore {
         let idx = -1;
         switch (value.type) {
           case ORGANIZATION_TYPE:
-            idx = findDataIndex(this.orgData, value);
-            return idx !== -1 && this.orgData[idx].into;
+            // idx = findDataIndex(this.orgData, value);
+            // return idx !== -1 && this.orgData[idx].into;
+            return false;
           case PROJECT_TYPE:
             idx = findDataIndex(this.proData, value);
             return idx !== -1;

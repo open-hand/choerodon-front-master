@@ -13,6 +13,7 @@ const BATCH_SIZE = 30;
 
 function getMenuType(menuType = AppState.currentMenuType, isUser = AppState.isTypeUser) {
   return isUser ? 'user' : menuType.type;
+  // return menuType.type;
 }
 
 function filterEmptyMenus(menuData, parent) {

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import queryString from 'query-string';
 import { inject, observer } from 'mobx-react';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Popover, Icon } from 'choerodon-ui';
 import Avatar from './Avatar';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
-import { historyPushMenu, logout } from '@choerodon/boot/lib/containers/common';
+import { historyPushMenu, logout } from '../../../../common';
 // import { PREFIX_CLS } from '@choerodon/boot/lib/containers/common/constants';
 
 const MenuItem = Menu.Item;
@@ -39,22 +40,24 @@ export default class UserPreferences extends Component {
     this.props.HeaderStore.setUserPreferenceVisible(visible);
   };
 
-  getGlobalMenuData = () => {
+  getGlobalMenuData = (orgId) => {
     const { MenuStore, history } = this.props;
     MenuStore.loadMenuData({ type: 'site' }, false).then((menus) => {
       if (menus.length) {
         const { route, domain } = findFirstLeafMenu(menus[0]);
-        historyPushMenu(history, route, domain);
+        const routeWithOrgId = `${route}/?orgId=${orgId}`;
+        historyPushMenu(history, routeWithOrgId, domain);
       }
     });
   };
 
   handleMenuItemClick = ({ key }) => {
-    if (key === 'site-setting') {
-      this.getGlobalMenuData();
-    }
     const { history } = this.props;
-    history.push(`${key}?type=site`);
+    const { orgId } = queryString.parse(history.location.search);
+    if (key === 'site-setting') {
+      this.getGlobalMenuData(orgId);
+    }
+    history.push(`${key}?type=site&orgId=${orgId}`);
   };
 
   render() {

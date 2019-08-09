@@ -1,6 +1,7 @@
 
 import React, { lazy, Suspense, useContext } from 'react';
-import Store from '../stores';
+import Store from './stores';
+import './index.less';
 
 const lists = {
   table: lazy(() => import('./table')),

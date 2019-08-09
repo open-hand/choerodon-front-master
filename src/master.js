@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter, HashRouter as Router, Route, Switch } from 'react-router-dom';
 import queryString from 'query-string';
 import { inject, observer, Provider } from 'mobx-react';
+import { Spin } from 'choerodon-ui';
 import { OUTWARD } from '@choerodon/boot/lib/containers/common/constants';
 import Outward from './containers/components/c7n/routes/outward';
 // import Master from './containers/components/c7n/master/Master';
@@ -11,13 +12,38 @@ import { authorizeC7n, getAccessToken, setAccessToken, dashboard, WEBSOCKET_SERV
 import AppState from './containers/stores/c7n/AppState';
 import noaccess from './containers/components/c7n/tools/error-pages/403';
 import stores from './containers/stores';
+import Master from './containers/components/c7n/master';
 import './containers/components/style';
+
+const spinStyle = {
+  textAlign: 'center',
+  paddingTop: 300,
+};
 
 const outwardPath = ['#/organization/register-organization', '#/organization/register-organization/agreement'];
 
+const UILocaleProviderAsync = asyncRouter(
+  () => import('choerodon-ui/lib/locale-provider'),
+  { locale: () => import(`choerodon-ui/lib/locale-provider/${AppState.currentLanguage}.js`) },
+);
+
+const language = AppState.currentLanguage;
+const IntlProviderAsync = asyncLocaleProvider(language, 
+  () => import(`./containers/locale/${language}`),
+  () => import(`react-intl/locale-data/${language.split('_')[0]}`));
+
 @observer
 export default class Index extends React.Component {
+  state = {
+    loading: true,
+  };
+
+  componentDidMount() {
+    this.auth();
+  }
+
   auth = async () => {
+    this.setState({ loading: true });
     const { access_token: accessToken, token_type: tokenType, expires_in: expiresIn } = queryString.parse(window.location.hash);
     if (accessToken) {
       setAccessToken(accessToken, tokenType, expiresIn);
@@ -27,24 +53,11 @@ export default class Index extends React.Component {
       return false;
     }
     AppState.setUserInfo(await AppState.loadUserInfo());
-    return true;
+    this.setState({ loading: false });
   }
 
   render() {
-    const UILocaleProviderAsync = asyncRouter(
-      () => import('choerodon-ui/lib/locale-provider'),
-      { locale: () => import(`choerodon-ui/lib/locale-provider/${AppState.currentLanguage}.js`) },
-    );
-
-    const language = AppState.currentLanguage;
-    const IntlProviderAsync = asyncLocaleProvider(language, 
-      () => import(`./containers/locale/${language}`),
-      () => import(`react-intl/locale-data/${language.split('_')[0]}`));
-    const Master = asyncRouter(
-      () => import('./containers/components/c7n/master'),
-      null,
-      { ...this.props },
-    );
+    const { loading } = this.state;
     const OUTWARD_ARR = OUTWARD === 'undefined' || !OUTWARD ? [] : OUTWARD.split(',');
     const customInner = OUTWARD_ARR.some(v => window.location.hash.startsWith(v));
     if (outwardPath.includes(window.location.hash) || customInner) {
@@ -60,6 +73,13 @@ export default class Index extends React.Component {
         </UILocaleProviderAsync>
       );
     } else {
+      if (loading) {
+        return (
+          <div style={spinStyle}>
+            <Spin />
+          </div>
+        );
+      }
       return (
         <UILocaleProviderAsync>
           <IntlProviderAsync>
@@ -67,8 +87,10 @@ export default class Index extends React.Component {
               <Switch>
                 <Route
                   path="/"
-                  component={this.auth() ? Master : noaccess}
-                />
+                  // component={this.auth() ? Master : noaccess}
+                >
+                  <Master AutoRouter={this.props.AutoRouter} />
+                </Route>
               </Switch>
             </Provider>
           </IntlProviderAsync>

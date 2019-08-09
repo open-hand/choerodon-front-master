@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Tabs } from 'choerodon-ui';
+import PageTab from './PageTab';
 import './style/PageWrap.less';
 
 const { TabPane } = Tabs;
@@ -24,8 +25,8 @@ const PageWrap = ({ children, noHeader, ...props }) => {
       >
         {
           React.Children.map(children, (child) => {
-            const { type: { name } } = child;
-            if (name === 'PageTab') {
+            const { type } = child;
+            if (type === PageTab) {
               return (
                 <TabPane
                   tab={child.props.title}

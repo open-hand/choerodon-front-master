@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import queryString from 'query-string';
 import { Icon, Menu, Tooltip } from 'choerodon-ui';
 import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
@@ -136,7 +137,8 @@ export default class CommonMenu extends Component {
   }
 
   getMenuLink(route) {
-    const { AppState } = this.props;
+    const { AppState, history } = this.props;
+    const { orgId } = queryString.parse(history.location.search);
     const { id, name, type, organizationId, category } = AppState.currentMenuType;
     let search = '';
     switch (type) {
@@ -149,12 +151,12 @@ export default class CommonMenu extends Component {
       case 'project':
         search = `?type=${type}&id=${id}&name=${encodeURIComponent(name)}&category=${category}`;
         if (organizationId) {
-          search += `&organizationId=${organizationId}&orgId=${organizationId}`;
+          search += `&organizationId=${organizationId}`;
         }
         break;
       default:
     }
-    return `${route}${search}`;
+    return `${route}${search}${search === '' ? `?orgId=${orgId}` : `&orgId=${orgId}`}`;
   }
 
   findSelectedMenuByCode(child, code) {

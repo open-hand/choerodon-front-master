@@ -56,16 +56,7 @@ class Header extends Component {
               <Icon type="school" />
             </Button>
           </li> */}
-          <li style={{ width: 'auto' }}>
-            <OrgSelect />
-          </li>
-          {
-            getSiteMenuData.length > 0 && (
-              <li style={{ width: 'auto' }}>
-                <Setting />
-              </li>
-            )
-          }
+          <OrgSelect />
           <li style={{ width: 'auto' }}>
             <div>
               <Button functype="flat" shape="circle" onClick={() => this.handleGuideClick()}>

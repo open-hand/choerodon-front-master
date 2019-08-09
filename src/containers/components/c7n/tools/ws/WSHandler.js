@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { getCookie } from '../../../../common';
 
 export default class WSHandler extends Component {
   static defaultProps = {
-    path: 'choerodon:msg',
+    path: `choerodon:msg?token=bearer ${getCookie('access_token')}`,
   };
 
   static propTypes = {
@@ -22,7 +23,7 @@ export default class WSHandler extends Component {
   };
 
   state = {
-    data: null,
+    key: null,
   };
 
   componentWillMount() {
@@ -43,10 +44,10 @@ export default class WSHandler extends Component {
   handleMessage = (data) => {
     const { onMessage } = this.props;
     if (typeof onMessage === 'function') {
-      onMessage(JSON.parse(data).data);
+      onMessage(JSON.parse(data).key);
     }
     this.setState({
-      data: JSON.parse(data).data,
+      key: JSON.parse(data).key,
     });
   };
 
@@ -54,7 +55,7 @@ export default class WSHandler extends Component {
     const { messageKey, path } = props;
     const { ws } = context;
     if (ws) {
-      ws.register(messageKey, { type: 'sub', data: messageKey }, this.handleMessage, path);
+      ws.register(messageKey, { type: 'notify', key: messageKey }, this.handleMessage, path);
     }
   }
 
@@ -67,10 +68,10 @@ export default class WSHandler extends Component {
   }
 
   render() {
-    const { data } = this.state;
+    const { key } = this.state;
     const { children } = this.props;
     if (typeof children === 'function') {
-      return children(data);
+      return children(key);
     } else {
       return children;
     }

@@ -34,42 +34,15 @@ const iconStyle = {
   marginLeft: '.11rem',
 };
 
-const ListView = observer(() => {
-  const {
-    dataSet, AppState,
-    HeaderStore, MenuStore, history,
-  } = useContext(Store);
-
-  function handleClickProject() {
-    const record = dataSet.current;
-    const { id, name, type, organizationId, category } = record.toData();
-    MenuStore.loadMenuData({ type, id }, false).then((menus) => {
-      let route;
-      let path;
-      let domain;
-      if (menus.length) {
-        const { route: menuRoute, domain: menuDomain } = findFirstLeafMenu(menus[0]);
-        route = menuRoute;
-        domain = menuDomain;
-      }
-      if (route) {
-        path = `/?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
-        if (organizationId) {
-          path += `&organizationId=${organizationId}&orgId=${organizationId}`;
-        }
-      }
-      if (path) {
-        historyPushMenu(history, path, domain);
-      }
-    });
-  }
+const ListView = observer(({ handleClickProject, handleEditProject }) => {
+  const { dataSet } = useContext(Store);
 
   function renderName({ record }) {
     return (
       <React.Fragment>
         <a
           role="none"
-          onClick={handleClickProject}
+          onClick={() => handleClickProject(record)}
         >
           {record.get('name')}
         </a>
@@ -78,7 +51,9 @@ const ListView = observer(() => {
   }
 
   function renderAction() {
-    const actionDatas = [];
+    const actionDatas = [
+      { service: [], icon: '', text: '编辑', action: handleEditProject },
+    ];
     return <Action data={actionDatas} style={actionStyle} />;
   }
 
@@ -86,9 +61,10 @@ const ListView = observer(() => {
     <Table dataSet={dataSet}>
       <Column name="name" renderer={renderName} />
       <Column renderer={renderAction} width={100} />
-      <Column name="appName" />
       <Column name="code" />
+      <Column name="appName" />
       <Column name="category" />
+      <Column name="categoryGroup" />
       <Column name="createBy" />
       <Column name="creationDate" />
     </Table>

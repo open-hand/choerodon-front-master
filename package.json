@@ -1,7 +1,7 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "0.20.3",
+  "version": "0.20.7",
   "description": "A package of Master for choerodon platform.",
   "main": "./lib/index.js",
   "files": [
@@ -24,13 +24,15 @@
     "@choerodon/boot": "0.20.x"
   },
   "devDependencies": {
-    "@choerodon/boot": "0.20.x",
+    "@choerodon/boot": "^0.20.3",
     "babel-preset-env": "^1.7.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "through2": "^2.0.3"
   },
   "dependencies": {
+    "@choerodon/feedback": "^0.19.4",
+    "html2canvas": "^1.0.0-rc.3",
     "react-onclickoutside": "^6.8.0"
   }
 }
