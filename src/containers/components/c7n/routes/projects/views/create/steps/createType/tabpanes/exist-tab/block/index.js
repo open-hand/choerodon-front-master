@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import { Icon } from 'choerodon-ui';
+import { Icon, Avatar } from 'choerodon-ui';
 import Store from '../stores';
 // import Card from './Card';
 
@@ -37,7 +37,7 @@ const ListView = observer(() => {
     return (
       <div className={classNames} onClick={() => handleClick(record)}>
         <div className="card-body">
-          <Icon type="playlist_add" style={{ color: '#3f51b5', fontSize: '64px' }} />
+          <Avatar src={record.get('imageUrl')} size={80} style={{ fontSize: '48px' }}>{record.get('name') && record.get('name').charAt(0)}</Avatar>
         </div>
         <div className="card-footer">{record.get('name')}</div>
         <div className="check-icon" style={{ display: idActive ? 'block' : 'none' }}>

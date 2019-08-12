@@ -20,8 +20,15 @@ export default function CreateProjectWrap(props) {
     handleCancelCreateProject();
   }
 
-  function handleGo(next) {
-    setIndex(prev => prev + (next ? 1 : -1));
+  async function handleGo(next) {
+    if (next && index === 1) {
+      const { context: { dataSet: { current } } } = props;
+      if (await current.validate() === true) {
+        setIndex(prev => prev + (next ? 1 : -1));
+      }
+    } else {
+      setIndex(prev => prev + (next ? 1 : -1));
+    }
   }
 
   function renderFooter() {

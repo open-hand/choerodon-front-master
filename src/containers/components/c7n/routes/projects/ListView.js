@@ -157,7 +157,6 @@ const ListView = observer(() => {
 
   return (
     <Page>
-      <Breadcrumb title="Project测试" />
       {renderHeader()}
       <Content>
         {renderTool()}

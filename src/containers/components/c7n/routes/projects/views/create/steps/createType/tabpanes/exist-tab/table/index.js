@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Icon } from 'choerodon-ui';
+import { Icon, Avatar } from 'choerodon-ui';
 import { Table } from 'choerodon-ui/pro';
 import Store from '../stores';
 
@@ -41,11 +41,22 @@ const ListView = observer(() => {
     return (record.get('name') || '').indexOf(filter) > -1 || (record.get('name') || '').indexOf(filter) > -1;
   }
 
+  function renderName({ record }) {
+    const { imageUrl, name } = record.toData();
+    return (
+      <React.Fragment>
+        <Avatar src={imageUrl} size={16} style={{ marginRight: 8, fontSize: '12px', verticalAlign: 'top', marginTop: 10 }}>{name && name.charAt(0)}</Avatar>
+        {name}
+      </React.Fragment>
+    );
+  }
+
   return (
     <Table dataSet={dataSet} onRow={handleRow} filter={tableFilter}>
       <Column renderer={renderSelect} width={50} />
-      <Column name="name" />
+      <Column name="name" renderer={renderName} />
       <Column name="code" />
+      <Column name="category" />
     </Table>
   );
 });
