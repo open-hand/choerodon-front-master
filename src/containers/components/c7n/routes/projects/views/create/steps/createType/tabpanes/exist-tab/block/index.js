@@ -6,10 +6,7 @@ import Store from '../stores';
 // import Card from './Card';
 
 const ListView = observer(() => {
-  const {
-    dataSet, AppState,
-    HeaderStore, MenuStore, history,
-  } = useContext(Store);
+  const { dataSet, context: { dataSet: outDs }, filter } = useContext(Store);
 
   // function renderCard(record) {
   //   const cardPlainObj = record.toData();
@@ -17,12 +14,22 @@ const ListView = observer(() => {
   // }
 
   function handleClick(record) {
-    const index = dataSet.findIndex(r => r === record);
-    dataSet.locate(index);
+    const createRecord = outDs.current;
+    const currentValue = createRecord.get('createByExist');
+    const selectedValue = record.get('id');
+    if (currentValue === selectedValue) {
+      createRecord.set('createByExist', undefined);
+      createRecord.set('category', 'AGILE');
+    } else {
+      createRecord.set('createByExist', selectedValue);
+      createRecord.set('category', record.get('category'));
+    }
   }
 
   function renderCard(record) {
-    const idActive = record === dataSet.current;
+    const createRecord = outDs.current;
+    const currentValue = createRecord.get('createByExist');
+    const idActive = record.get('id') === currentValue;
     const classNames = classnames({
       card: true,
       active: idActive,
@@ -40,9 +47,16 @@ const ListView = observer(() => {
     );
   }
 
+  function getFilterdData() {
+    if (!filter) {
+      return dataSet;
+    }
+    return dataSet.filter(r => (r.get('name') || '').indexOf(filter) > -1 || (r.get('name') || '').indexOf(filter) > -1);
+  }
+
   return (
     <div className="create-project-tab-card-block">
-      {dataSet.map(r => renderCard(r))}
+      {getFilterdData().map(r => renderCard(r))}
     </div>
   );
 });

@@ -41,9 +41,9 @@ const ListView = observer(() => {
   }
 
   return (
-    <React.Fragment>
+    <div style={{ display: 'flex', flexDirection: 'row' }}>
       {dataSet.map(r => renderCard(r))}
-    </React.Fragment>
+    </div>
   );
 });
 

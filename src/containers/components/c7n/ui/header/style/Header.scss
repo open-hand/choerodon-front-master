@@ -52,7 +52,7 @@ $c7n-boot-header: #{$c7n-prefix}-boot-header;
   }
   &-right {
     padding-right: 20px;
-    li {
+    &-li {
       width: 30px;
       margin: auto 0;
       height: 48px;

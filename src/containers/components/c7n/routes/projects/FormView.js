@@ -70,7 +70,7 @@ export default function FormView({ context }) {
         <TextField name="code" disabled />
         <Select name="category" disabled />
         <TextField name="creationDate" disabled />
-        <TextField name="createBy" disabled />
+        <TextField name="createUserName" disabled />
       </Form>
     </React.Fragment>
   );

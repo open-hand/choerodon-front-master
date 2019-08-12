@@ -1,25 +1,20 @@
 import React, { useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { inject } from 'mobx-react';
 import queryString from 'query-string';
-import classNames from 'classnames';
-import { FormattedMessage, injectIntl } from 'react-intl';
 import { observer } from 'mobx-react-lite';
-import { action } from 'mobx';
 import { toJS } from 'mobx';
 import { Icon, Button } from 'choerodon-ui';
-import { Modal, Stores, Table, Select } from 'choerodon-ui/pro';
-import { HEADER_TITLE_NAME } from '@choerodon/boot/lib/containers/common/constants';
+import { Modal, Table, Select } from 'choerodon-ui/pro';
 import Store from './stores';
 import List from './List';
 import findFirstLeafMenu from '../../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../../../common';
 import FormView from './FormView';
 import CreateView from './views/create';
-import { Action, Content, Header, Page, Permission, Breadcrumb } from '../../../../../index';
+import { Content, Page } from '../../../../../index';
 import './style/index.less';
 
-const { Column } = Table;
+import Breadcrumb from '../../tools/tab-page/Breadcrumb';
+
 const { Option } = Select;
 const modalKey = Modal.key();
 const createModalKey = Modal.key();
@@ -30,14 +25,6 @@ const modalStyle = {
 const largeModalStyle = {
   width: 'calc(100% - 3.5rem)',
 };
-const contentStyle = {
-  width: 512,
-  padding: 0,
-  overflowX: 'hidden',
-};
-const actionStyle = {
-  marginRight: 10,
-};
 const iconStyle = {
   fontSize: '16px',
   marginLeft: '.11rem',
@@ -46,27 +33,27 @@ const iconStyle = {
 const ListView = observer(() => {
   const context = useContext(Store);
   const {
-    dataSet, AppState, showType, toggleShowType, isNotRecent, toggleRecent,
+    dataSet, showType, toggleShowType, isNotRecent, toggleRecent,
     HeaderStore, MenuStore, history, intl,
   } = context;
 
-  function changeData() {
-    const { orgId } = queryString.parse(history.location.search);
-    let proData;
-    if (isNotRecent) {
-      proData = HeaderStore.getProData || [];
-    } else {
-      proData = HeaderStore.getRecentItem || [];
-    }
-    const pros = proData.filter(v => String(v.organizationId) === orgId);
-    dataSet.loadData(toJS(pros));
-  }
+  // function changeData() {
+  //   const { orgId } = queryString.parse(history.location.search);
+  //   let proData;
+  //   if (isNotRecent) {
+  //     proData = HeaderStore.getProData || [];
+  //   } else {
+  //     proData = HeaderStore.getRecentItem || [];
+  //   }
+  //   const pros = proData.filter(v => String(v.organizationId) === orgId);
+  //   dataSet.loadData(toJS(pros));
+  // }
 
-  useEffect(() => {
-    changeData();
-  }, [isNotRecent]);
+  // useEffect(() => {
+  //   changeData();
+  // }, [isNotRecent]);
 
-  async function handleCreate() {
+  async function handleOkEdit() {
     try {
       if ((await dataSet.submit()) !== false) {
         dataSet.query();
@@ -105,9 +92,9 @@ const ListView = observer(() => {
     Modal.open({
       key: modalKey,
       drawer: true,
-      title: '创建项目',
+      title: '项目设置',
       children: <FormView context={context} />,
-      // onOk: handleCreate,
+      onOk: handleOkEdit,
       onCancel: handleCancel,
       style: modalStyle,
     });
@@ -119,7 +106,8 @@ const ListView = observer(() => {
 
   function handleClickProject(record) {
     // const record = dataSet.current;
-    const { id, name, type, organizationId, category } = record.toData();
+    const { id, name, type = 'project', organizationId, category } = record.toData();
+    HeaderStore.setRecentItem(record.toData());
     MenuStore.loadMenuData({ type, id }, false).then((menus) => {
       let route;
       let path;
@@ -130,7 +118,7 @@ const ListView = observer(() => {
         domain = menuDomain;
       }
       // if (route) {
-      path = `/?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
+      path = `/?type=${type || 'project'}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
       if (organizationId) {
         path += `&organizationId=${organizationId}&orgId=${organizationId}`;
       }
@@ -143,7 +131,7 @@ const ListView = observer(() => {
 
   function renderHeader() {
     const { orgId } = queryString.parse(history.location.search);
-    const org = (HeaderStore.getOrgData || []).find(v => String(v.id) === orgId) || {};
+    const org = (HeaderStore.getOrgData || []).find(v => String(v.id) === orgId) || { name: '' };
     return (
       <div className="c7n-projects-header">
         <div className="c7n-projects-title">{`${org.name}中的项目`}</div>
@@ -169,6 +157,7 @@ const ListView = observer(() => {
 
   return (
     <Page>
+      <Breadcrumb title="Project测试" />
       {renderHeader()}
       <Content>
         {renderTool()}

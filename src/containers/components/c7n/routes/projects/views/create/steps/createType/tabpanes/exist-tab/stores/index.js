@@ -11,10 +11,10 @@ export default Store;
 
 export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderStore', 'MenuStore')(
   (props) => {
-    const { AppState: { currentMenuType: { type, id } }, intl, children } = props;
+    const { AppState: { currentMenuType: { type, id } }, intl, children, AppState, history } = props;
     const [showType, setShowType] = useState('table');
     const [filter, setFilter] = useState('');
-    const dataSet = useMemo(() => new DataSet(ListDataSet({ type, id, intl })), [type, id]);
+    const dataSet = useMemo(() => new DataSet(ListDataSet(AppState, history)), [type, id]);
     const value = {
       ...props,
       // prefixCls: 'c7n-projects',
@@ -24,6 +24,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderSto
         setShowType(st);
       },
       showType,
+      filter,
+      setFilter,
     };
     return (
       <Store.Provider value={value}>

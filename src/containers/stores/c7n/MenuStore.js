@@ -71,6 +71,8 @@ class MenuStore {
 
   @observable activeMenu = null;
 
+  @observable activeMenuParents = [];
+
   @observable selected = null;
 
   @observable leftOpenKeys = [];
@@ -118,6 +120,11 @@ class MenuStore {
         this.statistics = {};
       }
     });
+  }
+
+  @action
+  setActiveMenuParents(data) {
+    this.activeMenuParents = data;
   }
 
   @action

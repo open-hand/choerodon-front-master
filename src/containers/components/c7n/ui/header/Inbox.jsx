@@ -1,36 +1,32 @@
+/* eslint-disable react/no-danger */
 import React, { Component } from 'react';
 import TimeAgo from 'timeago-react';
+import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
-// import timeago from 'timeago-react';
 import classNames from 'classnames';
-import { Badge, Button, Icon, Popover, Spin, Tabs, Card, Avatar, Tooltip } from 'choerodon-ui';
-import { WSHandler } from '@choerodon/boot';
-import MouseOverWrapper from '../mouseOverWrapper';
-// import { PREFIX_CLS } from '@choerodon/boot/lib/containers/common/constants';
-import onClickOutside from "react-onclickoutside";
+import { Badge, Button, Icon, Spin } from 'choerodon-ui';
+import WSHandler from '../../tools/ws/WSHandler';
 
 const PREFIX_CLS = 'c7n';
 const prefixCls = `${PREFIX_CLS}-boot-header-inbox`;
 const popoverPrefixCls = `${prefixCls}-popover`;
 const siderPrefixCls = `${prefixCls}-sider`;
-// timeago.register('zh_CN', require('./locale/zh_CN'));
 
 /* eslint-disable-next-line */
 const reg = /\n|&nbsp;|&lt|&gt|<[^a\/][^>]*>|<\/[^a][^>]*>/g;
-const { TabPane } = Tabs;
-const { Meta } = Card;
 const iconMap = {
-  'msg': 'textsms',
-  'notice': 'volume_up'
-}
+  msg: 'textsms',
+  notice: 'volume_up',
+};
 
 @inject('HeaderStore', 'AppState')
 @onClickOutside
 @observer
 class RenderPopoverContentClass extends Component {
-  handleClickOutside = evt => {
+  handleClickOutside = () => {
     this.props.handleVisibleChange(false);
   };
+
   render() {
     const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg } = this.props;
     const { inboxVisible, getUnreadAll, announcementClosed } = HeaderStore;
@@ -56,10 +52,10 @@ class RenderPopoverContentClass extends Component {
             <div className={`${prefixCls}-sider-header-action`}>
               <span role="none" style={{ cursor: 'pointer' }} onClick={() => window.open('/#/notify/user-msg?type=site')}>
                 查看所有消息
-                  </span>
+              </span>
               <span role="none" style={{ cursor: 'pointer' }} onClick={cleanAllMsg}>
                 全部清除
-                  </span>
+              </span>
             </div>
           </div>
         </div>
@@ -69,7 +65,7 @@ class RenderPopoverContentClass extends Component {
           </Spin>
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -116,7 +112,7 @@ export default class Inbox extends Component {
 
   handleMessageTitleClick = (e, data) => {
     // set as read && go to message detail
-    this.cleanMsg(e, data)
+    this.cleanMsg(e, data);
     window.open(`/#/notify/user-msg?type=site&msgId=${data.id}&msgType=${data.type}`);
   }
 
@@ -142,7 +138,7 @@ export default class Inbox extends Component {
                   <div className={`${prefixCls}-sider-content-list-title`}>
                     <span>
                       <Icon type={iconMap[data.type]} style={{ marginRight: 10 }} />
-                      <a onClick={(e) => this.handleMessageTitleClick(e, data)}>{title}</a>
+                      <a onClick={e => this.handleMessageTitleClick(e, data)}>{title}</a>
                     </span>
                     <Icon
                       type="close"
@@ -154,7 +150,7 @@ export default class Inbox extends Component {
                     <div style={{ maxHeight: 57, overflow: 'hidden' }}>
                       <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(reg, '')}` }} />
                       {document.querySelector(`#li-${id}`) && document.querySelector(`#li-${id}`).offsetHeight > 63 ? (
-                        <a href={'#'} target="_blank" rel="noreferrer noopener">
+                        <a href="#" target="_blank" rel="noreferrer noopener">
                           <span>了解更多</span>
                           <Icon type="open_in_new" />
                         </a>
@@ -168,7 +164,7 @@ export default class Inbox extends Component {
                   <div className={`${prefixCls}-sider-content-list-time`}>
                     <TimeAgo
                       datetime={sendTime.slice(0, sendTime.length - 3)}
-                      locale={'zh_CN'}
+                      locale="zh_CN"
                     />
                   </div>
                 </li>
@@ -189,7 +185,7 @@ export default class Inbox extends Component {
   render() {
     const { AppState, HeaderStore } = this.props;
     const { inboxVisible, inboxLoaded, inboxData, inboxLoading } = HeaderStore;
-    const popOverContent = { inboxData, inboxLoading }
+    const popOverContent = { inboxData, inboxLoading };
     return (
       <React.Fragment>
         <WSHandler
@@ -206,8 +202,12 @@ export default class Inbox extends Component {
             )
           }
         </WSHandler>
-        <RenderPopoverContentClass {...popOverContent} cleanAllMsg={this.cleanAllMsg}
-          renderMessages={this.renderMessages} handleVisibleChange={this.handleVisibleChange} />
+        <RenderPopoverContentClass
+          {...popOverContent}
+          cleanAllMsg={this.cleanAllMsg}
+          renderMessages={this.renderMessages}
+          handleVisibleChange={this.handleVisibleChange}
+        />
       </React.Fragment>
     );
   }

@@ -1,50 +1,38 @@
-import React, { useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { inject } from 'mobx-react';
-import queryString from 'query-string';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
-import { action } from 'mobx';
-import { toJS } from 'mobx';
-import { Button, Icon } from 'choerodon-ui';
-import { Modal, Stores, Table, Select } from 'choerodon-ui/pro';
-import { HEADER_TITLE_NAME } from '@choerodon/boot/lib/containers/common/constants';
+import { Avatar } from 'choerodon-ui';
+import { Table } from 'choerodon-ui/pro';
 import Store from '../../stores';
-import findFirstLeafMenu from '../../../../../util/findFirstLeafMenu';
-import { historyPushMenu } from '../../../../../../common';
-import { Action, Content, Header, Page, Permission, Breadcrumb } from '../../../../../../../index';
+import { Action } from '../../../../../../../index';
 
 const { Column } = Table;
-const { Option } = Select;
-const modalKey = Modal.key();
 
-const modalStyle = {
-  width: 'calc(100vw - 350px)',
-};
-const contentStyle = {
-  width: 512,
-  padding: 0,
-  overflowX: 'hidden',
-};
 const actionStyle = {
   marginRight: 10,
 };
-const iconStyle = {
-  fontSize: '14px',
-  marginLeft: '.11rem',
-};
 
 const ListView = observer(({ handleClickProject, handleEditProject }) => {
-  const { dataSet } = useContext(Store);
+  const { dataSet, isNotRecent, HeaderStore } = useContext(Store);
+
+  function filterRecent(record) {
+    if (isNotRecent) {
+      return true;
+    } else {
+      const recents = HeaderStore.getRecentItem;
+      return !!recents.find(v => v.id === record.get('id'));
+    }
+  }
 
   function renderName({ record }) {
+    const { imageUrl, name } = record.toData();
     return (
       <React.Fragment>
         <a
           role="none"
           onClick={() => handleClickProject(record)}
         >
-          {record.get('name')}
+          <Avatar src={imageUrl} size={16} style={{ marginRight: 8, fontSize: '12px', verticalAlign: 'top', marginTop: 10 }}>{name && name.charAt(0)}</Avatar>
+          {name}
         </a>
       </React.Fragment>
     );
@@ -58,14 +46,14 @@ const ListView = observer(({ handleClickProject, handleEditProject }) => {
   }
 
   return (
-    <Table dataSet={dataSet}>
+    <Table dataSet={dataSet} filter={filterRecent}>
       <Column name="name" renderer={renderName} />
       <Column renderer={renderAction} width={100} />
       <Column name="code" />
-      <Column name="appName" />
+      <Column name="applicationName" />
       <Column name="category" />
-      <Column name="categoryGroup" />
-      <Column name="createBy" />
+      <Column name="programName" />
+      <Column name="createUserName" />
       <Column name="creationDate" />
     </Table>
   );

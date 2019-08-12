@@ -239,6 +239,9 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
     &-header-wrap{
       padding: 18px 24px 0 24px;
       .#{$c7n-boot-header-inbox}-sider-header {  
+        width: 100%;
+        padding-bottom: 9.5px;
+        border-bottom: 1px solid rgba(0,0,0,.2);
         &-title {
           display: flex;
           justify-content: space-between;
@@ -293,6 +296,7 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
         margin: 0 !important;
 
         &-title {
+          line-height: 21px;
           margin-right: -32px;
           display: flex;
           justify-content: space-between;
@@ -305,6 +309,7 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
         }
   
         &-description {
+          line-height: 21px;
           p {
             margin: 0;
             color: rgba(0, 0, 0, 0.87);
@@ -318,6 +323,7 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
           margin-top: 10px;
           color: rgba(0, 0, 0, 0.54);
           font-size: 12px;
+          line-height: 21px;
         }
       }
     }

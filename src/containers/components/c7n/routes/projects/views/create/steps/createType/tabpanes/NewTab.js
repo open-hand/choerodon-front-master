@@ -10,16 +10,16 @@ const FormView = observer(({ context }) => {
   const record = dataSet.current;
 
   const TYPE_MAP = {
-    normal: '创建普通应用项目',
-    agile: '创建敏捷管理项目',
-    agileGroup: '创建敏捷项目群项目',
-    lowcode: '创建低代码应用项目',
+    MICROSERVICE: '创建普通应用项目',
+    AGILE: '创建敏捷管理项目',
+    PROGRAM: '创建敏捷项目群项目',
+    LOWCODE: '创建低代码应用项目',
   };
 
   function handleClickType(type) {
     const currentCreateType = record.get('category');
     if (currentCreateType === type) {
-      record.set('category', undefined);
+      // record.set('category', undefined);
     } else {
       record.set('category', type);
     }
@@ -46,7 +46,7 @@ const FormView = observer(({ context }) => {
 
   return (
     <div className="create-project-tab-card-block">
-      {['normal', 'agile', 'agileGroup', 'lowcode'].map(t => renderCard(t))}
+      {['MICROSERVICE', 'AGILE', 'PROGRAM', 'LOWCODE'].map(t => renderCard(t))}
     </div>
   );
 });

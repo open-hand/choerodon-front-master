@@ -65,9 +65,11 @@ export default function FormView({ context }) {
     <React.Fragment>
       {renderAvatar()}
       <Form record={dataSet.current} style={{ width: '5.12rem' }}>
-        <Select name="category" />
+        {/* <Select name="category" /> */}
         <TextField name="name" />
         <TextField name="code" />
+        <TextField name="applicationCode" />
+        <TextField name="applicationName" />
       </Form>
     </React.Fragment>
   );

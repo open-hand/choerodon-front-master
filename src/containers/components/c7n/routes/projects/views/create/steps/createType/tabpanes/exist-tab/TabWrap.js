@@ -18,7 +18,7 @@ const iconStyle = {
 const ListView = observer((props) => {
   const {
     dataSet, AppState, showType, toggleShowType, isNotRecent, toggleRecent,
-    HeaderStore, MenuStore, history, intl,
+    HeaderStore, MenuStore, history, intl, filter, setFilter,
   } = useContext(Store);
 
   function changeData() {
@@ -54,10 +54,21 @@ const ListView = observer((props) => {
   //   });
   // }
 
+  function handleSearch(value, oldValue) {
+    if (value !== oldValue) {
+      setFilter(value);
+    }
+  }
+
   function renderTool() {
     return (
       <div className="c7n-projects-tool">
-        <TextField placeholder="请输入查询条件" prefix={<Icon type="search" />} style={{ width: '4.7rem' }} />
+        <TextField
+          placeholder="请输入查询条件"
+          prefix={<Icon type="search" />}
+          style={{ width: '4.7rem' }}
+          onChange={handleSearch}
+        />
         <div className="c7n-projects-tool-icon-group">
           <Icon type="dashboard" style={iconStyle} className={showType === 'block' ? 'active' : null} onClick={() => toggleShowType('block')} />
           <Icon type="format_list_bulleted" style={iconStyle} className={showType === 'table' ? 'active' : null} onClick={() => toggleShowType('table')} />
