@@ -1,55 +1,35 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Tooltip } from 'choerodon-ui';
 import { inject } from 'mobx-react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 
-@withRouter
-@inject('AppState', 'MenuStore')
-@injectIntl
-export default class PageHeader extends Component {
-  static propTypes = {
-    backPath: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.bool,
-    ]),
-  };
-
-  onBackBtnClick = () => {
-    const { backPath, history } = this.props;
-    if (backPath === true) {
-      this.props.history.goBack();
-    } else {
-      this.linkToChange(backPath);
-    }
-  };
-
-  linkToChange = (url) => {
-    const { history } = this.props;
-    history.push(url);
-  };
-
-  componentDidMount() {
-    const { MenuStore, AppState, title } = this.props;
+const PageHeader = ({
+  backPath = null,
+  children, className, history, MenuStore,
+  AppState, title, intl, location,
+}) => {
+  useEffect(() => {
     let titleText = null;
     if (title && title.props && title.props.id) {
-      titleText = this.props.intl.formatMessage({ id: title.props.id, values: title.props.value });
+      titleText = intl.formatMessage({ id: title.props.id, values: title.props.value });
     }
-    if (MenuStore.activeMenu && this.props.location.pathname !== '/') {
+    if (MenuStore.activeMenu && location.pathname !== '/') {
       setTimeout(() => {
         document.getElementsByTagName('title')[0].innerText = `${titleText && titleText !== MenuStore.activeMenu.name ? `${titleText} – ` : ''}${MenuStore.activeMenu.name} – ${MenuStore.activeMenu.parentName} – ${AppState.menuType.type !== 'site' ? `${AppState.menuType.name} – ` : ''} ${AppState.getSiteInfo.systemTitle || AppState.getSiteInfo.defaultTitle}`;
       }, 500);
     }
+  }, []);
+
+  function onBackBtnClick() {
+    history.push(backPath);
   }
 
-  render() {
-    const { backPath, children, className } = this.props;
+  function renderBackBtn() {
     let backBtn = null;
     if (backPath) {
       backBtn = (
-        // 清除从父元素继承的 CSS 样式
         <div style={{ lineHeight: '39px' }}>
           <Tooltip
             title="返回"
@@ -58,7 +38,7 @@ export default class PageHeader extends Component {
           >
             <Button
               type="primary"
-              onClick={this.onBackBtnClick}
+              onClick={onBackBtnClick}
               className="back-btn small-tooltip"
               shape="circle"
               size="large"
@@ -68,11 +48,15 @@ export default class PageHeader extends Component {
         </div>
       );
     }
-    return (
-      <div className={classNames('page-head', className)}>
-        {backBtn}
-        {children}
-      </div>
-    );
+    return backBtn;
   }
-}
+  
+  return (
+    <div className={classNames('page-head', className)}>
+      {renderBackBtn()}
+      {children}
+    </div>
+  );
+};
+
+export default withRouter(inject('AppState', 'MenuStore')(injectIntl(PageHeader)));

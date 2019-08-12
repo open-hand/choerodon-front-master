@@ -1,9 +1,8 @@
-@import "../../../style/theme/default";
-@import "../../../style/mixin/link";
+// @import "../../../style/mixin/link";
 
-$c7n-boot-favorites: #{$c7n-prefix}-boot-favorites;
+@c7n-boot-favorites: ~"c7n-boot-favorites";
 
-.#{$c7n-boot-favorites} {
+.@{c7n-boot-favorites} {
   &-color {
     display: flex;
     color: rgba(0, 0, 0, 0.54);
@@ -61,7 +60,7 @@ $c7n-boot-favorites: #{$c7n-prefix}-boot-favorites;
         .c7n-boot-favorites-popover-item-icon {
           background: rgba(0, 0, 0, 0.06);
         }
-        .#{$c7n-boot-favorites}-popover-item-icon {
+        .@{c7n-boot-favorites}-popover-item-icon {
           > i:nth-child(2) {
             display: inline-block;
             color: #6f6f6f;

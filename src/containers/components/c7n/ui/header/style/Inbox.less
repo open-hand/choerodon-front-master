@@ -1,10 +1,10 @@
-@import "../../../style/theme/default";
-@import "../../../style/mixin/link";
-@import "./constants";
+// @import "../../../style/theme/default";
+// @import "../../../style/mixin/link";
+@import "./_constants";
 
-$c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
+@c7n-boot-header-inbox: ~"c7n-boot-header-inbox";
 
-.#{$c7n-boot-header-inbox} {
+.@{c7n-boot-header-inbox} {
   transform: scale(.8);
   button {
     transform: scale(1.25);
@@ -43,7 +43,7 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
         color: rgba(0, 0, 0, 0.65);
         font-size: 15px;
         &-active {
-          color: #3f51b5;
+          color: @primary-color;
         }
       }
       .c7n-tabs-bar {
@@ -104,7 +104,7 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
 
       > a {
         float: right;
-        color: $primary-color;
+        color: @primary-color;
       }
     }
     &-card {
@@ -190,7 +190,7 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
       text-align: center;
       font-size: 14px;
       font-weight: 500;
-      color: $primary-color;
+      color: @primary-color;
       > button {
         width: 120px;
         margin-bottom: 16px;
@@ -219,7 +219,7 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
   &-sider {
     position: fixed;
     width: 520px;
-    height: calc(100vh - 48px);
+    height: calc(~"100vh - 48px");
     right: -550px;
     bottom: 0;
     background: #FFFFFF;
@@ -233,12 +233,12 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
 
     &-move-down {
       // move the Inbox down when annoucement banner is shown
-      height: calc(100vh - 48px - #{$banner-height});
+      height: calc(~"100vh - 48px - @{banner-height}");
     }
 
     &-header-wrap{
       padding: 18px 24px 0 24px;
-      .#{$c7n-boot-header-inbox}-sider-header {  
+      .@{c7n-boot-header-inbox}-sider-header {  
         width: 100%;
         padding-bottom: 9.5px;
         border-bottom: 1px solid rgba(0,0,0,.2);
@@ -274,7 +274,7 @@ $c7n-boot-header-inbox: #{$c7n-prefix}-boot-header-inbox;
 
 
     &-content {
-      height: calc(100% - 100px);
+      height: calc(~"100% - 100px");
       overflow: auto;
 
       > div {

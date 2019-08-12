@@ -1,8 +1,8 @@
-@import "../../../style/theme/default";
+// @import "../../../style/theme/default";
 
-$c7n-boot-header-logo: #{$c7n-prefix}-boot-header-logo;
+@c7n-boot-header-logo: ~"c7n-boot-header-logo";
 
-.#{$c7n-boot-header-logo} {
+.@{c7n-boot-header-logo} {
   color: white;
   flex-grow: 1;
   height: 100%;
@@ -21,7 +21,7 @@ $c7n-boot-header-logo: #{$c7n-prefix}-boot-header-logo;
     background-image: url('./icons/choerodon_logo_letter.svg');
   }
   &-wrap {
-    background-color: $primary-color - #0f1216;
+    background-color: @primary-color - #0f1216;
     width: 250px;
     height: 47px;
     line-height: 47px;
@@ -58,6 +58,6 @@ $c7n-boot-header-logo: #{$c7n-prefix}-boot-header-logo;
   }
 }
 
-a.#{$c7n-boot-header-logo} {
+a.@{c7n-boot-header-logo} {
   cursor: pointer;
 }

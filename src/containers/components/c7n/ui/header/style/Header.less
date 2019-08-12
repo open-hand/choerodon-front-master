@@ -1,8 +1,8 @@
-@import "../../../style/theme/default";
+// @import "../../../style/theme/default";
 
-$c7n-boot-header: #{$c7n-prefix}-boot-header;
+@c7n-boot-header: ~"c7n-boot-header";
 
-.#{$c7n-boot-header} {
+.@{c7n-boot-header} {
   &-wrap {
     display: flex;
     align-items: center;
@@ -12,7 +12,7 @@ $c7n-boot-header: #{$c7n-prefix}-boot-header;
     box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.16);
     position: relative;
     z-index: 999;
-    background-color: $primary-color;
+    background-color: @primary-color;
     ul {
       height: 48px;
       li {

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import querystring from 'query-string';
 import axios from '../../../../tools/axios';
 import { prompt, handleResponseError, getCookie } from '../../../../../../common';
-import './AvatarUploader.scss';
+import './AvatarUploader.less';
 
 const { Dragger } = Upload;
 const { round } = Math;

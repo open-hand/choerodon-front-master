@@ -1,8 +1,8 @@
-@import "../../../style/theme/default";
+// @import "../../../style/theme/default";
 
-$c7n-boot-header-menu-type: #{$c7n-prefix}-boot-header-menu-type;
+@c7n-boot-header-menu-type: ~"c7n-boot-header-menu-type";
 
-.#{$c7n-boot-header-menu-type} {
+.@{c7n-boot-header-menu-type} {
   &-button {
     margin: 0 20px 0 15px;
     padding: 0 2px 0 8px;
@@ -47,7 +47,7 @@ $c7n-boot-header-menu-type: #{$c7n-prefix}-boot-header-menu-type;
         vertical-align: top;
         &:hover {
           text-decoration: underline;
-          color: $primary-color;
+          color: @primary-color;
           cursor: pointer;
         }
         .icon {
@@ -87,7 +87,7 @@ $c7n-boot-header-menu-type: #{$c7n-prefix}-boot-header-menu-type;
     margin-top: 16px;
     align-items: center;
     justify-content: space-between;
-    &.has-search .#{$c7n-boot-header-menu-type}-organization-select + * {
+    &.has-search .@{c7n-boot-header-menu-type}-organization-select + * {
       width: 396px;
     }
   }

@@ -4,14 +4,13 @@ import { toJS } from 'mobx';
 import queryString from 'query-string';
 import { withRouter, Link } from 'react-router-dom';
 import { Breadcrumb as Bread } from 'choerodon-ui';
-import { Button } from 'choerodon-ui/pro';
 import { Context } from './PageWrap';
 import './style/Bread.less';
 
 const { Item } = Bread;
 
 const Breadcrumb = ({ title = 'Choerodon猪齿鱼平台', AppState, HeaderStore, MenuStore, history, ...props }) => {
-  const { isTab, renderBread } = useContext(Context);
+  const { isTab } = useContext(Context);
 
   function getOrganization() {
     const { currentMenuType: { orgId } } = AppState;

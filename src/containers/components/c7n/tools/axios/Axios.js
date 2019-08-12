@@ -1,6 +1,3 @@
-/**
- * Created by smilesoul on 2017/6/23.
- */
 import axios from 'axios';
 import { authorizeC7n as authorize } from '../../../../common/authorize';
 import { getAccessToken, removeAccessToken } from '../../../../common/accessToken';
@@ -8,18 +5,13 @@ import { API_HOST } from '../../../../common/constants';
 
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|PERMISSION_ACCESS_TOKEN_EXPIRED)/;
 
-// axios 配置
 axios.defaults.timeout = 30000;
 axios.defaults.baseURL = API_HOST;
 
-// history.go(0);
-// http request 拦截器);
 axios.interceptors.request.use(
   (config) => {
     const newConfig = config;
     newConfig.headers['Content-Type'] = 'application/json';
-    // newConfig.headers['If-Modified-Since'] = new Date();
-    // newConfig.headers['Cache-Control'] = 'max-age=3600';
     newConfig.headers.Accept = 'application/json';
     const accessToken = getAccessToken();
     if (accessToken) {
@@ -33,13 +25,11 @@ axios.interceptors.request.use(
   },
 );
 
-// http response 拦截器
 axios.interceptors.response.use(
   (response) => {
     if (response.status === 204) {
       return response;
     }
-    // continue sending response to the then() method
     return 'data' in response ? response.data : response;
   },
   (error) => {

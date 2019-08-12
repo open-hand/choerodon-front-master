@@ -1,5 +1,5 @@
-@import "../../../style/theme/default";
-@import "../../../style/mixin/link";
+// @import "../../../style/theme/default";
+// @import "../../../style/mixin/link";
 
 :root .c7n-menu-submenu-inline > .c7n-menu-submenu-title:after {
   font-size: 16px;
@@ -99,7 +99,7 @@
       &-selected,
       &-selected:hover {
         color: #fff;
-        background-color: $primary-color;
+        background-color: @primary-color;
       }
     }
     &-header {
@@ -131,7 +131,7 @@
     .c7n-menu-item-selected,
     .c7n-menu-vertical .c7n-menu-submenu-selected,
     &-popup .c7n-menu-item-selected {
-      color: $primary-color;
+      color: @primary-color;
       background-color: rgba(140, 158, 255, 0.16) !important;
     }
     &-popup.c7n-menu-submenu-popup {

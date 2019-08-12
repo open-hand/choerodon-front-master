@@ -1,3 +1,9 @@
-import Store from './Store';
-
-export default Store;
+export default function store(name) {
+  return (target) => {
+    Object.assign(target.prototype, {
+      getStoreName() {
+        return name;
+      },
+    });
+  };
+}
