@@ -30,9 +30,9 @@ export default function FormView({ context }) {
     const imageUrl = record.get('imgUrl');
     return (
       <React.Fragment>
-        <div className="c7n-iam-projectsetting-avatar">
+        <div className="c7n-master-projectsetting-avatar">
           <div
-            className="c7n-iam-projectsetting-avatar-wrap"
+            className="c7n-master-projectsetting-avatar-wrap"
             style={{
               backgroundColor: '#c5cbe8',
               backgroundImage: imageUrl ? `url(${fileServer(imageUrl)})` : '',
@@ -40,10 +40,10 @@ export default function FormView({ context }) {
           >
             {!imageUrl && name && name.charAt(0)}
             <Button
-              className={classnames('c7n-iam-projectsetting-avatar-button', 'c7n-iam-projectsetting-avatar-button-edit')}
+              className={classnames('c7n-master-projectsetting-avatar-button', 'c7n-master-projectsetting-avatar-button-edit')}
               onClick={openAvatarUploader}
             >
-              <div className="c7n-iam-projectsetting-avatar-button-icon">
+              <div className="c7n-master-projectsetting-avatar-button-icon">
                 <Icon type="photo_camera" />
               </div>
             </Button>

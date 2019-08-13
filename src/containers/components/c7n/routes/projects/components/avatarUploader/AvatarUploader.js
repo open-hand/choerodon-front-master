@@ -16,7 +16,7 @@ const editorWidth = 540;
 const editorHeight = 300;
 const defaultRectSize = 200;
 const minRectSize = 80;
-const prefixClas = 'c7n-iam-avatar-edit';
+const prefixClas = 'c7n-base-avatar-edit';
 const limitSize = 1024;
 let relativeX = 0;
 let relativeY = 0;
@@ -373,12 +373,12 @@ export default class AvatarUploader extends Component {
     const props = this.getUploadProps();
     return img ? (this.renderEditor(props)) 
       : (
-        <Dragger className="c7n-iam-avatar-dragger" {...props}>
+        <Dragger className="c7n-base-avatar-dragger" {...props}>
           <Icon type="inbox" />
-          <h3 className="c7n-iam-avatar-dragger-text">
+          <h3 className="c7n-base-avatar-dragger-text">
             xxxxxxxxxxxxxxxxxxxx
           </h3>
-          <h4 className="c7n-iam-avatar-dragger-hint">
+          <h4 className="c7n-base-avatar-dragger-hint">
             {/* <FormattedMessage id={`${intlPrefix}.dragger.hint`} values={{ size: `${limitSize / 1024}M`, access: 'PNG、JPG、JPEG' }} /> */}
             xxxxxxxxxxxxxxxxxxxx
           </h4>

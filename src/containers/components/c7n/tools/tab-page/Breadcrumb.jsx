@@ -23,6 +23,10 @@ const Breadcrumb = ({ title = 'Choerodon猪齿鱼平台', AppState, HeaderStore,
     return MenuStore.activeMenuParents;
   }
 
+  function getCurrentMenu() {
+    return MenuStore.activeMenu;
+  }
+
   function getMenuLink(route) {
     const { orgId } = queryString.parse(history.location.search);
     const { id, name, type, organizationId, category } = AppState.currentMenuType;
@@ -50,7 +54,12 @@ const Breadcrumb = ({ title = 'Choerodon猪齿鱼平台', AppState, HeaderStore,
   }
 
   function renderMenus() {
-    const menus = getMenuParents();
+    let menus = [];
+    const parentMenus = getMenuParents();
+    const currentMenu = getCurrentMenu();
+    if (currentMenu) {
+      menus = parentMenus.concat(currentMenu);
+    }
     return menus.map(m => (
       <Item>
         {m.route ? <Link to={getMenuLink(m)}>{m.name}</Link> : <span>{m.name}</span>}

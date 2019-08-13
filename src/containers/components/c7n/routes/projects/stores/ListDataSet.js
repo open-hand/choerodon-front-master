@@ -24,10 +24,11 @@ export default (AppState, history) => ({
       url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/users/${AppState.getUserId}/enableProjects`,
       method: 'post',
     },
-    submit: {
-      url: 'xxx',
-      method: 'post',
-    },
+    submit: ({ dataSet }) => ({
+      url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/projects/${dataSet.current.get('id')}`,
+      method: 'put',
+      data: dataSet.current.toData(),
+    }),
   },
   fields: [
     { name: 'name', type: 'string', label: '项目名称', required: true },

@@ -289,6 +289,8 @@ export default class CommonMenu extends Component {
             selectedKeys={[activeMenu && activeMenu.code]}
             openKeys={openKeys.slice()}
             onOpenChange={this.handleOpenChange}
+            subMenuCloseDelay={0.1}
+            subMenuOpenDelay={0.1}
           >
             {child.map(item => this.renderLeftMenuItem(item, collapsed))}
           </Menu>

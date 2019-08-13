@@ -22,11 +22,11 @@ const InitUiConfigMaster = ({ AutoRouter }) => {
         modalSectionBorder: false,
         modalOkFirst: false,
         buttonFuncType: 'flat',
-        generatePageQuery: ({ page, pageSize, sortName, sortOrder }) => ({
-          page: page - 1,
-          size: pageSize,
-          sort: sortName && (sortOrder ? `${sortName},${sortOrder}` : sortName),
-        }),
+        // generatePageQuery: ({ page, pageSize, sortName, sortOrder }) => ({
+        //   page: page - 1,
+        //   size: pageSize,
+        //   sort: sortName && (sortOrder ? `${sortName},${sortOrder}` : sortName),
+        // }),
       });
     }
 
