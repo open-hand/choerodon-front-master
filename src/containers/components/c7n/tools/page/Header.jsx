@@ -15,11 +15,11 @@ const PageHeader = ({
     if (title && title.props && title.props.id) {
       titleText = intl.formatMessage({ id: title.props.id, values: title.props.value });
     }
-    if (MenuStore.activeMenu && location.pathname !== '/') {
-      setTimeout(() => {
-        document.getElementsByTagName('title')[0].innerText = `${titleText && titleText !== MenuStore.activeMenu.name ? `${titleText} – ` : ''}${MenuStore.activeMenu.name} – ${MenuStore.activeMenu.parentName} – ${AppState.menuType.type !== 'site' ? `${AppState.menuType.name} – ` : ''} ${AppState.getSiteInfo.systemTitle || AppState.getSiteInfo.defaultTitle}`;
-      }, 500);
-    }
+    // if (MenuStore.activeMenu && location.pathname !== '/') {
+    //   setTimeout(() => {
+    //     document.getElementsByTagName('title')[0].innerText = `${titleText && titleText !== MenuStore.activeMenu.name ? `${titleText} – ` : ''}${MenuStore.activeMenu.name} – ${MenuStore.activeMenu.parentName} – ${AppState.menuType.type !== 'site' ? `${AppState.menuType.name} – ` : ''} ${AppState.getSiteInfo.systemTitle || AppState.getSiteInfo.defaultTitle}`;
+    //   }, 500);
+    // }
   }, []);
 
   function onBackBtnClick() {

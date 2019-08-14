@@ -3,7 +3,7 @@ import { Avatar } from 'choerodon-ui';
 import { Action } from '../../../../../../../index';
 import PROJECT_TYPE from '../../constant';
 
-const Card = ({ handleEditProject, dataSet, ...props }) => {
+const Card = ({ handleEditProject, handleClickProject, dataSet, record, ...props }) => {
   const { name, code, imgUrl, applicationName, category, createUserImageUrl, createUserName, creationDate } = props;
 
   function handleFocus() {
@@ -12,6 +12,10 @@ const Card = ({ handleEditProject, dataSet, ...props }) => {
       dataSet.locate(index);
       handleEditProject();
     }
+  }
+
+  function handleClick() {
+    handleClickProject(record);
   }
   
   function renderAction() {
@@ -24,7 +28,7 @@ const Card = ({ handleEditProject, dataSet, ...props }) => {
   return (
     <div className="card">
       <div className="border-top" />
-      <div className="card-content">
+      <div className="card-content" role="none" onClick={handleClick}>
         <Avatar size={80} src={imgUrl}>{name && name.charAt(0)}</Avatar>
         <h3>{name}</h3>
         <div>

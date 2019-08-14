@@ -9,7 +9,7 @@ import './style/Bread.less';
 
 const { Item } = Bread;
 
-const Breadcrumb = ({ title = 'Choerodon猪齿鱼平台', AppState, HeaderStore, MenuStore, history, ...props }) => {
+const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, ...props }) => {
   const { isTab } = useContext(Context);
 
   function getOrganization() {
@@ -62,7 +62,7 @@ const Breadcrumb = ({ title = 'Choerodon猪齿鱼平台', AppState, HeaderStore,
     }
     return menus.map(m => (
       <Item>
-        {m.route ? <Link to={getMenuLink(m)}>{m.name}</Link> : <span>{m.name}</span>}
+        {m.route ? <Link to={getMenuLink(m.route)}>{m.name}</Link> : <span>{m.name}</span>}
       </Item>
     ));
   }
@@ -77,7 +77,7 @@ const Breadcrumb = ({ title = 'Choerodon猪齿鱼平台', AppState, HeaderStore,
       <Bread separator=">">
         {renderOrganization()}
         {renderMenus()}
-        <Item style={{ color: 'rgba(0, 0, 0, 0.87)' }}>{title}</Item>
+        {title ? <Item style={{ color: 'rgba(0, 0, 0, 0.87)' }}>{title}</Item> : null}
       </Bread>
     </section>
   );

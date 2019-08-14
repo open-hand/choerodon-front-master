@@ -8,7 +8,7 @@ const ListView = observer((props) => {
 
   function renderCard(record) {
     const cardPlainObj = record.toData();
-    return <Card {...cardPlainObj} {...props} dataSet={dataSet} />;
+    return <Card {...cardPlainObj} {...props} dataSet={dataSet} record={record} />;
   }
 
   function filterRecent(record) {

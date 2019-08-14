@@ -289,13 +289,11 @@ export default class AvatarUploader extends Component {
     return (
       <div>
         <h3 className={`${prefixClas}-text`}>
-          xxxxxxxxxxxxxxxxxxxx
+          上传图标
           <Icon type="keyboard_arrow_right" />
           <span>{file.name}</span>
         </h3>
-        <h4 className={`${prefixClas}-hint`}>
-        xxxxxxxxxxxxxxxxxxxx
-        </h4>
+        <h4 className={`${prefixClas}-hint`}>{`您可以在此裁剪、旋转图片，然后点击"保存" 完成图标的修改`}</h4>
         <div className={`${prefixClas}-wraper`}>
           <div className={prefixClas} style={style}>
             <img alt="" src={src} style={imageStyle} />
@@ -324,7 +322,7 @@ export default class AvatarUploader extends Component {
         <div className={`${prefixClas}-button`}>
           <Upload {...props}>
             <Button icon="file_upload" type="primary">
-              保存
+              重新上传
             </Button>
           </Upload>
         </div>
@@ -376,11 +374,11 @@ export default class AvatarUploader extends Component {
         <Dragger className="c7n-base-avatar-dragger" {...props}>
           <Icon type="inbox" />
           <h3 className="c7n-base-avatar-dragger-text">
-            xxxxxxxxxxxxxxxxxxxx
+            点击或将图片拖到此区域上传图片
           </h3>
           <h4 className="c7n-base-avatar-dragger-hint">
             {/* <FormattedMessage id={`${intlPrefix}.dragger.hint`} values={{ size: `${limitSize / 1024}M`, access: 'PNG、JPG、JPEG' }} /> */}
-            xxxxxxxxxxxxxxxxxxxx
+            图片支持PNG、JPG、JPEG格式，且不能大于1M
           </h4>
         </Dragger>
       );
