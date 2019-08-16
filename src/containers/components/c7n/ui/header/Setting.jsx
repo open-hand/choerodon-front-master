@@ -4,8 +4,6 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { Button, Icon } from 'choerodon-ui';
-import findFirstLeafMenu from '../../util/findFirstLeafMenu';
-import { historyPushMenu } from '@choerodon/boot/lib/containers/common';
 
 @withRouter
 @inject('AppState', 'MenuStore')

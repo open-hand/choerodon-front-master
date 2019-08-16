@@ -106,7 +106,8 @@ const ListView = observer(() => {
 
   function handleClickProject(record) {
     // const record = dataSet.current;
-    const { id, name, type = 'project', organizationId, category } = record.toData();
+    const { id, name, organizationId, category } = record.toData();
+    const type = 'project';
     HeaderStore.setRecentItem(record.toData());
     MenuStore.loadMenuData({ type, id }, false).then((menus) => {
       let route;
@@ -118,7 +119,7 @@ const ListView = observer(() => {
         domain = menuDomain;
       }
       // if (route) {
-      path = `/?type=${type || 'project'}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
+      path = `/?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
       if (organizationId) {
         path += `&organizationId=${organizationId}&orgId=${organizationId}`;
       }

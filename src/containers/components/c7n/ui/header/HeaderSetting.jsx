@@ -1,59 +1,84 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
+import React from 'react';
+import { inject } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router-dom';
-import classNames from 'classnames';
+import queryString from 'query-string';
 import { Button, Icon } from 'choerodon-ui';
-import { historyPushMenu } from '@choerodon/boot/lib/containers/common';
-import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 
-@withRouter
-@inject('AppState', 'MenuStore')
-@observer
-export default class Setting extends Component {
-  getGlobalMenuData = () => {
-    const { MenuStore, history } = this.props;
-    MenuStore.loadMenuData({ type: 'site' }, false).then((menus) => {
-      if (menus.length) {
-        const { route, domain } = findFirstLeafMenu(menus[0]);
-        historyPushMenu(history, route, domain);
+const iconStyle = { marginLeft: '.05rem' };
+
+const Setting = ({ AppState, HeaderStore, history, ...props }) => {
+  function gotoCooperate() {
+    const { currentMenuType: { type, orgId } } = AppState;
+    const queryObj = queryString.parse(history.location.search);
+    let queryNeedObj;
+    if (type === 'project') {
+      queryNeedObj = {
+        type: 'project',
+        id: queryObj.id,
+        name: queryObj.name,
+        category: queryObj.category,
+        organizationId: queryObj.organizationId,
+        orgId: queryObj.orgId,
+      };
+    } else {
+      const orgData = HeaderStore.getOrgData;
+      const orgObj = orgData.find(v => String(v.id) === orgId) || {};
+      queryNeedObj = {
+        type: 'organization',
+        id: queryObj.orgId,
+        name: queryObj.name || orgObj.name,
+        category: queryObj.category || orgObj.category,
+        organizationId: queryObj.orgId,
+        orgId: queryObj.orgId,
+      };
+    }
+    history.push(`/buzz/cooperate?${queryString.stringify(queryNeedObj)}`);
+  }
+
+  function gotoProjects() {
+    history.push(`/projects${history.location.search}`);
+  }
+
+  function gotoKnowledge() {
+    const { currentMenuType: { orgId } } = AppState;
+    const queryObj = queryString.parse(history.location.search);
+    
+    const orgData = HeaderStore.getOrgData;
+    const orgObj = orgData.find(v => String(v.id) === orgId) || {};
+    const queryNeedObj = {
+      type: 'organization',
+      id: queryObj.orgId,
+      name: queryObj.name || orgObj.name,
+      category: queryObj.category || orgObj.category,
+      organizationId: queryObj.orgId,
+      orgId: queryObj.orgId,
+    };
+    history.push(`/knowledge/organization?${queryString.stringify(queryNeedObj)}`);
+  }
+
+  function loop() {}
+
+  const LI_MAPPING = [
+    { title: '协作共享', icon: 'sync_user', action: gotoCooperate },
+    { title: '项目', icon: 'project_line', action: gotoProjects },
+    { title: '应用', icon: 'appmarket', action: loop },
+    { title: '知识库', icon: 'book', action: gotoKnowledge },
+    { title: '应用市场', icon: 'redeploy_line', action: loop },
+  ];
+
+  return (
+    <React.Fragment>
+      {
+        LI_MAPPING.map(list => (
+          <Button className="block" onClick={list.action}>
+            <Icon className="manager-icon" type={list.icon} style={iconStyle} />
+            {list.title}
+          </Button>
+        ))
       }
-    });
-  };
+    </React.Fragment>
+  );
+};
 
-  gotoProjects = () => {
-    const { history } = this.props;
-    history.push(`/projects/${history.location.search}`);
-  }
-
-  render() {
-    const { AppState } = this.props;
-    const classString = classNames({
-      block: true,
-      // active: AppState.currentMenuType.type === 'site' && !AppState.isTypeUser,
-    });
-    return (
-      <React.Fragment>
-        <Button className={classString}>
-          <Icon className="manager-icon" type="sync_user " style={{ marginLeft: '5px' }} />
-          协作共享
-        </Button>
-        <Button className={classString} onClick={this.gotoProjects}>
-          <Icon className="manager-icon" type="project_line " style={{ marginLeft: '5px' }} />
-          项目
-        </Button>
-        <Button className={classString}>
-          <Icon className="manager-icon" type="appmarket " style={{ marginLeft: '5px' }} />
-          应用
-        </Button>
-        <Button className={classString}>
-          <Icon className="manager-icon" type="book " style={{ marginLeft: '5px' }} />
-          知识库
-        </Button>
-        <Button className={classString}>
-          <Icon className="manager-icon" type="redeploy_line " style={{ marginLeft: '5px' }} />
-          应用市场
-        </Button>
-      </React.Fragment>
-    );
-  }
-}
+export default withRouter(inject('AppState', 'HeaderStore')(observer(Setting)));

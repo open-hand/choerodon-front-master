@@ -4,7 +4,7 @@ import { getCookie } from '../../../../common';
 
 export default class WSHandler extends Component {
   static defaultProps = {
-    path: `choerodon:msg?token=bearer ${getCookie('access_token')}`,
+    path: `choerodon:msg?token=${getCookie('access_token')}`,
   };
 
   static propTypes = {

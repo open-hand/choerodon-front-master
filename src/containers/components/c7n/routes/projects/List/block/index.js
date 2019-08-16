@@ -21,7 +21,7 @@ const ListView = observer((props) => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
       {dataSet.filter(r => filterRecent(r)).map(r => renderCard(r))}
     </div>
   );

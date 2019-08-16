@@ -300,9 +300,9 @@ export default class CommonMenu extends Component {
   }
 
   render() {
-    const { MenuStore, AppState, location } = this.props;
+    const { MenuStore, AppState, location: { pathname } } = this.props;
     const child = MenuStore.getMenuData;
-    if (child && child.length > 0) {
+    if ((child && child.length > 0) && pathname !== '/projects' && pathname !== '/projects/') {
       const expanded = AppState.getMenuExpanded;
       return (
         <div style={{ height: '100%' }}>
