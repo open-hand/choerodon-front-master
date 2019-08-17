@@ -66,7 +66,10 @@ export default class Index extends React.Component {
           <IntlProviderAsync>
             <Provider {...stores}>
               <Switch>
-                <Route path="/" component={Outward} />
+                {/* <Route path="/" component={Outward} /> */}
+                <Route path="/">
+                  <Outward AutoRouter={this.props.AutoRouter} />
+                </Route>
               </Switch>
             </Provider>
           </IntlProviderAsync>

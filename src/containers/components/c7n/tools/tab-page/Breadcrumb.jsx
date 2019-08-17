@@ -9,7 +9,7 @@ import './style/Bread.less';
 
 const { Item } = Bread;
 
-const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, ...props }) => {
+const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, children, extraNode, ...props }) => {
   const { isTab } = useContext(Context);
 
   function getOrganization() {
@@ -49,8 +49,18 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, ...props
     return `${route}${search}${search === '' ? `?orgId=${orgId}` : `&orgId=${orgId}`}`;
   }
 
-  function renderOrganization() {
-    return <Item>{getOrganization().name || ''}</Item>;
+  function renderName() {
+    const { currentMenuType: { type, name } } = AppState;
+    if (type === 'site') return null;
+    if (type === 'organization') return <Item>{getOrganization().name || ''}</Item>;
+    if (type === 'project') {
+      return (
+        <React.Fragment>
+          <Item>{getOrganization().name || ''}</Item>
+          <Item>{name}</Item>
+        </React.Fragment>
+      );
+    }
   }
 
   function renderMenus() {
@@ -67,6 +77,22 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, ...props
     ));
   }
 
+  if (custom) {
+    return (
+      <section
+        className="page-breadcrumb"
+        style={{
+          marginBottom: isTab ? '50px' : 'auto',
+        }}
+      >
+        <Bread separator=">">
+          {children}
+        </Bread>
+        {extraNode || null}
+      </section>
+    );
+  }
+
   return (
     <section
       className="page-breadcrumb"
@@ -75,10 +101,11 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, ...props
       }}
     >
       <Bread separator=">">
-        {renderOrganization()}
+        {renderName()}
         {renderMenus()}
         {title ? <Item style={{ color: 'rgba(0, 0, 0, 0.87)' }}>{title}</Item> : null}
       </Bread>
+      {extraNode || null}
     </section>
   );
 };

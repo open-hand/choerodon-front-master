@@ -60,10 +60,28 @@ export default class UserPreferences extends Component {
     history.push(`${key}?type=site&orgId=${orgId}`);
   };
 
+  findUserInfoMenuItem = (menu, res) => {
+    if (menu.subMenus && menu.subMenus.length) {
+      menu.subMenus.forEach(v => this.findUserInfoMenuItem(v, res));
+    }
+    if (menu.code === 'choerodon.code.person.info-setting') {
+      res.res = menu;
+    }
+  }
+
+  getUserInfoMenuItem = () => {
+    const res = { res: {} };
+    const { MenuStore } = this.props;
+    const realData = MenuStore.menuGroup.user;
+    realData.forEach(v => this.findUserInfoMenuItem(v, res));
+    return res.res;
+  }
+
   render() {
     const { AppState, HeaderStore, MenuStore } = this.props;
     const { imageUrl, loginName, realName, email } = AppState.getUserInfo || {};
-    const realData = MenuStore.menuGroup && MenuStore.menuGroup.user.slice()[0] && MenuStore.menuGroup.user.slice()[0].subMenus.filter(item => !blackList.has(item.code));
+    // const realData = MenuStore.menuGroup && MenuStore.menuGroup.user.slice()[0] && MenuStore.menuGroup.user.slice()[0].subMenus.filter(item => !blackList.has(item.code));
+    const realData = [this.getUserInfoMenuItem()];
     const AppBarIconRight = (
       <div className={`${prefixCls}-popover-content`}>
         <Avatar src={imageUrl} prefixCls={prefixCls} onClick={() => { window.location = '/#/iam/user-info?type=site'; }}>

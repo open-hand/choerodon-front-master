@@ -38,7 +38,7 @@ export default class OrgSelect extends Component {
     const parsed = queryString.parse(history.location.search);
     parsed.orgId = id;
     const path = `${history.location.pathname}?${queryString.stringify(parsed)}`;
-    historyPushMenu(history, path);
+    historyPushMenu(history, path, null, 'replace');
   };
 
   renderTable(dataSource, isNotRecent) {

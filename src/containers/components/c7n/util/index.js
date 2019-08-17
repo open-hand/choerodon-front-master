@@ -38,7 +38,6 @@ function randomString(len = 32) {
 }
 
 function historyPushMenu(history, path, domain, method = 'push') {
-  method = 'push';
   if (!domain || LOCAL) {
     history[method](path);
   } else if (!path) {
