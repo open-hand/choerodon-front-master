@@ -75,6 +75,7 @@ export default class CommonMenu extends Component {
   }
 
   getMenuSingle(data, num, collapsed) {
+    const paddingStyleObj = num === 0 && collapsed ? { padding: '0 !important' } : {};
     if (!data.subMenus) {
       const { route } = findFirstLeafMenu(data);
       const link = (
@@ -82,20 +83,19 @@ export default class CommonMenu extends Component {
           to={this.getMenuLink(route)}
           onClick={() => this.props.MenuStore.click(data.code, data.resourceLevel, data.name)}
           style={{
-            marginLeft: collapsed ? 16 : parseInt(num, 10) * 20,
+            marginLeft: collapsed && num === 0 ? 0 : parseInt(num, 10) * 20,
           }}
         >
           <Icon type={data.icon} />
-          <span>
-            {data.name}
-          </span>
+          <span>{data.name}</span>
         </Link>
       );
       return (
         <Item
           key={data.code}
+          style={paddingStyleObj}
         >
-          {this.TooltipMenu(link, data.code)}
+          {link}
         </Item>
       );
     } else {
@@ -110,9 +110,7 @@ export default class CommonMenu extends Component {
               }}
             >
               <Icon type={data.icon} />
-              <span>
-                {data.name}
-              </span>
+              {num === 0 && collapsed ? null : <span>{data.name}</span>}
             </span>
           )}
         >
@@ -247,7 +245,7 @@ export default class CommonMenu extends Component {
         </Item>
       );
     } else {
-      return !collapsed ? (
+      return !false ? (
         <ItemGroup
           // onTitleClick={this.handleClick}
           key={item.code}

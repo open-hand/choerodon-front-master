@@ -65,7 +65,8 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
 
   function renderMenus() {
     let menus = [];
-    const parentMenus = getMenuParents();
+    // const parentMenus = getMenuParents();
+    const parentMenus = [];
     const currentMenu = getCurrentMenu();
     if (currentMenu) {
       menus = parentMenus.concat(currentMenu);
