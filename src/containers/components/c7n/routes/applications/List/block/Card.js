@@ -2,8 +2,8 @@ import React from 'react';
 import { Avatar } from 'choerodon-ui';
 import { Action } from '../../../../../../../index';
 
-const Card = ({ handleEditProject, handleClickProject, dataSet, record, ...props }) => {
-  const { name, code, imgUrl, applicationName, category, createUserImageUrl, createUserName, creationDate } = props;
+const Card = ({ handleEditProject, handleClickProject, handleGoToProject, dataSet, record, ...props }) => {
+  const { name, code, imgUrl, projectName, projectId, category, createUserImageUrl, createUserName, creationDate } = props;
 
   function handleFocus() {
     const index = dataSet.findIndex(r => r.get('code') === code);
@@ -15,6 +15,11 @@ const Card = ({ handleEditProject, handleClickProject, dataSet, record, ...props
 
   function handleClick() {
     handleClickProject(record);
+  }
+
+  function handleClickGoToProject(e) {
+    e.stopPropagation();
+    handleGoToProject(record);
   }
   
   function renderAction() {
@@ -31,7 +36,12 @@ const Card = ({ handleEditProject, handleClickProject, dataSet, record, ...props
         <Avatar size={50} src={imgUrl} style={{ fontSize: '32px' }}>{name && name.charAt(0)}</Avatar>
         <h3>{name}</h3>
         <div>
-          <span className="text link-text">{applicationName || '无关联应用'}</span>
+          <a
+            role="none"
+            onClick={(e) => handleClickGoToProject(e)}
+          >
+            <span className="text link-text">{projectName}</span>
+          </a>
           <span className="text separator">·</span>
           <span className="text">{code}</span>
         </div>

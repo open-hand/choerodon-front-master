@@ -7,8 +7,8 @@ export default function FormView({ context }) {
   return (
     <Form record={versionDs.current}>
       <TextField name="name" />
-      <DatePicker name="startTime" />
-      <DatePicker name="publishTime" />
+      <DatePicker name="startDate" />
+      <DatePicker name="releaseDate" />
       <TextArea name="description" />
     </Form>
   );

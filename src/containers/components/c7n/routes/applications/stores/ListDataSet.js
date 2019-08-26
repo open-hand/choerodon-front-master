@@ -20,7 +20,9 @@ export default (AppState, history) => ({
     { name: 'name', type: 'string', label: '应用名称', required: true },
     { name: 'code', type: 'string', label: '编码', required: true },
     { name: 'type', type: 'string', label: '应用来源' },
-    { name: 'connect', type: 'string', label: '关联项目' },
-    { name: 'creationDate', type: 'date', label: '创建时间' },
+    { name: 'imageUrl', type: 'string' },
+    { name: 'projectId', type: 'number' },
+    { name: 'projectName', type: 'string', label: '关联项目' },
+    { name: 'creationDate', type: 'date', label: '创建时间', format: 'YYYY-MM-DD' },
   ],
 });

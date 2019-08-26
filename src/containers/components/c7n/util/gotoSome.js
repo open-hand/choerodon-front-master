@@ -4,7 +4,7 @@ import HeaderStore from '../../../stores/c7n/HeaderStore';
 function getSearchString(type, key, value, extraProps = {}) {
   if (type === 'project') {
     const proData = HeaderStore.getProData;
-    const proObj = proData.find(v => String(v[key]) === value);
+    const proObj = proData.find(v => String(v[key]) === String(value));
     if (proObj) {
       const obj = {
         type,
@@ -19,7 +19,7 @@ function getSearchString(type, key, value, extraProps = {}) {
   }
   if (type === 'organization') {
     const orgData = HeaderStore.getOrgData;
-    const orgObj = orgData.find(v => String(v[key]) === value);
+    const orgObj = orgData.find(v => String(v[key]) === String(value));
     if (orgObj) {
       const obj = {
         type,

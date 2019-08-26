@@ -8,7 +8,7 @@ export default (AppState, history, applicationId) => ({
   transport: {
     read: {
       url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/applications/${applicationId}/services`,
-      // url: `/base/v1/organizations/1/applications/490/services`,
+      // url: `/base/v1/organizations/803/applications/490/services`,
       method: 'get',
     },
     submit: ({ dataSet }) => ({

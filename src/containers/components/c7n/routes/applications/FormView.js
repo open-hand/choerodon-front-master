@@ -20,14 +20,14 @@ export default function FormView({ context }) {
 
   function handleUploadOk(res) {
     const record = dataSet.current;
-    record.set('imgUrl', res);
+    record.set('imageUrl', res);
     closeAvatarUploader();
   }
 
   function renderAvatar() {
     const record = dataSet.current;
     const name = record.get('name');
-    const imageUrl = record.get('imgUrl');
+    const imageUrl = record.get('imageUrl');
     return (
       <React.Fragment>
         <div className="c7n-master-projectsetting-avatar">

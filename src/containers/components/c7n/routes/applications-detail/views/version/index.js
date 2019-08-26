@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Table, Button, Modal } from 'choerodon-ui/pro';
-import { Breadcrumb as Bread } from 'choerodon-ui';
+import { Breadcrumb as Bread, Tag } from 'choerodon-ui';
 import { Link } from 'react-router-dom';
 import TabPage from '../../../../tools/tab-page/TabPage';
 import Breadcrumb from '../../../../tools/tab-page/Breadcrumb';
@@ -67,6 +67,18 @@ const Index = () => {
     return <Action data={actionDatas} style={actionStyle} />;
   }
 
+  function renderStatus({ record }) {
+    const MAP = {
+      version_planning: { title: '规划中', color: '#ffb100' },
+      released: { title: '已发布', color: '#00bfa5' },
+      archived: { title: '已归档', color: '#b2b2b2' },
+    };
+    const current = MAP[record.get('statusCode')];
+    if (!current) return null;
+    const { title, color } = current;
+    return <Tag color={color}>{title}</Tag>;
+  }
+
   return (
     <TabPage>
       <Header>
@@ -82,9 +94,9 @@ const Index = () => {
         <Table dataSet={versionDs} queryBar="none">
           <Column name="name" />
           <Column renderer={renderAction} />
-          <Column name="status" />
-          <Column name="startTime" />
-          <Column name="publishTime" />
+          <Column name="statusCode" renderer={renderStatus} />
+          <Column name="startDate" />
+          <Column name="releaseDate" />
           <Column name="description" />
         </Table>
       </Content>

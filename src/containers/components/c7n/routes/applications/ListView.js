@@ -7,6 +7,7 @@ import List from './List';
 import { historyPushMenu } from '../../../../common';
 import FormView from './FormView';
 import { Content, Page } from '../../../../../index';
+import gotoSome from '../../util/gotoSome';
 import './style/index.less';
 
 const modalKey = Modal.key();
@@ -61,6 +62,12 @@ const ListView = observer(() => {
     historyPushMenu(history, path);
   }
 
+  function handleGoToProject(record) {
+    let path = '/';
+    path += gotoSome('project', 'id', record.get('projectId'));
+    historyPushMenu(history, path);
+  }
+
   function renderHeader() {
     return (
       <div className="c7n-projects-tool">
@@ -80,6 +87,7 @@ const ListView = observer(() => {
         <List
           handleClickProject={handleClickProject}
           handleEditProject={handleEditProject}
+          handleGoToProject={handleGoToProject}
         />
       </Content>
     </Page>

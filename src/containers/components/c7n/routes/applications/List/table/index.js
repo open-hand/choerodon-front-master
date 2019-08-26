@@ -11,7 +11,7 @@ const actionStyle = {
   marginRight: 10,
 };
 
-const ListView = observer(({ handleClickProject, handleEditProject }) => {
+const ListView = observer(({ handleClickProject, handleEditProject, handleGoToProject }) => {
   const { dataSet, isNotRecent, HeaderStore } = useContext(Store);
 
   function renderName({ record }) {
@@ -29,6 +29,17 @@ const ListView = observer(({ handleClickProject, handleEditProject }) => {
     );
   }
 
+  function renderProjectName({ record }) {
+    return (
+      <a
+        role="none"
+        onClick={() => handleGoToProject(record)}
+      >
+        {record.get('projectName')}
+      </a>
+    );
+  }
+
   function renderAction() {
     const actionDatas = [
       { service: [], icon: '', text: '编辑', action: handleEditProject },
@@ -37,14 +48,21 @@ const ListView = observer(({ handleClickProject, handleEditProject }) => {
   }
 
   function renderType({ record }) {
-    return record.get('type') === 'custom' ? '新建' : '内置';
+    const MAP = {
+      custom: '新建',
+      template: record.get('sourceName'),
+      mkt_code_only: record.get('sourceName'),
+      mkt_deploy_only: record.get('sourceName'),
+      mkt_code_deploy: record.get('sourceName'),
+    };
+    return MAP[record.get('type')];
   }
 
   return (
     <Table dataSet={dataSet} queryBar="none">
       <Column name="name" renderer={renderName} />
       <Column renderer={renderAction} width={100} />
-      <Column name="connect" />
+      <Column name="projectName" renderer={renderProjectName} />
       <Column name="code" />
       <Column name="type" renderer={renderType} />
       <Column name="creationDate" />
