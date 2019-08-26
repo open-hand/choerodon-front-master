@@ -27,7 +27,7 @@ export default function FormView({ context }) {
   function renderAvatar() {
     const record = dataSet.current;
     const name = record.get('name');
-    const imageUrl = record.get('imageUrl');
+    const imageUrl = record.get('imgUrl');
     return (
       <React.Fragment>
         <div className="c7n-master-projectsetting-avatar">
@@ -57,7 +57,7 @@ export default function FormView({ context }) {
             />
           </div>
         </div>
-        <div style={{ margin: '.06rem 0 .2rem 0', textAlign: 'center' }}>项目logo</div>
+        <div style={{ margin: '.06rem 0 .2rem 0', textAlign: 'center' }}>应用logo</div>
       </React.Fragment>
     );
   }
@@ -67,10 +67,6 @@ export default function FormView({ context }) {
       {renderAvatar()}
       <Form record={dataSet.current}>
         <TextField name="name" />
-        <TextField name="code" disabled />
-        <Select name="category" disabled />
-        <TextField name="creationDate" disabled />
-        <TextField name="createUserName" disabled />
       </Form>
     </React.Fragment>
   );

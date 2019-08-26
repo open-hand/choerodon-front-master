@@ -297,20 +297,35 @@ export default class CommonMenu extends Component {
     );
   }
 
+  shouldHiddenMenu = (pathname) => {
+    // eslint-disable-next-line no-underscore-dangle
+    const blackListString = window._env_.hiddenMenuList;
+    if (!blackListString) return false;
+
+    const blackListArray = blackListString.split(',');
+    return blackListArray.some((pname) => pathname.startsWith(pname));
+  }
+
   render() {
     const { MenuStore, AppState, location: { pathname } } = this.props;
     const child = MenuStore.getMenuData;
-    if ((child && child.length > 0) && pathname !== '/projects' && pathname !== '/projects/') {
-      const expanded = AppState.getMenuExpanded;
-      return (
-        <div style={{ height: '100%' }}>
-          <div className="common-menu">
-            {this.renderRightMenu(expanded)}
-          </div>
-        </div>
-      );
-    } else {
+    if (!(child && child.length > 0)) {
       return null;
     }
+    if (pathname === '/projects' || pathname === '/projects/') {
+      return null;
+    }
+    if (this.shouldHiddenMenu(pathname)) {
+      return null;
+    }
+    
+    const expanded = AppState.getMenuExpanded;
+    return (
+      <div style={{ height: '100%' }}>
+        <div className="common-menu">
+          {this.renderRightMenu(expanded)}
+        </div>
+      </div>
+    );
   }
 }

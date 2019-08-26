@@ -38,7 +38,10 @@ const categoryDs = new DataSet({
 });
 
 export default (AppState, history) => {
-  const codeValidator = async (value, name) => {
+  const codeValidator = async (value, name, record) => {
+    if (record.status !== 'add') {
+      return true;
+    }
     if (!value) {
       return '请输入编码。';
     }

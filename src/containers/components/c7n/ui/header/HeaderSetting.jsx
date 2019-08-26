@@ -40,6 +40,14 @@ const Setting = ({ AppState, HeaderStore, history, ...props }) => {
     history.push(`/projects${history.location.search}`);
   }
 
+  function gotoApplications() {
+    history.push(`/applications${history.location.search}`);
+  }
+
+  function gotoAppMarket() {
+    history.push(`/iam/app-market${history.location.search}`);
+  }
+
   function gotoKnowledge() {
     const { currentMenuType: { orgId } } = AppState;
     const queryObj = queryString.parse(history.location.search);
@@ -62,9 +70,9 @@ const Setting = ({ AppState, HeaderStore, history, ...props }) => {
   const LI_MAPPING = [
     { title: '协作共享', icon: 'sync_user', action: gotoCooperate },
     { title: '项目', icon: 'project_line', action: gotoProjects },
-    { title: '应用', icon: 'appmarket', action: loop },
+    { title: '应用', icon: 'appmarket', action: gotoApplications },
     { title: '知识库', icon: 'book', action: gotoKnowledge },
-    { title: '应用市场', icon: 'redeploy_line', action: loop },
+    { title: '应用市场', icon: 'redeploy_line', action: gotoAppMarket },
   ];
 
   return (

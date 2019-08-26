@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Spin } from 'choerodon-ui';
 import Permission from '../permission';
 import NoAccess from '../error-pages/403';
+import '../page/style';
 
 const spinStyle = {
   textAlign: 'center',
