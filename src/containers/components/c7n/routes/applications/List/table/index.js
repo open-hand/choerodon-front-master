@@ -36,13 +36,17 @@ const ListView = observer(({ handleClickProject, handleEditProject }) => {
     return <Action data={actionDatas} style={actionStyle} />;
   }
 
+  function renderType({ record }) {
+    return record.get('type') === 'custom' ? '新建' : '内置';
+  }
+
   return (
-    <Table dataSet={dataSet}>
+    <Table dataSet={dataSet} queryBar="none">
       <Column name="name" renderer={renderName} />
       <Column renderer={renderAction} width={100} />
       <Column name="connect" />
       <Column name="code" />
-      <Column name="type" />
+      <Column name="type" renderer={renderType} />
       <Column name="creationDate" />
     </Table>
   );

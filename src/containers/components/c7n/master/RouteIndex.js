@@ -11,7 +11,7 @@ const InnerIndex = ({ match, AutoRouter }) => (
   <div>
     <Switch>
       <Route exact path={`${match.url}projects`} component={Projects} />
-      <Route exact path={`${match.url}applications/:id`} component={ApplicationsDetail} />
+      <Route exact path={`${match.url}applications/:projectId/:id`} component={ApplicationsDetail} />
       <Route exact path={`${match.url}applications`} component={Applications} />
       <Route path={match.url} component={AutoRouter} />
     </Switch>

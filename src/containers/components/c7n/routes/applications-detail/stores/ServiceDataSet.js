@@ -8,6 +8,7 @@ export default (AppState, history, applicationId) => ({
   transport: {
     read: {
       url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/applications/${applicationId}/services`,
+      // url: `/base/v1/organizations/1/applications/490/services`,
       method: 'get',
     },
     submit: ({ dataSet }) => ({
@@ -20,6 +21,6 @@ export default (AppState, history, applicationId) => ({
     { name: 'name', type: 'string', label: '服务名称' },
     { name: 'code', type: 'string', label: '编码' },
     { name: 'type', type: 'string', label: '类型' },
-    { name: 'status', type: 'string', label: '状态' },
+    { name: 'active', type: 'boolean', label: '状态' },
   ],
 });

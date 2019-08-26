@@ -4,6 +4,7 @@ export default (AppState, history) => ({
   autoQuery: true,
   selection: false,
   paging: false,
+  primaryKey: 'code',
   transport: {
     read: {
       url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/applications/user/permission?as_template=false`,

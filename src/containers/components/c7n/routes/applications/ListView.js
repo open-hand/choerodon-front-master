@@ -53,8 +53,8 @@ const ListView = observer(() => {
   }
 
   function handleClickProject(record) {
-    const { id, organizationId } = record.toData();
-    let path = `/applications/${id}/?type=organization`;
+    const { id, organizationId, projectId } = record.toData();
+    let path = `/applications/${projectId}/${id}?type=organization`;
     if (organizationId) {
       path += `&organizationId=${organizationId}&orgId=${organizationId}`;
     }

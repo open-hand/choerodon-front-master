@@ -14,13 +14,14 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderSto
   (props) => {
     const { AppState: { currentMenuType: { type, id, orgId } }, intl, children, AppState, history } = props;
     const applicationId = props.match.params.id;
+    const proId = props.match.params.projectId;
     const [showType, setShowType] = useState('table');
     const [isNotRecent, setIsNotRecent] = useState(false);
     const serviceDs = useMemo(() => new DataSet(ServiceDataSet(AppState, history, applicationId)), [type, id, orgId, applicationId]);
-    const versionDs = useMemo(() => new DataSet(VersionDataSet(AppState, history, applicationId)), [type, id, orgId, applicationId]);
+    const versionDs = useMemo(() => new DataSet(VersionDataSet(AppState, history, applicationId, proId)), [type, id, orgId, applicationId, proId]);
     const value = {
       ...props,
-      prefixCls: 'c7n-projects',
+      prefixCls: 'c7n-applications',
       // intlPrefix: 'c7n-projects',
       serviceDs,
       versionDs,

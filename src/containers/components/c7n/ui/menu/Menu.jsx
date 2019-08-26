@@ -315,6 +315,15 @@ export default class CommonMenu extends Component {
     if (pathname === '/projects' || pathname === '/projects/') {
       return null;
     }
+    if (pathname.startsWith('/applications')) {
+      return null;
+    }
+    if (pathname.startsWith('/buzz/cooperate')) {
+      return null;
+    }
+    if (pathname.startsWith('/iam/app-market')) {
+      return null;
+    }
     if (this.shouldHiddenMenu(pathname)) {
       return null;
     }

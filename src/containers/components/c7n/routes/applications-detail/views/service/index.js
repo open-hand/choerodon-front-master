@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Table } from 'choerodon-ui/pro';
-import { Breadcrumb as Bread } from 'choerodon-ui';
-import { withRouter, Link } from 'react-router-dom';
+import { Breadcrumb as Bread, Tag } from 'choerodon-ui';
+import { Link } from 'react-router-dom';
 import TabPage from '../../../../tools/tab-page/TabPage';
 import Breadcrumb from '../../../../tools/tab-page/Breadcrumb';
 import Content from '../../../../tools/page/Content';
@@ -13,6 +13,19 @@ const { Item } = Bread;
 const Index = () => {
   const { serviceDs } = useContext(Store);
 
+  function renderType({ record }) {
+    const MAP = {
+      normal: '开发',
+      test: '测试',
+    };
+    return MAP[record.get('type')];
+  }
+
+  function renderActive({ record }) {
+    const active = record.get('active');
+    return <Tag color={active ? '#00bf96' : '#d3d3d3'}>{active ? '开启' : '停用'}</Tag>;
+  }
+
   return (
     <TabPage>
       <Breadcrumb custom>
@@ -22,11 +35,11 @@ const Index = () => {
         <Item style={{ color: 'rgba(0, 0, 0, 0.87)' }}>查看应用</Item>
       </Breadcrumb>
       <Content>
-        <Table dataSet={serviceDs}>
+        <Table dataSet={serviceDs} queryBar="none">
           <Column name="name" />
           <Column name="code" />
-          <Column name="type" />
-          <Column name="status" />
+          <Column name="type" renderer={renderType} />
+          <Column name="active" renderer={renderActive} />
         </Table>
       </Content>
     </TabPage>

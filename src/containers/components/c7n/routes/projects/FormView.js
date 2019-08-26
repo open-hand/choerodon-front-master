@@ -20,7 +20,7 @@ export default function FormView({ context }) {
 
   function handleUploadOk(res) {
     const record = dataSet.current;
-    record.set('imgUrl', res);
+    record.set('imageUrl', res);
     closeAvatarUploader();
   }
 
