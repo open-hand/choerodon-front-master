@@ -21,6 +21,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderSto
     const versionDs = useMemo(() => new DataSet(VersionDataSet(AppState, history, applicationId, proId)), [type, id, orgId, applicationId, proId]);
     const value = {
       ...props,
+      proId,
       prefixCls: 'c7n-applications',
       // intlPrefix: 'c7n-projects',
       serviceDs,

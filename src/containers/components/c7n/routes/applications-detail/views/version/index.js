@@ -7,6 +7,7 @@ import Breadcrumb from '../../../../tools/tab-page/Breadcrumb';
 import Content from '../../../../tools/page/Content';
 import Header from '../../../../tools/page/Header';
 import Action from '../../../../tools/action';
+import axios from '../../../../tools/axios';
 import Store from '../../stores';
 import FormView from './FormView';
 
@@ -23,7 +24,7 @@ const actionStyle = {
 
 const Index = () => {
   const context = useContext(Store);
-  const { versionDs } = context;
+  const { versionDs, proId } = context;
 
   async function handleOk() {
     try {
@@ -44,8 +45,7 @@ const Index = () => {
     }
   }
 
-  function handleCreateVersion() {
-    versionDs.create();
+  function handleOpenModal() {
     Modal.open({
       key: modalKey,
       drawer: true,
@@ -57,12 +57,39 @@ const Index = () => {
     });
   }
 
+  function handleCreateVersion() {
+    versionDs.create();
+    handleOpenModal();
+  }
+
+  async function handlePublish() {
+    const record = versionDs.current;
+    await axios.put(`/base/v1/project/${proId}/applications/versions/publish/${record.get('id')}`);
+    versionDs.query();
+  }
+
+  async function handleArchive() {
+    const record = versionDs.current;
+    await axios.put(`/base/v1/project/${proId}/applications/versions/archive/${record.get('id')}`);
+    versionDs.query();
+  }
+
+  function handleEdit() {
+    handleOpenModal();
+  }
+
+  async function handleDelete() {
+    const record = versionDs.current;
+    await axios.delete(`/base/v1/project/${proId}/applications/versions/${record.get('id')}`);
+    versionDs.query();
+  }
+
   function renderAction() {
     const actionDatas = [
-      { service: [], icon: '', text: '发布', action: () => {} },
-      { service: [], icon: '', text: '归档', action: () => {} },
-      { service: [], icon: '', text: '编辑', action: () => {} },
-      { service: [], icon: '', text: '删除', action: () => {} },
+      { service: [], icon: '', text: '发布', action: handlePublish },
+      { service: [], icon: '', text: '归档', action: handleArchive },
+      { service: [], icon: '', text: '编辑', action: handleEdit },
+      { service: [], icon: '', text: '删除', action: handleDelete },
     ];
     return <Action data={actionDatas} style={actionStyle} />;
   }
