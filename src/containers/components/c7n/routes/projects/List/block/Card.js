@@ -4,7 +4,7 @@ import { Action } from '../../../../../../../index';
 import PROJECT_TYPE from '../../constant';
 
 const Card = ({ handleEditProject, handleClickProject, dataSet, record, ...props }) => {
-  const { name, code, imgUrl, applicationName, category, createUserImageUrl, createUserName, creationDate } = props;
+  const { name, code, imageUrl, applicationName, category, createUserImageUrl, createUserName, creationDate } = props;
 
   function handleFocus() {
     const index = dataSet.findIndex(r => r.get('code') === code);
@@ -26,10 +26,10 @@ const Card = ({ handleEditProject, handleClickProject, dataSet, record, ...props
   }
 
   return (
-    <div className="card">
+    <div className="pro-card">
       <div className="border-top" />
       <div className="card-content" role="none" onClick={handleClick}>
-        <Avatar size={80} src={imgUrl} style={{ fontSize: '32px' }}>{name && name.charAt(0)}</Avatar>
+        <Avatar size={80} src={imageUrl} style={{ fontSize: '32px' }}>{name && name.charAt(0)}</Avatar>
         <h3>{name}</h3>
         <div>
           <span className="text link-text">{applicationName || '无关联应用'}</span>

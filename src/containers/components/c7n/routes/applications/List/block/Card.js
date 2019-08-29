@@ -3,7 +3,7 @@ import { Avatar } from 'choerodon-ui';
 import { Action } from '../../../../../../../index';
 
 const Card = ({ handleEditProject, handleClickProject, handleGoToProject, dataSet, record, ...props }) => {
-  const { name, code, imgUrl, projectName, projectId, category, createUserImageUrl, createUserName, creationDate } = props;
+  const { name, code, imageUrl, projectName, projectId, category, createUserImageUrl, createUserName, creationDate } = props;
 
   function handleFocus() {
     const index = dataSet.findIndex(r => r.get('code') === code);
@@ -30,10 +30,10 @@ const Card = ({ handleEditProject, handleClickProject, handleGoToProject, dataSe
   }
 
   return (
-    <div className="card">
+    <div className="app-card">
       <div className="border-top" />
       <div className="card-content" role="none" onClick={handleClick}>
-        <Avatar size={50} src={imgUrl} style={{ fontSize: '32px' }}>{name && name.charAt(0)}</Avatar>
+        <Avatar size={50} src={imageUrl} style={{ fontSize: '32px' }}>{name && name.charAt(0)}</Avatar>
         <h3>{name}</h3>
         <div>
           <a
