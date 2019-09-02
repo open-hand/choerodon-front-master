@@ -8,7 +8,7 @@ const { TabPane } = Tabs;
 
 export const Context = React.createContext({});
 
-const PageWrap = ({ children, noHeader, ...props }) => {
+const PageWrap = ({ children, noHeader, className, ...props }) => {
   const keyArr = React.Children.map(children, child => child.props.tabKey);
   const [currentKey, setCurrentKey] = useState(keyArr[0]);
 
@@ -19,7 +19,7 @@ const PageWrap = ({ children, noHeader, ...props }) => {
   return (
     <Context.Provider value={{ isTab: true }}>
       <Tabs
-        className={classNames('wrap-tabs', { hasHeader: !noHeader.includes(currentKey) })}
+        className={classNames('wrap-tabs', { hasHeader: !noHeader.includes(currentKey) }, className)}
         animated={false}
         onChange={callback}
       >

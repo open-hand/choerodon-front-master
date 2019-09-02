@@ -28,7 +28,7 @@ const UILocaleProviderAsync = asyncRouter(
 );
 
 const language = AppState.currentLanguage;
-const IntlProviderAsync = asyncLocaleProvider(language, 
+const IntlProviderAsync = asyncLocaleProvider(language,
   () => import(`./containers/locale/${language}`),
   () => import(`react-intl/locale-data/${language.split('_')[0]}`));
 

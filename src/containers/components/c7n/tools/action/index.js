@@ -52,12 +52,12 @@ export default class Action extends Component {
   }
 
   render() {
-    const { data, placement, getPopupContainer, ...restProps } = this.props;
+    const { data, placement, getPopupContainer, disabled, ...restProps } = this.props;
     return (
       <Permission
         service={this.getAllService(data)}
       >
-        <Dropdown overlay={this.renderMenu(data)} trigger={['click']} placement={placement} getPopupContainer={getPopupContainer}>
+        <Dropdown overlay={this.renderMenu(data)} trigger={['click']} placement={placement} getPopupContainer={getPopupContainer} disabled={disabled}>
           <Button size="small" shape="circle" style={{ color: '#000' }} icon="more_vert" {...restProps} />
         </Dropdown>
       </Permission>
