@@ -35,9 +35,16 @@ export default class OrgSelect extends Component {
     const { AppState, HeaderStore, MenuStore, history } = this.props;
     const { id, name, type, organizationId, category } = value;
     localStorage.setItem('C7N-ORG-ID', id);
-    const parsed = queryString.parse(history.location.search);
-    parsed.orgId = id;
-    const path = `${history.location.pathname}?${queryString.stringify(parsed)}`;
+    // const parsed = queryString.parse(history.location.search);
+    const parsed = {
+      id,
+      name,
+      type,
+      organizationId,
+      category,
+      orgId: id,
+    };
+    const path = `/buzz/cooperate?${queryString.stringify(parsed)}`;
     historyPushMenu(history, path, null, 'replace');
   };
 

@@ -3,7 +3,7 @@ import { withRouter, HashRouter as Router, Route, Switch } from 'react-router-do
 import queryString from 'query-string';
 import { inject, observer, Provider } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
-import { OUTWARD } from '@choerodon/boot/lib/containers/common/constants';
+// import { OUTWARD } from '@choerodon/boot/lib/containers/common/constants';
 import Outward from './containers/components/c7n/routes/outward';
 // import Master from './containers/components/c7n/master/Master';
 import asyncRouter from './containers/components/util/asyncRouter';
@@ -19,7 +19,8 @@ const spinStyle = {
   textAlign: 'center',
   paddingTop: 300,
 };
-
+// eslint-disable-next-line no-underscore-dangle
+const OUTWARD = window._env_.outward;
 const outwardPath = ['#/organization/register-organization', '#/organization/register-organization/agreement'];
 
 const UILocaleProviderAsync = asyncRouter(
@@ -28,7 +29,7 @@ const UILocaleProviderAsync = asyncRouter(
 );
 
 const language = AppState.currentLanguage;
-const IntlProviderAsync = asyncLocaleProvider(language,
+const IntlProviderAsync = asyncLocaleProvider(language, 
   () => import(`./containers/locale/${language}`),
   () => import(`react-intl/locale-data/${language.split('_')[0]}`));
 

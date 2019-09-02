@@ -44,6 +44,10 @@ class HeaderStore {
 
   @observable inboxVisible = false;
 
+  @observable inboxDetailVisible = false;
+
+  @observable inboxDetail = null;
+
   @observable inboxData = [];
 
   @observable inboxLoaded = false;
@@ -55,6 +59,14 @@ class HeaderStore {
   @observable announcementClosed = true;
 
   @observable inboxLoading = true;
+
+  @action setInboxDetailVisible(value) {
+    this.inboxDetailVisible = value;
+  }
+
+  @action setInboxDetail(value) {
+    this.inboxDetail = value;
+  }
 
   @action
   setInboxLoaded(flag) {

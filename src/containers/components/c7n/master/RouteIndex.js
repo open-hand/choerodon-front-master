@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import asyncRouter from '@choerodon/boot/lib/containers/components/util/asyncRouter';
 import { ModalContainer } from 'choerodon-ui/pro/lib';
 import feedback from '../tools/feedback';
+import asyncRouter from '../util/asyncRouter';
 
-const Projects = asyncRouter(() => import('../routes/projects/index'));
-const Applications = asyncRouter(() => import('../routes/applications/index'));
+const Projects = asyncRouter(() => import('../routes/projects'));
+const Applications = asyncRouter(() => import('../routes/applications'));
 const ApplicationsDetail = asyncRouter(() => import('../routes/applications-detail'));
 
 const InnerIndex = ({ match, AutoRouter }) => (

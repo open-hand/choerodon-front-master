@@ -44,7 +44,7 @@ const FormView = observer(({ context }) => {
   function renderCard(type) {
     const idActive = type === record.get('category');
     const classNames = classnames({
-      card: true,
+      'simple-card': true,
       active: idActive,
     });
     return (

@@ -24,7 +24,7 @@ export default function CreateProjectWrap(props) {
         name,
         code,
         category,
-        applicationDTO: {
+        applicationVO: {
           name: applicationName,
           code: applicationCode,
           organizationId: orgId,

@@ -1,12 +1,14 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable react/no-danger */
 import React, { Component } from 'react';
 import TimeAgo from 'timeago-react';
 import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
-import { Badge, Button, Icon, Spin } from 'choerodon-ui';
+import { Badge, Button, Icon, Spin, Tabs, Avatar } from 'choerodon-ui';
 import WSHandler from '../../tools/ws/WSHandler';
 
+const { TabPane } = Tabs;
 const PREFIX_CLS = 'c7n';
 const prefixCls = `${PREFIX_CLS}-boot-header-inbox`;
 const popoverPrefixCls = `${prefixCls}-popover`;
@@ -24,17 +26,31 @@ const iconMap = {
 @observer
 class RenderPopoverContentClass extends Component {
   handleClickOutside = () => {
-    this.props.handleVisibleChange(false);
+    const { HeaderStore } = this.props;
+    HeaderStore.setInboxVisible(false);
+    setTimeout(() => {
+      HeaderStore.setInboxDetailVisible(false);
+    }, 700);
   };
-
+  
   render() {
-    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg } = this.props;
-    const { inboxVisible, getUnreadAll, announcementClosed } = HeaderStore;
+    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg, handleSettingReceive } = this.props;
+    const { inboxVisible, getUnreadAll, announcementClosed, getUnreadMsg, getUnreadNotice } = HeaderStore;
     const siderClasses = classNames({
       [`${prefixCls}-sider`]: true,
       [`${prefixCls}-sider-visible`]: inboxVisible,
       [`${prefixCls}-sider-move-down`]: !announcementClosed,
     });
+    const operations = (
+      <React.Fragment>
+        <span role="none" style={{ cursor: 'pointer' }} onClick={handleSettingReceive}>
+          接收设置
+        </span>
+        <span role="none" style={{ cursor: 'pointer' }} onClick={cleanAllMsg}>
+          全部清除
+        </span>
+      </React.Fragment>
+    );
     return (
       <div className={siderClasses}>
         <div className={`${prefixCls}-sider-header-wrap ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
@@ -49,20 +65,120 @@ class RenderPopoverContentClass extends Component {
                 onClick={() => handleVisibleChange(!inboxVisible)}
               />
             </div>
-            <div className={`${prefixCls}-sider-header-action`}>
+            <Tabs defaultActiveKey="1" tabBarExtraContent={operations}>
+              <TabPane tab="消息" key="1">
+                <Spin spinning={inboxLoading}>
+                  {renderMessages(getUnreadMsg)}
+                </Spin>
+              </TabPane>
+              <TabPane tab="通知" key="2">
+                <Spin spinning={inboxLoading}>
+                  {renderMessages(getUnreadNotice)}
+                </Spin> 
+              </TabPane>
+              <TabPane tab="公告" key="3">
+                <Spin spinning={inboxLoading}>
+                  {renderMessages(getUnreadAll)}
+                </Spin>
+              </TabPane>
+            </Tabs>
+            {/* <div className={`${prefixCls}-sider-header-action`}>
               <span role="none" style={{ cursor: 'pointer' }} onClick={() => window.open('/#/notify/user-msg?type=site')}>
                 查看所有消息
               </span>
               <span role="none" style={{ cursor: 'pointer' }} onClick={cleanAllMsg}>
                 全部清除
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
-        <div className={`${prefixCls}-sider-content`}>
+        {/* <div className={`${prefixCls}-sider-content`}>
           <Spin spinning={inboxLoading}>
             {renderMessages(getUnreadAll)}
           </Spin>
+        </div> */}
+        <RenderPopoverContentDetailClass
+          handleVisibleChange={this.handleVisibleChange}
+        />
+      </div>
+    );
+  }
+}
+
+@inject('HeaderStore', 'AppState')
+// @onClickOutside
+@observer
+class RenderPopoverContentDetailClass extends Component {
+  handleClickOutside = () => {
+    const { HeaderStore } = this.props;
+    HeaderStore.setInboxVisible(false);
+    setTimeout(() => {
+      HeaderStore.setInboxDetailVisible(false);
+    }, 700);
+  };
+
+  render() {
+    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg } = this.props;
+    const { inboxDetailVisible, getUnreadAll, announcementClosed, getUnreadMsg, getUnreadNotice } = HeaderStore;
+    const siderClasses = classNames({
+      [`${prefixCls}-sider-no-animate`]: true,
+      [`${prefixCls}-sider`]: true,
+      [`${prefixCls}-sider-visible`]: inboxDetailVisible,
+      [`${prefixCls}-sider-move-down`]: !announcementClosed,
+    });
+    if (!inboxDetailVisible) {
+      return null;
+    }
+    return (
+      <div className={siderClasses}>
+        <div className={`${prefixCls}-sider-header-wrap`}>
+          <div className="header">
+            <div>
+              <Button
+                funcType="flat"
+                type="primary"
+                icon="arrow_back"
+                shape="circle"
+                style={{ color: '#3f51b5', textAlign: 'left' }}
+                onClick={() => {
+                  HeaderStore.setInboxDetailVisible(false);
+                }}
+              />
+              <span className="title">通知详情</span>
+            </div>
+            <Button
+              funcType="flat"
+              type="primary"
+              icon="close"
+              shape="circle"
+              onClick={() => {
+                HeaderStore.setInboxVisible(false);
+                setTimeout(() => {
+                  HeaderStore.setInboxDetailVisible(false);
+                }, 700);
+              }}
+            />
+          </div>
+          <div className="body">
+            <div className="title">
+              <span>
+                <Icon type={iconMap[HeaderStore.inboxDetail.type]} style={{ marginRight: 10 }} />
+                <a onClick={e => {}}>{HeaderStore.inboxDetail.title}</a>
+              </span>
+            </div>
+            <div className="info">
+              <Avatar src={HeaderStore.inboxDetail.sendByUser.imageUrl} size={18}>{HeaderStore.inboxDetail.sendByUser.realName && HeaderStore.inboxDetail.sendByUser.realName.charAt(0)}</Avatar>
+              <span style={{ marginLeft: 8, marginRight: 8 }}>{HeaderStore.inboxDetail.sendByUser.realName}</span>
+              <span style={{ marginRight: 8 }}>·</span>
+              <TimeAgo
+                datetime={HeaderStore.inboxDetail.sendTime.slice(0, HeaderStore.inboxDetail.sendTime.length - 3)}
+                locale="zh_CN"
+              />
+            </div>
+            <div className="content">
+              <p dangerouslySetInnerHTML={{ __html: `${HeaderStore.inboxDetail.content.replace(reg, '')}` }} />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -112,13 +228,19 @@ export default class Inbox extends Component {
 
   handleMessageTitleClick = (e, data) => {
     // set as read && go to message detail
-    this.cleanMsg(e, data);
-    window.open(`/#/notify/user-msg?type=site&msgId=${data.id}&msgType=${data.type}`);
+    // this.cleanMsg(e, data);
+    // window.open(`/#/notify/user-msg?type=site&msgId=${data.id}&msgType=${data.type}`);
+    const { HeaderStore } = this.props;
+    HeaderStore.setInboxDetailVisible(true);
+    HeaderStore.setInboxDetail(data);
   }
 
   handleVisibleChange = (visible) => {
     const { HeaderStore } = this.props;
     HeaderStore.setInboxVisible(visible);
+    if (!visible) {
+      HeaderStore.setInboxDetailVisible(visible);
+    }
   };
 
   renderMessages = (inboxData) => {
@@ -183,8 +305,7 @@ export default class Inbox extends Component {
   }
 
   render() {
-    const { AppState, HeaderStore } = this.props;
-    const { inboxVisible, inboxLoaded, inboxData, inboxLoading } = HeaderStore;
+    const { AppState, HeaderStore: { inboxData, inboxLoading } } = this.props;
     const popOverContent = { inboxData, inboxLoading };
     return (
       <React.Fragment>
@@ -207,7 +328,9 @@ export default class Inbox extends Component {
           cleanAllMsg={this.cleanAllMsg}
           renderMessages={this.renderMessages}
           handleVisibleChange={this.handleVisibleChange}
+          handleSettingReceive={this.openSettings}
         />
+        
       </React.Fragment>
     );
   }

@@ -1,7 +1,7 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "0.20.20",
+  "version": "0.20.21",
   "description": "A package of Master for Choerodon platform.",
   "main": "./lib/index.js",
   "files": [
@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "start": "choerodon-front-boot start --config ./src/config.js",
-    "compile": "gulp compile"
+    "compile": "gulp compile",
+    "compile:bin": "choerodon-front-boot compile"
   },
   "keywords": [
     "choerodon",
@@ -22,14 +23,14 @@
     "@choerodon/boot": "0.20.x"
   },
   "devDependencies": {
-    "@choerodon/boot": "0.20.x",
+    "@choerodon/boot": "^0.20.5",
     "babel-preset-env": "^1.7.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "through2": "^2.0.3"
   },
   "dependencies": {
-    "@choerodon/feedback": "0.19.4",
+    "@choerodon/feedback": "^0.19.5",
     "react-onclickoutside": "^6.8.0"
   }
 }

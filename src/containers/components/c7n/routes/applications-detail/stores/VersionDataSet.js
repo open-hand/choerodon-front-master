@@ -47,12 +47,8 @@ export default (AppState, history, applicationId, projectId) => {
         },
       },
       submit: ({ dataSet }) => ({
-        url: `/base/v1/projects/${projectId}/applications/versions`,
-        method: 'post',
-        data: {
-          ...dataSet.current.toData(),
-          applicationId,
-        },
+        url: `/base/v1/projects/${projectId}/applications/versions/${dataSet.current.get('id')}`,
+        method: 'put',
       }),
     },
     fields: [

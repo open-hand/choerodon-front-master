@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classnames from 'classnames';
-import { dashboard } from '@choerodon/boot/lib/containers/common';
+// import { dashboard } from '@choerodon/boot/lib/containers/common';
 
 const PREFIX_CLS = 'c7n';
 const prefixCls = `${PREFIX_CLS}-boot-header-logo`;
@@ -22,7 +22,7 @@ export default class Logo extends Component {
     const { systemLogo, systemName } = AppState.getSiteInfo;
     const menus = MenuStore.getMenuData;
     let homePath = '/';
-    if (dashboard) {
+    if (false) {
       const { type, id, name, organizationId } = AppState.currentMenuType;
       if (type && type !== 'site') {
         homePath = `${homePath}?type=${type}&id=${id}&name=${name}`;

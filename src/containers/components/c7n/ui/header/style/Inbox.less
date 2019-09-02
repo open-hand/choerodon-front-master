@@ -216,6 +216,55 @@
     background-position: top;
   }
 
+  &-sider-no-animate {
+    transition: transform 0s !important;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+      height: 60px;
+      color: rgba(0, 0, 0, .87);
+      line-height: 20px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .title {
+        font-size: 20px;
+        line-height: 24px;
+      }
+    }
+
+    .body {
+      height: calc(~"100% - 60px");
+      overflow-y: auto;
+      padding: 0 0 40px 0;
+
+      .title {
+        color: #303f9f;
+        font-size: 16px;
+        line-height: 22px;
+        margin-bottom: 16px;
+      }
+
+      .info {
+        color: rgba(0, 0, 0, .65);
+        font-size: 13px;
+        line-height: 20px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+      }
+
+      .content {
+        color: rgba(0, 0, 0, .87);
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+  }
+
   &-sider {
     position: fixed;
     width: 520px;
@@ -226,6 +275,7 @@
     box-shadow: 0 9px 30px 1px rgba(0, 0, 0, 0.14), 0 3px 16px 2px rgba(0, 0, 0, 0.12), 0 5px 6px -3px;
     transition: transform .7s;
     padding: 0;
+    z-index: 1;
 
     &-visible {
       transform: translateX(-550px)
@@ -238,10 +288,33 @@
 
     &-header-wrap{
       padding: 18px 24px 0 24px;
+      height: 100%;
+      .c7n-tabs-extra-content {
+        line-height: .34rem;
+        span {
+          color: @primary-color;
+          margin-left: .24rem;
+          cursor: pointer;
+        }
+      }
       .@{c7n-boot-header-inbox}-sider-header {  
         width: 100%;
+        height: 100%;
         padding-bottom: 9.5px;
         border-bottom: 1px solid rgba(0,0,0,.2);
+        .c7n-tabs {
+          height: calc(~"100% - 40px");
+          .c7n-tabs-content {
+            height: calc(~"100% - 50px");
+            .c7n-tabs-tabpane {
+              overflow: auto;
+              ul {
+                height: unset;
+                padding-inline-start: 0;
+              }
+            }
+          }
+        }
         &-title {
           display: flex;
           justify-content: space-between;
@@ -298,6 +371,7 @@
         &-title {
           line-height: 21px;
           margin-right: -32px;
+          padding-right: 5px;
           display: flex;
           justify-content: space-between;
           align-items: center;
