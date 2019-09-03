@@ -5,7 +5,7 @@ import { Spin } from 'choerodon-ui';
 import queryString from 'query-string';
 import CommonMenu from '../ui/menu';
 import MasterHeader from '../ui/header';
-// import AnnouncementBanner from '../header/AnnouncementBanner';
+import AnnouncementBanner from '../ui/header/AnnouncementBanner';
 import { dashboard, historyReplaceMenu } from '../../../common';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import RouteIndex from './RouteIndex';
@@ -147,7 +147,7 @@ class Masters extends Component {
         AppState.isAuth && AppState.currentMenuType ? (
           <div className="page-wrapper">
             <div className="page-header">
-              {/* <AnnouncementBanner /> */}
+              <AnnouncementBanner />
               <MasterHeader />
             </div>
             <div className="page-body">

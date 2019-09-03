@@ -111,7 +111,7 @@ const ListView = observer(() => {
     const type = 'project';
     HeaderStore.setRecentItem(record.toData());
     MenuStore.loadMenuData({ type, id }, false).then((menus) => {
-      let route;
+      let route = '';
       let path;
       let domain;
       if (menus.length) {
@@ -120,7 +120,7 @@ const ListView = observer(() => {
         domain = menuDomain;
       }
       // if (route) {
-      path = `/?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
+      path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
       if (organizationId) {
         path += `&organizationId=${organizationId}&orgId=${organizationId}`;
       }

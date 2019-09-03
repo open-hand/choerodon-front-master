@@ -34,6 +34,14 @@ export default (AppState, history, applicationId, projectId) => {
     selection: false,
     paging: false,
     transport: {
+      create: ({ dataSet }) => ({
+        url: `/base/v1/projects/${projectId}/applications/versions`,
+        method: 'post',
+        data: {
+          ...dataSet.current.toData(),
+          applicationId,
+        },
+      }),
       read: {
         url: `/base/v1/projects/${projectId}/applications/versions/${applicationId}`,
         // url: `/base/v1/projects/490/applications/versions/490`,
@@ -49,6 +57,7 @@ export default (AppState, history, applicationId, projectId) => {
       submit: ({ dataSet }) => ({
         url: `/base/v1/projects/${projectId}/applications/versions/${dataSet.current.get('id')}`,
         method: 'put',
+        data: dataSet.current.toData(),
       }),
     },
     fields: [

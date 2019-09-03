@@ -26,8 +26,8 @@ export default function FormView({ context }) {
   return (
     <React.Fragment>
       <Form record={dataSet.current} style={{ width: '5.12rem' }}>
-        <TextField name="name" />
         <TextField name="code" />
+        <TextField name="name" />
         <TextField name="applicationCode" />
         <TextField name="applicationName" />
       </Form>

@@ -7,6 +7,7 @@ import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import { Badge, Button, Icon, Spin, Tabs, Avatar } from 'choerodon-ui';
 import WSHandler from '../../tools/ws/WSHandler';
+import defaultAvatar from './style/icons/favicon.png';
 
 const { TabPane } = Tabs;
 const PREFIX_CLS = 'c7n';
@@ -118,8 +119,12 @@ class RenderPopoverContentDetailClass extends Component {
   };
 
   render() {
-    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg } = this.props;
+    const { HeaderStore, AppState, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg } = this.props;
     const { inboxDetailVisible, getUnreadAll, announcementClosed, getUnreadMsg, getUnreadNotice } = HeaderStore;
+    const { systemLogo, systemName } = AppState.getSiteInfo;
+    const realSystemLogo = systemLogo || defaultAvatar;
+    // eslint-disable-next-line no-underscore-dangle
+    const realSystemName = systemName || window._env_.HEADER_TITLE_NAME || 'Choerodon猪齿鱼平台';
     const siderClasses = classNames({
       [`${prefixCls}-sider-no-animate`]: true,
       [`${prefixCls}-sider`]: true,
@@ -167,8 +172,14 @@ class RenderPopoverContentDetailClass extends Component {
               </span>
             </div>
             <div className="info">
-              <Avatar src={HeaderStore.inboxDetail.sendByUser.imageUrl} size={18}>{HeaderStore.inboxDetail.sendByUser.realName && HeaderStore.inboxDetail.sendByUser.realName.charAt(0)}</Avatar>
-              <span style={{ marginLeft: 8, marginRight: 8 }}>{HeaderStore.inboxDetail.sendByUser.realName}</span>
+              <Avatar src={HeaderStore.inboxDetail.sendByUser ? HeaderStore.inboxDetail.sendByUser.imageUrl : realSystemLogo} size={18}>
+                {HeaderStore.inboxDetail.sendByUser
+                  ? HeaderStore.inboxDetail.sendByUser.realName && HeaderStore.inboxDetail.sendByUser.realName.charAt(0)
+                  : realSystemName && realSystemName.charAt(0)}
+              </Avatar>
+              <span style={{ marginLeft: 8, marginRight: 8 }}>
+                {HeaderStore.inboxDetail.sendByUser ? HeaderStore.inboxDetail.sendByUser.realName : realSystemName}
+              </span>
               <span style={{ marginRight: 8 }}>·</span>
               <TimeAgo
                 datetime={HeaderStore.inboxDetail.sendTime.slice(0, HeaderStore.inboxDetail.sendTime.length - 3)}
@@ -206,7 +217,7 @@ export default class Inbox extends Component {
   }
 
   openSettings = () => {
-    window.open('/#/iam/receive-setting?type=site');
+    window.open('/#/notify/msg-config');
   };
 
   handleButtonClick = () => {
@@ -269,7 +280,7 @@ export default class Inbox extends Component {
                     />
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
-                    <div style={{ maxHeight: 57, overflow: 'hidden' }}>
+                    <div style={{ maxHeight: 63, overflow: 'hidden' }}>
                       <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(reg, '')}` }} />
                       {document.querySelector(`#li-${id}`) && document.querySelector(`#li-${id}`).offsetHeight > 63 ? (
                         <a href="#" target="_blank" rel="noreferrer noopener">

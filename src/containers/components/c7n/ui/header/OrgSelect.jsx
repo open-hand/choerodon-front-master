@@ -31,20 +31,27 @@ export default class OrgSelect extends Component {
     }
   }
 
-  selectState = (value) => {
+  selectState = (value, gotoBuzz) => {
     const { AppState, HeaderStore, MenuStore, history } = this.props;
     const { id, name, type, organizationId, category } = value;
     localStorage.setItem('C7N-ORG-ID', id);
-    // const parsed = queryString.parse(history.location.search);
-    const parsed = {
-      id,
-      name,
-      type,
-      organizationId,
-      category,
-      orgId: id,
-    };
-    const path = `/buzz/cooperate?${queryString.stringify(parsed)}`;
+    let parsed;
+    let path;
+    if (gotoBuzz) {
+      parsed = {
+        id,
+        name,
+        type,
+        organizationId,
+        category,
+        orgId: id,
+      };
+      path = `/buzz/cooperate?${queryString.stringify(parsed)}`;
+    } else {
+      parsed = queryString.parse(history.location.search);
+      parsed.orgId = id;
+      path = `${history.location.pathname}?${queryString.stringify(parsed)}`;
+    }
     historyPushMenu(history, path, null, 'replace');
   };
 
@@ -58,7 +65,7 @@ export default class OrgSelect extends Component {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => this.selectState(org)}
+                  onClick={() => this.selectState(org, true)}
                 >
                   {org.name}
                 </a>
@@ -131,11 +138,14 @@ export default class OrgSelect extends Component {
               }
               {
                 !(orgObj && orgObj.name) ? (
-                  <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span>请选择组织</span>
                     <Icon type="arrow_drop_down" />
                   </div>
                 ) : null
+              }
+              {
+                orgObj ? <Icon type="expand_more" style={{ position: 'absolute', top: 0, right: 8, color: 'rgba(255, 255, 255, .65)' }} /> : null
               }
             </Button>
           </Dropdown>

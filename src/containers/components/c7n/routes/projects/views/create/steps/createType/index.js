@@ -11,8 +11,8 @@ export default function FormView(props) {
 
   return (
     <Tabs>
-      <TabPane tab="创建空白应用" key="1"><NewTab {...props} /></TabPane>
-      <TabPane tab="基于已有应用" key="2"><ExistTab {...props} /></TabPane>
+      <TabPane tab="创建空白项目" key="1"><NewTab {...props} /></TabPane>
+      {/* <TabPane tab="基于已有应用" key="2"><ExistTab {...props} /></TabPane> */}
     </Tabs>
   );
 }

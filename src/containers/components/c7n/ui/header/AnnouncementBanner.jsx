@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { Button, Icon } from 'choerodon-ui';
 import { inject, observer } from 'mobx-react';
-// import { PREFIX_CLS } from '@choerodon/boot/lib/containers/common/constants';
 import './style';
 
 const PREFIX_CLS = 'c7n';
@@ -22,7 +21,7 @@ export default class AnnouncementBanner extends Component {
   };
 
   handleInfo = () => {
-    window.open('/#/notify/user-msg?type=site&msgType=announcement');
+    window.open('/#/notify/announcement');
   };
 
   render() {

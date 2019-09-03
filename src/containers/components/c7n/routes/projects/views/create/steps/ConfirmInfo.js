@@ -13,8 +13,8 @@ export default function FormView({ context }) {
       labelAlign="left"
     >
       <Output name="category" />
-      <Output name="name" />
       <Output name="code" />
+      <Output name="name" />
       <Output name="applicationCode" />
       <Output name="applicationName" />
       {/* <Output name="createType" /> */}

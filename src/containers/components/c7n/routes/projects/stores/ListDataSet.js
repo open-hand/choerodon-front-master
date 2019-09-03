@@ -114,5 +114,15 @@ export default (AppState, history) => {
       { name: 'createType', type: 'string' },
       { name: 'createByExist', type: 'number' },
     ],
+    events: {
+      update: ({ record, name, value }) => {
+        if (record.status === 'add' && name === 'code' && !record.get('applicationCode')) {
+          record.set('applicationCode', value);
+        }
+        if (record.status === 'add' && name === 'name' && !record.get('applicationName')) {
+          record.set('applicationName', value);
+        }
+      },
+    },
   };
 };

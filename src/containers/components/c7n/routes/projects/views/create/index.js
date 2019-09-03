@@ -63,9 +63,9 @@ export default function CreateProjectWrap(props) {
     return (
       <div style={{ height: '.72rem', borderTop: '1px solid rgba(0,0,0,0.12)', display: 'flex', alignItems: 'center', marginLeft: '-.24rem', marginRight: '-.24rem', paddingLeft: '.24rem', paddingRight: '.24rem' }}>
         {index !== 0 && <Button color="blue" funcType="raised" onClick={handleCreate}>创建</Button>}
-        {index !== 0 && <Button color="blue" onClick={() => handleGo(false)}>上一步</Button>}
         {index !== 2 && <Button color="blue" funcType="raised" onClick={() => handleGo(true)}>下一步</Button>}
-        <Button color="blue" onClick={handleCancel}>取消</Button>
+        {index !== 0 && <Button className="active" funcType="raised" onClick={() => handleGo(false)}>上一步</Button>}
+        <Button onClick={handleCancel} funcType="raised" className="active">取消</Button>
       </div>
     );
   }

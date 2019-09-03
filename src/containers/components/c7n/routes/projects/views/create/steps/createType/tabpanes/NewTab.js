@@ -64,7 +64,7 @@ const FormView = observer(({ context }) => {
 
   return (
     <div className="create-project-tab-card-block">
-      {['MICROSERVICE', 'AGILE', 'PROGRAM', 'LOWCODE'].map(t => renderCard(t))}
+      {['MICROSERVICE', 'AGILE', 'PROGRAM'].map(t => renderCard(t))}
     </div>
   );
 });
