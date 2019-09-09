@@ -76,7 +76,7 @@ export default class CommonMenu extends Component {
 
   getMenuSingle(data, num, collapsed) {
     const paddingStyleObj = num === 0 && collapsed ? { padding: '0 !important' } : {};
-    if (!data.subMenus) {
+    if (!data.subMenus || data.subMenus.every(v => v.type === 'tab')) {
       const { route } = findFirstLeafMenu(data);
       const link = (
         <Link
@@ -114,7 +114,7 @@ export default class CommonMenu extends Component {
             </span>
           )}
         >
-          {data.subMenus.map(
+          {data.subMenus.filter(v => v.type !== 'tab').map(
             two => this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed),
           )}
         </SubMenu>
@@ -237,7 +237,7 @@ export default class CommonMenu extends Component {
         </Tooltip>
       );
     }
-    if (!item.subMenus) {
+    if (!item.subMenus || item.subMenus.every(v => v.type === 'tab')) {
       return (
         <Item key={item.code}>
           {icon}
@@ -245,7 +245,7 @@ export default class CommonMenu extends Component {
         </Item>
       );
     } else {
-      return !false ? (
+      return (
         <ItemGroup
           // onTitleClick={this.handleClick}
           key={item.code}
@@ -253,25 +253,14 @@ export default class CommonMenu extends Component {
           title={item.name}
         >
           {
-            item.subMenus.map(two => this.getMenuSingle(two, 0, collapsed))
+            item.subMenus.filter(v => v.type !== 'tab').map(two => this.getMenuSingle(two, 0, collapsed))
           }
         </ItemGroup>
-      ) : (
-        <SubMenu
-          // onTitleClick={this.handleClick}
-          key={item.code}
-          className="common-menu-right-popup"
-          title={icon}
-        >
-          {
-            item.subMenus.map(two => this.getMenuSingle(two, 0, collapsed))
-          }
-        </SubMenu>
       );
     }
   }
 
-  renderRightMenu(expanded) {
+  renderRightMenu() {
     const { MenuStore } = this.props;
     const { collapsed, openKeys, activeMenu } = MenuStore;
     const child = MenuStore.getMenuData;
@@ -298,6 +287,11 @@ export default class CommonMenu extends Component {
   }
 
   shouldHiddenMenu = (pathname) => {
+    const defaultBlackList = ['/projects', '/applications', '/base/app-market', '/knowledge/organization'];
+    if (pathname.startsWith('/buzz/cooperate') && !pathname.startsWith('/buzz/cooperate-pro')) return true;
+    if (defaultBlackList.some((pname) => pathname.startsWith(pname))) {
+      return true;
+    }
     // eslint-disable-next-line no-underscore-dangle
     const blackListString = window._env_.hiddenMenuList;
     if (!blackListString) return false;
@@ -307,33 +301,15 @@ export default class CommonMenu extends Component {
   }
 
   render() {
-    const { MenuStore, AppState, location: { pathname } } = this.props;
+    const { MenuStore, location: { pathname } } = this.props;
     const child = MenuStore.getMenuData;
-    if (!(child && child.length > 0)) {
-      return null;
-    }
-    if (pathname === '/projects' || pathname === '/projects/') {
-      return null;
-    }
-    if (pathname.startsWith('/applications')) {
-      return null;
-    }
-    if (pathname.startsWith('/buzz/cooperate')) {
-      return null;
-    }
-    if (pathname.startsWith('/iam/app-market')) {
-      return null;
-    }
-    if (this.shouldHiddenMenu(pathname)) {
+    if (!(child && child.length > 0) || this.shouldHiddenMenu(pathname)) {
       return null;
     }
     
-    const expanded = AppState.getMenuExpanded;
     return (
-      <div style={{ height: '100%' }}>
-        <div className="common-menu">
-          {this.renderRightMenu(expanded)}
-        </div>
+      <div className="common-menu">
+        {this.renderRightMenu()}
       </div>
     );
   }

@@ -9,6 +9,7 @@ import AnnouncementBanner from '../ui/header/AnnouncementBanner';
 import { dashboard, historyReplaceMenu } from '../../../common';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import RouteIndex from './RouteIndex';
+import themeColorClient from './themeColorClient';
 import './style';
 
 const spinStyle = {
@@ -56,6 +57,8 @@ function parseQueryToMenuType(search) {
 class Masters extends Component {
   componentWillMount() {
     this.initMenuType(this.props);
+    const themeColor = localStorage.getItem('C7N-THEME-COLOR');
+    this.updateTheme(themeColor);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,6 +72,39 @@ class Masters extends Component {
     if (pathname.includes('access_token') && pathname.includes('token_type') && localStorage.getItem(`historyPath-${getUserId}`)) {
       window.location = `/#${localStorage.getItem(`historyPath-${getUserId}`)}`;
     }
+  }
+
+  updateTheme = (newPrimaryColor) => {
+    if (newPrimaryColor === 'undefined' || !newPrimaryColor) {
+      return;
+    }
+    const colorArr = newPrimaryColor.split(',');
+    let c1; let c2;
+    if (colorArr.length === 2) {
+      [c1, c2] = colorArr;
+    } else if (colorArr.length === 1) {
+      // eslint-disable-next-line prefer-destructuring
+      c1 = colorArr[0];
+      // eslint-disable-next-line prefer-destructuring
+      c2 = colorArr[0];
+    } else if (!colorArr.length) {
+      return;
+    }
+    themeColorClient.changeColor(c1, c2)
+      .finally(() => {
+        // eslint-disable-next-line no-console
+        console.log(`[Choerodon] Current Theme Color: ${newPrimaryColor}`);
+      });
+  }
+
+  isInOutward = (pathname) => {
+    // eslint-disable-next-line no-underscore-dangle
+    const injectOutward = window._env_.outward;
+    if (injectOutward) {
+      const arr = injectOutward.split(',');
+      return arr.some(v => pathname.startsWith(v));
+    }
+    return false;
   }
 
   initFavicon() {
@@ -90,6 +126,8 @@ class Masters extends Component {
         document.getElementsByTagName('title')[0].innerText = data.systemTitle;
       }
       AppState.setSiteInfo(data);
+      this.updateTheme(data.themeColor);
+      localStorage.setItem('C7N-THEME-COLOR', data.themeColor);
     });
   }
 
@@ -136,7 +174,7 @@ class Masters extends Component {
 
   render() {
     const { AutoRouter, AppState } = this.props;
-    if (outwardPath.includes(this.props.location.pathname)) {
+    if (outwardPath.includes(this.props.location.pathname) || this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">
           <RouteIndex AutoRouter={AutoRouter} />

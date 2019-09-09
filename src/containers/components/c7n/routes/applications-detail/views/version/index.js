@@ -64,13 +64,13 @@ const Index = () => {
 
   async function handlePublish() {
     const record = versionDs.current;
-    await axios.put(`/base/v1/project/${proId}/applications/versions/publish/${record.get('id')}`);
+    await axios.put(`/base/v1/projects/${proId}/applications/versions/publish/${record.get('id')}`);
     versionDs.query();
   }
 
   async function handleArchive() {
     const record = versionDs.current;
-    await axios.put(`/base/v1/project/${proId}/applications/versions/archive/${record.get('id')}`);
+    await axios.put(`/base/v1/projects/${proId}/applications/versions/archive/${record.get('id')}`);
     versionDs.query();
   }
 
@@ -80,17 +80,24 @@ const Index = () => {
 
   async function handleDelete() {
     const record = versionDs.current;
-    await axios.delete(`/base/v1/project/${proId}/applications/versions/${record.get('id')}`);
+    await axios.delete(`/base/v1/projects/${proId}/applications/versions/${record.get('id')}`);
     versionDs.query();
   }
 
-  function renderAction() {
+  function renderAction({ record }) {
+    const status = record.get('statusCode');
     const actionDatas = [
       { service: [], icon: '', text: '发布', action: handlePublish },
       { service: [], icon: '', text: '归档', action: handleArchive },
       { service: [], icon: '', text: '编辑', action: handleEdit },
       { service: [], icon: '', text: '删除', action: handleDelete },
     ];
+    if (status === 'archived') {
+      actionDatas.splice(1, 1);
+    }
+    if (status === 'released') {
+      actionDatas.splice(0, 1);
+    }
     return <Action data={actionDatas} style={actionStyle} />;
   }
 
@@ -112,10 +119,10 @@ const Index = () => {
         <Button icon="playlist_add" color="primary" onClick={handleCreateVersion}>创建版本</Button>
       </Header>
       <Breadcrumb custom>
-        <Item style={{ color: 'rgba(0, 0, 0, 0.87)' }}>
+        <Item>
           <Link to="/applications">应用</Link>
         </Item>
-        <Item style={{ color: 'rgba(0, 0, 0, 0.87)' }}>查看应用</Item>
+        <Item>查看应用</Item>
       </Breadcrumb>
       <Content>
         <Table dataSet={versionDs} queryBar="none">

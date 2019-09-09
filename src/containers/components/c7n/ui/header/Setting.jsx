@@ -27,7 +27,7 @@ export default class Setting extends Component {
     const classString = classNames({ block: true });
     return (
       <Button className={classString} onClick={this.gotoOrganizationManager}>
-        <Icon className="manager-icon" type="settings " style={{ marginLeft: '5px' }} />
+        <Icon type="settings " style={{ marginLeft: '5px' }} />
         管理中心
       </Button>
     );

@@ -6,8 +6,8 @@ import Version from './views/version';
 
 const App = () => (
   <PageWrap noHeader={['tab1']}>
-    <PageTab title="应用服务" tabKey="tab1" component={Service} />
-    <PageTab title="应用版本" tabKey="tab2" component={Version} />
+    <PageTab title="应用服务" tabKey="tab1" component={Service} alawaysShow />
+    <PageTab title="应用版本" tabKey="tab2" component={Version} alawaysShow />
   </PageWrap>
 );
 

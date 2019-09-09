@@ -100,6 +100,11 @@ class HeaderStore {
   }
 
   @computed
+  get getUnreadOther() {
+    return this.inboxData.filter(v => v.type !== 'msg' && v.type !== 'notice');
+  }
+
+  @computed
   get getCurrentMsgType() {
     return this.currentMsgType;
   }

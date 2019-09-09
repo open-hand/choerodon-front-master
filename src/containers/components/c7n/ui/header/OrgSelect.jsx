@@ -31,6 +31,13 @@ export default class OrgSelect extends Component {
     }
   }
 
+  autoLocate = () => {
+    const { history } = this.props;
+    const parsed = queryString.parse(history.location.search);
+    const path = `${history.location.pathname === '/' ? 'buzz/cooperate' : history.location.pathname}?${queryString.stringify(parsed)}`;
+    historyPushMenu(history, path, null, 'replace');
+  }
+
   selectState = (value, gotoBuzz) => {
     const { AppState, HeaderStore, MenuStore, history } = this.props;
     const { id, name, type, organizationId, category } = value;
@@ -50,12 +57,12 @@ export default class OrgSelect extends Component {
     } else {
       parsed = queryString.parse(history.location.search);
       parsed.orgId = id;
-      path = `${history.location.pathname}?${queryString.stringify(parsed)}`;
+      path = `${history.location.pathname === '/' ? 'buzz/cooperate' : history.location.pathname}?${queryString.stringify(parsed)}`;
     }
     historyPushMenu(history, path, null, 'replace');
   };
 
-  renderTable(dataSource, isNotRecent) {
+  renderTable(dataSource) {
     if (dataSource && dataSource.length) {
       return (
         <Menu>
@@ -74,15 +81,8 @@ export default class OrgSelect extends Component {
           }
         </Menu>
       );
-    } else {
-      return (
-        <div className={`${prefixCls}-empty`}>
-          {
-            isNotRecent ? '您还没有在任何组织或项目中被分配角色' : '您没有最近浏览记录'
-          }
-        </div>
-      );
     }
+    return null;
   }
 
   getCurrentData() {
@@ -94,21 +94,40 @@ export default class OrgSelect extends Component {
   renderModalContent() {
     const currentData = this.getCurrentData();
     return (
-      <div style={{ maxHeight: 500, overflow: 'auto', boxShadow: '0 0.02rem 0.08rem rgba(0, 0, 0, 0.12)' }}>
-        {this.renderTable(currentData, true)}
+      <div style={{ maxHeight: 400, marginTop: 44, overflow: 'auto', boxShadow: '0 0.02rem 0.08rem rgba(0, 0, 0, 0.12)' }}>
+        {this.renderTable(currentData)}
       </div>
     );
   }
 
   render() {
     const {
-      AppState: { currentMenuType: { name: selectTitle = '选择组织', type, category, id, organizationId, orgId } },
+      HeaderStore, AppState: { currentMenuType: { name: selectTitle = '选择组织', type, category, id, organizationId, orgId }, getUserInfo }, history,
     } = this.props;
     const currentData = this.getCurrentData() || [];
     const orgObj = currentData.find(v => String(v.id) === orgId);
+    // if (history.location.pathname === '/') {
+    //   this.autoLocate();
+    //   return null;
+    // }
     if (!orgObj && currentData.length) {
-      this.autoSelect();
-      return null;
+      if (getUserInfo.admin) {
+        const obj = queryString.parse(history.location.search);
+        obj.into = true;
+        if (!obj.orgId) {
+          this.autoSelect();
+          return null;
+        }
+        this.selectState(obj);
+        HeaderStore.setOrgData([...currentData, {
+          ...obj,
+          enabled: true,
+        }]);
+        return null;
+      } else {
+        this.autoSelect();
+        return null;
+      }
     }
     const buttonClass = classnames(`${prefixCls}-button`, 'block', 'org-button');
     const menu = this.renderModalContent();

@@ -1,3 +1,3 @@
-import FeedbackButton from '@choerodon/feedback';
+// import FeedbackButton from '@choerodon/feedback';
 
-export default FeedbackButton;
+// export default FeedbackButton;

@@ -2,10 +2,12 @@
 /* eslint-disable react/no-danger */
 import React, { Component } from 'react';
 import TimeAgo from 'timeago-react';
+import { withRouter } from 'react-router-dom';
 import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import { Badge, Button, Icon, Spin, Tabs, Avatar } from 'choerodon-ui';
+import { Button as ButtonPro } from 'choerodon-ui/pro';
 import WSHandler from '../../tools/ws/WSHandler';
 import defaultAvatar from './style/icons/favicon.png';
 
@@ -36,7 +38,7 @@ class RenderPopoverContentClass extends Component {
   
   render() {
     const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg, handleSettingReceive } = this.props;
-    const { inboxVisible, getUnreadAll, announcementClosed, getUnreadMsg, getUnreadNotice } = HeaderStore;
+    const { inboxVisible, getUnreadAll, announcementClosed, getUnreadMsg, getUnreadNotice, getUnreadOther } = HeaderStore;
     const siderClasses = classNames({
       [`${prefixCls}-sider`]: true,
       [`${prefixCls}-sider-visible`]: inboxVisible,
@@ -44,12 +46,12 @@ class RenderPopoverContentClass extends Component {
     });
     const operations = (
       <React.Fragment>
-        <span role="none" style={{ cursor: 'pointer' }} onClick={handleSettingReceive}>
+        <ButtonPro funcType="flat" color="blue" onClick={handleSettingReceive}>
           接收设置
-        </span>
-        <span role="none" style={{ cursor: 'pointer' }} onClick={cleanAllMsg}>
+        </ButtonPro>
+        <ButtonPro funcType="flat" color="blue" onClick={cleanAllMsg}>
           全部清除
-        </span>
+        </ButtonPro>
       </React.Fragment>
     );
     return (
@@ -79,7 +81,7 @@ class RenderPopoverContentClass extends Component {
               </TabPane>
               <TabPane tab="公告" key="3">
                 <Spin spinning={inboxLoading}>
-                  {renderMessages(getUnreadAll)}
+                  {renderMessages(getUnreadOther)}
                 </Spin>
               </TabPane>
             </Tabs>
@@ -186,8 +188,15 @@ class RenderPopoverContentDetailClass extends Component {
                 locale="zh_CN"
               />
             </div>
-            <div className="content">
+            {/* <div className="content">
               <p dangerouslySetInnerHTML={{ __html: `${HeaderStore.inboxDetail.content.replace(reg, '')}` }} />
+            </div> */}
+            <div className="content c7n-boot-header-inbox-wrap">
+              <div
+                className="c7n-boot-header-inbox-content"
+                // eslint-disable-next-line react/no-danger
+                dangerouslySetInnerHTML={{ __html: `${HeaderStore.inboxDetail.content}` }}
+              />
             </div>
           </div>
         </div>
@@ -196,6 +205,7 @@ class RenderPopoverContentDetailClass extends Component {
   }
 }
 
+@withRouter
 @inject('HeaderStore', 'AppState')
 @observer
 export default class Inbox extends Component {
@@ -217,7 +227,8 @@ export default class Inbox extends Component {
   }
 
   openSettings = () => {
-    window.open('/#/notify/msg-config');
+    const { history } = this.props;
+    history.push('/notify/receive-setting');
   };
 
   handleButtonClick = () => {
@@ -269,15 +280,21 @@ export default class Inbox extends Component {
               return (
                 <li className={`${prefixCls}-sider-content-list`} key={data.id}>
                   <div className={`${prefixCls}-sider-content-list-title`}>
-                    <span>
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       <Icon type={iconMap[data.type]} style={{ marginRight: 10 }} />
                       <a onClick={e => this.handleMessageTitleClick(e, data)}>{title}</a>
                     </span>
-                    <Icon
-                      type="close"
-                      style={{ color: 'rgba(0, 0, 0, 0.54)', cursor: 'pointer' }}
-                      onClick={e => this.cleanMsg(e, data)}
-                    />
+                    <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                      <TimeAgo
+                        datetime={sendTime.slice(0, sendTime.length - 3)}
+                        locale="zh_CN"
+                      />
+                      <Icon
+                        type="close"
+                        style={{ color: 'rgba(0, 0, 0, 0.54)', cursor: 'pointer', marginLeft: 12 }}
+                        onClick={e => this.cleanMsg(e, data)}
+                      />
+                    </div>
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
                     <div style={{ maxHeight: 63, overflow: 'hidden' }}>
@@ -294,12 +311,12 @@ export default class Inbox extends Component {
                       <img style={{ maxWidth: '100%', marginTop: 10 }} src={showPicUrl} />
                     ) : null}
                   </div>
-                  <div className={`${prefixCls}-sider-content-list-time`}>
+                  {/* <div className={`${prefixCls}-sider-content-list-time`}>
                     <TimeAgo
                       datetime={sendTime.slice(0, sendTime.length - 3)}
                       locale="zh_CN"
                     />
-                  </div>
+                  </div> */}
                 </li>
               );
             })
@@ -325,13 +342,16 @@ export default class Inbox extends Component {
           onMessage={this.handleMessage}
         >
           {
-            data => (
-              <Badge onClick={this.handleButtonClick} className={`${prefixCls} ignore-react-onclickoutside`} count={data || 0}>
-                <Button functype="flat" shape="circle">
-                  <Icon type="notifications" />
-                </Button>
-              </Badge>
-            )
+            data => {
+              console.log(data);
+              return (
+                <Badge onClick={this.handleButtonClick} className={`${prefixCls} ignore-react-onclickoutside`} count={data || 0}>
+                  <Button functype="flat" shape="circle">
+                    <Icon type="notifications" />
+                  </Button>
+                </Badge>
+              );
+            }
           }
         </WSHandler>
         <RenderPopoverContentClass

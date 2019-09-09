@@ -2,6 +2,15 @@
   color: @primary-color;
 }
 
+.link {
+  color: #000;
+  &:hover {
+    color: @primary-color;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
 .c7n-projects-header {
   display: flex;
   width: 100%;
@@ -33,6 +42,12 @@
     .icon {
       cursor: pointer;
     }
+  }
+}
+
+.c7n-projects-table {
+  tbody {
+    color: rgba(0, 0, 0, .65);
   }
 }
 

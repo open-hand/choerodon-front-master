@@ -58,13 +58,14 @@ export default class UserPreferences extends Component {
       this.getGlobalMenuData(orgId);
     }
     history.push(`${key}?type=site&orgId=${orgId}`);
+    this.handleVisibleChange(false);
   };
 
   findUserInfoMenuItem = (menu, res) => {
     if (menu.subMenus && menu.subMenus.length) {
       menu.subMenus.forEach(v => this.findUserInfoMenuItem(v, res));
     }
-    if (menu.code === 'choerodon.code.person.info-setting') {
+    if (menu.code === 'choerodon.code.person.user-info') {
       res.res = menu;
     }
   }
@@ -99,11 +100,15 @@ export default class UserPreferences extends Component {
                 {item.name}
               </MenuItem>
             ))}
-            <Menu.Divider />
-            <MenuItem className={`${prefixCls}-popover-menu-item`} key="site-setting">
-              <Icon type="settings" />
-              平台管理
-            </MenuItem>
+            {
+              MenuStore.getSiteMenuData.length > 0 ? [
+                <Menu.Divider />,
+                <MenuItem className={`${prefixCls}-popover-menu-item`} key="site-setting">
+                  <Icon type="settings" />
+                  平台管理
+                </MenuItem>,
+              ] : null
+            }
           </Menu>
         </div>
         <div className="divider" />

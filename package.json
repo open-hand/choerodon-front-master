@@ -23,14 +23,14 @@
     "@choerodon/boot": "0.20.x"
   },
   "devDependencies": {
-    "@choerodon/boot": "^0.20.5",
+    "@choerodon/boot": "^0.20.6",
     "babel-preset-env": "^1.7.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "through2": "^2.0.3"
   },
   "dependencies": {
-    "@choerodon/feedback": "^0.19.5",
-    "react-onclickoutside": "^6.8.0"
+    "react-onclickoutside": "^6.8.0",
+    "webpack-theme-color-replacer": "^1.2.17"
   }
 }

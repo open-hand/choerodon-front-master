@@ -27,13 +27,14 @@ const ListView = observer(({ handleClickProject, handleEditProject }) => {
     const { imageUrl, name } = record.toData();
     return (
       <React.Fragment>
-        <a
+        <span
           role="none"
           onClick={() => handleClickProject(record)}
+          className="link"
         >
           <Avatar src={imageUrl} size={16} style={{ marginRight: 8, fontSize: '12px', verticalAlign: 'top', marginTop: 10 }}>{name && name.charAt(0)}</Avatar>
           {name}
-        </a>
+        </span>
       </React.Fragment>
     );
   }
@@ -46,7 +47,7 @@ const ListView = observer(({ handleClickProject, handleEditProject }) => {
   }
 
   return (
-    <Table dataSet={dataSet} filter={filterRecent}>
+    <Table dataSet={dataSet} filter={filterRecent} className="c7n-projects-table">
       <Column name="name" renderer={renderName} />
       <Column renderer={renderAction} width={100} />
       <Column name="code" />

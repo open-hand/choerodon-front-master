@@ -97,7 +97,7 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
       <Bread separator=">">
         {renderName()}
         {renderMenus()}
-        {title ? <Item style={{ color: 'rgba(0, 0, 0, 0.87)' }}>{title}</Item> : null}
+        {title ? <Item>{title}</Item> : null}
       </Bread>
       {extraNode || null}
     </section>

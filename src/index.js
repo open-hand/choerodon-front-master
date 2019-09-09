@@ -39,3 +39,5 @@ export { default as PageWrap } from './containers/components/c7n/tools/tab-page/
 export { default as TabPage } from './containers/components/c7n/tools/tab-page/TabPage';
 
 export { default as Breadcrumb } from './containers/components/c7n/tools/tab-page/Breadcrumb';
+
+export { default as Choerodon } from './containers/common/index2';

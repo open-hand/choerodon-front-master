@@ -58,13 +58,6 @@ class Header extends Component {
           </li> */}
           <OrgSelect />
           <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
-            <div>
-              <Button functype="flat" shape="circle" onClick={() => this.handleGuideClick()}>
-                <Icon type="help" />
-              </Button>
-            </div>
-          </li>
-          <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
             <Inbox />
           </li>
           <li style={{ marginLeft: 20 }} className={`${prefixCls}-right-li`}>

@@ -4,83 +4,44 @@ import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { Button, Icon } from 'choerodon-ui';
+import getSearchString from '../../util/gotoSome';
 
 const iconStyle = { marginLeft: '.05rem' };
+const LI_MAPPING = [
+  { title: '协作共享', icon: 'sync_user', activePath: '/buzz/cooperate', exclude: '/buzz/cooperate-pro' },
+  { title: '项目', icon: 'project_line', activePath: '/projects' },
+  { title: '应用', icon: 'appmarket', activePath: '/applications' },
+  { title: '知识库', icon: 'book', activePath: '/knowledge/organization' },
+  { title: '应用市场', icon: 'redeploy_line', activePath: '/base/app-market' },
+];
 
 const Setting = ({ AppState, HeaderStore, history, ...props }) => {
-  function gotoCooperate() {
-    const { currentMenuType: { type, orgId } } = AppState;
+  function goto(obj) {
     const queryObj = queryString.parse(history.location.search);
-    let queryNeedObj;
-    if (type === 'project') {
-      queryNeedObj = {
-        type: 'project',
-        id: queryObj.id,
-        name: queryObj.name,
-        category: queryObj.category,
-        organizationId: queryObj.organizationId,
-        orgId: queryObj.orgId,
-      };
-    } else {
-      const orgData = HeaderStore.getOrgData;
-      const orgObj = orgData.find(v => String(v.id) === orgId) || {};
-      queryNeedObj = {
-        type: 'organization',
-        id: queryObj.orgId,
-        name: queryObj.name || orgObj.name,
-        category: queryObj.category || orgObj.category,
-        organizationId: queryObj.orgId,
-        orgId: queryObj.orgId,
-      };
+    const search = getSearchString('organization', 'id', queryObj.orgId);
+    history.push(`${obj.activePath}${search}`);
+  }
+
+  function extraCls(list) {
+    const { location: { pathname } } = props;
+    if (pathname.startsWith(list.activePath)) {
+      if ('exclude' in list) {
+        if (!pathname.startsWith(list.exclude)) {
+          return 'header-setting-active';
+        }
+      } else {
+        return 'header-setting-active';
+      }
     }
-    history.push(`/buzz/cooperate?${queryString.stringify(queryNeedObj)}`);
+    return '';
   }
-
-  function gotoProjects() {
-    history.push(`/projects${history.location.search}`);
-  }
-
-  function gotoApplications() {
-    history.push(`/applications${history.location.search}`);
-  }
-
-  function gotoAppMarket() {
-    history.push(`/iam/app-market${history.location.search}`);
-  }
-
-  function gotoKnowledge() {
-    const { currentMenuType: { orgId } } = AppState;
-    const queryObj = queryString.parse(history.location.search);
-    
-    const orgData = HeaderStore.getOrgData;
-    const orgObj = orgData.find(v => String(v.id) === orgId) || {};
-    const queryNeedObj = {
-      type: 'organization',
-      id: queryObj.orgId,
-      name: queryObj.name || orgObj.name,
-      category: queryObj.category || orgObj.category,
-      organizationId: queryObj.orgId,
-      orgId: queryObj.orgId,
-    };
-    history.push(`/knowledge/organization?${queryString.stringify(queryNeedObj)}`);
-  }
-
-  function loop() {}
-
-  const LI_MAPPING = [
-    { title: '协作共享', icon: 'sync_user', action: gotoCooperate },
-    { title: '项目', icon: 'project_line', action: gotoProjects },
-    { title: '应用', icon: 'appmarket', action: gotoApplications },
-    { title: '知识库', icon: 'book', action: gotoKnowledge },
-    { title: '应用市场', icon: 'redeploy_line', action: gotoAppMarket },
-  ];
 
   return (
     <React.Fragment>
       {
         LI_MAPPING.map(list => (
-          <Button className="block" onClick={list.action}>
-            <Icon className="manager-icon" type={list.icon} style={iconStyle} />
+          <Button className={`block ${extraCls(list)}`} onClick={() => goto(list)}>
+            <Icon type={list.icon} style={iconStyle} />
             {list.title}
           </Button>
         ))

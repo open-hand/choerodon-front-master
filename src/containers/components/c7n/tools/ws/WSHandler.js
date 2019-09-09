@@ -1,10 +1,11 @@
+/* eslint-disable react/static-property-placement */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getCookie } from '../../../../common';
 
 export default class WSHandler extends Component {
   static defaultProps = {
-    path: `choerodon:msg?token=${getCookie('access_token')}`,
+    path: `choerodon/msg?token=${getCookie('access_token')}`,
   };
 
   static propTypes = {
@@ -47,7 +48,8 @@ export default class WSHandler extends Component {
       onMessage(JSON.parse(data).key);
     }
     this.setState({
-      key: JSON.parse(data).key,
+      // key: JSON.parse(data).key,
+      key: JSON.parse(data).data,
     });
   };
 
