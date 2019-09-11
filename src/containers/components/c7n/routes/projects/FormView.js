@@ -67,10 +67,14 @@ export default function FormView({ context }) {
       {renderAvatar()}
       <Form record={dataSet.current}>
         <TextField name="name" />
-        <TextField name="code" disabled />
-        <Select name="category" disabled />
-        <TextField name="creationDate" disabled />
-        <TextField name="createUserName" disabled />
+        <TextField name="code" disabled={dataSet.current.status !== 'add'} />
+        <Select name="category" disabled={dataSet.current.status !== 'add'} />
+        {
+          dataSet.current.status !== 'add' && [
+            <TextField name="creationDate" disabled />,
+            <TextField name="createUserName" disabled />,
+          ]
+        }
       </Form>
     </React.Fragment>
   );

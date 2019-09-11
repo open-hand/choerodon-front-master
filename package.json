@@ -30,6 +30,7 @@
     "through2": "^2.0.3"
   },
   "dependencies": {
+    "@choerodon/feedback": "^0.19.5",
     "react-onclickoutside": "^6.8.0",
     "webpack-theme-color-replacer": "^1.2.17"
   }

@@ -32,8 +32,8 @@ const Card = ({ handleEditProject, handleClickProject, dataSet, record, ...props
         <Avatar size={80} src={imageUrl} style={{ fontSize: '32px' }}>{name && name.charAt(0)}</Avatar>
         <h3>{name}</h3>
         <div>
-          <span className="text link-text">{applicationName || '无关联应用'}</span>
-          <span className="text separator">·</span>
+          {/* <span className="text link-text">{applicationName || '无关联应用'}</span>
+          <span className="text separator">·</span> */}
           <span className="text">{code}</span>
           <span className="text separator">·</span>
           <span className="text">{PROJECT_TYPE[category]}</span>

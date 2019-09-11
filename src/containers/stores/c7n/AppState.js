@@ -99,6 +99,14 @@ class AppState {
     return this.menuType;
   }
 
+  @computed
+  get currentOrginazationOrProjectId() {
+    const { id, type, orgId } = this.menuType;
+    if (type === 'project') return id;
+    if (type === 'organization') return id || orgId;
+    return null;
+  }
+
   @action
   setAuthenticated(flag) {
     this.isAuthenticated = flag;

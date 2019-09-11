@@ -5,9 +5,9 @@ import Service from './views/service';
 import Version from './views/version';
 
 const App = () => (
-  <PageWrap noHeader={['tab1']}>
-    <PageTab title="应用服务" tabKey="tab1" component={Service} alawaysShow />
-    <PageTab title="应用版本" tabKey="tab2" component={Version} alawaysShow />
+  <PageWrap noHeader={['tab1']} cache>
+    <PageTab title="应用服务" tabKey="tab1" component={Service} alwaysShow />
+    <PageTab title="应用版本" tabKey="tab2" component={Version} alwaysShow />
   </PageWrap>
 );
 

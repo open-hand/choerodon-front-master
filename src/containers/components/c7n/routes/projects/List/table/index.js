@@ -51,7 +51,7 @@ const ListView = observer(({ handleClickProject, handleEditProject }) => {
       <Column name="name" renderer={renderName} />
       <Column renderer={renderAction} width={100} />
       <Column name="code" />
-      <Column name="applicationName" />
+      {/* <Column name="applicationName" /> */}
       <Column name="category" />
       <Column name="programName" />
       <Column name="createUserName" />

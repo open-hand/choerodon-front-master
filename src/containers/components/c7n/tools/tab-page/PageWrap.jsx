@@ -11,20 +11,28 @@ const { TabPane } = Tabs;
 
 export const Context = React.createContext({});
 
-const PageWrap = ({ children, noHeader, className, ...props }) => {
+const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
+  const keyShowArr = React.Children.map(children, child => ({
+    tabKey: child.props.tabKey,
+    alwaysShow: child.props.alwaysShow,
+  }));
   const keyArr = React.Children.map(children, child => child.props.tabKey);
-  const [currentKey, setCurrentKey] = useState(keyArr[0]);
-  const activeMenu = useRef(null);
-  const parentMenu = useRef(null);
+  const [currentKey, setCurrentKey] = useState(null);
+  const [activeMenu, setActiveMenu] = useState(null);
+  const [parentMenu, setParentMenu] = useState(null);
 
   function loadMenu() {
     const { location, AppState, MenuStore } = props;
     const { pathname } = location;
+    setCurrentKey(`${keyArr[0]}/.0`);
     MenuStore.loadMenuData().then((menus) => {
       MenuStore.treeReduce({ subMenus: menus }, (menu, parents) => {
         if (menu.route === pathname || pathname.indexOf(`${menu.route}/`) === 0) {
-          activeMenu.current = menu;
-          parentMenu.current = parents;
+          setActiveMenu(menu);
+          const parentMenuNode = parents && parents.length ? parents[parents.length - 1] : null;
+          setParentMenu(parentMenuNode);
+          const index = parentMenuNode ? parentMenuNode.subMenus.findIndex(v => v === menu) : -1;
+          setCurrentKey(`${menu.code}/.${index}`);
           return true;
         }
         return false;
@@ -37,25 +45,34 @@ const PageWrap = ({ children, noHeader, className, ...props }) => {
   }, []);
 
   function callback(key) {
-    setCurrentKey(key && key.split('/')[0]);
+    if (cache) {
+      setCurrentKey(key);
+    } else {
+      const realCode = key && key.split('/')[0];
+      const realTabNode = parentMenu.subMenus.find(v => v.code === realCode);
+      if (realTabNode && realTabNode.route) {
+        props.history.push(`${realTabNode.route}${props.location.search}`);
+      }
+    }
   }
 
   return (
     <Context.Provider value={{ isTab: true }}>
       <Tabs
-        className={classNames('wrap-tabs', { hasHeader: !noHeader.includes(currentKey) }, className)}
+        className={classNames('wrap-tabs', { hasHeader: !noHeader.includes(currentKey && currentKey.split('/')[0]) }, className)}
         animated={false}
         onChange={callback}
+        activeKey={currentKey}
       >
         {
           React.Children.map(children, (child) => {
             const { type } = child;
             if (type === PageTab) {
               if (
-                (activeMenu.current
-                && activeMenu.current.subMenus
-                && activeMenu.current.subMenus.find(v => v.code === child.props.tabKey))
-                || child.props.alawaysShow
+                (parentMenu
+                && parentMenu.subMenus
+                && parentMenu.subMenus.find(v => v.code === child.props.tabKey))
+                || child.props.alwaysShow
               ) {
                 return (
                   <TabPane

@@ -56,11 +56,22 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
     if (type === 'project') return <Item>{name}</Item>;
   }
 
+  function getArrayLast(arr) {
+    if (Array.isArray(arr) && arr.length) {
+      return arr[arr.length - 1];
+    } else {
+      return null;
+    }
+  }
+
   function renderMenus() {
     let menus = [];
     // const parentMenus = getMenuParents();
     const parentMenus = [];
-    const currentMenu = getCurrentMenu();
+    let currentMenu = getCurrentMenu();
+    if (currentMenu && currentMenu.type === 'tab') {
+      currentMenu = getArrayLast(getMenuParents());
+    }
     if (currentMenu) {
       menus = parentMenus.concat(currentMenu);
     }

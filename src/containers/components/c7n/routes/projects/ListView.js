@@ -82,9 +82,10 @@ const ListView = observer(() => {
       drawer: true,
       title: '创建项目',
       className: 'c7n-projects-modal-create-project',
-      children: <CreateView context={context} handleCancelCreateProject={handleCancel} />,
-      footer: null,
-      style: largeModalStyle,
+      children: <FormView context={context} />,
+      onOk: handleOkEdit,
+      onCancel: handleCancel,
+      style: modalStyle,
     });
   }
 

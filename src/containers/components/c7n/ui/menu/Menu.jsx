@@ -56,7 +56,7 @@ export default class CommonMenu extends Component {
                 MenuStore.setOpenKeys(collapsed ? [] : [menu, ...parents].map(({ code }) => code));
                 this.savedOpenKeys = [menu, ...parents].map(({ code }) => code);
               }
-              MenuStore.setActiveMenu(menu);
+              MenuStore.setActiveMenu(menu.type === 'tab' ? parents[parents.length - 1] : menu);
               MenuStore.setActiveMenuParents(parents);
               MenuStore.setSelected(parents[0]);
               MenuStore.setType(type);
