@@ -3,7 +3,7 @@ import { inject } from 'mobx-react';
 import { toJS } from 'mobx';
 import queryString from 'query-string';
 import { withRouter, Link } from 'react-router-dom';
-import { Breadcrumb as Bread } from 'choerodon-ui';
+import { Breadcrumb as Bread, Icon } from 'choerodon-ui';
 import { Context } from './PageWrap';
 import './style/Bread.less';
 
@@ -82,6 +82,8 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
     ));
   }
 
+  const icon = <Icon type="keyboard_arrow_right" style={{ color: 'rgba(0, 0, 0, .65)', fontSize: '.2rem' }} />;
+
   if (custom) {
     return (
       <section
@@ -90,7 +92,7 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
           marginBottom: isTab ? '50px' : 'auto',
         }}
       >
-        <Bread separator=">">
+        <Bread separator={icon}>
           {children}
         </Bread>
         {extraNode || null}
@@ -105,10 +107,10 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
         marginBottom: isTab ? '50px' : 'auto',
       }}
     >
-      <Bread separator=">">
+      <Bread separator={icon}>
         {renderName()}
         {renderMenus()}
-        {title ? <Item>{title}</Item> : null}
+        {title ? <Item className="title">{title}</Item> : null}
       </Bread>
       {extraNode || null}
     </section>

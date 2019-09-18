@@ -1,10 +1,19 @@
 import React from 'react';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
+import { DataSet, Lov } from 'choerodon-ui/pro';
 import { withRouter } from 'react-router-dom';
 import { Page, Content, Breadcrumb } from '../../../../../index';
 import list from './list';
+import OverflowText from '../../tools/overflow-text';
 import './style/indexFun.less';
+
+const ds = new DataSet({
+  autoCreate: true,
+  fields: [
+    { name: 'code', type: 'object', lovCode: 'user', lovPara: { organization_id: 0 }, required: true },
+  ],
+});
 
 const Home = (props) => {
   function handleClickItem(report) {
@@ -45,11 +54,23 @@ const Home = (props) => {
     ));
   }
 
+  function renderLov() {
+    return <Lov dataSet={ds} name="code" noCache />;
+  }
+
   return (
     <Page>
       <Breadcrumb />
       <Content className="c7n-charts">
         {renderContentLinks()}
+        {renderLov()}
+        <OverflowText
+          size="16px"
+          lineHeight="20px"
+          rowCount={2}
+          text="上面的 root.error 和 root.warn 就分别是 ERROR 和WARNING 级别的日志。一般来说，我们使用
+          ERROR（错误）、WARNING（警告）、INFO（信息）、DEBUG（调试信息）等名词来定义日志级别，优先级由高到低，然后我们在配置文件里配置一个最低打印优先级，低于这个优先级的日志都会被忽略不会打印，比如："
+        />
       </Content>
     </Page>
   );

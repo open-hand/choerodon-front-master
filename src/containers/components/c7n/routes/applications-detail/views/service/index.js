@@ -29,10 +29,10 @@ const Index = () => {
   return (
     <TabPage>
       <Breadcrumb custom>
-        <Item style={{ color: 'rgba(0, 0, 0, 0.87)' }}>
+        <Item>
           <Link to="/applications">应用</Link>
         </Item>
-        <Item style={{ color: 'rgba(0, 0, 0, 0.87)' }}>查看应用</Item>
+        <Item><span className="title">查看应用</span></Item>
       </Breadcrumb>
       <Content>
         <Table dataSet={serviceDs} queryBar="none">

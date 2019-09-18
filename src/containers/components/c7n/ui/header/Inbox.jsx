@@ -14,8 +14,6 @@ import defaultAvatar from './style/icons/favicon.png';
 const { TabPane } = Tabs;
 const PREFIX_CLS = 'c7n';
 const prefixCls = `${PREFIX_CLS}-boot-header-inbox`;
-const popoverPrefixCls = `${prefixCls}-popover`;
-const siderPrefixCls = `${prefixCls}-sider`;
 
 /* eslint-disable-next-line */
 const reg = /\n|&nbsp;|&lt|&gt|<[^a\/][^>]*>|<\/[^a][^>]*>/g;
@@ -46,12 +44,9 @@ class RenderPopoverContentClass extends Component {
     });
     const operations = (
       <React.Fragment>
-        <ButtonPro funcType="flat" color="blue" onClick={handleSettingReceive}>
-          接收设置
-        </ButtonPro>
-        <ButtonPro funcType="flat" color="blue" onClick={cleanAllMsg}>
-          全部清除
-        </ButtonPro>
+        <ButtonPro funcType="flat" icon="all_read" color="primary" onClick={() => {}} />
+        <ButtonPro funcType="flat" icon="settings" color="primary" onClick={handleSettingReceive} />
+        <ButtonPro funcType="flat" icon="delete_sweep" color="primary" onClick={cleanAllMsg} />
       </React.Fragment>
     );
     return (
@@ -69,12 +64,18 @@ class RenderPopoverContentClass extends Component {
               />
             </div>
             <Tabs defaultActiveKey="1" tabBarExtraContent={operations}>
-              <TabPane tab="消息" key="1">
+              <TabPane
+                tab={<span><Badge count={getUnreadMsg.length} style={{ transform: 'scale(.75)' }}>消息</Badge></span>}
+                key="1"
+              >
                 <Spin spinning={inboxLoading}>
                   {renderMessages(getUnreadMsg)}
                 </Spin>
               </TabPane>
-              <TabPane tab="通知" key="2">
+              <TabPane
+                tab={<span><Badge count={getUnreadNotice.length} style={{ transform: 'scale(.75)' }}>通知</Badge></span>}
+                key="2"
+              >
                 <Spin spinning={inboxLoading}>
                   {renderMessages(getUnreadNotice)}
                 </Spin> 
@@ -85,21 +86,8 @@ class RenderPopoverContentClass extends Component {
                 </Spin>
               </TabPane>
             </Tabs>
-            {/* <div className={`${prefixCls}-sider-header-action`}>
-              <span role="none" style={{ cursor: 'pointer' }} onClick={() => window.open('/#/notify/user-msg?type=site')}>
-                查看所有消息
-              </span>
-              <span role="none" style={{ cursor: 'pointer' }} onClick={cleanAllMsg}>
-                全部清除
-              </span>
-            </div> */}
           </div>
         </div>
-        {/* <div className={`${prefixCls}-sider-content`}>
-          <Spin spinning={inboxLoading}>
-            {renderMessages(getUnreadAll)}
-          </Spin>
-        </div> */}
         <RenderPopoverContentDetailClass
           handleVisibleChange={this.handleVisibleChange}
         />
@@ -250,7 +238,7 @@ export default class Inbox extends Component {
 
   handleMessageTitleClick = (e, data) => {
     // set as read && go to message detail
-    // this.cleanMsg(e, data);
+    this.cleanMsg(e, data);
     // window.open(`/#/notify/user-msg?type=site&msgId=${data.id}&msgType=${data.type}`);
     const { HeaderStore } = this.props;
     HeaderStore.setInboxDetailVisible(true);
@@ -281,8 +269,10 @@ export default class Inbox extends Component {
                 <li className={`${prefixCls}-sider-content-list`} key={data.id}>
                   <div className={`${prefixCls}-sider-content-list-title`}>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      <Icon type={iconMap[data.type]} style={{ marginRight: 10 }} />
-                      <a onClick={e => this.handleMessageTitleClick(e, data)}>{title}</a>
+                      <Badge dot>
+                        <Icon type={iconMap[data.type]} style={{ color: '#303f9f' }} />
+                      </Badge>
+                      <a onClick={e => this.handleMessageTitleClick(e, data)} style={{ marginLeft: 10 }}>{title}</a>
                     </span>
                     <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                       <TimeAgo
@@ -340,18 +330,16 @@ export default class Inbox extends Component {
         <WSHandler
           messageKey={`choerodon:msg:site-msg:${AppState.userInfo.id}`}
           onMessage={this.handleMessage}
+          type="site-msg"
         >
           {
-            data => {
-              console.log(data);
-              return (
-                <Badge onClick={this.handleButtonClick} className={`${prefixCls} ignore-react-onclickoutside`} count={data || 0}>
-                  <Button functype="flat" shape="circle">
-                    <Icon type="notifications" />
-                  </Button>
-                </Badge>
-              );
-            }
+            data => (
+              <Badge onClick={this.handleButtonClick} className={`${prefixCls} ignore-react-onclickoutside`} count={data || 0}>
+                <Button functype="flat" shape="circle">
+                  <Icon type="notifications" />
+                </Button>
+              </Badge>
+            )
           }
         </WSHandler>
         <RenderPopoverContentClass

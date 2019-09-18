@@ -69,9 +69,9 @@ class Masters extends Component {
     const { pathname } = this.props.location;
     const { getUserId } = this.props.AppState;
     this.initFavicon();
-    if (pathname.includes('access_token') && pathname.includes('token_type') && localStorage.getItem(`historyPath-${getUserId}`)) {
-      window.location = `/#${localStorage.getItem(`historyPath-${getUserId}`)}`;
-    }
+    // if (pathname.includes('access_token') && pathname.includes('token_type') && localStorage.getItem(`historyPath-${getUserId}`)) {
+    //   window.location = `/#${localStorage.getItem(`historyPath-${getUserId}`)}`;
+    // }
   }
 
   updateTheme = (newPrimaryColor) => {
@@ -157,19 +157,19 @@ class Masters extends Component {
     }
     AppState.setTypeUser(isUser);
     AppState.changeMenuType(menuType);
-    if (needLoad) {
-      MenuStore.loadMenuData().then((menus) => {
-        if (menus.length) {
-          const { route, domain } = findFirstLeafMenu(menus[0]);
-          const { type, name, id, organizationId } = AppState.currentMenuType;
-          let path = `${route}?type=${type}&id=${id}&name=${name}`;
-          if (organizationId) {
-            path += `&organizationId=${organizationId}`;
-          }
-          historyReplaceMenu(history, path, domain);
-        }
-      });
-    }
+    // if (needLoad) {
+    //   MenuStore.loadMenuData().then((menus) => {
+    //     if (menus.length) {
+    //       const { route, domain } = findFirstLeafMenu(menus[0]);
+    //       const { type, name, id, organizationId } = AppState.currentMenuType;
+    //       let path = `${route}?type=${type}&id=${id}&name=${name}`;
+    //       if (organizationId) {
+    //         path += `&organizationId=${organizationId}`;
+    //       }
+    //       historyReplaceMenu(history, path, domain);
+    //     }
+    //   });
+    // }
   }
 
   render() {

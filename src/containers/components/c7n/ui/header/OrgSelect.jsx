@@ -110,10 +110,11 @@ export default class OrgSelect extends Component {
     //   this.autoLocate();
     //   return null;
     // }
-    if (!orgObj && currentData.length) {
+    if (!orgObj && currentData.length && type !== 'project') {
       if (getUserInfo.admin) {
         const obj = queryString.parse(history.location.search);
         obj.into = true;
+        obj.name = decodeURIComponent(obj.name);
         if (!obj.orgId) {
           this.autoSelect();
           return null;
@@ -164,7 +165,7 @@ export default class OrgSelect extends Component {
                 ) : null
               }
               {
-                orgObj ? <Icon type="expand_more" style={{ position: 'absolute', top: 0, right: 8, color: 'rgba(255, 255, 255, .65)' }} /> : null
+                orgObj ? <Icon type="expand_more" style={{ position: 'absolute', top: 0, right: 8, color: 'rgba(255, 255, 255, .65)', fontSize: '.24rem' }} /> : null
               }
             </Button>
           </Dropdown>

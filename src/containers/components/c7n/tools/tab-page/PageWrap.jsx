@@ -27,12 +27,13 @@ const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
     setCurrentKey(`${keyArr[0]}/.0`);
     MenuStore.loadMenuData().then((menus) => {
       MenuStore.treeReduce({ subMenus: menus }, (menu, parents) => {
-        if (menu.route === pathname || pathname.indexOf(`${menu.route}/`) === 0) {
+        if ((menu.route === pathname || pathname.indexOf(`${menu.route}/`) === 0) && menu.type === 'tab') {
           setActiveMenu(menu);
           const parentMenuNode = parents && parents.length ? parents[parents.length - 1] : null;
           setParentMenu(parentMenuNode);
           const index = parentMenuNode ? parentMenuNode.subMenus.findIndex(v => v === menu) : -1;
-          setCurrentKey(`${menu.code}/.${index}`);
+          const realIndex = keyShowArr.findIndex(v => v.tabKey === menu.code);
+          setCurrentKey(`${menu.code}/.${realIndex}`);
           return true;
         }
         return false;

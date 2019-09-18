@@ -4,7 +4,7 @@ import Store from '../../stores';
 import Card from './Card';
 
 const ListView = observer((props) => {
-  const { dataSet, isNotRecent, HeaderStore } = useContext(Store);
+  const { dataSet, isNotRecent, HeaderStore, AppState, auto } = useContext(Store);
 
   function renderCard(record) {
     const cardPlainObj = record.toData();
@@ -12,11 +12,13 @@ const ListView = observer((props) => {
   }
 
   function filterRecent(record) {
-    if (isNotRecent) {
+    if (isNotRecent === 'all') {
       return true;
-    } else {
+    } else if (isNotRecent === 'recent') {
       const recents = HeaderStore.getRecentItem;
       return !!recents.find(v => v.id === record.get('id'));
+    } else {
+      return record.get('createdBy') === AppState.getUserId;
     }
   }
 

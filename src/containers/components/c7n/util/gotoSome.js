@@ -9,7 +9,7 @@ function getSearchString(type, key, value, extraProps = {}) {
       const obj = {
         type,
         id: proObj.id,
-        name: encodeURIComponent(proObj.name),
+        name: proObj.name,
         category: proObj.category,
         orgId: proObj.organizationId,
         ...extraProps,
@@ -24,7 +24,7 @@ function getSearchString(type, key, value, extraProps = {}) {
       const obj = {
         type,
         id: orgObj.id,
-        name: encodeURIComponent(orgObj.name),
+        name: orgObj.name,
         category: orgObj.category,
         orgId: orgObj.organizationId,
         ...extraProps,

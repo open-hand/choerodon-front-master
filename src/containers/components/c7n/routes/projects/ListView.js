@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef, useCallback } from 'react';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import { toJS } from 'mobx';
@@ -10,7 +10,8 @@ import findFirstLeafMenu from '../../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../../../common';
 import FormView from './FormView';
 import CreateView from './views/create';
-import { Content, Page } from '../../../../../index';
+import { Content, Page, axios } from '../../../../../index';
+import { prompt } from '../../../../common';
 import './style/index.less';
 
 
@@ -33,46 +34,81 @@ const iconStyle = {
 
 const ListView = observer(() => {
   const context = useContext(Store);
+  const cancelCreate = useRef(false);
   const {
-    dataSet, showType, toggleShowType, isNotRecent, toggleRecent,
-    HeaderStore, MenuStore, history, intl,
+    dataSet, showType, toggleShowType, isNotRecent, toggleRecent, setAuto,
+    HeaderStore, MenuStore, history, intl, AppState,
   } = context;
 
-  // function changeData() {
-  //   const { orgId } = queryString.parse(history.location.search);
-  //   let proData;
-  //   if (isNotRecent) {
-  //     proData = HeaderStore.getProData || [];
-  //   } else {
-  //     proData = HeaderStore.getRecentItem || [];
-  //   }
-  //   const pros = proData.filter(v => String(v.organizationId) === orgId);
-  //   dataSet.loadData(toJS(pros));
-  // }
+  const checkRecentIsEmpty = useCallback(({ dataSet: ds }) => {
+    const recents = HeaderStore.getRecentItem;
+    if (!ds.find(r => recents.find(v => v.id === r.get('id')))) {
+      toggleRecent('all');
+    }
+  }, [dataSet]);
 
-  // useEffect(() => {
-  //   changeData();
-  // }, [isNotRecent]);
+  useEffect(() => {
+    dataSet.addEventListener('load', checkRecentIsEmpty);
+  }, []);
+
+  async function handleCreate() {
+    const { currentMenuType: { orgId } } = AppState;
+    const { current } = dataSet;
+    if (await current.validate() === true) {
+      const { category, code, name } = current.toData();
+      const data = {
+        name,
+        code,
+        category,
+      };
+      const res = await axios.post(`/base/v1/organizations/${orgId}/projects`, data);
+      if (res.failed) {
+        prompt(res.message);
+        return false;
+      } else {
+        prompt('创建成功');
+        dataSet.query();
+        return true;
+      }
+    }
+  }
 
   async function handleOkEdit() {
-    try {
-      if ((await dataSet.submit()) !== false) {
-        dataSet.query();
-      } else {
+    if (dataSet.current.status === 'add') {
+      return (await handleCreate() === true);
+    } else {
+      try {
+        if ((await dataSet.submit()) !== false) {
+          dataSet.query();
+        } else {
+          return false;
+        }
+      } catch (e) {
         return false;
       }
-    } catch (e) {
-      return false;
     }
   }
 
   function handleCancel() {
+    const { current } = dataSet;
+    current.reset();
+  }
+
+  function handleCancelCreate() {
+    cancelCreate.current = true;
+  }
+
+  function handleRomove() {
+    if (!cancelCreate.current) {
+      return;
+    }
     const { current } = dataSet;
     if (current.status === 'add') {
       dataSet.remove(current);
     } else {
       current.reset();
     }
+    cancelCreate.current = false;
   }
 
   function handleCreateProject() {
@@ -84,7 +120,8 @@ const ListView = observer(() => {
       className: 'c7n-projects-modal-create-project',
       children: <FormView context={context} />,
       onOk: handleOkEdit,
-      onCancel: handleCancel,
+      onCancel: handleCancelCreate,
+      afterClose: handleRomove,
       style: modalStyle,
     });
   }
@@ -102,8 +139,20 @@ const ListView = observer(() => {
     });
   }
 
+  async function handleEnabledProject() {
+    const { current } = dataSet;
+    try {
+      const { id, organizationId, enabled } = current.toData();
+      await axios.put(`/base/v1/organizations/${organizationId}/projects/${id}/${enabled ? 'disable' : 'enable'}`);
+      dataSet.query();
+    } catch (e) {
+      return false;
+    }
+  }
+
   function handleChangeRecent(value) {
-    toggleRecent(value === 'all');
+    setAuto(false);
+    toggleRecent(value);
   }
 
   function handleClickProject(record) {
@@ -146,9 +195,10 @@ const ListView = observer(() => {
   function renderTool() {
     return (
       <div className="c7n-projects-tool">
-        <Select labelLayout="float" label="项目" clearButton={false} value={isNotRecent ? 'all' : 'recent'} onChange={handleChangeRecent}>
+        <Select labelLayout="float" label="项目" clearButton={false} value={isNotRecent} onChange={handleChangeRecent}>
           <Option key="recent" value="recent">最近使用</Option>
           <Option key="all" value="all">全部项目</Option>
+          <Option key="mine" value="mine">我创建的项目</Option>
         </Select>
         <div className="c7n-projects-tool-icon-group">
           <Icon type="dashboard" style={iconStyle} className={showType === 'block' ? 'active' : null} onClick={() => toggleShowType('block')} />
@@ -166,6 +216,7 @@ const ListView = observer(() => {
         <List
           handleClickProject={handleClickProject}
           handleEditProject={handleEditProject}
+          handleEnabledProject={handleEnabledProject}
         />
       </Content>
     </Page>

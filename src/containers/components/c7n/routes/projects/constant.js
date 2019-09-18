@@ -1,6 +1,6 @@
 const PROJECT_TYPE = {
-  MICROSERVICE: '普通应用项目',
-  LOWCODE: '低代码应用项目',
+  GENERAL: '普通应用项目',
+  // LOWCODE: '低代码应用项目',
   AGILE: '敏捷管理项目',
   PROGRAM: '敏捷项目群项目',
 };

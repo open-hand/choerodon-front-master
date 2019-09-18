@@ -13,7 +13,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderSto
   (props) => {
     const { AppState: { currentMenuType: { type, id, orgId } }, intl, children, AppState, history } = props;
     const [showType, setShowType] = useState('table');
-    const [isNotRecent, setIsNotRecent] = useState(false);
+    const [auto, setAuto] = useState(true);
+    const [isNotRecent, setIsNotRecent] = useState('recent');
     const dataSet = useMemo(() => new DataSet(ListDataSet(AppState, history)), [type, id, orgId]);
     const value = {
       ...props,
@@ -28,6 +29,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderSto
       },
       showType,
       isNotRecent,
+      auto,
+      setAuto,
     };
     return (
       <Store.Provider value={value}>

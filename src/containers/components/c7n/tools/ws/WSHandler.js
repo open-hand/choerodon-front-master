@@ -10,6 +10,7 @@ export default class WSHandler extends Component {
 
   static propTypes = {
     messageKey: PropTypes.string.isRequired,
+    type: PropTypes.string,
     path: PropTypes.string, // 能从Provider获得指定path的连接
     autoReconnect: PropTypes.bool, // 在WebSocket连接断开后要能自动重连
     onMessage: PropTypes.func,
@@ -24,7 +25,7 @@ export default class WSHandler extends Component {
   };
 
   state = {
-    key: null,
+    data: null,
   };
 
   componentWillMount() {
@@ -43,14 +44,22 @@ export default class WSHandler extends Component {
   }
 
   handleMessage = (data) => {
-    const { onMessage } = this.props;
+    const { onMessage, type } = this.props;
     if (typeof onMessage === 'function') {
-      onMessage(JSON.parse(data).key);
+      onMessage(JSON.parse(data).data);
     }
-    this.setState({
-      // key: JSON.parse(data).key,
-      key: JSON.parse(data).data,
-    });
+    if (type) {
+      const jsonData = JSON.parse(data);
+      if (jsonData.type === type) {
+        this.setState({
+          data: jsonData.data,
+        });
+      }
+    } else {
+      this.setState({
+        data: JSON.parse(data).data,
+      });
+    }
   };
 
   register(props, context) {
@@ -70,10 +79,10 @@ export default class WSHandler extends Component {
   }
 
   render() {
-    const { key } = this.state;
+    const { data } = this.state;
     const { children } = this.props;
     if (typeof children === 'function') {
-      return children(key);
+      return children(data);
     } else {
       return children;
     }
