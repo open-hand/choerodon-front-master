@@ -28,12 +28,12 @@ export default class Action extends Component {
   renderMenu(data) {
     return (
       <Menu onClick={this.handleClick} style={{ minWidth: 80 }}>
-        {data.map(item => this.renderMenuItem(item))}
+        {data.map((item, i) => this.renderMenuItem(item, i))}
       </Menu>
     );
   }
 
-  renderMenuItem({ service, text, action, icon }) {
+  renderMenuItem({ service, text, action, icon }, i) {
     const item = (
       <Item action={action}>
         {icon && <Icon type={icon} />}
@@ -43,7 +43,7 @@ export default class Action extends Component {
     return (
       <Permission
         service={service}
-        key={Math.random()}
+        key={i}
         defaultChildren={cloneElement(item, { style: { display: 'none' } })}
       >
         {item}

@@ -64,24 +64,25 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
     }
   }
 
+  function getRoute(menu) {
+    if (menu.subMenus && menu.subMenus.length && menu.subMenus[0].type === 'tab') {
+      return menu.subMenus[0].route;
+    }
+    return menu.route;
+  }
+
   function renderMenus() {
-    let menus = [];
-    let routeSign = true;
-    // const parentMenus = getMenuParents();
-    const parentMenus = [];
-    let currentMenu = getCurrentMenu();
-    if (currentMenu && currentMenu.type === 'tab') {
-      currentMenu = getArrayLast(getMenuParents());
-      routeSign = false;
-    }
-    if (currentMenu) {
-      menus = parentMenus.concat(currentMenu);
-    }
-    return menus.map(m => (
+    const currentMenu = getCurrentMenu();
+    if (!currentMenu) return null;
+    return (
       <Item>
-        {m.route && routeSign ? <Link to={getMenuLink(m.route)}>{m.name}</Link> : <span>{m.name}</span>}
+        {
+          getRoute(currentMenu)
+            ? <Link to={getMenuLink(getRoute(currentMenu))}>{currentMenu.name}</Link>
+            : <span>{currentMenu.name}</span>
+        }
       </Item>
-    ));
+    );
   }
 
   const icon = <Icon type="keyboard_arrow_right" style={{ color: 'rgba(0, 0, 0, .54)', fontSize: '.2rem' }} />;
@@ -112,7 +113,7 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
       <Bread separator={icon}>
         {renderName()}
         {renderMenus()}
-        {title ? <Item className="title">{title}</Item> : null}
+        {title ? <Item>{title}</Item> : null}
       </Bread>
       {extraNode || null}
     </section>
