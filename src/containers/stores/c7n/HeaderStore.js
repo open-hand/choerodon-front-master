@@ -1,5 +1,6 @@
 import { action, computed, observable } from 'mobx';
 import omit from 'object.omit';
+import sortBy from 'lodash/sortBy';
 import queryString from 'query-string';
 import store from '../../components/c7n/tools/store';
 import axios from '../../components/c7n/tools/axios';
@@ -50,6 +51,8 @@ class HeaderStore {
 
   @observable inboxData = [];
 
+  @observable stickData = [];
+
   @observable inboxLoaded = false;
 
   @observable currentMsgType = 'msg';
@@ -91,17 +94,17 @@ class HeaderStore {
 
   @computed
   get getUnreadMsg() {
-    return this.inboxData.filter(v => v.type === 'msg');
+    return sortBy(this.inboxData.filter(v => v.type === 'msg'), ['read']);
   }
 
   @computed
   get getUnreadNotice() {
-    return this.inboxData.filter(v => v.type === 'notice');
+    return sortBy(this.inboxData.filter(v => v.type === 'notice'), ['read']);
   }
 
   @computed
   get getUnreadOther() {
-    return this.inboxData.filter(v => v.type !== 'msg' && v.type !== 'notice');
+    return this.stickData;
   }
 
   @computed
@@ -172,12 +175,23 @@ class HeaderStore {
     });
   }
 
+  axiosGetStick() {
+    return axios.get(`/notify/v1/system_notice/completed?${queryString.stringify({
+      page: 1,
+      size: 9999,
+    })}`)
+      .then(action(({ list }) => {
+        this.stickData = list || [];
+      }))
+      .catch(handleResponseError);
+  }
+
   axiosGetUserMsg(userId) {
     return axios.get(`/notify/v1/notices/sitemsgs?${queryString.stringify({
       user_id: userId,
-      read: false,
+      // read: false,
       page: 1,
-      size: 100,
+      size: 9999,
       sort: 'id,desc',
     })}`)
       .then(action(({ list }) => {
@@ -279,9 +293,31 @@ class HeaderStore {
   @action
   readMsg(userId, data) {
     const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
-    this.clearMsg(data);
+    this.lookMsg(data);
     return axios.put(`/notify/v1/notices/sitemsgs/batch_read?user_id=${userId}`, JSON.stringify(body));
   }
+
+  @action
+  deleteMsg(userId, data) {
+    const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
+    this.clearMsg(data);
+    return axios.put(`/notify/v1/notices/sitemsgs/batch_delete?user_id=${userId}`, JSON.stringify(body));
+  }
+
+  @action
+  lookMsg(data) {
+    if (data) {
+      const index = this.inboxData.indexOf(data);
+      if (index !== -1) {
+        this.inboxData[index].read = true;
+      }
+    } else {
+      this.inboxData.forEach((list) => {
+        list.read = true;
+      });
+    }
+  }
+
 
   @action
   clearMsg(data) {

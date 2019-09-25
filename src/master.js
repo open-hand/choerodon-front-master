@@ -3,9 +3,7 @@ import { withRouter, HashRouter as Router, Route, Switch } from 'react-router-do
 import queryString from 'query-string';
 import { inject, observer, Provider } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
-// import { OUTWARD } from '@choerodon/boot/lib/containers/common/constants';
 import Outward from './containers/components/c7n/routes/outward';
-// import Master from './containers/components/c7n/master/Master';
 import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
 import { authorizeC7n, getAccessToken, setAccessToken, dashboard, WEBSOCKET_SERVER } from './containers/common';
@@ -19,9 +17,6 @@ const spinStyle = {
   textAlign: 'center',
   paddingTop: 300,
 };
-// eslint-disable-next-line no-underscore-dangle
-const OUTWARD = window._env_.outward;
-const outwardPath = ['#/organization/register-organization', '#/organization/register-organization/agreement'];
 
 const UILocaleProviderAsync = asyncRouter(
   () => import('choerodon-ui/lib/locale-provider'),
@@ -33,6 +28,7 @@ const IntlProviderAsync = asyncLocaleProvider(language,
   () => import(`./containers/locale/${language}`),
   () => import(`react-intl/locale-data/${language.split('_')[0]}`));
 
+@withRouter
 @observer
 export default class Index extends React.Component {
   state = {
@@ -40,7 +36,9 @@ export default class Index extends React.Component {
   };
 
   componentDidMount() {
-    this.auth();
+    if (!this.isInOutward(this.props.location.pathname)) {
+      this.auth();
+    }
   }
 
   auth = async () => {
@@ -57,17 +55,24 @@ export default class Index extends React.Component {
     this.setState({ loading: false });
   }
 
+  isInOutward = (pathname) => {
+    // eslint-disable-next-line no-underscore-dangle
+    const injectOutward = window._env_.outward;
+    if (injectOutward) {
+      const arr = injectOutward.split(',').map(r => r.replace(/['"']/g, ''));
+      return arr.some(v => pathname.startsWith(v));
+    }
+    return false;
+  }
+
   render() {
     const { loading } = this.state;
-    const OUTWARD_ARR = OUTWARD === 'undefined' || !OUTWARD ? [] : OUTWARD.split(',');
-    const customInner = OUTWARD_ARR.some(v => window.location.hash.startsWith(v));
-    if (outwardPath.includes(window.location.hash) || customInner) {
+    if (this.isInOutward(this.props.location.pathname)) {
       return (
         <UILocaleProviderAsync>
           <IntlProviderAsync>
             <Provider {...stores}>
               <Switch>
-                {/* <Route path="/" component={Outward} /> */}
                 <Route path="/">
                   <Outward AutoRouter={this.props.AutoRouter} />
                 </Route>

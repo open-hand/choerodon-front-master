@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router';
-import { Button, Icon } from 'choerodon-ui';
-import MenuType from './MenuType';
 import Logo from './Logo';
-import Setting from './Setting';
 import User from './User';
 import Inbox from './Inbox';
 import HeaderSetting from './HeaderSetting';
-import Favorites from '../favorites';
 import './style';
 import OrgSelect from './OrgSelect';
 
@@ -43,19 +39,8 @@ class Header extends Component {
         </div>
         <ul className={`${prefixCls}-center`}>
           <li><HeaderSetting /></li>
-          {/* <li>
-            <MenuType />
-          </li> */}
         </ul>
         <ul className={`${prefixCls}-right`}>
-          {/* <li>
-            <Favorites />
-          </li>
-          <li>
-            <Button functype="flat" shape="circle" onClick={() => this.handleGuideClick()}>
-              <Icon type="school" />
-            </Button>
-          </li> */}
           <OrgSelect />
           <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
             <Inbox />

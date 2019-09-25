@@ -85,7 +85,7 @@ export default class UserPreferences extends Component {
     const realData = [this.getUserInfoMenuItem()];
     const AppBarIconRight = (
       <div className={`${prefixCls}-popover-content`}>
-        <Avatar src={imageUrl} prefixCls={prefixCls} onClick={() => { window.location = '/#/iam/user-info?type=site'; }}>
+        <Avatar src={imageUrl} prefixCls={prefixCls} onClick={() => { window.location = '/#/base/user-info?type=site'; }}>
           {realName && realName.charAt(0)}
         </Avatar>
         <div className={`${prefixCls}-popover-title`}>

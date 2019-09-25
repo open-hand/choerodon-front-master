@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Button, Icon } from 'choerodon-ui';
-import { Form, TextField, TextArea, Select } from 'choerodon-ui/pro';
-import { FormattedMessage } from 'react-intl';
+import { Form, TextField, Select } from 'choerodon-ui/pro';
 import AvatarUploader from './components/avatarUploader';
 import { fileServer } from '../../../../common';
 

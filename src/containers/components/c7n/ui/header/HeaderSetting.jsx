@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import { Button, Icon } from 'choerodon-ui';
 import getSearchString from '../../util/gotoSome';
 
-const iconStyle = { marginLeft: '.05rem' };
+const iconStyle = { marginLeft: 0, marginRight: 0 };
 const LI_MAPPING = [
   { title: '协作共享', icon: 'question_answer', activePath: '/buzz/cooperate', exclude: '/buzz/cooperate-pro' },
   { title: '项目', icon: 'project_filled', activePath: '/projects' },

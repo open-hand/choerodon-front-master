@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import Store from '../../stores';
 import Card from './Card';
+import EmptyProject from '../EmptyProject';
 
 const ListView = observer((props) => {
   const { dataSet, isNotRecent, HeaderStore, AppState, auto } = useContext(Store);
@@ -22,9 +23,15 @@ const ListView = observer((props) => {
     }
   }
 
+  const realData = dataSet.filter(r => filterRecent(r));
+
+  if (realData.length === 0) {
+    return <EmptyProject />;
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-      {dataSet.filter(r => filterRecent(r)).map(r => renderCard(r))}
+      {realData.map(r => renderCard(r))}
     </div>
   );
 });

@@ -4,6 +4,7 @@ import { Avatar } from 'choerodon-ui';
 import { Table } from 'choerodon-ui/pro';
 import Store from '../../stores';
 import { Action } from '../../../../../../../index';
+import EmptyProject from '../EmptyProject';
 
 const { Column } = Table;
 
@@ -12,7 +13,7 @@ const actionStyle = {
 };
 
 const ListView = observer(({ handleClickProject, handleEditProject, handleEnabledProject }) => {
-  const { dataSet, isNotRecent, HeaderStore, AppState, auto } = useContext(Store);
+  const { dataSet, isNotRecent, HeaderStore, AppState } = useContext(Store);
 
   function filterRecent(record) {
     if (isNotRecent === 'all') {
@@ -26,8 +27,8 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
   }
 
   function renderName({ record }) {
-    const { imageUrl, name } = record.toData();
-    if (!record.get('enabled')) {
+    const { imageUrl, name, enabled, into } = record.toData();
+    if (!into || !enabled) {
       return (
         <span>
           <Avatar src={imageUrl} size={16} style={{ marginRight: 8, fontSize: '12px', verticalAlign: 'top', marginTop: 10 }}>{name && name.charAt(0)}</Avatar>
@@ -57,7 +58,18 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
 
   function renderEnabled({ record }) {
     if (record.status === 'add') return '';
-    return record.get('enabled') ? '启用' : '停用';
+    const enabled = record.get('enabled');
+    return (
+      <div className="project-status-wrap" style={{ background: enabled ? '#00bfa5' : '#d3d3d3' }}>
+        <div className="word">{enabled ? '启用' : '停用'}</div>
+      </div>
+    );
+  }
+
+  const realData = dataSet.filter(r => filterRecent(r));
+
+  if (realData.length === 0) {
+    return <EmptyProject />;
   }
 
   return (
@@ -65,9 +77,8 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
       <Column name="name" renderer={renderName} />
       <Column renderer={renderAction} width={100} />
       <Column name="code" />
-      {/* <Column name="applicationName" /> */}
       <Column name="category" />
-      <Column name="enabled" renderer={renderEnabled} />
+      <Column name="enabled" renderer={renderEnabled} align="left" />
       <Column name="programName" />
       <Column name="createUserName" />
       <Column name="creationDate" />

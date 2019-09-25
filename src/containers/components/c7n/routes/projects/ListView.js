@@ -1,21 +1,16 @@
 import React, { useContext, useEffect, useRef, useCallback } from 'react';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
-import { toJS } from 'mobx';
 import { Icon, Button } from 'choerodon-ui';
-import { Modal, Table, Select } from 'choerodon-ui/pro';
+import { Modal, Select } from 'choerodon-ui/pro';
 import Store from './stores';
 import List from './List';
 import findFirstLeafMenu from '../../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../../../common';
 import FormView from './FormView';
-import CreateView from './views/create';
 import { Content, Page, axios } from '../../../../../index';
 import { prompt } from '../../../../common';
 import './style/index.less';
-
-
-import Breadcrumb from '../../tools/tab-page/Breadcrumb';
 
 const { Option } = Select;
 const modalKey = Modal.key();
@@ -23,9 +18,6 @@ const createModalKey = Modal.key();
 
 const modalStyle = {
   width: '3.8rem',
-};
-const largeModalStyle = {
-  width: 'calc(100% - 3.5rem)',
 };
 const iconStyle = {
   fontSize: '16px',
@@ -127,7 +119,6 @@ const ListView = observer(() => {
   }
 
   function handleEditProject() {
-    // dataSet.create();
     Modal.open({
       key: modalKey,
       drawer: true,
@@ -156,7 +147,6 @@ const ListView = observer(() => {
   }
 
   function handleClickProject(record) {
-    // const record = dataSet.current;
     const { id, name, organizationId, category } = record.toData();
     const type = 'project';
     HeaderStore.setRecentItem(record.toData());
@@ -195,10 +185,10 @@ const ListView = observer(() => {
   function renderTool() {
     return (
       <div className="c7n-projects-tool">
-        <Select labelLayout="float" label="项目" clearButton={false} value={isNotRecent} onChange={handleChangeRecent}>
+        <Select labelLayout="float" label="项目" clearButton={false} value={isNotRecent} onChange={handleChangeRecent} style={{ width: 260 }}>
           <Option key="recent" value="recent">最近使用</Option>
           <Option key="all" value="all">全部项目</Option>
-          <Option key="mine" value="mine">我创建的项目</Option>
+          <Option key="mine" value="mine">我创建的</Option>
         </Select>
         <div className="c7n-projects-tool-icon-group">
           <Icon type="dashboard" style={iconStyle} className={showType === 'block' ? 'active' : null} onClick={() => toggleShowType('block')} />

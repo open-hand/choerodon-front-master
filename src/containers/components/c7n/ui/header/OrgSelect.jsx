@@ -59,6 +59,7 @@ export default class OrgSelect extends Component {
       parsed.orgId = id;
       path = `${history.location.pathname === '/' ? 'buzz/cooperate' : history.location.pathname}?${queryString.stringify(parsed)}`;
     }
+    MenuStore.setActiveMenu(null);
     historyPushMenu(history, path, null, 'replace');
   };
 

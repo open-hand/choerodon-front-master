@@ -66,30 +66,32 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
 
   function renderMenus() {
     let menus = [];
+    let routeSign = true;
     // const parentMenus = getMenuParents();
     const parentMenus = [];
     let currentMenu = getCurrentMenu();
     if (currentMenu && currentMenu.type === 'tab') {
       currentMenu = getArrayLast(getMenuParents());
+      routeSign = false;
     }
     if (currentMenu) {
       menus = parentMenus.concat(currentMenu);
     }
     return menus.map(m => (
       <Item>
-        {m.route ? <Link to={getMenuLink(m.route)}>{m.name}</Link> : <span>{m.name}</span>}
+        {m.route && routeSign ? <Link to={getMenuLink(m.route)}>{m.name}</Link> : <span>{m.name}</span>}
       </Item>
     ));
   }
 
-  const icon = <Icon type="keyboard_arrow_right" style={{ color: 'rgba(0, 0, 0, .65)', fontSize: '.2rem' }} />;
+  const icon = <Icon type="keyboard_arrow_right" style={{ color: 'rgba(0, 0, 0, .54)', fontSize: '.2rem' }} />;
 
   if (custom) {
     return (
       <section
         className="page-breadcrumb"
         style={{
-          marginBottom: isTab ? '50px' : 'auto',
+          marginBottom: isTab ? '33px' : 'auto',
         }}
       >
         <Bread separator={icon}>
@@ -104,7 +106,7 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
     <section
       className="page-breadcrumb"
       style={{
-        marginBottom: isTab ? '50px' : 'auto',
+        marginBottom: isTab ? '33px' : 'auto',
       }}
     >
       <Bread separator={icon}>

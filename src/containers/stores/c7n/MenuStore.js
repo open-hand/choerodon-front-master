@@ -85,6 +85,8 @@ class MenuStore {
 
   @observable id = null;
 
+  @observable notFoundSign = false;
+
   statistics = {};
 
   counter = 0;
@@ -168,6 +170,11 @@ class MenuStore {
   }
 
   @action
+  setNotFoundSignSign(value) {
+    this.notFoundSign = value;
+  }
+
+  @action
   loadMenuData(menuType = AppState.currentMenuType, isUser) {
     const type = getMenuType(menuType, isUser) || 'site';
     const { id = 0 } = menuType;
@@ -185,11 +192,11 @@ class MenuStore {
     //       return child;
     //     }));
     // } else {
-      return axios.get(`/base/v1/menus?code=choerodon.code.top.${type}&source_id=${id}`).then(action((data) => {
-        const child = filterEmptyMenus(data.subMenus || []);
-        this.setMenuData(child, type, id);
-        return child;
-      }));
+    return axios.get(`/base/v1/menus?code=choerodon.code.top.${type}&source_id=${id}`).then(action((data) => {
+      const child = filterEmptyMenus(data.subMenus || []);
+      this.setMenuData(child, type, id);
+      return child;
+    }));
     // }
   }
 
@@ -231,10 +238,11 @@ class MenuStore {
     }
     return tree[childrenName].some((node, index) => {
       const newParents = parents.slice(0);
+      node.parentName = parents[0] && parents[0].name;
       if (node[childrenName] && node[childrenName].length > 0) {
         return this.treeReduce(node, callback, childrenName, newParents);
       }
-      node.parentName = parents[0].name;
+      // node.parentName = parents[0].name;
       return callback(node, parents, index);
     });
   }

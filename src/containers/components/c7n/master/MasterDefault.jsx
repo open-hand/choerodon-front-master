@@ -17,8 +17,6 @@ const spinStyle = {
   paddingTop: 300,
 };
 
-const outwardPath = ['/organization/register-organization', '/organization/register-organization/agreement'];
-
 function parseQueryToMenuType(search) {
   const menuType = {};
   if (search) {
@@ -174,7 +172,7 @@ class Masters extends Component {
 
   render() {
     const { AutoRouter, AppState } = this.props;
-    if (outwardPath.includes(this.props.location.pathname) || this.isInOutward(this.props.location.pathname)) {
+    if (this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">
           <RouteIndex AutoRouter={AutoRouter} />

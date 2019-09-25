@@ -1,94 +1,107 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
-import { Icon } from 'choerodon-ui';
-import { Modal } from 'choerodon-ui/pro';
+import { Table, Select } from 'choerodon-ui/pro';
 import Store from './stores';
-import List from './List';
-import { historyPushMenu } from '../../../../common';
-import FormView from './FormView';
 import { Content, Page } from '../../../../../index';
-import gotoSome from '../../util/gotoSome';
+import InRowTable from './InRowTable';
+import getSearchString from '../../util/gotoSome';
 import './style/index.less';
 
-const modalKey = Modal.key();
-
-const modalStyle = {
-  width: '3.8rem',
-};
-const iconStyle = {
-  fontSize: '16px',
-  marginLeft: '.11rem',
-};
+const { Option } = Select;
+const { Column } = Table;
 
 const ListView = observer(() => {
   const context = useContext(Store);
-  const { dataSet, showType, toggleShowType, history } = context;
+  const { dataSet, type, changeType, history, HeaderStore, getDs, AppState } = context;
 
-  async function handleOkEdit() {
-    try {
-      if ((await dataSet.submit()) !== false) {
-        dataSet.query();
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
+  function goto(record) {
+    const search = getSearchString('project', 'id', record.get('projectId'));
+    history.push(`/base/application-management${search}`);
+  }
+
+  function handleOnCell({ record }) {
+    return {
+      onClick: () => {
+        record.set('expandField', !record.get('expandField'));
+      },
+    };
+  }
+
+  function handleChangeType(value) {
+    changeType(value);
+    dataSet.setQueryParameter('participant', undefined);
+    dataSet.setQueryParameter('create_by', undefined);
+    dataSet.setQueryParameter('type', undefined);
+    dataSet.setQueryParameter('all', undefined);
+    if (value === 'join') {
+      dataSet.setQueryParameter('participant', AppState.getUserId);
+    } else if (value === 'create') {
+      dataSet.setQueryParameter('create_by', AppState.getUserId);
+    } else if (value === 'market') {
+      dataSet.setQueryParameter('type', 'market');
+    } else if (value === 'all') {
+      dataSet.setQueryParameter('all', true);
+      dataSet.setQueryParameter('participant', AppState.getUserId);
     }
+    dataSet.query();
   }
 
-  function handleCancel() {
-    const { current } = dataSet;
-    current.reset();
-  }
-
-  function handleEditProject() {
-    Modal.open({
-      key: modalKey,
-      drawer: true,
-      title: '编辑应用',
-      children: <FormView context={context} />,
-      onOk: handleOkEdit,
-      onCancel: handleCancel,
-      style: modalStyle,
-    });
-  }
-
-  function handleClickProject(record) {
-    const { id, organizationId, projectId } = record.toData();
-    let path = `/applications/${projectId}/${id}?type=organization`;
-    if (organizationId) {
-      path += `&organizationId=${organizationId}&orgId=${organizationId}`;
-    }
-    historyPushMenu(history, path);
-  }
-
-  function handleGoToProject(record) {
-    let path = '/';
-    path += gotoSome('project', 'id', record.get('projectId'));
-    historyPushMenu(history, path);
-  }
+  useEffect(() => {
+    handleChangeType(type);
+  }, []);
 
   function renderHeader() {
+    const { orgId } = queryString.parse(history.location.search);
+    const org = (HeaderStore.getOrgData || []).find(v => String(v.id) === orgId) || { name: '' };
+    return (
+      <div className="c7n-projects-header">
+        <div className="c7n-projects-title">{`${org.name}中的应用`}</div>
+      </div>
+    );
+  }
+
+  function renderTool() {
     return (
       <div className="c7n-projects-tool">
-        <div className="c7n-projects-tool-name">应用</div>
-        <div className="c7n-projects-tool-icon-group">
-          <Icon type="dashboard" style={iconStyle} className={showType === 'block' ? 'active' : null} onClick={() => toggleShowType('block')} />
-          <Icon type="format_list_bulleted" style={iconStyle} className={showType === 'table' ? 'active' : null} onClick={() => toggleShowType('table')} />
-        </div>
+        <Select labelLayout="float" label="应用" clearButton={false} value={type} onChange={handleChangeType} style={{ width: 260 }}>
+          <Option key="join" value="join">我参与的</Option>
+          <Option key="create" value="create">我创建的</Option>
+          <Option key="market" value="market">来自应用市场</Option>
+          <Option key="all" value="all">全部</Option>
+        </Select>
       </div>
+    );
+  }
+
+  function renderName({ record }) {
+    return <span className="name-column">{record.get('name')}</span>;
+  }
+
+  function renderProjectName({ record }) {
+    return (
+      <span
+        className="link"
+        onClick={() => goto(record)}
+        role="none"
+      >
+        {record.get('projectName')}
+      </span>
     );
   }
 
   return (
     <Page>
+      {renderHeader()}
       <Content>
-        {renderHeader()}
-        <List
-          handleClickProject={handleClickProject}
-          handleEditProject={handleEditProject}
-          handleGoToProject={handleGoToProject}
-        />
+        {renderTool()}
+        <Table expandedRowRenderer={InRowTable.bind(this, getDs)} dataSet={dataSet} className="c7n-app-table">
+          <Column name="name" renderer={renderName} onCell={handleOnCell} />
+          <Column name="description" />
+          <Column name="projectName" renderer={renderProjectName} />
+          <Column name="creatorRealName" />
+          <Column name="creationDate" />
+        </Table>
       </Content>
     </Page>
   );

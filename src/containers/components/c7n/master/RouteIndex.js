@@ -6,14 +6,12 @@ import feedback from '../tools/feedback';
 
 const Projects = asyncRouter(() => import('../routes/projects'));
 const Applications = asyncRouter(() => import('../routes/applications'));
-const ApplicationsDetail = asyncRouter(() => import('../routes/applications-detail'));
 const Charts = asyncRouter(() => import('../routes/charts'));
 
 const InnerIndex = ({ match, AutoRouter }) => (
   <div>
     <Switch>
       <Route exact path={`${match.url}projects`} component={Projects} />
-      <Route exact path={`${match.url}applications/:projectId/:id`} component={ApplicationsDetail} />
       <Route exact path={`${match.url}applications`} component={Applications} />
       <Route exact path={`${match.url}charts`} component={Charts} />
       <Route path={match.url} component={AutoRouter} />

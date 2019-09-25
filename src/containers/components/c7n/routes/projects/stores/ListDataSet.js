@@ -37,6 +37,20 @@ const categoryDs = new DataSet({
   })),
 });
 
+const statusDs = new DataSet({
+  autoQuery: false,
+  selection: false,
+  fields: [
+    { name: 'key', type: 'string' },
+    { name: 'value', type: 'string' },
+  ],
+  data: [
+    { key: 'true', value: '启用' },
+    { key: 'false', value: '停用' },
+  ],
+});
+
+
 export default (AppState, history) => {
   const codeValidator = async (value, name, record) => {
     if (record.status !== 'add') {
@@ -92,8 +106,8 @@ export default (AppState, history) => {
     paging: false,
     transport: {
       read: {
-        url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/users/${AppState.getUserId}/enableProjects`,
-        method: 'post',
+        url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/users/${AppState.getUserId}/projects`,
+        method: 'get',
       },
       submit: ({ dataSet }) => ({
         url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/projects/${dataSet.current.get('id')}`,
@@ -114,6 +128,12 @@ export default (AppState, history) => {
       { name: 'creationDate', type: 'date', label: '创建时间' },
       { name: 'createType', type: 'string' },
       { name: 'createByExist', type: 'number' },
+    ],
+    queryFields: [
+      { name: 'name', type: 'string', label: '项目名称' },
+      { name: 'code', type: 'string', label: '项目编码' },
+      { name: 'category', type: 'string', label: '项目类型', textField: 'value', valueField: 'key', options: categoryDs },
+      { name: 'enabled', type: 'auto', label: '状态', textField: 'value', valueField: 'key', options: statusDs },
     ],
     events: {
       update: ({ record, name, value }) => {

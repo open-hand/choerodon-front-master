@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@choerodon/feedback": "^0.19.5",
+    "choerodon-ui": "^0.8.12",
     "react-onclickoutside": "^6.8.0",
     "webpack-theme-color-replacer": "^1.2.17"
   }

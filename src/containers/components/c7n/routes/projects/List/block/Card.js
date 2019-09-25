@@ -15,7 +15,7 @@ const Card = ({ handleEditProject, handleClickProject, handleEnabledProject, dat
   }
 
   function handleClick() {
-    if (!record.get('status')) {
+    if (!record.get('enabled') || !record.get('into')) {
       return;
     }
     handleClickProject(record);
@@ -39,20 +39,18 @@ const Card = ({ handleEditProject, handleClickProject, handleEnabledProject, dat
 
   return (
     <div className="pro-card">
-      <div className="border-top" />
-      <Tooltip title={record.get('enabled') ? '启用' : '停用'} placement="bottomRight">
-        <div className="card-content" role="none" onClick={handleClick}>
-          <Avatar size={80} src={imageUrl} style={{ fontSize: '32px' }}>{name && name.charAt(0)}</Avatar>
-          <h3>{name}</h3>
-          <div>
-            {/* <span className="text link-text">{applicationName || '无关联应用'}</span>
-            <span className="text separator">·</span> */}
-            <span className="text">{code}</span>
-            <span className="text separator">·</span>
-            <span className="text">{PROJECT_TYPE[category]}</span>
-          </div>
+      <div className={`border-top ${record.get('enabled') ? '' : 'border-top-disenabled'}`} />
+      <div className="card-content" role="none" onClick={handleClick}>
+        <Avatar size={80} src={imageUrl} style={{ fontSize: '32px' }}>{name && name.charAt(0)}</Avatar>
+        <h3>{name}</h3>
+        <div>
+          {/* <span className="text link-text">{applicationName || '无关联应用'}</span>
+          <span className="text separator">·</span> */}
+          <span className="text">{code}</span>
+          <span className="text separator">·</span>
+          <span className="text">{PROJECT_TYPE[category]}</span>
         </div>
-      </Tooltip>
+      </div>
       <div className="card-footer">
         <div className="card-footer-left">
           <Avatar size={18} style={{ marginRight: 8, flexShrink: 0 }} src={createUserImageUrl}>

@@ -4,10 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { authorize } from '../../../../common';
 import './style';
 import AppState from '../../../../stores/c7n/AppState';
-import { OUTWARD } from '../../../../common/constants';
 
-const OUTWARD_ARR = OUTWARD === 'undefined' ? [] : OUTWARD.split(',');
-const outwardPath = ['/organization/register-organization', '/organization/register-organization/agreement'];
 @withRouter
 @inject('AppState')
 @observer
@@ -16,6 +13,16 @@ class Outward extends Component {
     if (!AppState.siteInfo.systemTitle) {
       this.initFavicon();
     }
+  }
+
+  isInOutward = (pathname) => {
+    // eslint-disable-next-line no-underscore-dangle
+    const injectOutward = window._env_.outward;
+    if (injectOutward) {
+      const arr = injectOutward.split(',').map(r => r.replace(/['"']/g, ''));
+      return arr.some(v => pathname.startsWith(v));
+    }
+    return false;
   }
 
   initFavicon() {
@@ -40,8 +47,7 @@ class Outward extends Component {
 
   render() {
     const { AutoRouter } = this.props;
-    const customInner = OUTWARD_ARR.some(v => `#${this.props.location.pathname}`.startsWith(v));
-    if (outwardPath.includes(this.props.location.pathname) || customInner) {
+    if (this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">
           <AutoRouter />
