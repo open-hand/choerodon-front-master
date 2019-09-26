@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useRef, useCallback } from 'react';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
-import { Icon, Button } from 'choerodon-ui';
-import { Modal, Select } from 'choerodon-ui/pro';
+import { Icon, Button, Modal as OldModal } from 'choerodon-ui';
+import { Modal, Select, message } from 'choerodon-ui/pro';
 import Store from './stores';
 import List from './List';
 import findFirstLeafMenu from '../../../util/findFirstLeafMenu';
@@ -133,8 +133,36 @@ const ListView = observer(() => {
   async function handleEnabledProject() {
     const { current } = dataSet;
     try {
-      const { id, organizationId, enabled } = current.toData();
-      await axios.put(`/base/v1/organizations/${organizationId}/projects/${id}/${enabled ? 'disable' : 'enable'}`);
+      const { id, organizationId, enabled, name } = current.toData();
+      if (enabled) {
+        OldModal.confirm({
+          className: 'c7n-iam-confirm-modal',
+          title: '停用项目',
+          content: `确定要停用项目"${name}"吗？停用后，您和项目下其他成员将无法进入此项目。`,
+          onOk: async () => {
+            try {
+              const result = await axios.put(`/base/v1/organizations/${organizationId}/projects/${id}/disable`);
+              if (result.failed) {
+                throw result.message;
+              }
+              dataSet.query();
+            } catch (err) {
+              message.error(err);
+              return false;
+            }
+          },
+        });
+      } else {
+        try {
+          const result = await axios.put(`/base/v1/organizations/${organizationId}/projects/${id}/enable`);
+          if (result.failed) {
+            throw result.message;
+          }
+        } catch (err) {
+          message.error(err);
+          return false;
+        }
+      }
       dataSet.query();
     } catch (e) {
       return false;
