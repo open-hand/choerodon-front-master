@@ -280,7 +280,7 @@ export default class Inbox extends Component {
             inboxData.map((data) => {
               const { title, content, id, sendByUser, type, sendTime, read, sendDate } = data;
               const realSendTime = 'sendDate' in data ? sendDate : sendTime;
-              const icon = <Icon type={iconMap[data.type] || 'volume_up'} style={{ color: '#303f9f' }} />;
+              const icon = <Icon type={iconMap[data.type] || 'volume_up'} className="color-blue" />;
               const iconWithBadge = read || !type ? icon : <Badge dot>{icon}</Badge>;
               let showPicUrl;
               if (content.indexOf('<img') !== -1) {
