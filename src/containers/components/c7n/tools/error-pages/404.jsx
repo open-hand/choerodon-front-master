@@ -6,7 +6,7 @@ import './style/404.less';
 
 const NoMatch = ({ MenuStore }) => {
   useEffect(() => {
-    MenuStore.setNotFoundSignSign(true);
+    MenuStore.setNotFoundSignSign(false);
 
     return () => {
       MenuStore.setNotFoundSignSign(false);
