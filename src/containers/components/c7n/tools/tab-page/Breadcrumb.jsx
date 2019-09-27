@@ -1,5 +1,6 @@
 import React, { Component, useContext, useEffect } from 'react';
 import { inject } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { toJS } from 'mobx';
 import queryString from 'query-string';
 import { withRouter, Link } from 'react-router-dom';
@@ -120,4 +121,4 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
   );
 };
 
-export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(Breadcrumb));
+export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer(Breadcrumb)));
