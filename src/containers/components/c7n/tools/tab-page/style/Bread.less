@@ -7,6 +7,11 @@
   justify-content: space-between;
   padding-left: 24px;
   padding-right: 24px;
+  span:last-child {
+    span:first-child {
+      color: rgba(0, 0, 0, .87);
+    }
+  }
 
   .c7n-breadcrumb-separator {
     font-size: 20px;
@@ -15,17 +20,20 @@
 
   .c7n-breadcrumb-link {
     font-size: 20px;
-    color: rgba(0, 0, 0, .65) !important;
+    // color: rgba(0, 0, 0, .65) !important;
     line-height: 28px;
 
     a {
-      color: rgba(0, 0, 0, .87) !important;
+      color: rgba(0, 0, 0, .65) !important;
+      &:hover {
+        color: rgba(0, 0, 0, .87) !important;
+      }
     }
   }
 
   .title {
     font-size: 20px;
-    color: rgba(0, 0, 0, .65) !important;
+    color: rgba(0, 0, 0, .87) !important;
     line-height: 28px;
 
     a {
