@@ -31,17 +31,18 @@ const ListView = observer(() => {
   function handleChangeType(value) {
     changeType(value);
     dataSet.setQueryParameter('participant', undefined);
-    dataSet.setQueryParameter('create_by', undefined);
+    dataSet.setQueryParameter('created_by', undefined);
     dataSet.setQueryParameter('type', undefined);
     dataSet.setQueryParameter('all', undefined);
     if (value === 'join') {
       dataSet.setQueryParameter('participant', AppState.getUserId);
     } else if (value === 'create') {
-      dataSet.setQueryParameter('create_by', AppState.getUserId);
+      dataSet.setQueryParameter('created_by', AppState.getUserId);
     } else if (value === 'market') {
       dataSet.setQueryParameter('type', 'market');
     } else if (value === 'all') {
       dataSet.setQueryParameter('all', true);
+      dataSet.setQueryParameter('type', 'market');
       dataSet.setQueryParameter('participant', AppState.getUserId);
     }
     dataSet.query();
