@@ -10,6 +10,7 @@ import { Badge, Button, Icon, Spin, Tabs, Avatar, Tooltip } from 'choerodon-ui';
 import { Button as ButtonPro } from 'choerodon-ui/pro';
 import WSHandler from '../../tools/ws/WSHandler';
 import defaultAvatar from './style/icons/favicon.png';
+import { getCookie } from '../../../../common';
 
 const { TabPane } = Tabs;
 const PREFIX_CLS = 'c7n';
@@ -358,6 +359,7 @@ export default class Inbox extends Component {
       <React.Fragment>
         <WSHandler
           messageKey={`choerodon:msg:site-msg:${AppState.userInfo.id}`}
+          path={`choerodon/msg?token=${getCookie('access_token')}`}
           onMessage={this.handleMessage}
           type="site-msg"
         >

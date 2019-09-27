@@ -37,7 +37,8 @@
     vertical-align: text-bottom;
   }
 
-  .c7n-btn:not(.back-btn) {
+  .c7n-btn:not(.back-btn),
+  .c7n-pro-btn:not(.back-btn) {
     font-weight: 500 !important;
     padding: 0 10px;
     line-height: 28px;
@@ -47,7 +48,8 @@
     &[disabled] {
       color: rgba(0, 0, 0, .26);
     }
-    & + .c7n-btn {
+    & + .c7n-btn, 
+    & + .c7n-pro-btn {
       margin-left: 20px;
     }
     .icon {

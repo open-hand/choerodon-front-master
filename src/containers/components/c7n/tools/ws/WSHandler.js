@@ -33,7 +33,8 @@ export default class WSHandler extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (nextProps.messageKey !== this.props.messageKey) {
+    if (nextProps.messageKey !== this.props.messageKey 
+      || nextProps.path !== this.props.path) {
       this.unregister(this.props, this.context);
       this.register(nextProps, nextContext);
     }
