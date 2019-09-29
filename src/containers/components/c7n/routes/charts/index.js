@@ -8,18 +8,17 @@ import './style/index.less';
 
 const Home = (props) => {
   const [list, setList] = useState([]);
+  const { history, AppState } = props;
 
   useEffect(() => {
     async function loadLists() {
-      const res = await axios.get('/base/v1/report/list');
+      const res = await axios.get(`/base/v1/projects/${AppState.currentMenuType.id}/report/list`);
       setList(res);
     }
-
     loadLists();
   }, []);
 
   function handleClickItem(report) {
-    const { history, AppState } = props;
     const urlParams = AppState.currentMenuType;
     const { type, id, name, organizationId, orgId, category } = urlParams;
     history.push(`${report.path}?type=${type}&id=${id}&name=${name}&organizationId=${organizationId}&orgId=${orgId}&category=${category}`);
