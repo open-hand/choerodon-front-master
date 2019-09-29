@@ -25,6 +25,9 @@
     background: white
   }
 }
-.c7n-modal-sidebar .c7n-modal-content {
-  left: unset;
+.c7n-modal-sidebar {
+   & > .c7n-modal-content  {
+    right: 0 !important;
+    left: inherit !important;
+  }  
 }
