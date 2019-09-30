@@ -121,7 +121,7 @@ export default (AppState, history) => {
       { name: 'enabled', type: 'boolean', label: '状态' },
       // { name: 'applicationCode', type: 'string', label: '应用编码', required: true, validator: codeValidator },
       // { name: 'applicationName', type: 'string', label: '应用名称', required: true, validator: nameValidator },
-      { name: 'category', type: 'string', label: '项目类型', required: true, textField: 'value', valueField: 'key', options: categoryDs, defaultValue: 'AGILE' },
+      { name: 'category', type: 'string', label: '项目类型', required: true, textField: 'value', valueField: 'key', options: categoryDs, defaultValue: 'GENERAL' },
       { name: 'programName', type: 'string', label: '项目群' },
       { name: 'createUserName', type: 'string', label: '创建人' },
       { name: 'createUserImageUrl', type: 'string' },
