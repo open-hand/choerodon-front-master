@@ -55,3 +55,5 @@ export { default as PageWrap } from './c7n/tab-page/PageWrap';
 export { default as TabPage } from './c7n/tab-page/TabPage';
 
 export { default as Breadcrumb } from './c7n/tab-page/Breadcrumb';
+
+export { default as StatusTag } from './c7n/StatusTag';
