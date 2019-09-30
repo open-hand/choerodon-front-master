@@ -47,11 +47,12 @@ const ListView = observer(() => {
     const { currentMenuType: { orgId } } = AppState;
     const { current } = dataSet;
     if (await current.validate() === true) {
-      const { category, code, name } = current.toData();
+      const { category, code, name, imageUrl } = current.toData();
       const data = {
         name,
         code,
         category,
+        imageUrl,
       };
       const res = await axios.post(`/base/v1/organizations/${orgId}/projects`, data);
       if (res.failed) {
