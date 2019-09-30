@@ -31,8 +31,8 @@ const Card = ({ handleEditProject, handleClickProject, handleEnabledProject, dat
   
   function renderAction() {
     const actionDatas = [
-      { service: [], icon: '', text: '编辑', action: handleFocus },
-      { service: [], icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabled },
+      { service: ['base-service.organization-project.update'], icon: '', text: '编辑', action: handleFocus },
+      { service: ['base-service.organization-project.disableProject', 'base-service.organization-project.enableProject'], icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabled },
     ];
     return <Action data={actionDatas} style={{ marginLeft: 5, flexShrink: 0 }} />;
   }

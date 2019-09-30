@@ -50,8 +50,8 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
 
   function renderAction({ record }) {
     const actionDatas = [
-      { service: [], icon: '', text: '编辑', action: handleEditProject },
-      { service: [], icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabledProject },
+      { service: ['base-service.organization-project.update'], icon: '', text: '编辑', action: handleEditProject },
+      { service: ['base-service.organization-project.disableProject', 'base-service.organization-project.enableProject'], icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabledProject },
     ];
     return <Action data={actionDatas} style={actionStyle} />;
   }
