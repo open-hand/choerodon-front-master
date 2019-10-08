@@ -51,7 +51,8 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
   }
 
   function renderName() {
-    const { currentMenuType: { type, name } } = AppState;
+    const { currentMenuType: { type, name }, isTypeUser } = AppState;
+    if (isTypeUser) return <Item>{name}</Item>;
     if (type === 'site') return <Item>平台管理</Item>;
     if (type === 'organization') return <Item>{getOrganization().name || ''}</Item>;
     if (type === 'project') return <Item>{name}</Item>;
