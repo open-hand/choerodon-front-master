@@ -8,7 +8,7 @@ import List from './List';
 import findFirstLeafMenu from '../../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../../../common';
 import FormView from './FormView';
-import { Content, Page, axios } from '../../../../../index';
+import { Content, Page, axios, Permission } from '../../../../../index';
 import { prompt } from '../../../../common';
 import './style/index.less';
 
@@ -206,7 +206,9 @@ const ListView = observer(() => {
     return (
       <div className="c7n-projects-header">
         <div className="c7n-projects-title">{`${org.name}中的项目`}</div>
-        <Button type="primary" funcType="raised" onClick={handleCreateProject}>创建项目</Button>
+        <Permission service={['base-service.organization-project.create']}>
+          <Button type="primary" funcType="raised" onClick={handleCreateProject}>创建项目</Button>
+        </Permission>
       </div>
     );
   }
