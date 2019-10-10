@@ -45,10 +45,11 @@ const defaultProps = {
 };
 
 function StatusTag(props) {
-  const { name, colorCode = defaultProps.colorCode, color, iconType } = props;
+  const { name, colorCode = defaultProps.colorCode, color, iconType, ...otherProps } = props;
   function renderIconMode() {
     return (
       <span
+        {...otherProps}
         className="c7n-iam-status-tag-with-icon"
         style={{
           ...props.style,
@@ -69,6 +70,7 @@ function StatusTag(props) {
     }
     return (
       <div
+        {...otherProps}
         className="c7n-iam-status-tag"
         style={{
           background: color || Color[colorCode],
