@@ -79,7 +79,7 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
     return (
       <Item>
         {
-          getRoute(currentMenu)
+          getRoute(currentMenu) && title
             ? <Link to={getMenuLink(getRoute(currentMenu))}>{currentMenu.name}</Link>
             : <span>{currentMenu.name}</span>
         }
