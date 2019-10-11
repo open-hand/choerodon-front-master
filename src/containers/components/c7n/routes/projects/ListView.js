@@ -31,13 +31,28 @@ const ListView = observer(() => {
     dataSet, showType, toggleShowType, isNotRecent, toggleRecent, setAuto,
     HeaderStore, MenuStore, history, intl, AppState,
   } = context;
-
+  const recents = HeaderStore.getRecentItem;
   const checkRecentIsEmpty = useCallback(({ dataSet: ds }) => {
-    const recents = HeaderStore.getRecentItem;
     if (!ds.find(r => recents.find(v => v.id === r.get('id')))) {
       toggleRecent('all');
+    } else {
+      toggleRecent('recent');
     }
   }, [dataSet]);
+
+  function filterRecent(record, type) {
+    if (type === 'all') {
+      return true;
+    } else if (type === 'recent') {
+      return !!recents.find(v => v.id === record.get('id'));
+    } else {
+      return record.get('createdBy') === AppState.getUserId;
+    }
+  }
+
+  function realData(type) {
+    return dataSet.filter(r => filterRecent(r, type));
+  }
 
   useEffect(() => {
     dataSet.addEventListener('load', checkRecentIsEmpty);
@@ -217,9 +232,9 @@ const ListView = observer(() => {
     return (
       <div className="c7n-projects-tool">
         <Select labelLayout="float" label="项目" clearButton={false} value={isNotRecent} onChange={handleChangeRecent} style={{ width: 260 }}>
-          <Option key="recent" value="recent">最近使用</Option>
+          {realData('recent').length > 0 && <Option key="recent" value="recent">最近使用</Option>}
           <Option key="all" value="all">全部项目</Option>
-          <Option key="mine" value="mine">我创建的</Option>
+          {realData('mine').length > 0 && <Option key="mine" value="mine">我创建的</Option>}
         </Select>
         <div className="c7n-projects-tool-icon-group">
           <Icon type="dashboard" style={iconStyle} className={showType === 'block' ? 'active' : null} onClick={() => toggleShowType('block')} />
