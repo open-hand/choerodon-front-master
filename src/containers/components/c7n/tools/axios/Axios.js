@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { authorizeC7n as authorize } from '../../../../common/authorize';
+import { authorizeUrl } from '../../../../common/authorize';
 import { getAccessToken, removeAccessToken } from '../../../../common/accessToken';
 import { API_HOST } from '../../../../common/constants';
 
@@ -39,13 +39,13 @@ axios.interceptors.response.use(
       switch (status) {
         case 401: {
           removeAccessToken();
-          authorize();
+          authorizeUrl();
           break;
         }
         case 403: {
           if (regTokenExpired.test(response.data)) {
             removeAccessToken();
-            authorize();
+            authorizeUrl();
           }
           break;
         }

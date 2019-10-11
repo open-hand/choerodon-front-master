@@ -19,7 +19,7 @@ export function logout() {
 
 export function authorizeC7n() {
   // 为了把这个hash传到oauth里要把#换成%23
-  const uri = escape(window.location.href);
+  const uri = escape(`${window.location.origin}/#${localStorage.getItem('historyPath')}`);
   window.localStorage.removeItem('lastClosedId');
   // 这里是为了告诉oauth我要重定向的uri是什么，必须和client中对应，跳转到非client的页面会报错。
   if (window.location.href.indexOf('#') === -1) {
@@ -29,6 +29,10 @@ export function authorizeC7n() {
   } else {
     window.location = `${AUTH_URL}&redirect_uri=${uri}%26redirectFlag`;
   }
+}
+
+export function authorizeUrl() {
+  window.location = `${window.location.origin}/#/unauthorized`;
 }
 
 /**

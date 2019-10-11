@@ -99,7 +99,7 @@ class Masters extends Component {
     // eslint-disable-next-line no-underscore-dangle
     const injectOutward = window._env_.outward;
     if (injectOutward) {
-      const arr = injectOutward.split(',');
+      const arr = injectOutward.split(',').concat(['/unauthorized']);
       return arr.some(v => pathname.startsWith(v));
     }
     return false;

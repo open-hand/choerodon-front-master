@@ -22,7 +22,9 @@ class Header extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { getUserId } = this.props.AppState;
-    localStorage.setItem(`historyPath-${getUserId}`, nextProps.location.pathname + nextProps.location.search);
+    if (nextProps.location.pathname !== 'unauthorized') {
+      localStorage.setItem('historyPath', nextProps.location.pathname + nextProps.location.search);
+    }
   }
 
   handleGuideClick() {

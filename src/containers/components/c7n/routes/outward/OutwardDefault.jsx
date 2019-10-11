@@ -46,7 +46,7 @@ class Outward extends Component {
   }
 
   render() {
-    const { AutoRouter } = this.props;
+    const { AutoRouter, history } = this.props;
     if (this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">
@@ -54,7 +54,7 @@ class Outward extends Component {
         </div>
       );
     } else {
-      authorize();
+      history.push('/unauthorized');
     }
   }
 }

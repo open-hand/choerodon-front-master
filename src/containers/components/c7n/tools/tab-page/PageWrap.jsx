@@ -31,7 +31,6 @@ const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
           setActiveMenu(menu);
           const parentMenuNode = parents && parents.length ? parents[parents.length - 1] : null;
           setParentMenu(parentMenuNode);
-          const index = parentMenuNode ? parentMenuNode.subMenus.findIndex(v => v === menu) : -1;
           const realIndex = keyShowArr.findIndex(v => v.tabKey === menu.code);
           setCurrentKey(`${menu.code}/.${realIndex}`);
           return true;
