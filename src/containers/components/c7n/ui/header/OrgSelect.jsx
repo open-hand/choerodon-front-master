@@ -16,18 +16,18 @@ const prefixCls = 'c7n-boot-header-menu-type';
 @observer
 export default class OrgSelect extends Component {
   autoSelect() {
-    const { AppState: { currentMenuType: { orgId } } } = this.props;
+    const { AppState: { currentMenuType: { orgId } }, history } = this.props;
     const currentData = this.getCurrentData() || [];
     const localOrgId = localStorage.getItem('C7N-ORG-ID');
     if (localOrgId) {
       const orgObj = currentData.find(v => String(v.id) === localOrgId);
       if (orgObj) {
-        this.selectState(orgObj, true);
+        this.selectState(orgObj);
         return;
       }
     }
     if (!orgId && currentData.length) {
-      this.selectState(currentData[0], true);
+      this.selectState(currentData[0]);
     }
   }
 
