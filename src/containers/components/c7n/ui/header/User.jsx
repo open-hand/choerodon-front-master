@@ -56,8 +56,9 @@ export default class UserPreferences extends Component {
     const { orgId } = queryString.parse(history.location.search);
     if (key === 'site-setting') {
       this.getGlobalMenuData(orgId);
+    } else {
+      history.push(`${key}?type=site&orgId=${orgId}`);
     }
-    history.push(`${key}?type=site&orgId=${orgId}`);
     this.handleVisibleChange(false);
   };
 
