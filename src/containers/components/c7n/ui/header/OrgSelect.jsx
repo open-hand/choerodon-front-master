@@ -22,12 +22,12 @@ export default class OrgSelect extends Component {
     if (localOrgId) {
       const orgObj = currentData.find(v => String(v.id) === localOrgId);
       if (orgObj) {
-        this.selectState(orgObj);
+        this.selectState(orgObj, true);
         return;
       }
     }
     if (!orgId && currentData.length) {
-      this.selectState(currentData[0]);
+      this.selectState(currentData[0], true);
     }
   }
 
@@ -117,7 +117,9 @@ export default class OrgSelect extends Component {
         obj.into = true;
         obj.name = decodeURIComponent(obj.name);
         if (!obj.orgId) {
-          this.autoSelect();
+          setTimeout(() => {
+            this.autoSelect();
+          }, 100);
           return null;
         }
         this.selectState(obj);
@@ -127,7 +129,9 @@ export default class OrgSelect extends Component {
         }]);
         return null;
       } else {
-        this.autoSelect();
+        setTimeout(() => {
+          this.autoSelect();
+        }, 100);
         return null;
       }
     }
