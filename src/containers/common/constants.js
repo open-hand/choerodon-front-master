@@ -10,10 +10,7 @@ function get(valueName, defaultValue) {
 }
 
 function getAuthHost(isChoerodon, isDev, defaultValue, API_HOST) {
-  if (isChoerodon && !isDev) {
-    return `${API_HOST}/oauth`;
-  }
-  return defaultValue;
+  return `${API_HOST}/oauth`;
 }
 
 // export const PREFIX_CLS = 'c7n';

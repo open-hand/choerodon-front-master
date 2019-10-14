@@ -21,8 +21,8 @@ function compileFile() {
 
 function compileDir(dir) {
   babelify(gulp.src([
-    'src/' + dir + '/**/*.js',
-    'src/' + dir + '/**/*.jsx',
+    `src/${  dir  }/**/*.js`,
+    `src/${  dir  }/**/*.jsx`,
   ]), dir);
 }
 
@@ -54,12 +54,12 @@ function getBabelCommonConfig() {
       require.resolve('babel-plugin-import'), 
       [
         {
-          'libraryName': 'choerodon-ui',
-          'style': true,
+          libraryName: 'choerodon-ui',
+          style: true,
         },
         {
-          'libraryName': 'choerodon-ui/pro',
-          'style': true,
+          libraryName: 'choerodon-ui/pro',
+          style: true,
         },
       ],
     ],
@@ -85,8 +85,8 @@ function babelify(js, dir = '') {
         const content = file.contents.toString(encoding);
         file.contents = Buffer.from(content
           .replace(`'{{ ${matches[1]} }}'`, `{{ ${matches[1]} }}`)
-          .replace(`'{{ home }}'`, '{{ home }}')
-          .replace(`'{{ master }}'`, '{{ master }}'));
+          .replace('\'{{ home }}\'', '{{ home }}')
+          .replace('\'{{ master }}\'', '{{ master }}'));
       }
       this.push(file);
       next();
@@ -97,7 +97,6 @@ function babelify(js, dir = '') {
 gulp.task('compile', () => {
   compile();
 });
-
 gulp.task('copy', () => {
-  copyTo('/Users/binjiechen/base-service-pro/node_modules/@choerodon/master/lib');
-})
+  copyTo('/Users/binjiechen/base-service-pro/node_modules/@choerodon/master-pro/lib');
+});
