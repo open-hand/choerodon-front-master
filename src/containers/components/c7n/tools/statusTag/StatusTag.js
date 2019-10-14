@@ -64,8 +64,8 @@ function StatusTag(props) {
   function renderDefaultMode() {
     const additionalStyles = {};
     const offsetStyle = {};
-    if (name.length === 5) {
-      additionalStyles.width = '0.6rem';
+    if (name.length > 3) {
+      additionalStyles.width = 'auto';
       offsetStyle.marginLeft = '-0.02rem';
     }
     return (
