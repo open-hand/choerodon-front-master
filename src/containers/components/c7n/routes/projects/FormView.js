@@ -67,7 +67,6 @@ export default function FormView({ context }) {
       <Form record={dataSet.current} className="c7n-project-sider">
         <TextField name="name" />
         <TextField name="code" disabled={dataSet.current.status !== 'add'} />
-        <Select name="category" disabled={dataSet.current.status !== 'add'} />
         {
           dataSet.current.status !== 'add' && [
             <TextField name="creationDate" disabled />,

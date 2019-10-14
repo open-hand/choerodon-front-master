@@ -97,3 +97,7 @@ function babelify(js, dir = '') {
 gulp.task('compile', () => {
   compile();
 });
+
+gulp.task('copy', () => {
+  copyTo('/Users/binjiechen/base-service-pro/node_modules/@choerodon/master/lib');
+})

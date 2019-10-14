@@ -78,8 +78,7 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
       <Column renderer={renderAction} width={100} />
       <Column name="code" />
       <Column name="category" />
-      <Column name="enabled" renderer={renderEnabled} align="left" />
-      <Column name="programName" />
+      <Column width={100} name="enabled" renderer={renderEnabled} align="left" />
       <Column name="createUserName" />
       <Column name="creationDate" />
     </Table>
