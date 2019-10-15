@@ -3,7 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { ModalContainer } from 'choerodon-ui/pro/lib';
 import { authorizeC7n as authorize } from '../../../common';
 import asyncRouter from '../util/asyncRouter';
-// import feedback from '../tools/feedback';
+import feedback from '../tools/feedback';
 
 const Projects = asyncRouter(() => import('../routes/projects'));
 const Applications = asyncRouter(() => import('../routes/applications'));
@@ -23,4 +23,4 @@ const InnerIndex = ({ match, AutoRouter }) => (
   </div>
 );
 
-export default withRouter(InnerIndex);
+export default feedback(withRouter(InnerIndex));
