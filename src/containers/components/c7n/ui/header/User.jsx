@@ -101,6 +101,16 @@ export default class UserPreferences extends Component {
                 {item.name}
               </MenuItem>
             ))}
+            {
+              MenuStore.getSiteMenuData.length > 0 ? [
+                <Menu.Divider />,
+                <MenuItem className={`${prefixCls}-popover-menu-item`} key="site-setting">
+                  <Icon type="settings" />
+                  平台管理
+                </MenuItem>,
+              ] : null
+            }
+
           </Menu>
         </div>
         <div className="divider" />
