@@ -75,6 +75,7 @@ const ListView = observer(() => {
         return false;
       } else {
         prompt('创建成功');
+        HeaderStore.setRecentItem(res);
         dataSet.query();
         return true;
       }
@@ -232,9 +233,9 @@ const ListView = observer(() => {
     return (
       <div className="c7n-projects-tool">
         <Select labelLayout="float" label="项目" clearButton={false} value={isNotRecent} onChange={handleChangeRecent} style={{ width: 260 }}>
-          {realData('recent').length > 0 && <Option key="recent" value="recent">最近使用</Option>}
+          {(realData('recent').length > 0 || dataSet.queryDataSet.length > 0) && <Option key="recent" value="recent">最近使用</Option>}
           <Option key="all" value="all">全部项目</Option>
-          {realData('mine').length > 0 && <Option key="mine" value="mine">我创建的</Option>}
+          {(realData('mine').length > 0 || dataSet.queryDataSet.length > 0) && <Option key="mine" value="mine">我创建的</Option>}
         </Select>
         <div className="c7n-projects-tool-icon-group">
           <Icon type="dashboard" style={iconStyle} className={showType === 'block' ? 'active' : null} onClick={() => toggleShowType('block')} />

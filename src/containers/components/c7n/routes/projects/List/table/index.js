@@ -68,7 +68,7 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
 
   const realData = dataSet.filter(r => filterRecent(r));
 
-  if (realData.length === 0 && dataSet.status === 'ready') {
+  if (realData.length === 0 && dataSet.status === 'ready' && Object.keys(dataSet.queryDataSet.current.toData()).length === 0) {
     return <EmptyProject />;
   }
 
