@@ -10,7 +10,7 @@ import { historyPushMenu } from '../../util';
 import Setting from './Setting';
 
 const prefixCls = 'c7n-boot-header-menu-type';
-
+const homePage = '/projects';
 @withRouter
 @inject('AppState', 'HeaderStore', 'MenuStore')
 @observer
@@ -34,7 +34,7 @@ export default class OrgSelect extends Component {
   autoLocate = () => {
     const { history } = this.props;
     const parsed = queryString.parse(history.location.search);
-    const path = `${history.location.pathname === '/' ? 'buzz/cooperate' : history.location.pathname}?${queryString.stringify(parsed)}`;
+    const path = `${history.location.pathname === '/' ? homePage : history.location.pathname}?${queryString.stringify(parsed)}`;
     historyPushMenu(history, path, null, 'replace');
   }
 
@@ -53,11 +53,11 @@ export default class OrgSelect extends Component {
         category,
         orgId: id,
       };
-      path = `/buzz/cooperate?${queryString.stringify(parsed)}`;
+      path = `${homePage}?${queryString.stringify(parsed)}`;
     } else {
       parsed = queryString.parse(history.location.search);
       parsed.orgId = id;
-      path = `${history.location.pathname === '/' ? 'buzz/cooperate' : history.location.pathname}?${queryString.stringify(parsed)}`;
+      path = `${history.location.pathname === '/' ? homePage : history.location.pathname}?${queryString.stringify(parsed)}`;
     }
     MenuStore.setActiveMenu(null);
     historyPushMenu(history, path, null, 'replace');
@@ -107,10 +107,6 @@ export default class OrgSelect extends Component {
     } = this.props;
     const currentData = this.getCurrentData() || [];
     const orgObj = currentData.find(v => String(v.id) === orgId);
-    // if (history.location.pathname === '/') {
-    //   this.autoLocate();
-    //   return null;
-    // }
     if (!orgObj && currentData.length && type !== 'project') {
       if (getUserInfo.admin) {
         const obj = queryString.parse(history.location.search);
