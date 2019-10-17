@@ -16,9 +16,9 @@ const defaultChildren = (
   </div>
 );
 
-const noAccess = (
-  <div style={{ marginTop: 150 }}>没有权限</div>
-);
+// const noAccess = (
+//   <div style={{ marginTop: 150 }}>没有权限</div>
+// );
 
 const TabPage = ({ className, service, onAccess, ...props }) => {
   const classString = classNames(className);
@@ -28,7 +28,7 @@ const TabPage = ({ className, service, onAccess, ...props }) => {
       <Permission
         service={service}
         defaultChildren={defaultChildren}
-        noAccessChildren={noAccess}
+        noAccessChildren={<NoAccess />}
         onAccess={onAccess}
       >
         {page}
