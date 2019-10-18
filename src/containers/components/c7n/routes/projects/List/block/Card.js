@@ -1,5 +1,6 @@
 import React from 'react';
 import { Avatar, Tooltip } from 'choerodon-ui';
+import queryString from 'query-string';
 import { Action } from '../../../../../../../index';
 import PROJECT_TYPE from '../../constant';
 
@@ -30,11 +31,12 @@ const Card = ({ handleEditProject, handleClickProject, handleEnabledProject, dat
   }
   
   function renderAction() {
+    const { orgId } = queryString.parse(history.location.search);
     const actionDatas = [
       { service: ['base-service.organization-project.update'], icon: '', text: '编辑', action: handleFocus },
       { service: ['base-service.organization-project.disableProject', 'base-service.organization-project.enableProject'], icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabled },
     ];
-    return <Action data={actionDatas} style={{ marginLeft: 5, flexShrink: 0 }} />;
+    return <Action organizationId={orgId} type="organization" data={actionDatas} style={{ marginLeft: 5, flexShrink: 0 }} />;
   }
 
   return (

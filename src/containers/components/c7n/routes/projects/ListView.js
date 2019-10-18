@@ -222,7 +222,11 @@ const ListView = observer(() => {
     return (
       <div className="c7n-projects-header">
         <div className="c7n-projects-title">{`${org.name}中的项目`}</div>
-        <Permission service={['base-service.organization-project.create']}>
+        <Permission
+          service={['base-service.organization-project.create']}
+          type="organization"
+          organizationId={orgId}
+        >
           <Button type="primary" funcType="raised" onClick={handleCreateProject}>创建项目</Button>
         </Permission>
       </div>
