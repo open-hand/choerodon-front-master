@@ -52,7 +52,7 @@ class RenderPopoverContentClass extends Component {
     );
     return (
       <div className={siderClasses}>
-        <div className={`${prefixCls}-sider-header-wrap ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
+        <div className={`${prefixCls}-sider-header-wrap no-mr ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
           <div className={`${prefixCls}-sider-header`}>
             <div className={`${prefixCls}-sider-header-title`}>
               <span className="msgTitle">消息通知</span>
@@ -146,6 +146,7 @@ class RenderPopoverContentDetailClass extends Component {
             <ButtonPro
               funcType="flat"
               icon="close"
+              className="close-button"
               onClick={() => {
                 HeaderStore.setInboxVisible(false);
                 setTimeout(() => {
