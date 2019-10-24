@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
+import queryString from 'query-string';
 import { Avatar } from 'choerodon-ui';
 import { Table } from 'choerodon-ui/pro';
 import Store from '../../stores';
@@ -13,7 +14,7 @@ const actionStyle = {
 };
 
 const ListView = observer(({ handleClickProject, handleEditProject, handleEnabledProject }) => {
-  const { dataSet, isNotRecent, HeaderStore, AppState } = useContext(Store);
+  const { dataSet, isNotRecent, HeaderStore, AppState, history } = useContext(Store);
 
   function filterRecent(record) {
     if (isNotRecent === 'all') {
@@ -49,11 +50,12 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
   }
 
   function renderAction({ record }) {
+    const { orgId } = queryString.parse(history.location.search);
     const actionDatas = [
       { service: ['base-service.organization-project.update'], icon: '', text: '编辑', action: handleEditProject },
       { service: ['base-service.organization-project.disableProject', 'base-service.organization-project.enableProject'], icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabledProject },
     ];
-    return <Action data={actionDatas} style={actionStyle} />;
+    return <Action organizationId={orgId} type="organization" data={actionDatas} style={actionStyle} />;
   }
 
   function renderEnabled({ record }) {
@@ -68,7 +70,7 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
 
   const realData = dataSet.filter(r => filterRecent(r));
 
-  if (realData.length === 0 && dataSet.status === 'ready') {
+  if (realData.length === 0 && dataSet.status === 'ready' && Object.keys(dataSet.queryDataSet.current.toData()).length === 0) {
     return <EmptyProject />;
   }
 

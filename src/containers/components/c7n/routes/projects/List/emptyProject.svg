@@ -14,11 +14,11 @@
             <g id="编组">
                 <g id="Group-11" transform="translate(400.000000, 368.000000)">
                     <g id="Group-7" transform="translate(301.000000, 75.000000)" fill="#000000" font-family="PingFangSC-Regular, PingFang SC" font-weight="normal">
-                        <text id="当前组织下暂无项目" font-size="14" line-spacing="20" fill-opacity="0.649999976">
-                            <tspan x="0" y="15">当前组织下暂无项目</tspan>
+                        <text id="暂无项目" font-size="14" line-spacing="20" fill-opacity="0.649999976">
+                            <tspan x="0" y="15">暂无项目</tspan>
                         </text>
-                        <text id="如需创建，请点击右上角创建项目按钮" font-size="20" line-spacing="34">
-                            <tspan x="0" y="50">如需创建，请点击右上角创建项目按钮</tspan>
+                        <text id="您在当前组织下暂无可操作项目" font-size="20" line-spacing="34">
+                            <tspan x="0" y="50">您在当前组织下暂无可操作项目</tspan>
                         </text>
                     </g>
                     <g id="Group-10">

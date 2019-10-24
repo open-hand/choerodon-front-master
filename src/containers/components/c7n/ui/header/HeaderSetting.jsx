@@ -9,7 +9,9 @@ import getSearchString from '../../util/gotoSome';
 const iconStyle = { marginLeft: 0, marginRight: 0 };
 const LI_MAPPING = [
   { title: '项目', icon: 'project_filled', activePath: '/projects' },
+  // { title: '应用', icon: 'widgets', activePath: '/applications' },
   { title: '知识库', icon: 'knowledge', activePath: '/knowledge/organization' },
+  // { title: '应用市场', icon: 'application_market', activePath: '/base/app-market' },
 ];
 
 const Setting = ({ AppState, HeaderStore, MenuStore, history, ...props }) => {

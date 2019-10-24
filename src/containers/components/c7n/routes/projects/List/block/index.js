@@ -25,8 +25,14 @@ const ListView = observer((props) => {
 
   const realData = dataSet.filter(r => filterRecent(r));
 
-  if (realData.length === 0) {
+  if (realData.length === 0 && Object.keys(dataSet.queryDataSet.current.toData()).length === 0) {
     return <EmptyProject />;
+  } else if (realData.length === 0) {
+    return (
+      <div style={{ textAlign: 'center', marginTop: 100, color: 'rgba(0,0,0,0.65)' }}>
+        暂无数据
+      </div>
+    );
   }
 
   return (
