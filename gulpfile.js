@@ -8,21 +8,21 @@ const cwd = process.cwd();
 const libDir = path.join(cwd, 'lib');
 
 function compileAssets() {
-  return gulp.src(['src/**/*.@(jpg|png|svg|scss|less|html|ico)']).pipe(gulp.dest(libDir));
+  return gulp.src(['react/**/*.@(jpg|png|svg|scss|less|html|ico)']).pipe(gulp.dest(libDir));
 }
 
 function compileFile() {
   const source = [
-    'src/**/*.js',
-    'src/**/*.jsx',
+    'react/**/*.js',
+    'react/**/*.jsx',
   ];
   return babelify(gulp.src(source));
 }
 
 function compileDir(dir) {
   babelify(gulp.src([
-    `src/${  dir  }/**/*.js`,
-    `src/${  dir  }/**/*.jsx`,
+    `react/${  dir  }/**/*.js`,
+    `react/${  dir  }/**/*.jsx`,
   ]), dir);
 }
 

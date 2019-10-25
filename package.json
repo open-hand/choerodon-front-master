@@ -8,7 +8,7 @@
     "lib"
   ],
   "scripts": {
-    "start": "choerodon-front-boot start --config ./src/config.js",
+    "start": "choerodon-front-boot start --config ./react/config.js",
     "compile": "gulp compile",
     "compile:bin": "choerodon-front-boot compile",
     "copy": "gulp copy"
