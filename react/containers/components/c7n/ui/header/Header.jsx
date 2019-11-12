@@ -22,7 +22,7 @@ class Header extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { getUserId } = this.props.AppState;
-    if (nextProps.location.pathname !== 'unauthorized') {
+    if (!nextProps.location.pathname.includes('unauthorized')) {
       localStorage.setItem('historyPath', nextProps.location.pathname + nextProps.location.search);
     }
   }

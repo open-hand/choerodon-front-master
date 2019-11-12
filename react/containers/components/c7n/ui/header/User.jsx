@@ -40,12 +40,12 @@ export default class UserPreferences extends Component {
     this.props.HeaderStore.setUserPreferenceVisible(visible);
   };
 
-  getGlobalMenuData = (orgId) => {
+  getGlobalMenuData = (organizationId) => {
     const { MenuStore, history } = this.props;
     MenuStore.loadMenuData({ type: 'site' }, false).then((menus) => {
       if (menus.length) {
         const { route, domain } = findFirstLeafMenu(menus[0]);
-        const routeWithOrgId = `${route}/?orgId=${orgId}`;
+        const routeWithOrgId = `${route}/?organizationId=${organizationId}`;
         historyPushMenu(history, routeWithOrgId, domain);
       }
     });
@@ -53,11 +53,11 @@ export default class UserPreferences extends Component {
 
   handleMenuItemClick = ({ key }) => {
     const { history } = this.props;
-    const { orgId } = queryString.parse(history.location.search);
+    const { organizationId } = queryString.parse(history.location.search);
     if (key === 'site-setting') {
-      this.getGlobalMenuData(orgId);
+      this.getGlobalMenuData(organizationId);
     } else {
-      history.push(`${key}?type=site&orgId=${orgId}`);
+      history.push(`${key}?type=site&organizationId=${organizationId}`);
     }
     this.handleVisibleChange(false);
   };

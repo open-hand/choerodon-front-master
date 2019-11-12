@@ -70,14 +70,14 @@ export default (AppState, history) => {
       return '编码只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"。';
     }
     try {
-      const { currentMenuType: { orgId, id, type, organizationId } } = AppState;
+      const { currentMenuType: { organizationId, id, type } } = AppState;
       let apiOrgId;
       if (type === 'organization') {
-        apiOrgId = id || organizationId || orgId;
+        apiOrgId = id || organizationId;
       } else if (type === 'project') {
         apiOrgId = organizationId;
       } else {
-        apiOrgId = orgId;
+        apiOrgId = organizationId;
       }
       const url = name === 'code'
         ? `/base/v1/organizations/${apiOrgId}/projects/check`
@@ -106,11 +106,11 @@ export default (AppState, history) => {
     paging: false,
     transport: {
       read: {
-        url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/users/${AppState.getUserId}/projects`,
+        url: `/base/v1/organizations/${queryString.parse(history.location.search).organizationId}/users/${AppState.getUserId}/projects`,
         method: 'get',
       },
       submit: ({ dataSet }) => ({
-        url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/projects/${dataSet.current.get('id')}`,
+        url: `/base/v1/organizations/${queryString.parse(history.location.search).organizationId}/projects/${dataSet.current.get('id')}`,
         method: 'put',
         data: dataSet.current.toData(),
       }),

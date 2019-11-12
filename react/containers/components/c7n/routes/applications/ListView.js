@@ -53,8 +53,8 @@ const ListView = observer(() => {
   }, []);
 
   function renderHeader() {
-    const { orgId } = queryString.parse(history.location.search);
-    const org = (HeaderStore.getOrgData || []).find(v => String(v.id) === orgId) || { name: '' };
+    const { organizationId } = queryString.parse(history.location.search);
+    const org = (HeaderStore.getOrgData || []).find(v => String(v.id) === organizationId) || { name: '' };
     return (
       <div className="c7n-projects-header">
         <div className="c7n-projects-title">{`${org.name}中的应用`}</div>

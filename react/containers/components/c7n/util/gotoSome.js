@@ -11,7 +11,7 @@ function getSearchString(type, key, value, extraProps = {}) {
         id: proObj.id,
         name: proObj.name,
         category: proObj.category,
-        orgId: proObj.organizationId,
+        organizationId: proObj.organizationId,
         ...extraProps,
       };
       return `?${queryString.stringify(obj)}`;
@@ -26,7 +26,7 @@ function getSearchString(type, key, value, extraProps = {}) {
         id: orgObj.id,
         name: orgObj.name,
         category: orgObj.category,
-        orgId: orgObj.id,
+        organizationId: orgObj.id,
         ...extraProps,
       };
       return `?${queryString.stringify(obj)}`;

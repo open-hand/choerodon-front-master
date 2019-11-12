@@ -59,7 +59,7 @@ const ListView = observer(() => {
   }, []);
 
   async function handleCreate() {
-    const { currentMenuType: { orgId } } = AppState;
+    const { currentMenuType: { organizationId } } = AppState;
     const { current } = dataSet;
     if (await current.validate() === true) {
       const { category, code, name, imageUrl } = current.toData();
@@ -69,7 +69,7 @@ const ListView = observer(() => {
         category,
         imageUrl,
       };
-      const res = await axios.post(`/base/v1/organizations/${orgId}/projects`, data);
+      const res = await axios.post(`/base/v1/organizations/${organizationId}/projects`, data);
       if (res.failed) {
         prompt(res.message);
         return false;
@@ -204,9 +204,9 @@ const ListView = observer(() => {
         domain = menuDomain;
       }
       // if (route) {
-      path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
+      path = `${route}?type=${type}&id=${id}${name && `&name=${encodeURIComponent(name)}`}${category ? `&category=${category}` : ''}`;
       if (organizationId) {
-        path += `&organizationId=${organizationId}&orgId=${organizationId}`;
+        path += `&organizationId=${organizationId}`;
       }
       // }
       if (path) {
@@ -216,8 +216,8 @@ const ListView = observer(() => {
   }
 
   function renderHeader() {
-    const { orgId } = queryString.parse(history.location.search);
-    const org = (HeaderStore.getOrgData || []).find(v => String(v.id) === orgId) || { name: '' };
+    const { organizationId } = queryString.parse(history.location.search);
+    const org = (HeaderStore.getOrgData || []).find(v => String(v.id) === organizationId) || { name: '' };
     return (
       <div className="c7n-projects-header">
         <div className="c7n-projects-title">{`${org.name}中的项目`}</div>

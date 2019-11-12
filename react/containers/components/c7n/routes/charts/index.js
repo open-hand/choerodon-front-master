@@ -20,8 +20,8 @@ const Home = (props) => {
 
   function handleClickItem(report) {
     const urlParams = AppState.currentMenuType;
-    const { type, id, name, organizationId, orgId, category } = urlParams;
-    history.push(`${report.path}?type=${type}&id=${id}&name=${name}&organizationId=${organizationId}&orgId=${orgId}&category=${category}`);
+    const { type, id, name, organizationId, category } = urlParams;
+    history.push(`${report.path}?type=${type}&id=${id}&name=${name}&organizationId=${organizationId}&category=${category}`);
   }
 
   function renderGroup(chart) {

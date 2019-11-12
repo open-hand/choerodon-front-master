@@ -12,9 +12,9 @@ export default Store;
 
 export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderStore', 'MenuStore')(
   (props) => {
-    const { AppState: { currentMenuType: { id, orgId } }, children, AppState, history } = props;
+    const { AppState: { currentMenuType: { id, organizationId } }, children, AppState, history } = props;
     const [type, changeType] = useState('join');
-    const dataSet = useMemo(() => new DataSet(ListDataSet(AppState, history)), [id, orgId]);
+    const dataSet = useMemo(() => new DataSet(ListDataSet(AppState, history)), [id, organizationId]);
     const dsMap = useRef({});
     const value = {
       ...props,

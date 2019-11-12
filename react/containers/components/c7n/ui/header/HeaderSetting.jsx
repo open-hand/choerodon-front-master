@@ -15,7 +15,7 @@ const LI_MAPPING = [
 const Setting = ({ AppState, HeaderStore, MenuStore, history, ...props }) => {
   function goto(obj) {
     const queryObj = queryString.parse(history.location.search);
-    const search = getSearchString('organization', 'id', queryObj.orgId);
+    const search = getSearchString('organization', 'id', queryObj.organizationId);
     MenuStore.setActiveMenu(null);
     history.push(`${obj.activePath}${search}`);
   }

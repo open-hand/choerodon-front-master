@@ -14,9 +14,9 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
   const { isTab } = useContext(Context);
 
   function getOrganization() {
-    const { currentMenuType: { orgId } } = AppState;
+    const { currentMenuType: { organizationId } } = AppState;
     const currentData = toJS(HeaderStore.getOrgData) || [];
-    const orgObj = currentData.find(v => String(v.id) === orgId) || {};
+    const orgObj = currentData.find(v => String(v.id) === organizationId) || {};
     return orgObj;
   }
 
@@ -29,7 +29,6 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
   }
 
   function getMenuLink(route) {
-    const { orgId } = queryString.parse(history.location.search);
     const { id, name, type, organizationId, category } = AppState.currentMenuType;
     let search = '';
     switch (type) {
@@ -47,7 +46,7 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
         break;
       default:
     }
-    return `${route}${search}${search === '' ? `?orgId=${orgId}` : `&orgId=${orgId}`}`;
+    return `${route}${search}${search === '' ? `?organizationId=${organizationId}` : `&organizationId=${organizationId}`}`;
   }
 
   function renderName() {

@@ -20,7 +20,7 @@ const spinStyle = {
 function parseQueryToMenuType(search) {
   const menuType = {};
   if (search) {
-    const { type, name, id, organizationId, category, orgId } = queryString.parse(search);
+    const { type, name, id, organizationId, category } = queryString.parse(search);
     if (type) {
       menuType.type = type;
     }
@@ -30,8 +30,9 @@ function parseQueryToMenuType(search) {
     if (name) {
       menuType.name = name;
     }
-    if (orgId) {
-      menuType.orgId = orgId;
+    if (organizationId) {
+      menuType.orgId = organizationId;
+      menuType.organizationId = organizationId;
     }
     if (id) {
       menuType.id = id;

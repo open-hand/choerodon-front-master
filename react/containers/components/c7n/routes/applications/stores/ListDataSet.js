@@ -7,7 +7,7 @@ export default (AppState, history) => ({
   expandField: 'expandField',
   transport: {
     read: {
-      url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/applications/pagingByOptions`,
+      url: `/base/v1/organizations/${queryString.parse(history.location.search).organizationId}/applications/pagingByOptions`,
       method: 'get',
     },
   },

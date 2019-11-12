@@ -17,7 +17,7 @@ export default class Setting extends Component {
         const { route, domain } = findFirstLeafMenu(menus[0]);
         let path = route || '';
         path += `?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
-        path += `&organizationId=${id}&orgId=${id}`;
+        path += `&organizationId=${id}`;
         history.push(path);
       }
     });

@@ -16,18 +16,18 @@ const homePage = '/projects';
 @observer
 export default class OrgSelect extends Component {
   autoSelect() {
-    const { AppState: { currentMenuType: { orgId } }, history } = this.props;
+    const { AppState: { currentMenuType: { organizationId } }, history } = this.props;
     const currentData = this.getCurrentData() || [];
     const localOrgId = localStorage.getItem('C7N-ORG-ID');
-    if (localOrgId) {
+    if (localOrgId && localOrgId !== 'undefined') {
       const orgObj = currentData.find(v => String(v.id) === localOrgId);
       if (orgObj) {
-        this.selectState(orgObj);
+        this.selectState({ organizationId: orgObj.id });
         return;
       }
     }
-    if (!orgId && currentData.length) {
-      this.selectState(currentData[0]);
+    if (!organizationId && currentData.length) {
+      this.selectState({ organizationId: currentData[0].id });
     }
   }
 
@@ -38,26 +38,31 @@ export default class OrgSelect extends Component {
     historyPushMenu(history, path, null, 'replace');
   }
 
-  selectState = (value, gotoBuzz) => {
+  selectState = (value, gotoHome) => {
     const { AppState, HeaderStore, MenuStore, history } = this.props;
     const { id, name, type, organizationId, category } = value;
     localStorage.setItem('C7N-ORG-ID', id);
     let parsed;
     let path;
-    if (gotoBuzz) {
+    if (gotoHome) {
       parsed = {
         id,
         name,
         type,
-        organizationId,
+        organizationId: id || organizationId,
         category,
-        orgId: id,
       };
       path = `${homePage}?${queryString.stringify(parsed)}`;
     } else {
-      parsed = queryString.parse(history.location.search);
-      parsed.orgId = id;
+      parsed = {
+        id,
+        name,
+        type,
+        organizationId: id || organizationId,
+        category,
+      };
       path = `${history.location.pathname === '/' ? homePage : history.location.pathname}?${queryString.stringify(parsed)}`;
+      AppState.changeMenuType(parsed);
     }
     MenuStore.setActiveMenu(null);
     historyPushMenu(history, path, null, 'replace');
@@ -103,16 +108,16 @@ export default class OrgSelect extends Component {
 
   render() {
     const {
-      HeaderStore, AppState: { currentMenuType: { name: selectTitle = '选择组织', type, category, id, organizationId, orgId }, getUserInfo }, history,
+      HeaderStore, AppState: { currentMenuType: { name: selectTitle = '选择组织', type, category, id, organizationId }, getUserInfo }, history,
     } = this.props;
     const currentData = this.getCurrentData() || [];
-    const orgObj = currentData.find(v => String(v.id) === orgId);
+    const orgObj = currentData.find(v => String(v.id) === (organizationId || id));
     if (!orgObj && currentData.length && type !== 'project') {
       if (getUserInfo.admin) {
         const obj = queryString.parse(history.location.search);
         obj.into = true;
-        obj.name = decodeURIComponent(obj.name);
-        if (!obj.orgId) {
+        obj.name = obj.name && decodeURIComponent(obj.name);
+        if (!obj.organizationId) {
           setTimeout(() => {
             this.autoSelect();
           }, 100);

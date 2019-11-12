@@ -101,9 +101,9 @@ class AppState {
 
   @computed
   get currentOrginazationOrProjectId() {
-    const { id, type, orgId } = this.menuType;
+    const { id, type, organizationId } = this.menuType;
     if (type === 'project') return id;
-    if (type === 'organization') return id || orgId;
+    if (type === 'organization') return id || organizationId;
     return null;
   }
 

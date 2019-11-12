@@ -6,7 +6,7 @@ export default (applicationId, history) => ({
   selection: false,
   transport: {
     read: {
-      url: `/base/v1/organizations/${queryString.parse(history.location.search).orgId}/applications/${applicationId}/services/list`,
+      url: `/base/v1/organizations/${queryString.parse(history.location.search).organizationId}/applications/${applicationId}/services/list`,
       method: 'get',
     },
   },
