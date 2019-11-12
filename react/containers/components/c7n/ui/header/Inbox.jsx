@@ -7,7 +7,7 @@ import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import { Badge, Button, Icon, Spin, Tabs, Avatar, Tooltip } from 'choerodon-ui';
-import { Button as ButtonPro } from 'choerodon-ui/pro';
+import { Button as ButtonPro, CheckBox } from 'choerodon-ui/pro';
 import WSHandler from '../../tools/ws/WSHandler';
 import defaultAvatar from './style/icons/favicon.png';
 import { getCookie } from '../../../../common';
@@ -34,10 +34,10 @@ class RenderPopoverContentClass extends Component {
       HeaderStore.setInboxDetailVisible(false);
     }, 700);
   };
-  
+
   render() {
     const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg, handleSettingReceive, readAllMsg } = this.props;
-    const { inboxVisible, getUnreadAll, announcementClosed, getUnreadMsg, getUnreadNotice, getUnreadOther } = HeaderStore;
+    const { inboxVisible, getUnreadAll, announcementClosed, getUnreadMsg, getIsTodo, getUnreadOther } = HeaderStore;
     const siderClasses = classNames({
       [`${prefixCls}-sider`]: true,
       [`${prefixCls}-sider-visible`]: inboxVisible,
@@ -52,7 +52,7 @@ class RenderPopoverContentClass extends Component {
     );
     return (
       <div className={siderClasses}>
-        <div className={`${prefixCls}-sider-header-wrap ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
+        <div className={`${prefixCls}-sider-header-wrap no-mr ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
           <div className={`${prefixCls}-sider-header`}>
             <div className={`${prefixCls}-sider-header-title`}>
               <span className="msgTitle">消息通知</span>
@@ -64,7 +64,7 @@ class RenderPopoverContentClass extends Component {
                 onClick={() => handleVisibleChange(!inboxVisible)}
               />
             </div>
-            <Tabs defaultActiveKey="1" tabBarExtraContent={operations}>
+            <Tabs defaultActiveKey="1" activeKey={HeaderStore.getInboxActiveKey} onChange={(flag) => HeaderStore.setInboxActiveKey(flag)} tabBarExtraContent={operations}>
               <TabPane
                 tab={<span><Badge count={getUnreadMsg.filter(v => !v.read).length} style={{ transform: 'scale(.75)' }}>消息</Badge></span>}
                 key="1"
@@ -73,20 +73,26 @@ class RenderPopoverContentClass extends Component {
                   {renderMessages(getUnreadMsg)}
                 </Spin>
               </TabPane>
-              <TabPane
-                tab={<span><Badge count={getUnreadNotice.filter(v => !v.read).length} style={{ transform: 'scale(.75)' }}>通知</Badge></span>}
-                key="2"
-              >
-                <Spin spinning={inboxLoading}>
-                  {renderMessages(getUnreadNotice)}
-                </Spin> 
-              </TabPane>
               <TabPane tab="公告" key="3">
                 <Spin spinning={inboxLoading}>
                   {renderMessages(getUnreadOther)}
                 </Spin>
               </TabPane>
             </Tabs>
+            {
+              HeaderStore.getInboxActiveKey === '1' && (
+                <CheckBox
+                  name="controlled"
+                  value
+                  className="backlog-checkbox"
+                  checked={getIsTodo}
+                  onChange={isTodo => HeaderStore.setIsTodo(isTodo)}
+                >
+                  我的待办
+                </CheckBox>
+              )
+            }
+            
           </div>
         </div>
         <RenderPopoverContentDetailClass
@@ -146,6 +152,7 @@ class RenderPopoverContentDetailClass extends Component {
             <ButtonPro
               funcType="flat"
               icon="close"
+              className="close-button"
               onClick={() => {
                 HeaderStore.setInboxVisible(false);
                 setTimeout(() => {
@@ -220,7 +227,7 @@ export default class Inbox extends Component {
     HeaderStore.readMsg(AppState.userInfo.id);
     // HeaderStore.setInboxVisible(false);
   };
-  
+
   cleanAllMsg = () => {
     const { AppState, HeaderStore } = this.props;
     HeaderStore.deleteMsg(AppState.userInfo.id);
@@ -235,7 +242,7 @@ export default class Inbox extends Component {
 
   openSettings = () => {
     const { history, AppState } = this.props;
-    history.push(`/notify/receive-setting?type=site&orgId=${AppState.currentMenuType.orgId}`);
+    history.push(`/notify/receive-setting?type=site&organizationId=${AppState.currentMenuType.organizationId}`);
   };
 
   handleButtonClick = () => {
@@ -381,7 +388,6 @@ export default class Inbox extends Component {
           handleSettingReceive={this.openSettings}
           readAllMsg={this.readAllMsg}
         />
-        
       </React.Fragment>
     );
   }

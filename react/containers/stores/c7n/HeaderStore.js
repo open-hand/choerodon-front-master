@@ -51,6 +51,8 @@ class HeaderStore {
 
   @observable inboxData = [];
 
+  @observable inboxActiveKey = '1';
+
   @observable stickData = [];
 
   @observable inboxLoaded = false;
@@ -62,6 +64,17 @@ class HeaderStore {
   @observable announcementClosed = true;
 
   @observable inboxLoading = true;
+
+  @observable isTodo = false;
+
+  @action setInboxActiveKey(flag) {
+    this.inboxActiveKey = flag;
+  }
+
+  @action setIsTodo(_isTodo) {
+    debugger;
+    this.isTodo = _isTodo;
+  }
 
   @action setInboxDetailVisible(value) {
     this.inboxDetailVisible = value;
@@ -88,18 +101,28 @@ class HeaderStore {
   }
 
   @computed
+  get getInboxActiveKey() {
+    return this.inboxActiveKey;
+  }
+
+  @computed
+  get getIsTodo() {
+    return this.isTodo;
+  }
+
+  @computed
   get getUnreadAll() {
     return this.inboxData.slice();
   }
 
   @computed
   get getUnreadMsg() {
-    return sortBy(this.inboxData.filter(v => v.type === 'msg'), ['read']);
+    return sortBy(this.inboxData.filter(item => !this.isTodo || item.backlogFlag), ['read']);
   }
 
   @computed
   get getUnreadNotice() {
-    return sortBy(this.inboxData.filter(v => v.type === 'notice'), ['read']);
+    return sortBy(this.inboxData, ['read']);
   }
 
   @computed

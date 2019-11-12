@@ -299,7 +299,10 @@
     }
 
     &-header-wrap{
-      padding: 20px 0 0 24px;
+      padding: 20px 24px;
+      &.no-mr {
+        padding: 20px 0 0 24px;
+      }
       height: 100%;
       .c7n-tabs-extra-content {
         line-height: .34rem;
@@ -313,8 +316,14 @@
         height: 100%;
         padding-bottom: 9.5px;
         border-bottom: 1px solid rgba(0,0,0,.2);
+        .backlog-checkbox {
+          color: #000;
+          font-size: 0.13rem;
+          float: right;
+          margin-right: 0.16rem;
+        }
         .c7n-tabs {
-          height: calc(~"100% - 40px");
+          height: calc(~"100% - 80px");
           .c7n-tabs-content {
             height: calc(~"100% - 50px");
             .c7n-tabs-tabpane {
