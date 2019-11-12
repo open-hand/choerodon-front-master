@@ -69,10 +69,10 @@ export default class CommonMenu extends Component {
         }
         if (MenuStore.activeMenu && this.props.location.pathname !== '/') {
           // eslint-disable-next-line no-underscore-dangle
-          document.getElementsByTagName('title')[0].innerText = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${AppState.menuType.type !== 'site' ? `${AppState.menuType.name} – ` : ''} ${AppState.getSiteInfo.systemTitle || AppState.getSiteInfo.defaultTitle || window._env_.HEADER_TITLE_NAME}`;
+          document.getElementsByTagName('title')[0].innerText = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${AppState.menuType.type !== 'site' ? `${AppState.menuType.name} – ` : ''} ${AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle}`;
         } else {
           // eslint-disable-next-line no-underscore-dangle
-          document.getElementsByTagName('title')[0].innerText = AppState.getSiteInfo.defaultTitle || window._env_.HEADER_TITLE_NAME;
+          document.getElementsByTagName('title')[0].innerText = AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle;
         }
       });
     }
