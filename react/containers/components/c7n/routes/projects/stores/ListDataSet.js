@@ -14,7 +14,7 @@ const nameValidator = (value) => {
     return '名称不能全为空。';
   }
   if (value.length > 32) {
-    return '编码长度不能超过32！';
+    return '名称长度不能超过32！';
   } 
   // eslint-disable-next-line no-useless-escape
   const reg = /^[-—\.\w\s\u4e00-\u9fa5]{1,32}$/;
@@ -59,8 +59,8 @@ export default (AppState, history) => {
     if (!value) {
       return '请输入编码。';
     }
-    if (value.length > 32) {
-      return '编码长度不能超过32！';
+    if (value.length > 14) {
+      return '编码长度不能超过14！';
     } else if (value.trim() === '') {
       return '编码不能全为空！';
     }
