@@ -46,7 +46,7 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
         break;
       default:
     }
-    return `${route}${search}${search === '' ? `?organizationId=${organizationId}` : `&organizationId=${organizationId}`}`;
+    return `${route}${search}`;
   }
 
   function renderName() {
