@@ -66,14 +66,14 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
     );
   }
 
-  const realData = dataSet.filter(r => filterRecent(r));
+  const realData = dataSet.originalData.filter(r => filterRecent(r) && r.status !== 'add');
 
-  if (realData.length === 0 && dataSet.status === 'ready') {
+  if (realData.length === 0 && dataSet.status === 'ready' && Object.keys(dataSet.queryDataSet.current.toData()).filter((item) => item !== '__dirty').length === 0) {
     return <EmptyProject />;
   }
 
   return (
-    <Table dataSet={dataSet} filter={filterRecent} className="c7n-projects-table">
+    <Table dataSet={dataSet} filter={filterRecent} className="c7n-projects-table" pristine>
       <Column name="name" renderer={renderName} />
       <Column renderer={renderAction} width={100} />
       <Column name="code" />
