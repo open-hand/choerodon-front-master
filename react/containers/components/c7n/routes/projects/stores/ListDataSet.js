@@ -71,7 +71,7 @@ export default (AppState, history) => {
     }
     try {
       const { currentMenuType: { organizationId, id, type } } = AppState;
-      let apiOrgId;
+      let apiOrgId = organizationId;
       if (type === 'organization') {
         apiOrgId = id || organizationId;
       } else if (type === 'project') {
