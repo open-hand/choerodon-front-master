@@ -1,10 +1,11 @@
 import React from 'react';
 import { Avatar, Tooltip } from 'choerodon-ui';
+import queryString from 'query-string';
 import { Action } from '../../../../../../../index';
 import PROJECT_TYPE from '../../constant';
 
 const Card = ({ handleEditProject, handleClickProject, handleEnabledProject, dataSet, record, ...props }) => {
-  const { name, code, imageUrl, applicationName, category, createUserImageUrl, createUserName, creationDate } = props;
+  const { name, code, imageUrl, applicationName, category, createUserImageUrl, createUserName, creationDate, history } = props;
 
   function handleFocus() {
     const index = dataSet.findIndex(r => r.get('code') === code);
@@ -30,11 +31,12 @@ const Card = ({ handleEditProject, handleClickProject, handleEnabledProject, dat
   }
   
   function renderAction() {
+    const { organizationId } = queryString.parse(history.location.search);
     const actionDatas = [
       { service: ['base-service.organization-project.update'], icon: '', text: '编辑', action: handleFocus },
       { service: ['base-service.organization-project.disableProject', 'base-service.organization-project.enableProject'], icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabled },
     ];
-    return <Action data={actionDatas} style={{ marginLeft: 5, flexShrink: 0 }} />;
+    return <Action data={actionDatas} style={{ marginLeft: 5, flexShrink: 0 }} organizationId={organizationId} type="organization" />;
   }
 
   return (
