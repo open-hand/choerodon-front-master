@@ -130,6 +130,7 @@ class RenderPopoverContentDetailClass extends Component {
     });
     if (!inboxDetail) return null;
     const realSendTime = 'sendDate' in HeaderStore.inboxDetail ? HeaderStore.inboxDetail.sendDate : HeaderStore.inboxDetail.sendTime;
+    const isMsg = 'backlogFlag' in HeaderStore.inboxDetail;
     if (!inboxDetailVisible) {
       return null;
     }
@@ -164,7 +165,7 @@ class RenderPopoverContentDetailClass extends Component {
           <div className="body">
             <div className="title">
               <span>
-                <Icon type={iconMap[HeaderStore.inboxDetail.type] || 'volume_up'} style={{ marginRight: 10 }} />
+                <Icon type={isMsg ? 'textsms' : 'volume_up'} style={{ marginRight: 10 }} />
                 <a onClick={e => {}}>{HeaderStore.inboxDetail.title}</a>
               </span>
             </div>
@@ -286,10 +287,11 @@ export default class Inbox extends Component {
         <ul>
           {
             inboxData.map((data) => {
-              const { title, content, id, sendByUser, type, sendTime, read, sendDate } = data;
+              const { title, content, id, sendTime, read, sendDate } = data;
               const realSendTime = 'sendDate' in data ? sendDate : sendTime;
-              const icon = <Icon type={iconMap[data.type] || 'volume_up'} className="color-blue" />;
-              const iconWithBadge = read || !type ? icon : <Badge dot>{icon}</Badge>;
+              const isMsg = 'backlogFlag' in data;
+              const icon = <Icon type={isMsg ? 'textsms' : 'volume_up'} className="color-blue" />;
+              const iconWithBadge = read || !isMsg ? icon : <Badge dot>{icon}</Badge>;
               let showPicUrl;
               if (content.indexOf('<img') !== -1) {
                 showPicUrl = content.slice(content.indexOf('<img src="') + '<img src="'.length, content.indexOf('">', content.indexOf('<img src="')));
@@ -313,7 +315,7 @@ export default class Inbox extends Component {
                         )
                       }
                       {
-                        data.type ? (
+                        isMsg ? (
                           <Icon
                             type="close"
                             style={{ cursor: 'pointer', marginLeft: 12, fontSize: '20px' }}
