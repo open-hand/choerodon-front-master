@@ -6,11 +6,11 @@ stages:
 release:
   stage: release
   script:
-    - npm install --registry https://nexus.choerodon.com.cn/repository/choerodon-npm/ --sass-binary-site=http://npm.taobao.org/mirrors/node-sass
+    - npm install --registry ${NPM_REPO} --sass-binary-site=http://npm.taobao.org/mirrors/node-sass
     - chmod -R 755 node_modules
     - npm run compile
     - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>.npmrc
-    - npm publish --registry https://nexus.choerodon.com.cn/repository/private-npm/
+    - npm publish --registry ${NPM_REGISTRY}
   only:
     refs:
       - master
