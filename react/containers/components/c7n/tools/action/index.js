@@ -34,6 +34,7 @@ export default class Action extends Component {
   }
 
   renderMenuItem({ service, text, action, icon }, i) {
+    const { organizationId, type } = this.props;
     const item = (
       <Item action={action}>
         {icon && <Icon type={icon} />}
@@ -45,6 +46,8 @@ export default class Action extends Component {
         service={service}
         key={i}
         defaultChildren={cloneElement(item, { style: { display: 'none' } })}
+        organizationId={organizationId}
+        type={type}
       >
         {item}
       </Permission>
@@ -52,10 +55,12 @@ export default class Action extends Component {
   }
 
   render() {
-    const { data, placement, getPopupContainer, disabled, ...restProps } = this.props;
+    const { data, placement, getPopupContainer, disabled, organizationId, type, ...restProps } = this.props;
     return (
       <Permission
         service={this.getAllService(data)}
+        organizationId={organizationId}
+        type={type}
       >
         <Dropdown overlay={this.renderMenu(data)} trigger={['click']} placement={placement} getPopupContainer={getPopupContainer} disabled={disabled}>
           <Button size="small" shape="circle" style={{ color: '#000' }} icon="more_vert" {...restProps} />
