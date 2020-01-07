@@ -251,7 +251,7 @@ export default class Inbox extends Component {
 
   openSettings = () => {
     const { history, AppState } = this.props;
-    history.push(`/notify/receive-setting?type=site&organizationId=${AppState.currentMenuType.organizationId}`);
+    history.push(`/notify/receive-setting/project?type=site&organizationId=${AppState.currentMenuType.organizationId}`);
   };
 
   handleButtonClick = () => {
