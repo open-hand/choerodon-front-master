@@ -5,7 +5,7 @@ import { Table } from 'choerodon-ui/pro';
 import queryString from 'query-string';
 import Store from '../../stores';
 import { Action } from '../../../../../../../index';
-import EmptyProject from '../EmptyProject';
+import EmptyProject from '../../components/Empty';
 
 const { Column } = Table;
 
@@ -71,7 +71,16 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
   const realData = dataSet.originalData.filter(r => filterRecent(r) && r.status !== 'add');
 
   if (realData.length === 0 && dataSet.status === 'ready' && Object.keys(dataSet.queryDataSet.current.toData()).filter((item) => item !== '__dirty').length === 0) {
-    return <EmptyProject />;
+    let description = '';
+    if (isNotRecent === 'all') {
+      description = '暂无可操作的项目';
+    } else if (isNotRecent === 'recent') {
+      description = '暂无“最近使用”项目';
+    } else if (isNotRecent === 'mine') {
+      description = '暂无“我创建的” 项目';
+    }
+
+    return <EmptyProject title="暂无项目" description={description} />;
   }
 
   return (
