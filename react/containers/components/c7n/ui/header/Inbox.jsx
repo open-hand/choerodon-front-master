@@ -7,7 +7,7 @@ import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import { Badge, Button, Icon, Spin, Tabs, Avatar, Tooltip } from 'choerodon-ui';
-import { Button as ButtonPro, CheckBox } from 'choerodon-ui/pro';
+import { Button as ButtonPro, CheckBox, Modal } from 'choerodon-ui/pro';
 import WSHandler from '../../tools/ws/WSHandler';
 import defaultAvatar from './style/icons/favicon.png';
 import { getCookie } from '../../../../common';
@@ -18,10 +18,7 @@ const prefixCls = `${PREFIX_CLS}-boot-header-inbox`;
 
 /* eslint-disable-next-line */
 const reg = /\n|&nbsp;|&lt|&gt|<[^a\/][^>]*>|<\/[^a][^>]*>/g;
-const iconMap = {
-  msg: 'textsms',
-  notice: 'notifications',
-};
+const cleanModalKey = Modal.key();
 
 @inject('HeaderStore', 'AppState')
 @onClickOutside
@@ -36,7 +33,7 @@ class RenderPopoverContentClass extends Component {
   };
 
   render() {
-    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg, handleSettingReceive, readAllMsg } = this.props;
+    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, openCleanAllModal, handleSettingReceive, readAllMsg } = this.props;
     const { inboxVisible, getUnreadAll, announcementClosed, getUnreadMsg, getIsTodo, getUnreadOther } = HeaderStore;
     const siderClasses = classNames({
       [`${prefixCls}-sider`]: true,
@@ -47,7 +44,7 @@ class RenderPopoverContentClass extends Component {
       <React.Fragment>
         <Tooltip title="全部已读"><ButtonPro funcType="flat" icon="all_read" color="primary" onClick={readAllMsg} /></Tooltip>
         <Tooltip title="接收设置"><ButtonPro funcType="flat" icon="settings" color="primary" onClick={handleSettingReceive} style={{ marginLeft: '.04rem' }} /></Tooltip>
-        <Tooltip title="全部清除"><ButtonPro funcType="flat" icon="delete_sweep" color="primary" onClick={cleanAllMsg} style={{ marginLeft: '.04rem' }} /></Tooltip>
+        {HeaderStore.getInboxActiveKey === '1' && (<Tooltip title="全部清除"><ButtonPro funcType="flat" icon="delete_sweep" color="primary" onClick={openCleanAllModal} style={{ marginLeft: '.04rem' }} /></Tooltip>)}
       </React.Fragment>
     );
     return (
@@ -130,6 +127,7 @@ class RenderPopoverContentDetailClass extends Component {
     });
     if (!inboxDetail) return null;
     const realSendTime = 'sendDate' in HeaderStore.inboxDetail ? HeaderStore.inboxDetail.sendDate : HeaderStore.inboxDetail.sendTime;
+    const isMsg = 'backlogFlag' in HeaderStore.inboxDetail;
     if (!inboxDetailVisible) {
       return null;
     }
@@ -164,7 +162,7 @@ class RenderPopoverContentDetailClass extends Component {
           <div className="body">
             <div className="title">
               <span>
-                <Icon type={iconMap[HeaderStore.inboxDetail.type] || 'volume_up'} style={{ marginRight: 10 }} />
+                <Icon type={isMsg ? 'textsms' : 'volume_up'} style={{ marginRight: 10 }} />
                 <a onClick={e => {}}>{HeaderStore.inboxDetail.title}</a>
               </span>
             </div>
@@ -234,6 +232,17 @@ export default class Inbox extends Component {
     // HeaderStore.setInboxVisible(false);
   };
 
+  openCleanAllModal = () => {
+    Modal.open({
+      key: cleanModalKey,
+      title: '全部清除',
+      children: <span>确定要彻底清除所有消息吗？清除后您将无法查看到这些消息</span>,
+      okText: '清除',
+      onOk: this.cleanAllMsg,
+      className: `${prefixCls}-sider-clean-modal`,
+    });
+  };
+
   getUnreadMsg() {
     const { AppState, HeaderStore } = this.props;
     HeaderStore.axiosGetUserMsg(AppState.getUserId);
@@ -242,7 +251,7 @@ export default class Inbox extends Component {
 
   openSettings = () => {
     const { history, AppState } = this.props;
-    history.push(`/notify/receive-setting?type=site&organizationId=${AppState.currentMenuType.organizationId}`);
+    history.push(`/notify/receive-setting/project?type=site&organizationId=${AppState.currentMenuType.organizationId}`);
   };
 
   handleButtonClick = () => {
@@ -286,10 +295,11 @@ export default class Inbox extends Component {
         <ul>
           {
             inboxData.map((data) => {
-              const { title, content, id, sendByUser, type, sendTime, read, sendDate } = data;
+              const { title, content, id, sendTime, read, sendDate } = data;
               const realSendTime = 'sendDate' in data ? sendDate : sendTime;
-              const icon = <Icon type={iconMap[data.type] || 'volume_up'} className="color-blue" />;
-              const iconWithBadge = read || !type ? icon : <Badge dot>{icon}</Badge>;
+              const isMsg = 'backlogFlag' in data;
+              const icon = <Icon type={isMsg ? 'textsms' : 'volume_up'} className="color-blue" />;
+              const iconWithBadge = read || !isMsg ? icon : <Badge dot>{icon}</Badge>;
               let showPicUrl;
               if (content.indexOf('<img') !== -1) {
                 showPicUrl = content.slice(content.indexOf('<img src="') + '<img src="'.length, content.indexOf('">', content.indexOf('<img src="')));
@@ -313,7 +323,7 @@ export default class Inbox extends Component {
                         )
                       }
                       {
-                        data.type ? (
+                        isMsg ? (
                           <Icon
                             type="close"
                             style={{ cursor: 'pointer', marginLeft: 12, fontSize: '20px' }}
@@ -387,7 +397,10 @@ export default class Inbox extends Component {
           handleVisibleChange={this.handleVisibleChange}
           handleSettingReceive={this.openSettings}
           readAllMsg={this.readAllMsg}
+          openCleanAllModal={this.openCleanAllModal}
+          outsideClickIgnoreClass={`${prefixCls}-sider-clean-modal`}
         />
+
       </React.Fragment>
     );
   }

@@ -82,6 +82,6 @@
     "react/sort-comp": "off"
   },
   "globals": {
-    "Choerodon": true
+    "C7NHasModule": true
   }
 }

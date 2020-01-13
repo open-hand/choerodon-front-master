@@ -75,6 +75,7 @@ const ListView = observer(() => {
         return false;
       } else {
         prompt('创建成功');
+        HeaderStore.setRecentItem(res);
         dataSet.query();
         return true;
       }
@@ -204,7 +205,7 @@ const ListView = observer(() => {
         domain = menuDomain;
       }
       // if (route) {
-      path = `${route}?type=${type}&id=${id}${name && `&name=${encodeURIComponent(name)}`}${category ? `&category=${category}` : ''}`;
+      path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
       if (organizationId) {
         path += `&organizationId=${organizationId}`;
       }
@@ -221,7 +222,11 @@ const ListView = observer(() => {
     return (
       <div className="c7n-projects-header">
         <div className="c7n-projects-title">{`${org.name}中的项目`}</div>
-        <Permission service={['base-service.organization-project.create']}>
+        <Permission
+          service={['base-service.organization-project.create']}
+          type="organization"
+          organizationId={organizationId}
+        >
           <Button type="primary" funcType="raised" onClick={handleCreateProject}>创建项目</Button>
         </Permission>
       </div>
@@ -232,9 +237,9 @@ const ListView = observer(() => {
     return (
       <div className="c7n-projects-tool">
         <Select labelLayout="float" label="项目" clearButton={false} value={isNotRecent} onChange={handleChangeRecent} style={{ width: 260 }}>
-          {realData('recent').length > 0 && <Option key="recent" value="recent">最近使用</Option>}
+          {(realData('recent').length > 0 || dataSet.queryDataSet.length > 0) && <Option key="recent" value="recent">最近使用</Option>}
           <Option key="all" value="all">全部项目</Option>
-          {realData('mine').length > 0 && <Option key="mine" value="mine">我创建的</Option>}
+          {(realData('mine').length > 0 || dataSet.queryDataSet.length > 0) && <Option key="mine" value="mine">我创建的</Option>}
         </Select>
         <div className="c7n-projects-tool-icon-group">
           <Icon type="dashboard" style={iconStyle} className={showType === 'block' ? 'active' : null} onClick={() => toggleShowType('block')} />

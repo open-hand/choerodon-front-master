@@ -12,7 +12,7 @@ export default function renderExpandRow(getDs, { record }) {
 
   return (
     <Table queryBar="none" dataSet={dataSet} className="app-inrow-table c7n-app-table">
-      <Column name="name" />
+      <Column name="name" width={300} />
       <Column name="code" />
       <Column name="type" renderer={renderType} />
     </Table>

@@ -15,7 +15,7 @@ const nameValidator = (value) => {
   }
   if (value.length > 32) {
     return '名称长度不能超过32！';
-  } 
+  }
   // eslint-disable-next-line no-useless-escape
   const reg = /^[-—\.\w\s\u4e00-\u9fa5]{1,32}$/;
   if (!reg.test(value)) {
@@ -70,13 +70,11 @@ export default (AppState, history) => {
       return '编码只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"。';
     }
     try {
-      const { currentMenuType: { organizationId, id, type } } = AppState;
-      let apiOrgId;
+      const { currentMenuType: { id, type, organizationId } } = AppState;
+      let apiOrgId = organizationId;
       if (type === 'organization') {
         apiOrgId = id || organizationId;
       } else if (type === 'project') {
-        apiOrgId = organizationId;
-      } else {
         apiOrgId = organizationId;
       }
       const url = name === 'code'
@@ -99,7 +97,7 @@ export default (AppState, history) => {
       return '编码已存在或编码重名校验失败，请稍后再试。';
     }
   };
-  
+
   return {
     autoQuery: true,
     selection: false,
@@ -119,7 +117,10 @@ export default (AppState, history) => {
       { name: 'name', type: 'string', label: '项目名称', required: true, validator: nameValidator },
       { name: 'code', type: 'string', label: '项目编码', required: true, validator: codeValidator },
       { name: 'enabled', type: 'boolean', label: '状态' },
+      // { name: 'applicationCode', type: 'string', label: '应用编码', required: true, validator: codeValidator },
+      // { name: 'applicationName', type: 'string', label: '应用名称', required: true, validator: nameValidator },
       { name: 'category', type: 'string', label: '项目类型', required: true, textField: 'value', valueField: 'key', options: categoryDs, defaultValue: 'GENERAL' },
+      { name: 'programName', type: 'string', label: '项目群' },
       { name: 'createUserName', type: 'string', label: '创建人' },
       { name: 'createUserImageUrl', type: 'string' },
       { name: 'creationDate', type: 'date', label: '创建时间' },

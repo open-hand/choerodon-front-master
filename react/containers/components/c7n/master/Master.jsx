@@ -23,6 +23,7 @@ const InitUiConfigMaster = ({ AutoRouter }) => {
         modalSectionBorder: false,
         modalOkFirst: false,
         buttonFuncType: 'flat',
+        lovQueryUrl: (code) => `/base/v1/lov/code?code=${code}`,
         generatePageQuery: ({ page, pageSize, sortName, sortOrder }) => ({
           page,
           size: pageSize,
@@ -48,6 +49,7 @@ const InitUiConfigMaster = ({ AutoRouter }) => {
                 queryFields = [],
                 gridFields = [],
                 url,
+                description,
               } = originData;
               let { title } = originData;
               if (originData.failed) {
@@ -106,13 +108,13 @@ const InitUiConfigMaster = ({ AutoRouter }) => {
                 customUrl: null,
                 lovPageSize: pageSize,
                 lovItems,
-                treeFlag: originData.treeFlag,
+                treeFlag: originData.treeFlag ? 'Y' : 'N',
                 parentIdField: originData.parentField,
                 idField: originData.idField,
                 textField,
                 valueField,
-                placeholder: title || code,
-                editableFlag: originData.editFlag,
+                placeholder: description || title || code,
+                editableFlag: originData.editFlag ? 'Y' : 'N',
                 queryColumns: queryFields && queryFields.length ? 1 : 0,
               };
               return convertedData;

@@ -97,7 +97,7 @@ const ListView = observer(() => {
       <Content>
         {renderTool()}
         <Table expandedRowRenderer={InRowTable.bind(this, getDs)} dataSet={dataSet} className="c7n-app-table">
-          <Column name="name" renderer={renderName} onCell={handleOnCell} />
+          <Column name="name" width={300} renderer={renderName} onCell={handleOnCell} />
           <Column name="description" />
           <Column name="projectName" renderer={renderProjectName} />
           <Column name="creatorRealName" />

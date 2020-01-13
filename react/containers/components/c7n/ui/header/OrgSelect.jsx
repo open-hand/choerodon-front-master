@@ -112,6 +112,10 @@ export default class OrgSelect extends Component {
     } = this.props;
     const currentData = this.getCurrentData() || [];
     const orgObj = currentData.find(v => String(v.id) === (organizationId || id));
+    // if (history.location.pathname === '/') {
+    //   this.autoLocate();
+    //   return null;
+    // }
     if (!orgObj && currentData.length && type !== 'project') {
       if (getUserInfo.admin) {
         const obj = queryString.parse(history.location.search);
@@ -141,19 +145,20 @@ export default class OrgSelect extends Component {
     return (
       <React.Fragment>
         <li style={{ width: 'auto' }}>
-          <Button
-            className={buttonClass}
-            funcType="flat"
-            style={{
-              margin: 0,
-              padding: '0 20px',
-              width: 200,
-              borderLeft: '1px solid rgba(255, 255, 255, 0.3)',
-              borderRight: '1px solid rgba(255, 255, 255, 0.3)',
-              textAlign: 'left',
-            }}
-          >
-            {
+          <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
+            <Button
+              className={buttonClass}
+              funcType="flat"
+              style={{
+                margin: 0,
+                padding: '0 20px',
+                width: 200,
+                borderLeft: '1px solid rgba(255, 255, 255, 0.3)',
+                borderRight: '1px solid rgba(255, 255, 255, 0.3)',
+                textAlign: 'left',
+              }}
+            >
+              {
                 (orgObj && orgObj.name) ? (
                   <div>
                     <div style={{ fontSize: '12px', lineHeight: '20px', color: 'rgba(255, 255, 255, 0.6)' }}>组织</div>
@@ -161,7 +166,7 @@ export default class OrgSelect extends Component {
                   </div>
                 ) : null
               }
-            {
+              {
                 !(orgObj && orgObj.name) ? (
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span>请选择组织</span>
@@ -169,7 +174,11 @@ export default class OrgSelect extends Component {
                   </div>
                 ) : null
               }
-          </Button>
+              {
+                orgObj ? <Icon type="expand_more" style={{ position: 'absolute', top: 0, right: 8, color: 'rgba(255, 255, 255, .65)', fontSize: '.24rem' }} /> : null
+              }
+            </Button>
+          </Dropdown>
         </li>
         {
           (orgObj && orgObj.into) ? (

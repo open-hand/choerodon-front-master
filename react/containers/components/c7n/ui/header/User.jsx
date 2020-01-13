@@ -80,13 +80,20 @@ export default class UserPreferences extends Component {
   }
 
   render() {
-    const { AppState, HeaderStore, MenuStore } = this.props;
+    const { AppState, HeaderStore, MenuStore, history } = this.props;
+    const { organizationId } = queryString.parse(history.location.search);
     const { imageUrl, loginName, realName, email } = AppState.getUserInfo || {};
     // const realData = MenuStore.menuGroup && MenuStore.menuGroup.user.slice()[0] && MenuStore.menuGroup.user.slice()[0].subMenus.filter(item => !blackList.has(item.code));
     const realData = [this.getUserInfoMenuItem()];
     const AppBarIconRight = (
       <div className={`${prefixCls}-popover-content`}>
-        <Avatar src={imageUrl} prefixCls={prefixCls} onClick={() => { window.location = '/#/base/user-info?type=site'; }}>
+        <Avatar
+          src={imageUrl}
+          prefixCls={prefixCls}
+          onClick={() => {
+            history.push(`/base/user-info?type=site&organizationId=${organizationId}`);
+          }}
+        >
           {realName && realName.charAt(0)}
         </Avatar>
         <div className={`${prefixCls}-popover-title`}>

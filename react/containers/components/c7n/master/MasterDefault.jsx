@@ -31,8 +31,8 @@ function parseQueryToMenuType(search) {
       menuType.name = name;
     }
     if (organizationId) {
-      menuType.orgId = organizationId;
       menuType.organizationId = organizationId;
+      menuType.orgId = organizationId;
     }
     if (id) {
       menuType.id = id;
