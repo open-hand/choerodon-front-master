@@ -10,7 +10,7 @@ release:
     - chmod -R 755 node_modules
     - npm run compile
     - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>.npmrc
-    - npm publish --registry ${NPM_REGISTRY}
+    - npm publish --registry ${NPM_PUBLISH_REGISTRY}
   only:
     refs:
       - master
