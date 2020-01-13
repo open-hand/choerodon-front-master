@@ -21,8 +21,8 @@ function compileFile() {
 
 function compileDir(dir) {
   babelify(gulp.src([
-    `react/${  dir  }/**/*.js`,
-    `react/${  dir  }/**/*.jsx`,
+    `react/${dir}/**/*.js`,
+    `react/${dir}/**/*.jsx`,
   ]), dir);
 }
 
@@ -51,7 +51,7 @@ function getBabelCommonConfig() {
       polyfill: false,
     }],
     [
-      require.resolve('babel-plugin-import'), 
+      require.resolve('babel-plugin-import'),
       [
         {
           libraryName: 'choerodon-ui',
@@ -64,6 +64,10 @@ function getBabelCommonConfig() {
       ],
     ],
     require.resolve('babel-plugin-lodash'),
+    ['try-import', {
+      tryImport: 'C7NTryImport',
+      hasModule: 'C7NHasModule',
+    }],
   ];
   return {
     presets: [
