@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { Avatar } from 'choerodon-ui';
 import { Table } from 'choerodon-ui/pro';
-import queryString from 'query-string';
 import Store from '../../stores';
 import { Action } from '../../../../../../../index';
 import EmptyProject from '../../components/Empty';
