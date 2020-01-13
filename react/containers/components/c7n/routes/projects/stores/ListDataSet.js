@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 import { DataSet } from 'choerodon-ui/pro/lib';
-import PROJECT_TYPE from '../constant';
+import { PROJECT_TYPE } from '../constant';
 import axios from '../../../tools/axios';
 
 // 项目编码只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"  /^[a-z](([a-z0-9]|-(?!-))*[a-z0-9])*$/

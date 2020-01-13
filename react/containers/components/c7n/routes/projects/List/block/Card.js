@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar, Tooltip } from 'choerodon-ui';
 import queryString from 'query-string';
 import { Action } from '../../../../../../../index';
-import PROJECT_TYPE from '../../constant';
+import { PROJECT_TYPE } from '../../constant';
 
 const Card = ({ handleEditProject, handleClickProject, handleEnabledProject, dataSet, record, ...props }) => {
   const { name, code, imageUrl, applicationName, category, createUserImageUrl, createUserName, creationDate, history } = props;

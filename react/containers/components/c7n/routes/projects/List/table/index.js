@@ -6,8 +6,8 @@ import { Table } from 'choerodon-ui/pro';
 import Store from '../../stores';
 import { Action } from '../../../../../../../index';
 import EmptyProject from '../../components/Empty';
+import { HAS_AGILE_PRO } from '../../constant';
 
-const hasAgilePro = C7NHasModule('@choerodon/agile-pro');
 const { Column } = Table;
 
 const actionStyle = {
@@ -91,7 +91,7 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
       <Column name="code" />
       <Column name="category" />
       <Column name="enabled" renderer={renderEnabled} align="left" />
-      {hasAgilePro && <Column name="programName" />}
+      {HAS_AGILE_PRO && <Column name="programName" />}
       <Column name="createUserName" />
       <Column name="creationDate" />
     </Table>
