@@ -48,6 +48,8 @@ export default class Action extends Component {
         type={type}
         key={i}
         defaultChildren={cloneElement(item, { style: { display: 'none' } })}
+        organizationId={organizationId}
+        type={type}
       >
         {item}
       </Permission>

@@ -29,7 +29,7 @@ const Card = ({ handleEditProject, handleClickProject, handleEnabledProject, dat
       handleEnabledProject();
     }
   }
-  
+
   function renderAction() {
     const { organizationId } = queryString.parse(history.location.search);
     const actionDatas = [
