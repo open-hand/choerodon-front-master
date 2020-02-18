@@ -74,7 +74,7 @@ class Masters extends Component {
   }
 
   updateTheme = (newPrimaryColor) => {
-    if (newPrimaryColor === 'undefined' || !newPrimaryColor) {
+    if (newPrimaryColor === 'undefined' || newPrimaryColor === 'null' || !newPrimaryColor) {
       return;
     }
     const colorArr = newPrimaryColor.split(',');
