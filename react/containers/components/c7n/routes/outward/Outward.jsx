@@ -17,6 +17,7 @@ const InitUiConfigMaster = ({ AutoRouter }) => {
         queryBar: 'bar',
         tableBorder: false,
         lookupAxiosMethod: 'get',
+        lookupUrl: (code) => `base/v1/lookups/code/${code}`,
         tableHighLightRow: false,
         tableRowHeight: 32,
         tableColumnResizable: false,
