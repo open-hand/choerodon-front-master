@@ -9,8 +9,7 @@
   ],
   "scripts": {
     "start": "choerodon-front-boot start --config ./react/config.js",
-    "compile": "gulp compile",
-    "compile:bin": "choerodon-front-boot compile",
+    "compile": "choerodon-front-boot compile",
     "copy": "gulp copy"
   },
   "keywords": [
