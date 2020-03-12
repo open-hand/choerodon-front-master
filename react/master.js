@@ -17,14 +17,12 @@ const spinStyle = {
   textAlign: 'center',
   paddingTop: 300,
 };
-
+const language = AppState.currentLanguage;
 const UILocaleProviderAsync = asyncRouter(
   () => import('choerodon-ui/lib/locale-provider'),
-  { locale: () => import(`choerodon-ui/lib/locale-provider/${AppState.currentLanguage}.js`) },
+  { locale: () => import(`choerodon-ui/lib/locale-provider/${language}.js`) },
 );
-
-const language = AppState.currentLanguage;
-const IntlProviderAsync = asyncLocaleProvider(language, 
+const IntlProviderAsync = asyncLocaleProvider(language,
   () => import(`./containers/locale/${language}`),
   () => import(`react-intl/locale-data/${language.split('_')[0]}`));
 
@@ -96,7 +94,7 @@ export default class Index extends React.Component {
               <Switch>
                 <Route
                   path="/"
-                  // component={this.auth() ? Master : noaccess}
+                // component={this.auth() ? Master : noaccess}
                 >
                   <Master AutoRouter={this.props.AutoRouter} />
                 </Route>
