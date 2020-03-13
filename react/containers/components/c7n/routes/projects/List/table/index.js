@@ -44,7 +44,7 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
         onClick={() => handleClickProject(record)}
         className="link"
       >
-        <Avatar src={imageUrl} size={16} style={{ marginRight: 8, fontSize: '12px', verticalAlign: 'top', marginTop: 10 }}>{name && name.charAt(0)}</Avatar>
+        <Avatar src={imageUrl} size={16} style={{ marginRight: 8, fontSize: '12px', verticalAlign: 'top', marginTop: 10, background: 'rgba(104, 135, 232, 0.2)', border: '1px solid #6887E8', color: '#6887E8' }}>{name && name.charAt(0)}</Avatar>
         {name}
       </span>
     );

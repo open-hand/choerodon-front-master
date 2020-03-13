@@ -9,6 +9,7 @@
 ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, .26);
   transition: background-color .3s;
+
   &:hover {
     background-color: #aeaeae;
   }
@@ -20,43 +21,58 @@
 .@{c7n-pro-prefix} {
   &-input-group-help {
     background: #fff;
+
     i {
       color: rgba(0, 0, 0, 0.54);
       font-size: 0.16rem;
     }
   }
+
   &-btn {
     height: 0.32rem;
+
     i {
       font-size: 0.18rem;
     }
   }
+
   &-modal {
     &-body {
       padding-top: 0.24rem;
     }
+
     &-footer {
       background: white;
+
       .c7n-pro-btn {
         font-weight: 500;
+
         & > span {
           vertical-align: baseline;
         }
+
         &-default {
           color: #3f51b5;
         }
       }
     }
   }
+
   &-validation-message {
     white-space: normal;
   }
+
+  &-select-dropdown-menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+  }
 }
+
 .c7n-modal-sidebar {
   .c7n-modal-body {
     padding: .24rem .2rem;
   }
-   & > .c7n-modal-content  {
+
+  & > .c7n-modal-content {
     right: 0 !important;
     left: inherit !important;
   }
