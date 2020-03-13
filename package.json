@@ -9,8 +9,7 @@
   ],
   "scripts": {
     "start": "choerodon-front-boot start --config ./react/config.js",
-    "compile": "choerodon-front-boot compile",
-    "copy": "gulp copy"
+    "compile": "choerodon-front-boot compile"
   },
   "keywords": [
     "choerodon",
@@ -24,10 +23,10 @@
   "author": "qyellow",
   "license": "ISC",
   "peerDependencies": {
-    "@choerodon/boot": "0.20.x"
+    "@choerodon/boot": "0.21.x"
   },
   "devDependencies": {
-    "@choerodon/boot": "0.20.x"
+    "@choerodon/boot": "0.21.x"
   },
   "dependencies": {
     "react-onclickoutside": "^6.8.0",
