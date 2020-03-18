@@ -41,7 +41,7 @@ export default class OrgSelect extends Component {
   selectState = (value, gotoHome) => {
     const { AppState, HeaderStore, MenuStore, history } = this.props;
     const { id, name, type, organizationId, category } = value;
-    localStorage.setItem('C7N-ORG-ID', id);
+    localStorage.setItem('C7N-ORG-ID', id || organizationId);
     let parsed;
     let path;
     if (gotoHome) {
