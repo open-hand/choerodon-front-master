@@ -6,6 +6,7 @@ const PROJECT_TYPE = HAS_AGILE_PRO ? {
   PROGRAM: '敏捷项目群项目',
 } : {
   GENERAL: 'DevOps全流程项目',
+  AGILE: '普通敏捷项目',
 };
 
 export { PROJECT_TYPE, HAS_AGILE_PRO };
