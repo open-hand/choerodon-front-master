@@ -30,10 +30,11 @@ const ListView = observer(() => {
   const {
     dataSet, showType, toggleShowType, isNotRecent, toggleRecent, setAuto,
     HeaderStore, MenuStore, history, AppState,
-    projectStore: { getCanCreate },
+    projectStore,
     intl: { formatMessage },
   } = context;
   const recents = HeaderStore.getRecentItem;
+  const { getCanCreate } = projectStore;
   const checkRecentIsEmpty = useCallback(({ dataSet: ds }) => {
     if (!ds.find(r => recents.find(v => v.id === r.get('id')))) {
       toggleRecent('all');
@@ -79,6 +80,7 @@ const ListView = observer(() => {
         prompt('创建成功');
         HeaderStore.setRecentItem(res);
         dataSet.query();
+        projectStore.checkCreate(organizationId);
         return true;
       }
     }
