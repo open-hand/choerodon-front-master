@@ -10,6 +10,7 @@
   display: flex;
   width: 100%;
   height: 100%;
+
   a {
     text-decoration: none;
     color: inherit;
@@ -24,6 +25,7 @@
   }
 
   @include button-link-masker();
+
   .icon {
     font-size: .2rem !important;
     color: rgba(0, 0, 0, .54) !important;
@@ -35,17 +37,23 @@
     font-size: .14rem;
     // color: #000;
   }
+
   &-left,
   &-right {
     display: flex;
     flex-direction: column;
     border-right: 1px solid #d3d3d3;
     background-color: #fafafa;
-    .c7n-menu-inline-collapsed > .c7n-menu-item, .c7n-menu-inline-collapsed > .c7n-menu-item-group > .c7n-menu-item-group-list > .c7n-menu-item, .c7n-menu-inline-collapsed > .c7n-menu-submenu > .c7n-menu-submenu-title {
+
+    .c7n-menu-inline-collapsed > .c7n-menu-item,
+    .c7n-menu-inline-collapsed > .c7n-menu-item-group > .c7n-menu-item-group-list > .c7n-menu-item,
+    .c7n-menu-inline-collapsed > .c7n-menu-submenu > .c7n-menu-submenu-title {
       padding: 0 0.15rem !important;
     }
+
     .c7n-menu {
       background-color: rgb(250, 250, 250);
+
       // margin-top: 8px;
       .icon {
         font-size: 18px;
@@ -53,15 +61,18 @@
         height: 18px;
         margin-right: 17px;
       }
+
       li:first-child {
         .c7n-menu-item-group-title {
           padding-top: 0;
         }
       }
+
       &-item,
       &-submenu > .c7n-menu-submenu-title {
         padding: 0 15px !important;
       }
+
       &-item {
         // color: rgba(0, 0, 0, .65);
         color: #000;
@@ -70,6 +81,7 @@
         align-items: center;
       }
     }
+
     &-header {
       display: flex;
       padding: 0 12px;
@@ -80,6 +92,7 @@
       flex-shrink: 0;
       color: rgba(0, 0, 0, .65);
       white-space: nowrap;
+
       // margin-bottom: -15px;
       .icon {
         font-size: 24px;
@@ -88,11 +101,13 @@
         margin-right: 14px;
         margin-left: 2px;
         cursor: pointer;
+
         & + span {
           vertical-align: middle;
         }
       }
     }
+
     &-content {
       overflow: auto;
       overflow-x: hidden;
@@ -100,6 +115,7 @@
       margin-bottom: .24rem;
     }
   }
+
   &-left {
     position: absolute;
     width: 280px;
@@ -107,10 +123,13 @@
     z-index: 998;
     transition: all 0.25s;
     left: -280px;
+
     &.expanded {
       left: 0;
     }
+
     .c7n-menu .c7n-menu-item {
+
       // color: #000;
       &-selected,
       &-selected:hover {
@@ -118,9 +137,11 @@
         background-color: @primary-color;
       }
     }
+
     &-header {
       cursor: pointer;
       position: relative;
+
       div {
         width: 100%;
         display: flex;
@@ -128,38 +149,57 @@
       }
     }
   }
+
   &-right {
     width: 250px;
     transition: width 0.25s;
+
     .c7n-menu {
       border-right: 0;
+
       &-sub {
         background: #f6f6f6;
       }
+
       &-submenu-active {
         background-color: transparent;
       }
+
       &-selected:after,
       &-item-selected:after {
         display: none;
       }
+
       > .c7n-menu-item {
         align-items: unset;
       }
     }
+
+    .c7n-menu-item a:hover {
+      color: black;
+    }
+
     .c7n-menu-item-selected,
     .c7n-menu-vertical .c7n-menu-submenu-selected,
     &-popup .c7n-menu-item-selected {
       color: @primary-color;
+
+      a {
+        color: @primary-color  !important;
+      }
+
       background-color: rgba(140, 158, 255, 0.16) !important;
+
       .icon {
-        color: @primary-color !important;
+        color: @primary-color  !important;
       }
     }
+
     &-popup.c7n-menu-submenu-popup {
       .c7n-menu {
         box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.20), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
         min-width: 130px;
+
         &-item {
           padding-left: 0;
           padding-right: 20px;
@@ -177,31 +217,39 @@
 
     &.collapsed {
       width: 50px;
+
       .c7n-menu-inline-collapsed {
         width: 50px;
+
         .c7n-menu-item {
           padding: 0 15px !important;
         }
+
         .c7n-menu-item-group-title {
           padding-left: .12rem;
         }
+
         .c7n-menu-submenu-title {
           text-overflow: clip;
+
           .c7n-menu-submenu-arrow {
             right: .06rem;
           }
         }
       }
+
       .icon + span {
         max-width: 0;
         display: inline-block;
         opacity: 0;
       }
+
       .common-menu-right-footer .icon {
         transform: scale(-1);
       }
     }
   }
+
   &-mask {
     z-index: 997;
     width: 100%;
