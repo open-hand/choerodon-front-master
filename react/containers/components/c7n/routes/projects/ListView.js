@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useCallback } from 'react';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
-import { Icon, Button, Modal as OldModal } from 'choerodon-ui';
+import { Icon, Button, Modal as OldModal, Tooltip } from 'choerodon-ui';
 import { Modal, Select, message } from 'choerodon-ui/pro';
 import Store from './stores';
 import List from './List';
@@ -29,9 +29,12 @@ const ListView = observer(() => {
   const cancelCreate = useRef(false);
   const {
     dataSet, showType, toggleShowType, isNotRecent, toggleRecent, setAuto,
-    HeaderStore, MenuStore, history, intl, AppState,
+    HeaderStore, MenuStore, history, AppState,
+    projectStore,
+    intl: { formatMessage },
   } = context;
   const recents = HeaderStore.getRecentItem;
+  const { getCanCreate } = projectStore;
   const checkRecentIsEmpty = useCallback(({ dataSet: ds }) => {
     if (!ds.find(r => recents.find(v => v.id === r.get('id')))) {
       toggleRecent('all');
@@ -77,6 +80,7 @@ const ListView = observer(() => {
         prompt('创建成功');
         HeaderStore.setRecentItem(res);
         dataSet.query();
+        projectStore.checkCreate(organizationId);
         return true;
       }
     }
@@ -227,7 +231,19 @@ const ListView = observer(() => {
           type="organization"
           organizationId={organizationId}
         >
-          <Button type="primary" funcType="raised" onClick={handleCreateProject}>创建项目</Button>
+          <Tooltip
+            title={getCanCreate ? '' : '项目数量已达上限，无法创建更多项目'}
+            placement="bottom"
+          >
+            <Button
+              type="primary"
+              funcType="raised"
+              disabled={!getCanCreate}
+              onClick={handleCreateProject}
+            >
+              创建项目
+            </Button>
+          </Tooltip>
         </Permission>
       </div>
     );
