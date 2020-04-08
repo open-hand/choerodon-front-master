@@ -239,7 +239,7 @@ export default class Inbox extends Component {
       children: <span>确定要彻底清除所有消息吗？清除后您将无法查看到这些消息</span>,
       okText: '清除',
       onOk: this.cleanAllMsg,
-      className: `${prefixCls}-sider-clean-modal`,
+      className: 'ignore-react-onclickoutside',
     });
   };
 
@@ -398,7 +398,6 @@ export default class Inbox extends Component {
           handleSettingReceive={this.openSettings}
           readAllMsg={this.readAllMsg}
           openCleanAllModal={this.openCleanAllModal}
-          outsideClickIgnoreClass={`${prefixCls}-sider-clean-modal`}
         />
 
       </React.Fragment>
