@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import queryString from 'query-string';
 import { inject, observer } from 'mobx-react';
 import { withRouter, Link } from 'react-router-dom';
@@ -103,19 +103,23 @@ export default class UserPreferences extends Component {
         <div className={`${prefixCls}-popover-menu`}>
           <Menu selectedKeys={[-1]} onClick={this.handleMenuItemClick}>
             {realData && realData.map(item => (
-              <MenuItem className={`${prefixCls}-popover-menu-item`} key={item.route}>
-                <Icon type={item.icon} />
-                {item.name}
-              </MenuItem>
+              item.code && (
+                <MenuItem className={`${prefixCls}-popover-menu-item`} key={item.code}>
+                  <Icon type={item.icon} />
+                  {item.name}
+                </MenuItem>
+              )
             ))}
             {
-              MenuStore.getSiteMenuData.length > 0 ? [
-                <Menu.Divider />,
-                <MenuItem className={`${prefixCls}-popover-menu-item`} key="site-setting">
-                  <Icon type="settings" />
-                  平台管理
-                </MenuItem>,
-              ] : null
+              MenuStore.getSiteMenuData.length > 0 ? (
+                <Fragment>
+                  <Menu.Divider />
+                  <MenuItem className={`${prefixCls}-popover-menu-item`} key="site-setting">
+                    <Icon type="settings" />
+                    平台管理
+                  </MenuItem>
+                </Fragment>
+              ) : null
             }
 
           </Menu>

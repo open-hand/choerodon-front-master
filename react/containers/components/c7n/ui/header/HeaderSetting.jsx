@@ -41,7 +41,7 @@ const Setting = ({ AppState, HeaderStore, MenuStore, history, ...props }) => {
     <React.Fragment>
       {
         LI_MAPPING.map(list => (
-          <Button className={`block ${extraCls(list)}`} onClick={() => goto(list)}>
+          <Button key={list.activePath} className={`block ${extraCls(list)}`} onClick={() => goto(list)}>
             <Icon type={list.icon} style={iconStyle} />
             {list.title}
           </Button>

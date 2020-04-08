@@ -1,7 +1,7 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "0.22.0",
+  "version": "0.0.0",
   "description": "A package of Master for Choerodon platform.",
   "main": "./lib/index.js",
   "files": [
@@ -29,7 +29,6 @@
     "@choerodon/boot": "0.21.x"
   },
   "dependencies": {
-    "react-onclickoutside": "^6.8.0",
-    "rxjs": "5.0.0"
+    "react-onclickoutside": "^6.8.0"
   }
 }
