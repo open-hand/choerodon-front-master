@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import esModule from './esModule';
 
 function transformInjects(getInjects, inject) {
-  if (typeof getInjects === 'function') {
-    return { [inject.getStoreName()]: inject[0] };
+  if (!getInjects) {
+    return {};
+  }
+  if (typeof getInjects === 'function' && inject[0].getStoreName) {
+    return { [inject[0].getStoreName()]: inject[0] };
   } else if (typeof getInjects === 'object') {
     const result = {};
     Object.keys(getInjects).forEach((key, i) => {
@@ -14,12 +17,13 @@ function transformInjects(getInjects, inject) {
   return {};
 }
 function getInjectDataFetchers(getInjects) {
+  if (!getInjects) {
+    return [];
+  }
   if (typeof getInjects === 'function') {
     return [getInjects()];
   } else if (typeof getInjects === 'object') {
     return Object.keys(getInjects).map((key) => getInjects[key]());
-  } else {
-    return [];
   }
 }
 export default function asyncRouter(getComponent, getInjects, extProps, callback) {
