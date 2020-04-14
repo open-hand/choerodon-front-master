@@ -111,7 +111,7 @@ export default class OrgSelect extends Component {
       HeaderStore, AppState: { currentMenuType: { name: selectTitle = '选择组织', type, category, id, organizationId }, getUserInfo }, history,
     } = this.props;
     const currentData = this.getCurrentData() || [];
-    const orgObj = currentData.find(v => String(v.id) === (organizationId || id));
+    const orgObj = currentData.find(v => String(v.id) === (organizationId || id) || v.id === (organizationId || id));
     // if (history.location.pathname === '/') {
     //   this.autoLocate();
     //   return null;
