@@ -20,7 +20,9 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderSto
     const projectStore = useStore();
 
     useEffect(() => {
-      projectStore.checkCreate(organizationId);
+      if (organizationId) {
+        projectStore.checkCreate(organizationId);
+      }
     }, [type, id, organizationId]);
 
     const value = {
