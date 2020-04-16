@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
 import queryString from 'query-string';
+import filter from 'lodash/filter';
 import CommonMenu from '../ui/menu';
 import MasterHeader from '../ui/header';
 import AnnouncementBanner from '../ui/header/AnnouncementBanner';
@@ -153,6 +154,11 @@ class Masters extends Component {
       isUser = true;
     } else if (!menuType.type) {
       menuType.type = 'site';
+    } else if (menuType.type === 'project' && (!menuType.category || menuType.category === 'undefined')) {
+      const project = filter(HeaderStore.getProData, ({ id, organizationId }) => String(id) === menuType.id && String(organizationId) === menuType.organizationId)[0];
+      if (project) {
+        menuType.category = project.category;
+      }
     }
     AppState.setTypeUser(isUser);
     AppState.changeMenuType(menuType);
