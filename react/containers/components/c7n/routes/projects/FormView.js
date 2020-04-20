@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Button, Icon } from 'choerodon-ui';
-import { Form, TextField, Select } from 'choerodon-ui/pro';
+import { Form, TextField, Select, Tooltip } from 'choerodon-ui/pro';
 import AvatarUploader from './components/avatarUploader';
 import { fileServer } from '../../../../common';
 
@@ -67,7 +67,19 @@ export default function FormView({ context }) {
       <Form record={dataSet.current} className="c7n-project-sider">
         <TextField name="name" />
         <TextField name="code" disabled={dataSet.current.status !== 'add'} />
-        <Select name="category" disabled={dataSet.current.status !== 'add'} />
+        <Select
+          name="category"
+          disabled={dataSet.current.status !== 'add'}
+          addonAfter={(
+            <Tooltip
+              title="普通敏捷项目类型中仅包含了敏捷、测试、知识管理等模块的功能；DevOps全流程项目相较于普通敏捷项目，则多出了开发、部署模块的功能。"
+              placement="bottomRight"
+              arrowPointAtCenter
+            >
+              <Icon type="help" className="c7n-master-projectsetting-help-icon" />
+            </Tooltip>
+          )}
+        />
         {
           dataSet.current.status !== 'add' && [
             <TextField name="creationDate" disabled />,
