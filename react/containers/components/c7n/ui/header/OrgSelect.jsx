@@ -22,12 +22,12 @@ export default class OrgSelect extends Component {
     if (localOrgId && localOrgId !== 'undefined') {
       const orgObj = currentData.find(v => String(v.id) === localOrgId);
       if (orgObj) {
-        this.selectState({ organizationId: orgObj.id });
+        this.selectState(orgObj);
         return;
       }
     }
     if (!organizationId && currentData.length) {
-      this.selectState({ organizationId: currentData[0].id });
+      this.selectState(currentData[0]);
     }
   }
 
@@ -112,10 +112,6 @@ export default class OrgSelect extends Component {
     } = this.props;
     const currentData = this.getCurrentData() || [];
     const orgObj = currentData.find(v => String(v.id) === (organizationId || id) || v.id === (organizationId || id));
-    // if (history.location.pathname === '/') {
-    //   this.autoLocate();
-    //   return null;
-    // }
     if (!orgObj && currentData.length && type !== 'project') {
       if (getUserInfo.admin) {
         const obj = queryString.parse(history.location.search);
@@ -139,6 +135,12 @@ export default class OrgSelect extends Component {
         }, 100);
         return null;
       }
+    }
+    if (history.location.pathname === '/') {
+      setTimeout(() => {
+        this.autoSelect();
+      }, 100);
+      return null;
     }
     const buttonClass = classnames(`${prefixCls}-button`, 'block', 'org-button');
     const menu = this.renderModalContent();
