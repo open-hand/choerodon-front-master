@@ -79,7 +79,7 @@ const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
                     tab={child.props.title}
                     key={child.props.tabKey}
                   >
-                    {React.createElement(child.props.component, props)}
+                    {cache || (currentKey && currentKey.indexOf(child.props.tabKey) > -1) ? React.createElement(child.props.component, props) : null}
                   </TabPane>
                 );
               } else {
