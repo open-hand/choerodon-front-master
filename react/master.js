@@ -3,6 +3,7 @@ import { withRouter, HashRouter as Router, Route, Switch } from 'react-router-do
 import queryString from 'query-string';
 import { inject, observer, Provider } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
+import { Modal } from 'choerodon-ui/pro';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
@@ -12,6 +13,7 @@ import noaccess from './containers/components/c7n/tools/error-pages/403';
 import stores from './containers/stores';
 import Master from './containers/components/c7n/master';
 import './containers/components/style';
+import { handleResponseError } from './containers/common';
 
 const spinStyle = {
   textAlign: 'center',
@@ -39,6 +41,24 @@ export default class Index extends React.Component {
     }
   }
 
+  checkOrg = async () => {
+    const { email } = AppState.getUserInfo;
+    try {
+      const res = await AppState.loadOrgDate(email);
+      if (res && !res.failed) {
+        Modal.open({
+          key: Modal.key(),
+          title: '试用期限',
+          children: `您已成功注册，所属组织的试用期限还剩${res}天。`,
+          okText: '我知道了',
+          okCancel: false,
+        });
+      }
+    } catch (error) {
+      handleResponseError(error);
+    }
+  }
+
   auth = async () => {
     this.setState({ loading: true });
     const { access_token: accessToken, token_type: tokenType, expires_in: expiresIn } = queryString.parse(window.location.hash);
@@ -50,6 +70,7 @@ export default class Index extends React.Component {
       return false;
     }
     AppState.setUserInfo(await AppState.loadUserInfo());
+    await this.checkOrg();
     this.setState({ loading: false });
   }
 
