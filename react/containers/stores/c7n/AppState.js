@@ -134,6 +134,8 @@ class AppState {
 
   loadUserInfo = () => axios.get('/base/v1/users/self');
 
+  loadOrgDate = (email) => axios.get(`/base/v1/organizations/daysRemaining?email=${email}`);
+
   loadSiteInfo = () => axios.get('/base/v1/system/setting');
 }
 
