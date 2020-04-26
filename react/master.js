@@ -49,7 +49,7 @@ export default class Index extends React.Component {
         Modal.open({
           key: Modal.key(),
           title: '试用期限',
-          children: `您已成功注册，所属组织的试用期限还剩${res}天。`,
+          children: `您好，您所属组织的试用期限还剩${res}天。`,
           okText: '我知道了',
           okCancel: false,
         });
