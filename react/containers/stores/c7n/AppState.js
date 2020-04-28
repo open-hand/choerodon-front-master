@@ -132,7 +132,7 @@ class AppState {
     return this.isUser;
   }
 
-  loadUserInfo = () => axios.get('/base/v1/users/self');
+  loadUserInfo = () => axios.get('iam/hzero/v1/users/self');
 
   loadOrgDate = (email) => axios.get(`/base/v1/organizations/daysRemaining?email=${email}`);
 
