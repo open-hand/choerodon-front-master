@@ -1,5 +1,39 @@
 .c7n-starTargetPro {
-  background: #00bfa5;
   height: 226px;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  &-name {
+    font-size: 16px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: rgba(58, 52, 95, 1);
+  }
+  &-content {
+    background: white;
+    flex: 1;
+    border-radius:10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 184px;
+      height: 146px;
+    }
+    &-emptyText {
+      margin-left: 70px;
+      &-emptyP {
+        font-size:14px;
+        font-family:PingFangSC-Regular,PingFang SC;
+        font-weight:400;
+        color:rgba(58,52,95,0.65);
+      }
+      &-c7n-starTargetPro-content-emptyText-emptySuggest {
+        font-size:20px;
+        font-family:PingFangSC-Regular,PingFang SC;
+        font-weight:400;
+        color:rgba(58,52,95,1);
+      }
+    }
+  }
 }
