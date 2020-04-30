@@ -8,6 +8,7 @@ import getSearchString from '../../util/gotoSome';
 
 const iconStyle = { marginLeft: 0, marginRight: 0 };
 const LI_MAPPING = [
+  { title: '工作台', icon: 'home-o', activePath: '/workbench' },
   // { title: '协作共享', icon: 'question_answer', activePath: '/buzz/cooperate', exclude: '/buzz/cooperate-pro' },
   { title: '项目', icon: 'project_filled', activePath: '/projects' },
   // { title: '应用', icon: 'widgets', activePath: '/applications' },
