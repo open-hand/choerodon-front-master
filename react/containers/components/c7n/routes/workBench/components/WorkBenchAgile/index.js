@@ -1,11 +1,11 @@
 import React from 'react';
+import { StoreProvider } from "./stores";
+import WorkBenchAgile from './WorkBenchAgile';
 
-import './index.less';
-
-const StarTargetPro = () => (
-  <div className="c7n-workbenchAgile">
-    代办问题-快速链接
-  </div>
+const index = (props) => (
+  <StoreProvider {...props}>
+    <WorkBenchAgile />
+  </StoreProvider>
 )
 
-export default StarTargetPro;
+export default index
