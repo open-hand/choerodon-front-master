@@ -1,6 +1,6 @@
 import React from 'react';
 import { Content, Page } from '../../../../../index';
-import StarTargetPro from "./components/StarTargetPro";
+import StarTargetPro from './components/StarTargetPro';
 import WorkBenchAgile from './components/WorkBenchAgile';
 import TodoThings from './components/TodoThings';
 import SelfIntro from './components/SelfIntro';
@@ -22,6 +22,6 @@ const WorkBench = () => (
       <ServiceList />
     </div>
   </Page>
-)
+);
 
 export default WorkBench;
