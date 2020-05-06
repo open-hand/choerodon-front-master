@@ -1,6 +1,6 @@
 .c7n-workbench-check {
-  width: 4.76rem;
-  flex-grow: 1;
+  flex-basis: 44%;
+  margin-right: .2rem;
 
   &-item {
     background-color: #f5f6fa;
@@ -15,7 +15,7 @@
     }
 
     &-content {
-      flex-grow: 1;
+      flex: 1 1 auto;
       margin: 0 .24rem 0 .16rem;
       overflow: hidden;
     }
@@ -31,23 +31,23 @@
       line-height: .2rem;
       display: flex;
       align-items: center;
+      overflow: hidden;
 
       &-text {
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        //white-space: nowrap;
       }
     }
 
     &-btn {
-      width: .4rem;
+      flex: 0 0 .4rem;
       height: .4rem;
       line-height: .4rem;
       text-align: center;
       border-radius: .1rem;
       background-color: #fff;
       cursor: pointer;
-      flex-shrink: 0;
       font-size: .12rem;
 
       &-icon {
@@ -59,11 +59,10 @@
     }
 
     &-border {
-      width: .04rem;
+      flex: 0 0 .04rem;
       background-color: #ffb96a;
       border-radius: 4px;
       margin-left: -0.02rem;
-      flex-shrink: 0;
     }
 
     &-user {
@@ -72,10 +71,9 @@
       border: none;
       text-align: center;
       overflow: hidden;
-      width: .18rem;
       height: .18rem;
       line-height: .18rem;
-      flex-shrink: 0;
+      flex: 0 0 .18rem;
       margin-right: .05rem;
 
       &-text {
