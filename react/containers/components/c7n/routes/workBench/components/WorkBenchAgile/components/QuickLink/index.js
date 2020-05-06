@@ -22,7 +22,7 @@ const QuickLink = () => {
           <div className="c7n-quickLink-linkItem-right-profile" />
           <div className="c7n-quickLink-linkItem-right-content">
             <p className="c7n-quickLink-linkItem-right-content-project">{l.project}</p>
-            <p className="c7n-quickLink-linkItem-right-content-linkName">{l.linkName}</p>
+            <p className="c7n-quickLink-linkItem-right-content-linkName">{l.linkName}<Icon style={{ color: '#5266D4' }} type="link2" /></p>
           </div>
           <div>
             <Icon type="more_vert" />
