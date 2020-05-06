@@ -5,6 +5,7 @@ import WorkBenchAgile from './components/WorkBenchAgile';
 import TodoThings from './components/TodoThings';
 import SelfIntro from './components/SelfIntro';
 import ServiceList from './components/ServiceList';
+import EnvList from './components/EnvList';
 
 import './WorkBench.less';
 
@@ -20,6 +21,7 @@ const WorkBench = () => (
     <div className="c7n-workbench-right">
       <SelfIntro />
       <ServiceList />
+      <EnvList />
     </div>
   </Page>
 );
