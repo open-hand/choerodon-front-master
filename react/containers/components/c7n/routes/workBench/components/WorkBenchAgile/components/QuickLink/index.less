@@ -16,5 +16,69 @@
         color: #6887E8;
         cursor: pointer;
       }
+  }
+  &-linkItem {
+    display: flex;
+    align-items: center;
+    position: relative;
+    p {
+      margin: 0;
     }
+    &-left {
+      text-align: right;
+      flex: 1;
+      &-name {
+        font-size:13px;
+        font-family:PingFangSC-Regular,PingFang SC;
+        font-weight:400;
+        color:rgba(58,52,95,1);
+      }
+      &-time {
+        margin-top: 2px;
+        font-size:12px;
+        font-family:PingFangSC-Regular,PingFang SC;
+        font-weight:400;
+        color:rgba(58,52,95,0.65);
+      }
+    }
+    &-circle {
+      width: 8px;
+      height: 8px;
+      background:rgba(104,135,232,1);
+      border-radius: 50%;
+      position: absolute;
+      right: calc(82% - 4px);
+    }
+    &-right {
+      margin-left: 19px;
+      flex-basis: 82%;
+      padding: 10px 16px;
+      background:rgba(245,246,250,1);
+      border-radius:4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &-profile {
+        width: 24px;
+        height: 24px;
+        border:2px solid rgba(0,0,0,0.16);
+        border-radius: 50%;
+      }
+      &-content {
+        margin-left: 9px;
+        &-project {
+          font-size:12px;
+          font-family:PingFangSC-Regular,PingFang SC;
+          font-weight:400;
+          color:rgba(58,52,95,0.65);
+        }
+        &-linkName {
+          font-size:13px;
+          font-family:PingFangSC-Regular,PingFang SC;
+          font-weight:400;
+          color:rgba(58,52,95,1);
+        }
+      }
+    }
+  }
 }

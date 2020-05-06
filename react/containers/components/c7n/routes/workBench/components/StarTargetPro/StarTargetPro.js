@@ -29,7 +29,7 @@ const StarTargetPro = () => {
           <div className="c7n-starTargetPro-content-emptyText">
             <p className="c7n-starTargetPro-content-emptyText-emptyP">暂无星标</p>
             <p className="c7n-starTargetPro-content-emptyText-emptySuggest">您还没有星标项目，请前往"项目管理"页面进行添加</p>
-            <Button funcType="raised" color="primary">转到项目管理</Button>,
+            <Button funcType="raised" color="primary">转到项目管理</Button>
           </div>
         </div>
       )

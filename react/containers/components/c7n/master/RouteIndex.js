@@ -7,7 +7,7 @@ const Projects = asyncRouter(() => import('../routes/projects'));
 const Applications = asyncRouter(() => import('../routes/applications'));
 const Charts = asyncRouter(() => import('../routes/charts'));
 const Unauthorized = asyncRouter(() => import('../routes/unauthorized'));
-const WorkBench = asyncRouter(() => import('../routes/workbench'));
+const WorkBench = asyncRouter(() => import('../routes/workBench'));
 
 const InnerIndex = ({ match, AutoRouter }) => (
   <div>
