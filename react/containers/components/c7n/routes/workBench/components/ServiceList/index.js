@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from 'choerodon-ui';
-import { Button } from 'choerodon-ui/pro';
+import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 
 import './index.less';
@@ -36,7 +36,9 @@ const ServiceList = observer(() => {
       return (
         <div className="c7n-serviceList-content-item">
           <header>
-            <Icon type="date_range-o" />
+            <Tooltip title={time} placement="top">
+              <Icon type="date_range-o" />
+            </Tooltip>
             <span className="c7n-serviceList-content-item-date">{time}分钟前 &nbsp;操作</span>
           </header>
           <main>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button } from 'choerodon-ui/pro';
+import { Button, Tooltip } from 'choerodon-ui/pro';
 
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
@@ -40,7 +40,9 @@ const EnvList = observer(() => {
               </a>
               <span>环境编码：1</span>
             </div>
-            <span className="c7n-envList-content-item-main-date">2分钟前访问</span>
+            <Tooltip title="2">
+              <span className="c7n-envList-content-item-main-date">2分钟前访问</span>
+            </Tooltip>
           </main>
           <footer>
             <span>choerodon持续交付</span>
