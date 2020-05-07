@@ -24,19 +24,6 @@ const nameValidator = (value) => {
   return true;
 };
 
-const categoryDs = new DataSet({
-  autoQuery: false,
-  selection: false,
-  fields: [
-    { name: 'key', type: 'string' },
-    { name: 'value', type: 'string' },
-  ],
-  data: Object.keys(PROJECT_TYPE).map(k => ({
-    key: k,
-    value: PROJECT_TYPE[k],
-  })),
-});
-
 const statusDs = new DataSet({
   autoQuery: false,
   selection: false,
@@ -51,7 +38,7 @@ const statusDs = new DataSet({
 });
 
 
-export default (AppState, history) => {
+export default (AppState, history, categoryDs) => {
   const codeValidator = async (value, name, record) => {
     if (record.status !== 'add') {
       return true;
@@ -119,7 +106,7 @@ export default (AppState, history) => {
       { name: 'enabled', type: 'boolean', label: '状态' },
       // { name: 'applicationCode', type: 'string', label: '应用编码', required: true, validator: codeValidator },
       // { name: 'applicationName', type: 'string', label: '应用名称', required: true, validator: nameValidator },
-      { name: 'category', type: 'string', label: '项目类型', required: true, textField: 'value', valueField: 'key', options: categoryDs, defaultValue: 'GENERAL' },
+      { name: 'category', type: 'string', label: '项目类型', required: true, textField: 'name', valueField: 'code', options: categoryDs, defaultValue: 'GENERAL' },
       { name: 'programName', type: 'string', label: '项目群' },
       { name: 'createUserName', type: 'string', label: '创建人' },
       { name: 'createUserImageUrl', type: 'string' },
@@ -130,7 +117,7 @@ export default (AppState, history) => {
     queryFields: [
       { name: 'name', type: 'string', label: '项目名称' },
       { name: 'code', type: 'string', label: '项目编码' },
-      { name: 'category', type: 'string', label: '项目类型', textField: 'value', valueField: 'key', options: categoryDs },
+      { name: 'category', type: 'string', label: '项目类型', textField: 'name', valueField: 'code', options: categoryDs },
       { name: 'enabled', type: 'auto', label: '状态', textField: 'value', valueField: 'key', options: statusDs },
     ],
     events: {
