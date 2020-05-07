@@ -1,6 +1,7 @@
 import React from 'react';
 import map from 'lodash/map';
 import { Tooltip } from 'choerodon-ui/pro';
+import TimePopover from '../time-popover';
 
 import './index.less';
 
@@ -8,7 +9,7 @@ const data = [
   {
     projectName: 'Choerodon持续交付',
     title: 'C7N服务融合为hzero服务步骤',
-    updateTime: '',
+    updateTime: '2020-04-30 15:52:57',
     users: [
       {
         userName: 'aaa',
@@ -32,7 +33,7 @@ const data = [
   {
     orgName: '基础架构管理-区块链中台',
     title: '功能平台化整体逻辑',
-    updateTime: '',
+    updateTime: '2020-04-10 15:52:57',
     users: [
       {
         userName: 'aaa',
@@ -44,7 +45,7 @@ const data = [
   {
     projectName: 'Choerodon持续交付',
     title: 'C7N服务融合为hzero服务步骤',
-    updateTime: '',
+    updateTime: '2020-05-01 15:52:57',
     users: [
       {
         userName: 'aaa',
@@ -114,7 +115,14 @@ const StarTargetPro = () => (
           <span>{orgName || projectName }</span>
           {orgName && <span className="c7n-workbench-doc-item-org">组织</span>}
         </div>
-        <div className="c7n-workbench-doc-item-title">{title}</div>
+        <div className="c7n-workbench-doc-item-title">
+          <Tooltip title={title}>
+            <span className="c7n-workbench-doc-item-title-text">{title}</span>
+          </Tooltip>
+          <span className="c7n-workbench-doc-item-time">
+            <TimePopover datetime={updateTime} />
+          </span>
+        </div>
       </div>
     ))}
   </div>

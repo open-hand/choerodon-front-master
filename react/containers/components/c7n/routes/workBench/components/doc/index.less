@@ -20,6 +20,14 @@
 
     &-title {
       color: #3a345f;
+
+      &-text {
+        width: ~"calc(100% - 0.5rem)";
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
 
     &-project {
@@ -87,7 +95,14 @@
           z-index: 1;
         }
       }
+    }
 
+    &-time {
+      font-size: .12rem;
+      opacity: 0.65;
+      width: .5rem;
+      text-align: right;
+      float: right;
     }
   }
 }
