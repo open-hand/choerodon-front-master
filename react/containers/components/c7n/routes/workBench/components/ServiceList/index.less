@@ -60,11 +60,17 @@
           display: flex;
           flex-direction: column;
           &>a {
-            font-size:13px;
-            font-family:PingFangSC-Regular,PingFang SC;
-            font-weight:400;
-            color:rgba(58,52,95,1);
-            line-height:18px;
+            font-size: 13px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #3a345f;
+            line-height: 18px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            &:hover {
+              text-decoration: underline;
+            }
           }
           &>span{
             font-size:12px;

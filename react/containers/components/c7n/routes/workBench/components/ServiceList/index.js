@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Icon } from 'choerodon-ui';
 import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import { withRouter } from 'react-router';
 
 import './index.less';
 
@@ -27,8 +28,18 @@ const appserviceData = [
 ];
 
 
-const ServiceList = observer(() => {
+const ServiceList = withRouter(observer((props) => {
+  const { history } = props;
   const [expand, changeExpand] = useState(false);
+
+  function goAppService(appserviceId) {
+    history.push({
+      pathname: 'devops/code-management',
+      state: {
+        appserviceId,
+      },
+    });
+  }
 
   const renderAppServiceItem = () => (
     appserviceData.map((item, index) => {
@@ -43,10 +54,12 @@ const ServiceList = observer(() => {
           </header>
           <main>
             <div className="c7n-serviceList-content-item-main">
-              <a>{name}</a>
+              <a onClick={goAppService}>{name}</a>
               <span>服务编码：{code}</span>
             </div>
-            <Icon type="account_balance" />
+            <a href="#" target="blank">
+              <Icon type="account_balance" />
+            </a>
           </main>
           <footer>
             <span>{from}</span>
@@ -73,6 +86,6 @@ const ServiceList = observer(() => {
       </div>
     </div>
   );
-});
+}));
 
 export default ServiceList;
