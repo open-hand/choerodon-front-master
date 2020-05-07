@@ -5,6 +5,7 @@ import { inject } from 'mobx-react';
 import { injectIntl } from 'react-intl';
 import ListDataSet from './ListDataSet';
 import useStore from './useStore';
+import CategoryDataSet from './CategoryDataSet';
 
 const Store = createContext();
 
@@ -16,7 +17,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderSto
     const [showType, setShowType] = useState('table');
     const [auto, setAuto] = useState(true);
     const [isNotRecent, setIsNotRecent] = useState('all');
-    const dataSet = useMemo(() => new DataSet(ListDataSet(AppState, history)), [type, id, organizationId]);
+    const categoryDs = useMemo(() => new DataSet(CategoryDataSet(AppState, history)), [type, id, organizationId]);
+    const dataSet = useMemo(() => new DataSet(ListDataSet(AppState, history, categoryDs)), [type, id, organizationId]);
     const projectStore = useStore();
 
     useEffect(() => {
