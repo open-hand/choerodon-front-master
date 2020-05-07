@@ -98,6 +98,9 @@ class Permission extends Component {
       'noAccessChildren', 'children', 'onAccess', 'AppState',
     ]);
     const { status } = this.state;
+    if (typeof children === 'function') {
+      return children(status === SUCCESS);
+    }
     if (status === SUCCESS) {
       return this.extendProps(children, otherProps);
     } else if (status === FAILURE && (noAccessChildren || defaultChildren)) {
