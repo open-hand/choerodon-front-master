@@ -17,9 +17,10 @@ function getMenuType(menuType = AppState.currentMenuType, isUser = AppState.isTy
 }
 
 function filterEmptyMenus(menuData, parent) {
+  debugger;
   const newMenuData = menuData.filter((item) => {
     const { name, type, subMenus } = item;
-    return name !== null && (type === 'menu_item' || (subMenus && filterEmptyMenus(subMenus, item).length > 0) || item.modelCode);
+    return name !== null && (type === 'menu' || (subMenus && filterEmptyMenus(subMenus, item).length > 0) || item.modelCode);
     // return name !== null && (type === 'menu_item' || (subMenus !== null && filterEmptyMenus(subMenus, item).length > 0));
   });
   if (parent) {
@@ -192,8 +193,8 @@ class MenuStore {
     //       return child;
     //     }));
     // } else {
-    return axios.get(`/base/v1/menus?code=choerodon.code.top.${type}&source_id=${id}`).then(action((data) => {
-      const child = filterEmptyMenus(data.subMenus || []);
+    return axios.get(`/iam/hzero/v1/menus/tree?lang=zh_CN&roleId=${id}`).then(action((data) => {
+      const child = filterEmptyMenus(data || []);
       this.setMenuData(child, type, id);
       return child;
     }));

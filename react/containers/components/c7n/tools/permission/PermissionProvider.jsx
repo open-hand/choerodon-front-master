@@ -26,7 +26,7 @@ export default class PermissionProvider extends Component {
 
   fetch() {
     const handlers = Array.from(this.handlers);
-    axios.post('/base/v1/permissions/checkPermission', `[${Array.from(this.queue).join(',')}]`)
+    axios.post('/iam/hzero/v1/menus/check-permissions', `[${Array.from(this.queue).join(',')}]`)
       .then((data) => {
         data.forEach(({ code, resourceType, organizationId, projectId, approve }) => {
           if (resourceType) {

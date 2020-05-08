@@ -157,7 +157,7 @@ class HeaderStore {
 
   @action
   setOrgData(data) {
-    this.orgData = data.filter(item => item.enabled === true);
+    this.orgData = data;
   }
 
   @computed
@@ -182,15 +182,19 @@ class HeaderStore {
 
   axiosGetOrgAndPro(userId) {
     return axios.all([
-      axios.get(`/base/v1/users/${userId}/organizations`),
-      axios.get(`/base/v1/users/${userId}/projects`),
+      axios.get(`iam/hzero/v1/users/self-tenants`),
+      axios.get(`/iam/v1/users/${userId}/projects`),
     ]).then((data) => {
       const [organizations, projects] = data;
       organizations.forEach((value) => {
+        value.id = value.tenantId;
+        value.name = value.tenantName;
+        value.organizationId = value.id;
         value.type = ORGANIZATION_TYPE;
       });
       projects.forEach((value) => {
         value.type = PROJECT_TYPE;
+        value.projectId = value.id;
       });
       this.setOrgData(organizations);
       this.setProData(projects);
@@ -228,7 +232,7 @@ class HeaderStore {
   }
 
   axiosGetNewSticky() {
-    return axios.get('/notify/v1/system_notice/new_sticky').then(action((data) => {
+    return axios.get('/hmsg/v1/system_notice/new_sticky').then(action((data) => {
       this.announcement = data;
       if (data && data.id && (!localStorage.lastClosedId || localStorage.lastClosedId !== `${data.id}`)) {
         this.announcementClosed = false;
@@ -238,7 +242,7 @@ class HeaderStore {
 
   @action
   setProData(data) {
-    this.proData = data.filter(item => item.enabled === true);
+    this.proData = data;
   }
 
   @action
