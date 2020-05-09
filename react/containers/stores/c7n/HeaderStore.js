@@ -183,7 +183,7 @@ class HeaderStore {
   axiosGetOrgAndPro(userId) {
     return axios.all([
       axios.get(`iam/hzero/v1/users/self-tenants`),
-      axios.get(`/iam/v1/users/${userId}/projects`),
+      axios.get(`/iam/choerodon/v1/users/${userId}/projects`),
     ]).then((data) => {
       const [organizations, projects] = data;
       organizations.forEach((value) => {

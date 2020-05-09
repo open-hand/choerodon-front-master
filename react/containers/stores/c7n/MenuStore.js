@@ -17,7 +17,6 @@ function getMenuType(menuType = AppState.currentMenuType, isUser = AppState.isTy
 }
 
 function filterEmptyMenus(menuData, parent) {
-  debugger;
   const newMenuData = menuData.filter((item) => {
     const { name, type, subMenus } = item;
     return name !== null && (type === 'menu' || (subMenus && filterEmptyMenus(subMenus, item).length > 0) || item.modelCode);
