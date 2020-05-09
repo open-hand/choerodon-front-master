@@ -176,6 +176,7 @@ class MenuStore {
 
   @action
   loadMenuData(menuType = AppState.currentMenuType, isUser) {
+    debugger;
     const type = getMenuType(menuType, isUser) || 'site';
     const { id = 0 } = menuType;
     const menu = this.menuData(type, id);
@@ -192,7 +193,13 @@ class MenuStore {
     //       return child;
     //     }));
     // } else {
-    return axios.get(`/iam/hzero/v1/menus/tree?lang=zh_CN&roleId=${id}`).then(action((data) => {
+    let url = '/iam/choerodon/v1/menu';
+    if (type == 'project') {
+      url += `?projectId=${id}&labels=PROJECT_MENU`;
+    } else if (type == 'organization') {
+      url += `?labels=TENANT_MENU`;
+    }
+    return axios.get(url).then(action((data) => {
       const child = filterEmptyMenus(data || []);
       this.setMenuData(child, type, id);
       return child;
@@ -208,6 +215,7 @@ class MenuStore {
     } else {
       set(this.menuGroup, childType, data);
     }
+    console.log(this.menuGroup);
   }
 
   @computed

@@ -287,8 +287,7 @@ export default class CommonMenu extends Component {
   }
 
   shouldHiddenMenu = (pathname) => {
-    // const defaultBlackList = ['/projects', '/applications', '/base/app-market', '/knowledge/organization'];
-    const defaultBlackList = ['/applications', '/base/app-market', '/knowledge/organization'];
+    const defaultBlackList = ['/projects', '/applications', '/base/app-market', '/knowledge/organization'];
     if (pathname.startsWith('/buzz/cooperate') && !pathname.startsWith('/buzz/cooperate-pro')) return true;
     if (defaultBlackList.some((pname) => pathname.startsWith(pname))) {
       return true;

@@ -69,7 +69,13 @@ export default class Index extends React.Component {
       authorizeC7n();
       return false;
     }
-    AppState.setUserInfo(await AppState.loadUserInfo());
+    let result = await AppState.loadUserInfo();
+    result = {
+      ...result,
+      organizationName: result.tenantName,
+      organizationCode: result.tenantNum,
+    }
+    AppState.setUserInfo(result);
     await this.checkOrg();
     this.setState({ loading: false });
   }
