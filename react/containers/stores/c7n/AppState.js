@@ -132,7 +132,16 @@ class AppState {
     return this.isUser;
   }
 
-  loadUserInfo = () => axios.get('iam/hzero/v1/users/self');
+  loadUserInfo = () => {
+    axios.get('iam/hzero/v1/users/self').then((res) => {
+      res = {
+        ...res,
+        organizationName: res.tenantName,
+        organizationCode: res.tenantNum,
+      }
+      this.setUserInfo(res);
+    })
+  };
 
   loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`);
 

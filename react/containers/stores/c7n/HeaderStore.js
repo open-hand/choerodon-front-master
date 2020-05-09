@@ -31,6 +31,8 @@ function saveRecent(collection = [], value, number) {
 
 @store('HeaderStore')
 class HeaderStore {
+  @observable roles = [];
+
   @observable orgData = null;
 
   @observable proData = null;
@@ -72,7 +74,6 @@ class HeaderStore {
   }
 
   @action setIsTodo(_isTodo) {
-    debugger;
     this.isTodo = _isTodo;
   }
 
@@ -98,6 +99,21 @@ class HeaderStore {
   closeAnnouncement() {
     this.announcementClosed = true;
     window.localStorage.setItem('lastClosedId', `${this.announcement.id}`);
+  }
+
+  @computed
+  get getRoles() {
+    return this.roles;
+  }
+
+  @action setRoles(data) {
+    this.roles = data;
+  }
+
+  axiosGetRoles() {
+    axios.get(`iam/hzero/v1/member-roles/self-roles`).then((res) => {
+      this.setRoles(res);
+    })
   }
 
   @computed

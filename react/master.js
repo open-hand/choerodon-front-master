@@ -9,6 +9,7 @@ import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
 import { authorizeC7n, getAccessToken, setAccessToken, dashboard, WEBSOCKET_SERVER } from './containers/common';
 import AppState from './containers/stores/c7n/AppState';
+import HeaderStore from './containers/stores/c7n/HeaderStore';
 import noaccess from './containers/components/c7n/tools/error-pages/403';
 import stores from './containers/stores';
 import Master from './containers/components/c7n/master';
@@ -36,6 +37,7 @@ export default class Index extends React.Component {
   };
 
   componentDidMount() {
+    HeaderStore.axiosGetRoles();
     if (!this.isInOutward(this.props.location.pathname)) {
       this.auth();
     }
@@ -69,13 +71,7 @@ export default class Index extends React.Component {
       authorizeC7n();
       return false;
     }
-    let result = await AppState.loadUserInfo();
-    result = {
-      ...result,
-      organizationName: result.tenantName,
-      organizationCode: result.tenantNum,
-    }
-    AppState.setUserInfo(result);
+    AppState.loadUserInfo();
     await this.checkOrg();
     this.setState({ loading: false });
   }
