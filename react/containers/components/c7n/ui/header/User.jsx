@@ -66,7 +66,7 @@ export default class UserPreferences extends Component {
     if (menu.subMenus && menu.subMenus.length) {
       menu.subMenus.forEach(v => this.findUserInfoMenuItem(v, res));
     }
-    if (menu.code === 'choerodon.code.person.user-info') {
+    if (menu.code === 'choerodon.code.person.setting.user-info') {
       res.res = menu;
     }
   }

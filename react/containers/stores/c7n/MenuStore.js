@@ -9,7 +9,6 @@ import flatten from 'lodash/flatten';
 import axios from '../../components/c7n/tools/axios';
 import AppState from './AppState';
 import HeaderStore from './HeaderStore';
-import { inject, observer } from 'mobx-react';
 
 const BATCH_SIZE = 30;
 
@@ -179,6 +178,7 @@ class MenuStore {
 
   @action
   loadMenuData(menuType = AppState.currentMenuType, isUser) {
+    const type = getMenuType(menuType, isUser) || 'site';
     function getMenu(that) {
       const { id = 0 } = menuType;
       const menu = that.menuData(type, id);
@@ -196,10 +196,12 @@ class MenuStore {
       //     }));
       // } else {
       let url = '/iam/choerodon/v1/menu';
-      if (type == 'project') {
+      if (type === 'project') {
         url += `?projectId=${id}&labels=PROJECT_MENU`;
-      } else if (type == 'organization') {
-        url += `?labels=TENANT_MENU`;
+      } else if (type === 'organization') {
+        url += '?labels=TENANT_MENU';
+      } else if (type === 'user') {
+        url += '?labels=USER_MENU';
       }
       return axios.get(url).then(action((data) => {
         const child = filterEmptyMenus(data || []);
@@ -207,28 +209,24 @@ class MenuStore {
         return child;
       }));
     }
-    const type = getMenuType(menuType, isUser) || 'site';
     const roles = HeaderStore.getRoles;
-    console.log(AppState);
-    const item = roles.find(r => type == 'site' ? r.level == type : r.level == 'organization');
+    const item = roles.find(r => (type === 'site' ? r.level === type : r.level === 'organization'));
     if (item) {
       return axios.put(`iam/v1/users/roles?roleId=${item.id}`).then((res) => {
         AppState.loadUserInfo();
         return getMenu(this);
-      })
+      });
     }
   }
 
   @action
   setMenuData(child, childType, id = AppState.currentMenuType.id) {
     const data = filterEmptyMenus(child);
-    debugger;
     if (id) {
       set(this.menuGroup[childType], id, data);
     } else {
       set(this.menuGroup, childType, data);
     }
-    console.log(this.menuGroup);
   }
 
   @computed
