@@ -179,12 +179,12 @@ class MenuStore {
   @action
   loadMenuData(menuType = AppState.currentMenuType, isUser) {
     const type = getMenuType(menuType, isUser) || 'site';
+    const { id = 0 } = menuType;
+    const menu = this.menuData(type, id);
+    if (menu.length) {
+      return Promise.resolve(menu);
+    }
     function getMenu(that) {
-      const { id = 0 } = menuType;
-      const menu = that.menuData(type, id);
-      if (menu.length) {
-        return Promise.resolve(menu);
-      }
       // if (type === 'organization') {
       //   return Promise.all([axios.get(`/base/v1/menus?code=choerodon.code.top.organization&source_id=${id}`), axios.get(`/lc/v1/organizations/${id}/menu/all`)])
       //     .then(action(([menuData, lcMenu]) => {
