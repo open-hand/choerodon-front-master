@@ -15,7 +15,7 @@ release:
     refs:
       - master
       - tags
-      - master-hzero
+      - hzero-front
       - /^release-.*$/
       - /^hotfix-.*$/
 
