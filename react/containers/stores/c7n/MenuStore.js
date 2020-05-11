@@ -190,7 +190,6 @@ class MenuStore {
     }
 
     function mainFunc() {
-      debugger;
       const type = getMenuType(menuType, isUser) || 'site';
       const { id = 0 } = menuType;
       const menu = this.menuData(type, id);
@@ -231,6 +230,9 @@ class MenuStore {
           AppState.loadUserInfo();
           return getMenu(this);
         });
+      } else {
+        isLoadMenu = 0;
+        return Promise.resolve([]);
       }
     }
   }
