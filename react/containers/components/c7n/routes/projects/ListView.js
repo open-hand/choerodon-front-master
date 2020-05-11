@@ -210,7 +210,7 @@ const ListView = observer(() => {
       }
       // if (route) {
       path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
-      if (organizationId) {
+      if (String(organizationId)) {
         path += `&organizationId=${organizationId}`;
       }
       // }

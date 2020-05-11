@@ -193,6 +193,8 @@ class MenuStore {
       const type = getMenuType(menuType, isUser) || 'site';
       const { id = 0 } = menuType;
       const menu = this.menuData(type, id);
+      // 现在这行不要删 我也不知道为什么 反正就好了
+      console.log(JSON.parse(JSON.stringify(this.menuGroup)));
       if (menu.length) {
         isLoadMenu = 0;
         return Promise.resolve(menu);
@@ -220,7 +222,7 @@ class MenuStore {
           const child = filterEmptyMenus(data || []);
           that.setMenuData(child, type, id);
           isLoadMenu = 0;
-          return child;
+          return Promise.resolve(child);
         }));
       }
       const roles = HeaderStore.getRoles;

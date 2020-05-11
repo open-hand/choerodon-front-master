@@ -23,9 +23,9 @@ export default class CommonMenu extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.loadMenu(nextProps);
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.loadMenu(nextProps);
+  // }
 
   loadMenu(props) {
     const { location, AppState, MenuStore } = props;
