@@ -12,6 +12,8 @@ import HeaderStore from './HeaderStore';
 
 const BATCH_SIZE = 30;
 
+let isLoadMenu = [];
+
 function getMenuType(menuType = AppState.currentMenuType, isUser = AppState.isTypeUser) {
   return isUser ? 'user' : menuType.type;
   // return menuType.type;
@@ -178,44 +180,58 @@ class MenuStore {
 
   @action
   loadMenuData(menuType = AppState.currentMenuType, isUser) {
-    const type = getMenuType(menuType, isUser) || 'site';
-    const { id = 0 } = menuType;
-    const menu = this.menuData(type, id);
-    if (menu.length) {
-      return Promise.resolve(menu);
+    if (isLoadMenu == 1) {
+      return setTimeout(function() {
+        return this.loadMenuData(menuType, isUser);
+      }.bind(this), 500);
+    } else {
+      isLoadMenu = 1;
+      return mainFunc.call(this);
     }
-    function getMenu(that) {
-      // if (type === 'organization') {
-      //   return Promise.all([axios.get(`/base/v1/menus?code=choerodon.code.top.organization&source_id=${id}`), axios.get(`/lc/v1/organizations/${id}/menu/all`)])
-      //     .then(action(([menuData, lcMenu]) => {
-      //       // const child = filterEmptyMenus(menuData.subMenus || []);
-      //       const child = menuData.subMenus || [];
-      //       insertLcMenu(child, lcMenu);
-      //       this.setMenuData(child, type, id);
-      //       return child;
-      //     }));
-      // } else {
-      let url = '/iam/choerodon/v1/menu';
-      if (type === 'project') {
-        url += `?projectId=${id}&labels=PROJECT_MENU`;
-      } else if (type === 'organization') {
-        url += '?labels=TENANT_MENU';
-      } else if (type === 'user') {
-        url += '?labels=USER_MENU';
+
+    function mainFunc() {
+      debugger;
+      const type = getMenuType(menuType, isUser) || 'site';
+      const { id = 0 } = menuType;
+      const menu = this.menuData(type, id);
+      if (menu.length) {
+        isLoadMenu = 0;
+        return Promise.resolve(menu);
       }
-      return axios.get(url).then(action((data) => {
-        const child = filterEmptyMenus(data || []);
-        that.setMenuData(child, type, id);
-        return child;
-      }));
-    }
-    const roles = HeaderStore.getRoles;
-    const item = roles.find(r => (type === 'site' ? r.level === type : r.level === 'organization'));
-    if (item) {
-      return axios.put(`iam/v1/users/roles?roleId=${item.id}`).then((res) => {
-        AppState.loadUserInfo();
-        return getMenu(this);
-      });
+      async function getMenu(that) {
+        // if (type === 'organization') {
+        //   return Promise.all([axios.get(`/base/v1/menus?code=choerodon.code.top.organization&source_id=${id}`), axios.get(`/lc/v1/organizations/${id}/menu/all`)])
+        //     .then(action(([menuData, lcMenu]) => {
+        //       // const child = filterEmptyMenus(menuData.subMenus || []);
+        //       const child = menuData.subMenus || [];
+        //       insertLcMenu(child, lcMenu);
+        //       this.setMenuData(child, type, id);
+        //       return child;
+        //     }));
+        // } else {
+        let url = '/iam/choerodon/v1/menu';
+        if (type === 'project') {
+          url += `?projectId=${id}&labels=PROJECT_MENU`;
+        } else if (type === 'organization') {
+          url += '?labels=TENANT_MENU';
+        } else if (type === 'user') {
+          url += '?labels=USER_MENU';
+        }
+        return await axios.get(url).then(action((data) => {
+          const child = filterEmptyMenus(data || []);
+          that.setMenuData(child, type, id);
+          isLoadMenu = 0;
+          return child;
+        }));
+      }
+      const roles = HeaderStore.getRoles;
+      const item = roles.find(r => (type === 'site' ? r.level === type : r.level === 'organization'));
+      if (item) {
+        return axios.put(`iam/v1/users/roles?roleId=${item.id}`).then((res) => {
+          AppState.loadUserInfo();
+          return getMenu(this);
+        });
+      }
     }
   }
 
