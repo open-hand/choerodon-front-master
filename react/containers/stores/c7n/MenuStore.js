@@ -240,7 +240,7 @@ class MenuStore {
   @action
   setMenuData(child, childType, id = AppState.currentMenuType.id) {
     const data = filterEmptyMenus(child);
-    if (id) {
+    if (String(id) && !['user', 'site'].includes(childType)) {
       set(this.menuGroup[childType], id, data);
     } else {
       set(this.menuGroup, childType, data);
