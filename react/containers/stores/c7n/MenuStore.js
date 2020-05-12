@@ -180,7 +180,7 @@ class MenuStore {
 
   @action
   loadMenuData(menuType = AppState.currentMenuType, isUser) {
-    if (isLoadMenu == 1) {
+    if (isLoadMenu === 1) {
       return setTimeout(function() {
         return this.loadMenuData(menuType, isUser);
       }.bind(this), 500);
@@ -193,8 +193,6 @@ class MenuStore {
       const type = getMenuType(menuType, isUser) || 'site';
       const { id = 0 } = menuType;
       const menu = this.menuData(type, id);
-      // 现在这行不要删 我也不知道为什么 反正就好了
-      console.log(JSON.parse(JSON.stringify(this.menuGroup)));
       if (menu.length) {
         isLoadMenu = 0;
         return Promise.resolve(menu);

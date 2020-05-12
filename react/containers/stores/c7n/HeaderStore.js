@@ -111,9 +111,9 @@ class HeaderStore {
   }
 
   axiosGetRoles() {
-    axios.get(`iam/hzero/v1/member-roles/self-roles`).then((res) => {
+    axios.get('iam/hzero/v1/member-roles/self-roles').then((res) => {
       this.setRoles(res);
-    })
+    });
   }
 
   @computed
@@ -198,7 +198,7 @@ class HeaderStore {
 
   axiosGetOrgAndPro(userId) {
     return axios.all([
-      axios.get(`iam/hzero/v1/users/self-tenants`),
+      axios.get('/iam/choerodon/v1/users/self-tenants'),
       axios.get(`/iam/choerodon/v1/users/${userId}/projects`),
     ]).then((data) => {
       const [organizations, projects] = data;
