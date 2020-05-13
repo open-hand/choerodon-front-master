@@ -104,7 +104,7 @@ export default class UserPreferences extends Component {
           <Menu selectedKeys={[-1]} onClick={this.handleMenuItemClick}>
             {realData && realData.map(item => (
               item.code && (
-                <MenuItem className={`${prefixCls}-popover-menu-item`} key={item.code}>
+                <MenuItem className={`${prefixCls}-popover-menu-item`} key={item.route}>
                   <Icon type={item.icon} />
                   {item.name}
                 </MenuItem>
