@@ -7,6 +7,7 @@ export default class WSHandler extends Component {
   static defaultProps = {
     path: `choerodon/msg?token=${getCookie('access_token')}`,
     dataKey: 'data',
+    typeKey: 'type',
   };
 
   static propTypes = {
@@ -20,6 +21,7 @@ export default class WSHandler extends Component {
     onError: PropTypes.func,
     onRetry: PropTypes.func,
     dataKey: PropTypes.string,
+    typeKey: PropTypes.string,
   };
 
   static contextTypes = {
@@ -47,13 +49,13 @@ export default class WSHandler extends Component {
   }
 
   handleMessage = (data) => {
-    const { onMessage, type, dataKey } = this.props;
+    const { onMessage, type, dataKey, typeKey } = this.props;
     if (typeof onMessage === 'function') {
       onMessage(JSON.parse(data)[dataKey]);
     }
     if (type) {
       const jsonData = JSON.parse(data);
-      if (jsonData.type === type) {
+      if (jsonData[typeKey] === type) {
         this.setState({
           data: jsonData[dataKey],
         });

@@ -380,6 +380,7 @@ export default class Inbox extends Component {
           onMessage={this.handleMessage}
           type="site-msg"
           dataKey="message"
+          typeKey="key"
         >
           {
             data => (
