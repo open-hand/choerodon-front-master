@@ -133,13 +133,14 @@ class AppState {
   }
 
   loadUserInfo = () => {
-    axios.get('iam/hzero/v1/users/self').then((res) => {
+    return axios.get('iam/hzero/v1/users/self').then((res) => {
       res = {
         ...res,
         organizationName: res.tenantName,
         organizationCode: res.tenantNum,
       }
       this.setUserInfo(res);
+      return res;
     })
   };
 
