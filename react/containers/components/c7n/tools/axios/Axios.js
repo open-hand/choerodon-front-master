@@ -11,8 +11,14 @@ axios.defaults.baseURL = API_HOST;
 axios.interceptors.request.use(
   (config) => {
     const newConfig = config;
+    const str = window.location.hash;
+    const urlSearchParam = new URLSearchParams(str);
+    const type = urlSearchParam.get('type');
+    const orgId = urlSearchParam.get('organizationId');
+    const id = !type || type === 'site' ? 0 : orgId || 0;
     newConfig.headers['Content-Type'] = 'application/json';
     newConfig.headers.Accept = 'application/json';
+    newConfig.headers['H-Tenant-Id'] = id;
     const accessToken = getAccessToken();
     if (accessToken) {
       newConfig.headers.Authorization = accessToken;
