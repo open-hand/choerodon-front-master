@@ -121,7 +121,7 @@ class MenuStore {
       this.statistics = {};
       return;
     }
-    axios.post('/manager/v1/statistic/menu_click/save', JSON.stringify(postData)).then((data) => {
+    axios.post('/hadm/v1/statistic/menu_click/save', JSON.stringify(postData)).then((data) => {
       if (!data.failed) {
         this.statistics = {};
       }

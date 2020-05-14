@@ -17,7 +17,7 @@ const ListView = observer(() => {
 
   function goto(record) {
     const search = getSearchString('project', 'id', record.get('projectId'));
-    history.push(`/base/application-management${search}`);
+    history.push(`/iam/application-management${search}`);
   }
 
   function handleOnCell({ record }) {

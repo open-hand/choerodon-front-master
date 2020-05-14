@@ -17,7 +17,7 @@ const InitUiConfigMaster = ({ AutoRouter }) => {
         queryBar: 'bar',
         tableBorder: false,
         lookupAxiosMethod: 'get',
-        lookupUrl: (code) => `/base/v1/lookups/code/${code}`,
+        lookupUrl: (code) => `/iam/choerodon/v1/lookups/code/${code}`,
         tableHighLightRow: false,
         tableRowHeight: 32,
         tableColumnResizable: false,
@@ -30,18 +30,18 @@ const InitUiConfigMaster = ({ AutoRouter }) => {
           sort: sortName && (sortOrder ? `${sortName},${sortOrder}` : sortName),
         }),
         lovDefineAxiosConfig: code => ({
-          url: `/base/v1/lov/code?code=${code}`,
+          url: `/iam/choerodon/v1/lov/code?code=${code}`,
           method: 'GET',
           transformResponse: [
             data => {
               let originData = {};
-      
+
               try {
                 originData = JSON.parse(data);
               } catch (e) {
                 return data;
               }
-      
+
               const {
                 valueField = 'value',
                 textField = 'name',
@@ -99,7 +99,7 @@ const InitUiConfigMaster = ({ AutoRouter }) => {
                 lovItems.push(lovItem);
                 tableWidth += tableItem.gridFieldWidth;
               });
-      
+
               const convertedData = {
                 originData,
                 title: title || code,

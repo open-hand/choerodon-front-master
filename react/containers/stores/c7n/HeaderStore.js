@@ -219,7 +219,7 @@ class HeaderStore {
   }
 
   axiosGetStick() {
-    return axios.get(`/notify/v1/system_notice/completed?${queryString.stringify({
+    return axios.get(`/hmsg/choerodon/v1/system_notice/completed?${queryString.stringify({
       page: 1,
       size: 9999,
     })}`)
@@ -230,7 +230,7 @@ class HeaderStore {
   }
 
   axiosGetUserMsg(userId) {
-    return axios.get(`/notify/v1/notices/sitemsgs?${queryString.stringify({
+    return axios.get(`/hmsg/choerodon/v1/notices/sitemsgs?${queryString.stringify({
       user_id: userId,
       // read: false,
       page: 1,
@@ -337,14 +337,14 @@ class HeaderStore {
   readMsg(userId, data) {
     const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
     this.lookMsg(data);
-    return axios.put(`/notify/v1/notices/sitemsgs/batch_read?user_id=${userId}`, JSON.stringify(body));
+    return axios.put(`/hmsg/choerodon/v1/notices/sitemsgs/batch_read?user_id=${userId}`, JSON.stringify(body));
   }
 
   @action
   deleteMsg(userId, data) {
     const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
     this.clearMsg(data);
-    return axios.put(`/notify/v1/notices/sitemsgs/batch_delete?user_id=${userId}`, JSON.stringify(body));
+    return axios.put(`/hmsg/choerodon/v1/notices/sitemsgs/batch_delete?user_id=${userId}`, JSON.stringify(body));
   }
 
   @action

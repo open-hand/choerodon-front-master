@@ -23,11 +23,12 @@ export default class CommonMenu extends Component {
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   this.loadMenu(nextProps);
-  // }
+  componentWillReceiveProps(nextProps) {
+    this.loadMenu(nextProps);
+  }
 
   loadMenu(props) {
+    debugger;
     const { location, AppState, MenuStore } = props;
     const { type: currentType, isUser: currentIsUser, id: currentId, selected, collapsed } = MenuStore;
     const { pathname } = location;
@@ -290,7 +291,7 @@ export default class CommonMenu extends Component {
   }
 
   shouldHiddenMenu = (pathname) => {
-    const defaultBlackList = ['/projects', '/applications', '/base/app-market', '/knowledge/organization'];
+    const defaultBlackList = ['/projects', '/applications', '/iam/app-market', '/knowledge/organization'];
     if (pathname.startsWith('/buzz/cooperate') && !pathname.startsWith('/buzz/cooperate-pro')) return true;
     if (defaultBlackList.some((pname) => pathname.startsWith(pname))) {
       return true;

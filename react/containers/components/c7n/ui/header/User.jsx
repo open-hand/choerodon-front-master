@@ -91,7 +91,7 @@ export default class UserPreferences extends Component {
           src={imageUrl}
           prefixCls={prefixCls}
           onClick={() => {
-            history.push(`/base/user-info?type=site&organizationId=${organizationId}`);
+            history.push(`/iam/user-info?type=site&organizationId=${organizationId}`);
           }}
         >
           {realName && realName.charAt(0)}
