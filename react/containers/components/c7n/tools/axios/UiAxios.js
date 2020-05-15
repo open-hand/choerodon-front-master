@@ -13,6 +13,14 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const newConfig = config;
+
+    const str = window.location.hash;
+    const urlSearchParam = new URLSearchParams(str);
+    const type = urlSearchParam.get('type');
+    const orgId = urlSearchParam.get('organizationId');
+    const id = !type || type === 'site' ? 0 : orgId || 0;
+    newConfig.headers['H-Tenant-Id'] = id;
+
     newConfig.headers['Content-Type'] = 'application/json';
     newConfig.headers.Accept = 'application/json';
     if (newConfig.params) {
