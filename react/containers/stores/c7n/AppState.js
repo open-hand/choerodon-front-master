@@ -133,7 +133,7 @@ class AppState {
   }
 
   loadUserInfo = () => {
-    return axios.get('iam/hzero/v1/users/self').then((res) => {
+    return axios.get('iam/choerodon/v1/users/self').then((res) => {
       res = {
         ...res,
         organizationName: res.tenantName,

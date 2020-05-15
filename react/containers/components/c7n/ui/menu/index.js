@@ -28,7 +28,6 @@ export default class CommonMenu extends Component {
   }
 
   loadMenu(props) {
-    debugger;
     const { location, AppState, MenuStore } = props;
     const { type: currentType, isUser: currentIsUser, id: currentId, selected, collapsed } = MenuStore;
     const { pathname } = location;
