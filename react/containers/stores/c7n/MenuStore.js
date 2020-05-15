@@ -186,28 +186,20 @@ class MenuStore {
       }.bind(this), 500);
     } else {
       isLoadMenu = 1;
-      return mainFunc.call(this);
+      return new Promise((resolve) => {
+        mainFunc.call(this, resolve);
+      });
     }
 
-    function mainFunc() {
+    async function mainFunc(resolve) {
       const type = getMenuType(menuType, isUser) || 'site';
       const { id = 0 } = menuType;
       const menu = this.menuData(type, id);
       if (menu.length) {
         isLoadMenu = 0;
-        return Promise.resolve(menu);
+        return resolve(menu);
       }
       async function getMenu(that) {
-        // if (type === 'organization') {
-        //   return Promise.all([axios.get(`/base/v1/menus?code=choerodon.code.top.organization&source_id=${id}`), axios.get(`/lc/v1/organizations/${id}/menu/all`)])
-        //     .then(action(([menuData, lcMenu]) => {
-        //       // const child = filterEmptyMenus(menuData.subMenus || []);
-        //       const child = menuData.subMenus || [];
-        //       insertLcMenu(child, lcMenu);
-        //       this.setMenuData(child, type, id);
-        //       return child;
-        //     }));
-        // } else {
         let url = '/iam/choerodon/v1/menu';
         if (type === 'project') {
           url += `?projectId=${id}&labels=PROJECT_MENU`;
@@ -216,23 +208,23 @@ class MenuStore {
         } else if (type === 'user') {
           url += '?labels=USER_MENU';
         }
-        return await axios.get(url).then(action((data) => {
-          const child = filterEmptyMenus(data || []);
-          that.setMenuData(child, type, id);
-          isLoadMenu = 0;
-          return Promise.resolve(child);
-        }));
+        const data = await axios.get(url);
+        const child = filterEmptyMenus(data || []);
+        that.setMenuData(child, type, id);
+        isLoadMenu = 0;
+        return child;
       }
       const roles = HeaderStore.getRoles;
       const item = roles.find(r => (type === 'site' ? r.level === type : r.level === 'organization'));
       if (item) {
-        return axios.put(`iam/v1/users/roles?roleId=${item.id}`).then((res) => {
-          AppState.loadUserInfo();
-          return getMenu(this);
-        });
+        isLoadMenu = 0;
+        await axios.put(`iam/v1/users/roles?roleId=${item.id}`);
+        AppState.loadUserInfo();
+        const data = await getMenu(this);
+        return resolve(data);
       } else {
         isLoadMenu = 0;
-        return Promise.resolve([]);
+        return resolve([]);
       }
     }
   }
