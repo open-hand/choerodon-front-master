@@ -99,7 +99,7 @@ export default (AppState, history) => {
   };
 
   return {
-    autoQuery: true,
+    autoQuery: false,
     selection: false,
     paging: false,
     transport: {

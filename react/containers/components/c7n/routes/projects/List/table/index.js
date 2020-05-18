@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { Avatar } from 'choerodon-ui';
@@ -7,6 +7,7 @@ import Store from '../../stores';
 import { Action } from '../../../../../../../index';
 import EmptyProject from '../../components/Empty';
 import { HAS_AGILE_PRO } from '../../constant';
+import axios from '../../../../tools/axios';
 
 const { Column } = Table;
 
@@ -15,7 +16,15 @@ const actionStyle = {
 };
 
 const ListView = observer(({ handleClickProject, handleEditProject, handleEnabledProject }) => {
-  const { dataSet, isNotRecent, HeaderStore, AppState, history } = useContext(Store);
+  const { dataSet } = useContext(Store);
+  useEffect(() => {
+    async function init() {
+      await axios.get(`iam/v1/users/tenant-id?tenantId=${queryString.parse(history.location.search).organizationId}`)
+      await dataSet.query();
+    }
+    init();
+  }, [dataSet]);
+  const { isNotRecent, HeaderStore, AppState, history } = useContext(Store);
 
   function filterRecent(record) {
     if (isNotRecent === 'all') {
@@ -71,7 +80,7 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
 
   const realData = dataSet.originalData.filter(r => filterRecent(r));
 
-  if (realData.length === 0 && dataSet.status === 'ready' && Object.keys(dataSet.queryDataSet.current.toData()).filter((item) => item !== '__dirty').length === 0) {
+  if (realData.length === 0 && dataSet.status === 'ready' && dataSet.queryDataSet.current && Object.keys(dataSet.queryDataSet.current.toData()).filter((item) => item !== '__dirty').length === 0) {
     let description = '';
     if (isNotRecent === 'all') {
       description = '暂无可操作的项目';
