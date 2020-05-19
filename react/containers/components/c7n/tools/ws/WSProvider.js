@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { warning } from '@/utils';
 import addEventListener from './addEventListener';
-import warning from '../../../../../common/warning';
 
 const TIMEOUT_TIME = 50000;
 

@@ -3,13 +3,13 @@ import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import { Icon, Button, Modal as OldModal, Tooltip } from 'choerodon-ui';
 import { Modal, Select, message } from 'choerodon-ui/pro';
+import { prompt } from '@/utils';
 import Store from './stores';
 import List from './List';
 import findFirstLeafMenu from '../../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../../../common';
 import FormView from './FormView';
 import { Content, Page, axios, Permission } from '../../../../../index';
-import { prompt } from '../../../../common';
 import './style/index.less';
 
 const { Option } = Select;

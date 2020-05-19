@@ -6,8 +6,9 @@ import React, { Component } from 'react';
 import { Button, Icon, Modal, Upload } from 'choerodon-ui';
 import PropTypes from 'prop-types';
 import querystring from 'query-string';
+import { prompt, handleResponseError } from '@/utils';
 import axios from '../../../../tools/axios';
-import { prompt, handleResponseError, getCookie } from '../../../../../../common';
+import { getCookie } from '../../../../../../common';
 import './AvatarUploader.less';
 
 const { Dragger } = Upload;
@@ -293,7 +294,7 @@ export default class AvatarUploader extends Component {
           <Icon type="keyboard_arrow_right" />
           <span>{file.name}</span>
         </h3>
-        <h4 className={`${prefixClas}-hint`}>{`您可以在此裁剪、旋转图片，然后点击"保存" 完成图标的修改`}</h4>
+        <h4 className={`${prefixClas}-hint`}>您可以在此裁剪、旋转图片，然后点击"保存" 完成图标的修改</h4>
         <div className={`${prefixClas}-wraper`}>
           <div className={prefixClas} style={style}>
             <img alt="" src={src} style={imageStyle} />
@@ -369,7 +370,7 @@ export default class AvatarUploader extends Component {
     const { img } = this.state;
     const { intlPrefix } = this.props;
     const props = this.getUploadProps();
-    return img ? (this.renderEditor(props)) 
+    return img ? (this.renderEditor(props))
       : (
         <Dragger className="c7n-base-avatar-dragger" {...props}>
           <Icon type="inbox" />

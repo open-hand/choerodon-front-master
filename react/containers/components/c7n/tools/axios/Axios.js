@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { prompt } from '@/utils';
 import { authorizeUrl } from '../../../../common/authorize';
 import {
   getAccessToken,
@@ -8,7 +9,6 @@ import { API_HOST } from '../../../../common/constants';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|PERMISSION_ACCESS_TOKEN_EXPIRED)/;
-
 axios.defaults.timeout = 30000;
 axios.defaults.baseURL = API_HOST;
 
@@ -41,7 +41,15 @@ axios.interceptors.response.use(
     if (response.status === 204) {
       return response;
     }
-    return 'data' in response ? transformResponsePage(response.data) : response;
+    if ('data' in response) {
+      if (response.data.failed === true) {
+        prompt(response.data.message, 'error');
+        throw response.data;
+      }
+      return transformResponsePage(response.data);
+    } else {
+      return response;
+    }
   },
   error => {
     const { response } = error;
