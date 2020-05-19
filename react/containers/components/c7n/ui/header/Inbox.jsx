@@ -8,9 +8,9 @@ import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import { Badge, Button, Icon, Spin, Tabs, Avatar, Tooltip } from 'choerodon-ui';
 import { Button as ButtonPro, CheckBox, Modal } from 'choerodon-ui/pro';
+import { getCookie } from '@/utils';
 import WSHandler from '../../tools/ws/WSHandler';
 import defaultAvatar from './style/icons/favicon.png';
-import { getCookie } from '../../../../common';
 
 const { TabPane } = Tabs;
 const PREFIX_CLS = 'c7n';
@@ -89,7 +89,7 @@ class RenderPopoverContentClass extends Component {
                 </CheckBox>
               )
             }
-            
+
           </div>
         </div>
         <RenderPopoverContentDetailClass

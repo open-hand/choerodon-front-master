@@ -3,9 +3,9 @@ import queryString from 'query-string';
 import { inject, observer } from 'mobx-react';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Popover, Icon } from 'choerodon-ui';
+import { historyPushMenu, logout } from '@/utils';
 import Avatar from './Avatar';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
-import { historyPushMenu, logout } from '../../../../common';
 // import { PREFIX_CLS } from '@choerodon/boot/lib/containers/common/constants';
 
 const MenuItem = Menu.Item;

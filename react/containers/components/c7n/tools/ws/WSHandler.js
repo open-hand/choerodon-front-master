@@ -1,7 +1,7 @@
 /* eslint-disable react/static-property-placement */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getCookie } from '../../../../common';
+import { getCookie } from '@/utils';
 
 export default class WSHandler extends Component {
   static defaultProps = {
@@ -37,7 +37,7 @@ export default class WSHandler extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (nextProps.messageKey !== this.props.messageKey 
+    if (nextProps.messageKey !== this.props.messageKey
       || nextProps.path !== this.props.path) {
       this.unregister(this.props, this.context);
       this.register(nextProps, nextContext);

@@ -4,7 +4,7 @@ import { Icon } from 'choerodon-ui';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
-import { HEADER_TITLE_NAME } from '../../../../common/constants';
+import { HEADER_TITLE_NAME } from '@/utils/constants';
 
 const PageContent = ({
   intl, AppState: { currentMenuType: { name = HEADER_TITLE_NAME } },

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { configure } from 'choerodon-ui';
-import { UI_CONFIGURE } from '../../../common/constants';
+import { UI_CONFIGURE } from '@/utils';
 import uiAxios from '../tools/axios/UiAxios';
 import MasterDefault from './MasterDefault';
 import AppState from '../../../stores/c7n/AppState';

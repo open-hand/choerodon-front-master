@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Button, Icon } from 'choerodon-ui';
 import { Form, TextField, Select, Tooltip } from 'choerodon-ui/pro';
+import { fileServer } from '@/utils';
 import AvatarUploader from './components/avatarUploader';
-import { fileServer } from '../../../../common';
 
 export default function FormView({ context }) {
   const { dataSet, AppState, intl } = context;

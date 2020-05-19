@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { Button } from 'choerodon-ui/pro';
-import { authorizeC7n as authorize } from '../../../../common';
+import { authorizeC7n as authorize } from '@/utils';
 import './index.less';
 
 
@@ -15,7 +15,7 @@ function ListView() {
         </Button>
       </div>
     </div>
-    
+
   );
 }
 

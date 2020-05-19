@@ -7,8 +7,8 @@ import { Button, Icon, Modal, Upload } from 'choerodon-ui';
 import PropTypes from 'prop-types';
 import querystring from 'query-string';
 import { prompt, handleResponseError } from '@/utils';
+import { getCookie } from '@/utils';
 import axios from '../../../../tools/axios';
-import { getCookie } from '../../../../../../common';
 import './AvatarUploader.less';
 
 const { Dragger } = Upload;

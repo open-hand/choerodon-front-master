@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { authorizeUrl } from '../../../../common/authorize';
-import { getAccessToken, removeAccessToken } from '../../../../common/accessToken';
-import { API_HOST } from '../../../../common/constants';
+import { authorizeUrl } from '@/utils/authorize';
+import { getAccessToken, removeAccessToken } from '@/utils/accessToken';
+import { API_HOST } from '@/utils/constants';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|PERMISSION_ACCESS_TOKEN_EXPIRED)/;

@@ -1,20 +1,19 @@
 import React from 'react';
-import { withRouter, HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { withRouter, Route, Switch } from 'react-router-dom';
 import queryString from 'query-string';
-import { inject, observer, Provider } from 'mobx-react';
+import { observer, Provider } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
 import { Modal } from 'choerodon-ui/pro';
+import { authorizeC7n, getAccessToken, setAccessToken, handleResponseError } from '@/utils';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
-import { authorizeC7n, getAccessToken, setAccessToken, dashboard, WEBSOCKET_SERVER } from './containers/common';
 import AppState from './containers/stores/c7n/AppState';
 import HeaderStore from './containers/stores/c7n/HeaderStore';
 import noaccess from './containers/components/c7n/tools/error-pages/403';
 import stores from './containers/stores';
 import Master from './containers/components/c7n/master';
 import './containers/components/style';
-import { handleResponseError } from './containers/common';
 
 const spinStyle = {
   textAlign: 'center',
