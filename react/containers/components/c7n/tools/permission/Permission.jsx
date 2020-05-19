@@ -98,15 +98,16 @@ class Permission extends Component {
       'noAccessChildren', 'children', 'onAccess', 'AppState',
     ]);
     const { status } = this.state;
-    if (status === SUCCESS) {
-      return this.extendProps(children, otherProps);
-    } else if (status === FAILURE && (noAccessChildren || defaultChildren)) {
-      return this.extendProps(noAccessChildren || defaultChildren, otherProps);
-    } else if (status === PENDING && defaultChildren) {
-      return this.extendProps(defaultChildren, otherProps);
-    } else {
-      return null;
-    }
+    return typeof children === 'function' ? children(true) : children;
+    // if (status === SUCCESS) {
+    //   return this.extendProps(children, otherProps);
+    // } else if (status === FAILURE && (noAccessChildren || defaultChildren)) {
+    //   return this.extendProps(noAccessChildren || defaultChildren, otherProps);
+    // } else if (status === PENDING && defaultChildren) {
+    //   return this.extendProps(defaultChildren, otherProps);
+    // } else {
+    //   return null;
+    // }
   }
 }
 
