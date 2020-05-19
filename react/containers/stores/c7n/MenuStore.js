@@ -207,6 +207,8 @@ class MenuStore {
           url += '?labels=TENANT_MENU';
         } else if (type === 'user') {
           url += '?labels=USER_MENU';
+        } else {
+          url += '?labels=SITE_MENU';
         }
         const data = await axios.get(url);
         const child = filterEmptyMenus(data || []);
