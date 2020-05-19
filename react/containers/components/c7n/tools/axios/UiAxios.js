@@ -15,7 +15,7 @@ instance.interceptors.request.use(
   (config) => {
     const newConfig = config;
 
-    const str = window.location.hash;
+    const str = window.location.hash.split('?')[1];
     const urlSearchParam = new URLSearchParams(str);
     const type = urlSearchParam.get('type');
     const orgId = urlSearchParam.get('organizationId');
