@@ -5,6 +5,7 @@ import { inject } from 'mobx-react';
 import { injectIntl } from 'react-intl';
 import ListDataSet from './ListDataSet';
 import useStore from './useStore';
+import axios from '../../../tools/axios';
 
 const Store = createContext();
 
@@ -22,6 +23,17 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderSto
     useEffect(() => {
       if (organizationId) {
         projectStore.checkCreate(organizationId);
+      }
+    }, [type, id, organizationId]);
+
+    useEffect(() => {
+      async function init() {
+        await axios.get(`iam/v1/users/tenant-id?tenantId=${organizationId}`);
+        dataSet.query();
+      }
+      dataSet.status = 'loading';
+      if (organizationId) {
+        init();
       }
     }, [type, id, organizationId]);
 

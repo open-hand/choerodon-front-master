@@ -7,7 +7,6 @@ import Store from '../../stores';
 import { Action } from '../../../../../../../index';
 import EmptyProject from '../../components/Empty';
 import { HAS_AGILE_PRO } from '../../constant';
-import axios from '../../../../tools/axios';
 
 const { Column } = Table;
 
@@ -16,15 +15,7 @@ const actionStyle = {
 };
 
 const ListView = observer(({ handleClickProject, handleEditProject, handleEnabledProject }) => {
-  const { dataSet } = useContext(Store);
-  useEffect(() => {
-    async function init() {
-      await axios.get(`iam/v1/users/tenant-id?tenantId=${queryString.parse(history.location.search).organizationId}`)
-      await dataSet.query();
-    }
-    init();
-  }, [dataSet]);
-  const { isNotRecent, HeaderStore, AppState, history } = useContext(Store);
+  const { dataSet, isNotRecent, HeaderStore, AppState, history } = useContext(Store);
 
   function filterRecent(record) {
     if (isNotRecent === 'all') {
