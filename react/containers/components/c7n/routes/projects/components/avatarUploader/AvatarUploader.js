@@ -63,7 +63,7 @@ export default class AvatarUploader extends Component {
     const data = new FormData();
     data.append('file', file);
     this.setState({ submitting: true });
-    axios.post(`/file/v1/cut_image?${qs}`, data)
+    axios.post(`/hfle/v1/cut_image?${qs}`, data)
       .then((res) => {
         if (res.failed) {
           prompt(res.message);
@@ -369,7 +369,7 @@ export default class AvatarUploader extends Component {
     const { img } = this.state;
     const { intlPrefix } = this.props;
     const props = this.getUploadProps();
-    return img ? (this.renderEditor(props)) 
+    return img ? (this.renderEditor(props))
       : (
         <Dragger className="c7n-base-avatar-dragger" {...props}>
           <Icon type="inbox" />
