@@ -4,7 +4,6 @@ import { inject, observer } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
 import queryString from 'query-string';
 import filter from 'lodash/filter';
-import { dashboard } from '@/utils';
 import CommonMenu from '../ui/menu';
 import MasterHeader from '../ui/header';
 import AnnouncementBanner from '../ui/header/AnnouncementBanner';
@@ -138,17 +137,15 @@ class Masters extends Component {
     let needLoad = false;
     let menuType = parseQueryToMenuType(search);
     if (pathname === '/') {
-      if (!dashboard) {
-        const recent = HeaderStore.getRecentItem;
-        if (recent.length && !sessionStorage.home_first_redirect) {
-          const { id, name, type, organizationId } = recent[0];
-          menuType = { id, name, type, organizationId };
-          needLoad = true;
-        } else {
-          menuType = {};
-        }
-        sessionStorage.home_first_redirect = 'yes';
+      const recent = HeaderStore.getRecentItem;
+      if (recent.length && !sessionStorage.home_first_redirect) {
+        const { id, name, type, organizationId } = recent[0];
+        menuType = { id, name, type, organizationId };
+        needLoad = true;
+      } else {
+        menuType = {};
       }
+      sessionStorage.home_first_redirect = 'yes';
     } else if (menuType.type === 'site') {
       isUser = true;
     } else if (!menuType.type) {

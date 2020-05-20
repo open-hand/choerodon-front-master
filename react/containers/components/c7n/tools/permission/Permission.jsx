@@ -25,13 +25,13 @@ class Permission extends Component {
     status: PENDING,
   };
 
-  componentWillMount() {
-    this.check(this.props, this.context);
-  }
+  // componentWillMount() {
+  //   this.check(this.props, this.context);
+  // }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    this.check(nextProps, nextContext);
-  }
+  // componentWillReceiveProps(nextProps, nextContext) {
+  //   this.check(nextProps, nextContext);
+  // }
 
   componentDidMount() {
     this.triggerAccess();
