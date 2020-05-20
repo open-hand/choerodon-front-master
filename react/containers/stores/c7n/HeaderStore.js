@@ -223,8 +223,8 @@ class HeaderStore {
       page: 1,
       size: 9999,
     })}`)
-      .then(action(({ list }) => {
-        this.stickData = list || [];
+      .then(action(({ content }) => {
+        this.stickData = content || [];
       }))
       .catch(handleResponseError);
   }
