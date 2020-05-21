@@ -248,7 +248,7 @@ class HeaderStore {
   }
 
   axiosGetNewSticky() {
-    return axios.get('/hmsg/v1/system_notice/new_sticky').then(action((data) => {
+    return axios.get('/hmsg/choerodon/v1/system_notice/new_sticky').then(action((data) => {
       this.announcement = data;
       if (data && data.id && (!localStorage.lastClosedId || localStorage.lastClosedId !== `${data.id}`)) {
         this.announcementClosed = false;
