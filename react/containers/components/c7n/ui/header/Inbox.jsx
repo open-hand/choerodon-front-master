@@ -375,7 +375,7 @@ export default class Inbox extends Component {
     return (
       <React.Fragment>
         <WSHandler
-          messageKey={`choerodon:msg:site-msg:${AppState.userInfo.id}`}
+          messageKey="site-msg"
           onMessage={this.handleMessage}
           type="site-msg"
         >
