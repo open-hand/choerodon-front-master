@@ -2,12 +2,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getCookie } from '@/utils';
+import AppState from '../../../../stores/c7n/AppState';
 
 export default class WSHandler extends Component {
   static defaultProps = {
-    path: `choerodon/msg?token=${getCookie('access_token')}`,
-    dataKey: 'data',
-    typeKey: 'type',
+    path: () => `websocket?group=choerodon:msg:site-msg:${AppState.userInfo.id}&processor=cheorodon_msg&access_token=${getCookie('access_token')}`,
+    dataKey: 'message',
+    typeKey: 'key',
   };
 
   static propTypes = {
@@ -38,7 +39,7 @@ export default class WSHandler extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.messageKey !== this.props.messageKey
-      || nextProps.path !== this.props.path) {
+      || this.getPath(nextProps.path) !== this.getPath(this.props.path)) {
       this.unregister(this.props, this.context);
       this.register(nextProps, nextContext);
     }
@@ -46,6 +47,16 @@ export default class WSHandler extends Component {
 
   componentWillUnmount() {
     this.unregister(this.props, this.context);
+  }
+
+  getPath(path) {
+    if (typeof path === 'string') {
+      return path;
+    } else if (typeof path === 'function') {
+      return path();
+    } else {
+      return undefined;
+    }
   }
 
   handleMessage = (data) => {
@@ -71,7 +82,7 @@ export default class WSHandler extends Component {
     const { messageKey, path } = props;
     const { ws } = context;
     if (ws) {
-      ws.register(messageKey, { type: 'notify', key: messageKey }, this.handleMessage, path);
+      ws.register(messageKey, { type: 'notify', key: messageKey }, this.handleMessage, this.getPath(path));
     }
   }
 
@@ -79,7 +90,7 @@ export default class WSHandler extends Component {
     const { messageKey, path } = props;
     const { ws } = context;
     if (ws) {
-      ws.unregister(messageKey, this.handleMessage, path);
+      ws.unregister(messageKey, this.handleMessage, this.getPath(path));
     }
   }
 

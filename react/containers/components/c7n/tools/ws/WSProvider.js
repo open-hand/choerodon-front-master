@@ -73,7 +73,7 @@ export default class WSProvider extends Component {
   };
 
   handleMessage = ({ data }, path) => {
-    const { key, data: message } = JSON.parse(data);
+    const { key, message } = JSON.parse(data);
     const { onMessage } = this.props;
     const handlers = this.map.get(`${path}-${key}`);
     if (typeof onMessage === 'function') {

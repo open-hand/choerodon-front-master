@@ -80,8 +80,8 @@ export default class PermissionProvider extends Component {
   }
 
   judgeServices({ service, type, organizationId, projectId }) {
-    return service
-      .map(code => this.judgeService(code, type, organizationId, projectId));
+    return service;
+    // .map(code => this.judgeService(code, type, organizationId, projectId));
   }
 
   judgeService(code, type, organizationId, projectId) {

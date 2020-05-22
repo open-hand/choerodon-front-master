@@ -70,7 +70,7 @@ export default class Index extends React.Component {
       authorizeC7n();
       return false;
     }
-    AppState.loadUserInfo();
+    await AppState.loadUserInfo();
     await this.checkOrg();
     this.setState({ loading: false });
   }

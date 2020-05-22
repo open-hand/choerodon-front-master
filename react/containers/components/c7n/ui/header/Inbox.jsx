@@ -376,11 +376,8 @@ export default class Inbox extends Component {
       <React.Fragment>
         <WSHandler
           messageKey={`choerodon:msg:site-msg:${AppState.userInfo.id}`}
-          path={`websocket?group=choerodon:msg:site-msg:${AppState.userInfo.id}&processor=cheorodon_msg&access_token=${getCookie('access_token')}`}
           onMessage={this.handleMessage}
           type="site-msg"
-          dataKey="message"
-          typeKey="key"
         >
           {
             data => (
