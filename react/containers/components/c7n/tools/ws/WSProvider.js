@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { warning } from '@/utils';
-import SockJS from 'sockjs-client';
 import addEventListener from './addEventListener';
 
 const TIMEOUT_TIME = 50000;
@@ -159,9 +158,7 @@ export default class WSProvider extends Component {
   initSocket = ({ server }, path) => {
     if (server && path) {
       try {
-        // const ws = new WebSocket(`${server}/${path}`);
-        const url = `http://hzero-message.staging.saas.hand-china.com/${path}`;
-        const ws = new SockJS(url);
+        const ws = new WebSocket(`${server}/${path}`);
         ws.addEventListener('open', evt => this.handleOpen(evt, path));
         ws.addEventListener('message', evt => this.handleMessage(evt, path));
         ws.addEventListener('error', evt => this.handleError(evt, path));

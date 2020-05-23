@@ -31,7 +31,6 @@
     "choerodon-ui": "^0.8.62"
   },
   "dependencies": {
-    "react-onclickoutside": "^6.8.0",
-    "sockjs-client": "^1.4.0"
+    "react-onclickoutside": "^6.8.0"
   }
 }
