@@ -36,8 +36,8 @@ export default class Index extends React.Component {
   };
 
   componentDidMount() {
-    HeaderStore.axiosGetRoles();
     if (!this.isInOutward(this.props.location.pathname)) {
+      HeaderStore.axiosGetRoles();
       this.auth();
     }
   }
