@@ -1,4 +1,7 @@
-import React, { Children, cloneElement, Component, createElement, isValidElement } from 'react';
+/* eslint-disable react/no-deprecated */
+/* eslint-disable react/state-in-constructor */
+/* eslint-disable react/static-property-placement */
+import { Children, cloneElement, Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import omit from 'object.omit';
@@ -25,13 +28,13 @@ class Permission extends Component {
     status: PENDING,
   };
 
-  // componentWillMount() {
-  //   this.check(this.props, this.context);
-  // }
+  componentWillMount() {
+    this.check(this.props, this.context);
+  }
 
-  // componentWillReceiveProps(nextProps, nextContext) {
-  //   this.check(nextProps, nextContext);
-  // }
+  componentWillReceiveProps(nextProps, nextContext) {
+    this.check(nextProps, nextContext);
+  }
 
   componentDidMount() {
     this.triggerAccess();
@@ -98,16 +101,18 @@ class Permission extends Component {
       'noAccessChildren', 'children', 'onAccess', 'AppState',
     ]);
     const { status } = this.state;
-    return typeof children === 'function' ? children(true) : this.extendProps(children, otherProps);
-    // if (status === SUCCESS) {
-    //   return this.extendProps(children, otherProps);
-    // } else if (status === FAILURE && (noAccessChildren || defaultChildren)) {
-    //   return this.extendProps(noAccessChildren || defaultChildren, otherProps);
-    // } else if (status === PENDING && defaultChildren) {
-    //   return this.extendProps(defaultChildren, otherProps);
-    // } else {
-    //   return null;
-    // }
+    if (typeof children === 'function') {
+      return children(status === SUCCESS);
+    }
+    if (status === SUCCESS) {
+      return this.extendProps(children, otherProps);
+    } else if (status === FAILURE && (noAccessChildren || defaultChildren)) {
+      return this.extendProps(noAccessChildren || defaultChildren, otherProps);
+    } else if (status === PENDING && defaultChildren) {
+      return this.extendProps(defaultChildren, otherProps);
+    } else {
+      return null;
+    }
   }
 }
 
