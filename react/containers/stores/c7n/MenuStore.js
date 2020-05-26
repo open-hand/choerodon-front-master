@@ -31,6 +31,15 @@ function filterEmptyMenus(menuData, parent) {
   return newMenuData;
 }
 
+function changeMenuLevel({ level, child }) {
+  child.forEach(item => {
+    item.level = 'project';
+    if (item.subMenus) {
+      changeMenuLevel({ level, child: item.subMenus });
+    }
+  });
+}
+
 function insertLcMenuOneMenu(menuItem, groupLcMenu, groupParentLcMenu, parentArr) {
   if (menuItem.modelCode) {
     return;
@@ -212,6 +221,9 @@ class MenuStore {
         }
         const data = await axios.get(url);
         const child = filterEmptyMenus(data || []);
+        if (type === 'project') {
+          changeMenuLevel({ level: 'project', child });
+        }
         that.setMenuData(child, type, id);
         isLoadMenu = 0;
         return child;

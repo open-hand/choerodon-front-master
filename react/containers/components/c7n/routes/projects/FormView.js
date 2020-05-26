@@ -72,7 +72,7 @@ export default function FormView({ context }) {
           disabled={dataSet.current.status !== 'add'}
           addonAfter={(
             <Tooltip
-              title="普通敏捷项目类型中仅包含了敏捷、测试、知识管理等模块的功能；DevOps全流程项目相较于普通敏捷项目，则多出了开发、部署模块的功能。"
+              title="普通敏捷项目类型中仅包含了敏捷、测试、知识管理等模块的功能；运维项目类型中仅包含了开发、部署等模块的功能；DevOps全流程项目相较于普通敏捷项目，则多出了开发、部署模块的功能。"
               placement="bottomRight"
               arrowPointAtCenter
             >
