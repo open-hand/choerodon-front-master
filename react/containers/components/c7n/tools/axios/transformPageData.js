@@ -7,6 +7,7 @@ export function transformResponsePage(data) {
     data.pageSize = data.size;
     data.pageNum = data.number + 1;
     data.hasNextPage = data.number + 1 < data.totalPages;
+    data.isFirstPage = data.number === 0;
   }
   // console.log(data);
   return data;

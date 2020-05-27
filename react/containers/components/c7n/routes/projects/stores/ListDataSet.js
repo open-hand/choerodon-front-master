@@ -87,14 +87,14 @@ export default (AppState, history) => {
         data: name === 'code' ? params : undefined,
       });
       if (res === false) {
-        return '编码已存在。';
+        return '项目编码已存在';
       } else if (res && res.failed) {
         return res.message;
       } else {
         return true;
       }
     } catch (err) {
-      return '编码已存在或编码重名校验失败，请稍后再试。';
+      return '项目编码已存在';
     }
   };
 
