@@ -228,18 +228,26 @@ class MenuStore {
         isLoadMenu = 0;
         return child;
       }
-      const roles = HeaderStore.getRoles;
-      const item = roles.find(r => (type === 'site' ? r.level === type : r.level === 'organization'));
-      if (item) {
-        isLoadMenu = 0;
-        await axios.put(`iam/v1/users/roles?roleId=${item.id}`);
-        AppState.loadUserInfo();
-        const data = await getMenu(this);
-        return resolve(data);
-      } else {
-        isLoadMenu = 0;
-        return resolve([]);
+      // const roles = HeaderStore.getRoles;
+      isLoadMenu = 0;
+      // await axios.put(`iam/v1/users/roles?roleId=${item.id}`);
+      if (type === 'site') {
+        await axios.get(`/iam/choerodon/v1/switch/site`);
       }
+      const data = await getMenu(this);
+      AppState.loadUserInfo();
+      return resolve(data);
+      // const item = roles.find(r => (type === 'site' ? r.level === type : r.level === 'organization'));
+      // if (item) {
+      //   isLoadMenu = 0;
+      //   // await axios.put(`iam/v1/users/roles?roleId=${item.id}`);
+      //   AppState.loadUserInfo();
+      //   const data = await getMenu(this);
+      //   return resolve(data);
+      // } else {
+      //   isLoadMenu = 0;
+      //   return resolve([]);
+      // }
     }
   }
 
