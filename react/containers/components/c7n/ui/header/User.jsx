@@ -18,10 +18,11 @@ const blackList = new Set(['choerodon.code.usercenter.receive-setting']);
 @observer
 export default class UserPreferences extends Component {
   componentDidMount() {
-    const { history, MenuStore } = this.props;
+    const { history, MenuStore, HeaderStore } = this.props;
     if (window.location.href.split('#')[1].split('&')[1] === 'token_type=bearer') {
       history.push('/');
     }
+    HeaderStore.axiosShowSiteMenu();
     MenuStore.loadMenuData({ type: 'site' }, true);
   }
 
@@ -111,7 +112,7 @@ export default class UserPreferences extends Component {
               )
             ))}
             {
-              MenuStore.getSiteMenuData.length > 0 ? [
+              HeaderStore.getShowSiteMenu ? [
                 <Menu.Divider />,
                 <MenuItem className={`${prefixCls}-popover-menu-item`} key="site-setting">
                   <Icon type="settings" />

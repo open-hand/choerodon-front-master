@@ -69,6 +69,8 @@ class HeaderStore {
 
   @observable isTodo = false;
 
+  @observable showSiteMenu = false;
+
   @action setInboxActiveKey(flag) {
     this.inboxActiveKey = flag;
   }
@@ -196,6 +198,16 @@ class HeaderStore {
     this.inboxVisible = inboxVisible;
   }
 
+  @computed
+  get getShowSiteMenu() {
+    return this.showSiteMenu;
+  }
+
+  @action
+  setShowSiteMenu(flag) {
+    this.showSiteMenu = flag;
+  }
+
   axiosGetOrgAndPro(userId) {
     return axios.all([
       axios.get('/iam/choerodon/v1/users/self-tenants'),
@@ -255,6 +267,14 @@ class HeaderStore {
         this.announcementClosed = false;
       }
     })).catch(handleResponseError);
+  }
+
+  axiosShowSiteMenu() {
+    return axios.get('/iam/choerodon/v1/menus/site_menu_flag').then(action((data) => {
+      this.setShowSiteMenu(data);
+    })).catch(() => {
+      this.setShowSiteMenu(false);
+    });
   }
 
   @action

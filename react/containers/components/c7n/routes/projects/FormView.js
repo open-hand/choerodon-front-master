@@ -34,7 +34,7 @@ export default function FormView({ context }) {
             className="c7n-master-projectsetting-avatar-wrap"
             style={{
               backgroundColor: '#c5cbe8',
-              backgroundImage: imageUrl ? `url(${fileServer(imageUrl)})` : '',
+              backgroundImage: imageUrl ? `url('${fileServer(imageUrl)}')` : '',
             }}
           >
             {!imageUrl && name && name.charAt(0)}
