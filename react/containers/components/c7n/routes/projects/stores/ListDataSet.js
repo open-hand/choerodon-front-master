@@ -81,7 +81,7 @@ export default (AppState, history, categoryDs) => {
         return true;
       }
     } catch (err) {
-      return '项目编码已存在';
+      return '编码已存在或编码重名校验失败，请稍后再试';
     }
   };
 
