@@ -211,7 +211,7 @@ class MenuStore {
       async function getMenu(that) {
         let url = '/iam/choerodon/v1/menu';
         if (type === 'project') {
-          url += `?projectId=${id}&labels=PROJECT_MENU`;
+          url += `?projectId=${id}`;
         } else if (type === 'organization') {
           url += '?labels=TENANT_MENU';
         } else if (type === 'user') {
