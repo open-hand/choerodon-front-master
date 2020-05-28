@@ -202,7 +202,7 @@ class MenuStore {
 
     async function mainFunc(resolve) {
       const type = getMenuType(menuType, isUser) || 'site';
-      const { id = 0 } = menuType;
+      const { id = 0, organizationId } = menuType;
       const menu = this.menuData(type, id);
       if (menu.length) {
         isLoadMenu = 0;
@@ -233,6 +233,8 @@ class MenuStore {
       // await axios.put(`iam/v1/users/roles?roleId=${item.id}`);
       if (type === 'site') {
         await axios.get(`/iam/choerodon/v1/switch/site`);
+      } else if (id && (type === 'organization')) {
+        await axios.put(`iam/v1/users/tenant-id?tenantId=${id}`);
       }
       const data = await getMenu(this);
       AppState.loadUserInfo();

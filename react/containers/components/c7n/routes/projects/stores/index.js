@@ -29,7 +29,6 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderSto
 
     useEffect(() => {
       async function init() {
-        await axios.put(`iam/v1/users/tenant-id?tenantId=${organizationId}`);
         dataSet.query();
         AppState.loadUserInfo();
       }
