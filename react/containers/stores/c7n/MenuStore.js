@@ -233,8 +233,8 @@ class MenuStore {
       // await axios.put(`iam/v1/users/roles?roleId=${item.id}`);
       if (type === 'site') {
         await axios.get(`/iam/choerodon/v1/switch/site`);
-      } else if (id && (type === 'organization')) {
-        await axios.put(`iam/v1/users/tenant-id?tenantId=${id}`);
+      } else if (id && (['project', 'organization'].includes(type))) {
+        await axios.put(`iam/v1/users/tenant-id?tenantId=${organizationId || id}`);
       }
       const data = await getMenu(this);
       AppState.loadUserInfo();
