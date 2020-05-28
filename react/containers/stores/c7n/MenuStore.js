@@ -234,7 +234,11 @@ class MenuStore {
       if (type === 'site') {
         await axios.get(`/iam/choerodon/v1/switch/site`);
       } else if (id && (['project', 'organization'].includes(type))) {
-        await axios.put(`iam/v1/users/tenant-id?tenantId=${organizationId || id}`);
+        const { tenantId } = AppState.getUserInfo;
+        let orgId = organizationId || new URLSearchParams(window.location.hash).get('organizationId');
+        if (String(tenantId) !== String(orgId || id)) {
+          await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`);
+        }
       }
       const data = await getMenu(this);
       AppState.loadUserInfo();
