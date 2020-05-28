@@ -226,11 +226,7 @@ const ListView = observer(() => {
     return (
       <div className="c7n-projects-header">
         <div className="c7n-projects-title">{`${org.name}中的项目`}</div>
-        <Permission
-          service={['base-service.organization-project.create']}
-          type="organization"
-          organizationId={organizationId}
-        >
+        <Permission service={['choerodon.code.organization.project.ps.create']}>
           <Tooltip
             title={getCanCreate ? '' : '项目数量已达上限，无法创建更多项目'}
             placement="bottom"
@@ -266,7 +262,7 @@ const ListView = observer(() => {
   }
 
   return (
-    <Page>
+    <Page service={['choerodon.code.organization.project.ps.default']}>
       {renderHeader()}
       <Content>
         {renderTool()}
