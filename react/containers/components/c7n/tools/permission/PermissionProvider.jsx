@@ -31,7 +31,7 @@ class PermissionProvider extends Component {
     if (projectData.length > 0) {
       request.push(axios({
         method: 'post',
-        url: '/iam/hzero/v1/menus/check-permissions',
+        url: '/iam/choerodon/v1/permissions/menus/check-permissions',
         data: projectData.map(item => item.code),
         params: {
           projectId: projectData[0].projectId,
@@ -41,7 +41,7 @@ class PermissionProvider extends Component {
     if (otherData.length > 0) {
       request.push(axios({
         method: 'post',
-        url: '/iam/hzero/v1/menus/check-permissions',
+        url: '/iam/choerodon/v1/permissions/menus/check-permissions',
         data: otherData.map(item => item.code),
       }));
     }
