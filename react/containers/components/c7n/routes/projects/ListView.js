@@ -262,7 +262,7 @@ const ListView = observer(() => {
   }
 
   return (
-    <Page service={['choerodon.code.organization.project.ps.default']}>
+    <Page>
       {renderHeader()}
       <Content>
         {renderTool()}
