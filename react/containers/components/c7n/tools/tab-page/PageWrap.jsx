@@ -66,7 +66,7 @@ const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
           const { type } = child;
           if (type === PageTab) {
             if (
-              (keyShowArr && keyShowArr.length > 0)
+              (keyShowArr && keyShowArr.filter(v => v.route).find(v => v.tabKey === child.props.tabKey))
               || child.props.alwaysShow
             ) {
               return (
