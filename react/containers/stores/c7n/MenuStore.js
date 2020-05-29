@@ -236,7 +236,8 @@ class MenuStore {
         await axios.put('iam/v1/users/tenant-id?tenantId=0');
         await axios.get(`/iam/choerodon/v1/switch/site`);
       } else if (id && (['project', 'organization'].includes(type))) {
-        let orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId'));
+        debugger;
+        let orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
         if (!loadingTenant.includes(orgId)) {
           loadingTenant.push(String(orgId));
           await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`);
