@@ -14,6 +14,8 @@ const BATCH_SIZE = 30;
 
 let isLoadMenu = [];
 
+let loadingTenant = [];
+
 function getMenuType(menuType = AppState.currentMenuType, isUser = AppState.isTypeUser) {
   return isUser ? 'user' : menuType.type;
   // return menuType.type;
@@ -228,21 +230,26 @@ class MenuStore {
         isLoadMenu = 0;
         return child;
       }
-      // const roles = HeaderStore.getRoles;
       isLoadMenu = 0;
-      // await axios.put(`iam/v1/users/roles?roleId=${item.id}`);
+      let flag = 0;
       if (type === 'site') {
+        await axios.put('iam/v1/users/tenant-id?tenantId=0');
         await axios.get(`/iam/choerodon/v1/switch/site`);
       } else if (id && (['project', 'organization'].includes(type))) {
-        const { tenantId } = AppState.getUserInfo;
-        let orgId = organizationId || new URLSearchParams(window.location.hash).get('organizationId');
-        if (String(tenantId) !== String(orgId || id)) {
+        let orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId'));
+        if (!loadingTenant.includes(orgId)) {
+          loadingTenant.push(String(orgId));
           await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`);
+          loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);
+        } else {
+          flag = 1;
         }
       }
-      const data = await getMenu(this);
-      AppState.loadUserInfo();
-      return resolve(data);
+      if (!flag) {
+        const data = await getMenu(this);
+        AppState.loadUserInfo();
+        return resolve(data);
+      }
       // const item = roles.find(r => (type === 'site' ? r.level === type : r.level === 'organization'));
       // if (item) {
       //   isLoadMenu = 0;
