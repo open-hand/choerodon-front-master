@@ -6,7 +6,7 @@ import AppState from '../../../../stores/c7n/AppState';
 
 export default class WSHandler extends Component {
   static defaultProps = {
-    path: () => `websocket?group=choerodon:msg:site-msg:${AppState.userInfo.id}&processor=cheorodon_msg&access_token=${getCookie('access_token')}`,
+    path: () => `websocket?group=choerodon:msg:site-msg:${AppState.userInfo.id}&processor=choerodon_msg&access_token=${getCookie('access_token')}`,
     dataKey: 'message',
     typeKey: 'key',
   };
