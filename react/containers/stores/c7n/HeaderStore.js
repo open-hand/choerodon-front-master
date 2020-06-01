@@ -71,6 +71,8 @@ class HeaderStore {
 
   @observable showSiteMenu = false;
 
+  @observable unreadMessageCount = 0;
+
   @action setInboxActiveKey(flag) {
     this.inboxActiveKey = flag;
   }
@@ -208,6 +210,16 @@ class HeaderStore {
     this.showSiteMenu = flag;
   }
 
+  @computed
+  get getUnreadMessageCount() {
+    return this.unreadMessageCount;
+  }
+
+  @action
+  setUnreadMessageCount(data) {
+    this.unreadMessageCount = data;
+  }
+
   axiosGetOrgAndPro(userId) {
     return axios.all([
       axios.get('/iam/choerodon/v1/users/self-tenants'),
@@ -242,15 +254,25 @@ class HeaderStore {
   }
 
   axiosGetUserMsg(userId) {
-    return axios.get(`/hmsg/v1/0/messages/user/preview?${queryString.stringify({
+    return axios.get(`/hmsg/v1/0/messages/user?${queryString.stringify({
       user_id: userId,
-      readFlag: 0,
+      // readFlag: 0,
       // read: false,
       page: 1,
       size: 9999,
-      sort: 'id,desc',
-    })}`)
+      sort: 'read_flag,asc',
+      withContent: true,
+    })}&sort=creationDate,desc`)
       .then(action(({ list }) => {
+        if (list && list.length) {
+          list.forEach((item) => {
+            const { messageId, subject, creationDate, readFlag } = item;
+            item.read = readFlag === 1;
+            item.id = messageId;
+            item.title = subject;
+            item.sendTime = creationDate;
+          });
+        }
         this.inboxData = list || [];
         this.inboxLoading = false;
         this.inboxLoaded = true;
@@ -274,6 +296,14 @@ class HeaderStore {
       this.setShowSiteMenu(data);
     })).catch(() => {
       this.setShowSiteMenu(false);
+    });
+  }
+
+  axiosGetUnreadMessageCount(organizationId) {
+    return axios.get(`hmsg/v1/${organizationId}/messages/user/count`).then(action((data) => {
+      this.setUnreadMessageCount(data ? data.unreadMessageCount : 0);
+    })).catch(() => {
+      this.setUnreadMessageCount(0);
     });
   }
 
@@ -355,10 +385,10 @@ class HeaderStore {
   }
 
   @action
-  readMsg(userId, data) {
+  readMsg(userId, data, readAll) {
     const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
     this.lookMsg(data);
-    return axios.post(`/hmsg/v1/0/messages/user/read-flag?readAll=1&user_id=${userId}`, JSON.stringify(body));
+    return axios.post(`/hmsg/v1/0/messages/user/read-flag?readAll=${readAll}&user_id=${userId}`, JSON.stringify(body));
   }
 
   @action

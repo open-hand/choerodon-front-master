@@ -53,10 +53,18 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
   function renderAction({ record }) {
     const { organizationId } = queryString.parse(history.location.search);
     const actionDatas = [
-      { service: ['base-service.organization-project.update'], icon: '', text: '编辑', action: handleEditProject },
-      { service: ['base-service.organization-project.disableProject', 'base-service.organization-project.enableProject'], icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabledProject },
+      {
+        icon: '',
+        text: '编辑',
+        action: handleEditProject,
+      },
+      {
+        icon: '',
+        text: record.get('enabled') ? '停用' : '启用',
+        action: handleEnabledProject,
+      },
     ];
-    return <Action organizationId={organizationId} type="organization" data={actionDatas} style={actionStyle} />;
+    return <Action organizationId={organizationId} type="organization" data={record.get('editFlag') ? actionDatas : []} style={actionStyle} />;
   }
 
   function renderEnabled({ record }) {

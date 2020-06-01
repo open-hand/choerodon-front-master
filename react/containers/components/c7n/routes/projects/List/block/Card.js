@@ -33,10 +33,10 @@ const Card = ({ handleEditProject, handleClickProject, handleEnabledProject, dat
   function renderAction() {
     const { organizationId } = queryString.parse(history.location.search);
     const actionDatas = [
-      { service: ['base-service.organization-project.update'], icon: '', text: '编辑', action: handleFocus },
-      { service: ['base-service.organization-project.disableProject', 'base-service.organization-project.enableProject'], icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabled },
+      { icon: '', text: '编辑', action: handleFocus },
+      { icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabled },
     ];
-    return <Action organizationId={organizationId} type="organization" data={actionDatas} style={{ marginLeft: 5, flexShrink: 0 }} />;
+    return <Action organizationId={organizationId} type="organization" data={record.get('editFlag') ? actionDatas : []} style={{ marginLeft: 5, flexShrink: 0 }} />;
   }
 
   return (

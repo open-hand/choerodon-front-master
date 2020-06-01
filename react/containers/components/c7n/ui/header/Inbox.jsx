@@ -208,10 +208,15 @@ class RenderPopoverContentDetailClass extends Component {
 @inject('HeaderStore', 'AppState')
 @observer
 export default class Inbox extends Component {
+  componentDidMount() {
+    const { AppState: { currentMenuType: { organizationId } }, HeaderStore } = this.props;
+    HeaderStore.axiosGetUnreadMessageCount(organizationId);
+  }
+
   cleanMsg = (e, data) => {
     e.stopPropagation();
     const { AppState, HeaderStore } = this.props;
-    HeaderStore.readMsg(AppState.userInfo.id, data);
+    HeaderStore.readMsg(AppState.userInfo.id, data, 0);
   };
 
   deleteMsg = (e, data) => {
@@ -222,7 +227,7 @@ export default class Inbox extends Component {
 
   readAllMsg = () => {
     const { AppState, HeaderStore } = this.props;
-    HeaderStore.readMsg(AppState.userInfo.id);
+    HeaderStore.readMsg(AppState.userInfo.id, 1);
     // HeaderStore.setInboxVisible(false);
   };
 
@@ -263,7 +268,11 @@ export default class Inbox extends Component {
     this.handleVisibleChange(!HeaderStore.inboxVisible);
   };
 
-  handleMessage = () => {
+  handleMessage = (data) => {
+    const { HeaderStore } = this.props;
+    const newData = JSON.parse(data);
+    const count = HeaderStore.getUnreadMessageCount + (newData ? newData.number : 0) || 0;
+    HeaderStore.setUnreadMessageCount(count);
     this.props.HeaderStore.setInboxLoaded(false);
   };
 
@@ -297,7 +306,7 @@ export default class Inbox extends Component {
             inboxData.map((data) => {
               const { title, content, id, sendTime, read, sendDate } = data;
               const realSendTime = 'sendDate' in data ? sendDate : sendTime;
-              const isMsg = 'backlogFlag' in data;
+              const isMsg = 'messageId' in data;
               const icon = <Icon type={isMsg ? 'textsms' : 'volume_up'} className="color-blue" />;
               const iconWithBadge = read || !isMsg ? icon : <Badge dot>{icon}</Badge>;
               let showPicUrl;
@@ -370,18 +379,17 @@ export default class Inbox extends Component {
   }
 
   render() {
-    const { AppState, HeaderStore: { inboxData, inboxLoading } } = this.props;
+    const { AppState, HeaderStore: { inboxData, inboxLoading, getUnreadMessageCount } } = this.props;
     const popOverContent = { inboxData, inboxLoading };
     return (
       <React.Fragment>
         <WSHandler
-          messageKey="site-msg"
+          messageKey="hzero-web"
           onMessage={this.handleMessage}
-          type="site-msg"
         >
           {
             data => (
-              <Badge onClick={this.handleButtonClick} className={`${prefixCls} ignore-react-onclickoutside`} count={data || 0}>
+              <Badge onClick={this.handleButtonClick} className={`${prefixCls} ignore-react-onclickoutside`} count={getUnreadMessageCount}>
                 <Button functype="flat" shape="circle" style={{ color: '#fff' }}>
                   <Icon type="notifications" />
                 </Button>
