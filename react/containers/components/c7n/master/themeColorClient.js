@@ -31,8 +31,6 @@ export default {
       hexToRgba(colorPalette(newColor, 1)).join(','), // 左侧菜单menu-item颜色
     ];
     const options = {
-      cssUrl: '/dis/theme-colors.css', // hash模式下用相对路径
-      // oldColors: ['#3f51b5', '#303f9f'], // current colors array. The same as `matchColors`
       newColors, // new colors array, one-to-one corresponde with `oldColors`
     };
     const promise = client.changer.changeColor(options);

@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-import classNames from 'classnames';
-import { Tabs } from 'choerodon-ui';
-import { withRouter } from 'react-router-dom';
-
-const { TabPane } = Tabs;
+import React from 'react';
 
 export const Context = React.createContext({});
 
-const PageTab = ({ children, ...props }) => (
-  <React.Fragment>{children}</React.Fragment>
-);
+const PageTab = ({ children }) => <React.Fragment>{children}</React.Fragment>;
+PageTab.propTypes = {
 
+};
 export default PageTab;

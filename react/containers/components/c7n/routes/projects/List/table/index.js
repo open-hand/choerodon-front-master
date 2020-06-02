@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { Avatar } from 'choerodon-ui';
@@ -53,10 +53,18 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
   function renderAction({ record }) {
     const { organizationId } = queryString.parse(history.location.search);
     const actionDatas = [
-      { service: ['base-service.organization-project.update'], icon: '', text: '编辑', action: handleEditProject },
-      { service: ['base-service.organization-project.disableProject', 'base-service.organization-project.enableProject'], icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabledProject },
+      {
+        icon: '',
+        text: '编辑',
+        action: handleEditProject,
+      },
+      {
+        icon: '',
+        text: record.get('enabled') ? '停用' : '启用',
+        action: handleEnabledProject,
+      },
     ];
-    return <Action organizationId={organizationId} type="organization" data={actionDatas} style={actionStyle} />;
+    return <Action organizationId={organizationId} type="organization" data={record.get('editFlag') ? actionDatas : []} style={actionStyle} />;
   }
 
   function renderEnabled({ record }) {
@@ -71,7 +79,7 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
 
   const realData = dataSet.originalData.filter(r => filterRecent(r));
 
-  if (realData.length === 0 && dataSet.status === 'ready' && Object.keys(dataSet.queryDataSet.current.toData()).filter((item) => item !== '__dirty').length === 0) {
+  if (realData.length === 0 && dataSet.status === 'ready' && dataSet.queryDataSet.current && Object.keys(dataSet.queryDataSet.current.toData()).filter((item) => item !== '__dirty').length === 0) {
     let description = '';
     if (isNotRecent === 'all') {
       description = '暂无可操作的项目';

@@ -65,8 +65,8 @@ export default (AppState, history, categoryDs) => {
         apiOrgId = organizationId;
       }
       const url = name === 'code'
-        ? `/base/v1/organizations/${apiOrgId}/projects/check`
-        : `/base/v1/organizations/${apiOrgId}/applications/check/${value}`;
+        ? `/iam/choerodon/v1/organizations/${apiOrgId}/projects/check`
+        : `/iam/choerodon/v1/organizations/${apiOrgId}/applications/check/${value}`;
       const params = { code: value };
       const res = await axios({
         method: name === 'code' ? 'post' : 'get',
@@ -74,28 +74,28 @@ export default (AppState, history, categoryDs) => {
         data: name === 'code' ? params : undefined,
       });
       if (res === false) {
-        return '编码已存在。';
+        return '项目编码已存在';
       } else if (res && res.failed) {
         return res.message;
       } else {
         return true;
       }
     } catch (err) {
-      return '编码已存在或编码重名校验失败，请稍后再试。';
+      return '编码已存在或编码重名校验失败，请稍后再试';
     }
   };
 
   return {
-    autoQuery: true,
+    autoQuery: false,
     selection: false,
     paging: false,
     transport: {
       read: {
-        url: queryString.parse(history.location.search).organizationId ? `/base/v1/organizations/${queryString.parse(history.location.search).organizationId}/users/${AppState.getUserId}/projects` : '',
+        url: queryString.parse(history.location.search).organizationId ? `/iam/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/users/${AppState.getUserId}/projects` : '',
         method: 'get',
       },
       submit: ({ dataSet }) => ({
-        url: `/base/v1/organizations/${queryString.parse(history.location.search).organizationId}/projects/${dataSet.current.get('id')}`,
+        url: `/iam/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/projects/${dataSet.current.get('id')}`,
         method: 'put',
         data: dataSet.current.toData(),
       }),

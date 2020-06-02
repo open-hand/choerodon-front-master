@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import { authorize } from '../../../../common';
 import './style';
 import AppState from '../../../../stores/c7n/AppState';
 

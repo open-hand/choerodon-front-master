@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { warning } from '@/utils';
 import addEventListener from './addEventListener';
-import warning from '../../../../../common/warning';
 
 const TIMEOUT_TIME = 50000;
 
@@ -73,7 +73,7 @@ export default class WSProvider extends Component {
   };
 
   handleMessage = ({ data }, path) => {
-    const { key, data: message } = JSON.parse(data);
+    const { key, message } = JSON.parse(data);
     const { onMessage } = this.props;
     const handlers = this.map.get(`${path}-${key}`);
     if (typeof onMessage === 'function') {
