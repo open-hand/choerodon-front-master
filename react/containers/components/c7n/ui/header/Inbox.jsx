@@ -227,7 +227,7 @@ export default class Inbox extends Component {
 
   readAllMsg = () => {
     const { AppState, HeaderStore } = this.props;
-    HeaderStore.readMsg(AppState.userInfo.id, 1);
+    HeaderStore.readMsg(AppState.userInfo.id, null, 1);
     // HeaderStore.setInboxVisible(false);
   };
 
