@@ -209,8 +209,8 @@ class RenderPopoverContentDetailClass extends Component {
 @observer
 export default class Inbox extends Component {
   componentDidMount() {
-    const { AppState: { currentMenuType: { organizationId } }, HeaderStore } = this.props;
-    HeaderStore.axiosGetUnreadMessageCount(organizationId);
+    const { HeaderStore } = this.props;
+    HeaderStore.axiosGetUnreadMessageCount();
   }
 
   cleanMsg = (e, data) => {

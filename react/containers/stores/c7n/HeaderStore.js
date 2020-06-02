@@ -299,8 +299,8 @@ class HeaderStore {
     });
   }
 
-  axiosGetUnreadMessageCount(organizationId) {
-    return axios.get(`hmsg/v1/${organizationId}/messages/user/count`).then(action((data) => {
+  axiosGetUnreadMessageCount() {
+    return axios.get('hmsg/v1/0/messages/user/count').then(action((data) => {
       this.setUnreadMessageCount(data ? data.unreadMessageCount : 0);
     })).catch(() => {
       this.setUnreadMessageCount(0);
