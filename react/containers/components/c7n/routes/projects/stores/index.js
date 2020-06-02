@@ -27,6 +27,17 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'HeaderSto
       }
     }, [type, id, organizationId]);
 
+    useEffect(() => {
+      async function init() {
+        dataSet.query();
+        AppState.loadUserInfo();
+      }
+      dataSet.status = 'loading';
+      if (organizationId) {
+        init();
+      }
+    }, [type, id, organizationId]);
+
     const value = {
       ...props,
       prefixCls: 'c7n-projects',

@@ -42,4 +42,4 @@ export { default as StatusTag } from './containers/components/c7n/tools/statusTa
 
 export { default as Breadcrumb } from './containers/components/c7n/tools/tab-page/Breadcrumb';
 
-export { default as Choerodon } from './containers/common/index2';
+export { default as Choerodon } from '@/utils/choerodon';

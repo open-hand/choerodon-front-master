@@ -25,7 +25,7 @@ const ListView = observer((props) => {
 
   const realData = dataSet.originalData.filter(r => filterRecent(r));
 
-  if (realData.length === 0 && Object.keys(dataSet.queryDataSet.current.toData()).filter((item) => item !== '__dirty').length === 0) {
+  if (realData.length === 0 && dataSet.status === 'ready' && dataSet.queryDataSet.current && Object.keys(dataSet.queryDataSet.current.toData()).filter((item) => item !== '__dirty').length === 0) {
     let description = '';
     if (isNotRecent === 'all') {
       description = '暂无可操作的项目';

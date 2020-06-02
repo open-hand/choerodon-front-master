@@ -12,7 +12,7 @@ const Home = (props) => {
 
   useEffect(() => {
     async function loadLists() {
-      const res = await axios.get(`/base/v1/projects/${AppState.currentMenuType.id}/report/list`);
+      const res = await axios.get(`/iam/choerodon/v1/projects/${AppState.currentMenuType.id}/report/list`);
       setList(res);
     }
     loadLists();

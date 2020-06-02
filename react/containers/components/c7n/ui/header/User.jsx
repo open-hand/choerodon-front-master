@@ -3,9 +3,9 @@ import queryString from 'query-string';
 import { inject, observer } from 'mobx-react';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Popover, Icon } from 'choerodon-ui';
+import { historyPushMenu, logout } from '@/utils';
 import Avatar from './Avatar';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
-import { historyPushMenu, logout } from '../../../../common';
 // import { PREFIX_CLS } from '@choerodon/boot/lib/containers/common/constants';
 
 const MenuItem = Menu.Item;
@@ -18,10 +18,11 @@ const blackList = new Set(['choerodon.code.usercenter.receive-setting']);
 @observer
 export default class UserPreferences extends Component {
   componentDidMount() {
-    const { history, MenuStore } = this.props;
+    const { history, MenuStore, HeaderStore } = this.props;
     if (window.location.href.split('#')[1].split('&')[1] === 'token_type=bearer') {
       history.push('/');
     }
+    HeaderStore.axiosShowSiteMenu();
     MenuStore.loadMenuData({ type: 'site' }, true);
   }
 
@@ -66,7 +67,7 @@ export default class UserPreferences extends Component {
     if (menu.subMenus && menu.subMenus.length) {
       menu.subMenus.forEach(v => this.findUserInfoMenuItem(v, res));
     }
-    if (menu.code === 'choerodon.code.person.user-info') {
+    if (menu.code === 'choerodon.code.person.setting.user-info') {
       res.res = menu;
     }
   }
@@ -91,7 +92,7 @@ export default class UserPreferences extends Component {
           src={imageUrl}
           prefixCls={prefixCls}
           onClick={() => {
-            history.push(`/base/user-info?type=site&organizationId=${organizationId}`);
+            history.push(`/iam/user-info?type=site&organizationId=${organizationId}`);
           }}
         >
           {realName && realName.charAt(0)}
@@ -104,14 +105,14 @@ export default class UserPreferences extends Component {
           <Menu selectedKeys={[-1]} onClick={this.handleMenuItemClick}>
             {realData && realData.map(item => (
               item.code && (
-                <MenuItem className={`${prefixCls}-popover-menu-item`} key={item.code}>
+                <MenuItem className={`${prefixCls}-popover-menu-item`} key={item.route}>
                   <Icon type={item.icon} />
                   {item.name}
                 </MenuItem>
               )
             ))}
             {
-              MenuStore.getSiteMenuData.length > 0 ? [
+              HeaderStore.getShowSiteMenu ? [
                 <Menu.Divider />,
                 <MenuItem className={`${prefixCls}-popover-menu-item`} key="site-setting">
                   <Icon type="settings" />

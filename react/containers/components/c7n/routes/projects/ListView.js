@@ -3,13 +3,13 @@ import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import { Icon, Button, Modal as OldModal, Tooltip } from 'choerodon-ui';
 import { Modal, Select, message } from 'choerodon-ui/pro';
+import { prompt } from '@/utils';
+import { historyPushMenu } from '@/utils';
 import Store from './stores';
 import List from './List';
 import findFirstLeafMenu from '../../../util/findFirstLeafMenu';
-import { historyPushMenu } from '../../../../common';
 import FormView from './FormView';
 import { Content, Page, axios, Permission } from '../../../../../index';
-import { prompt } from '../../../../common';
 import './style/index.less';
 
 const { Option } = Select;
@@ -72,7 +72,7 @@ const ListView = observer(() => {
         category,
         imageUrl,
       };
-      const res = await axios.post(`/base/v1/organizations/${organizationId}/projects`, data);
+      const res = await axios.post(`/iam/choerodon/v1/organizations/${organizationId}/projects`, data);
       if (res.failed) {
         prompt(res.message);
         return false;
@@ -162,7 +162,7 @@ const ListView = observer(() => {
           content: `确定要停用项目"${name}"吗？停用后，您和项目下其他成员将无法进入此项目。`,
           onOk: async () => {
             try {
-              const result = await axios.put(`/base/v1/organizations/${organizationId}/projects/${id}/disable`);
+              const result = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${id}/disable`);
               if (result.failed) {
                 throw result.message;
               }
@@ -175,7 +175,7 @@ const ListView = observer(() => {
         });
       } else {
         try {
-          const result = await axios.put(`/base/v1/organizations/${organizationId}/projects/${id}/enable`);
+          const result = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${id}/enable`);
           if (result.failed) {
             throw result.message;
           }
@@ -210,7 +210,7 @@ const ListView = observer(() => {
       }
       // if (route) {
       path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
-      if (organizationId) {
+      if (String(organizationId)) {
         path += `&organizationId=${organizationId}`;
       }
       // }
@@ -226,11 +226,7 @@ const ListView = observer(() => {
     return (
       <div className="c7n-projects-header">
         <div className="c7n-projects-title">{`${org.name}中的项目`}</div>
-        <Permission
-          service={['base-service.organization-project.create']}
-          type="organization"
-          organizationId={organizationId}
-        >
+        <Permission service={['choerodon.code.organization.project.ps.create']}>
           <Tooltip
             title={getCanCreate ? '' : '项目数量已达上限，无法创建更多项目'}
             placement="bottom"

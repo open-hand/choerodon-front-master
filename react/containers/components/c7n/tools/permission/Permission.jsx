@@ -1,4 +1,7 @@
-import React, { Children, cloneElement, Component, createElement, isValidElement } from 'react';
+/* eslint-disable react/no-deprecated */
+/* eslint-disable react/state-in-constructor */
+/* eslint-disable react/static-property-placement */
+import { Children, cloneElement, Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import omit from 'object.omit';

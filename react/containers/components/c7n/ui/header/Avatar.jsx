@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import { fileServer } from '../../../../common';
+import { fileServer } from '@/utils';
 
 export default class Avatar extends Component {
   render() {

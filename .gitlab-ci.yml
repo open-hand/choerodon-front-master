@@ -11,10 +11,12 @@ release:
     - npm run compile
     - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>.npmrc
     - npm publish --registry ${NPM_PUBLISH_REGISTRY}
+    - curl -sX POST -F token=${FRONT_REPOSITORY_TOKEN} -F ref=${REF_NAME} https://code.choerodon.com.cn/api/v4/projects/7909/trigger/pipeline
   only:
     refs:
       - master
       - tags
+      - hzero-front
       - /^release-.*$/
       - /^hotfix-.*$/
 

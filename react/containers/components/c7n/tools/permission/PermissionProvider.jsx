@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { flatten } from 'lodash';
 import axios from '../axios';
 import { FAILURE, SUCCESS } from './PermissionStatus';
 
 const DELAY = 500;
 
-export default class PermissionProvider extends Component {
-  static childContextTypes = {
-    permission: PropTypes.object,
-  };
-
+class PermissionProvider extends Component {
   delayId = 0;
 
   permissions = new Map();
@@ -26,16 +23,45 @@ export default class PermissionProvider extends Component {
 
   fetch() {
     const handlers = Array.from(this.handlers);
-    axios.post('/base/v1/permissions/checkPermission', `[${Array.from(this.queue).join(',')}]`)
-      .then((data) => {
-        data.forEach(({ code, resourceType, organizationId, projectId, approve }) => {
+    const totalData = Array.from(this.queue).map(item => JSON.parse(item));
+    const projectData = totalData.filter(item => item.resourceType === 'project');
+    const otherData = totalData.filter(item => item.resourceType !== 'project');
+    const request = [];
+    // 项目层和其他层分开请求
+    if (projectData.length > 0) {
+      request.push(axios({
+        method: 'post',
+        url: '/iam/choerodon/v1/permissions/menus/check-permissions',
+        data: projectData.map(item => item.code),
+        params: {
+          projectId: projectData[0].projectId,
+        },
+      }));
+    }
+    if (otherData.length > 0) {
+      request.push(axios({
+        method: 'post',
+        url: '/iam/choerodon/v1/permissions/menus/check-permissions',
+        data: otherData.map(item => item.code),
+      }));
+    }
+
+    Promise.all(request).then((res) => {
+      const data = flatten(res);
+      data.forEach(
+        ({ code, approve }, index) => {
+          const item = totalData[index];
+          const { resourceType, organizationId, projectId } = item;
           if (resourceType) {
-            const key = JSON.stringify(this.judgeService(code, resourceType, organizationId, projectId));
+            const key = JSON.stringify(
+              this.judgeService(code, resourceType, organizationId, projectId),
+            );
             this.permissions.set(key, approve ? SUCCESS : FAILURE);
           }
-        });
-        handlers.forEach(([props, handler]) => this.check(props, handler, true));
-      });
+        },
+      );
+      handlers.forEach(([props, handler]) => this.check(props, handler, true));
+    });
   }
 
   start() {
@@ -54,20 +80,21 @@ export default class PermissionProvider extends Component {
       handler(SUCCESS);
     } else {
       const queue = new Set();
-      if (this.judgeServices(props).every((item) => {
-        if (item) {
-          const key = JSON.stringify(item);
-          const status = this.permissions.get(key);
-          if (status === SUCCESS) {
-            handler(status);
-            return false;
-          } else if (status !== FAILURE) {
-            this.queue.add(key);
-            queue.add(key);
+      if (
+        this.judgeServices(props).every(item => {
+          if (item) {
+            const key = JSON.stringify(item);
+            const status = this.permissions.get(key);
+            if (status === SUCCESS) {
+              handler(status);
+              return false;
+            } else if (status !== FAILURE) {
+              this.queue.add(key);
+              queue.add(key);
+            }
           }
-        }
-        return true;
-      })
+          return true;
+        })
       ) {
         if (queue.size > 0 && !flag) {
           this.handlers.add([props, handler]);
@@ -80,8 +107,7 @@ export default class PermissionProvider extends Component {
   }
 
   judgeServices({ service, type, organizationId, projectId }) {
-    return service
-      .map(code => this.judgeService(code, type, organizationId, projectId));
+    return service.map(code => this.judgeService(code, type, organizationId, projectId));
   }
 
   judgeService(code, type, organizationId, projectId) {
@@ -113,3 +139,7 @@ export default class PermissionProvider extends Component {
     return this.props.children;
   }
 }
+PermissionProvider.childContextTypes = {
+  permission: PropTypes.object,
+};
+export default PermissionProvider;

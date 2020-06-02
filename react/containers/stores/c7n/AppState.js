@@ -132,11 +132,21 @@ class AppState {
     return this.isUser;
   }
 
-  loadUserInfo = () => axios.get('/base/v1/users/self');
+  loadUserInfo = () => {
+    return axios.get('iam/choerodon/v1/users/self').then((res) => {
+      res = {
+        ...res,
+        organizationName: res.tenantName,
+        organizationCode: res.tenantNum,
+      }
+      this.setUserInfo(res);
+      return res;
+    })
+  };
 
-  loadOrgDate = (email) => axios.get(`/base/v1/organizations/daysRemaining?email=${email}`);
+  loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`);
 
-  loadSiteInfo = () => axios.get('/base/v1/system/setting');
+  loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting');
 }
 
 const appState = new AppState();

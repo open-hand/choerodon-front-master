@@ -2,9 +2,9 @@ import { action, computed, observable } from 'mobx';
 import omit from 'object.omit';
 import sortBy from 'lodash/sortBy';
 import queryString from 'query-string';
+import { handleResponseError } from '@/utils';
 import store from '../../components/c7n/tools/store';
 import axios from '../../components/c7n/tools/axios';
-import { handleResponseError } from '../../common';
 
 const ORGANIZATION_TYPE = 'organization';
 const PROJECT_TYPE = 'project';
@@ -31,6 +31,8 @@ function saveRecent(collection = [], value, number) {
 
 @store('HeaderStore')
 class HeaderStore {
+  @observable roles = [];
+
   @observable orgData = null;
 
   @observable proData = null;
@@ -67,12 +69,15 @@ class HeaderStore {
 
   @observable isTodo = false;
 
+  @observable showSiteMenu = false;
+
+  @observable unreadMessageCount = 0;
+
   @action setInboxActiveKey(flag) {
     this.inboxActiveKey = flag;
   }
 
   @action setIsTodo(_isTodo) {
-    debugger;
     this.isTodo = _isTodo;
   }
 
@@ -98,6 +103,21 @@ class HeaderStore {
   closeAnnouncement() {
     this.announcementClosed = true;
     window.localStorage.setItem('lastClosedId', `${this.announcement.id}`);
+  }
+
+  @computed
+  get getRoles() {
+    return this.roles;
+  }
+
+  @action setRoles(data) {
+    this.roles = data;
+  }
+
+  axiosGetRoles() {
+    axios.get('iam/hzero/v1/member-roles/self-roles').then((res) => {
+      this.setRoles(res);
+    });
   }
 
   @computed
@@ -157,7 +177,7 @@ class HeaderStore {
 
   @action
   setOrgData(data) {
-    this.orgData = data.filter(item => item.enabled === true);
+    this.orgData = data;
   }
 
   @computed
@@ -180,17 +200,41 @@ class HeaderStore {
     this.inboxVisible = inboxVisible;
   }
 
+  @computed
+  get getShowSiteMenu() {
+    return this.showSiteMenu;
+  }
+
+  @action
+  setShowSiteMenu(flag) {
+    this.showSiteMenu = flag;
+  }
+
+  @computed
+  get getUnreadMessageCount() {
+    return this.unreadMessageCount;
+  }
+
+  @action
+  setUnreadMessageCount(data) {
+    this.unreadMessageCount = data;
+  }
+
   axiosGetOrgAndPro(userId) {
     return axios.all([
-      axios.get(`/base/v1/users/${userId}/organizations`),
-      axios.get(`/base/v1/users/${userId}/projects`),
+      axios.get('/iam/choerodon/v1/users/self-tenants'),
+      axios.get(`/iam/choerodon/v1/users/${userId}/projects`),
     ]).then((data) => {
       const [organizations, projects] = data;
       organizations.forEach((value) => {
+        value.id = value.tenantId;
+        value.name = value.tenantName;
+        value.organizationId = value.id;
         value.type = ORGANIZATION_TYPE;
       });
       projects.forEach((value) => {
         value.type = PROJECT_TYPE;
+        value.projectId = value.id;
       });
       this.setOrgData(organizations);
       this.setProData(projects);
@@ -199,25 +243,36 @@ class HeaderStore {
   }
 
   axiosGetStick() {
-    return axios.get(`/notify/v1/system_notice/completed?${queryString.stringify({
+    return axios.get(`/hmsg/choerodon/v1/system_notice/completed?${queryString.stringify({
       page: 1,
       size: 9999,
     })}`)
-      .then(action(({ list }) => {
-        this.stickData = list || [];
+      .then(action(({ content }) => {
+        this.stickData = content || [];
       }))
       .catch(handleResponseError);
   }
 
   axiosGetUserMsg(userId) {
-    return axios.get(`/notify/v1/notices/sitemsgs?${queryString.stringify({
+    return axios.get(`/hmsg/v1/0/messages/user?${queryString.stringify({
       user_id: userId,
+      // readFlag: 0,
       // read: false,
       page: 1,
       size: 9999,
-      sort: 'id,desc',
-    })}`)
+      sort: 'read_flag,asc',
+      withContent: true,
+    })}&sort=creationDate,desc`)
       .then(action(({ list }) => {
+        if (list && list.length) {
+          list.forEach((item) => {
+            const { messageId, subject, creationDate, readFlag } = item;
+            item.read = readFlag === 1;
+            item.id = messageId;
+            item.title = subject;
+            item.sendTime = creationDate;
+          });
+        }
         this.inboxData = list || [];
         this.inboxLoading = false;
         this.inboxLoaded = true;
@@ -228,7 +283,7 @@ class HeaderStore {
   }
 
   axiosGetNewSticky() {
-    return axios.get('/notify/v1/system_notice/new_sticky').then(action((data) => {
+    return axios.get('/hmsg/choerodon/v1/system_notice/new_sticky').then(action((data) => {
       this.announcement = data;
       if (data && data.id && (!localStorage.lastClosedId || localStorage.lastClosedId !== `${data.id}`)) {
         this.announcementClosed = false;
@@ -236,9 +291,25 @@ class HeaderStore {
     })).catch(handleResponseError);
   }
 
+  axiosShowSiteMenu() {
+    return axios.get('/iam/choerodon/v1/menus/site_menu_flag').then(action((data) => {
+      this.setShowSiteMenu(data);
+    })).catch(() => {
+      this.setShowSiteMenu(false);
+    });
+  }
+
+  axiosGetUnreadMessageCount() {
+    return axios.get('hmsg/v1/0/messages/user/count').then(action((data) => {
+      this.setUnreadMessageCount(data ? data.unreadMessageCount : 0);
+    })).catch(() => {
+      this.setUnreadMessageCount(0);
+    });
+  }
+
   @action
   setProData(data) {
-    this.proData = data.filter(item => item.enabled === true);
+    this.proData = data;
   }
 
   @action
@@ -314,17 +385,17 @@ class HeaderStore {
   }
 
   @action
-  readMsg(userId, data) {
+  readMsg(userId, data, readAll) {
     const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
     this.lookMsg(data);
-    return axios.put(`/notify/v1/notices/sitemsgs/batch_read?user_id=${userId}`, JSON.stringify(body));
+    return axios.post(`/hmsg/v1/0/messages/user/read-flag?readAll=${readAll}&user_id=${userId}`, JSON.stringify(body));
   }
 
   @action
   deleteMsg(userId, data) {
     const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
     this.clearMsg(data);
-    return axios.put(`/notify/v1/notices/sitemsgs/batch_delete?user_id=${userId}`, JSON.stringify(body));
+    return axios.get(`/hmsg/v1/0/messages/user/clear?user_id=${userId}`, JSON.stringify(body));
   }
 
   @action

@@ -16,7 +16,7 @@ const prefixCls = 'c7n-boot-header';
 class Header extends Component {
   componentDidMount() {
     const { AppState, HeaderStore, MenuStore } = this.props;
-    MenuStore.loadMenuData({ type: 'site' }, false);
+    // MenuStore.loadMenuData({ type: 'site' }, false);
     HeaderStore.axiosGetOrgAndPro(AppState.getUserId);
   }
 
