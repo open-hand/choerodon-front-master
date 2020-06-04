@@ -233,7 +233,7 @@ export default class Inbox extends Component {
 
   cleanAllMsg = () => {
     const { AppState, HeaderStore } = this.props;
-    HeaderStore.deleteMsg(AppState.userInfo.id);
+    HeaderStore.cleanAllMsg(AppState.userInfo.id);
     // HeaderStore.setInboxVisible(false);
   };
 
@@ -272,7 +272,7 @@ export default class Inbox extends Component {
     const { HeaderStore } = this.props;
     const newData = JSON.parse(data);
     const count = HeaderStore.getUnreadMessageCount + (newData ? newData.number : 0) || 0;
-    HeaderStore.setUnreadMessageCount(count);
+    HeaderStore.setUnreadMessageCount(count < 0 ? 0 : count);
     this.props.HeaderStore.setInboxLoaded(false);
   };
 

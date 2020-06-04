@@ -386,16 +386,25 @@ class HeaderStore {
 
   @action
   readMsg(userId, data, readAll) {
-    const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
+    // const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
+    const param = data && data.userMessageId ? `&userMessageIdList=${data.userMessageId}` : '';
     this.lookMsg(data);
-    return axios.post(`/hmsg/v1/0/messages/user/read-flag?readAll=${readAll}&user_id=${userId}`, JSON.stringify(body));
+    return axios.post(`/hmsg/v1/0/messages/user/read-flag?readAll=${readAll}&user_id=${userId}${param}`);
   }
 
   @action
   deleteMsg(userId, data) {
-    const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
+    // const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
+    const param = data && data.userMessageId ? `&userMessageIdList=${data.userMessageId}` : '';
     this.clearMsg(data);
-    return axios.get(`/hmsg/v1/0/messages/user/clear?user_id=${userId}`, JSON.stringify(body));
+    return axios.delete(`/hmsg/v1/0/messages/user?user_id=${userId}${param}`);
+  }
+
+  @action
+  cleanAllMsg(userId, data) {
+    // const body = (data ? [].concat(data) : this.inboxData).map(({ id }) => id);
+    this.clearMsg(data);
+    return axios.delete(`/hmsg/choerodon/v1/messages/user/delete_all?user_id=${userId}`);
   }
 
   @action
