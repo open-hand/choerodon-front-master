@@ -207,9 +207,8 @@ class MenuStore {
       const { id = 0, organizationId } = menuType;
       const menu = this.menuData(type, id);
       if (menu.length) {
-        if (type === 'site') {
-          await axios.put('iam/v1/users/tenant-id?tenantId=0');
-        }
+        let orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
+        await axios.put(`iam/v1/users/tenant-id?tenantId=${type === 'site' ? 0 : orgId}`);
         isLoadMenu = 0;
         return resolve(menu);
       }
