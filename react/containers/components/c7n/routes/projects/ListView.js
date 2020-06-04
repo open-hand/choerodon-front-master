@@ -154,12 +154,22 @@ const ListView = observer(() => {
   async function handleEnabledProject() {
     const { current } = dataSet;
     try {
-      const { id, organizationId, enabled, name } = current.toData();
+      const { id, organizationId, enabled, name, category } = current.toData();
+      const content = (
+        <div>
+          <span>确定要停用项目“{name}”吗？停用后，您和项目下其他成员将无法进入此项目。</span>
+          {category === 'PROGRAM' ? (
+            <div className="c7n-projects-enable-tips">
+              警告：项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用。请谨慎操作！
+            </div>
+          ) : null}
+        </div>
+      );
       if (enabled) {
         OldModal.confirm({
           className: 'c7n-iam-confirm-modal',
           title: '停用项目',
-          content: `确定要停用项目"${name}"吗？停用后，您和项目下其他成员将无法进入此项目。`,
+          content,
           onOk: async () => {
             try {
               const result = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${id}/disable`);
