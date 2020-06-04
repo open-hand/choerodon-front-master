@@ -207,8 +207,16 @@ class MenuStore {
       const { id = 0, organizationId } = menuType;
       const menu = this.menuData(type, id);
       if (menu.length) {
-        let orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
-        await axios.put(`iam/v1/users/tenant-id?tenantId=${type === 'site' ? 0 : orgId}`);
+        if (type === 'site') {
+          await axios.put('iam/v1/users/tenant-id?tenantId=0');
+          AppState.loadUserInfo();
+        } else if (type === 'organization') {
+          let orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
+          if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
+            await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId}`);
+            AppState.loadUserInfo();
+          }
+        }
         isLoadMenu = 0;
         return resolve(menu);
       }
