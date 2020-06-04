@@ -3,6 +3,7 @@ import { authorizeUrl } from '@/utils/authorize';
 import { getAccessToken, removeAccessToken } from '@/utils/accessToken';
 import { API_HOST } from '@/utils/constants';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
+import MenuStore from '../../../../stores/c7n/MenuStore';
 
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|PERMISSION_ACCESS_TOKEN_EXPIRED)/;
 
@@ -21,7 +22,7 @@ instance.interceptors.request.use(
     const orgId = urlSearchParam.get('organizationId');
     const id = !type || type === 'site' ? 0 : orgId || 0;
     newConfig.headers['H-Tenant-Id'] = id;
-
+    newConfig.headers['H-Menu-Id'] = MenuStore.activeMenu ? MenuStore.activeMenu.id : 0;
     newConfig.headers['Content-Type'] = 'application/json';
     newConfig.headers.Accept = 'application/json';
     transformRequestPage(newConfig);

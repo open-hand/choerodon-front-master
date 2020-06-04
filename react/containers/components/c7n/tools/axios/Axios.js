@@ -7,6 +7,8 @@ import {
 import { authorizeUrl } from '@/utils/authorize';
 import { API_HOST } from '@/utils/constants';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
+// eslint-disable-next-line import/no-cycle
+import MenuStore from '../../../../stores/c7n/MenuStore';
 
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|PERMISSION_ACCESS_TOKEN_EXPIRED)/;
 axios.defaults.timeout = 30000;
@@ -23,6 +25,7 @@ axios.interceptors.request.use(
     newConfig.headers['Content-Type'] = 'application/json';
     newConfig.headers.Accept = 'application/json';
     newConfig.headers['H-Tenant-Id'] = id;
+    newConfig.headers['H-Menu-Id'] = MenuStore.activeMenu ? MenuStore.activeMenu.id : 0;
     transformRequestPage(newConfig);
     const accessToken = getAccessToken();
     if (accessToken) {
