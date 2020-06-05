@@ -54,11 +54,13 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
     const { organizationId } = queryString.parse(history.location.search);
     const actionDatas = [
       {
+        service: ['choerodon.code.organization.project.ps.edit'],
         icon: '',
         text: '编辑',
         action: handleEditProject,
       },
       {
+        service: ['choerodon.code.organization.project.ps.edit'],
         icon: '',
         text: record.get('enabled') ? '停用' : '启用',
         action: handleEnabledProject,
