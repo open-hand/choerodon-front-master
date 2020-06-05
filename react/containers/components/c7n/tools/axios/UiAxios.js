@@ -43,10 +43,13 @@ instance.interceptors.response.use(
     if (response.status === 204) {
       return response;
     }
-    if (response.data.failed === true) {
-      throw response.data;
-    } else {
+    if (response.data) {
+      if (response.data.failed === true) {
+        throw response.data;
+      }
       return transformResponsePage(response.data);
+    } else {
+      return response;
     }
   },
   (error) => {

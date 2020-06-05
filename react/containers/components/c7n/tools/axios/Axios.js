@@ -44,7 +44,7 @@ axios.interceptors.response.use(
     if (response.status === 204) {
       return response;
     }
-    if ('data' in response) {
+    if (response.data) {
       if (response.data.failed === true) {
         prompt(response.data.message, 'error');
         throw response.data;
