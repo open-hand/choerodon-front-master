@@ -36,7 +36,7 @@ const Card = ({ handleEditProject, handleClickProject, handleEnabledProject, dat
       { icon: '', text: '编辑', action: handleFocus },
       { icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabled },
     ];
-    return <Action organizationId={organizationId} type="organization" data={record.get('editFlag') ? actionDatas : []} style={{ marginLeft: 5, flexShrink: 0 }} />;
+    return record.get('editFlag') && <Action organizationId={organizationId} type="organization" data={actionDatas} style={{ marginLeft: 5, flexShrink: 0 }} />;
   }
 
   return (

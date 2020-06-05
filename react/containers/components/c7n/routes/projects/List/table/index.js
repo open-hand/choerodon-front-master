@@ -64,7 +64,7 @@ const ListView = observer(({ handleClickProject, handleEditProject, handleEnable
         action: handleEnabledProject,
       },
     ];
-    return <Action organizationId={organizationId} type="organization" data={record.get('editFlag') ? actionDatas : []} style={actionStyle} />;
+    return record.get('editFlag') && <Action organizationId={organizationId} type="organization" data={actionDatas} style={actionStyle} />;
   }
 
   function renderEnabled({ record }) {
