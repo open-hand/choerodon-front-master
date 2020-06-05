@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useRef, useCallback } from 'react';
+import React, { useContext, useEffect, useRef, useCallback, Fragment } from 'react';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import { Icon, Button, Modal as OldModal, Tooltip } from 'choerodon-ui';
-import { Modal, Select, message } from 'choerodon-ui/pro';
+import { Modal, Select, message, TextField } from 'choerodon-ui/pro';
 import { prompt } from '@/utils';
 import { historyPushMenu } from '@/utils';
 import Store from './stores';
@@ -156,44 +156,111 @@ const ListView = observer(() => {
     try {
       const { id, organizationId, enabled, name, category, categories } = current.toData();
       const isSubProject = categories.some(c => c.code === 'PROGRAM_PROJECT');
-      let extraMessage;
-      if (category === 'PROGRAM') {
-        extraMessage = (
-          <div className="c7n-projects-enable-tips">
-            警告：项目群停用后，将影响项目群和子项目操作。请谨慎操作！
+      const okProps = {
+        disabled: true,
+        color: 'red',
+        style: {
+          width: '100%', border: '1px solid rgba(27,31,35,.2)', height: 36, marginTop: -26,
+        },
+      };
+      const ModalContent = ({ modal }) => {
+        let extraMessage;
+        if (category === 'PROGRAM') {
+          extraMessage = (
+            <Fragment>
+              <div className="c7n-projects-enable-tips">
+                警告：项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
+              </div>
+              <div style={{ marginTop: 10 }}>
+                请输入
+                {' '}
+                <span style={{ fontWeight: 600 }}>{name}</span>
+                {' '}
+                来确认停用。
+              </div>
+              <TextField
+                style={{ width: '100%', marginTop: 10 }}
+                autoFocus
+                onInput={(e) => {
+                  modal.update({
+                    okProps: {
+                      ...okProps,
+                      disabled: e.target.value !== name,
+                    },
+                  });
+                }}
+              />
+            </Fragment>
+          );
+        } else if (isSubProject) {
+          extraMessage = (
+            <div className="c7n-projects-enable-tips">
+              警告：子项目停用后，将删除与项目群相关冲刺。请谨慎操作！
+            </div>
+          );
+        }
+        const content = (
+          <div style={{ marginTop: -10 }}>
+            {category === 'PROGRAM' && (
+              <p style={{
+                marginBottom: 14,
+                background: '#fffbdd',
+                padding: '15px 26px',
+                border: '1px solid rgba(27,31,35,.15)',
+                width: 'calc(100% + 49px)',
+                marginLeft: -25,
+              }}
+              >
+                请仔细阅读下列事项！
+              </p>
+            )}
+            <span>确定要停用项目“{name}”吗？停用后，您和项目下其他成员将无法进入此项目。</span>
+            {extraMessage}
           </div>
         );
-      } else if (isSubProject) {
-        extraMessage = (
-          <div className="c7n-projects-enable-tips">
-            警告：子项目停用后，将删除与项目群相关冲刺。请谨慎操作！
-          </div>
-        );
-      }
-      const content = (
-        <div>
-          <span>确定要停用项目“{name}”吗？停用后，您和项目下其他成员将无法进入此项目。</span>
-          {extraMessage}
-        </div>
-      );
+        return content;
+      };
+
       if (enabled) {
-        OldModal.confirm({
-          className: 'c7n-iam-confirm-modal',
-          title: '停用项目',
-          content,
-          onOk: async () => {
-            try {
-              const result = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${id}/disable`);
-              if (result.failed) {
-                throw result.message;
+        if (category === 'PROGRAM') {
+          Modal.open({
+            title: '停用项目',
+            children: <ModalContent />,
+            onOk: async () => {
+              try {
+                const result = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${id}/disable`);
+                if (result.failed) {
+                  throw result.message;
+                }
+                dataSet.query();
+              } catch (err) {
+                message.error(err);
+                return false;
               }
-              dataSet.query();
-            } catch (err) {
-              message.error(err);
-              return false;
-            }
-          },
-        });
+            },
+            okProps,
+            okText: '我已经知道后果，停用此项目',
+            closable: true,
+            footer: okBtn => okBtn,
+          });
+        } else {
+          Modal.open({
+            title: '停用项目',
+            children: <ModalContent />,
+            onOk: async () => {
+              try {
+                const result = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${id}/disable`);
+                if (result.failed) {
+                  throw result.message;
+                }
+                dataSet.query();
+              } catch (err) {
+                message.error(err);
+                return false;
+              }
+            },
+          });
+        }
       } else {
         try {
           const result = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${id}/enable`);
