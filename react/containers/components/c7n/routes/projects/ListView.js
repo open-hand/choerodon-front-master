@@ -195,7 +195,7 @@ const ListView = observer(() => {
         } else if (isSubProject) {
           extraMessage = (
             <div className="c7n-projects-enable-tips">
-              警告：子项目停用后，将删除与项目群相关冲刺。请谨慎操作！
+              警告：子项目停用后，与项目群相关的冲刺将发生变动，进行中的冲刺会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
             </div>
           );
         }
