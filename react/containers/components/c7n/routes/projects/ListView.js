@@ -154,15 +154,26 @@ const ListView = observer(() => {
   async function handleEnabledProject() {
     const { current } = dataSet;
     try {
-      const { id, organizationId, enabled, name, category } = current.toData();
+      const { id, organizationId, enabled, name, category, categories } = current.toData();
+      const isSubProject = categories.some(c => c.code === 'PROGRAM_PROJECT');
+      let extraMessage;
+      if (category === 'PROGRAM') {
+        extraMessage = (
+          <div className="c7n-projects-enable-tips">
+            警告：项目群停用后，将影响项目群和子项目操作。请谨慎操作！
+          </div>
+        );
+      } else if (isSubProject) {
+        extraMessage = (
+          <div className="c7n-projects-enable-tips">
+            警告：子项目停用后，将删除与项目群相关冲刺。请谨慎操作！
+          </div>
+        );
+      }
       const content = (
         <div>
           <span>确定要停用项目“{name}”吗？停用后，您和项目下其他成员将无法进入此项目。</span>
-          {category === 'PROGRAM' ? (
-            <div className="c7n-projects-enable-tips">
-              警告：项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用。请谨慎操作！
-            </div>
-          ) : null}
+          {extraMessage}
         </div>
       );
       if (enabled) {
