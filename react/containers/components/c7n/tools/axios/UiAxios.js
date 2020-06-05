@@ -5,7 +5,7 @@ import { API_HOST } from '@/utils/constants';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 import MenuStore from '../../../../stores/c7n/MenuStore';
 
-const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|PERMISSION_ACCESS_TOKEN_EXPIRED)/;
+const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 
 const instance = axios.create({
   timeout: 30000,
