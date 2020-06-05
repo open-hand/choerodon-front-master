@@ -43,7 +43,7 @@ instance.interceptors.response.use(
     if (response.status === 204) {
       return response;
     }
-    if (response.data) {
+    if (Object.prototype.hasOwnProperty.call(response, 'data')) {
       if (response.data.failed === true) {
         throw response.data;
       }
