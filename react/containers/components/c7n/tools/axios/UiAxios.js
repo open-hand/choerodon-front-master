@@ -5,7 +5,7 @@ import { API_HOST } from '@/utils/constants';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 import MenuStore from '../../../../stores/c7n/MenuStore';
 
-const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|PERMISSION_ACCESS_TOKEN_EXPIRED)/;
+const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 
 const instance = axios.create({
   timeout: 30000,
@@ -43,10 +43,13 @@ instance.interceptors.response.use(
     if (response.status === 204) {
       return response;
     }
-    if (response.data.failed === true) {
-      throw response.data;
-    } else {
+    if (Object.prototype.hasOwnProperty.call(response, 'data')) {
+      if (response.data.failed === true) {
+        throw response.data;
+      }
       return transformResponsePage(response.data);
+    } else {
+      return response;
     }
   },
   (error) => {

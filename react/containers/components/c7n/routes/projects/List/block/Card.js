@@ -33,8 +33,18 @@ const Card = ({ handleEditProject, handleClickProject, handleEnabledProject, dat
   function renderAction() {
     const { organizationId } = queryString.parse(history.location.search);
     const actionDatas = [
-      { icon: '', text: '编辑', action: handleFocus },
-      { icon: '', text: record.get('enabled') ? '停用' : '启用', action: handleEnabled },
+      {
+        service: ['choerodon.code.organization.project.ps.edit'],
+        icon: '',
+        text: '编辑',
+        action: handleFocus,
+      },
+      {
+        service: ['choerodon.code.organization.project.ps.edit'],
+        icon: '',
+        text: record.get('enabled') ? '停用' : '启用',
+        action: handleEnabled,
+      },
     ];
     return record.get('editFlag') && <Action organizationId={organizationId} type="organization" data={actionDatas} style={{ marginLeft: 5, flexShrink: 0 }} />;
   }
