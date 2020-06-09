@@ -14,7 +14,7 @@ const EnvList = observer(() => {
   return (
     <div className="c7n-envList">
       <div className="c7n-envList-title">
-        <span>环境</span>
+        <span>环境（最近使用）</span>
         <Button
           className="c7n-envList-expand-btn"
           onClick={() => changeExpand(!expand)}

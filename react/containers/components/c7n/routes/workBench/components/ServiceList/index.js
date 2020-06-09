@@ -9,19 +9,19 @@ import './index.less';
 const appserviceData = [
   {
     time: 5,
-    name: 'Devops Service(devops service)',
+    name: 'Devops Service',
     code: 'staging',
     from: 'choerodon持续交付',
   },
   {
     time: 15,
-    name: 'Devops Service(devops service)',
+    name: 'Devops Service',
     code: 'master',
     from: 'choerodon持续交付',
   },
   {
     time: 25,
-    name: 'Devops Service(devops service)',
+    name: 'Devops Service',
     code: 'feature-C7NCD-1766',
     from: 'choerodon持续交付',
   },
@@ -54,8 +54,7 @@ const ServiceList = withRouter(observer((props) => {
           </header>
           <main>
             <div className="c7n-serviceList-content-item-main">
-              <a onClick={goAppService}>{name}</a>
-              <span>服务编码：{code}</span>
+              <a onClick={goAppService}>{name}（{code}）</a>
             </div>
             <a href="#" target="blank">
               <Icon type="account_balance" />
@@ -72,7 +71,7 @@ const ServiceList = withRouter(observer((props) => {
   return (
     <div className="c7n-serviceList">
       <div className="c7n-serviceList-title">
-        <span>应用服务</span>
+        <span>应用服务（最近使用）</span>
         <Button
           className="c7n-serviceList-expand-btn"
           onClick={() => changeExpand(!expand)}

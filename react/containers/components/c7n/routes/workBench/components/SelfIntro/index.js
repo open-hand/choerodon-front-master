@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { Icon } from 'choerodon-ui/pro';
 import { useWorkBenchStore } from '../../stores';
 
@@ -16,9 +16,16 @@ const SelfIntro = () => {
     email,
   } = getUserInfo || {};
 
-  useEffect(() => {
-
-  }, []);
+  function getDate() {
+    const date = new Date();
+    const [a, month, day] = date.toDateString().split(' ');
+    return (
+      <span className="c7n-selfInfo-date">
+        <span className="c7n-selfInfo-date-day">{day}</span>
+        <span className="c7n-selfInfo-date-month">{month}</span>
+      </span>
+    );
+  }
   
   return (
     <div className="c7n-selfInfo">
@@ -35,10 +42,11 @@ const SelfIntro = () => {
           </span>
         )}
         <span className="c7n-selfInfo-name">Hi，{realName}</span>
+        {getDate()}
       </div>
       <div className="c7n-selfInfo-email">
-        <Icon type="email-o" />
-        <span>{email}</span>
+        <Icon type="email-o" className="c7n-selfInfo-email-icon" />
+        <span className="c7n-selfInfo-email-text">{email}</span>
       </div>
     </div>
   );
