@@ -16,7 +16,7 @@ release:
     refs:
       - master
       - tags
-      - hzero-front
+      - feature-C7NCD-4514
       - /^release-.*$/
       - /^hotfix-.*$/
 
