@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import { Button, Tooltip } from 'choerodon-ui/pro';
-
-import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
+import StatusDot from '../StatusDot';
+import TimePopover from '../time-popover';
 
 import './index.less';
-import StatusDot from '../StatusDot';
 
 const EnvList = observer(() => {
   const [expand, changeExpand] = useState(false);
+  const [envList, setEnvList] = useState([]);
+
+  useEffect(() => {
+    const env = localStorage.envRecentItem ? JSON.parse(localStorage.envRecentItem) : [];
+    setEnvList(env);
+  }, []);
 
   return (
     <div className="c7n-envList">
@@ -24,30 +28,32 @@ const EnvList = observer(() => {
         />
       </div>
       <div className="c7n-serviceList-content" style={{ display: !expand ? 'block' : 'none' }}>
-        <div className="c7n-envList-content-item">
-          <main>
-            <div className="c7n-envList-content-item-main">
-              <a>
-                <StatusDot
-                  size="small"
-                  connect={false}
-                  active
-                  failed={false}
-                />
-                <span style={{ marginLeft: '3px' }}>
-                  1212
-                </span>
-              </a>
-              <span>环境编码：1</span>
-            </div>
-            <Tooltip title="2">
-              <span className="c7n-envList-content-item-main-date">2分钟前访问</span>
-            </Tooltip>
-          </main>
-          <footer>
-            <span>choerodon持续交付</span>
-          </footer>
-        </div>
+        {envList.map(({ name, code, projectName, clickTime }) => (
+          <div className="c7n-envList-content-item">
+            <main>
+              <div className="c7n-envList-content-item-main">
+                <a>
+                  <StatusDot
+                    size="small"
+                    connect
+                    active
+                    failed={false}
+                  />
+                  <span style={{ marginLeft: '3px' }}>
+                    {name}
+                  </span>
+                </a>
+                <span>环境编码：{code}</span>
+              </div>
+              <span className="c7n-envList-content-item-main-date">
+                <TimePopover datetime={clickTime} />
+              </span>
+            </main>
+            <footer>
+              <span>{projectName}</span>
+            </footer>
+          </div>
+        ))}
       </div>
     </div>
   );
