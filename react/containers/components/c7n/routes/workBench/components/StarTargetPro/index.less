@@ -12,7 +12,13 @@
   &-proContainer {
     flex: 1;
     display: flex;
+    &-focus {
+      background: #7589F2 !important;
+      height: 188px !important;
+    }
     &-items {
+      position: relative;
+      cursor: pointer;
       max-width: 164px;
       background:rgba(255,255,255,1);
       border-radius:10px;
@@ -20,6 +26,34 @@
       height: 142px;
       flex: 1;
       padding: 20px 17px 20px 16px;
+      &-correct {
+        border-radius: 8px;
+        position: absolute;
+        top: -9px;
+        left: 42%;
+        width: 30px;
+        background: rgba(58,52,95,1);
+        &-icon {
+          position: relative;
+          left: 6px;
+          display: inline-block;
+          width: 7px;
+          height: 2px;
+          background: white;
+          line-height: 0;
+          font-size: 0;
+          vertical-align: middle;
+          -webkit-transform: rotate(45deg);
+        }
+        &-icon:after {
+          content: '/';
+          display: block;
+          width: 14px;
+          height: 2px;
+          background: white;
+          -webkit-transform: rotate(-90deg) translateY(-50%) translateX(50%);
+        }
+      }
       &-icon {
         width: 30px;
         height: 30px;
@@ -30,7 +64,6 @@
         font-size:13px;
         font-family:PingFangSC-Regular,PingFang SC;
         font-weight:400;
-        color:rgba(58,52,95,1);
         margin-top: 16px !important;
       }
       &-project {
@@ -50,9 +83,24 @@
           display: inline-flex;
           justify-content: center;
           align-items: center;
-          i {
-            color: #6887E8;
-          }
+        }
+      }
+      &-extra {
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        &-icon {
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          background: gainsboro;
+        }
+        &-text {
+          margin-left: 5px;
+          font-size:12px;
+          font-family:PingFangSC-Regular,PingFang SC;
+          font-weight:400;
+          color:rgba(255,255,255,1);
         }
       }
     }
