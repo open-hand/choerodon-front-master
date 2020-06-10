@@ -1,13 +1,13 @@
-import React from 'react';
+import React, {Content} from 'react';
 import TodoQuestion from './components/TodoQuestion';
-import QuickLink from "./components/QuickLink";
 
 import './index.less';
+import TodoThings from "@/containers/components/c7n/routes/workBench/components/TodoThings";
 
 const WorkBenchAgile = () => (
   <div className="c7n-workbenchAgile">
     <TodoQuestion />
-    <QuickLink />
+    <TodoThings />
   </div>
 )
 

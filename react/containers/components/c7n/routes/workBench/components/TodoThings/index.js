@@ -13,14 +13,14 @@ const StarTargetPro = () => (
     >
       <Check />
     </Card>
-    <Card
-      title="文档"
-      showLink
-      pathname="/ddd"
-      className="c7n-workbench-doc"
-    >
-      <Doc />
-    </Card>
+    {/*<Card*/}
+    {/*  title="文档"*/}
+    {/*  showLink*/}
+    {/*  pathname="/ddd"*/}
+    {/*  className="c7n-workbench-doc"*/}
+    {/*>*/}
+    {/*  <Doc />*/}
+    {/*</Card>*/}
   </div>
 );
 
