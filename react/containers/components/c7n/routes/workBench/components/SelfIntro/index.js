@@ -18,7 +18,7 @@ const SelfIntro = () => {
 
   function getDate() {
     const date = new Date();
-    const [a, month, day] = date.toDateString().split(' ');
+    const [year, month, day] = date.toDateString().split(' ');
     return (
       <span className="c7n-selfInfo-date">
         <span className="c7n-selfInfo-date-day">{day}</span>

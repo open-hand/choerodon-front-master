@@ -3,10 +3,15 @@ import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import StatusDot from '../StatusDot';
 import TimePopover from '../time-popover';
+import { useWorkBenchStore } from '../../stores';
 
 import './index.less';
 
 const EnvList = observer(() => {
+  const {
+    history,
+    AppState: { currentMenuType: { organizationId } },
+  } = useWorkBenchStore();
   const [expand, changeExpand] = useState(false);
   const [envList, setEnvList] = useState([]);
 
@@ -14,6 +19,17 @@ const EnvList = observer(() => {
     const env = localStorage.envRecentItem ? JSON.parse(localStorage.envRecentItem) : [];
     setEnvList(env);
   }, []);
+
+  function linkToEnv({ envId, projectName, projectId }) {
+    history.push({
+      pathname: '/devops/resource',
+      search: `?id=${projectId}&name=${projectName}&organizationId=${organizationId}&type=project`,
+      state: {
+        envId,
+        viewType: 'instance',
+      },
+    });
+  }
 
   return (
     <div className="c7n-envList">
@@ -28,22 +44,23 @@ const EnvList = observer(() => {
         />
       </div>
       <div className="c7n-serviceList-content" style={{ display: !expand ? 'block' : 'none' }}>
-        {envList.map(({ name, code, projectName, clickTime }) => (
+        {envList.map(({ name, code, projectName, clickTime, active, connect, id, projectId }) => (
           <div className="c7n-envList-content-item">
-            <main>
+            <main onClick={() => linkToEnv({ envId: id, projectName, projectId })}>
               <div className="c7n-envList-content-item-main">
-                <a>
+                <span className="c7n-envList-content-item-main-title">
                   <StatusDot
                     size="small"
-                    connect
-                    active
+                    synchronize
+                    active={active}
+                    connect={connect}
                     failed={false}
                   />
                   <span style={{ marginLeft: '3px' }}>
                     {name}
                   </span>
-                </a>
-                <span>环境编码：{code}</span>
+                </span>
+                <span className="c7n-envList-content-item-main-code">环境编码：{code}</span>
               </div>
               <span className="c7n-envList-content-item-main-date">
                 <TimePopover datetime={clickTime} />

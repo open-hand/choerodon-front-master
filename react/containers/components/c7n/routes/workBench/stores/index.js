@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import { inject } from 'mobx-react';
+import { withRouter } from 'react-router-dom';
 
 const Store = createContext();
 
@@ -7,9 +8,9 @@ export function useWorkBenchStore() {
   return useContext(Store);
 }
 
-export const StoreProvider = inject('AppState')((props) => {
+export const StoreProvider = withRouter(inject('AppState')((props) => {
   const {
-    children
+    children,
   } = props;
 
   const value = {
@@ -21,4 +22,4 @@ export const StoreProvider = inject('AppState')((props) => {
       {children}
     </Store.Provider>
   );
-});
+}));
