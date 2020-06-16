@@ -8,6 +8,7 @@ const Applications = asyncRouter(() => import('../routes/applications'));
 const Charts = asyncRouter(() => import('../routes/charts'));
 const Unauthorized = asyncRouter(() => import('../routes/unauthorized'));
 const WorkBench = asyncRouter(() => import('../routes/workBench'));
+const ProjectsPro = asyncRouter(() => import('../routes/projectsPro'));
 
 const InnerIndex = ({ match, AutoRouter }) => (
   <div>
@@ -17,6 +18,7 @@ const InnerIndex = ({ match, AutoRouter }) => (
       <Route exact path={`${match.url}charts`} component={Charts} />
       <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
       <Route exact path={`${match.url}workbench`} component={WorkBench} />
+      <Route exact path={`${match.url}projectsPro`} component={ProjectsPro} />
       <Route path={match.url} component={AutoRouter} />
     </Switch>
     <ModalContainer />

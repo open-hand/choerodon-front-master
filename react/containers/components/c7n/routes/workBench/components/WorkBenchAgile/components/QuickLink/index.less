@@ -29,11 +29,15 @@
     &-left {
       text-align: right;
       flex: 1;
+      overflow: hidden;
       &-name {
         font-size:13px;
         font-family:PingFangSC-Regular,PingFang SC;
         font-weight:400;
         color:rgba(58,52,95,1);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       &-time {
         margin-top: 2px;
@@ -41,6 +45,9 @@
         font-family:PingFangSC-Regular,PingFang SC;
         font-weight:400;
         color:rgba(58,52,95,0.65);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
     &-circle {
@@ -65,9 +72,20 @@
         height: 24px;
         border:2px solid rgba(0,0,0,0.16);
         border-radius: 50%;
+        background-size: 100% 100%;
       }
       &-content {
         margin-left: 9px;
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+        align-items: flex-end;
+        &-scope {
+          font-size:12px;
+          font-family:PingFangSC-Regular,PingFang SC;
+          font-weight:400;
+          color:rgba(58,52,95,0.65);
+        }
         &-project {
           font-size:12px;
           font-family:PingFangSC-Regular,PingFang SC;
@@ -75,10 +93,11 @@
           color:rgba(58,52,95,0.65);
         }
         &-linkName {
+          cursor: pointer;
           font-size:13px;
           font-family:PingFangSC-Regular,PingFang SC;
           font-weight:400;
-          color:rgba(58,52,95,1);
+          color:rgba(63,81,181,1);
           i {
             font-size: 14px;
             position: relative;

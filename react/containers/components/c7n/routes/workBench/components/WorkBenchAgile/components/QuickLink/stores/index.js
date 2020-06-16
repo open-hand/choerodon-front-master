@@ -2,6 +2,7 @@ import React, { createContext, useContext, useMemo } from 'react';
 import { inject } from 'mobx-react';
 import { DataSet } from "choerodon-ui/pro";
 import addLinkDataSet from './addLinkDataSet';
+import useStore from './useStore';
 
 const Store = createContext();
 
@@ -11,14 +12,21 @@ export function useQuickLinkStore() {
 
 export const StoreProvider = inject('AppState')((props) => {
   const {
-    children
+    children,
+    AppState: {
+      currentMenuType: {
+        organizationId,
+      }
+    },
+    AppState,
   } = props;
 
-  const AddLinkDataSet = useMemo(() => new DataSet(addLinkDataSet()), []);
+  const AddLinkDataSet = useMemo(() => new DataSet(addLinkDataSet(AppState)), []);
 
   const value = {
     ...props,
     AddLinkDataSet,
+    quickLinkUseStore: useStore({organizationId}),
   };
 
   return (
