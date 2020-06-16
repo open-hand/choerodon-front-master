@@ -1,0 +1,78 @@
+.c7n-todoQuestion {
+  flex-basis: 62%;
+  background: white;
+  border-radius:10px;
+  margin-right: 20px;
+  padding: 20px 24px 24px 26px;
+  &-title {
+    font-size:16px;
+    font-family:PingFangSC-Medium,PingFang SC;
+    font-weight:500;
+    color:rgba(58,52,95,1);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    i {
+      color: #6887E8;
+      cursor: pointer;
+    }
+  }
+  &-issueContent {
+    &-issueItem {
+      padding-top: 9px;
+      padding-bottom: 24px;
+      border-top:1px transparent solid;
+      border-image:linear-gradient(to right,rgba(216,220,235, 1), rgba(216,220,235, 0.4)) 1 10;
+      &-project {
+        font-size:13px;
+        font-family:PingFangSC-Regular,PingFang SC;
+        font-weight:400;
+        color:rgba(58,52,95,0.65);
+        margin: 0;
+      }
+      &-main {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        &-icon {
+          position: relative;
+          bottom: 2px;
+        }
+        &-issueId {
+          margin-left: 1px;
+          font-size:13px;
+          font-family:PingFangSC-Regular,PingFang SC;
+          font-weight:400;
+          color:rgba(63,81,181,1);
+        }
+        &-description {
+          margin-left: 16px;
+          font-size:13px;
+          font-family:PingFangSC-Regular,PingFang SC;
+          font-weight:400;
+          color:rgba(58,52,95,1);
+        }
+        &-status {
+          background:rgba(255,185,106,1);
+          border-radius:2px;
+          font-size:13px;
+          font-family:PingFangSC-Regular,PingFang SC;
+          font-weight:400;
+          color:rgba(255,255,255,1);
+          padding: 0 6px;
+        }
+        &-priority {
+          margin-left: 8px;
+          background:rgba(77,144,254,0.1);
+          border-radius:2px;
+          font-size:13px;
+          font-family:PingFangSC-Regular,PingFang SC;
+          font-weight:400;
+          color:rgba(77,144,254,1);
+          padding: 0 6px;
+        }
+      }
+    }
+  }
+}

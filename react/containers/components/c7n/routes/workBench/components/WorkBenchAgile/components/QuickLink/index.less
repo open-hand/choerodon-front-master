@@ -1,0 +1,112 @@
+.c7n-quickLink {
+  width: 50%;
+  margin-right: 20px;
+  //flex: 1;
+  background: white;
+  border-radius:10px;
+  padding: 20px 24px 24px 26px;
+  &-title {
+      font-size:16px;
+      font-family:PingFangSC-Medium,PingFang SC;
+      font-weight:500;
+      color:rgba(58,52,95,1);
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      i {
+        font-size: 20px;
+        color: #6887E8;
+        cursor: pointer;
+      }
+  }
+  &-linkItem {
+    display: flex;
+    align-items: center;
+    position: relative;
+    p {
+      margin: 0;
+    }
+    &-left {
+      text-align: right;
+      flex: 1;
+      overflow: hidden;
+      &-name {
+        font-size:13px;
+        font-family:PingFangSC-Regular,PingFang SC;
+        font-weight:400;
+        color:rgba(58,52,95,1);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      &-time {
+        margin-top: 2px;
+        font-size:12px;
+        font-family:PingFangSC-Regular,PingFang SC;
+        font-weight:400;
+        color:rgba(58,52,95,0.65);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    &-circle {
+      width: 8px;
+      height: 8px;
+      background:rgba(104,135,232,1);
+      border-radius: 50%;
+      position: absolute;
+      right: calc(82% - 4px);
+    }
+    &-right {
+      margin-left: 19px;
+      flex-basis: 82%;
+      padding: 10px 16px;
+      background:rgba(245,246,250,1);
+      border-radius:4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &-profile {
+        width: 24px;
+        height: 24px;
+        border:2px solid rgba(0,0,0,0.16);
+        border-radius: 50%;
+        background-size: 100% 100%;
+      }
+      &-content {
+        margin-left: 9px;
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+        align-items: flex-end;
+        &-scope {
+          font-size:12px;
+          font-family:PingFangSC-Regular,PingFang SC;
+          font-weight:400;
+          color:rgba(58,52,95,0.65);
+        }
+        &-project {
+          font-size:12px;
+          font-family:PingFangSC-Regular,PingFang SC;
+          font-weight:400;
+          color:rgba(58,52,95,0.65);
+        }
+        &-linkName {
+          cursor: pointer;
+          font-size:13px;
+          font-family:PingFangSC-Regular,PingFang SC;
+          font-weight:400;
+          color:rgba(63,81,181,1);
+          i {
+            font-size: 14px;
+            position: relative;
+            bottom: 1px;
+            margin-left: 9px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}

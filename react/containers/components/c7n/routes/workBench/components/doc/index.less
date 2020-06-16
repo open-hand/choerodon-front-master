@@ -1,0 +1,108 @@
+.c7n-workbench-doc{
+  flex: 1 1 55%;
+
+  &-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  &-item {
+    flex-basis: 2.4rem;
+    background: #f5f6fA;
+    border-radius: .1rem;
+    padding: .16rem .2rem;
+    margin-bottom: .2rem;
+
+    &-info {
+      margin-bottom: .16rem;
+    }
+
+    &-title {
+      color: #3a345f;
+
+      &-text {
+        width: ~"calc(100% - 0.5rem)";
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+
+    &-project {
+      color: rgba(58,52,95,0.65);
+      font-size: .12rem;
+      margin-bottom: .05rem;
+    }
+
+    &-org {
+      width: .36rem;
+      height: .17rem;
+      line-height: .17rem;
+      text-align: center;
+      background: rgba(104, 135, 232, 0.1);
+      border-radius: .1rem;
+      color: #6887e8;
+      font-size: .12rem;
+      display: inline-block;
+      margin-left: .12rem;
+    }
+
+    &-logo {
+      width: .4rem;
+      height: .48rem;
+      display: inline-block;
+      text-align: center;
+      line-height: .48rem;
+      font-size: .16rem;
+      font-weight: 500;
+
+
+      &-create {
+        color: #189f8d;
+        background: url("./image/green.svg");
+      }
+
+      &-update {
+        background: url("./image/blue.svg");
+        color: #514fa0;
+      }
+    }
+
+    &-userlist {
+      display: inline-block;
+      float: right;
+      line-height: .48rem;
+
+      &-item {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: -6px;
+        width: .32rem;
+        height: .32rem;
+        line-height: .28rem;
+        text-align: center;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        overflow: hidden;
+        cursor: pointer;
+        background: #6887e8;
+        color: #fff;
+
+        &:hover {
+          transform: scale(1.2);
+          z-index: 1;
+        }
+      }
+    }
+
+    &-time {
+      font-size: .12rem;
+      opacity: 0.65;
+      width: .5rem;
+      text-align: right;
+      float: right;
+    }
+  }
+}
