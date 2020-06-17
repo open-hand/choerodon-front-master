@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from 'choerodon-ui/pro';
+import { observer } from 'mobx-react-lite';
+import { useStarTargetPro } from "./stores";
 import { Icon } from "choerodon-ui";
 import emptyImg from '../../../../../../images/owner.png';
 
@@ -22,11 +24,18 @@ const init = [{
   time: '2018-07-07',
 }];
 
-const StarTargetPro = () => {
-  const [starProjects, setStarProjects] = useState([]);
+const StarTargetPro = observer(() => {
+  const {
+    starTargetProUseStore
+  } = useStarTargetPro();
+
+  useEffect(() => {
+    starTargetProUseStore.axiosGetStarProjects();
+  }, []);
 
   const handleClickItem = (s) => {
-    setStarProjects(starProjects.map(si => {
+    const origin = starTargetProUseStore.getStarProjects;
+    starTargetProUseStore.setStarProjects(origin.map(si => {
      if (si.id === s.id) {
        si.active = true;
      } else {
@@ -37,6 +46,7 @@ const StarTargetPro = () => {
   }
 
   const renderContent = () => {
+    const starProjects = starTargetProUseStore.getStarProjects;
     if (starProjects.length == 0) {
       return (
         <div className="c7n-starTargetPro-content">
@@ -44,7 +54,7 @@ const StarTargetPro = () => {
           <div className="c7n-starTargetPro-content-emptyText">
             <p className="c7n-starTargetPro-content-emptyText-emptyP">暂无星标</p>
             <p className="c7n-starTargetPro-content-emptyText-emptySuggest">您还没有星标项目，请前往"项目管理"页面进行添加</p>
-            <Button onClick={() => setStarProjects(starProjects.length == 0 ? init : [])} funcType="raised" color="primary">转到项目管理</Button>
+            <Button funcType="raised" color="primary">转到项目管理</Button>
           </div>
         </div>
       )
@@ -64,9 +74,14 @@ const StarTargetPro = () => {
                     </div>
                   )
                 }
-                <div className="c7n-starTargetPro-proContainer-items-icon" />
-                <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-text">{s.text}</p>
-                <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-project">{s.project}
+                <div
+                  className="c7n-starTargetPro-proContainer-items-icon"
+                  style={{
+                    background: s.imageUrl ? `url(${s.imageUrl})` : 'linear-gradient(225deg,rgba(152,229,218,1) 0%,rgba(0,191,165,1) 100%)',
+                  }}
+                />
+                <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-text">{s.name}</p>
+                <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-project">{s.categories && s.categories[0].name}
                   <span
                     style={{
                       position: s.active ? 'relative' : 'unset',
@@ -101,6 +116,6 @@ const StarTargetPro = () => {
       {renderContent()}
     </div>
   )
-}
+});
 
 export default StarTargetPro;
