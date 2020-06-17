@@ -28,6 +28,7 @@ const QuickLink = observer(() => {
 
 
   const handleAdd = useCallback((data) => {
+    debugger;
     Modal.open({
       key: Modal.key(),
       title: data ? '修改链接' : '添加链接',
@@ -90,7 +91,7 @@ const QuickLink = observer(() => {
     <div className="c7n-quickLink">
       <div className="c7n-quickLink-title">
         快速链接
-        <Icon onClick={handleAdd} type="playlist_add" />
+        <Icon onClick={() => handleAdd()} type="playlist_add" />
       </div>
       {renderLinks()}
     </div>

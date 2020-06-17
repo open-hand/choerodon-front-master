@@ -1,5 +1,6 @@
 import React from 'react';
 import {Icon} from "choerodon-ui";
+import TimePopover from "@/containers/components/c7n/routes/workBench/components/time-popover";
 import { useProjectsProStore } from "../stores";
 
 import './projectTaskContent.less';
@@ -58,7 +59,9 @@ export default ({ data, alltrue }) => {
           />
           <div className="starProjects-items-content-right-down">
             <div className="starProjects-items-content-right-down-avatur" />
-            <p style={{ marginTop: 7 }}>3月前创建</p>
+            <p style={{ marginTop: 7 }}>
+              <TimePopover datetime={data.creationDate} />创建
+            </p>
           </div>
         </div>
       </div>
