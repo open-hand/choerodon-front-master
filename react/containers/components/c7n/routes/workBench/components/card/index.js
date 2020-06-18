@@ -24,6 +24,7 @@ const Tips = withRouter(({ title, showLink, pathname, children, className, locat
               pathname,
               search,
             }}
+            className="c7n-workbench-card-header-link"
           >
             <Icon type="trending_flat" />
           </Link>
