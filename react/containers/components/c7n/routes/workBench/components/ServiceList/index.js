@@ -30,7 +30,7 @@ const ServiceList = observer((props) => {
 
   const renderAppServiceItem = () => (
     appServiceDs.map((record) => {
-      const { name, code, projectName, lastUpdateDate, id } = record.toData() || {};
+      const { name, code, projectName, lastUpdateDate, repoUrl } = record.toData() || {};
       return (
         <div className="c7n-serviceList-content-item" key={record.id}>
           <header>
@@ -49,7 +49,11 @@ const ServiceList = observer((props) => {
                 {name}（{code}）
               </span>
             </div>
-            <a href="#" target="blank">
+            <a
+              href={repoUrl}
+              target="_blank"
+              rel="nofollow me noopener noreferrer"
+            >
               <Icon type="account_balance" className="c7n-serviceList-content-item-icon" />
             </a>
           </main>
