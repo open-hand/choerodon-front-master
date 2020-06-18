@@ -6,7 +6,7 @@ import { Button, Icon } from 'choerodon-ui/pro';
 
 import './index.less';
 
-const Tips = withRouter(({ title, showLink, pathname, children, className, location: { search } }) => {
+const Tips = withRouter(({ title, showLink, pathname, children, className, location: { search }, showCount, count }) => {
   function handleLink() {
 
   }
@@ -15,6 +15,9 @@ const Tips = withRouter(({ title, showLink, pathname, children, className, locat
     <div className={`c7n-workbench-card ${className}`}>
       <div className="c7n-workbench-card-header">
         <span className="c7n-workbench-card-header-title">{title}</span>
+        {showCount ? (
+          <span className="c7n-workbench-card-header-count">{count}</span>
+        ) : null}
         {showLink && pathname && (
           <Link
             to={{
@@ -38,10 +41,14 @@ Tips.propTypes = {
   showLink: PropTypes.bool,
   pathname: PropTypes.string,
   className: PropTypes.string,
+  showCount: PropTypes.bool,
+  count: PropTypes.number,
 };
 
 Tips.defaultProps = {
   showLink: false,
+  showCount: false,
+  count: 0,
 };
 
 export default injectIntl(Tips);

@@ -59,7 +59,8 @@
           flex: 1;
           display: flex;
           flex-direction: column;
-          &>a {
+
+          &-text {
             font-size: 13px;
             font-family: PingFangSC-Regular, PingFang SC;
             font-weight: 400;
@@ -68,19 +69,10 @@
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            &:hover {
-              text-decoration: underline;
-            }
-          }
-          &>span{
-            font-size:12px;
-            font-family:PingFangSC-Regular,PingFang SC;
-            font-weight:400;
-            color:rgba(58,52,95,0.65);
-            line-height:12px;
+            cursor: pointer;
           }
         }
-        .icon-account_balance {
+        .c7n-serviceList-content-item-icon {
           font-size: 18px;
           color:rgba(104,135,232,1);
           cursor: pointer;

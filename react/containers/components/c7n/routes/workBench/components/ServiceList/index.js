@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Icon } from 'choerodon-ui';
 import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
-import { withRouter } from 'react-router';
 
 import './index.less';
+import {useWorkBenchStore} from "../../stores";
+import TimePopover from "../time-popover";
 
 const appserviceData = [
   {
@@ -28,40 +29,50 @@ const appserviceData = [
 ];
 
 
-const ServiceList = withRouter(observer((props) => {
-  const { history } = props;
+const ServiceList = observer((props) => {
+  const {
+    history,
+    appServiceDs,
+  } = useWorkBenchStore();
+
   const [expand, changeExpand] = useState(false);
 
-  function goAppService(appserviceId) {
+  function goAppService(appServiceId) {
     history.push({
-      pathname: 'devops/code-management',
+      pathname: '/devops/code-management',
       state: {
-        appserviceId,
+        appServiceId,
       },
     });
   }
 
   const renderAppServiceItem = () => (
-    appserviceData.map((item, index) => {
-      const { time, name, code, from } = item;
+    appServiceDs.map((record) => {
+      const { name, code, projectName, lastUpdateDate, id } = record.toData() || {};
       return (
-        <div className="c7n-serviceList-content-item">
+        <div className="c7n-serviceList-content-item" key={record.id}>
           <header>
-            <Tooltip title={time} placement="top">
-              <Icon type="date_range-o" />
-            </Tooltip>
-            <span className="c7n-serviceList-content-item-date">{time}分钟前 &nbsp;操作</span>
+            <Icon type="date_range-o" />
+            <span className="c7n-serviceList-content-item-date">
+              <TimePopover datetime={lastUpdateDate} />
+              &nbsp;操作
+            </span>
           </header>
           <main>
             <div className="c7n-serviceList-content-item-main">
-              <a onClick={goAppService}>{name}（{code}）</a>
+              <span
+                className="c7n-serviceList-content-item-main-text"
+                onClick={() => goAppService(id)}
+              >
+                {name}（{code}）
+              </span>
             </div>
             <a href="#" target="blank">
-              <Icon type="account_balance" />
+              <Icon type="account_balance" className="c7n-serviceList-content-item-icon" />
             </a>
           </main>
           <footer>
-            <span>{from}</span>
+            <span>{projectName}</span>
           </footer>
         </div>
       );
@@ -85,6 +96,6 @@ const ServiceList = withRouter(observer((props) => {
       </div>
     </div>
   );
-}));
+});
 
 export default ServiceList;
