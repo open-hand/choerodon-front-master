@@ -2,46 +2,28 @@ import React, { useState } from 'react';
 import { Icon } from 'choerodon-ui';
 import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import { useWorkBenchStore } from '../../stores';
+import TimePopover from '../time-popover';
 
 import './index.less';
-import {useWorkBenchStore} from "../../stores";
-import TimePopover from "../time-popover";
-
-const appserviceData = [
-  {
-    time: 5,
-    name: 'Devops Service',
-    code: 'staging',
-    from: 'choerodon持续交付',
-  },
-  {
-    time: 15,
-    name: 'Devops Service',
-    code: 'master',
-    from: 'choerodon持续交付',
-  },
-  {
-    time: 25,
-    name: 'Devops Service',
-    code: 'feature-C7NCD-1766',
-    from: 'choerodon持续交付',
-  },
-];
-
 
 const ServiceList = observer((props) => {
   const {
     history,
     appServiceDs,
+    AppState: { currentMenuType: { organizationId } },
   } = useWorkBenchStore();
 
   const [expand, changeExpand] = useState(false);
 
-  function goAppService(appServiceId) {
+  function goAppService(record) {
+    const { projectId, projectName, id } = record.toData() || {};
+    const search = `?id=${projectId}&name=${projectName}&organizationId=${organizationId}&type=project`;
     history.push({
       pathname: '/devops/code-management',
+      search,
       state: {
-        appServiceId,
+        appServiceId: id,
       },
     });
   }
@@ -62,7 +44,7 @@ const ServiceList = observer((props) => {
             <div className="c7n-serviceList-content-item-main">
               <span
                 className="c7n-serviceList-content-item-main-text"
-                onClick={() => goAppService(id)}
+                onClick={() => goAppService(record)}
               >
                 {name}（{code}）
               </span>
