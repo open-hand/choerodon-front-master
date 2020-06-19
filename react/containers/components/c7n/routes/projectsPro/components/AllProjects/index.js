@@ -97,7 +97,7 @@ export default observer(() => {
               <Icon
                 type={p.starFlag ? 'turned_in' : 'turned_in_not'}
                 style={{
-                  color: p.starFlag ? 'rgb(86, 111, 225)' : 'rgb(70, 70, 70)',
+                  color: p.starFlag ? 'rgb(86, 111, 225)' : 'rgb(196, 195, 225)',
                 }}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -128,7 +128,11 @@ export default observer(() => {
                 }
               </p>
               <p className="allProjects-content-item-right-down-time">
-                <span />
+                <span
+                  style={{
+                    backgroundImage: `url(${p.createUserImageUrl})`,
+                  }}
+                />
                 <p>{p.creationDate.split(' ')[0]} 创建</p>
               </p>
             </div>
@@ -155,7 +159,12 @@ export default observer(() => {
       <React.Fragment>
         <p>{org.name}所有项目</p>
         <div className="allProjects-title-right">
-          <TextField onBlur={handleBlurProjects} placeholder="请输入搜索条件" className="allProjects-title-right-textField" prefix={<Icon style={{ color: 'rgba(202,202,228,1)' }} type="search" />} />
+          <TextField
+            onBlur={handleBlurProjects}
+            placeholder="请输入搜索条件"
+            className="allProjects-title-right-textField"
+            prefix={<Icon style={{ color: 'rgba(202,202,228,1)' }} type="search" />}
+          />
           <Permission service={['choerodon.code.organization.project.ps.create']}>
             <Tooltip
               title={getCanCreate ? '' : '项目数量已达上限，无法创建更多项目'}
