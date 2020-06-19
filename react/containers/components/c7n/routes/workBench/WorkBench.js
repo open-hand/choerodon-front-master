@@ -14,21 +14,19 @@ import './WorkBench.less';
 const WorkBench = () => (
   <Page className="c7n-workbench">
     <div className="c7n-workbench-left">
-      <Content style={{ paddingRight: 0 }}>
-        <StarTargetPro />
-        <WorkBenchAgile />
-        <div style={{ display: 'flex' }}>
-          <QuickLink />
-          <Card
-            title="文档"
-            showLink
-            pathname="/ddd"
-            className="c7n-workbench-doc"
-          >
-            <Doc />
-          </Card>
-        </div>
-      </Content>
+      <StarTargetPro />
+      <WorkBenchAgile />
+      <div style={{ display: 'flex' }}>
+        <QuickLink />
+        <Card
+          title="文档"
+          showLink
+          pathname="/ddd"
+          className="c7n-workbench-doc"
+        >
+          <Doc />
+        </Card>
+      </div>
     </div>
     <div className="c7n-workbench-right">
       <SelfIntro />
