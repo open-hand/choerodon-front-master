@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext, useMemo, useEffect } from 'react';
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
 import AuditDataSet from './AuditDataSet';
 import useStore from './useStore';
@@ -12,20 +13,34 @@ export function useWorkBenchStore() {
   return useContext(Store);
 }
 
-export const StoreProvider = withRouter(inject('AppState')((props) => {
+export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
     AppState: { currentMenuType: { organizationId } },
   } = props;
 
+  const workBenchUseStore = useStore();
   const auditDs = useMemo(() => new DataSet(AuditDataSet({ organizationId })), [organizationId]);
   const appServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ organizationId })), [organizationId]);
+
+  useEffect(() => {
+    const project = workBenchUseStore.getActiveStarProject;
+    if (project && project.id) {
+      auditDs.setQueryParameter('projectId', project.id);
+      appServiceDs.setQueryParameter('projectId', project.id);
+    } else {
+      auditDs.setQueryParameter('projectId', null);
+      appServiceDs.setQueryParameter('projectId', null);
+    }
+    auditDs.query();
+    appServiceDs.query();
+  }, [workBenchUseStore.getActiveStarProject]);
 
   const value = {
     ...props,
     auditDs,
     appServiceDs,
-    workBenchUseStore: useStore(),
+    workBenchUseStore,
   };
 
   return (
@@ -33,4 +48,4 @@ export const StoreProvider = withRouter(inject('AppState')((props) => {
       {children}
     </Store.Provider>
   );
-}));
+})));

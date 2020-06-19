@@ -1,5 +1,5 @@
 export default (({ organizationId }) => ({
-  autoQuery: true,
+  autoQuery: false,
   selection: false,
   paging: false,
   transport: {
