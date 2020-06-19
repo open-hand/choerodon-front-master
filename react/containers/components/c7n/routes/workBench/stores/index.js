@@ -17,9 +17,10 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
     AppState: { currentMenuType: { organizationId } },
+    history,
   } = props;
 
-  const workBenchUseStore = useStore();
+  const workBenchUseStore = useStore(history);
   const auditDs = useMemo(() => new DataSet(AuditDataSet({ organizationId })), [organizationId]);
   const appServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ organizationId })), [organizationId]);
 

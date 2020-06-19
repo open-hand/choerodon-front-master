@@ -32,6 +32,8 @@ const StarTargetPro = observer(() => {
 
   const {
     workBenchUseStore,
+    history,
+    location: { search },
   } = useWorkBenchStore();
 
   useEffect(() => {
@@ -49,7 +51,6 @@ const StarTargetPro = observer(() => {
      }
      return si;
     }))
-    console.log(workBenchUseStore.getActiveStarProject);
   }
 
   const renderContent = () => {
@@ -61,7 +62,12 @@ const StarTargetPro = observer(() => {
           <div className="c7n-starTargetPro-content-emptyText">
             <p className="c7n-starTargetPro-content-emptyText-emptyP">暂无星标</p>
             <p className="c7n-starTargetPro-content-emptyText-emptySuggest">您还没有星标项目，请前往"项目管理"页面进行添加</p>
-            <Button funcType="raised" color="primary">转到项目管理</Button>
+            <Button onClick={() => {
+              history.push({
+                pathname: '/projectsPro',
+                search,
+              })
+            }} funcType="raised" color="primary">转到项目管理</Button>
           </div>
         </div>
       )
@@ -75,6 +81,7 @@ const StarTargetPro = observer(() => {
                 onClick={() => handleClickItem(s)}
                 style={{
                   marginRight: sIndex === 5 ? 0 : '20px',
+                  maxWidth: 'calc((100% - 100px) / 6)',
                 }}
               >
                 {
@@ -102,6 +109,10 @@ const StarTargetPro = observer(() => {
                       top: s.active ? '40px' : 'unset',
                       left: s.active ? '8px' : 'unset',
                       background: s.active ? 'rgba(255,255,255,0.12)' : 'rgba(104,135,232,0.1)',
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      workBenchUseStore.handleClickProject(s);
                     }}
                   >
                     <Icon style={{ color: s.active ? 'white' : '#6887E8' }} type="trending_flat" />

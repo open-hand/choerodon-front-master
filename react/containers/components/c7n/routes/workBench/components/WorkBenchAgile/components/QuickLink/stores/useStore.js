@@ -4,15 +4,31 @@ import axios from '../../../../../../../tools/axios';
 export default function useStore({ organizationId }) {
   return useLocalStore(() => ({
     quickLinkList: [],
+    params: {
+      size: 10,
+      hasMore: false,
+    },
+    get getParams() {
+      return this.params;
+    },
+    setParams(data) {
+      debugger;
+      this.params = data;
+    },
     get getQuickLinkList() {
       return this.quickLinkList;
     },
     setQuickLinkList(data) {
       this.quickLinkList = data;
     },
-    axiosGetQuickLinkList() {
-      axios.get(`/iam/choerodon/v1/organizations/${organizationId}/quick_links?page=0&size=99`).then((res) => {
+    axiosGetQuickLinkList(id) {
+      axios.get(`/iam/choerodon/v1/organizations/${organizationId}/quick_links?page=0&size=${this.getParams.size}${id ? `&project_id=${id}` : ''}`).then((res) => {
         this.setQuickLinkList(res.content);
+        debugger;
+        this.setParams({
+          size: res.size,
+          hasMore: (res.numberOfElements >= res.size) && (res.totalElements % 10 > 0),
+        })
       })
     },
     axiosCreateQuickLink(data) {
