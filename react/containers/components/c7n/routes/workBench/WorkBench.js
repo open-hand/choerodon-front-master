@@ -7,9 +7,9 @@ import ServiceList from './components/ServiceList';
 import Card from './components/card';
 import Doc from './components/doc';
 import EnvList from './components/EnvList';
+import QuickLink from './components/WorkBenchAgile/components/QuickLink';
 
 import './WorkBench.less';
-import QuickLink from "@/containers/components/c7n/routes/workBench/components/WorkBenchAgile/components/QuickLink";
 
 const WorkBench = () => (
   <Page className="c7n-workbench">

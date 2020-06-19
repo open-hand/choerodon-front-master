@@ -1,17 +1,20 @@
 .c7n-workbench-card {
   background-color: #fff;
-  padding: .2rem .24rem;
+  padding: .2rem 0;
+  border-radius: 10px;
+  height: 100%;
 
   &-header {
     margin-bottom: .2rem;
     display: flex;
     align-items: center;
+    padding: 0 .24rem;
 
     &-title {
       font-size: .16rem;
+      font-family:PingFangSC-Medium,PingFang SC;
       font-weight: 500;
       color: #3a345f;
-      //margin-right: auto;
     }
 
     &-count {
@@ -29,5 +32,11 @@
       margin-left: auto;
       color: #6887E8;
     }
+  }
+
+  &-content {
+    height: ~"calc(100% - .44rem)";
+    overflow-y: scroll;
+    padding: 0 .24rem;
   }
 }
