@@ -37,7 +37,7 @@ const StarTargetPro = observer(() => {
     const origin = starTargetProUseStore.getStarProjects;
     starTargetProUseStore.setStarProjects(origin.map(si => {
      if (si.id === s.id) {
-       si.active = true;
+       si.active = !s.active;
      } else {
        si.active = false;
      }
@@ -94,10 +94,15 @@ const StarTargetPro = observer(() => {
                 {
                   s.active && (
                     <div className="c7n-starTargetPro-proContainer-items-extra">
-                      <div className="c7n-starTargetPro-proContainer-items-extra-icon" />
+                      <div
+                        className="c7n-starTargetPro-proContainer-items-extra-icon"
+                        style={{
+                          backgroundImage: `url(${s.createUserImageUrl})`
+                        }}
+                      />
                       <div className="c7n-starTargetPro-proContainer-items-extra-text">
                         <p>创建于</p>
-                        <p>{s.time}</p>
+                        <p>{s.creationDate && s.creationDate.split(' ')[0]}</p>
                       </div>
                     </div>
                   )
