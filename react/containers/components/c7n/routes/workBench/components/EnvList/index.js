@@ -11,14 +11,22 @@ const EnvList = observer(() => {
   const {
     history,
     AppState: { currentMenuType: { organizationId } },
+    workBenchUseStore,
   } = useWorkBenchStore();
   const [expand, changeExpand] = useState(false);
   const [envList, setEnvList] = useState([]);
 
   useEffect(() => {
+    const { id: projectId } = workBenchUseStore.getActiveStarProject || {};
     const env = localStorage.envRecentItem ? JSON.parse(localStorage.envRecentItem) : [];
-    setEnvList(env);
-  }, []);
+    let realEnv;
+    if (projectId) {
+      realEnv = env.filter((item) => item.projectId === projectId && item.organizationId === organizationId);
+    } else {
+      realEnv = env.filter((item) => item.organizationId === organizationId);
+    }
+    setEnvList(realEnv);
+  }, [workBenchUseStore.getActiveStarProject]);
 
   function linkToEnv({ envId, projectName, projectId }) {
     history.push({
