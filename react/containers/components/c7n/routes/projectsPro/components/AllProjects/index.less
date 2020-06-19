@@ -15,12 +15,20 @@
       font-family:PingFangSC-Medium,PingFang SC;
       font-weight:500;
       color:rgba(58,52,95,1);
+      flex: 1;
     }
     &-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
       &-textField {
+        flex: 1;
         background:rgba(245,246,250,1);
         border-radius:2px;
         border: none;
+        input {
+          border: none;
+        }
       }
       button {
         margin-left: 12px;
@@ -41,8 +49,6 @@
         width: 30px;
         height: 30px;
         //background:linear-gradient(225deg,rgba(152,229,218,1) 0%,rgba(0,191,165,1) 100%);
-        border-radius: 50%;
-        color: white;
         border-radius: 50%;
         color: white;
         font-size: 20px;
@@ -72,6 +78,7 @@
               padding: 1px 4px;
               background: rgba(0,191,165,0.1);
               border-radius:4px;
+              margin-left: 4px;
             }
           }
         }
@@ -144,11 +151,11 @@
             font-weight:400;
             color:rgba(58,52,95,0.65);
             span {
+              background-size: 100% 100%;
               display: inline-block;
               width: 16px;
               height: 16px;
               border-radius: 50%;
-              background: gainsboro;
               margin-right: 7px;
               flex-shrink: 0;
             }

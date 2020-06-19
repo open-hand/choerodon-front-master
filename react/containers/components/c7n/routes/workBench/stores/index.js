@@ -3,6 +3,7 @@ import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { DataSet } from 'choerodon-ui/pro';
 import AuditDataSet from './AuditDataSet';
+import useStore from './useStore';
 import AppServiceDataSet from './AppServiceDataSet';
 
 const Store = createContext();
@@ -24,6 +25,7 @@ export const StoreProvider = withRouter(inject('AppState')((props) => {
     ...props,
     auditDs,
     appServiceDs,
+    workBenchUseStore: useStore(),
   };
 
   return (

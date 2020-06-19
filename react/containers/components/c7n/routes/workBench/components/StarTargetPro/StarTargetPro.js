@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import { useStarTargetPro } from "./stores";
+import { useWorkBenchStore } from "../../stores";
 import { Icon } from "choerodon-ui";
 import emptyImg from '../../../../../../images/owner.png';
 
@@ -29,6 +30,10 @@ const StarTargetPro = observer(() => {
     starTargetProUseStore
   } = useStarTargetPro();
 
+  const {
+    workBenchUseStore,
+  } = useWorkBenchStore();
+
   useEffect(() => {
     starTargetProUseStore.axiosGetStarProjects();
   }, []);
@@ -37,12 +42,14 @@ const StarTargetPro = observer(() => {
     const origin = starTargetProUseStore.getStarProjects;
     starTargetProUseStore.setStarProjects(origin.map(si => {
      if (si.id === s.id) {
+       workBenchUseStore.setActiveStarProject(!s.active ? si : undefined)
        si.active = !s.active;
      } else {
        si.active = false;
      }
      return si;
     }))
+    console.log(workBenchUseStore.getActiveStarProject);
   }
 
   const renderContent = () => {
@@ -62,10 +69,13 @@ const StarTargetPro = observer(() => {
       return (
         <div className="c7n-starTargetPro-proContainer">
           {
-            starProjects.map(s => (
+            starProjects.slice(0, 6).map((s, sIndex) => (
               <div
                 className={s.active ? "c7n-starTargetPro-proContainer-items c7n-starTargetPro-proContainer-focus" : "c7n-starTargetPro-proContainer-items"}
                 onClick={() => handleClickItem(s)}
+                style={{
+                  marginRight: sIndex === 5 ? 0 : '20px',
+                }}
               >
                 {
                   s.active && (
@@ -79,13 +89,19 @@ const StarTargetPro = observer(() => {
                   style={{
                     background: s.imageUrl ? `url(${s.imageUrl})` : 'linear-gradient(225deg,rgba(152,229,218,1) 0%,rgba(0,191,165,1) 100%)',
                   }}
-                />
+                >
+                  {!s.imageUrl && s.name.slice(0, 1)}
+                </div>
                 <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-text">{s.name}</p>
-                <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-project">{s.categories && s.categories[0].name}
+                <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,0.65)' }} className="c7n-starTargetPro-proContainer-items-project">
+                  <span className="c7n-starTargetPro-proContainer-items-project-categories">{s.categories && s.categories[0].name}</span>
                   <span
+                    className="c7n-starTargetPro-proContainer-items-project-goNext"
                     style={{
                       position: s.active ? 'relative' : 'unset',
-                      top: s.active ? '40px' : 'unset'
+                      top: s.active ? '40px' : 'unset',
+                      left: s.active ? '8px' : 'unset',
+                      background: s.active ? 'rgba(255,255,255,0.12)' : 'rgba(104,135,232,0.1)',
                     }}
                   >
                     <Icon style={{ color: s.active ? 'white' : '#6887E8' }} type="trending_flat" />

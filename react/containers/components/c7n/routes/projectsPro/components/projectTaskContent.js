@@ -15,7 +15,7 @@ export default ({ data, alltrue }) => {
   return (
     <div>
       <div className="starProjects-items-content">
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', maxWidth: '60%' }}>
           <div
             className="starProjects-items-content-icon"
             style={{
@@ -36,7 +36,7 @@ export default ({ data, alltrue }) => {
           <Icon
             type={data.starFlag ? 'turned_in' : 'turned_in_not'}
             style={{
-              color: data.starFlag ? 'rgb(86, 111, 225)' : 'rgb(70, 70, 70)',
+              color: data.starFlag ? 'rgb(86, 111, 225)' : 'rgb(196, 195, 225)',
             }}
             onClick={(e) => {
               e.stopPropagation();
@@ -58,7 +58,12 @@ export default ({ data, alltrue }) => {
             }}
           />
           <div className="starProjects-items-content-right-down">
-            <div className="starProjects-items-content-right-down-avatur" />
+            <div
+              className="starProjects-items-content-right-down-avatur"
+              style={{
+                backgroundImage: `url(${data.createUserImageUrl})`
+              }}
+            />
             <p style={{ marginTop: 7 }}>
               <TimePopover datetime={data.creationDate} />创建
             </p>

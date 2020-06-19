@@ -11,7 +11,7 @@ export default function useStore({ organizationId }) {
       this.quickLinkList = data;
     },
     axiosGetQuickLinkList() {
-      axios.get(`/iam/choerodon/v1/organizations/${organizationId}/quick_links?page=0&size=5`).then((res) => {
+      axios.get(`/iam/choerodon/v1/organizations/${organizationId}/quick_links?page=0&size=99`).then((res) => {
         this.setQuickLinkList(res.content);
       })
     },
