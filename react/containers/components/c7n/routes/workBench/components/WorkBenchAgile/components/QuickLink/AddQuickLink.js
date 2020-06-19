@@ -4,7 +4,7 @@ import {Form, Select, SelectBox, TextField} from "choerodon-ui/pro";
 
 const { Option } = Select;
 
-export default observer(({ dataSet, modal, useStore, data }) => {
+export default observer(({ dataSet, modal, useStore, data, workBenchUseStore }) => {
   const optionRenderer = ({ text }) => renderer({ text });
 
   const renderer = ({ text }) => {
@@ -26,9 +26,11 @@ export default observer(({ dataSet, modal, useStore, data }) => {
         if (res.failed) {
           return false;
         }
+        dataSet.reset();
       }
       return false;
     } catch (e) {
+      dataSet.reset();
       return true;
     }
   }
@@ -38,6 +40,11 @@ export default observer(({ dataSet, modal, useStore, data }) => {
   useEffect(() => {
     if (data) {
       dataSet.loadData([data]);
+    } else {
+      if (workBenchUseStore.getActiveStarProject) {
+        debugger;
+        dataSet.current.set('projectId', workBenchUseStore.getActiveStarProject.id)
+      }
     }
   }, [])
 

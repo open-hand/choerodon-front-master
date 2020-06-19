@@ -2,9 +2,11 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Icon } from "choerodon-ui";
 import { observer } from 'mobx-react-lite';
 import Action from "@/containers/components/c7n/tools/action";
+import emptyImage from '../../../../../../../../images/owner.png';
 import { Modal, Form, SelectBox, Select, TextField } from 'choerodon-ui/pro';
 import HeaderStore from '../../../../../../../../stores/c7n/HeaderStore';
 import AddQuickLink from "./AddQuickLink";
+import { useWorkBenchStore } from "../../../../stores";
 import TimePopover from "@/containers/components/c7n/routes/workBench/components/time-popover";
 import { useQuickLinkStore } from "./stores";
 import './index.less';
@@ -22,10 +24,21 @@ const QuickLink = observer(() => {
     quickLinkUseStore,
   } = useQuickLinkStore();
 
-  useEffect(() => {
-    quickLinkUseStore.axiosGetQuickLinkList();
-  }, []);
+  const {
+    workBenchUseStore,
+  } = useWorkBenchStore();
 
+  const init = () => {
+    let id;
+    if (workBenchUseStore.getActiveStarProject) {
+      id = workBenchUseStore.getActiveStarProject.id;
+    }
+    quickLinkUseStore.axiosGetQuickLinkList(id);
+  }
+
+  useEffect(() => {
+    init();
+  }, [workBenchUseStore.getActiveStarProject]);
 
   const handleAdd = useCallback((data) => {
     Modal.open({
@@ -34,7 +47,7 @@ const QuickLink = observer(() => {
       style: {
         width: 380,
       },
-      children:  <AddQuickLink data={data} useStore={quickLinkUseStore} dataSet={AddLinkDataSet} />,
+      children:  <AddQuickLink data={data} useStore={quickLinkUseStore} dataSet={AddLinkDataSet} workBenchUseStore={workBenchUseStore} />,
       drawer: true,
       okText: '添加',
     })
@@ -77,7 +90,13 @@ const QuickLink = observer(() => {
               icon: '',
               text: '删除',
               action: () => {
-                quickLinkUseStore.axiosDeleteQuickLink(l.id);
+                Modal.confirm({
+                  title: '提示',
+                  children: '确认删除?',
+                  type: 'warning',
+                }).then(() => {
+                  quickLinkUseStore.axiosDeleteQuickLink(l.id);
+                })
               }
             }]} />
           </div>
@@ -86,13 +105,35 @@ const QuickLink = observer(() => {
     ))
   }
 
+  const handleLoadMore = () => {
+    const originSize = quickLinkUseStore.getParams.size;
+    quickLinkUseStore.setParams({
+      size: originSize + 10,
+      hasMore: false,
+    });
+    init();
+  }
+
   return (
     <div className="c7n-quickLink">
       <div className="c7n-quickLink-title">
         快速链接
         <Icon onClick={() => handleAdd()} type="playlist_add" />
       </div>
-      {renderLinks()}
+      {
+        quickLinkUseStore.getQuickLinkList.length > 0 ? [
+          renderLinks(),
+          quickLinkUseStore.getParams.hasMore && <a onClick={() => handleLoadMore()}>加载更多</a>
+        ] : (
+          <div className="c7n-quickLink-empty">
+            <div className="c7n-quickLink-empty-container">
+              <p className="c7n-quickLink-empty-container-text1">暂无快速链接</p>
+              <p className="c7n-quickLink-empty-container-text2">暂无快速链接，请创建</p>
+              <img style={{ width: 220 }} src={emptyImage} alt=""/>
+            </div>
+          </div>
+        )
+       }
     </div>
   )
 });
