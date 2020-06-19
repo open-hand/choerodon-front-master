@@ -15,7 +15,7 @@ const Tips = withRouter(({ title, showLink, pathname, children, className, locat
     <div className={`c7n-workbench-card ${className}`}>
       <div className="c7n-workbench-card-header">
         <span className="c7n-workbench-card-header-title">{title}</span>
-        {showCount ? (
+        {showCount && count ? (
           <span className="c7n-workbench-card-header-count">{count}</span>
         ) : null}
         {showLink && pathname && (

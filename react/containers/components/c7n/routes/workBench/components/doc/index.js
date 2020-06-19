@@ -2,79 +2,84 @@ import React from 'react';
 import map from 'lodash/map';
 import { Tooltip } from 'choerodon-ui/pro';
 import TimePopover from '../time-popover';
+import EmptyPage from '../empty-page';
 
 import './index.less';
 
-const data = [
-  {
-    projectName: 'Choerodon持续交付',
-    title: 'C7N服务融合为hzero服务步骤',
-    updateTime: '2020-04-30 15:52:57',
-    users: [
-      {
-        userName: 'aaa',
-        userUrl: '',
-      },
-      {
-        userName: 'bbb',
-        userUrl: '',
-      },
-      {
-        userName: 'ccc',
-        userUrl: '',
-      },
-      {
-        userName: 'ddd',
-        userUrl: '',
-      },
-    ],
-    type: 'create',
-  },
-  {
-    orgName: '基础架构管理-区块链中台',
-    title: '功能平台化整体逻辑',
-    updateTime: '2020-04-10 15:52:57',
-    users: [
-      {
-        userName: 'aaa',
-        userUrl: '',
-      },
-    ],
-    type: 'create',
-  },
-  {
-    projectName: 'Choerodon持续交付',
-    title: 'C7N服务融合为hzero服务步骤',
-    updateTime: '2020-05-01 15:52:57',
-    users: [
-      {
-        userName: 'aaa',
-        userUrl: '',
-      },
-      {
-        userName: 'bbb',
-        userUrl: '',
-      },
-      {
-        userName: 'ccc',
-        userUrl: '',
-      },
-      {
-        userName: 'ddd',
-        userUrl: '',
-      },
-      {
-        userName: 'eee',
-        userUrl: '',
-      },
-    ],
-    type: 'update',
-  },
-];
+// const data = [
+//   {
+//     projectName: 'Choerodon持续交付',
+//     title: 'C7N服务融合为hzero服务步骤',
+//     updateTime: '2020-04-30 15:52:57',
+//     users: [
+//       {
+//         userName: 'aaa',
+//         userUrl: '',
+//       },
+//       {
+//         userName: 'bbb',
+//         userUrl: '',
+//       },
+//       {
+//         userName: 'ccc',
+//         userUrl: '',
+//       },
+//       {
+//         userName: 'ddd',
+//         userUrl: '',
+//       },
+//     ],
+//     type: 'create',
+//   },
+//   {
+//     orgName: '基础架构管理-区块链中台',
+//     title: '功能平台化整体逻辑',
+//     updateTime: '2020-04-10 15:52:57',
+//     users: [
+//       {
+//         userName: 'aaa',
+//         userUrl: '',
+//       },
+//     ],
+//     type: 'create',
+//   },
+//   {
+//     projectName: 'Choerodon持续交付',
+//     title: 'C7N服务融合为hzero服务步骤',
+//     updateTime: '2020-05-01 15:52:57',
+//     users: [
+//       {
+//         userName: 'aaa',
+//         userUrl: '',
+//       },
+//       {
+//         userName: 'bbb',
+//         userUrl: '',
+//       },
+//       {
+//         userName: 'ccc',
+//         userUrl: '',
+//       },
+//       {
+//         userName: 'ddd',
+//         userUrl: '',
+//       },
+//       {
+//         userName: 'eee',
+//         userUrl: '',
+//       },
+//     ],
+//     type: 'update',
+//   },
+// ];
 
 const StarTargetPro = () => (
   <div className="c7n-workbench-doc-content">
-    {map(data, ({ projectName, title, users, updateTime, type, orgName }) => (
+    <EmptyPage
+      title="暂无文档信息"
+      describe="暂无文档相关的记录，请直接前往知识库中查看。"
+    />
+    {map([], ({ projectName, title, users, updateTime, type, orgName }) => (
       <div className="c7n-workbench-doc-item">
         <div className="c7n-workbench-doc-item-info">
           <span className={`c7n-workbench-doc-item-logo c7n-workbench-doc-item-logo-${type}`}>
