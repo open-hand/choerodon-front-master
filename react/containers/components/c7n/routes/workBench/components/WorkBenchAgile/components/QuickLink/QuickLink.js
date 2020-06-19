@@ -28,7 +28,6 @@ const QuickLink = observer(() => {
 
 
   const handleAdd = useCallback((data) => {
-    debugger;
     Modal.open({
       key: Modal.key(),
       title: data ? '修改链接' : '添加链接',
