@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui/pro';
 import { useWorkBenchStore } from '../../stores';
 import LoadingBar from '../../../../tools/loading-bar';
+import EmptyPage from '../empty-page';
 
 import './index.less';
 
@@ -25,6 +26,15 @@ const StarTargetPro = observer(() => {
 
   if (!auditDs || auditDs.status === 'loading') {
     return <LoadingBar display />;
+  }
+
+  if (!auditDs.length) {
+    return (
+      <EmptyPage
+        title="暂无待审核任务"
+        describe="暂无需您审核的任务"
+      />
+    );
   }
 
   return (auditDs.map((record) => {

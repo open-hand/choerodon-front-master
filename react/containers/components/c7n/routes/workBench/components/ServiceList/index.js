@@ -4,6 +4,7 @@ import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import { useWorkBenchStore } from '../../stores';
 import TimePopover from '../time-popover';
+import LoadingBar from '../../../../tools/loading-bar';
 
 import './index.less';
 
@@ -77,9 +78,16 @@ const ServiceList = observer((props) => {
           size="small"
         />
       </div>
-      <div className="c7n-serviceList-content" style={{ display: !expand ? 'block' : 'none' }}>
-        {renderAppServiceItem()}
-      </div>
+      {(!appServiceDs || appServiceDs.status === 'loading') ? (
+        <LoadingBar display />
+      ) : (
+        <div className="c7n-serviceList-content" style={{ display: !expand ? 'block' : 'none' }}>
+          {!appServiceDs.length ? (
+            <div className="c7n-workbench-empty-span">暂无最近操作的应用服务</div>
+          ) : null}
+          {renderAppServiceItem()}
+        </div>
+      )}
     </div>
   );
 });

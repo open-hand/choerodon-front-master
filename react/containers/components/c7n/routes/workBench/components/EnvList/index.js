@@ -52,6 +52,9 @@ const EnvList = observer(() => {
         />
       </div>
       <div className="c7n-serviceList-content" style={{ display: !expand ? 'block' : 'none' }}>
+        {!envList.length ? (
+          <div className="c7n-workbench-empty-span">暂无最近操作的环境</div>
+        ) : null}
         {envList.map(({ name, code, projectName, clickTime, active, connect, id, projectId }) => (
           <div className="c7n-envList-content-item">
             <main onClick={() => linkToEnv({ envId: id, projectName, projectId })}>
