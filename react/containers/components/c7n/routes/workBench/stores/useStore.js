@@ -40,7 +40,7 @@ export default function useStore(history) {
     },
     
     loadQuestions({ organizationId, projectId, page }) {
-      return axios.post(`agile/v1/organizations/${organizationId}/work_bench/personal/backlog_issues?page=${page}&size=20${projectId ? `projectId=${projectId}` : ''}`);
+      return axios.post(`agile/v1/organizations/${organizationId}/work_bench/personal/backlog_issues?page=${page}&size=20${projectId ? `&projectId=${projectId}` : ''}`);
     },
   }));
 }
