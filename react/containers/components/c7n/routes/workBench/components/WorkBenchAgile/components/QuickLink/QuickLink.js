@@ -34,7 +34,7 @@ const QuickLink = observer(() => {
       id = workBenchUseStore.getActiveStarProject.id;
     }
     quickLinkUseStore.axiosGetQuickLinkList(id);
-  }
+  };
 
   useEffect(() => {
     init();
@@ -71,11 +71,22 @@ const QuickLink = observer(() => {
             }}
           />
           <div className="c7n-quickLink-linkItem-right-content">
-            <div>
-              <p className="c7n-quickLink-linkItem-right-content-scope">{l.scope === 'project' ? '项目可见' : '仅自己可见'}</p>
-              <p>{l.name}</p>
+            <p className="c7n-quickLink-linkItem-right-content-scope">{l.scope === 'project' ? '项目可见' : '仅自己可见'}</p>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <p className="c7n-quickLink-linkItem-right-content-name">{l.name}</p>
+              <p onClick={() => window.open(l.linkUrl)} className="c7n-quickLink-linkItem-right-content-linkName">
+                <Icon style={{ color: '#5266D4' }} type="link2" />
+                <span>{l.linkUrl}</span>
+              </p>
             </div>
-            <p onClick={() => window.open(l.linkUrl)} className="c7n-quickLink-linkItem-right-content-linkName"><Icon style={{ color: '#5266D4' }} type="link2" />{l.linkUrl}</p>
+            {/*<div>*/}
+            {/*  */}
+            {/*  <p>{l.name}</p>*/}
+            {/*</div>*/}
+            {/*<p onClick={() => window.open(l.linkUrl)} className="c7n-quickLink-linkItem-right-content-linkName">*/}
+            {/*  <Icon style={{ color: '#5266D4' }} type="link2" />*/}
+            {/*  <span>{l.linkUrl}</span>*/}
+            {/*</p>*/}
           </div>
           <div>
             <Action data={[{

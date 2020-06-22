@@ -21,7 +21,7 @@ export default observer(() => {
 
   const renderProjects = useCallback(() => {
     return ProjectsProUseStore.getStarProjectsList.map(p => (
-      <div className="starProjects-items">
+      <div onClick={() => ProjectsProUseStore.handleClickProject(p)} className="starProjects-items">
         <div className="starProjects-items-topborder"></div>
         <ProjectTaskContent alltrue data={p} />
       </div>

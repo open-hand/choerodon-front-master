@@ -98,6 +98,7 @@ export default observer(() => {
                 type={p.starFlag ? 'turned_in' : 'turned_in_not'}
                 style={{
                   color: p.starFlag ? 'rgb(86, 111, 225)' : 'rgb(196, 195, 225)',
+                  fontSize: '20px',
                 }}
                 onClick={(e) => {
                   e.stopPropagation();
