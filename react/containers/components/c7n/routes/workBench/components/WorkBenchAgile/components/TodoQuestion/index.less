@@ -6,8 +6,6 @@
   &-issueContent {
     &-issueItem {
       padding: .1rem 0;
-      border-top: 1px transparent solid;
-      border-image: linear-gradient(to right, rgba(216, 220, 235, 0.4), #d8dceb, rgba(216, 220, 235, 0.4)) 1 10;
 
       &-project {
         font-size: .13rem;
@@ -19,7 +17,6 @@
       &-main {
         display: flex;
         align-items: center;
-        //justify-content: space-between;
 
         &-icon {
           font-size: .2rem;
@@ -31,6 +28,10 @@
           font-weight: 400;
           color: rgba(63, 81, 181, 1);
           margin: 0 .16rem 0 .04rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          min-width: .5rem;
         }
 
         &-description {
@@ -44,7 +45,7 @@
         }
 
         &-status {
-          background: rgba(255, 185, 106, 1);
+          background-color: rgba(255, 185, 106, 1);
           border-radius: 2px;
           font-size: 13px;
           font-family: PingFangSC-Regular,PingFang SC;
@@ -54,6 +55,19 @@
           flex: 0 0 auto;
           padding: 0 .06rem;
           margin-left: auto;
+
+          &-doing {
+            background-color: #4d90fe;
+          }
+          &-done {
+            background-color: #00bfa5;
+          }
+          &-todo {
+            background-color: #ffb100;
+          }
+          &-prepare {
+            background-color: #F67F5A;
+          }
         }
         &-priority {
           margin-left: 8px;
@@ -67,5 +81,29 @@
         }
       }
     }
+
+    .c7n-tree .c7n-tree-treenode {
+      width: 100%;
+      padding: 0;
+      border-top: 1px transparent solid;
+      border-image: linear-gradient(to right, rgba(216, 220, 235, 0.4), #d8dceb, rgba(216, 220, 235, 0.4)) 1 10;
+    }
+
+    .c7n-tree .c7n-tree-node-content-wrapper {
+      width: 100%;
+      padding: 0;
+      overflow: hidden;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+    .c7n-tree .c7n-tree-switcher {
+      padding-top: .08rem;
+    }
+  }
+
+  .c7n-workBench-empty-page {
+    padding: .9rem .4rem;
   }
 }
