@@ -1,10 +1,8 @@
 export default (AppState) => ({
   autoCreate: true,
   fields: [{
-    label: '链接公开范围',
     type: 'string',
     name: 'scope',
-    help: '123',
     defaultValue: 'project',
   }, {
     name: 'projectId',
@@ -44,6 +42,7 @@ export default (AppState) => ({
     type: 'string',
     label: '链接名称',
     required: true,
+    maxLength: 30,
   }, {
     name: 'linkUrl',
     type: 'string',

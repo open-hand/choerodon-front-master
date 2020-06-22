@@ -79,14 +79,6 @@ const QuickLink = observer(() => {
                 <span>{l.linkUrl}</span>
               </p>
             </div>
-            {/*<div>*/}
-            {/*  */}
-            {/*  <p>{l.name}</p>*/}
-            {/*</div>*/}
-            {/*<p onClick={() => window.open(l.linkUrl)} className="c7n-quickLink-linkItem-right-content-linkName">*/}
-            {/*  <Icon style={{ color: '#5266D4' }} type="link2" />*/}
-            {/*  <span>{l.linkUrl}</span>*/}
-            {/*</p>*/}
           </div>
           <div>
             <Action data={[{
@@ -102,8 +94,9 @@ const QuickLink = observer(() => {
               text: '删除',
               action: () => {
                 Modal.confirm({
-                  title: '提示',
-                  children: '确认删除?',
+                  okText: '删除',
+                  title: '删除快速链接',
+                  children: '确认删除快速链接吗?',
                   type: 'warning',
                 }).then(() => {
                   quickLinkUseStore.axiosDeleteQuickLink(l.id);
@@ -131,20 +124,22 @@ const QuickLink = observer(() => {
         快速链接
         <Icon onClick={() => handleAdd()} type="playlist_add" />
       </div>
-      {
-        quickLinkUseStore.getQuickLinkList.length > 0 ? [
-          renderLinks(),
-          quickLinkUseStore.getParams.hasMore && <a onClick={() => handleLoadMore()}>加载更多</a>
-        ] : (
-          <div className="c7n-quickLink-empty">
-            <div className="c7n-quickLink-empty-container">
-              <p className="c7n-quickLink-empty-container-text1">暂无快速链接</p>
-              <p className="c7n-quickLink-empty-container-text2">暂无快速链接，请创建</p>
-              <img style={{ width: 220 }} src={emptyImage} alt=""/>
+      <div className="c7n-quickLink-scroll">
+        {
+          quickLinkUseStore.getQuickLinkList.length > 0 ? [
+            renderLinks(),
+            quickLinkUseStore.getParams.hasMore && <a onClick={() => handleLoadMore()}>加载更多</a>
+          ] : (
+            <div className="c7n-quickLink-empty">
+              <div className="c7n-quickLink-empty-container">
+                <p className="c7n-quickLink-empty-container-text1">暂无快速链接</p>
+                <p className="c7n-quickLink-empty-container-text2">暂无快速链接，请创建</p>
+                <img style={{ width: 220 }} src={emptyImage} alt=""/>
+              </div>
             </div>
-          </div>
-        )
-       }
+          )
+        }
+      </div>
     </div>
   )
 });

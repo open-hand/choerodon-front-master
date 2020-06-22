@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import {Form, Select, SelectBox, TextField} from "choerodon-ui/pro";
+import {Form, Select, SelectBox, TextField, Tooltip} from "choerodon-ui/pro";
+import { Icon } from "choerodon-ui";
 
 const { Option } = Select;
 
@@ -37,12 +38,15 @@ export default observer(({ dataSet, modal, useStore, data, workBenchUseStore }) 
 
   modal.handleOk(handleSumbit)
 
+  modal.handleCancel(() => {
+    dataSet.reset();
+  })
+
   useEffect(() => {
     if (data) {
       dataSet.loadData([data]);
     } else {
       if (workBenchUseStore.getActiveStarProject) {
-        debugger;
         dataSet.current.set('projectId', workBenchUseStore.getActiveStarProject.id)
       }
     }
@@ -51,8 +55,16 @@ export default observer(({ dataSet, modal, useStore, data, workBenchUseStore }) 
   const [isProject, setIsProject] = useState(true);
 
   return (
-    <Form dataSet={dataSet}>
-      <SelectBox onChange={(data) => setIsProject(data === 'project')} name="scope">
+    <Form className="addQuickLinkForm" dataSet={dataSet}>
+      <p className="addQuickLinkForm-p">链接公开范围
+        <Tooltip title="">
+          <Icon type="help" />
+        </Tooltip>
+      </p>
+      <SelectBox
+        onChange={(data) => setIsProject(data === 'project')}
+        name="scope"
+      >
         <Option value="project">项目可见</Option>
         <Option value="self">仅自己可见</Option>
       </SelectBox>
