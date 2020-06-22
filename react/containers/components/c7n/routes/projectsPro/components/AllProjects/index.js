@@ -83,7 +83,7 @@ export default observer(() => {
           <div
             className="allProjects-content-item-icon"
             style={{
-              backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : 'linear-gradient(225deg, #98e5da 0%, #00bfa5 100%)',
+              backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : p.background,
             }}
           >
             {p.name.slice(0, 1)}

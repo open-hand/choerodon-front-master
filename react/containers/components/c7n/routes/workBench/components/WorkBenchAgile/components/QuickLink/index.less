@@ -102,10 +102,15 @@
       &-profile {
         width: 24px;
         height: 24px;
-        border:2px solid rgba(0,0,0,0.16);
+        //border:2px solid rgba(0,0,0,0.16);
         border-radius: 50%;
         background-size: 100% 100%;
         flex-shrink: 0;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
       }
       &-content {
         margin-left: 9px;
@@ -118,6 +123,8 @@
           line-clamp: 1;
           -webkit-line-clamp: 1;
           -webkit-box-orient: vertical;
+          flex-basis: 50%;
+          flex-grow: 0;
         }
         &-scope {
           font-size:12px;
@@ -139,6 +146,8 @@
           color:rgba(63,81,181,1);
           display: flex;
           align-items: center;
+          flex-basis: 50%;
+          flex-grow: 0;
           i {
             font-size: 14px;
             position: relative;
