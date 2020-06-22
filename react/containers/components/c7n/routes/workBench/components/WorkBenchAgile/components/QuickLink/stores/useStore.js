@@ -12,7 +12,6 @@ export default function useStore({ organizationId }) {
       return this.params;
     },
     setParams(data) {
-      debugger;
       this.params = data;
     },
     get getQuickLinkList() {
@@ -24,7 +23,6 @@ export default function useStore({ organizationId }) {
     axiosGetQuickLinkList(id) {
       axios.get(`/iam/choerodon/v1/organizations/${organizationId}/quick_links?page=0&size=${this.getParams.size}${id ? `&project_id=${id}` : ''}`).then((res) => {
         this.setQuickLinkList(res.content);
-        debugger;
         this.setParams({
           size: res.size,
           hasMore: (res.numberOfElements >= res.size) && (res.totalElements % 10 > 0),
