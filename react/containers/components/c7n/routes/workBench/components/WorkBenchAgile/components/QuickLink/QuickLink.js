@@ -80,7 +80,11 @@ const QuickLink = observer(() => {
               </p>
             </div>
           </div>
-          <div>
+          <div
+            style={{
+              display: l.editFlag ? 'block' : 'none',
+            }}
+          >
             <Action data={[{
               service: [],
               icon: '',
@@ -98,9 +102,10 @@ const QuickLink = observer(() => {
                   title: '删除快速链接',
                   children: '确认删除快速链接吗?',
                   type: 'warning',
-                }).then(() => {
-                  quickLinkUseStore.axiosDeleteQuickLink(l.id);
-                })
+                  onOk() {
+                    quickLinkUseStore.axiosDeleteQuickLink(l.id);
+                  },
+                });
               }
             }]} />
           </div>
