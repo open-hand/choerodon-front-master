@@ -2,6 +2,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column-reverse;
+  width: 100%;
+  font-family: PingFangSC-Regular,PingFan;
 
   &-image {
     flex: 0 0 2.20rem;
@@ -12,7 +15,8 @@
   }
 
   &-text {
-    margin-left: .5rem;
+    margin: 0.04rem auto 0.32rem;
+    max-width: 2rem;
   }
 
   &-title {
@@ -24,6 +28,7 @@
   &-des {
     font-size: .2rem;
     line-height: .34rem;
-    margin: .09rem 0 .2rem;
+    margin: .09rem 0 0;
+    color: #3A345F;
   }
 }

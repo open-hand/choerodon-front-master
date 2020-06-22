@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Icon, Tooltip, Tree } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Card from '../../../card';
@@ -14,6 +14,10 @@ const TodoQuestion = observer(() => {
     questionDs,
     history,
   } = useWorkBenchStore();
+
+  useEffect(() => {
+    console.log(questionDs.totalPages);
+  }, [questionDs.totalPages]);
 
   function handleClick(record) {
     const { projectVO, issueId } = record.toData();

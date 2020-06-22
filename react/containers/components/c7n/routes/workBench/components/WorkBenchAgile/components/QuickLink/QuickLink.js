@@ -1,24 +1,17 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Icon } from "choerodon-ui";
+import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
-import Action from "@/containers/components/c7n/tools/action";
-import emptyImage from '../../../../../../../../images/owner.png';
+import Action from '@/containers/components/c7n/tools/action';
+import TimePopover from '@/containers/components/c7n/routes/workBench/components/time-popover';
 import { Modal, Form, SelectBox, Select, TextField } from 'choerodon-ui/pro';
-import HeaderStore from '../../../../../../../../stores/c7n/HeaderStore';
-import AddQuickLink from "./AddQuickLink";
-import { useWorkBenchStore } from "../../../../stores";
-import TimePopover from "@/containers/components/c7n/routes/workBench/components/time-popover";
-import { useQuickLinkStore } from "./stores";
+import AddQuickLink from './AddQuickLink';
+import { useWorkBenchStore } from '../../../../stores';
+import { useQuickLinkStore } from './stores';
+import EmptyPage from '../../../empty-page';
+
 import './index.less';
 
 const QuickLink = observer(() => {
-  const [links, setLinks] = useState([{
-    name: '李丹丹',
-    day: '2天前',
-    project: '基础架构管理-区块链中台研发',
-    linkName: 'Choerodon-UI图 蓝湖地址',
-  }])
-
   const {
     AddLinkDataSet,
     quickLinkUseStore,
@@ -47,11 +40,11 @@ const QuickLink = observer(() => {
       style: {
         width: 380,
       },
-      children:  <AddQuickLink data={data} useStore={quickLinkUseStore} dataSet={AddLinkDataSet} workBenchUseStore={workBenchUseStore} />,
+      children: <AddQuickLink data={data} useStore={quickLinkUseStore} dataSet={AddLinkDataSet} workBenchUseStore={workBenchUseStore} />,
       drawer: true,
       okText: '添加',
-    })
-  }, [AddLinkDataSet.current.get('scope')])
+    });
+  }, [AddLinkDataSet.current.get('scope')]);
 
   const renderLinks = () => {
     return quickLinkUseStore.getQuickLinkList.map(l => (
@@ -135,18 +128,15 @@ const QuickLink = observer(() => {
             renderLinks(),
             quickLinkUseStore.getParams.hasMore && <a onClick={() => handleLoadMore()}>加载更多</a>
           ] : (
-            <div className="c7n-quickLink-empty">
-              <div className="c7n-quickLink-empty-container">
-                <p className="c7n-quickLink-empty-container-text1">暂无快速链接</p>
-                <p className="c7n-quickLink-empty-container-text2">暂无快速链接，请创建</p>
-                <img style={{ width: 220 }} src={emptyImage} alt=""/>
-              </div>
-            </div>
+            <EmptyPage
+              title="暂无快速链接"
+              describe="暂无快速链接，请创建"
+            />
           )
         }
       </div>
     </div>
-  )
+  );
 });
 
 export default QuickLink;
