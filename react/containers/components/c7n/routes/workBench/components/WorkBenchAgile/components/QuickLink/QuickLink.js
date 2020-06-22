@@ -3,12 +3,12 @@ import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import Action from '@/containers/components/c7n/tools/action';
 import TimePopover from '@/containers/components/c7n/routes/workBench/components/time-popover';
-import { Modal, Form, SelectBox, Select, TextField } from 'choerodon-ui/pro';
+import { Modal, Form, SelectBox, Select, TextField, Tooltip } from 'choerodon-ui/pro';
 import AddQuickLink from './AddQuickLink';
 import { useWorkBenchStore } from '../../../../stores';
 import { useQuickLinkStore } from './stores';
 import EmptyPage from '../../../empty-page';
-
+import HeaderStore from '../../../../../../../../stores/c7n/HeaderStore';
 import './index.less';
 
 const QuickLink = observer(() => {
@@ -60,17 +60,31 @@ const QuickLink = observer(() => {
           <div
             className="c7n-quickLink-linkItem-right-profile"
             style={{
-              backgroundImage: `url(${l.user.imageUrl})`
+              backgroundImage: l.user.imageUrl ? `url(${l.user.imageUrl})` : 'linear-gradient(225deg,rgba(152,229,218,1) 0%,rgba(0,191,165,1) 100%)',
             }}
-          />
+          >
+            {
+              !l.user.imageUrl && l.user.realName.slice(0, 1)
+            }
+          </div>
           <div className="c7n-quickLink-linkItem-right-content">
             <p className="c7n-quickLink-linkItem-right-content-scope">{l.scope === 'project' ? '项目可见' : '仅自己可见'}</p>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <p className="c7n-quickLink-linkItem-right-content-name">{l.name}</p>
-              <p onClick={() => window.open(l.linkUrl)} className="c7n-quickLink-linkItem-right-content-linkName">
-                <Icon style={{ color: '#5266D4' }} type="link2" />
-                <span>{l.linkUrl}</span>
-              </p>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Tooltip placement="top" title={l.name}>
+                <p className="c7n-quickLink-linkItem-right-content-name">{l.name}</p>
+              </Tooltip>
+              <Tooltip placement="top" title={l.linkUrl}>
+                <p onClick={() => window.open(l.linkUrl)} className="c7n-quickLink-linkItem-right-content-linkName">
+                  <Icon style={{ color: '#5266D4' }} type="link2" />
+                  <span>{l.linkUrl}</span>
+                </p>
+              </Tooltip>
             </div>
           </div>
           <div

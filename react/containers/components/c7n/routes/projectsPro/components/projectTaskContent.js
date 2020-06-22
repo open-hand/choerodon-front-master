@@ -19,7 +19,7 @@ export default ({ data, alltrue }) => {
           <div
             className="starProjects-items-content-icon"
             style={{
-              backgroundImage: data.imageUrl ? `url("${data.imageUrl}")` : 'linear-gradient(225deg, #98e5da 0%, #00bfa5 100%)',
+              backgroundImage: data.imageUrl ? `url("${data.imageUrl}")` : data.background,
             }}
           >
             {data.name.slice(0, 1)}

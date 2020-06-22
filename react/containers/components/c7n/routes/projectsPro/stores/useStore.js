@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import { axios } from '@choerodon/boot';
 import HeaderStore from "@/containers/stores/c7n/HeaderStore";
 import MenuStore from "@/containers/stores/c7n/MenuStore";
+import { getRandomBackground } from "@/containers/components/c7n/util";
 import findFirstLeafMenu from "@/containers/components/util/findFirstLeafMenu";
 import {historyPushMenu} from "@/utils";
 
@@ -43,7 +44,10 @@ export default function useStore(AppState, history) {
     axiosGetProjects() {
       const { page, size } = this.getPagination;
       axios.get(queryString.parse(history.location.search).organizationId ? `/iam/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
-        this.setAllProjects(res.content);
+        this.setAllProjects(res.content.map(r => {
+          r.background = getRandomBackground();
+          return r;
+        }));
         this.setPagination({
           page: res.pageNum,
           size: 10,
@@ -141,7 +145,10 @@ export default function useStore(AppState, history) {
     },
     axiosGetStarProjects() {
       axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/star_projects`).then((res) => {
-        this.setStarProjectsList(res);
+        this.setStarProjectsList(res.map(r => {
+          r.background = getRandomBackground();
+          return r;
+        }));
       })
     }
   }));
