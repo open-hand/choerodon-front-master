@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
@@ -17,28 +17,29 @@ const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
     alwaysShow: child.props.alwaysShow,
   }));
   const keyArr = React.Children.map(children, child => child.props.tabKey);
+  const Children = React.Children.map(children, child => child);
   const [currentKey, setCurrentKey] = useState(null);
 
   function loadMenu() {
     const { location } = props;
     const { pathname } = location;
-    setCurrentKey(`${keyArr[0]}/.0`);
-    keyShowArr.forEach((menu, index) => {
+    setCurrentKey(`${keyArr[0]}`);
+    keyShowArr.forEach((menu) => {
       if (menu.route === pathname) {
-        setCurrentKey(`${menu.tabKey}/.${index}`);
+        setCurrentKey(`${menu.tabKey}`);
       }
     });
   }
 
   useEffect(() => {
     loadMenu();
-  }, []);
+  }, [Children.length]);
 
   function callback(key) {
     if (cache) {
       setCurrentKey(key);
     } else {
-      const realCode = key && key.split('/')[0];
+      const realCode = key;
       const realTabNode = keyShowArr.find(v => v.tabKey === realCode);
       if (realTabNode && realTabNode.route) {
         props.history.push(`${realTabNode.route}${props.location.search}`);
@@ -53,7 +54,7 @@ const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
           'wrap-tabs',
           {
             hasHeader: !noHeader.includes(
-              currentKey && currentKey.split('/')[0],
+              currentKey && currentKey,
             ),
           },
           className,
@@ -62,7 +63,7 @@ const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
         onChange={callback}
         activeKey={currentKey}
       >
-        {React.Children.map(children, child => {
+        {Children.map(child => {
           const { type } = child;
           if (type === PageTab) {
             if (
