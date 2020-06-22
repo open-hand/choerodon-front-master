@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { Icon, Tooltip, Tree } from 'choerodon-ui/pro';
+import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import Card from '../../../card';
 import { useWorkBenchStore } from '../../../../stores';
@@ -13,11 +14,50 @@ const TodoQuestion = observer(() => {
     AppState: { currentMenuType: { organizationId } },
     questionDs,
     history,
+    workBenchUseStore,
   } = useWorkBenchStore();
 
+  const [page, changePage] = useState(1);
+  const [showMore, changeShowMore] = useState(false);
+  const [btnLoading, changeBtnLoading] = useState(false);
+  const [loading, changeLoading] = useState(false);
+
+  async function loadData(newPage) {
+    try {
+      const oldData = questionDs.toData();
+      const { id: projectId } = workBenchUseStore.getActiveStarProject || {};
+      const res = await workBenchUseStore.loadQuestions({ organizationId, projectId, page: newPage || 1 });
+      if (res && !res.failed) {
+        if (res.totalElements && res.number < res.totalPages) {
+          changeShowMore(true);
+        } else {
+          changeShowMore(false);
+        }
+        questionDs.loadData(oldData.concat(res.content));
+      }
+      changeBtnLoading(false);
+      changeLoading(false);
+    } catch (e) {
+      changeShowMore(true);
+      changePage(1);
+      changeBtnLoading(false);
+      changeLoading(false);
+    }
+  }
+
   useEffect(() => {
-    console.log(questionDs.totalPages);
-  }, [questionDs.totalPages]);
+    changeLoading(true);
+    questionDs.removeAll();
+    changePage(1);
+    loadData();
+  }, [workBenchUseStore.getActiveStarProject]);
+  
+  function loadMoreData() {
+    const newPage = page + 1;
+    changeBtnLoading(true);
+    loadData(newPage);
+    changePage(newPage);
+  }
 
   function handleClick(record) {
     const { projectVO, issueId } = record.toData();
@@ -91,7 +131,9 @@ const TodoQuestion = observer(() => {
         <p className="c7n-todoQuestion-issueContent-issueItem-project">{projectVO ? projectVO.name : ''}</p>
         <div className="c7n-todoQuestion-issueContent-issueItem-main">
           {getIssueType(typeCode)}
-          <span className="c7n-todoQuestion-issueContent-issueItem-main-issueId">{issueNum}</span>
+          <Tooltip title={issueNum} placement="top">
+            <span className="c7n-todoQuestion-issueContent-issueItem-main-issueId">{issueNum}</span>
+          </Tooltip>
           <Tooltip title={summary} placement="top">
             <span className="c7n-todoQuestion-issueContent-issueItem-main-description">{summary}</span>
           </Tooltip>
@@ -105,7 +147,7 @@ const TodoQuestion = observer(() => {
   }
 
   function getContent() {
-    if (!questionDs || questionDs.status === 'loading') {
+    if (!questionDs || questionDs.status === 'loading' || loading) {
       return <LoadingBar display />;
     }
     if (!questionDs.length) {
@@ -117,12 +159,24 @@ const TodoQuestion = observer(() => {
       );
     }
     return (
-      <Tree
-        dataSet={questionDs}
-        renderer={nodeRenderer}
-        // onExpand={handleExpanded}
-        className="c7n-todoQuestion-issueContent"
-      />
+      <Fragment>
+        <Tree
+          dataSet={questionDs}
+          renderer={nodeRenderer}
+          className="c7n-todoQuestion-issueContent"
+        />
+        {showMore ? (btnLoading ? (
+          <Spin spinning />
+          ) : (
+            <div
+              onClick={() => loadMoreData()}
+              className="c7n-todoQuestion-issueContent-more"
+            >
+              加载更多
+            </div>
+          )
+        ) : null}
+      </Fragment>
     );
   }
 
@@ -131,7 +185,7 @@ const TodoQuestion = observer(() => {
       <Card
         title="待办问题"
         showCount
-        count={questionDs ? questionDs.length : 0}
+        // count={totalCount}
         className="c7n-todoQuestion-issueContent"
       >
         {getContent()}

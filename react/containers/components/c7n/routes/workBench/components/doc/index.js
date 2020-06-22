@@ -10,7 +10,7 @@ const StarTargetPro = () => (
   <div className="c7n-workbench-doc-content">
     <EmptyPage
       title="暂无文档信息"
-      describe="暂无文档相关的记录，请直接前往知识库中查看。"
+      describe="暂无文档相关的记录，请直接前往知识库中查看"
     />
     {map([], ({ projectName, title, users, updateTime, type, orgName }) => (
       <div className="c7n-workbench-doc-item">
