@@ -15,9 +15,9 @@ const EnvList = observer(() => {
   } = useWorkBenchStore();
   const [expand, changeExpand] = useState(false);
   const [envList, setEnvList] = useState([]);
+  const { id: projectId, category } = workBenchUseStore.getActiveStarProject || {};
 
   useEffect(() => {
-    const { id: projectId } = workBenchUseStore.getActiveStarProject || {};
     const env = localStorage.envRecentItem ? JSON.parse(localStorage.envRecentItem) : [];
     let realEnv;
     if (projectId) {
@@ -28,15 +28,19 @@ const EnvList = observer(() => {
     setEnvList(realEnv);
   }, [workBenchUseStore.getActiveStarProject]);
 
-  function linkToEnv({ envId, projectName, projectId }) {
+  function linkToEnv({ envId, projectName, realProjectId }) {
     history.push({
       pathname: '/devops/resource',
-      search: `?id=${projectId}&name=${projectName}&organizationId=${organizationId}&type=project`,
+      search: `?id=${realProjectId}&name=${projectName}&organizationId=${organizationId}&type=project`,
       state: {
         envId,
         viewType: 'instance',
       },
     });
+  }
+
+  if (projectId && (category === 'AGILE' || category === 'PROGRAM')) {
+    return null;
   }
 
   return (
@@ -55,9 +59,9 @@ const EnvList = observer(() => {
         {!envList.length ? (
           <div className="c7n-workbench-empty-span">暂无最近操作的环境</div>
         ) : null}
-        {envList.map(({ name, code, projectName, clickTime, active, connect, id, projectId }) => (
+        {envList.map(({ name, code, projectName, clickTime, active, connect, id, projectId: realProjectId }) => (
           <div className="c7n-envList-content-item">
-            <main onClick={() => linkToEnv({ envId: id, projectName, projectId })}>
+            <main onClick={() => linkToEnv({ envId: id, projectName, realProjectId })}>
               <div className="c7n-envList-content-item-main">
                 <span className="c7n-envList-content-item-main-title">
                   <StatusDot
