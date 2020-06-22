@@ -1,0 +1,99 @@
+.c7n-serviceList {
+  background: #fff;
+  padding: 32px 24px;
+  padding-bottom: 10px;
+  &-expand-btn {
+    margin: 0 auto 0 11px;
+  }
+  &-title {
+    margin-bottom: 20px;
+    display: flex;
+    span {
+      font-size: 16px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #3a345f;
+    }
+  }
+  &-content {
+    &-item {
+      header, footer, main{
+        display: flex;
+        align-items: center;
+      }
+      &::before {
+        content: "";
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(to right, rgba(216, 220, 235, 0.4) , rgba(216, 220, 235, 1), rgba(216, 220, 235, 0.4));
+        display: block;
+        margin-bottom: 10px;
+      }
+      &+& {
+        margin-top: 13px;
+      }
+      header {
+        .icon-date_range-o {
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+          font-size: 14px;
+          text-align: center;
+          background: rgba(104, 135, 232, 0.12);
+          border-radius: 50%;
+          color: rgba(104, 135, 232, 1);
+        }
+       span.c7n-serviceList-content-item-date {
+          font-size: 12px;
+          font-family: PingFangSC-Regular,PingFang SC;
+          font-weight: 400;
+          color: rgba(58, 52, 95, 0.65);
+          line-height: 12px;
+          margin-left: 4px;
+        }
+      }
+
+      main {
+        margin-top: 10px;
+        .c7n-serviceList-content-item-main {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+
+          &-text {
+            font-size: 13px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #3a345f;
+            line-height: 18px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            cursor: pointer;
+          }
+        }
+        .c7n-serviceList-content-item-icon {
+          font-size: 18px;
+          color:rgba(104,135,232,1);
+          cursor: pointer;
+        }
+      }
+
+      footer {
+        margin-top: 10px;
+        span {
+          background: rgba(104, 135, 232, 0.1);
+          border-radius: 10px;
+          font-size: 12px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: #6887e8;
+          line-height: 17px;
+          padding: 2px 8px;
+        }
+      }
+    }
+
+  }
+}

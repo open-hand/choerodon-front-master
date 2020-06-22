@@ -10,7 +10,7 @@ import { transformResponsePage, transformRequestPage } from './transformPageData
 // eslint-disable-next-line import/no-cycle
 import MenuStore from '../../../../stores/c7n/MenuStore';
 
-const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|PERMISSION_ACCESS_TOKEN_EXPIRED)/;
+const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 axios.defaults.timeout = 30000;
 axios.defaults.baseURL = API_HOST;
 
@@ -44,7 +44,7 @@ axios.interceptors.response.use(
     if (response.status === 204) {
       return response;
     }
-    if ('data' in response) {
+    if (Object.prototype.hasOwnProperty.call(response, 'data')) {
       if (response.data.failed === true) {
         prompt(response.data.message, 'error');
         throw response.data;
