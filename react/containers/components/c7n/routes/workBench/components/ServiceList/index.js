@@ -13,9 +13,11 @@ const ServiceList = observer((props) => {
     history,
     appServiceDs,
     AppState: { currentMenuType: { organizationId } },
+    workBenchUseStore,
   } = useWorkBenchStore();
 
   const [expand, changeExpand] = useState(false);
+  const { id: activeProjectId, category } = workBenchUseStore.getActiveStarProject || {};
 
   function goAppService(record) {
     const { projectId, projectName, id } = record.toData() || {};
@@ -65,6 +67,10 @@ const ServiceList = observer((props) => {
       );
     })
   );
+
+  if (activeProjectId && (category === 'AGILE' || category === 'PROGRAM')) {
+    return null;
+  }
 
   return (
     <div className="c7n-serviceList">

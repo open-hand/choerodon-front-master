@@ -48,7 +48,7 @@ const StarTargetPro = observer(() => {
             {type === 'merge_request' ? (
               <div className="c7n-workbench-check-item-user">
                 {imageUrl ? (
-                  <img src={imageUrl} alt="avatar" />) : (
+                  <img src={imageUrl} alt="avatar" className="c7n-workbench-check-item-user-image" />) : (
                     <span className="c7n-workbench-check-item-user-text">
                       {(content || '').toUpperCase().substring(0, 1)}
                     </span>

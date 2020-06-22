@@ -20,7 +20,6 @@ const WorkBench = () => (
         <QuickLink />
         <Card
           title="文档"
-          showLink
           pathname="/ddd"
           className="c7n-workbench-doc"
         >
