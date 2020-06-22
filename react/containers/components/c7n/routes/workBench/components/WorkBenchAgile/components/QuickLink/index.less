@@ -84,6 +84,7 @@
       border-radius: 50%;
       position: absolute;
       right: calc(82% - 4px);
+      z-index: 1;
     }
     &-right {
       margin-left: 19px;
@@ -103,10 +104,15 @@
       }
       &-content {
         margin-left: 9px;
-        display: flex;
-        justify-content: space-between;
         flex: 1;
-        align-items: flex-end;
+        &-name {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          line-clamp: 1;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+        }
         &-scope {
           font-size:12px;
           font-family:PingFangSC-Regular,PingFang SC;
@@ -125,12 +131,21 @@
           font-family:PingFangSC-Regular,PingFang SC;
           font-weight:400;
           color:rgba(63,81,181,1);
+          display: flex;
+          align-items: center;
           i {
             font-size: 14px;
             position: relative;
             bottom: 1px;
             margin-left: 9px;
             cursor: pointer;
+          }
+          span {
+            display: inline-block;
+            max-width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
       }
