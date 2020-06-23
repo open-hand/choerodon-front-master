@@ -63,12 +63,16 @@ export default ({ data, alltrue }) => {
             }}
           />
           <div className="starProjects-items-content-right-down">
-            <div
-              className="starProjects-items-content-right-down-avatur"
-              style={{
-                backgroundImage: `url(${data.createUserImageUrl})`
-              }}
-            />
+            <Tooltip title={data.createUserName} placement="top">
+              <div
+                className="starProjects-items-content-right-down-avatur"
+                style={{
+                  backgroundImage: `url(${data.createUserImageUrl})`,
+                }}
+              >
+                {!data.createUserImageUrl && data.createUserName.slice(0, 1)}
+              </div>
+            </Tooltip>
             <p
               style={{
                 marginTop: 7,

@@ -128,12 +128,16 @@ const StarTargetPro = observer(() => {
                 {
                   s.active && (
                     <div className="c7n-starTargetPro-proContainer-items-extra">
-                      <div
-                        className="c7n-starTargetPro-proContainer-items-extra-icon"
-                        style={{
-                          backgroundImage: `url(${s.createUserImageUrl})`
-                        }}
-                      />
+                      <Tooltip title={s.createUserName} placement="top">
+                        <div
+                          className="c7n-starTargetPro-proContainer-items-extra-icon"
+                          style={{
+                            backgroundImage: `url(${s.createUserImageUrl})`
+                          }}
+                        >
+                          {!s.createUserImageUrl && s.createUserName.slice(0, 1)}
+                        </div>
+                      </Tooltip>
                       <div className="c7n-starTargetPro-proContainer-items-extra-text">
                         <p>创建于</p>
                         <p>{s.creationDate && s.creationDate.split(' ')[0]}</p>

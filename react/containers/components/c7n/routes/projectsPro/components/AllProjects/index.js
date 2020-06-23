@@ -132,11 +132,16 @@ export default observer(() => {
                 }
               </p>
               <p className="allProjects-content-item-right-down-time">
-                <span
-                  style={{
-                    backgroundImage: `url(${p.createUserImageUrl})`,
-                  }}
-                />
+                <Tooltip title={p.createUserName} placement="top">
+                  <span
+                    className="allProjects-content-item-right-down-avatar"
+                    style={{
+                      backgroundImage: `url(${p.createUserImageUrl})`,
+                    }}
+                  >
+                    {!p.createUserImageUrl && p.createUserName.slice(0, 1)}
+                  </span>
+                </Tooltip>
                 <p>{p.creationDate.split(' ')[0]} 创建</p>
               </p>
             </div>
