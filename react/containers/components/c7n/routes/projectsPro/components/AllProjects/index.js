@@ -211,6 +211,7 @@ export default observer(() => {
           onChange={handleChangePagination}
           page={ProjectsProUseStore.getPagination.page}
           total={ProjectsProUseStore.getPagination.total}
+          pageSize={ProjectsProUseStore.getPagination.size}
           style={{
             textAlign: 'right',
             marginTop: 15,
