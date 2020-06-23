@@ -7,6 +7,7 @@ import { Icon } from "choerodon-ui";
 import emptyImg from '../../../../../../images/owner.png';
 
 import './index.less';
+import {getRandomBackground} from "@/containers/components/c7n/util";
 
 const init = [{
   text: '基础架构管理-区块链中…(rdm01)',
@@ -94,7 +95,7 @@ const StarTargetPro = observer(() => {
                 <div
                   className="c7n-starTargetPro-proContainer-items-icon"
                   style={{
-                    background: s.imageUrl ? `url(${s.imageUrl})` : 'linear-gradient(225deg,rgba(152,229,218,1) 0%,rgba(0,191,165,1) 100%)',
+                    backgroundImage: s.imageUrl ? `url("${s.imageUrl}")` : getRandomBackground(s.id),
                   }}
                 >
                   {!s.imageUrl && s.name.slice(0, 1)}

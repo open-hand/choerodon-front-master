@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
-import {Form, Select, SelectBox, TextField, Tooltip} from "choerodon-ui/pro";
+import {DataSet, Form, Select, SelectBox, TextField, Tooltip} from "choerodon-ui/pro";
+import addLinkDataSet from './stores/addLinkDataSet';
 import { Icon } from "choerodon-ui";
 
 const { Option } = Select;
 
-export default observer(({ dataSet, modal, useStore, data, workBenchUseStore }) => {
+export default observer(({ AppState, modal, useStore, data, workBenchUseStore }) => {
+  const dataSet = useMemo(() => new DataSet(addLinkDataSet(AppState)), []);
+
   const optionRenderer = ({ text }) => renderer({ text });
 
   const renderer = ({ text }) => {
@@ -45,6 +48,7 @@ export default observer(({ dataSet, modal, useStore, data, workBenchUseStore }) 
   useEffect(() => {
     if (data) {
       dataSet.loadData([data]);
+      setIsProject(data.scope !== 'self');
     } else {
       if (workBenchUseStore.getActiveStarProject) {
         dataSet.current.set('projectId', workBenchUseStore.getActiveStarProject.id)

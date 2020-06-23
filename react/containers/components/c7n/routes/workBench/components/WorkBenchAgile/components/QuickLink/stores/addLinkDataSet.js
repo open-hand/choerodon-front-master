@@ -10,6 +10,9 @@ export default (AppState) => ({
     label: '项目',
     textField: 'name',
     valueField: 'id',
+    dynamicProps: {
+      required: ({ record }) => record.get('scope') === 'project',
+    },
     lookupAxiosConfig: (data) => {
       return ({
         method: 'get',

@@ -2,6 +2,7 @@ import React from 'react';
 import {Icon} from "choerodon-ui";
 import TimePopover from "@/containers/components/c7n/routes/workBench/components/time-popover";
 import { useProjectsProStore } from "../stores";
+import { getRandomBackground } from "@/containers/components/c7n/util";
 
 import './projectTaskContent.less';
 
@@ -19,7 +20,7 @@ export default ({ data, alltrue }) => {
           <div
             className="starProjects-items-content-icon"
             style={{
-              backgroundImage: data.imageUrl ? `url("${data.imageUrl}")` : data.background,
+              backgroundImage: data.imageUrl ? `url("${data.imageUrl}")` : getRandomBackground(data.id),
             }}
           >
             {data.name.slice(0, 1)}

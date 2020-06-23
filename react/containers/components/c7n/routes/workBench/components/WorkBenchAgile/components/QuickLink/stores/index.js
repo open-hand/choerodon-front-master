@@ -20,14 +20,10 @@ export const StoreProvider = inject('AppState')(observer((props) => {
         organizationId,
       }
     },
-    AppState,
   } = props;
-
-  const AddLinkDataSet = useMemo(() => new DataSet(addLinkDataSet(AppState)), []);
 
   const value = {
     ...props,
-    AddLinkDataSet,
     quickLinkUseStore: useStore({organizationId}),
   };
 
