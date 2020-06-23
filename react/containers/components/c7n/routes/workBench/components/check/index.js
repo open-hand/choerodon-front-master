@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import {Icon, Tooltip} from 'choerodon-ui/pro';
+import { Icon, Tooltip } from 'choerodon-ui/pro';
 import { useWorkBenchStore } from '../../stores';
 import LoadingBar from '../../../../tools/loading-bar';
 import EmptyPage from '../empty-page';
@@ -11,7 +11,7 @@ const StarTargetPro = observer(() => {
   const {
     auditDs,
     history,
-    AppState: { currentMenuType: { organizationId, name } },
+    AppState: { currentMenuType: { organizationId } },
   } = useWorkBenchStore();
 
   function linkToDetail(record) {

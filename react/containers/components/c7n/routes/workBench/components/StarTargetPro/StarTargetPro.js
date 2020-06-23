@@ -28,18 +28,20 @@ const init = [{
 
 const StarTargetPro = observer(() => {
   const {
-    starTargetProUseStore
+    starTargetProUseStore,
   } = useStarTargetPro();
 
   const {
     workBenchUseStore,
     history,
     location: { search },
+    AppState: { currentMenuType: { organizationId } },
   } = useWorkBenchStore();
 
   useEffect(() => {
+    workBenchUseStore.setActiveStarProject(null);
     starTargetProUseStore.axiosGetStarProjects();
-  }, []);
+  }, [organizationId]);
 
   const handleClickItem = (s) => {
     const origin = starTargetProUseStore.getStarProjects;

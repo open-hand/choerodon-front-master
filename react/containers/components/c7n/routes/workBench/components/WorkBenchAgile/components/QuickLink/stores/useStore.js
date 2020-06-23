@@ -1,7 +1,7 @@
 import { useLocalStore } from 'mobx-react-lite';
 import axios from '../../../../../../../tools/axios';
 
-export default function useStore({ organizationId }) {
+export default function useStore(AppState) {
   return useLocalStore(() => ({
     quickLinkList: [],
     params: {
@@ -21,7 +21,7 @@ export default function useStore({ organizationId }) {
       this.quickLinkList = data;
     },
     axiosGetQuickLinkList(id) {
-      axios.get(`/iam/choerodon/v1/organizations/${organizationId}/quick_links?page=0&size=${this.getParams.size}${id ? `&project_id=${id}` : ''}`).then((res) => {
+      axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/quick_links?page=0&size=${this.getParams.size}${id ? `&project_id=${id}` : ''}`).then((res) => {
         this.setQuickLinkList(res.content);
         this.setParams({
           size: res.size,
@@ -35,12 +35,12 @@ export default function useStore({ organizationId }) {
       })
     },
     axiosDeleteQuickLink(id) {
-      axios.delete(`/iam/choerodon/v1/organizations/${organizationId}/quick_links/${id}`).then(() => {
+      axios.delete(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/quick_links/${id}`).then(() => {
         this.axiosGetQuickLinkList();
       });
     },
     axiosEditQuickLink(data) {
-      axios.put(`/iam/choerodon/v1/organizations/${organizationId}/quick_links/${data.id}`, data).then(() => {
+      axios.put(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/quick_links/${data.id}`, data).then(() => {
         this.axiosGetQuickLinkList();
       })
     },

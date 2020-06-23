@@ -26,7 +26,7 @@ const EnvList = observer(() => {
       realEnv = env.filter((item) => item.organizationId === organizationId);
     }
     setEnvList(realEnv);
-  }, [workBenchUseStore.getActiveStarProject]);
+  }, [workBenchUseStore.getActiveStarProject, organizationId]);
 
   function linkToEnv({ envId, projectName, realProjectId }) {
     history.push({

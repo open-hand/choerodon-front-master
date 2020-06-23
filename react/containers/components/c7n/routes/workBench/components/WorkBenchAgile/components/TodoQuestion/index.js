@@ -50,7 +50,7 @@ const TodoQuestion = observer(() => {
     questionDs.removeAll();
     changePage(1);
     loadData();
-  }, [workBenchUseStore.getActiveStarProject]);
+  }, [workBenchUseStore.getActiveStarProject, organizationId]);
   
   function loadMoreData() {
     const newPage = page + 1;
