@@ -61,7 +61,7 @@ const StarTargetPro = observer(() => {
     if (starProjects.length == 0) {
       return (
         <div className="c7n-starTargetPro-content">
-          <img src={emptyImg} alt="empty"/>,
+          <img src={emptyImg} alt="empty"/>
           <div className="c7n-starTargetPro-content-emptyText">
             <p className="c7n-starTargetPro-content-emptyText-emptyP">暂无星标</p>
             <p className="c7n-starTargetPro-content-emptyText-emptySuggest">您还没有星标项目，请前往"项目管理"页面进行添加</p>

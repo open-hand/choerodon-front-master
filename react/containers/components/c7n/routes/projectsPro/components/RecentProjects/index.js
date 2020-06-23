@@ -32,8 +32,12 @@ export default observer(() => {
 
   return (
     <div className="recentProjects">
-      <p className="recentProjects-title">最近使用</p>
-      {renderProjects()}
+      <div className="recentProjects-title-wrap">
+        <p className="recentProjects-title">最近使用</p>
+      </div>
+      <div className="recentProjects-content-wrap">
+        {renderProjects()}
+      </div>
     </div>
   )
 })

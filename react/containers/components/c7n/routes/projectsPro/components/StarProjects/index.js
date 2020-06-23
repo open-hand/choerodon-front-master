@@ -30,14 +30,18 @@ export default observer(() => {
 
   return (
     <div className="starProjects">
-      <p className="starProjects-title">星标项目
-        <span>{
-          ProjectsProUseStore.getStarProjectsList.length > 6
-          ? 6
-            :ProjectsProUseStore.getStarProjectsList.length
-        }</span>
-      </p>
-      {renderProjects()}
+      <div className="starProjects-title-wrap">
+        <p className="starProjects-title">星标项目
+          <span>{
+            ProjectsProUseStore.getStarProjectsList.length > 6
+              ? 6
+              :ProjectsProUseStore.getStarProjectsList.length
+          }</span>
+        </p>
+      </div>
+      <div className="starProjects-content-wrap">
+        {renderProjects()}
+      </div>
     </div>
   )
 });
