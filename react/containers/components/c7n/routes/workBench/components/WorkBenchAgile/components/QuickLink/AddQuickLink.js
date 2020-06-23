@@ -66,6 +66,7 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore })
         </Tooltip>
       </p>
       <SelectBox
+        className="addQuickLinkForm-scope"
         onChange={(data) => setIsProject(data === 'project')}
         name="scope"
       >
