@@ -65,7 +65,7 @@ const StarTargetPro = observer(() => {
             <p className="c7n-starTargetPro-content-emptyText-emptySuggest">您还没有星标项目，请前往"项目管理"页面进行添加</p>
             <Button onClick={() => {
               history.push({
-                pathname: '/projectsPro',
+                pathname: '/projects',
                 search,
               })
             }} funcType="raised" color="primary">转到项目管理</Button>

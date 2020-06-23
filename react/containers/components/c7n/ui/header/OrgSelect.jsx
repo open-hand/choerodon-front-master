@@ -10,7 +10,7 @@ import { historyPushMenu } from '../../util';
 import Setting from './Setting';
 
 const prefixCls = 'c7n-boot-header-menu-type';
-const homePage = '/projects';
+const homePage = '/workbench';
 @withRouter
 @inject('AppState', 'HeaderStore', 'MenuStore')
 @observer
