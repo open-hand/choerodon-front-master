@@ -87,7 +87,7 @@ export default observer(() => {
               backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : getRandomBackground(p.id),
             }}
           >
-            {p.name.slice(0, 1)}
+            {!p.imageUrl && p.name.slice(0, 1)}
           </div>
           <div className="allProjects-content-item-right">
             <div className="allProjects-content-item-right-top">

@@ -24,7 +24,7 @@ export default ({ data, alltrue }) => {
               backgroundImage: data.imageUrl ? `url("${data.imageUrl}")` : getRandomBackground(data.id),
             }}
           >
-            {data.name.slice(0, 1)}
+            {!data.imageUrl && data.name.slice(0, 1)}
           </div>
           <div className="starProjects-items-content-center">
             <p className="starProjects-items-content-center-title">{data.name}</p>
