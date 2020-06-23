@@ -110,7 +110,9 @@ export default observer(() => {
               />
             </div>
             <div className="allProjects-content-item-right-down">
-              <p className="allProjects-content-item-right-down-pro">{p.name}</p>
+              <Tooltip title={p.name} placement="bottomLeft">
+                <p className="allProjects-content-item-right-down-pro">{p.name}</p>
+              </Tooltip>
               <p className="allProjects-content-item-right-down-text1">
               <span>
                 <Icon type="project_line" />
@@ -177,6 +179,9 @@ export default observer(() => {
                 color="primary"
                 disabled={!getCanCreate}
                 onClick={handleAddProject}
+                style={{
+                  height: 30,
+                }}
               >创建项目</Button>
             </Tooltip>
           </Permission>
