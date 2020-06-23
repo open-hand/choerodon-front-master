@@ -138,7 +138,13 @@ const TodoQuestion = observer(() => {
             <span className="c7n-todoQuestion-issueContent-issueItem-main-description">{summary}</span>
           </Tooltip>
           {getStatus(statusVO)}
-          <span className="c7n-todoQuestion-issueContent-issueItem-main-priority">
+          <span
+            className="c7n-todoQuestion-issueContent-issueItem-main-priority"
+            style={{
+              backgroundColor: `${priorityVO ? priorityVO.colour : '#FFFFFF'}1F`,
+              color: priorityVO ? priorityVO.colour : '#FFFFFF',
+            }}
+          >
             {priorityVO ? priorityVO.name : '无'}
           </span>
         </div>
