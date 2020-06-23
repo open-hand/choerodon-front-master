@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import Permission from "@/containers/components/c7n/tools/permission";
 import { useProjectsProStore } from "../../stores";
 import { Icon } from "choerodon-ui";
+import { getRandomBackground } from "@/containers/components/c7n/util";
 import axios from '@/containers/components/c7n/tools/axios'
 
 import './index.less';
@@ -83,7 +84,7 @@ export default observer(() => {
           <div
             className="allProjects-content-item-icon"
             style={{
-              backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : p.background,
+              backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : getRandomBackground(p.id),
             }}
           >
             {p.name.slice(0, 1)}

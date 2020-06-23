@@ -6,6 +6,7 @@ import TimePopover from '@/containers/components/c7n/routes/workBench/components
 import { Modal, Form, SelectBox, Select, TextField, Tooltip } from 'choerodon-ui/pro';
 import AddQuickLink from './AddQuickLink';
 import { useWorkBenchStore } from '../../../../stores';
+import { getRandomBackground } from "@/containers/components/c7n/util";
 import { useQuickLinkStore } from './stores';
 import EmptyPage from '../../../empty-page';
 import HeaderStore from '../../../../../../../../stores/c7n/HeaderStore';
@@ -13,7 +14,7 @@ import './index.less';
 
 const QuickLink = observer(() => {
   const {
-    AddLinkDataSet,
+    AppState,
     quickLinkUseStore,
   } = useQuickLinkStore();
 
@@ -33,18 +34,18 @@ const QuickLink = observer(() => {
     init();
   }, [workBenchUseStore.getActiveStarProject]);
 
-  const handleAdd = useCallback((data) => {
+  const handleAdd = (data) => {
     Modal.open({
       key: Modal.key(),
       title: data ? '修改链接' : '添加链接',
       style: {
         width: 380,
       },
-      children: <AddQuickLink data={data} useStore={quickLinkUseStore} dataSet={AddLinkDataSet} workBenchUseStore={workBenchUseStore} />,
+      children: <AddQuickLink AppState={AppState} data={data} useStore={quickLinkUseStore} workBenchUseStore={workBenchUseStore} />,
       drawer: true,
       okText: '添加',
     });
-  }, [AddLinkDataSet.current.get('scope')]);
+  };
 
   const renderLinks = () => {
     return quickLinkUseStore.getQuickLinkList.map(l => (
@@ -60,7 +61,7 @@ const QuickLink = observer(() => {
           <div
             className="c7n-quickLink-linkItem-right-profile"
             style={{
-              backgroundImage: l.user.imageUrl ? `url(${l.user.imageUrl})` : 'linear-gradient(225deg,rgba(152,229,218,1) 0%,rgba(0,191,165,1) 100%)',
+              backgroundImage: l.user.imageUrl ? `url(${l.user.imageUrl})` : getRandomBackground(l.user.id),
             }}
           >
             {
@@ -109,6 +110,8 @@ const QuickLink = observer(() => {
                   title: '删除快速链接',
                   children: '确认删除快速链接吗?',
                   type: 'warning',
+                  okProps: { color: 'red' },
+                  cancelProps: { color: 'dark' },
                   onOk() {
                     quickLinkUseStore.axiosDeleteQuickLink(l.id);
                   },
