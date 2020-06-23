@@ -45,7 +45,7 @@ export default observer(() => {
         return false;
       } else {
         prompt('创建成功');
-        HeaderStore.setRecentItem(res);
+        // HeaderStore.setRecentItem(res);
         ProjectsProUseStore.axiosGetProjects();
         ProjectsProUseStore.checkCreate(organizationId);
         return true;
