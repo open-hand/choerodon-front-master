@@ -21,7 +21,7 @@ const ServiceList = observer((props) => {
 
   function goAppService(record) {
     const { projectId, projectName, id } = record.toData() || {};
-    const search = `?id=${projectId}&name=${projectName}&organizationId=${organizationId}&type=project`;
+    const search = `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`;
     history.push({
       pathname: '/devops/code-management',
       search,

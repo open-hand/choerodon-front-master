@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="312px" height="245px" viewBox="0 0 312 245" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+<svg width="312px" height="246px" viewBox="0 0 312 246" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>pic</title>
-    <desc>Created with Sketch.</desc>
     <defs>
         <linearGradient x1="66.6800403%" y1="100%" x2="66.6800403%" y2="0%" id="linearGradient-1">
             <stop stop-color="#EBEFFF" offset="0%"></stop>
             <stop stop-color="#FFFFFF" offset="100%"></stop>
         </linearGradient>
-        <linearGradient x1="6.0768289%" y1="52.8047091%" x2="100%" y2="50%" id="linearGradient-2">
-            <stop stop-color="#FFFFFF" stop-opacity="0.6" offset="0%"></stop>
-            <stop stop-color="#FFFFFF" stop-opacity="0.8" offset="100%"></stop>
+        <linearGradient x1="0%" y1="64.9697401%" x2="83.8697287%" y2="43.8726104%" id="linearGradient-2">
+            <stop stop-color="#FFFFFF" stop-opacity="0.4" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.777740353" offset="100%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.6" offset="100%"></stop>
         </linearGradient>
-        <linearGradient x1="40.3621801%" y1="34.6476839%" x2="78.0739066%" y2="66.0175488%" id="linearGradient-3">
+        <linearGradient x1="0%" y1="61.8715323%" x2="90.991236%" y2="43.9597546%" id="linearGradient-3">
+            <stop stop-color="#FFFFFF" stop-opacity="0.2" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.777740353" offset="100%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.6" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="40.3621801%" y1="34.6476839%" x2="78.0739066%" y2="66.0175488%" id="linearGradient-4">
             <stop stop-color="#FFD6DC" offset="0%"></stop>
             <stop stop-color="#F48590" offset="100%"></stop>
         </linearGradient>
-        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="82.6923077%" gradientTransform="translate(0.500000,0.500000),scale(1.000000,0.604651),rotate(90.000000),scale(1.000000,0.704139),translate(-0.500000,-0.500000)" id="radialGradient-4">
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="82.6923077%" gradientTransform="translate(0.500000,0.500000),scale(1.000000,0.604651),rotate(90.000000),scale(1.000000,0.704139),translate(-0.500000,-0.500000)" id="radialGradient-5">
             <stop stop-color="#FFFFFF" stop-opacity="0.2" offset="0%"></stop>
             <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
         </radialGradient>
-        <linearGradient x1="6.0768289%" y1="54.1595233%" x2="100%" y2="50%" id="linearGradient-5">
-            <stop stop-color="#FFFFFF" stop-opacity="0.6" offset="0%"></stop>
-            <stop stop-color="#FFFFFF" stop-opacity="0.8" offset="100%"></stop>
-        </linearGradient>
-        <linearGradient x1="0%" y1="50.7070743%" x2="100%" y2="50.1538626%" id="linearGradient-6">
-            <stop stop-color="#F5F5F5" offset="0%"></stop>
+        <linearGradient x1="31.8285483%" y1="49.1365672%" x2="100%" y2="50.4005818%" id="linearGradient-6">
+            <stop stop-color="#C7D0FF" offset="0%"></stop>
             <stop stop-color="#D4D9F6" offset="100%"></stop>
         </linearGradient>
         <linearGradient x1="89.1895556%" y1="51.6928643%" x2="0%" y2="48.6827697%" id="linearGradient-7">
@@ -34,15 +34,15 @@
         </linearGradient>
     </defs>
     <g id="打开项目" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.9">
-        <g id="个人工作台-normal" transform="translate(-1130.000000, -49.000000)">
+        <g id="个人工作台-空" transform="translate(-1130.000000, -49.000000)">
             <g id="pic" transform="translate(1130.000000, 49.000000)">
                 <rect id="矩形" fill="url(#linearGradient-1)" x="9.09494702e-13" y="0" width="312" height="245"></rect>
-                <path d="M58.9079994,165.870839 C61.1171678,164.668405 62.0562877,165.820486 70.4391738,163.812879 C72.8998898,163.223565 73.687392,158.721093 76.9356101,158.08462 C80.1832269,157.448264 80.1838283,160.630513 82.7824028,159.99404 C83.5371458,159.809179 86.5193875,159.333871 87.9795518,159.99404 C89.1166653,160.508151 90.1213928,162.539932 92.5270572,162.539932 C94.692536,162.539932 95.9918233,164.025037 96.424919,166.995245 L64.5923811,166.995245 C59.3300144,167.047264 57.4352204,166.672462 58.9079994,165.870839 Z" id="矩形" fill="url(#linearGradient-2)" transform="translate(77.424919, 162.500000) scale(-1, 1) translate(-77.424919, -162.500000) "></path>
+                <path d="M88.0774546,151.544135 C88.0774546,151.529379 88.0780493,151.514756 88.0780493,151.5 C88.0780493,143.491859 80.8826497,137 72.0066432,137 C65.4256173,137 59.7694233,140.569429 57.2841236,145.679019 C56.6536916,145.581091 56.0058633,145.529443 55.3445045,145.529443 C49.0791406,145.529443 44,150.111963 44,155.764722 C44,161.41748 49.0791406,166 55.3445045,166 L88.9643713,166 C93.4023745,166 97,162.754004 97,158.749933 C97,154.745862 93.4023745,151.5 88.9643713,151.5 C88.6646187,151.5 88.368732,151.515293 88.0774546,151.544135 Z" id="Fill-5" fill="url(#linearGradient-2)"></path>
+                <path d="M238.624256,161.703337 C237.980748,157.543093 234.410064,154.35 230.113281,154.35 C228.496855,154.35 226.943594,154.801723 225.596381,155.64427 C223.546803,152.165043 219.856969,150 215.757812,150 C209.425424,150 204.273438,155.203857 204.273438,161.6 C204.273438,161.639633 204.273438,161.680717 204.274873,161.72035 C200.205098,162.412773 197,165.99669 197,170.3 C197,175.09747 200.959334,179 205.708984,179 L237.291016,179 C242.040666,179 246,175.09747 246,170.3 C246,165.959957 242.743031,162.353323 238.624256,161.703337 Z" id="路径" fill="url(#linearGradient-3)"></path>
                 <g id="sun" transform="translate(99.000000, 149.389815)">
-                    <path d="M54,74.6101851 C83.5472341,74.6101851 107,83.6574192 107,54.1101851 C107,24.562951 83.0472341,0.610185122 53.5,0.610185122 C23.9527659,0.610185122 0,24.562951 0,54.1101851 C0,83.6574192 24.4527659,74.6101851 54,74.6101851 Z" id="椭圆形" fill="url(#linearGradient-3)"></path>
-                    <ellipse id="椭圆形" fill="url(#radialGradient-4)" transform="translate(39.557799, 21.500000) rotate(67.000000) translate(-39.557799, -21.500000) " cx="39.5577987" cy="21.5" rx="13" ry="21.5"></ellipse>
+                    <path d="M54,74.6101851 C83.5472341,74.6101851 107,83.6574192 107,54.1101851 C107,24.562951 83.0472341,0.610185122 53.5,0.610185122 C23.9527659,0.610185122 0,24.562951 0,54.1101851 C0,83.6574192 24.4527659,74.6101851 54,74.6101851 Z" id="椭圆形" fill="url(#linearGradient-4)"></path>
+                    <ellipse id="椭圆形" fill="url(#radialGradient-5)" transform="translate(39.557799, 21.500000) rotate(67.000000) translate(-39.557799, -21.500000) " cx="39.5577987" cy="21.5" rx="13" ry="21.5"></ellipse>
                 </g>
-                <path d="M184,179 C178.730785,181.769512 180.397452,182.102845 189,180 C192.787794,179.074095 194,172 199,171 C203.999074,170.000185 204,175 208,174 C209.16178,173.709555 213.752361,172.962771 216,174 C217.750365,174.80775 219.296947,178 223,178 C226.333333,178 228.333333,180.333333 229,185 L180,185 L184,179 Z" id="矩形" fill="url(#linearGradient-5)"></path>
                 <g id="moun" transform="translate(0.000000, 187.590909)">
                     <path d="M110,16.4090909 C147,16.4090909 201,28.4090909 248,28.4090909 C279.333333,28.4090909 300.666667,24.4090909 312,16.4090909 L312,57.4090909 L0,57.4090909 C34,30.0757576 70.6666667,16.4090909 110,16.4090909 Z" id="矩形" fill="url(#linearGradient-6)"></path>
                     <path d="M9.09494702e-13,4.40909091 C40,20.4090909 79.6666667,28.4090909 119,28.4090909 C156,28.4090909 194.607322,5.4146545 248,0.409090909 C269.333333,-1.59090909 290.666667,3.74242424 312,16.4090909 L312,57.4090909 L9.09494702e-13,57.4090909 L9.09494702e-13,4.40909091 Z" id="矩形" fill="url(#linearGradient-7)"></path>

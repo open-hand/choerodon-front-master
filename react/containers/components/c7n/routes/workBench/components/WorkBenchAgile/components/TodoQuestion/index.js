@@ -64,7 +64,7 @@ const TodoQuestion = observer(() => {
     const { id: projectId, name: projectName } = projectVO || {};
     history.push({
       pathname: '/agile/scrumboard',
-      search: `?id=${projectId}&name=${projectName}&organizationId=${organizationId}&type=project`,
+      search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`,
       state: {
         issueId,
       },

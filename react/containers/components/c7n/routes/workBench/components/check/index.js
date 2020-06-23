@@ -17,7 +17,7 @@ const StarTargetPro = observer(() => {
   function linkToDetail(record) {
     const { type, projectId, projectName, pipelineRecordId, mergeRequestUrl } = record.toData() || {};
     if (type === 'pipeline') {
-      const search = `?id=${projectId}&name=${projectName}&organizationId=${organizationId}&type=project`;
+      const search = `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`;
       history.push(`/devops/deployment-operation${search}&pipelineRecordId=${pipelineRecordId}`);
     } else if (type === 'merge_request') {
       window.open(mergeRequestUrl);

@@ -31,7 +31,7 @@ const EnvList = observer(() => {
   function linkToEnv({ envId, projectName, realProjectId }) {
     history.push({
       pathname: '/devops/resource',
-      search: `?id=${realProjectId}&name=${projectName}&organizationId=${organizationId}&type=project`,
+      search: `?id=${realProjectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`,
       state: {
         envId,
         viewType: 'instance',
