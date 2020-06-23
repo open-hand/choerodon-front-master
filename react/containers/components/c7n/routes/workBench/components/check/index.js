@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Icon } from 'choerodon-ui/pro';
+import {Icon, Tooltip} from 'choerodon-ui/pro';
 import { useWorkBenchStore } from '../../stores';
 import LoadingBar from '../../../../tools/loading-bar';
 import EmptyPage from '../empty-page';
@@ -55,7 +55,9 @@ const StarTargetPro = observer(() => {
                 )}
               </div>
             ) : null}
-            <span className="c7n-workbench-check-item-des-text">{content}</span>
+            <Tooltip title={content} placement="top">
+              <span className="c7n-workbench-check-item-des-text">{content}</span>
+            </Tooltip>
           </div>
         </div>
         <div className="c7n-workbench-check-item-btn" onClick={() => linkToDetail(record)}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'choerodon-ui/pro';
+import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import { useStarTargetPro } from "./stores";
 import { useWorkBenchStore } from "../../stores";
@@ -100,9 +100,13 @@ const StarTargetPro = observer(() => {
                 >
                   {!s.imageUrl && s.name.slice(0, 1)}
                 </div>
-                <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-text">{s.name}</p>
+                <Tooltip title={`${s.name} (${s.code})`} placement="top">
+                  <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-text">{s.name}&nbsp;({s.code})</p>
+                </Tooltip>
                 <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,0.65)' }} className="c7n-starTargetPro-proContainer-items-project">
-                  <span className="c7n-starTargetPro-proContainer-items-project-categories">{s.categories && s.categories[0].name}</span>
+                  <Tooltip title={s.categories && s.categories[0].name} placement="top">
+                    <span className="c7n-starTargetPro-proContainer-items-project-categories">{s.categories && s.categories[0].name}</span>
+                  </Tooltip>
                   <span
                     className="c7n-starTargetPro-proContainer-items-project-goNext"
                     style={{
