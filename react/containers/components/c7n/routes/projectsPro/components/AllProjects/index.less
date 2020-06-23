@@ -1,7 +1,6 @@
 .allProjects {
   padding: 16px 24px;
   flex: 1;
-  overflow: auto;
   p {
     margin: 0;
   }
@@ -37,6 +36,9 @@
     }
   }
   &-content {
+    height: calc(100% - 46px);
+    overflow-y: auto;
+    overflow-x: hidden;
     &-item {
       cursor: pointer;
       padding: 9px 20px 11px 20px;

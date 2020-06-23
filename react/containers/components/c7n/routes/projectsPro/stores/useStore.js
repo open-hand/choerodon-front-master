@@ -50,7 +50,7 @@ export default function useStore(AppState, history) {
         }));
         this.setPagination({
           page: res.pageNum,
-          size: 10,
+          size: res.size,
           total: res.totalElements,
         })
       })
