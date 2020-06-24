@@ -11,7 +11,7 @@ export default function useStore(AppState) {
       this.starProjects = data;
     },
     axiosGetStarProjects() {
-      axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/star_projects`).then((res) => {
+      axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/star_projects?size=6`).then((res) => {
         this.setStarProjects(res);
       })
     }
