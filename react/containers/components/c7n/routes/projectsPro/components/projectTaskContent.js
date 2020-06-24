@@ -24,7 +24,7 @@ export default ({ data, alltrue }) => {
               backgroundImage: data.imageUrl ? `url("${data.imageUrl}")` : getRandomBackground(data.id),
             }}
           >
-            {!data.imageUrl && data.name.slice(0, 1)}
+            {!data.imageUrl && data.name && data.name.slice(0, 1)}
           </div>
           <div className="starProjects-items-content-center">
             <p className="starProjects-items-content-center-title">{data.name}</p>
@@ -70,7 +70,7 @@ export default ({ data, alltrue }) => {
                   backgroundImage: `url(${data.createUserImageUrl})`,
                 }}
               >
-                {!data.createUserImageUrl && data.createUserName.slice(0, 1)}
+                {!data.createUserImageUrl && data.createUserName && data.createUserName.slice(0, 1)}
               </div>
             </Tooltip>
             <p
