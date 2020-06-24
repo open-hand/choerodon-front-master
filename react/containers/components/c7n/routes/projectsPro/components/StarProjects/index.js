@@ -20,7 +20,7 @@ export default observer(() => {
   // }]);
 
   const renderProjects = useCallback(() => {
-    return ProjectsProUseStore.getStarProjectsList.slice(0, 6).map(p => (
+    return ProjectsProUseStore.getStarProjectsList.map(p => (
       <div onClick={() => ProjectsProUseStore.handleClickProject(p)} className="starProjects-items">
         <div className="starProjects-items-topborder"></div>
         <ProjectTaskContent alltrue data={p} />
@@ -33,9 +33,7 @@ export default observer(() => {
       <div className="starProjects-title-wrap">
         <p className="starProjects-title">星标项目
           <span>{
-            ProjectsProUseStore.getStarProjectsList.length > 6
-              ? 6
-              :ProjectsProUseStore.getStarProjectsList.length
+            ProjectsProUseStore.getStarProjectsList.length || 0
           }</span>
         </p>
       </div>

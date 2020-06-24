@@ -87,7 +87,7 @@ export default observer(() => {
               backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : getRandomBackground(p.id),
             }}
           >
-            {!p.imageUrl && p.name.slice(0, 1)}
+            {!p.imageUrl && p.name && p.name.slice(0, 1)}
           </div>
           <div className="allProjects-content-item-right">
             <div className="allProjects-content-item-right-top">
@@ -139,7 +139,7 @@ export default observer(() => {
                       backgroundImage: `url(${p.createUserImageUrl})`,
                     }}
                   >
-                    {!p.createUserImageUrl && p.createUserName.slice(0, 1)}
+                    {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
                   </span>
                 </Tooltip>
                 <p>{p.creationDate.split(' ')[0]} 创建</p>

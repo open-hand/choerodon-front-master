@@ -100,7 +100,7 @@ const StarTargetPro = observer(() => {
                     backgroundImage: s.imageUrl ? `url("${s.imageUrl}")` : getRandomBackground(s.id),
                   }}
                 >
-                  {!s.imageUrl && s.name.slice(0, 1)}
+                  {!s.imageUrl && s.name && s.name.slice(0, 1)}
                 </div>
                 <Tooltip title={`${s.name} (${s.code})`} placement="top">
                   <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-text">{s.name}&nbsp;({s.code})</p>
@@ -135,7 +135,7 @@ const StarTargetPro = observer(() => {
                             backgroundImage: `url(${s.createUserImageUrl})`
                           }}
                         >
-                          {!s.createUserImageUrl && s.createUserName.slice(0, 1)}
+                          {!s.createUserImageUrl && s.createUserName && s.createUserName.slice(0, 1)}
                         </div>
                       </Tooltip>
                       <div className="c7n-starTargetPro-proContainer-items-extra-text">

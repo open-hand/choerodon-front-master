@@ -70,7 +70,7 @@ const QuickLink = observer(() => {
             }}
           >
             {
-              !l.user.imageUrl && l.user.realName.slice(0, 1)
+              !l.user.imageUrl && l.user.realName && l.user.realName.slice(0, 1)
             }
           </div>
           <div className="c7n-quickLink-linkItem-right-content">

@@ -67,7 +67,7 @@ export default class CommonMenu extends Component {
             return false;
           });
         }
-        if (MenuStore.activeMenu && this.props.location.pathname !== '/') {
+        if (MenuStore.activeMenu && MenuStore.activeMenu.route === this.props.location.pathname && this.props.location.pathname !== '/') {
           // eslint-disable-next-line no-underscore-dangle
           document.getElementsByTagName('title')[0].innerText = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${AppState.menuType.type !== 'site' ? `${AppState.menuType.name} – ` : ''} ${AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle}`;
         } else {
