@@ -3,6 +3,9 @@ import { observer } from 'mobx-react-lite';
 import {DataSet, Form, Select, SelectBox, TextField, Tooltip} from "choerodon-ui/pro";
 import addLinkDataSet from './stores/addLinkDataSet';
 import { Icon } from "choerodon-ui";
+import axios from '@/containers/components/c7n/tools/axios';
+
+let size = 10;
 
 const { Option } = Select;
 
@@ -13,7 +16,20 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore })
 
   const renderer = ({ text }) => {
     return (text === '加载更多' ? (
-      <a>{text}</a>
+      <a onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        size += 10;
+        axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=${size}`).then((res) => {
+          if (res.content.length % 10 === 0) {
+            res.content.push({
+              id: 'more',
+              name: '加载更多',
+            });
+          }
+          dataSet.getField('projectId').props.lookup = res.content;
+        })
+      }}>{text}</a>
     ) : text)
   };
 
@@ -66,6 +82,7 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore })
         </Tooltip>
       </p>
       <SelectBox
+        className="addQuickLinkForm-scope"
         onChange={(data) => setIsProject(data === 'project')}
         name="scope"
       >

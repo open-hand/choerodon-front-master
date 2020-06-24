@@ -36,6 +36,9 @@
     }
   }
   &-content {
+    height: calc(100% - 46px);
+    overflow-y: auto;
+    overflow-x: hidden;
     &-item {
       cursor: pointer;
       padding: 9px 20px 11px 20px;
@@ -55,6 +58,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        background-size: 100% 100%;
       }
       &-right {
         width: 100%;
@@ -87,8 +91,11 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          p {
-            min-width: 25%;
+          p:first-child {
+            min-width: 40%;
+          }
+          p:not(:first-child) {
+            min-width: 20%;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -158,6 +165,10 @@
               border-radius: 50%;
               margin-right: 7px;
               flex-shrink: 0;
+              background-color: #c5cbe8;
+              line-height: 16px;
+              color: #3f51b5;
+              text-align: center;
             }
           }
         }

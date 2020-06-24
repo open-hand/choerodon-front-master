@@ -13,7 +13,7 @@ const ProjectsPro = asyncRouter(() => import('../routes/projectsPro'));
 const InnerIndex = ({ match, AutoRouter }) => (
   <div>
     <Switch>
-      <Route exact path={`${match.url}projects`} component={Projects} />
+      <Route exact path={`${match.url}projects`} component={ProjectsPro} />
       <Route exact path={`${match.url}applications`} component={Applications} />
       <Route exact path={`${match.url}charts`} component={Charts} />
       <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />

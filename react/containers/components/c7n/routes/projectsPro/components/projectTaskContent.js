@@ -1,5 +1,6 @@
 import React from 'react';
 import {Icon} from "choerodon-ui";
+import { Tooltip } from "choerodon-ui/pro";
 import TimePopover from "@/containers/components/c7n/routes/workBench/components/time-popover";
 import { useProjectsProStore } from "../stores";
 import { getRandomBackground } from "@/containers/components/c7n/util";
@@ -23,12 +24,14 @@ export default ({ data, alltrue }) => {
               backgroundImage: data.imageUrl ? `url("${data.imageUrl}")` : getRandomBackground(data.id),
             }}
           >
-            {data.name.slice(0, 1)}
+            {!data.imageUrl && data.name.slice(0, 1)}
           </div>
           <div className="starProjects-items-content-center">
             <p className="starProjects-items-content-center-title">{data.name}</p>
-            <div style={{ display: 'flex', alignItems: 'center', marginTop: 7 }}>
-              <p className="starProjects-items-content-center-code">{data.code && data.code.toUpperCase()}</p>
+            <div style={{ display: 'flex', alignItems: 'center', marginTop: 5 }}>
+              <Tooltip title={data.code && data.code.toUpperCase()}>
+                <p className="starProjects-items-content-center-code">{data.code && data.code.toUpperCase()}</p>
+              </Tooltip>
               <p className="starProjects-items-content-center-status">{data.enabled ? '启用' : '未启用'}</p>
             </div>
           </div>
@@ -60,13 +63,25 @@ export default ({ data, alltrue }) => {
             }}
           />
           <div className="starProjects-items-content-right-down">
-            <div
-              className="starProjects-items-content-right-down-avatur"
+            <Tooltip title={data.createUserName} placement="top">
+              <div
+                className="starProjects-items-content-right-down-avatur"
+                style={{
+                  backgroundImage: `url(${data.createUserImageUrl})`,
+                }}
+              >
+                {!data.createUserImageUrl && data.createUserName.slice(0, 1)}
+              </div>
+            </Tooltip>
+            <p
               style={{
-                backgroundImage: `url(${data.createUserImageUrl})`
+                marginTop: 7,
+                fontSize: '12px',
+                fontFamily: 'PingFangSC-Regular,PingFang SC',
+                fontWeight: 400,
+                color: 'rgba(58,52,95,0.65)',
               }}
-            />
-            <p style={{ marginTop: 7 }}>
+            >
               <TimePopover datetime={data.creationDate} />创建
             </p>
           </div>

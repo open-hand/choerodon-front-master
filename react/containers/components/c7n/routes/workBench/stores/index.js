@@ -39,8 +39,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     }
     auditDs.query();
     appServiceDs.query();
-    // questionDs.query();
-  }, [workBenchUseStore.getActiveStarProject]);
+  }, [workBenchUseStore.getActiveStarProject, organizationId]);
 
   const value = {
     ...props,

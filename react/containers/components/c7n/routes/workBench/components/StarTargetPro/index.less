@@ -1,6 +1,6 @@
 .c7n-starTargetPro {
-  height: 226px;
-  margin-bottom: 20px;
+  //height: 226px;
+  margin-bottom: .2rem;
   display: flex;
   flex-direction: column;
   &-name {
@@ -61,6 +61,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        background-size: 100% 100%;
       }
       &-text {
         font-size:13px;
@@ -111,7 +112,10 @@
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background: gainsboro;
+          background: #fff;
+          color: #3f51b5;
+          text-align: center;
+          line-height: 24px;
           background-size: 100% 100%;
         }
         &-text {
@@ -137,6 +141,7 @@
     img {
       width: 184px;
       height: 146px;
+      margin: .2rem 0;
     }
     &-emptyText {
       margin-left: 70px;
@@ -145,12 +150,14 @@
         font-family:PingFangSC-Regular,PingFang SC;
         font-weight:400;
         color:rgba(58,52,95,0.65);
+        margin-bottom: .09rem;
       }
-      &-c7n-starTargetPro-content-emptyText-emptySuggest {
+      &-emptySuggest {
         font-size:20px;
         font-family:PingFangSC-Regular,PingFang SC;
         font-weight:400;
         color:rgba(58,52,95,1);
+        margin-bottom: .2rem;
       }
     }
   }

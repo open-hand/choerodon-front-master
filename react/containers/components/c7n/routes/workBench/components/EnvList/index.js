@@ -26,12 +26,12 @@ const EnvList = observer(() => {
       realEnv = env.filter((item) => item.organizationId === organizationId);
     }
     setEnvList(realEnv);
-  }, [workBenchUseStore.getActiveStarProject]);
+  }, [workBenchUseStore.getActiveStarProject, organizationId]);
 
   function linkToEnv({ envId, projectName, realProjectId }) {
     history.push({
       pathname: '/devops/resource',
-      search: `?id=${realProjectId}&name=${projectName}&organizationId=${organizationId}&type=project`,
+      search: `?id=${realProjectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`,
       state: {
         envId,
         viewType: 'instance',

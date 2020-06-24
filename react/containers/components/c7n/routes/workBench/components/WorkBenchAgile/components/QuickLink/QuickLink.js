@@ -16,6 +16,11 @@ const QuickLink = observer(() => {
   const {
     AppState,
     quickLinkUseStore,
+    AppState: {
+      currentMenuType: {
+        organizationId,
+      },
+    },
   } = useQuickLinkStore();
 
   const {
@@ -32,7 +37,7 @@ const QuickLink = observer(() => {
 
   useEffect(() => {
     init();
-  }, [workBenchUseStore.getActiveStarProject]);
+  }, [workBenchUseStore.getActiveStarProject, organizationId]);
 
   const handleAdd = (data) => {
     Modal.open({

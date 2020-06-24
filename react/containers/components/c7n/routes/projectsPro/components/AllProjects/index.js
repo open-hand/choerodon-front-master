@@ -45,7 +45,7 @@ export default observer(() => {
         return false;
       } else {
         prompt('创建成功');
-        HeaderStore.setRecentItem(res);
+        // HeaderStore.setRecentItem(res);
         ProjectsProUseStore.axiosGetProjects();
         ProjectsProUseStore.checkCreate(organizationId);
         return true;
@@ -87,7 +87,7 @@ export default observer(() => {
               backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : getRandomBackground(p.id),
             }}
           >
-            {p.name.slice(0, 1)}
+            {!p.imageUrl && p.name.slice(0, 1)}
           </div>
           <div className="allProjects-content-item-right">
             <div className="allProjects-content-item-right-top">
@@ -110,7 +110,9 @@ export default observer(() => {
               />
             </div>
             <div className="allProjects-content-item-right-down">
-              <p className="allProjects-content-item-right-down-pro">{p.name}</p>
+              <Tooltip title={p.name} placement="bottomLeft">
+                <p className="allProjects-content-item-right-down-pro">{p.name}</p>
+              </Tooltip>
               <p className="allProjects-content-item-right-down-text1">
               <span>
                 <Icon type="project_line" />
@@ -130,11 +132,16 @@ export default observer(() => {
                 }
               </p>
               <p className="allProjects-content-item-right-down-time">
-                <span
-                  style={{
-                    backgroundImage: `url(${p.createUserImageUrl})`,
-                  }}
-                />
+                <Tooltip title={p.createUserName} placement="top">
+                  <span
+                    className="allProjects-content-item-right-down-avatar"
+                    style={{
+                      backgroundImage: `url(${p.createUserImageUrl})`,
+                    }}
+                  >
+                    {!p.createUserImageUrl && p.createUserName.slice(0, 1)}
+                  </span>
+                </Tooltip>
                 <p>{p.creationDate.split(' ')[0]} 创建</p>
               </p>
             </div>
@@ -177,6 +184,9 @@ export default observer(() => {
                 color="primary"
                 disabled={!getCanCreate}
                 onClick={handleAddProject}
+                style={{
+                  height: 30,
+                }}
               >创建项目</Button>
             </Tooltip>
           </Permission>
@@ -206,6 +216,7 @@ export default observer(() => {
           onChange={handleChangePagination}
           page={ProjectsProUseStore.getPagination.page}
           total={ProjectsProUseStore.getPagination.total}
+          pageSize={ProjectsProUseStore.getPagination.size}
           style={{
             textAlign: 'right',
             marginTop: 15,

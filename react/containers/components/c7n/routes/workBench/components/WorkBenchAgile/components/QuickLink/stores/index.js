@@ -15,16 +15,12 @@ export function useQuickLinkStore() {
 export const StoreProvider = inject('AppState')(observer((props) => {
   const {
     children,
-    AppState: {
-      currentMenuType: {
-        organizationId,
-      }
-    },
+    AppState,
   } = props;
 
   const value = {
     ...props,
-    quickLinkUseStore: useStore({organizationId}),
+    quickLinkUseStore: useStore(AppState),
   };
 
   return (

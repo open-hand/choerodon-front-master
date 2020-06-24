@@ -50,7 +50,7 @@ const TodoQuestion = observer(() => {
     questionDs.removeAll();
     changePage(1);
     loadData();
-  }, [workBenchUseStore.getActiveStarProject]);
+  }, [workBenchUseStore.getActiveStarProject, organizationId]);
   
   function loadMoreData() {
     const newPage = page + 1;
@@ -64,7 +64,7 @@ const TodoQuestion = observer(() => {
     const { id: projectId, name: projectName } = projectVO || {};
     history.push({
       pathname: '/agile/scrumboard',
-      search: `?id=${projectId}&name=${projectName}&organizationId=${organizationId}&type=project`,
+      search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`,
       state: {
         issueId,
       },
@@ -138,7 +138,13 @@ const TodoQuestion = observer(() => {
             <span className="c7n-todoQuestion-issueContent-issueItem-main-description">{summary}</span>
           </Tooltip>
           {getStatus(statusVO)}
-          <span className="c7n-todoQuestion-issueContent-issueItem-main-priority">
+          <span
+            className="c7n-todoQuestion-issueContent-issueItem-main-priority"
+            style={{
+              backgroundColor: `${priorityVO ? priorityVO.colour : '#FFFFFF'}1F`,
+              color: priorityVO ? priorityVO.colour : '#FFFFFF',
+            }}
+          >
             {priorityVO ? priorityVO.name : '无'}
           </span>
         </div>

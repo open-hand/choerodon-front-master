@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'choerodon-ui/pro';
+import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import { useStarTargetPro } from "./stores";
 import { useWorkBenchStore } from "../../stores";
@@ -28,18 +28,20 @@ const init = [{
 
 const StarTargetPro = observer(() => {
   const {
-    starTargetProUseStore
+    starTargetProUseStore,
   } = useStarTargetPro();
 
   const {
     workBenchUseStore,
     history,
     location: { search },
+    AppState: { currentMenuType: { organizationId } },
   } = useWorkBenchStore();
 
   useEffect(() => {
+    workBenchUseStore.setActiveStarProject(null);
     starTargetProUseStore.axiosGetStarProjects();
-  }, []);
+  }, [organizationId]);
 
   const handleClickItem = (s) => {
     const origin = starTargetProUseStore.getStarProjects;
@@ -59,13 +61,13 @@ const StarTargetPro = observer(() => {
     if (starProjects.length == 0) {
       return (
         <div className="c7n-starTargetPro-content">
-          <img src={emptyImg} alt="empty"/>,
+          <img src={emptyImg} alt="empty"/>
           <div className="c7n-starTargetPro-content-emptyText">
             <p className="c7n-starTargetPro-content-emptyText-emptyP">暂无星标</p>
             <p className="c7n-starTargetPro-content-emptyText-emptySuggest">您还没有星标项目，请前往"项目管理"页面进行添加</p>
             <Button onClick={() => {
               history.push({
-                pathname: '/projectsPro',
+                pathname: '/projects',
                 search,
               })
             }} funcType="raised" color="primary">转到项目管理</Button>
@@ -100,9 +102,13 @@ const StarTargetPro = observer(() => {
                 >
                   {!s.imageUrl && s.name.slice(0, 1)}
                 </div>
-                <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-text">{s.name}</p>
+                <Tooltip title={`${s.name} (${s.code})`} placement="top">
+                  <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-text">{s.name}&nbsp;({s.code})</p>
+                </Tooltip>
                 <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,0.65)' }} className="c7n-starTargetPro-proContainer-items-project">
-                  <span className="c7n-starTargetPro-proContainer-items-project-categories">{s.categories && s.categories[0].name}</span>
+                  <Tooltip title={s.categories && s.categories[0].name} placement="top">
+                    <span className="c7n-starTargetPro-proContainer-items-project-categories">{s.categories && s.categories[0].name}</span>
+                  </Tooltip>
                   <span
                     className="c7n-starTargetPro-proContainer-items-project-goNext"
                     style={{
@@ -122,12 +128,16 @@ const StarTargetPro = observer(() => {
                 {
                   s.active && (
                     <div className="c7n-starTargetPro-proContainer-items-extra">
-                      <div
-                        className="c7n-starTargetPro-proContainer-items-extra-icon"
-                        style={{
-                          backgroundImage: `url(${s.createUserImageUrl})`
-                        }}
-                      />
+                      <Tooltip title={s.createUserName} placement="top">
+                        <div
+                          className="c7n-starTargetPro-proContainer-items-extra-icon"
+                          style={{
+                            backgroundImage: `url(${s.createUserImageUrl})`
+                          }}
+                        >
+                          {!s.createUserImageUrl && s.createUserName.slice(0, 1)}
+                        </div>
+                      </Tooltip>
                       <div className="c7n-starTargetPro-proContainer-items-extra-text">
                         <p>创建于</p>
                         <p>{s.creationDate && s.creationDate.split(' ')[0]}</p>
