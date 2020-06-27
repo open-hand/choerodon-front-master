@@ -2,15 +2,16 @@ import React, { useEffect } from 'react';
 import StarProjects from './components/StarProjects';
 import AllProjects from './components/AllProjects';
 import RecentProjects from './components/RecentProjects';
-import { useProjectsProStore } from "./stores";
+import { useProjectsProStore } from './stores';
+
 import './index.less';
 
 export default () => {
   const {
     ProjectsProUseStore,
     AppState: {
-      currentMenuType: {organizationId }
-    }
+      currentMenuType: { organizationId },
+    },
   } = useProjectsProStore();
 
   useEffect(() => {
@@ -25,5 +26,5 @@ export default () => {
       <AllProjects />
       <RecentProjects />
     </div>
-  )
-}
+  );
+};
