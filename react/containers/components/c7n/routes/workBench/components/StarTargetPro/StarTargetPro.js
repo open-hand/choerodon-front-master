@@ -39,7 +39,7 @@ const StarTargetPro = observer(() => {
   } = useWorkBenchStore();
 
   useEffect(() => {
-    workBenchUseStore.setActiveStarProject(null);
+    workBenchUseStore.setActiveStarProject(undefined);
     starTargetProUseStore.axiosGetStarProjects();
   }, [organizationId]);
 
