@@ -21,7 +21,17 @@ export default observer(() => {
 
   const renderProjects = useCallback(() => {
     return ProjectsProUseStore.getStarProjectsList.map(p => (
-      <div onClick={() => ProjectsProUseStore.handleClickProject(p)} className="starProjects-items">
+      <div
+        onClick={() => {
+         if (p.enabled) {
+           ProjectsProUseStore.handleClickProject(p)
+         }
+        }}
+        className="starProjects-items"
+        style={{
+          cursor: p.enabled ? 'pointer' : 'not-allowed',
+        }}
+      >
         <div className="starProjects-items-topborder"></div>
         <ProjectTaskContent alltrue data={p} />
       </div>

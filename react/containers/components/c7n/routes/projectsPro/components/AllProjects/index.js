@@ -219,7 +219,17 @@ export default observer(() => {
   const renderProjects = useCallback(() => {
     const projects = ProjectsProUseStore.getAllProjects;
     return projects.map(p => (
-      <div onClick={() => handleClickProject(p)} className="allProjects-content-item">
+      <div
+        onClick={() => {
+          if (p.enabled) {
+            handleClickProject(p)
+          }
+        }}
+        className="allProjects-content-item"
+        style={{
+          cursor: p.enabled ? 'pointer' : 'not-allowed',
+        }}
+      >
         <div
           className="allProjects-content-item-icon"
           style={{
