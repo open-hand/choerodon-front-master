@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import NewUserTrackTable from '../Test';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
-import DateTable from '../DateTable';
+import DateTable from './components/DateTable';
 const { Option } = Select;
 const Workload = memo(({
   userNumber = 100,

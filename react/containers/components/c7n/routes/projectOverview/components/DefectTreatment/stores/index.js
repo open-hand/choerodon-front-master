@@ -9,7 +9,7 @@ import { useProjectOverviewStore } from '../../../stores';
 
 const Store = createContext();
 
-export function useBurnDownChartStore() {
+export function useDefectTreatmentStore() {
   return useContext(Store);
 }
 
@@ -19,10 +19,15 @@ export const StoreProvider = inject('AppState')(observer((props) => {
     AppState: { currentMenuType: { organizationId, projectId } },
   } = props;
   const { projectOverviewStore } = useProjectOverviewStore();
-  const burnDownChartStore = useStore(organizationId, projectId);
+  const defectTreatmentStore = useStore(organizationId, projectId);
+  useEffect(()=>{
+    if(projectOverviewStore.getStaredSprint){
+      defectTreatmentStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId);
+    }
+  },[projectOverviewStore.getStaredSprint])
   const value = {
     ...props,
-    burnDownChartStore,
+    defectTreatmentStore,
   };
   return (
     <Store.Provider value={value}>

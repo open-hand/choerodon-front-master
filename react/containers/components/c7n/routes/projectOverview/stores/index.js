@@ -3,8 +3,9 @@ import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
-import DelayTaskDataSet from './DelayTaskDataSet';
+import SprintCountDataSet from './SprintCountDataSet';
 import useStore from './useStore';
+import SprintWaterWaveDataSet from './SprintWaterWaveDataSet';
 const Store = createContext();
 
 export function useProjectOverviewStore() {
@@ -18,8 +19,10 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     history,
   } = props;
   console.log(props)
-  const delayTaskDataSet = useMemo(() => new DataSet(DelayTaskDataSet({ organizationId })), [organizationId]);
   const projectOverviewStore = useStore(projectId);
+  const sprintCountDataSet = useMemo(() => new DataSet(SprintCountDataSet({ projectId, sprint: projectOverviewStore.getStaredSprint })), [projectId, projectOverviewStore.getStaredSprint]);
+  const sprintWaterWaveDataSet = useMemo(() => new DataSet(SprintWaterWaveDataSet({ projectId, sprint: projectOverviewStore.getStaredSprint })), [projectId, projectOverviewStore.getStaredSprint]);
+
   useEffect(() => {
     projectOverviewStore.loadAllSprint().then(
       sprints => {
@@ -30,11 +33,18 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
       }
     )
   }, []);
-
+  // 
+  useEffect(()=>{
+    if(projectOverviewStore.getStaredSprint){
+      sprintCountDataSet.query();
+      sprintWaterWaveDataSet.query();
+    }
+  },[projectOverviewStore.getStaredSprint]);
   const value = {
     ...props,
-    delayTaskDataSet,
+    sprintCountDataSet,
     projectOverviewStore,
+    sprintWaterWaveDataSet,
   };
 
   return (

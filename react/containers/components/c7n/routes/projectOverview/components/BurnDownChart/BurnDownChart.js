@@ -23,7 +23,7 @@ const BurnDownChart = observer(({
   const [markArea, setMarkArea] = useState([]);
   const [exportAxis, setExportAxis] = useState([]);
   const [selectValue, setSelectValue] = useState('remainingEstimatedTime');
-  const [checkedValue, setCheckedValue] = useState('true');
+  const [checkedValue, setCheckedValue] = useState(true);
   function getBetweenDateStr(start, end) {
     // 是否显示非工作日
     const range = moment.range(start, end);
@@ -121,7 +121,6 @@ const BurnDownChart = observer(({
     });
   }
   useEffect(() => {
-    console.log('getStaredSprint', projectOverviewStore.getStaredSprint)
     if (projectOverviewStore.getStaredSprint) {
       burnDownChartStore.axiosGetRestDays(projectOverviewStore.getStaredSprint.sprintId).then(res => {
         burnDownChartStore.setRestDays(res.map(date => moment(date).format('YYYY-MM-DD')));
@@ -129,6 +128,12 @@ const BurnDownChart = observer(({
       });
     }
   }, [projectOverviewStore.getStaredSprint]);
+  useEffect(() => {
+    if (projectOverviewStore.getStaredSprint) {
+      loadChartCoordinate();
+    }
+
+  }, [selectValue,checkedValue]);
   function renderChartTitle() {
     let result = '';
     if (selectValue === 'remainingEstimatedTime') {
@@ -142,10 +147,7 @@ const BurnDownChart = observer(({
     }
     return result;
   }
-  useEffect(() => {
-    console.log('gogogo');
 
-  }, [selectValue])
   function getOption() {
     return {
       tooltip: {
@@ -333,7 +335,8 @@ const BurnDownChart = observer(({
       </Select>
       <CheckBox
         style={{ marginLeft: 24 }}
-        value={checkedValue}
+        // value={checkedValue}
+        checked={checkedValue}
         onChange={setCheckedValue}
       >
         显示非工作日
