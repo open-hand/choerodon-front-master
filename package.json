@@ -32,6 +32,10 @@
     "choerodon-ui": "^0.8.62"
   },
   "dependencies": {
+    "echarts": "^4.8.0",
+    "echarts-for-react": "^2.0.16",
+    "moment": "^2.27.0",
+    "moment-range": "^4.0.2",
     "react-onclickoutside": "^6.8.0"
   }
 }
