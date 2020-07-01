@@ -1,0 +1,55 @@
+.c7n-project-overview-service-info{
+
+  display: flex;
+  &-content {
+    padding-left: 2%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    i.icon {
+      width: .6rem;
+      height: .6rem;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 1.7;
+      font-size: 0.34rem;
+    }
+    &-icon-service {
+      background: rgba(104, 135, 232, 0.12);
+      color: rgba(104, 135, 232, 1);
+    }
+    &-icon-env {
+      color: rgba(255, 177, 0, 1);
+      background: rgba(255, 177, 0, 0.12);
+    }
+    &-group {
+      margin-left: 9%;
+      display: flex;
+      flex: 1;
+      &-item {
+        flex: 1;
+        span {
+          display: block;
+          text-align: center;
+          &:first-of-type {
+            color: #3a345fff;
+            font-weight: 500;
+            font-size: .32rem;
+          }
+          &:nth-of-type(2) {
+            font-size: .13rem;
+            color: #3a345fa6;
+            line-height: .12rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+      .c7n-overview-content-number_group-item + .c7n-overview-content-number_group-item {
+        margin-left: .24rem;
+      }
+    }
+  }
+}
