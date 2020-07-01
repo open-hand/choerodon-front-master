@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Button, Icon } from 'choerodon-ui';
-import { Form, TextField, Select, Tooltip } from 'choerodon-ui/pro';
+import { Form, TextField, Select, Tooltip, SelectBox } from 'choerodon-ui/pro';
 import { fileServer } from '@/utils';
 import AvatarUploader from './avatarUploader';
 import './form.less';
+
+const { Option } = Select;
 
 export default function FormView({ context }) {
   const { dataSet, AppState, intl } = context;
@@ -85,6 +87,10 @@ export default function FormView({ context }) {
           dataSet.current.status !== 'add' && [
             <TextField name="creationDate" disabled />,
             <TextField name="createUserName" disabled />,
+            <SelectBox name="enabled">
+              <Option value={true}>启用</Option>
+              <Option value={false}>停用</Option>
+            </SelectBox>,
           ]
         }
       </Form>

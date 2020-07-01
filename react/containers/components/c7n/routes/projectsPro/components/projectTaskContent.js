@@ -32,7 +32,9 @@ export default ({ data, alltrue }) => {
               <Tooltip title={data.code && data.code.toUpperCase()}>
                 <p className="starProjects-items-content-center-code">{data.code && data.code.toUpperCase()}</p>
               </Tooltip>
-              <p className="starProjects-items-content-center-status">{data.enabled ? '启用' : '未启用'}</p>
+              <p className={`starProjects-items-content-center-status starProjects-items-content-center-status-${data.enabled}`}>
+                {data.enabled ? '启用' : '停用'}
+              </p>
             </div>
           </div>
         </div>

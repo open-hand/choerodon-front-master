@@ -17,7 +17,17 @@ export default observer(() => {
   const renderProjects = () => {
     const { organizationId } = queryString.parse(history.location.search);
     return HeaderStore.getRecentItem.filter(i => String(i.organizationId) === String(organizationId)).map(r => (
-      <div onClick={() => ProjectsProUseStore.handleClickProject(r)} className="recentProjects-content">
+      <div
+        onClick={() => {
+          if (r.enabled) {
+            ProjectsProUseStore.handleClickProject(r)
+          }
+        }}
+        className="recentProjects-content"
+        style={{
+          cursor: r.enabled ? 'pointer' : 'not-allowed',
+        }}
+      >
         <div className="recentProjects-content-time">
         <span>
           <Icon type="date_range-o" />

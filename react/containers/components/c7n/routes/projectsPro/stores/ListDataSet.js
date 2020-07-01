@@ -91,7 +91,6 @@ export default (AppState, history, categoryDs) => {
     paging: false,
     transport: {
       read: {
-        url: queryString.parse(history.location.search).organizationId ? `/iam/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/users/${AppState.getUserId}/projects` : '',
         method: 'get',
       },
       submit: ({ dataSet }) => ({
@@ -103,7 +102,7 @@ export default (AppState, history, categoryDs) => {
     fields: [
       { name: 'name', type: 'string', label: '项目名称', required: true, validator: nameValidator },
       { name: 'code', type: 'string', label: '项目编码', required: true, validator: codeValidator },
-      { name: 'enabled', type: 'boolean', label: '状态' },
+      { name: 'enabled', type: 'boolean', label: '项目状态' },
       // { name: 'applicationCode', type: 'string', label: '应用编码', required: true, validator: codeValidator },
       // { name: 'applicationName', type: 'string', label: '应用名称', required: true, validator: nameValidator },
       { name: 'category', type: 'string', label: '项目类型', required: true, textField: 'name', valueField: 'code', options: categoryDs, defaultValue: 'GENERAL' },

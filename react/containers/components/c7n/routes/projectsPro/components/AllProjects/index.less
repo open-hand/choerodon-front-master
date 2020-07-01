@@ -40,7 +40,6 @@
     overflow-y: auto;
     overflow-x: hidden;
     &-item {
-      cursor: pointer;
       padding: 9px 20px 11px 20px;
       border-bottom: 1px solid #D8DCEB;
       display: flex;
@@ -79,10 +78,17 @@
               font-family:PingFangSC-Regular,PingFang SC;
               font-weight:400;
               color:rgba(0,191,165,1);
-              padding: 1px 4px;
+              padding: 1px 6px;
               background: rgba(0,191,165,0.1);
               border-radius:4px;
               margin-left: 4px;
+              transform: scale(0.8);
+              display: inline-block;
+
+              &-false {
+                color: rgba(0,0,0,0.36);
+                background: rgba(0,0,0,0.04);
+              }
             }
           }
         }
@@ -105,6 +111,15 @@
             font-family:PingFangSC-Medium,PingFang SC;
             font-weight:500;
             color:rgba(58,52,95,1);
+
+            &-edit {
+
+              &:hover {
+                color: #3F51B5;
+                cursor: pointer;
+                text-decoration: underline;
+              }
+            }
           }
           &-text1 {
             display: flex;
