@@ -14,7 +14,7 @@ export default function useStore(organizationId, projectId) {
     axiosGetChartData(sprintId) {
       return axios({
         method: 'get',
-        url: `/agile/v1/projects/${projectId}/project_overview/${sprintId}/issue`,
+        url: `/agile-20340/v1/projects/${projectId}/project_overview/${sprintId}/issue`,
       }).then(res=>this.setChartList(res));
     },
 

@@ -1,5 +1,6 @@
 import { useLocalStore } from 'mobx-react-lite';
 import { axios } from '@choerodon/boot';
+import axios0 from 'axios';
 // import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 // import MenuStore from '@/containers/stores/c7n/MenuStore';
 // import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
@@ -23,10 +24,6 @@ export default function useStore(projectId) {
     },
     loadAllSprint() {
       return axios.post(`/agile/v1/projects/${projectId}/sprint/names`, ['started', 'closed']);
-    },
-
-    loadQuestions({ organizationId, projectId, page }) {
-      return axios.post(`agile/v1/organizations/${organizationId}/work_bench/personal/backlog_issues?page=${page}&size=20${projectId ? `&projectId=${projectId}` : ''}`);
     },
   }));
 }

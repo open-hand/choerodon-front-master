@@ -5,14 +5,15 @@ import Echart from 'echarts-for-react';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import WaterWave from './components/WaterWave';
+import { useProjectOverviewStore } from '../../stores';
 
+const clsPrefix = 'c7n-project-overview-sprint-water-wave';
 const SprintPie = memo(({
   imageUrl,
   realName = '王王王',
   roles = ['admin', 'admin'],
 }) => {
-  const clsPrefix = 'c7n-project-overview-sprint-water-wave';
-  const [url, setUrl] = useState(0);
+  const { sprintWaterWaveDataSet } = useProjectOverviewStore();
   function getOptions() {
     return {
       series: [{
@@ -70,7 +71,7 @@ const SprintPie = memo(({
 
     };
   }
-
+  console.log('sprintWaterWaveDataSet', sprintWaterWaveDataSet);
   return (
     <OverviewWrap>
       <OverviewWrap.Header title="冲刺未完成情况" />
@@ -78,12 +79,12 @@ const SprintPie = memo(({
         <div className={`${clsPrefix}-content-left`}>
           {/* <Echart option={getOptions()} /> */}
           <WaterWave
-            height={161}
+            height={120}
             title="剩余时间"
-            percent={36}
+            percent={36} // "totalDays": remainingDays
             percentRender={() => (
               <div className={`${clsPrefix}-percent`}>
-                1
+                remainingDays
                 <span>天</span>
               </div>
             )}
@@ -92,15 +93,15 @@ const SprintPie = memo(({
         <ul className={`${clsPrefix}-content-right`}>
           <li>
             <label>问题数</label>
-            <span>30(个)</span>
+            <span>issueCount(个)</span>
           </li>
           <li>
             <label>故事点</label>
-            <span>30(个)</span>
+            <span>storyPoints(个)</span>
           </li>
           <li>
             <label>剩余工时</label>
-            <span>30(个)</span>
+            <span>remainingEstimatedTime(个)</span>
           </li>
         </ul>
       </OverviewWrap.Content>

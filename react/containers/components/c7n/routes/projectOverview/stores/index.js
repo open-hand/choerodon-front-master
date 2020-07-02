@@ -53,7 +53,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   return (
     <Store.Provider value={value}>
-      {children}
+      {projectOverviewStore.getStaredSprint && children}
     </Store.Provider>
   );
 })));

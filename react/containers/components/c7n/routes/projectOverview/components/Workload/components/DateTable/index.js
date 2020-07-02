@@ -14,21 +14,23 @@ const DateTable = memo(({
   const canvas = useRef();
   const clsPrefix = 'c7n-project-overview-date-table';
   const [selectValue, setSelectValue] = useState('remember');
+  const [columSize, setColumSize] = useState(8);
+  const [dateList, setDateList] = useState(new Array(8));
   const handleChangeSelect = () => {
     console.log('handleChangeSelect');
     // setSelectValue
   };
-  const Cell = memo(({ children, className }) => <div className={`${clsPrefix}-cell`}>
+  const Cell = memo(({ children, className }) => <div className={`${clsPrefix}-cell ${className || ''}`}>
     {children}
   </div>);
-  const Row = memo(({ rowName, size = 0, data = [], children }) => {
+  const Row = memo(({ rowName, size = columSize, data = [], children }) => {
     const cells = [];
     cells.push(<Cell >{rowName}</Cell>)
     cells.push(...data.map(item => <Cell>{item}</Cell>));
     if (size > data.size) {
       cells.push(<Cell>我是空白</Cell>)
     }
-    console.log('row', cells);
+    // console.log('cells', cells);
     return <div className={`${clsPrefix}-row`}>
       {children || cells}
     </div>;
@@ -41,7 +43,7 @@ const DateTable = memo(({
   };
   const renderH = () => { };
   const renderRows = () => {
-    console.log('row');
+    // console.log('row');
     if (rows.length === 0) {
       return <Row>
         暂无数据
@@ -58,14 +60,26 @@ const DateTable = memo(({
   };
   const renderDate = () => {
     console.log('renderHeader');
+    const dateCells = [];
+    for (let index = 0; index < columSize; index++) {
+      dateCells.push(<Cell>{dateList[index]}</Cell>)
+    }
+    return dateCells;
   };
- 
+  useEffect(() => {
+    // dateList.fill(...dateData, 0, 8);
+    console.log('useEffect', dateList);
+  }, []);
+  useEffect(() => {
+    console.log('dateList', dateList);
+
+  }, [dateList])
   return (
     <div className={`${clsPrefix}`}>
       <div className={`${clsPrefix}-header`}>
         <div className={`${clsPrefix}-header-cell ${clsPrefix}-header-cell-top`}>
-          <div>成员</div>
-          <div>日期</div>
+          <div className={`${clsPrefix}-header-cell-top-y`}>成员</div>
+          <div className={`${clsPrefix}-header-cell-top-x`}>日期</div>
         </div>
         {renderDate()}
       </div>

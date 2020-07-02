@@ -5,10 +5,10 @@ export default (({ projectId, sprint }) => ({
     dataKey: null,
     transport: {
       read: { 
-        url: `/agile/v1/projects/${projectId}/project_overview/${sprint ? sprint.sprintId : ''}/uncompleted`,
+        url: `/agile-20340/v1/projects/${projectId}/project_overview/${sprint ? sprint.sprintId : ''}/uncompleted`,
         method: 'get',
       },
     },
-    fields: [],
+    // fields: [],
   }));
   

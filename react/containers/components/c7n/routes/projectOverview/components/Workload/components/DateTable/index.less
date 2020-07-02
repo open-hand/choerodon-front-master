@@ -1,31 +1,57 @@
 @borderColor: rgba(0, 0, 0, 0.12);
+@headerHeight: .58rem;
 
 .c7n-project-overview-date-table {
   width: 100%;
   height: auto;
   border: 1px solid @borderColor;
 
-
-
   &-header {
     width: 100%;
-    min-height: 80px;
+    height: @headerHeight;
     border-bottom: 1px solid @borderColor;
 
     &-cell {
       width: 112px;
-      height: 59px;
+      height: @headerHeight;
 
       &-top {
+        position: relative;
+        overflow: hidden;
+        border-right: 1px solid @borderColor;
+
         &::before {
           content: '';
           position: absolute;
           left: 0;
           top: 0;
           width: 100%;
-          height: 14px;
+          height: .24rem;
           box-sizing: border-box;
-          border-bottom: 1px solid #D8D8D8;
+          border-bottom: 1px solid @borderColor;
+          transform: rotateZ(27deg) scale(1.2903);
+        }
+
+        div {
+          font-size: .12rem;
+          font-weight: 400;
+          color: rgba(58, 52, 95, 1);
+          line-height: .17rem;
+        }
+
+        &-x {
+          position: relative;
+          right: .23rem;
+          bottom: .13rem;
+          text-align: right;
+        }
+
+        &-y {
+          position: relative;
+          top: .31rem;
+          left: .2rem;
+          width: max-content;
+          text-align: left;
         }
       }
     }
