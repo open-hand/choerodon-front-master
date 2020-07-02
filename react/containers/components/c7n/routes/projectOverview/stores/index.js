@@ -6,6 +6,8 @@ import { DataSet } from 'choerodon-ui/pro';
 import SprintCountDataSet from './SprintCountDataSet';
 import useStore from './useStore';
 import SprintWaterWaveDataSet from './SprintWaterWaveDataSet';
+import UserListDataSet from "./UserListDataSet";
+
 const Store = createContext();
 
 export function useProjectOverviewStore() {
@@ -18,33 +20,35 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     AppState: { currentMenuType: { organizationId, projectId } },
     history,
   } = props;
-  console.log(props)
+  
   const projectOverviewStore = useStore(projectId);
   const sprintCountDataSet = useMemo(() => new DataSet(SprintCountDataSet({ projectId, sprint: projectOverviewStore.getStaredSprint })), [projectId, projectOverviewStore.getStaredSprint]);
   const sprintWaterWaveDataSet = useMemo(() => new DataSet(SprintWaterWaveDataSet({ projectId, sprint: projectOverviewStore.getStaredSprint })), [projectId, projectOverviewStore.getStaredSprint]);
+  const userListDs = useMemo(() => new DataSet(UserListDataSet({ projectId })), [projectId]);
 
   useEffect(() => {
     projectOverviewStore.loadAllSprint().then(
       sprints => {
         projectOverviewStore.setSprints(sprints);
         const staredSprint = sprints.find(sprint => sprint.statusCode === 'started');
-        console.log('s', staredSprint);
         projectOverviewStore.setStaredSprint(staredSprint);
-      }
-    )
+      },
+    );
   }, []);
-  // 
-  useEffect(()=>{
-    if(projectOverviewStore.getStaredSprint){
+
+  useEffect(() => {
+    if (projectOverviewStore.getStaredSprint) {
       sprintCountDataSet.query();
       sprintWaterWaveDataSet.query();
     }
-  },[projectOverviewStore.getStaredSprint]);
+  }, [projectOverviewStore.getStaredSprint]);
+
   const value = {
     ...props,
     sprintCountDataSet,
     projectOverviewStore,
     sprintWaterWaveDataSet,
+    userListDs,
   };
 
   return (

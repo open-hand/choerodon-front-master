@@ -1,3 +1,60 @@
-.c7n-project-overview-user-head {
+.c7n-project-overview-user-list-item {
+  display: flex;
+  align-items: center;
+  padding: .05rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  color: #3A345F;
 
+  &:first-child {
+    border-top: 1px solid rgba(0, 0, 0, .12);
+  }
+
+  &-avatar {
+    width: .3rem;
+    height: .3rem;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #c5cbe8;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: .18rem;
+    font-weight: bold;
+    color: #3f51b5;
+    flex-shrink: 0;
+  }
+
+  &-status {
+    background: rgba(0, 191, 165, 0.08);
+    border-radius: 2px;
+    font-weight: 500;
+    color: rgba(0, 191, 165, 1);
+    line-height: .18rem;
+    padding: .02rem .1rem;
+    margin-right: .08rem;
+    flex-shrink: 0;
+  }
+
+  &-roles {
+    margin-left: auto;
+    flex-shrink: 0;
+
+    &-item {
+      background: rgba(244, 243, 248, 1);
+      border-radius: 11px;
+      padding: .02rem .1rem;
+      margin-right: .1rem;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &-name {
+    margin: 0 .08rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }
