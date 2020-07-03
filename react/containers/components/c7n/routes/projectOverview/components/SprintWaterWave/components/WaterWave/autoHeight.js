@@ -1,11 +1,6 @@
 import React from 'react';
 
-export type IReactComponent<P = any> =
-  | React.StatelessComponent<P>
-  | React.ComponentClass<P>
-  | React.ClassicComponentClass<P>;
-
-function computeHeight(node: HTMLDivElement) {
+function computeHeight(node) {
   const { style } = node;
   style.height = '100%';
   const totalHeight = parseInt(`${getComputedStyle(node).height}`, 10);
@@ -15,7 +10,7 @@ function computeHeight(node: HTMLDivElement) {
   return totalHeight - padding;
 }
 
-function getAutoHeight(n: HTMLDivElement) {
+function getAutoHeight(n) {
   if (!n) {
     return 0;
   }
@@ -23,7 +18,7 @@ function getAutoHeight(n: HTMLDivElement) {
   const node = n;
 
   let height = computeHeight(node);
-  const parentNode = node.parentNode as HTMLDivElement;
+  const parentNode = node.parentNode;
   if (parentNode) {
     height = computeHeight(parentNode);
   }
@@ -31,20 +26,19 @@ function getAutoHeight(n: HTMLDivElement) {
   return height;
 }
 
-interface AutoHeightProps {
-  height?: number;
-}
 
 function autoHeight() {
-  return <P extends AutoHeightProps>(
-    WrappedComponent: React.ComponentClass<P> | React.FC<P>,
-  ): React.ComponentClass<P> => {
-    class AutoHeightComponent extends React.Component<P & AutoHeightProps> {
+  return (WrappedComponent) => {
+    class AutoHeightComponent extends React.Component{
+      constructor(props){
+        super(props);
+        
+      }
       state = {
         computedHeight: 0,
       };
 
-      root: HTMLDivElement | null = null;
+      root = null;
 
       componentDidMount() {
         const { height } = this.props;
@@ -58,7 +52,7 @@ function autoHeight() {
         }
       }
 
-      handleRoot = (node: HTMLDivElement) => {
+      handleRoot = (node) => {
         this.root = node;
       };
 
