@@ -20,7 +20,13 @@ const DefectChart = memo(() => {
   function getOptions() {
     return {
       tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
+        // trigger: 'item',
+        backgroundColor: 'rgba(0,0,0,0.75)',
+        textStyle: {
+          color: '#FFF',
+        },
+        extraCssText: '0px 2px 8px 0px rgba(0,0,0,0.12);padding:15px 17px',
       },
       legend: {
         top: '-3px',
@@ -37,8 +43,8 @@ const DefectChart = memo(() => {
       // dataSet: {
       //   dimensions: [
       //     { name: 'date', type: 'ordinal' },
-      //     { name: 'add' },
-      //     { name: 'score' },
+      //     { name: 'add', type: 'number' },
+      //     { name: 'score', type: 'number' },
       //   ],
       //   source: [
       //     { date: '2020-08-09', add: 12, score: 12 },
@@ -49,7 +55,7 @@ const DefectChart = memo(() => {
       grid: {
         y2: 35,
 
-        left: 0,
+        left: 20,
         right: '40',
         containLabel: true,
       },

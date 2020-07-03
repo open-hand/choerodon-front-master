@@ -7,24 +7,17 @@ import styles from './index.less';
 /* eslint no-mixed-operators: 0 */
 // riddle: https://riddle.alibaba-inc.com/riddles/2d9a4b90
 
-export interface WaterWaveProps {
-  title: React.ReactNode;
-  color?: string;
-  height?: number;
-  percent: number;
-  style?: React.CSSProperties;
-}
 
-class WaterWave extends Component<WaterWaveProps> {
+class WaterWave extends React.Component {
   state = {
     radio: 1,
   };
 
-  timer: number = 0;
+  timer = 0;
 
-  root: HTMLDivElement | undefined | null = null;
+  root = null;
 
-  node: HTMLCanvasElement | undefined | null = null;
+  node = null;
 
   componentDidMount() {
     this.renderChart();
@@ -38,7 +31,7 @@ class WaterWave extends Component<WaterWaveProps> {
     );
   }
 
-  componentDidUpdate(props: WaterWaveProps) {
+  componentDidUpdate(props) {
     const { percent } = this.props;
     if (props.percent !== percent) {
       // 不加这个会造成绘制缓慢
@@ -57,14 +50,14 @@ class WaterWave extends Component<WaterWaveProps> {
   resize = () => {
     if (this.root) {
       const { height = 1 } = this.props;
-      const { offsetWidth } = this.root.parentNode as HTMLElement;
+      const { offsetWidth } = this.root.parentNode;
       this.setState({
         radio: offsetWidth < height ? offsetWidth / height : 1,
       });
     }
   };
 
-  renderChart(type?: string) {
+  renderChart(type) {
     const { percent, color = '#1890FF' } = this.props;
     const data = percent / 100;
     const self = this;
@@ -97,7 +90,7 @@ class WaterWave extends Component<WaterWaveProps> {
     let currData = 0;
     const waveupsp = 0.005; // 水波上涨速度
 
-    let arcStack: number[][] = [];
+    let arcStack = [];
     const bR = radius - lineWidth;
     const circleOffset = -(Math.PI / 2);
     let circleLock = true;
@@ -106,7 +99,7 @@ class WaterWave extends Component<WaterWaveProps> {
       arcStack.push([radius + bR * Math.cos(i), radius + bR * Math.sin(i)]);
     }
 
-    const cStartPoint = arcStack.shift() as number[];
+    const cStartPoint = arcStack.shift();
     ctx.strokeStyle = color;
     ctx.moveTo(cStartPoint[0], cStartPoint[1]);
 
@@ -128,7 +121,7 @@ class WaterWave extends Component<WaterWaveProps> {
         sinStack.push([dx, dy]);
       }
 
-      const startPoint = sinStack.shift() as number[];
+      const startPoint = sinStack.shift();
 
       ctx.lineTo(xOffset + axisLength, canvasHeight);
       ctx.lineTo(xOffset, canvasHeight);
@@ -149,7 +142,7 @@ class WaterWave extends Component<WaterWaveProps> {
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
       if (circleLock && type !== 'update') {
         if (arcStack.length) {
-          const temp = arcStack.shift() as number[];
+          const temp = arcStack.shift();
           ctx.lineTo(temp[0], temp[1]);
           ctx.stroke();
         } else {
