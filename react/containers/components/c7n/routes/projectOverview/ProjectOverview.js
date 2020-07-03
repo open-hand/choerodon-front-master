@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { Content, Breadcrumb, Header, Page } from '../../../../../index';
 
 import './ProjectOverview.less';
-import UserHead from './components/UserHead';
-import Backlog from './components/Backlog';
 import ServiceInfo from './components/ServiceInfo';
 import BurnDownChart from './components/BurnDownChart';
 import DefectTreatment from './components/DefectTreatment';
@@ -20,13 +18,9 @@ import DefectChart from './components/defect-chart';
 const ProjectOverview = () => {
   return (
     <Page className="c7n-project-overview">
-      {/* <Breadcrumb title="项目概览" /> */}
+      <Breadcrumb />
       <Content>
 
-        {/* <div className="c7n-project-overview-header">
-          <UserHead />
-          <Backlog />
-        </div> */}
         <div className="c7n-project-overview-content">
           <div className="c7n-project-overview-content-left">
             <ServiceInfo />

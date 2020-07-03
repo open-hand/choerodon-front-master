@@ -7,7 +7,6 @@ import OverviewWrap from '../OverviewWrap';
 import './index.less';
 
 const DefectChart = memo(() => {
-  const options = useMemo(() => [{ value: 'todo', text: '提出' }, { value: 'complete', text: '解决' }], []);
   const clsPrefix = 'c7n-project-overview-defect-chart';
   const [charOption, setCharOption] = useState('todo'); // todo complete
 
@@ -22,6 +21,7 @@ const DefectChart = memo(() => {
       tooltip: {
         trigger: 'axis',
         // trigger: 'item',
+
         backgroundColor: 'rgba(0,0,0,0.75)',
         textStyle: {
           color: '#FFF',
@@ -60,27 +60,28 @@ const DefectChart = memo(() => {
         containLabel: true,
       },
       xAxis: {
-        type: 'category',
-        // axisTick: { show: false },
         boundaryGap: false,
-        splitLine: {
-          show: true,
+        type: 'category',
+        axisTick: {
+          show: false,
         },
         axisLine: {
           show: true,
           lineStyle: {
             color: '#eee',
-            type: 'solid',
-            width: 2,
+          },
+          onZero: true,
+        },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: ['#eee'],
           },
         },
         axisLabel: {
-          show: true,
-          margin: 15,
           textStyle: {
             color: 'rgba(0, 0, 0, 0.65)',
             fontSize: 12,
-            fontStyle: 'normal',
           },
         },
         data: ['2020-08-09', '2020-08-09', '2020-08-09', '2020-08-09', '2020-08-09']
@@ -91,22 +92,25 @@ const DefectChart = memo(() => {
           color: '#000',
         },
         type: 'value',
-        // axisTick: { show: false },
         axisLine: {
           show: true,
           lineStyle: {
             color: '#eee',
-            type: 'solid',
-            width: 2,
+          },
+        },
+        axisTick: {
+          show: false,
+        },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: ['#eee'],
           },
         },
         axisLabel: {
-          show: true,
-          margin: 15,
           textStyle: {
             color: 'rgba(0, 0, 0, 0.65)',
             fontSize: 12,
-            fontStyle: 'normal',
           },
         },
       },
@@ -115,12 +119,16 @@ const DefectChart = memo(() => {
           name: '累计新增缺陷',
           type: 'line',
           lineStyle: {
-            // type: 'dotted',
             color: 'rgba(244, 133, 144, 1)',
           },
+          itemStyle: {
+            normal: {
+              color:'rgba(244, 133, 144, 1)',
+            },
+          },
+          symbol: 'circle',
+      
           data: [120, 132, 101, 134, 90]
-
-
         },
         {
           name: "累计修复缺陷",
@@ -129,6 +137,13 @@ const DefectChart = memo(() => {
             // type: 'dotted',
             color: 'rgba(136, 223, 240, 1)',
           },
+          itemStyle: {
+            normal: {
+              color:'rgba(136, 223, 240, 1)',
+            },
+          },
+          symbol: 'circle',
+      
           data: [220, 182, 191, 234, 290]
         },
       ]

@@ -1,5 +1,6 @@
 @borderColor: rgba(0, 0, 0, 0.12);
 @headerHeight: .58rem;
+@columWidth: 12.5%;
 
 .c7n-project-overview-date-table {
   width: 100%;
@@ -11,11 +12,34 @@
     height: @headerHeight;
     border-bottom: 1px solid @borderColor;
     display: inline-flex;
+
+    &-btn {
+
+      width: 0;
+      height: 0;
+      position: relative;
+
+      &-left {
+        right: 4px;
+        top: 12px;
+      }
+
+      &-right {
+        right: 27px;
+        top: 12px;
+      }
+    }
+
     &-cell {
-      width: 112px;
+      width: @columWidth;
       height: @headerHeight;
+      font-size: .13rem;
+      font-weight: 500;
+      color: rgba(58, 52, 95, 1);
+      line-height: .18rem;
 
       &-top {
+        width: 129px; //error
         position: relative;
         overflow: hidden;
         border-right: 1px solid @borderColor;
@@ -62,17 +86,48 @@
     width: 100%;
     height: max-content;
     min-height: 100px;
+
+    .c7n-project-overview-date-table-row:not(:last-child) {
+      border-bottom: 1px solid @borderColor;
+
+    }
   }
 
   &-row {
     min-height: 50px;
     width: 100%;
+    display: inline-flex;
+
+    &:not(:last-child) {
+      border-bottom: none;
+    }
+
+    &-cell {
+      width: @columWidth;
+
+      &:not(:last-child) {
+        border-right: 1px solid @borderColor
+      }
+
+      &-first {
+        width: 1.29rem; //error
+        // background-color: red;
+
+      }
+    }
   }
 
   &-cell {
-    height: 123px;
-    width: 50px;
-    border-bottom: 1px solid @borderColor;
+    // height: 123px;
+    // width: 50px;
+    padding-top: .2rem; //error
+    text-align: center;
+    // border-bottom: 1px solid @borderColor;
+
+  }
+
+  border-right {
     border-right: 1px solid @borderColor;
+
   }
 }

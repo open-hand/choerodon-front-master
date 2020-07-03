@@ -1,5 +1,5 @@
 import React, { useState, memo, useEffect } from 'react';
-import { Button, Tooltip } from 'choerodon-ui/pro';
+import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import './index.less';
@@ -7,13 +7,12 @@ import OverviewWrap from '../OverviewWrap';
 import WaterWave from './components/WaterWave';
 import { useProjectOverviewStore } from '../../stores';
 import two from '../number-font/2.svg'
+import { EmptyPage } from '../EmptyPage';
 const clsPrefix = 'c7n-project-overview-sprint-water-wave';
 const SprintPie = observer(({
-  imageUrl,
-  realName = '王王王',
-  roles = ['admin', 'admin'],
 }) => {
-  const { sprintWaterWaveDataSet } = useProjectOverviewStore();
+  const [loading, setLoading] = useState(true);
+  const { sprintWaterWaveDataSet, projectOverviewStore } = useProjectOverviewStore();
   function getOptions() {
     return {
       series: [{
@@ -71,12 +70,17 @@ const SprintPie = observer(({
 
     };
   }
-  const remainingDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : 0;
-  const totalDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('totalDays') : 0;
-  return (sprintWaterWaveDataSet.current &&
-    <OverviewWrap>
-      <OverviewWrap.Header title="冲刺未完成情况" />
-      <OverviewWrap.Content className={`${clsPrefix}-content`}>
+  useEffect(() => {
+    if (projectOverviewStore.getStaredSprint) {
+      sprintWaterWaveDataSet.query();
+    }
+    setLoading(false);
+  }, [projectOverviewStore.getIsFinishLoad]);
+  function render() {
+    const remainingDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : 0;
+    const totalDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('totalDays') : 0;
+    if (sprintWaterWaveDataSet.current) {
+      return <OverviewWrap.Content className={`${clsPrefix}-content`}>
         <div className={`${clsPrefix}-content-left`}>
           {/* <Echart option={getOptions()} /> */}
           <WaterWave
@@ -107,7 +111,15 @@ const SprintPie = observer(({
           </li>
         </ul>
       </OverviewWrap.Content>
-
+    }
+    return <EmptyPage />
+  }
+  return (
+    <OverviewWrap height={225}>
+      <OverviewWrap.Header title="冲刺未完成情况" />
+      <Spin spinning={sprintWaterWaveDataSet && projectOverviewStore.getIsFinishLoad && loading}>
+        {render()}
+      </Spin>
     </OverviewWrap>
 
   );

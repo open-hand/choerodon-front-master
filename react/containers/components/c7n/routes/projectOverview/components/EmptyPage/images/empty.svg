@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="111px" height="79px" viewBox="0 0 111 79" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+    <title>Group Copy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="缺省页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="所有报告-" transform="translate(-498.000000, -283.000000)">
+            <g id="Group-Copy" transform="translate(498.000000, 283.000000)">
+                <rect id="Rectangle-7-Copy-13" fill="#DEE0ED" x="0" y="0" width="110.4" height="78.8333333" rx="2.4"></rect>
+                <path d="M0,14.3333333 L110.4,14.3333333 L110.4,76.4333333 C110.4,77.7588167 109.325483,78.8333333 108,78.8333333 L2.4,78.8333333 C1.0745166,78.8333333 -1.16994273e-15,77.7588167 0,76.4333333 L0,14.3333333 L0,14.3333333 Z" id="Rectangle-7-Copy-13" fill="#F2F4FD"></path>
+                <rect id="Rectangle-21-Copy-14" fill="#F9FAFF" x="4.8" y="5.375" width="4.8" height="4.77777778" rx="2.38888889"></rect>
+                <rect id="Rectangle-21-Copy-19" fill="#F9FAFF" x="13.2" y="5.375" width="4.8" height="4.77777778" rx="2.38888889"></rect>
+                <rect id="Rectangle-21-Copy-18" fill="#F9FAFF" x="21.6" y="5.375" width="28.8" height="4.77777778" rx="2.38888889"></rect>
+                <g id="Group-9" transform="translate(23.000000, 19.000000)">
+                    <g id="Group-7" transform="translate(31.863544, 32.183129) rotate(-45.000000) translate(-31.863544, -32.183129) translate(14.363544, 4.683129)">
+                        <rect id="Rectangle-25" fill="#6776C4" x="15.6631579" y="33.2738095" width="3.03157895" height="6.04978355"></rect>
+                        <rect id="Rectangle-25-Copy" fill="#2A2E76" x="13.458213" y="37.3571679" width="7.07368421" height="17.1410534" rx="1.2"></rect>
+                        <ellipse id="Oval-11" fill="#3D42A3" cx="17.1789474" cy="17.1410534" rx="17.1789474" ry="17.1410534"></ellipse>
+                        <ellipse id="Oval-11" fill="#FFBA1C" cx="17.1789474" cy="17.1410534" rx="12.6315789" ry="12.6037157"></ellipse>
+                    </g>
+                    <path d="M24,17 C26.7614237,17 29,19.3281193 29,22.2 C29,24.8961456 27.0270058,27.1130411 24.5006616,27.3742565 L24.5,30 L22.5,30 L22.5,25.32 L24,25.32 L24,25.32 C25.6568542,25.32 27,23.9231284 27,22.2 C27,20.4768716 25.6568542,19.08 24,19.08 C22.3431458,19.08 21,20.4768716 21,22.2 L19,22.2 C19,19.3281193 21.2385763,17 24,17 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+                    <circle id="Oval-13" fill="#FFFFFF" cx="23.5" cy="32.5" r="1.5"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
