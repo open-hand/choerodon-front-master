@@ -23,6 +23,7 @@ export const StoreProvider = inject('AppState')(observer((props) => {
   useEffect(()=>{
     if(projectOverviewStore.getStaredSprint){
       defectChartStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId);
+      console.log('store11');
     }
   },[projectOverviewStore.getStaredSprint])
   const value = {

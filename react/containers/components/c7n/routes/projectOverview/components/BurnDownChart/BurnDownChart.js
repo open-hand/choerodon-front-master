@@ -8,6 +8,7 @@ import { useBurnDownChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
+import { EmptyPage } from '../EmptyPage';
 const moment = extendMoment(Moment);
 
 const { Option } = Select;
@@ -17,7 +18,7 @@ const BurnDownChart = observer(({
   const clsPrefix = 'c7n-project-overview-burn-down-chart';
   const { burnDownChartStore } = useBurnDownChartStore();
   const { projectOverviewStore } = useProjectOverviewStore();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [xAxis, setXAxis] = useState([]);
   const [yAxis, setYAxis] = useState([]);
   const [markArea, setMarkArea] = useState([]);
@@ -127,13 +128,14 @@ const BurnDownChart = observer(({
         loadChartCoordinate();
       });
     }
-  }, [projectOverviewStore.getStaredSprint]);
+    setLoading(false);
+  }, [projectOverviewStore.getIsFinishLoad]);
   useEffect(() => {
     if (projectOverviewStore.getStaredSprint) {
       loadChartCoordinate();
     }
 
-  }, [selectValue,checkedValue]);
+  }, [selectValue, checkedValue]);
   function renderChartTitle() {
     let result = '';
     if (selectValue === 'remainingEstimatedTime') {
@@ -311,43 +313,46 @@ const BurnDownChart = observer(({
     };
   }
 
-  const handleChangeSelect = () => {
-
-  };
-  const handleChangeChecked = () => {
-
-  };
+  function render() {
+    if (projectOverviewStore.getStaredSprint) {
+      return <Echart option={getOption()} />
+    }
+    return <EmptyPage imgHeight={200} imgWidth={300} />
+  }
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>燃尽图</span>
-      <Select
-        getPopupContainer={triggerNode => triggerNode.parentNode}
-        style={{ width: 100, marginLeft: 34 }}
-        className="c7n-project-overview-SelectTheme"
-        label="单位"
-        clearButton={false}
-        defaultValue={selectValue}
-        onChange={setSelectValue}
-      >
-        <Option value="remainingEstimatedTime">剩余时间</Option>
-        <Option value="storyPoints">故事点</Option>
-        <Option value="issueCount">问题计数</Option>
-      </Select>
-      <CheckBox
-        style={{ marginLeft: 24 }}
-        // value={checkedValue}
-        checked={checkedValue}
-        onChange={setCheckedValue}
-      >
-        显示非工作日
+      {projectOverviewStore.getStaredSprint ? <React.Fragment>
+        <Select
+          getPopupContainer={triggerNode => triggerNode.parentNode}
+          style={{ width: 100, marginLeft: 34 }}
+          className="c7n-project-overview-SelectTheme"
+          label="单位"
+          clearButton={false}
+          defaultValue={selectValue}
+          onChange={setSelectValue}
+        >
+          <Option value="remainingEstimatedTime">剩余时间</Option>
+          <Option value="storyPoints">故事点</Option>
+          <Option value="issueCount">问题计数</Option>
+        </Select>
+        <CheckBox
+          style={{ marginLeft: 24 }}
+          // value={checkedValue}
+          checked={checkedValue}
+          onChange={setCheckedValue}
+        >
+          显示非工作日
       </CheckBox>
+      </React.Fragment>
+        : ''}
     </div>
   );
   return (
-    <OverviewWrap>
+    <OverviewWrap height={333}>
       <OverviewWrap.Header title={renderTitle()} />
-      <Spin spinning={loading}>
-        <Echart option={getOption()} />
+      <Spin spinning={projectOverviewStore.getIsFinishLoad && loading}>
+          {render()}
       </Spin>
     </OverviewWrap>
 

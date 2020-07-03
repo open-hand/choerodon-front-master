@@ -20,7 +20,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     AppState: { currentMenuType: { organizationId, projectId } },
     history,
   } = props;
-  
+
   const projectOverviewStore = useStore(projectId);
   const sprintCountDataSet = useMemo(() => new DataSet(SprintCountDataSet({ projectId, sprint: projectOverviewStore.getStaredSprint })), [projectId, projectOverviewStore.getStaredSprint]);
   const sprintWaterWaveDataSet = useMemo(() => new DataSet(SprintWaterWaveDataSet({ projectId, sprint: projectOverviewStore.getStaredSprint })), [projectId, projectOverviewStore.getStaredSprint]);
@@ -32,16 +32,10 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
         projectOverviewStore.setSprints(sprints);
         const staredSprint = sprints.find(sprint => sprint.statusCode === 'started');
         projectOverviewStore.setStaredSprint(staredSprint);
+        projectOverviewStore.setIsFinishLoad(true);
       },
     );
   }, []);
-
-  useEffect(() => {
-    if (projectOverviewStore.getStaredSprint) {
-      sprintCountDataSet.query();
-      sprintWaterWaveDataSet.query();
-    }
-  }, [projectOverviewStore.getStaredSprint]);
 
   const value = {
     ...props,
@@ -53,7 +47,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   return (
     <Store.Provider value={value}>
-      {projectOverviewStore.getStaredSprint && children}
+      {children}
     </Store.Provider>
   );
 })));

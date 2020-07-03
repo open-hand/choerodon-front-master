@@ -8,8 +8,15 @@ import axios0 from 'axios';
 
 export default function useStore(projectId) {
   return useLocalStore(() => ({
+    isFinishLoad:false,
     sprints: [],
     staredSprint: undefined,
+    get getIsFinishLoad() {
+      return this.sprints;
+    },
+    setIsFinishLoad(data) {
+      this.isFinishLoad = data;
+    },
     get getSprints() {
       return this.sprints;
     },

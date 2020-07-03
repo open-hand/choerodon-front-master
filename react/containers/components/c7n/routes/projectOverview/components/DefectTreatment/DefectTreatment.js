@@ -9,11 +9,10 @@ import { useDefectTreatmentStore } from './stores';
 const DefectTreatment = observer(({
 
 }) => {
-  const options = useMemo(() => [{ value: 'createdList', text: '提出' }, { value: 'completedList', text: '解决' }], []);
+  const options = useMemo(() => [{ value: 'created', text: '提出' }, { value: 'completed', text: '解决' }], []);
   const clsPrefix = 'c7n-project-overview-defect-treatment';
   const { defectTreatmentStore } = useDefectTreatmentStore();
-  const [charOption, setCharOption] = useState('createdList'); // createdList completedList
-  console.log('defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList[charOption] : ', defectTreatmentStore.getChartList)
+  const [charOption, setCharOption] = useState('created'); // createdList completedList
   function getOptions(params) {
     return {
       legend: {
@@ -22,7 +21,7 @@ const DefectTreatment = observer(({
       },
       tooltip: {},
       dataset: {
-        source: []
+        source: defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList : [],
       },
       xAxis: {
         type: 'category',
@@ -44,7 +43,7 @@ const DefectTreatment = observer(({
             fontStyle: 'normal',
           },
         },
-        data: defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList[charOption].map(i => Object.keys(i)[0]) : [],
+        // data: defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList[charOption].map(i => Object.keys(i)[0]) : [],
 
       },
       yAxis: {
@@ -76,29 +75,31 @@ const DefectTreatment = observer(({
         {
           type: 'bar',
           // color: 'green',
-          name: charOption === 'createdList' ? '提出' : '解决',
-          color: charOption === 'createdList' ? 'rgba(249, 136, 148, 1)' : 'rgba(136, 223, 240, 1)',
+          name: charOption === 'created' ? '提出' : '解决',
+          color: charOption === 'created' ? 'rgba(249, 136, 148, 1)' : 'rgba(136, 223, 240, 1)',
           barWidth: 10,
           itemStyle: {
             barBorderRadius: [5, 5, 0, 0],
           },
           dimensions: [
-            { name: 'product', type: 'ordinal' },
+            { name: 'worker', type: 'ordinal' },
             { name: charOption, type: 'number' },
           ],
-          data: defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList[charOption].map(i => i[Object.keys(i)[0]]) : [],
+          // data: defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList[charOption].map(i => i[Object.keys(i)[0]]) : [],
 
         },
       ],
       dataZoom: [{
         type: 'slider',
+        height: 15,
         startValue: 0,
         endValue: 2,
         handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-        handleSize: '80%',
+        handleSize: '100%',
         handleStyle: {
           color: '#fff',
-          shadowBlur: 3,
+          borderType: 'dashed',
+          shadowBlur: 4,
           shadowColor: 'rgba(0, 0, 0, 0.6)',
           shadowOffsetX: 2,
           shadowOffsetY: 2,
@@ -110,13 +111,13 @@ const DefectTreatment = observer(({
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>缺陷提出与解决</span>
-      <OverviewWrap.Switch defaultValue="createdList" onChange={setCharOption} options={options} />
+      <OverviewWrap.Switch defaultValue="created" onChange={setCharOption} options={options} />
     </div>
   );
   return (
-    <OverviewWrap>
+    <OverviewWrap height={348}>
       <OverviewWrap.Header title={renderTitle()} />
-      <Echart option={getOptions()} />
+      <Echart style={{ height: '2.67rem' }} option={getOptions()} />
     </OverviewWrap>
 
   );

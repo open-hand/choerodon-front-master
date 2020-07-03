@@ -14,7 +14,10 @@ export default function useStore(organizationId, projectId) {
       return axios({
         method: 'get',
         url: `/agile/v1/projects/${projectId}/project_overview/${sprintId}/issue_count`,
-      }).then(res=>this.setChartList(res));
+      }).then(res=>{
+        console.log('defect',res);
+        this.setChartList(res)
+      });
     },
 
 
