@@ -193,7 +193,6 @@ export default class NewUserTrackTable extends Component {
         /*根据表格列数给表格设置宽度*/
         var tableId = this.props.tableId;
         var _tds = this.state.tbodyData[0].months[0].obs_values.length + 3;
-        console.log('_tds',_tds);
         document.getElementById(tableId).width = _tds * 100 + "px";
     }
     getNormalTdStyle = (gindex) => {

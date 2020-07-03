@@ -4,15 +4,16 @@ import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
+import { useDefectTreatmentStore } from './stores';
 
-const DefectTreatment = memo(({
-  imageUrl,
-  realName = '王王王',
-  roles = ['admin', 'admin'],
+const DefectTreatment = observer(({
+
 }) => {
-  const options = useMemo(() => [{ value: 'todo', text: '提出' }, { value: 'complete', text: '解决' }], []);
+  const options = useMemo(() => [{ value: 'createdList', text: '提出' }, { value: 'completedList', text: '解决' }], []);
   const clsPrefix = 'c7n-project-overview-defect-treatment';
-  const [charOption, setCharOption] = useState('todo'); // todo complete
+  const { defectTreatmentStore } = useDefectTreatmentStore();
+  const [charOption, setCharOption] = useState('createdList'); // createdList completedList
+  console.log('defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList[charOption] : ', defectTreatmentStore.getChartList)
   function getOptions(params) {
     return {
       legend: {
@@ -21,13 +22,7 @@ const DefectTreatment = memo(({
       },
       tooltip: {},
       dataset: {
-        source: [
-          { product: 'Matcha Latte', todo: 823, complete: 95.8 },
-          { product: '张二', todo: 235, complete: 81.4 },
-          { product: 'Cheese Cocoa', todo: 1042, complete: 91.2 },
-          { product: '张二', todo: 1043, complete: 91.2 },
-          { product: 'Walnut Brownie', todo: 988, complete: 76.9 },
-        ],
+        source: []
       },
       xAxis: {
         type: 'category',
@@ -49,6 +44,7 @@ const DefectTreatment = memo(({
             fontStyle: 'normal',
           },
         },
+        data: defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList[charOption].map(i => Object.keys(i)[0]) : [],
 
       },
       yAxis: {
@@ -80,8 +76,8 @@ const DefectTreatment = memo(({
         {
           type: 'bar',
           // color: 'green',
-          name: charOption === 'todo' ? '提出' : '解决',
-          color: charOption === 'todo' ? 'rgba(249, 136, 148, 1)' : 'rgba(136, 223, 240, 1)',
+          name: charOption === 'createdList' ? '提出' : '解决',
+          color: charOption === 'createdList' ? 'rgba(249, 136, 148, 1)' : 'rgba(136, 223, 240, 1)',
           barWidth: 10,
           itemStyle: {
             barBorderRadius: [5, 5, 0, 0],
@@ -90,6 +86,8 @@ const DefectTreatment = memo(({
             { name: 'product', type: 'ordinal' },
             { name: charOption, type: 'number' },
           ],
+          data: defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList[charOption].map(i => i[Object.keys(i)[0]]) : [],
+
         },
       ],
       dataZoom: [{
@@ -112,7 +110,7 @@ const DefectTreatment = memo(({
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>缺陷提出与解决</span>
-      <OverviewWrap.Switch defaultValue="todo" onChange={setCharOption} options={options} />
+      <OverviewWrap.Switch defaultValue="createdList" onChange={setCharOption} options={options} />
     </div>
   );
   return (

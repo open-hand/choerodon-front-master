@@ -6,9 +6,9 @@ import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import WaterWave from './components/WaterWave';
 import { useProjectOverviewStore } from '../../stores';
-
+import two from '../number-font/2.svg'
 const clsPrefix = 'c7n-project-overview-sprint-water-wave';
-const SprintPie = memo(({
+const SprintPie = observer(({
   imageUrl,
   realName = '王王王',
   roles = ['admin', 'admin'],
@@ -71,8 +71,9 @@ const SprintPie = memo(({
 
     };
   }
-  console.log('sprintWaterWaveDataSet', sprintWaterWaveDataSet);
-  return (
+  const remainingDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : 0;
+  const totalDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('totalDays') : 0;
+  return (sprintWaterWaveDataSet.current &&
     <OverviewWrap>
       <OverviewWrap.Header title="冲刺未完成情况" />
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
@@ -80,11 +81,12 @@ const SprintPie = memo(({
           {/* <Echart option={getOptions()} /> */}
           <WaterWave
             height={120}
+            // color="rgba(77, 144, 254, 1)"
             title="剩余时间"
-            percent={36} // "totalDays": remainingDays
+            percent={totalDays && remainingDays > 0 ? (totalDays - remainingDays) / totalDays : 100} // "totalDays": remainingDays
             percentRender={() => (
               <div className={`${clsPrefix}-percent`}>
-                remainingDays
+                {sprintWaterWaveDataSet.current.get('remainingDays')}
                 <span>天</span>
               </div>
             )}
@@ -93,15 +95,15 @@ const SprintPie = memo(({
         <ul className={`${clsPrefix}-content-right`}>
           <li>
             <label>问题数</label>
-            <span>issueCount(个)</span>
+            <span>{sprintWaterWaveDataSet.current.get('issueCount')}(个)</span>
           </li>
           <li>
             <label>故事点</label>
-            <span>storyPoints(个)</span>
+            <span>{sprintWaterWaveDataSet.current.get('storyPoints')}(个)</span>
           </li>
           <li>
             <label>剩余工时</label>
-            <span>remainingEstimatedTime(个)</span>
+            <span>{sprintWaterWaveDataSet.current.get('remainingEstimatedTime')}(个)</span>
           </li>
         </ul>
       </OverviewWrap.Content>

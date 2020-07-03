@@ -19,7 +19,7 @@ const InnerIndex = ({ match, AutoRouter }) => (
       <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
       <Route exact path={`${match.url}workbench`} component={WorkBench} />
       <Route exact path={`${match.url}projectsPro`} component={ProjectsPro} />
-      <Route exact path={`${match.url}agile/scrumboard`} component={ProjectOverview} />
+      <Route exact path={`${match.url}agile/project-overview`} component={ProjectOverview} />
 
       <Route path={match.url} component={AutoRouter} />
     </Switch>

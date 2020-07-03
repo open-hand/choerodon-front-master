@@ -12,7 +12,6 @@ const Workload = memo(({
   const clsPrefix = 'c7n-project-overview-workload';
   const [selectValue, setSelectValue] = useState('remember');
   const handleChangeSelect = () => {
-    console.log('handleChangeSelect');
     // setSelectValue
   };
   const renderTitle = () => (

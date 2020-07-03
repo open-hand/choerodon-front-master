@@ -15,9 +15,8 @@ const DateTable = memo(({
   const clsPrefix = 'c7n-project-overview-date-table';
   const [selectValue, setSelectValue] = useState('remember');
   const [columSize, setColumSize] = useState(8);
-  const [dateList, setDateList] = useState(new Array(8));
+  const [dateList, setDateList] = useState(dateData);
   const handleChangeSelect = () => {
-    console.log('handleChangeSelect');
     // setSelectValue
   };
   const Cell = memo(({ children, className }) => <div className={`${clsPrefix}-cell ${className || ''}`}>
@@ -71,7 +70,6 @@ const DateTable = memo(({
     console.log('useEffect', dateList);
   }, []);
   useEffect(() => {
-    console.log('dateList', dateList);
 
   }, [dateList])
   return (

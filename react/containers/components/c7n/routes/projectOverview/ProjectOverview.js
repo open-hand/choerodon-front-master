@@ -18,10 +18,9 @@ import CommitChart from './components/commit-chart';
 import DefectChart from './components/defect-chart';
 
 const ProjectOverview = () => {
-  console.log('ProjectOverview')
   return (
     <Page className="c7n-project-overview">
-      <Breadcrumb title="项目概览" />
+      {/* <Breadcrumb title="项目概览" /> */}
       <Content>
 
         {/* <div className="c7n-project-overview-header">

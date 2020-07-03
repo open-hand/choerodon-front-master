@@ -3,6 +3,7 @@ import { Button, Tooltip, Select, Progress, Icon } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
+import normalToSvg from '../number-font';
 import './index.less';
 
 const { Option } = Select;
@@ -13,10 +14,8 @@ const SprintCount = observer(({
   const { sprintCountDataSet } = useProjectOverviewStore();
   const [selectValue, setSelectValue] = useState('exist');
   const handleChangeSelect = () => {
-    console.log('handleChangeSelect');
     // setSelectValue
   };
-  console.log('sprintCountDataSet', sprintCountDataSet);
   const renderTitle = () => (
     <div>迭代问题统计
       <Tooltip title="当前迭代各个工作项在不同状态下的数量统计。">
@@ -33,9 +32,9 @@ const SprintCount = observer(({
     for (const key of keys) {
       progressArr.push(<div className={`${clsPrefix}-issue`}>
         <span className={`${clsPrefix}-issue-name`}>{sprintCountDataSet.getField(key).pristineProps.label}</span>
-        <h3 className={`${clsPrefix}-issue-number`}>{sprintCountDataSet.current.get(key)}</h3>
+        <h3 className={`${clsPrefix}-issue-number`}>{normalToSvg(sprintCountDataSet.current.get(key))}</h3>
         <Progress
-          value={40}
+          value={sprintCountDataSet.current.get(key) > 0 ? sprintCountDataSet.current.get(key) / sprintCountDataSet.current.get("total") *100 : 0}
           className={`${clsPrefix}-issue-${key}`}
           strokeWidth={4}
           showInfo={false}
