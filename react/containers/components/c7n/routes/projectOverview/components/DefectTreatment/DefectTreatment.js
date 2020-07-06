@@ -12,12 +12,21 @@ const DefectTreatment = observer(({
   const options = useMemo(() => [{ value: 'created', text: '提出' }, { value: 'completed', text: '解决' }], []);
   const clsPrefix = 'c7n-project-overview-defect-treatment';
   const { defectTreatmentStore } = useDefectTreatmentStore();
+  const [show, setShow] = useState(false);
   const [charOption, setCharOption] = useState('created'); // createdList completedList
+  useEffect(() => {
+    if (defectTreatmentStore.getChartList && defectTreatmentStore.getChartList.length > 6) {
+      setShow(true);
+    }
+  }, [defectTreatmentStore.getChartList])
   function getOptions(params) {
     return {
       legend: {
-        top: '24px',
+        top: '0',
         right: '8.2%',
+      },
+      grid: {
+        bottom: 66,
       },
       tooltip: {},
       dataset: {
@@ -43,8 +52,6 @@ const DefectTreatment = observer(({
             fontStyle: 'normal',
           },
         },
-        // data: defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList[charOption].map(i => Object.keys(i)[0]) : [],
-
       },
       yAxis: {
         name: '问题计数',
@@ -85,15 +92,15 @@ const DefectTreatment = observer(({
             { name: 'worker', type: 'ordinal' },
             { name: charOption, type: 'number' },
           ],
-          // data: defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList[charOption].map(i => i[Object.keys(i)[0]]) : [],
-
         },
       ],
       dataZoom: [{
+        bottom: 20,
+        show: show,
         type: 'slider',
         height: 15,
         startValue: 0,
-        endValue: 2,
+        endValue: 5,
         handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
         handleSize: '100%',
         handleStyle: {
@@ -117,7 +124,7 @@ const DefectTreatment = observer(({
   return (
     <OverviewWrap height={348}>
       <OverviewWrap.Header title={renderTitle()} />
-      <Echart style={{ height: '2.67rem' }} option={getOptions()} />
+      <Echart style={{ height: '2.8rem' }} option={getOptions()} />
     </OverviewWrap>
 
   );

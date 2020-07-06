@@ -6,10 +6,9 @@ import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import WaterWave from './components/WaterWave';
 import { useProjectOverviewStore } from '../../stores';
-import two from '../number-font/2.svg'
 import { EmptyPage } from '../EmptyPage';
 const clsPrefix = 'c7n-project-overview-sprint-water-wave';
-const SprintPie = observer(({
+const SprintWaterWave = observer(({
 }) => {
   const [loading, setLoading] = useState(true);
   const { sprintWaterWaveDataSet, projectOverviewStore } = useProjectOverviewStore();
@@ -125,4 +124,4 @@ const SprintPie = observer(({
   );
 });
 
-export default SprintPie;
+export default SprintWaterWave;

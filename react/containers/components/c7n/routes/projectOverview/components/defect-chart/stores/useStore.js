@@ -1,7 +1,7 @@
 import { useLocalStore } from 'mobx-react-lite';
 import { axios } from '@choerodon/boot';
 
-export default function useStore(organizationId, projectId) {
+export default function useStore(projectId) {
   return useLocalStore(() => ({
     chartList: undefined,
     get getChartList() {
@@ -15,7 +15,6 @@ export default function useStore(organizationId, projectId) {
         method: 'get',
         url: `/agile/v1/projects/${projectId}/project_overview/${sprintId}/issue_count`,
       }).then(res=>{
-        console.log('defect',res);
         this.setChartList(res)
       });
     },

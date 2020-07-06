@@ -12,7 +12,7 @@ export default function useStore(projectId) {
     sprints: [],
     staredSprint: undefined,
     get getIsFinishLoad() {
-      return this.sprints;
+      return this.isFinishLoad;
     },
     setIsFinishLoad(data) {
       this.isFinishLoad = data;

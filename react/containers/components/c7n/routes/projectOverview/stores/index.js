@@ -36,7 +36,6 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
       },
     );
   }, []);
-
   const value = {
     ...props,
     sprintCountDataSet,

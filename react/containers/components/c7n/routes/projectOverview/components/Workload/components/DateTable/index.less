@@ -1,4 +1,5 @@
 @borderColor: rgba(0, 0, 0, 0.12);
+@fontColor: rgba(58, 52, 95, 1);
 @headerHeight: .58rem;
 @columWidth: 12.5%;
 
@@ -6,15 +7,25 @@
   width: 100%;
   height: auto;
   border: 1px solid @borderColor;
+  color: @fontColor;
 
   &-header {
     width: 100%;
     height: @headerHeight;
     border-bottom: 1px solid @borderColor;
     display: inline-flex;
-
+    .margin-right {
+      margin-right: .09rem;
+    }
     &-btn {
-
+      // .c7n-pro-btn:disabled::before {
+      //   background-color: transparent;
+      // }
+      // .c7n-pro-btn-disabled {
+      //   .c7n-pro-btn-primary.c7n-pro-btn-flat {
+      //     color: #fff;
+      //   }
+      // }
       width: 0;
       height: 0;
       position: relative;
@@ -35,9 +46,10 @@
       height: @headerHeight;
       font-size: .13rem;
       font-weight: 500;
-      color: rgba(58, 52, 95, 1);
+      padding-top: .2rem; 
+      // color: rgba(58, 52, 95, 1);
       line-height: .18rem;
-
+      
       &-top {
         width: 129px; //error
         position: relative;
@@ -52,31 +64,33 @@
           width: 100%;
           height: .24rem;
           box-sizing: border-box;
-          border-bottom: 1px solid @borderColor;
+          border-bottom: .008rem solid @borderColor;
           transform: rotateZ(27deg) scale(1.2903);
         }
 
         div {
           font-size: .12rem;
           font-weight: 400;
-          color: rgba(58, 52, 95, 1);
           line-height: .17rem;
         }
 
         &-x {
           position: relative;
           right: .23rem;
-          bottom: .13rem;
+          bottom: .3rem;
           text-align: right;
         }
 
         &-y {
           position: relative;
-          top: .31rem;
-          left: .2rem;
+          top: .12rem;
+          left: .18rem;
           width: max-content;
           text-align: left;
         }
+      }
+      &-content{
+          margin-left: .04rem;
       }
     }
 
@@ -110,9 +124,12 @@
       }
 
       &-first {
-        width: 1.29rem; //error
+        width: 1.22rem; //error
+        padding: .10rem 0.3rem; 
         // background-color: red;
-
+        span{
+          // background-color: red;
+        }
       }
     }
   }
@@ -120,7 +137,6 @@
   &-cell {
     // height: 123px;
     // width: 50px;
-    padding-top: .2rem; //error
     text-align: center;
     // border-bottom: 1px solid @borderColor;
 
