@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
-import {DataSet, Form, Select, SelectBox, TextField, Tooltip} from "choerodon-ui/pro";
-import addLinkDataSet from './stores/addLinkDataSet';
-import { Icon } from "choerodon-ui";
+import { DataSet, Form, Select, SelectBox, TextField, Tooltip } from 'choerodon-ui/pro';
+import { Icon } from 'choerodon-ui';
 import axios from '@/containers/components/c7n/tools/axios';
+import addLinkDataSet from './stores/addLinkDataSet';
 
 let size = 10;
 
@@ -12,11 +12,10 @@ const { Option } = Select;
 export default observer(({ AppState, modal, useStore, data, workBenchUseStore }) => {
   const dataSet = useMemo(() => new DataSet(addLinkDataSet(AppState)), []);
 
-  const optionRenderer = ({ text }) => renderer({ text });
-
-  const renderer = ({ text }) => {
-    return (text === '加载更多' ? (
-      <a onClick={(e) => {
+  const renderer = ({ text }) => (text === '加载更多' ? (
+    <a
+      style={{ display: 'block', width: '100%' }}
+      onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
         size += 10;
@@ -28,10 +27,13 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore })
             });
           }
           dataSet.getField('projectId').props.lookup = res.content;
-        })
-      }}>{text}</a>
-    ) : text)
-  };
+        });
+      }}
+    >{text}
+    </a>
+  ) : text);
+
+  const optionRenderer = ({ text }) => renderer({ text });
 
   const handleSumbit = async () => {
     try {
@@ -53,26 +55,24 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore })
       dataSet.reset();
       return true;
     }
-  }
+  };
 
-  modal.handleOk(handleSumbit)
+  modal.handleOk(handleSumbit);
 
   modal.handleCancel(() => {
     dataSet.reset();
-  })
+  });
+
+  const [isProject, setIsProject] = useState(true);
 
   useEffect(() => {
     if (data) {
       dataSet.loadData([data]);
       setIsProject(data.scope !== 'self');
-    } else {
-      if (workBenchUseStore.getActiveStarProject) {
-        dataSet.current.set('projectId', workBenchUseStore.getActiveStarProject.id)
-      }
+    } else if (workBenchUseStore.getActiveStarProject) {
+      dataSet.current.set('projectId', workBenchUseStore.getActiveStarProject.id);
     }
-  }, [])
-
-  const [isProject, setIsProject] = useState(true);
+  }, []);
 
   return (
     <Form className="addQuickLinkForm" dataSet={dataSet}>
@@ -83,7 +83,7 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore })
       </p>
       <SelectBox
         className="addQuickLinkForm-scope"
-        onChange={(data) => setIsProject(data === 'project')}
+        onChange={(dataSource) => setIsProject(dataSource === 'project')}
         name="scope"
       >
         <Option value="project">项目可见</Option>
@@ -103,5 +103,5 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore })
       <TextField name="name" />
       <TextField name="linkUrl" />
     </Form>
-  )
+  );
 });
