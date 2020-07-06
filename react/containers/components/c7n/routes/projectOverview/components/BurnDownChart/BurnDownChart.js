@@ -208,8 +208,6 @@ const BurnDownChart = observer(({
           show: true,
           lineStyle: {
             color: '#eee',
-            type: 'solid',
-            width: 2,
           },
         },
         axisLabel: {
@@ -227,8 +225,6 @@ const BurnDownChart = observer(({
           interval: 0,
           lineStyle: {
             color: ['#eee'],
-            width: 1,
-            type: 'solid',
           },
         },
       },
@@ -238,24 +234,34 @@ const BurnDownChart = observer(({
           color: '#000',
         },
         nameGap: 22,
-        type: 'value',
-        axisTick: { show: false },
-        axisLine: {
+        type: 'value',     
+        splitLine: {
           show: true,
           lineStyle: {
             color: '#eee',
             type: 'solid',
-            width: 2,
+            width: 1,
+          },
+        },
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: '#eee',
+          },
+        },
+        axisTick: {
+          show: false,
+        },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: ['#eee'],
           },
         },
         axisLabel: {
-          show: true,
-          interval: 'auto',
-          margin: 18,
           textStyle: {
             color: 'rgba(0, 0, 0, 0.65)',
             fontSize: 12,
-            fontStyle: 'normal',
           },
           formatter(value, index) {
             if (selectValue === 'remainingEstimatedTime' && value) {
@@ -263,14 +269,6 @@ const BurnDownChart = observer(({
             } else {
               return value;
             }
-          },
-        },
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: '#eee',
-            type: 'solid',
-            width: 1,
           },
         },
       },
