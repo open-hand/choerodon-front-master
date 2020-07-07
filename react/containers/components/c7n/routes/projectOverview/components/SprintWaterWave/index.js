@@ -86,7 +86,7 @@ const SprintWaterWave = observer(({
             height={120}
             // color="rgba(77, 144, 254, 1)"
             title="剩余时间"
-            percent={totalDays && remainingDays > 0 ? (totalDays - remainingDays) / totalDays : 100} // "totalDays": remainingDays
+            percent={totalDays && remainingDays > 0 ? (totalDays - remainingDays) / totalDays * 100 : 100} // "totalDays": remainingDays
             percentRender={() => (
               <div className={`${clsPrefix}-percent`}>
                 {sprintWaterWaveDataSet.current.get('remainingDays')}
@@ -111,7 +111,7 @@ const SprintWaterWave = observer(({
         </ul>
       </OverviewWrap.Content>
     }
-    return <EmptyPage content="暂无活跃的冲刺"/>
+    return <EmptyPage content="暂无活跃的冲刺" />
   }
   return (
     <OverviewWrap height={225}>
