@@ -31,24 +31,19 @@ const DefectChart = observer(() => {
   }, [projectOverviewStore.getStaredSprint]);
   useEffect(() => {
     if (defectChartStore.getChartList) {
-      let maps = new Map();
+      const range = moment.range(projectOverviewStore.getStaredSprint.startDate, moment());
+      const days = Array.from(range.by('day'));
+      let maps = new Map(days.map(day => [day.format('MM/DD'), { complete: 0, create: 0 }]));
       defectChartStore.getChartList.completedList.forEach(obj => {
         const date = Object.keys(obj)[0].substring(5).replace(/-/g, '/');
         maps.set(date, { complete: Object.values(obj)[0], create: 0 })
       });
       defectChartStore.getChartList.createdList.forEach(obj => {
         const date = Object.keys(obj)[0].substring(5).replace(/-/g, '/');
-        if (maps.has(date)) {
-          const map = maps.get(date);
-          maps.set(date, { ...map, create: Object.values(obj)[0] });
-        } else {
-          maps.set(date, { complete: 0, create: Object.values(obj)[0] });
-        }
+        const map = maps.get(date);
+        maps.set(date, { ...map, create: Object.values(obj)[0] });
       });
       const chartDataArr = Array.from(maps);
-      chartDataArr.sort(function (a, b) {
-        return moment(a[0], 'MM/DD').isAfter(moment(b[0], 'MM/DD')) ? 1 : -1;
-      })
       const date = [];
       const complete = [];
       const create = [];
