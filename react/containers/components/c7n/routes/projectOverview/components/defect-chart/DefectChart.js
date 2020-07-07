@@ -2,13 +2,18 @@ import React, { useState, memo, useMemo, useEffect } from 'react';
 import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
+import moment from 'moment';
 import OverviewWrap from '../OverviewWrap';
 import { useDefectChartStore } from './stores';
 import './index.less';
+import { EmptyPage } from '../EmptyPage';
+import { useProjectOverviewStore } from '../../stores';
 
 const DefectChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-defect-chart';
   const { defectChartStore } = useDefectChartStore();
+  const { projectOverviewStore } = useProjectOverviewStore();
+  const [loading, setLoading] = useState(false);
   const [dataset, setDataset] = useState({ date: [], complete: [], create: [] });
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
@@ -16,6 +21,14 @@ const DefectChart = observer(() => {
     </div>
 
   );
+  useEffect(() => {
+    if (projectOverviewStore.getStaredSprint) {
+      setLoading(true);
+      defectChartStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId).then(() => {
+        setLoading(false);
+      });
+    }
+  }, [projectOverviewStore.getStaredSprint]);
   useEffect(() => {
     if (defectChartStore.getChartList) {
       let maps = new Map();
@@ -32,13 +45,18 @@ const DefectChart = observer(() => {
           maps.set(date, { complete: 0, create: Object.values(obj)[0] });
         }
       });
+      const chartDataArr = Array.from(maps);
+      chartDataArr.sort(function (a, b) {
+        return moment(a[0], 'MM/DD').isAfter(moment(b[0], 'MM/DD')) ? 1 : -1;
+      })
       const date = [];
       const complete = [];
       const create = [];
-      for (const map of maps) {
-        date.push(map[0]);
-        complete.push(map[1].complete);
-        create.push(map[1].create);
+      for (let i = 0; i < chartDataArr.length; i++) {
+        const item = chartDataArr[i];
+        date.push(item[0]);
+        complete.push(item[1].complete);
+        create.push(item[1].create);
       }
       setDataset({ date, complete, create });
     }
@@ -69,11 +87,11 @@ const DefectChart = observer(() => {
       },
       dataset: {
         source: dataset,
-        // dimensions: [
-        //   { name: 'date', type: 'ordinal' },
-        //   { name: 'add', type: 'number' },
-        //   { name: 'score', type: 'number' },
-        // ],
+        dimensions: [
+          { name: 'date', type: 'ordinal' },
+          { name: 'create', type: 'number' },
+          { name: 'complete', type: 'number' },
+        ],
       },
       grid: {
         y2: 35,
@@ -168,12 +186,14 @@ const DefectChart = observer(() => {
     };
 
   }
+
+
   return (
     <OverviewWrap width="57%" height={302}>
       <OverviewWrap.Header title={renderTitle()} />
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
-        <Spin spinning={!defectChartStore.getChartList}>
-          <Echart option={getOptions()} />
+        <Spin spinning={loading}>
+          {projectOverviewStore.getStaredSprint ? <Echart option={getOptions()} /> : <EmptyPage content="暂无活跃的冲刺" />}
         </Spin>
       </OverviewWrap.Content>
     </OverviewWrap>
