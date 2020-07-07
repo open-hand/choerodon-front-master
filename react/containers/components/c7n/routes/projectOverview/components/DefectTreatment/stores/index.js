@@ -20,11 +20,7 @@ export const StoreProvider = inject('AppState')(observer((props) => {
   } = props;
   const { projectOverviewStore } = useProjectOverviewStore();
   const defectTreatmentStore = useStore(organizationId, projectId);
-  useEffect(()=>{
-    if(projectOverviewStore.getStaredSprint){
-      defectTreatmentStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId);
-    }
-  },[projectOverviewStore.getStaredSprint])
+
   const value = {
     ...props,
     defectTreatmentStore,

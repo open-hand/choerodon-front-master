@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import autoHeight from './autoHeight';
-import styles from './index.less';
+import './index.less';
 
 /* eslint no-return-assign: 0 */
 /* eslint no-mixed-operators: 0 */
@@ -205,19 +205,19 @@ class WaterWave extends React.Component {
     const { percent, percentRender, title, height = 1 } = this.props;
     return (
       <div
-        className={styles.waterWave}
+        className="c7n-waterWave"
         ref={(n) => (this.root = n)}
         style={{ transform: `scale(${radio})` }}
       >
         <div style={{ width: height, height, overflow: 'hidden' }}>
           <canvas
-            className={styles.waterWaveCanvasWrapper}
+            className="c7n-waterWave-waterWaveCanvasWrapper"
             ref={(n) => (this.node = n)}
             width={height * 2}
             height={height * 2}
           />
         </div>
-        <div className={styles.text} style={{ width: height }}>
+        <div className="c7n-waterWave-text" style={{ width: height }}>
           {title && <span>{title}</span>}
           <h4>{percentRender ? percentRender(percent) : `${percent}%`}</h4>
         </div>

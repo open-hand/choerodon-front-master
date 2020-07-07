@@ -51,7 +51,6 @@ const BurnDownChart = observer(({
       let allDate;
       let rest = [];
       const endDate = projectOverviewStore.getStaredSprint.endDate;
-
       /* eslint-disable */
       if (moment(maxDate).isBefore(endDate.split(' ')[0])) {
         const result = getBetweenDateStr(minDate, endDate.split(' ')[0]);
@@ -234,7 +233,7 @@ const BurnDownChart = observer(({
           color: '#000',
         },
         nameGap: 22,
-        type: 'value',     
+        type: 'value',
         splitLine: {
           show: true,
           lineStyle: {
@@ -350,7 +349,7 @@ const BurnDownChart = observer(({
     <OverviewWrap height={333}>
       <OverviewWrap.Header title={renderTitle()} />
       <Spin spinning={projectOverviewStore.getIsFinishLoad && loading}>
-          {render()}
+        {render()}
       </Spin>
     </OverviewWrap>
 

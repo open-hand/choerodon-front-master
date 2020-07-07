@@ -5,6 +5,9 @@ import Echart from 'echarts-for-react';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import { useDefectTreatmentStore } from './stores';
+import { Spin } from 'choerodon-ui';
+import { useProjectOverviewStore } from '../../stores';
+import { EmptyPage } from '../EmptyPage';
 
 const DefectTreatment = observer(({
 
@@ -13,7 +16,17 @@ const DefectTreatment = observer(({
   const clsPrefix = 'c7n-project-overview-defect-treatment';
   const { defectTreatmentStore } = useDefectTreatmentStore();
   const [show, setShow] = useState(false);
+  const [loading,setLoading] =useState(false);
   const [charOption, setCharOption] = useState('created'); // createdList completedList
+  const { projectOverviewStore } = useProjectOverviewStore();
+  useEffect(()=>{
+    if(projectOverviewStore.getStaredSprint){
+      setLoading(true);
+      defectTreatmentStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId).then(()=>{
+        setLoading(false);
+      })
+    }
+  },[projectOverviewStore.getStaredSprint])
   useEffect(() => {
     if (defectTreatmentStore.getChartList && defectTreatmentStore.getChartList.length > 6) {
       setShow(true);
@@ -37,12 +50,14 @@ const DefectTreatment = observer(({
         axisTick: { show: false },
         interval: 0,
         axisLine: {
-          show: true,
+          show: false,
           lineStyle: {
             color: '#eee',
-            type: 'solid',
-            width: 2,
           },
+          onZero: true,
+        },
+        splitLine: {
+          show: false,
         },
         axisLabel: {
           show: true,
@@ -61,11 +76,13 @@ const DefectTreatment = observer(({
         nameGap: 23,
         axisTick: { show: false },
         axisLine: {
+          show: false,
+
+        },
+        splitLine: {
           show: true,
           lineStyle: {
-            color: '#eee',
-            type: 'solid',
-            width: 2,
+            color: 'rgba(238, 238, 238, 1)',
           },
         },
         axisLabel: {
@@ -118,13 +135,17 @@ const DefectTreatment = observer(({
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>缺陷提出与解决</span>
-      <OverviewWrap.Switch defaultValue="created" onChange={setCharOption} options={options} />
+      {projectOverviewStore.getStaredSprint ? <OverviewWrap.Switch defaultValue="created" onChange={setCharOption} options={options} /> : ''}
     </div>
   );
   return (
     <OverviewWrap height={348}>
       <OverviewWrap.Header title={renderTitle()} />
-      <Echart style={{ height: '2.8rem' }} option={getOptions()} />
+      <Spin spinning={loading}>
+        {projectOverviewStore.getStaredSprint ? <Echart style={{ height: '2.8rem' }} option={getOptions()} /> :
+          <EmptyPage content="暂无活跃的冲刺" />
+        }
+      </Spin>
     </OverviewWrap>
 
   );

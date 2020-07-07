@@ -111,7 +111,7 @@ const SprintWaterWave = observer(({
         </ul>
       </OverviewWrap.Content>
     }
-    return <EmptyPage />
+    return <EmptyPage content="暂无活跃的冲刺"/>
   }
   return (
     <OverviewWrap height={225}>

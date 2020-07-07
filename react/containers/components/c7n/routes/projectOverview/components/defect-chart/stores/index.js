@@ -18,13 +18,8 @@ export const StoreProvider = inject('AppState')(observer((props) => {
     children,
     AppState: { currentMenuType: { organizationId, projectId } },
   } = props;
-  const { projectOverviewStore } = useProjectOverviewStore();
   const defectChartStore = useStore(projectId);
-  useEffect(()=>{
-    if(projectOverviewStore.getStaredSprint){
-      defectChartStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId);
-    }
-  },[projectOverviewStore.getStaredSprint])
+
   const value = {
     ...props,
     defectChartStore,

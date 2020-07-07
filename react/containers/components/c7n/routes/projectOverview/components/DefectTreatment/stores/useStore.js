@@ -3,6 +3,13 @@ import { axios } from '@choerodon/boot';
 
 export default function useStore(organizationId, projectId) {
   return useLocalStore(() => ({
+    loading:true,
+    get getLoading() {
+      return this.loading;
+    },
+    setLoading(data) {
+      this.loading = data;
+    },
     chartList: undefined,
     get getChartList() {
       return this.chartList;

@@ -27,13 +27,13 @@ function EmptyImg({ height, width }) {
     </svg>
 
 }
-export function EmptyPage({ imgHeight, imgWidth }) {
+export function EmptyPage({ imgHeight, imgWidth, content }) {
 
     return <div className={clsPrefix}>
         <EmptyImg height={80} width={80} />
         {/* <div className={`${clsPrefix}-img`} /> */}
         <div className={`${clsPrefix}-text`}>
-            当前冲刺下无问题
+            {content || '当前冲刺下无问题'}
         </div>
 
     </div>
