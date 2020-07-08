@@ -52,12 +52,11 @@ export default function useStore(projectId) {
         res.forEach(item => {
           date.push(item.workDate);// 收集列数据
           total.push(item.total); // 收集总计数据
-          const assignee = new Map(item.jobList.map(i => {
+          const assignee = observable.map(item.jobList.map(i => {
             assigneeSet.add(i.worker); // 收集内容行首数据
             return [i.worker, i];
           }));
           data.set(item.workDate, assignee); // 收集对应日期下的人数据
-
         });
         this.setTotal(total);
         this.setData(data);
