@@ -89,8 +89,7 @@ const DefectChart = observer(() => {
         ],
       },
       grid: {
-        y2: 35,
-
+        y2: 40,
         left: 20,
         right: '40',
         containLabel: true,

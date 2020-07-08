@@ -4,16 +4,25 @@ import { observer } from 'mobx-react-lite';
 import './index.less';
 const { Option } = Select;
 /**
+ * 行列表格
  * @param {Array<string>} headerText 左上角数据
- * @param {Array<{}>}  rows 行数据， 需要有name名字，data对应这一行的数据
- * 
+ * @param {number}  columnLength 需要显示的列长
+ * @param {number}  cellHeight 内容页的单元格高
+ * @param {number}  rowLength 需要显示的几行
+ * @param {Array<string>}  columns 列数据
+ * @param {number}  current 从哪一列定位首列
+ * @param {Array<string>}  rowIndex 行名数组
+ * @param {Function}  render 单元格渲染
+ * @param {Map<key,Map<key,object>>}  quickMapData 快速查询数据的map
+ * @param {Array<number>}  filterRowIndex 筛选的行序列号
+ * @param {Array<{}>}  sumArr 最后一行数据
+ * @param {boolean}  isSum 是否有最后一行
+ * @param {boolean}  headerSplit 头部列是否有分割线
  */
-let refs = [null, null, null];
-
 const DateTable = observer(({
   headerTexts = ['成员', '日期'],
   columnLength = 7,
-  rowHeight,
+  cellHeight,
   rowLength = 3,
   columns = undefined,
   current = 0,
@@ -25,42 +34,42 @@ const DateTable = observer(({
   isSum = true,
   headerSplit = false,
 }) => {
-  useEffect(() => {
 
-  }, []);
   const rowRef = useRef();
   const clsPrefix = 'c7n-project-overview-date-table';
-  const [selectValue, setSelectValue] = useState('remember');
   const [columnSize, setColumnSize] = useState(columnLength);
   const [currentPosition, setCurrentPosition] = useState(current);
   const [sumData, setData] = useState(sumArr);
-  const [scrollHeight, setScrollHeight] = useState(0);
   const [dateList, setDateList] = useState([]);
   const [rowMap, setRowMap] = useState();
+  // 对列进行处理
   useEffect(() => {
     setDateList(columns);
   }, [columns]);
 
-  const handleChangeSelect = () => {
-    // setSelectValue
-  };
+  /**
+   * 渲染除列名单元格外的单元格
+   * @param {*} data 
+   */
   const renderCell = (data) => {
     if (render) {
       return render(data);
     }
     return data.toString();
   };
-  const Cell = memo(({ children, className }) => <div className={`${clsPrefix}-cell ${className || ''}`} style={{ height: rowHeight }}>
+  // 单元格
+  const Cell = memo(({ children, className }) => <div className={`${clsPrefix}-cell ${className || ''}`} style={{ height: cellHeight }}>
     {children}
   </div>);
+  // 行
   const Row = memo(({ sum, rowName, size = columnSize, data = new Map(), children, className }) => {
     const cells = [];
-    // 增加x轴
+    // 增加y轴
     cells.push(<Cell className={`${clsPrefix}-row-cell-first border-right`}><span>{rowName}</span></Cell>)
     // 增加内容页  从当前位置出发
     for (let index = currentPosition; index < size && index < dateList.length; index++) {
       const currentDate = columns[index];
-      cells.push(<Cell className={`${clsPrefix}-row-cell`}>{renderCell(sum ? data[index] : data.get(currentDate).get(rowName))}</Cell>);
+      cells.push(<Cell className={`${clsPrefix}-row-cell animate-table`}>{renderCell(sum ? data[index] : data.get(currentDate).get(rowName))}</Cell>);
     }
     // 填补空白格
     if (size > cells.length) {
@@ -69,33 +78,64 @@ const DateTable = observer(({
         cells.push(<Cell className={`${clsPrefix}-row-cell`}></Cell>);
       }
     }
-
     return <div className={`${clsPrefix}-row`}>
       {children || cells}
     </div>;
   });
 
+  /**
+   * 根据传入的 rowLength 行数进行显示的高度调整 
+   * @param {*} isAuto 
+   */
+  function resetScrollHeight(isAuto = false) {
+    let scrollHeight = 'auto';
+    const element = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
+    if (!isAuto) {
+      let height = 0;
+      scrollHeight = "";
+      const els = [];
+      const elements = rowRef.current.getElementsByClassName('c7n-project-overview-date-table-row');
+      for (let i = 0; elements && i < rowLength && i < elements.length; i++) {
+        height += elements[i].offsetHeight;
+        els.push(elements[i]);
+      }
+      scrollHeight = height + 'px';
+    }
+    // 如果相等就放弃更改高度
+    if (element.style.height === scrollHeight) {
+      return;
+    }
+    rowRef.current.style.height = scrollHeight;
+  }
+  //  行初始化完成后，进行高度调整
   useEffect(() => {
     // const doc = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
     if (rowRef.current && rowLength < rowIndex.length) {
-      let height = 0;
-      const elements = rowRef.current.getElementsByClassName('c7n-project-overview-date-table-row');
-      for (let i = 0; i < rowLength; i++) {
-        height += elements[i].offsetHeight;
-      }
-      setScrollHeight(height);
+      resetScrollHeight();
     }
-
-  }, [rowRef]);
+  }, [rowIndex]);
+  //  根据选择成员自动调整高度 进行滚动
   useEffect(() => {
-    if (scrollHeight !== 0) {
-      const element = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
-      element.style.height = scrollHeight + 'px';
+    if (rowRef.current) {
+      if (filterRowIndex.length > 0 && filterRowIndex.length <= rowLength) {
+        resetScrollHeight(true);
+      } else {
+        resetScrollHeight();
+      }
     }
-  }, [scrollHeight])
+  }, [filterRowIndex]);
+  // 切换行时进行高度调整
+  useEffect(() => {
+    resetScrollHeight();
+  }, [currentPosition])
+
+  /**
+   * 渲染底部 （即最后一行)
+   */
   const renderFooter = () => {
     // 假如有数据，则增加一行总计
     if (isSum && rowIndex.length > 0 && sumData) {
+      // 如果有筛选，则计算每一列的数据的和
       if (filterRowIndex.length > 0 && filterRowIndex.length !== rowIndex.length) {
         const newSumData = [];
         sumData.forEach((obj, index) => { //遍历总计
@@ -121,14 +161,16 @@ const DateTable = observer(({
         return <Row rowName="总计" data={newSumData} sum={isSum} />
       }
 
-
       return <Row rowName="总计" data={sumData} sum={isSum} />
     }
   };
+  /**
+   * 渲染行
+   */
   const renderRows = () => {
     if (rowIndex.length === 0) {
       return <Row>
-        暂无数据
+        <span className={`${clsPrefix}-row-no-data`}>暂无数据</span>
       </Row>
     }
     const rowArr = rowIndex.filter((row, index) => filterRowIndex.length === 0 || filterRowIndex.some(f => f === index)).map((row) => {
@@ -136,6 +178,10 @@ const DateTable = observer(({
     });
     return rowArr;
   };
+  /**
+   * 前后翻页
+   * @param {*} isNext 是否向后翻
+   */
   const handlePreOrNext = (isNext) => {
     if (currentPosition >= 0 && currentPosition <= dateList.length - columnSize) {
       if (isNext && currentPosition < dateList.length - columnSize) {
@@ -143,9 +189,13 @@ const DateTable = observer(({
       } else if (!isNext && currentPosition !== 0) {
         setCurrentPosition(currentPosition - 1)
       }
-    }
 
+    }
   };
+  /**
+   * 渲染前后翻页按钮
+   * @param {*} isNext 是否向后翻
+   */
   const renderPreOrNext = (isNext = false) => {
     if (isNext) {
       return <span className={`${clsPrefix}-header-btn`}><Button
@@ -167,16 +217,18 @@ const DateTable = observer(({
       onClick={handlePreOrNext.bind(this, isNext)}
     /></span>;
   };
+  /**
+   * 渲染日历行 （即列名）
+   */
   const renderDate = () => {
     const dateCells = [];
     for (let index = 0; index < columnSize - 1; index++) {
-      dateCells.push(<Cell className={`${clsPrefix}-header-cell ${headerSplit ? 'border-right' : ''}`}><span className={`${clsPrefix}-header-cell-content`}>{dateList[currentPosition + index]}</span></Cell>)
+      dateCells.push(<Cell className={`${clsPrefix}-header-cell animate-table ${headerSplit ? 'border-right' : ''}`}><span className={`${clsPrefix}-header-cell-content`}>{dateList[currentPosition + index]}</span></Cell>)
     }
-    dateCells.push(<Cell className={`${clsPrefix}-header-cell`}><span className={`${clsPrefix}-header-cell-content margin-right`}>{dateList[currentPosition + columnSize - 1]}</span></Cell>)
+    dateCells.push(<Cell className={`${clsPrefix}-header-cell animate-table`}><span className={`${clsPrefix}-header-cell-content margin-right`}>{dateList[currentPosition + columnSize - 1]}</span></Cell>)
     return dateCells;
   };
 
-  console.log('renderrenderrender')
   return (
     <div className={`${clsPrefix}`}>
       <div className={`${clsPrefix}-header`}>
@@ -191,9 +243,11 @@ const DateTable = observer(({
       <div ref={rowRef} className={`${clsPrefix}-content`} >
         {renderRows()}
       </div>
-      <div className={`${clsPrefix}-footer`}>
-        {renderFooter()}
-      </div>
+      { // 无数据则不显示最后一行
+        rowIndex.length > 0 ? <div className={`${clsPrefix}-footer`}>
+          {renderFooter()}
+        </div> : ''
+      }
     </div >
   );
 });

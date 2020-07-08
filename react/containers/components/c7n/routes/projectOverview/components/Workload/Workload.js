@@ -1,13 +1,13 @@
 import React, { useState, memo, useEffect } from 'react';
 import { Button, Tooltip, Select, Icon } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
-import NewUserTrackTable from '../Test';
-import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import DateTable from './components/DateTable';
 import { useWorkloadStore } from './stores';
 import { useProjectOverviewStore } from '../../stores';
 import { EmptyPage } from '../EmptyPage';
+import './index.less';
+
 const { Option } = Select;
 const showIcons = [
     {
@@ -36,7 +36,7 @@ const showIcons = [
     },
 
     {
-        icon: 'watch_later',
+        icon: 'watch_later-o',
         colour: 'rgba(255, 185, 106, 1)',
         typeCode: 'workTime',
         label: '工时：',
@@ -55,10 +55,18 @@ const Workload = observer(({
             setSelectOption([]);
         }
     };
-
+    function checkIsZeroData(data, exceptKey) {
+        if (!data) {
+            return false;
+        }
+        delete data[exceptKey];
+        const values = Object.values(data);
+        return values.reduce((sum, c) => sum + c) > 0;
+    }
     const renderCell = (data) => {
         // console.log('data', data);
-        if (data) {
+
+        if (checkIsZeroData(data, 'worker')) {
             return <div className={`${clsPrefix}-cell`}>
                 {showIcons.map(item => {
                     return (<div className={`${clsPrefix}-cell-item`}>
@@ -84,17 +92,19 @@ const Workload = observer(({
             <Tooltip placement="topLeft" arrowPointAtCenter title="统计当前迭代内团队成员每天完成的任务数，完成的故事数量及其对应故事点数量，提出的缺陷数量，解决的缺陷数量，当天工作记录的总工时。">
                 <Icon type="help" className={`${clsPrefix}-icon`} />
             </Tooltip>
-            {
+            {// 若冲刺数据已加载完成 但工作量无数据则不显示
                 projectOverviewStore.getIsFinishLoad && workloadStore.getData ? <Select
                     multiple
-                    searchable
+                    // searchable
                     getPopupContainer={triggerNode => triggerNode.parentNode}
-                    style={{ marginLeft: 24, width: 100 }}
+                    style={{ marginLeft: 24 }}
                     className="c7n-project-overview-SelectTheme"
-                    label="选择成员"
-                    placeholder="选择成员"
+                    label="选择经办人"
+                    placeholder="选择经办人"
                     clearButton={true}
                     maxTagCount={5}
+                    popupCls="c7n-project-overview-assignee"
+                    popupStyle={{ minWidth: "2rem" }}
                     // defaultValue={selectValue}
                     onChange={handleChangeSelect}
                 >
@@ -111,7 +121,8 @@ const Workload = observer(({
             <OverviewWrap.Header title={renderTitle()} />
             <OverviewWrap.Content>
                 {projectOverviewStore.getIsFinishLoad && workloadStore.getData ? <DateTable
-                    rowHeight={150}
+                    rowHeight={138}
+                    current={workloadStore.getData.size > 7 ? workloadStore.getData.size - 7 : 0}
                     quickMapData={workloadStore.getData}
                     rowIndex={workloadStore.getAssignee}
                     filterRowIndex={selectOption}

@@ -1,12 +1,19 @@
 import { useLocalStore } from 'mobx-react-lite';
 import { observable } from 'mobx';
 import { axios } from '@choerodon/boot';
-
+import moment from 'moment';
 export default function useStore(projectId) {
   return useLocalStore(() => ({
     date: [],
     assignee: undefined,
     total: [],
+    currentIndex: 0,
+    get getCurrentIndex() {
+      return this.currentIndex;
+    },
+    setCurrentIndex(data) {
+      this.currentIndex = data;
+    },
     data: undefined,
     get getAssignee() {
       return this.assignee;
@@ -48,8 +55,9 @@ export default function useStore(projectId) {
           const assignee = new Map(item.jobList.map(i => {
             assigneeSet.add(i.worker); // 收集内容行首数据
             return [i.worker, i];
-          })); 
+          }));
           data.set(item.workDate, assignee); // 收集对应日期下的人数据
+
         });
         this.setTotal(total);
         this.setData(data);
