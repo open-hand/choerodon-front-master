@@ -14,13 +14,12 @@
     height: @headerHeight;
     border-bottom: 1px solid @borderColor;
     display: inline-flex;
-
+    // box-shadow: 0px 6px 6px -4px rgba(0, 0, 0, 0.12);
     .margin-right {
       margin-right: .09rem;
     }
 
     &-btn {
-
       .c7n-pro-btn-flat:enabled:hover,
       .c7n-pro-btn-flat:enabled:focus {
         background-color: rgba(244, 243, 248, 1);
@@ -31,11 +30,13 @@
       position: relative;
 
       &-left {
+        z-index: 3;
         left: 1px;
         top: 12px;
       }
 
       &-right {
+        z-index: 3;
         right: 32px;
         top: 12px;
       }
@@ -65,7 +66,7 @@
           height: .24rem;
           box-sizing: border-box;
           border-bottom: .006rem solid @borderColor;
-          transform: rotateZ(23deg) scale(1.2903);
+          transform: rotateZ(24deg) scale(1.2903);
         }
 
         div {
@@ -101,7 +102,7 @@
     width: 100%;
     // height: max-content;
     overflow-y: scroll;
-    min-height: 100px;
+    min-height: .5rem;
 
     .c7n-project-overview-date-table-row:not(:last-child) {
       border-bottom: 1px solid @borderColor;
@@ -113,6 +114,13 @@
     min-height: 50px;
     width: 100%;
     display: inline-flex;
+
+    &-no-data {
+      font-size: 0.12rem;
+      font-weight: 400;
+      line-height: 0.17rem;
+      margin: auto;
+    }
 
     &:not(:last-child) {
       border-bottom: none;
@@ -157,5 +165,60 @@
   &-footer {
     width: 99.5%;
     border-top: 1px solid @borderColor;
+    box-sizing: border-box;
+    // box-shadow: 0px -6px 6px -4px rgba(0, 0, 0, 0.12);
+  }
+
+  .animate-table {
+    animation-duration: 0.8s;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-name: tableSwitch;
+
+  }
+
+  @keyframes tableSwitch {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes antSlideDownIn {
+    0% {
+      opacity: 0;
+      transform-origin: 100% 100%;
+      transform: scaleY(.8);
+    }
+    100% {
+      opacity: 1;
+      transform-origin: 100% 100%;
+      transform: scaleY(1);
+    }
+  }
+  @keyframes antSlideLeftIn {
+    0% {
+      opacity: 0;
+      transform-origin: 0% 0%;
+      transform: scaleX(.8);
+    }
+    100% {
+      opacity: 1;
+      transform-origin: 0% 0%;
+      transform: scaleX(1);
+    }
+  }
+  
+  @keyframes c7nZoomIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.2);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 }

@@ -1,5 +1,5 @@
 import React, { useState, memo, useEffect } from 'react';
-import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
+import { Button, Tooltip, Spin, Icon } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import './index.less';
@@ -106,16 +106,23 @@ const SprintWaterWave = observer(({
           </li>
           <li>
             <label>剩余工时</label>
-            <span>{sprintWaterWaveDataSet.current.get('remainingEstimatedTime')}(个)</span>
+            <span>{sprintWaterWaveDataSet.current.get('remainingEstimatedTime')}(小时)</span>
           </li>
         </ul>
       </OverviewWrap.Content>
     }
     return <EmptyPage content="暂无活跃的冲刺" />
   }
+  const renderTitle = () => (
+    <div>冲刺未完成统计
+      <Tooltip title="统计当前迭代未完成的工作项数量、故事点数量、工时数量，以及当前迭代剩余天数。" placement="top">
+        <Icon type="help" className={`${clsPrefix}-icon`} />
+      </Tooltip>
+    </div>
+  );
   return (
     <OverviewWrap height={225}>
-      <OverviewWrap.Header title="冲刺未完成情况" />
+      <OverviewWrap.Header title={renderTitle()} />
       <Spin spinning={sprintWaterWaveDataSet && projectOverviewStore.getIsFinishLoad && loading}>
         {render()}
       </Spin>

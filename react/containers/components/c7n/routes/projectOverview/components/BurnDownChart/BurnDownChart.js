@@ -191,11 +191,8 @@ const BurnDownChart = observer(({
         }],
       },
       grid: {
-        y2: 30,
-        top: '60',
-        // left: '20',
-        left: 0,
-        right: '40',
+        bottom: 50,
+        left: 5,
         containLabel: true,
       },
       xAxis: {

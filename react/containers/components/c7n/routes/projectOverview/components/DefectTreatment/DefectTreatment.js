@@ -35,13 +35,18 @@ const DefectTreatment = observer(({
   function getOptions(params) {
     return {
       legend: {
-        top: '0',
+        top: show ? '0' : -5,
         right: '8.2%',
       },
       grid: {
-        bottom: 66,
+        bottom: show ? 66 : 45,
       },
-      tooltip: {},
+      tooltip: {
+        backgroundColor: 'rgba(0,0,0,0.75)',
+        textStyle: {
+          color: '#FFF',
+        },
+      },
       dataset: {
         source: defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList : [],
       },
