@@ -1,5 +1,5 @@
 import React, { useState, useCallback, Fragment } from 'react';
-import {TextField, Button, Pagination, Tooltip, Modal, message} from 'choerodon-ui/pro';
+import { TextField, Button, Pagination, Tooltip, Modal, message } from 'choerodon-ui/pro';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import Permission from '@/containers/components/c7n/tools/permission';
@@ -222,7 +222,7 @@ export default observer(() => {
       <div
         onClick={() => {
           if (p.enabled) {
-            handleClickProject(p)
+            handleClickProject(p);
           }
         }}
         className="allProjects-content-item"
@@ -238,6 +238,7 @@ export default observer(() => {
         >
           {!p.imageUrl && p.name && p.name.slice(0, 1)}
         </div>
+
         <div className="allProjects-content-item-right">
           <div className="allProjects-content-item-right-top">
             <div className="allProjects-content-item-right-top-left">
@@ -275,23 +276,33 @@ export default observer(() => {
                 </p>
               )}
             </Tooltip>
-            <p className="allProjects-content-item-right-down-text1">
-              <span>
-                <Icon type="project_line" />
-              </span>
-              <p>{p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
-            </p>
-            <p className="allProjects-content-item-right-down-text2">
 
-              {p.categories && p.categories.find(c => c.code === 'PROGRAM_PROJECT') && (
-                <React.Fragment>
-                  <span>
-                    <Icon type="project_group" />
-                  </span>
-                  <p>{p.categories.find(c => c.code === 'PROGRAM_PROJECT').name}</p>
-                </React.Fragment>
-              )}
-            </p>
+            <Tooltip
+              title={p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}
+            >
+              <p className="allProjects-content-item-right-down-text1">
+                <span>
+                  <Icon type="project_line" />
+                </span>
+                <p>{p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
+              </p>
+            </Tooltip>
+
+            {
+              p.programName
+              && (
+                <Tooltip title={p.programName}>
+                  <p className="allProjects-content-item-right-down-text2">
+                    <React.Fragment>
+                      <span>
+                        <Icon type="project_group" />
+                      </span>
+                      <p>{p.programName}</p>
+                    </React.Fragment>
+                  </p>
+                </Tooltip>
+              )
+            }
             <p className="allProjects-content-item-right-down-time">
               <Tooltip title={p.createUserName} placement="top">
                 <span

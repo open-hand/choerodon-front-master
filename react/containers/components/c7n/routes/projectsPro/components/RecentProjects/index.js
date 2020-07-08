@@ -2,11 +2,11 @@ import React from 'react';
 import { Icon } from 'choerodon-ui';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
-import { useProjectsProStore } from "../../stores";
+import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import ProjectTaskContent from '../projectTaskContent';
 
-import './index.less'
+import './index.less';
 
 export default observer(() => {
   const {
@@ -20,7 +20,7 @@ export default observer(() => {
       <div
         onClick={() => {
           if (r.enabled) {
-            ProjectsProUseStore.handleClickProject(r)
+            ProjectsProUseStore.handleClickProject(r);
           }
         }}
         className="recentProjects-content"
@@ -29,16 +29,16 @@ export default observer(() => {
         }}
       >
         <div className="recentProjects-content-time">
-        <span>
-          <Icon type="date_range-o" />
-        </span>
+          <span>
+            <Icon type="date_range-o" />
+          </span>
           <p>5分钟前</p>
           <p style={{ marginLeft: 5 }}>使用</p>
         </div>
         <ProjectTaskContent data={r} />
       </div>
-    ))
-  }
+    ));
+  };
 
   return (
     <div className="recentProjects">
@@ -49,5 +49,5 @@ export default observer(() => {
         {renderProjects()}
       </div>
     </div>
-  )
-})
+  );
+});

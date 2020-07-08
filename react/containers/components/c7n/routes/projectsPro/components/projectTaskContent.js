@@ -1,9 +1,9 @@
 import React from 'react';
-import {Icon} from "choerodon-ui";
-import { Tooltip } from "choerodon-ui/pro";
-import TimePopover from "@/containers/components/c7n/routes/workBench/components/time-popover";
-import { useProjectsProStore } from "../stores";
-import { getRandomBackground } from "@/containers/components/c7n/util";
+import { Icon } from 'choerodon-ui';
+import { Tooltip } from 'choerodon-ui/pro';
+import TimePopover from '@/containers/components/c7n/routes/workBench/components/time-popover';
+import { getRandomBackground } from '@/containers/components/c7n/util';
+import { useProjectsProStore } from '../stores';
 
 import './projectTaskContent.less';
 
@@ -38,6 +38,7 @@ export default ({ data, alltrue }) => {
             </div>
           </div>
         </div>
+
         <div className="starProjects-items-content-right">
           <Icon
             type={data.starFlag ? 'turned_in' : 'turned_in_not'}
@@ -47,7 +48,7 @@ export default ({ data, alltrue }) => {
             }}
             onClick={(e) => {
               e.stopPropagation();
-              const starFlag = data.starFlag
+              const { starFlag } = data;
               ProjectsProUseStore.handleStarProject(data).then(() => {
                 const allProjects = ProjectsProUseStore.getAllProjects;
                 const index = allProjects.findIndex(i => String(i.id) === String(data.id));
@@ -57,8 +58,7 @@ export default ({ data, alltrue }) => {
                       p.starFlag = !starFlag;
                     }
                     return p;
-                  }))
-                  console.log(ProjectsProUseStore.getAllProjects);
+                  }));
                 }
                 ProjectsProUseStore.handleChangeStarProjects(data);
               });
@@ -90,23 +90,33 @@ export default ({ data, alltrue }) => {
         </div>
       </div>
       <div className="starProjects-items-down">
-        <div>
-        <span>
-          <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_line" />
-        </span>
-          <p style={{ display: 'inline-block' }}>{data.categories && data.categories.find(c => c.code !== 'PROGRAM_PROJECT') && data.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
-        </div>
-        {
-          data.categories && data.categories.find(c => c.code === 'PROGRAM_PROJECT') && (
-            <div>
+        <Tooltip
+          title={data.categories && data.categories.find(c => c.code !== 'PROGRAM_PROJECT') && data.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}
+        >
+          <div>
             <span>
-              <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_group" />
+              <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_line" />
             </span>
-              <p style={{ display: 'inline-block' }}>{data.categories.find(c => c.code === 'PROGRAM_PROJECT').name}</p>
+            <p style={{ display: 'inline-block' }}>{data.categories && data.categories.find(c => c.code !== 'PROGRAM_PROJECT') && data.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
+          </div>
+        </Tooltip>
+
+        {data.programName && (
+          <Tooltip title={data.programName}>
+            <div>
+              <span>
+                <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_group" />
+              </span>
+              <p
+                style={{ display: 'inline-block' }}
+              >
+                {data.programName}
+              </p>
             </div>
-          )
-        }
+          </Tooltip>
+        )}
+
       </div>
     </div>
-  )
-}
+  );
+};
