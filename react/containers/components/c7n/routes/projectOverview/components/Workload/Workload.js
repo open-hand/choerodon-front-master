@@ -42,14 +42,23 @@ const showIcons = [
         label: '工时：',
     }
 ];
+
 const Workload = observer(({
 }) => {
     const clsPrefix = 'c7n-project-overview-workload';
     const [selectOption, setSelectOption] = useState([]);
     const { workloadStore } = useWorkloadStore();
     const { projectOverviewStore } = useProjectOverviewStore();
-    // const tee= <Icon type="watch_later-o" className={`${clsPrefix}-icon-workTime-watch`} style={{ color: "rgba(255, 185, 106, 1)" }} />;
-    const TimeIcon = () => <div className={`${clsPrefix}-icon-workTime`}><span ></span></div>
+    const TimeIcon = () => <div className={`${clsPrefix}-icon-workTime`}>
+        <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+            <g>
+                <rect rx="3" id="svg_1" height="14.75" width="15.124999" y="0.181641" x="-0.0625" />
+                <ellipse ry="4.499996" rx="4.750006" id="svg_4" cy="7.5" cx="7.5" />
+                <line id="svg_9" y2="8.119141" x2="7.4375" y1="4.681634" x1="7.187501" />
+                <line id="svg_12" y2="8.931641" x2="10.437501" y1="7.806641" x1="7.062501" />
+            </g>
+        </svg>
+    </div>
 
     const handleChangeSelect = (value) => {
         if (value) {
@@ -60,7 +69,7 @@ const Workload = observer(({
     };
     function checkIsNullData(data, exceptKey) {
         if (!data) {
-            return false;
+            return true;
         }
         delete data[exceptKey];
         const values = Object.values(data);
@@ -69,15 +78,17 @@ const Workload = observer(({
     const renderCell = (data) => {
 
         if (!checkIsNullData(data, 'worker')) {
+            console.log('data', data);
             return <div className={`${clsPrefix}-cell`}>
                 {showIcons.map(item => {
                     return (<div className={`${clsPrefix}-cell-item`}>
-                        <Icon type={item.icon}
+                        {item.typeCode !== 'workTime' ? <Icon type={item.icon}
                             className={`${clsPrefix}-cell-item-icon`}
                             style={{
                                 color: item.colour,
-                            }} />
-                        {item.typeCode !== 'story' ? `${item.label}${data[item.typeCode]}` : `${item.label}${data.storyCount}（${data.storyPointCount}点）`}
+                            }} /> : <TimeIcon />
+                        }
+                        {item.typeCode !== 'story' ? `${item.label}${data[item.typeCode] || 0}` : `${item.label}${data.storyCount || 0}（${data.storyPointCount || 0}点）`}
                     </div>)
 
                 })}
