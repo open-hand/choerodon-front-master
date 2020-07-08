@@ -1,0 +1,161 @@
+@borderColor: rgba(0, 0, 0, 0.12);
+@fontColor: rgba(58, 52, 95, 1);
+@headerHeight: .58rem;
+@columWidth: 12.5%;
+
+.c7n-project-overview-date-table {
+  width: 100%;
+  height: auto;
+  border: 1px solid @borderColor;
+  color: @fontColor;
+
+  &-header {
+    width: 100%;
+    height: @headerHeight;
+    border-bottom: 1px solid @borderColor;
+    display: inline-flex;
+
+    .margin-right {
+      margin-right: .09rem;
+    }
+
+    &-btn {
+
+      .c7n-pro-btn-flat:enabled:hover,
+      .c7n-pro-btn-flat:enabled:focus {
+        background-color: rgba(244, 243, 248, 1);
+      }
+
+      width: 0;
+      height: 0;
+      position: relative;
+
+      &-left {
+        left: 1px;
+        top: 12px;
+      }
+
+      &-right {
+        right: 32px;
+        top: 12px;
+      }
+    }
+
+    &-cell {
+      width: @columWidth;
+      height: @headerHeight;
+      font-size: .13rem;
+      font-weight: 500;
+      padding-top: .2rem;
+      // color: rgba(58, 52, 95, 1);
+      line-height: .18rem;
+
+      &-top {
+        width: 1.29rem; //error
+        position: relative;
+        overflow: hidden;
+        border-right: 1px solid @borderColor;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: .24rem;
+          box-sizing: border-box;
+          border-bottom: .006rem solid @borderColor;
+          transform: rotateZ(23deg) scale(1.2903);
+        }
+
+        div {
+          font-size: .12rem;
+          font-weight: 400;
+          line-height: .17rem;
+        }
+
+        &-x {
+          position: relative;
+          right: .23rem;
+          bottom: .3rem;
+          text-align: right;
+        }
+
+        &-y {
+          position: relative;
+          top: .12rem;
+          left: .18rem;
+          width: max-content;
+          text-align: left;
+        }
+      }
+
+      &-content {
+        margin-left: .04rem;
+      }
+    }
+
+  }
+
+  &-content {
+    width: 100%;
+    // height: max-content;
+    overflow-y: scroll;
+    min-height: 100px;
+
+    .c7n-project-overview-date-table-row:not(:last-child) {
+      border-bottom: 1px solid @borderColor;
+
+    }
+  }
+
+  &-row {
+    min-height: 50px;
+    width: 100%;
+    display: inline-flex;
+
+    &:not(:last-child) {
+      border-bottom: none;
+    }
+
+    &-cell {
+      width: @columWidth;
+
+      &:not(:last-child) {
+        border-right: 1px solid @borderColor
+      }
+
+      &-first {
+        width: 1.29rem; //error
+        padding: .1rem 0;
+        // padding: .10rem 0.3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // background-color: red;
+
+        span {
+          // background-color: red;
+        }
+      }
+    }
+  }
+
+  &-cell {
+    // height: 123px;
+    // width: 50px;
+    text-align: center;
+    // border-bottom: 1px solid @borderColor;
+
+  }
+
+  .border-right {
+    border-right: 1px solid @borderColor;
+
+  }
+
+  &-footer {
+    width: 99.5%;
+    border-top: 1px solid @borderColor;
+  }
+}

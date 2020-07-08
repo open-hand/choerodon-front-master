@@ -1,0 +1,33 @@
+// @import '~antd/es/style/themes/default.less';
+@heading-color :rgba(58, 52, 95, 0.65);
+@text-color-secondary: rgba(58, 52, 95, 1);
+.c7n-waterWave {
+    position: relative;
+    display: inline-block;
+    transform-origin: left;
+
+    .c7n-waterWave-text {
+      position: absolute;
+      top: 14px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+  
+      span {
+        color: @text-color-secondary;
+        font-size: 14px;
+        line-height: 22px;
+      }
+  
+      h4 {
+        color: @heading-color;
+        font-size: 24px;
+        line-height: 32px;
+      }
+    }
+  
+    .c7n-waterWave-waterWaveCanvasWrapper {
+      transform: scale(0.5);
+      transform-origin: 0 0;
+    }
+}

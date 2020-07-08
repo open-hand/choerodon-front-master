@@ -1,0 +1,55 @@
+.c7n-project-overview-wrap {
+  background: rgba(255, 255, 255, 1);
+  border-radius: .08rem;
+  padding: .2rem .16rem;
+  margin-bottom: .2rem;
+  position: relative;
+  &-title {
+    display: inline-flex;
+    align-items: center;
+    font-size: .16rem;
+    font-weight: 500;
+    color: rgba(58, 52, 95, 1);
+    // line-height: .22rem;
+    // height: .22rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &-right {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &-switch {
+    background: rgba(245, 246, 250, 1);
+    border-radius: 2px;
+    padding: .05rem .06rem;
+    margin: 0;
+    .line:not(:last-child)::after {
+      float: left;
+      margin: 0 .06rem ;
+      font-size: .16rem;
+      color: rgba(121, 126, 154, 1);
+      content: '|';
+    }
+    li {
+      float: left;
+      list-style: none;
+      border-radius:.02rem;
+      padding: .04rem;
+      font-size: .13rem;
+      margin: 0;
+      cursor: pointer;
+    }
+    &-li {
+      color: rgba(58, 52, 95, 0.8);
+    }
+    &-active{
+      background-color: rgba(255,255,255,1);
+      color: rgba(63, 81, 181, 1);
+    }
+  }
+
+}

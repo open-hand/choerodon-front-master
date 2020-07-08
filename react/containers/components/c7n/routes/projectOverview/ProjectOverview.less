@@ -1,0 +1,60 @@
+.c7n-project-overview {
+  display: flex;
+  // flex-direction: row;
+  // height: auto !important;
+  background: rgba(245, 246, 250, 1);
+
+  &-SelectTheme {
+    font-size: .14rem;
+
+    // background-color: red;
+
+    input {
+      border: none;
+    }
+
+    .c7n-pro-select {
+      border: none;
+    }
+ 
+    // .c7n-pro-select-placeholder:focus {
+    //   color: red;
+    // }
+    // .c7n-pro-select-placeholder {
+    //   color: rgba(0, 0, 0, 1);
+    // }
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .12rem .20rem;
+    margin-bottom: .2rem;
+    background: rgba(255, 255, 255, 1);
+    border-radius: .04rem;
+  }
+
+  &-content {
+    display: flex;
+    justify-content: space-between;
+
+    &-left {
+      flex-basis: 65%;
+      margin-right: .2rem;
+      width: 63%;
+    }
+
+    &-right {
+      flex-basis: 37%;
+      width: 37%;
+    }
+  }
+
+
+  &-item {
+    width: 100%;
+    display: flex;
+  }
+
+}
