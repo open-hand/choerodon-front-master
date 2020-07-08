@@ -48,6 +48,9 @@ const Workload = observer(({
     const [selectOption, setSelectOption] = useState([]);
     const { workloadStore } = useWorkloadStore();
     const { projectOverviewStore } = useProjectOverviewStore();
+    // const tee= <Icon type="watch_later-o" className={`${clsPrefix}-icon-workTime-watch`} style={{ color: "rgba(255, 185, 106, 1)" }} />;
+    const TimeIcon = () => <div className={`${clsPrefix}-icon-workTime`}><span ></span></div>
+
     const handleChangeSelect = (value) => {
         if (value) {
             setSelectOption(value);
@@ -55,18 +58,17 @@ const Workload = observer(({
             setSelectOption([]);
         }
     };
-    function checkIsZeroData(data, exceptKey) {
+    function checkIsNullData(data, exceptKey) {
         if (!data) {
             return false;
         }
         delete data[exceptKey];
         const values = Object.values(data);
-        return values.reduce((sum, c) => sum + c) > 0;
+        return values.length === 0 || values.reduce((sum, c) => sum + c) === 0;
     }
     const renderCell = (data) => {
-        // console.log('data', data);
 
-        if (checkIsZeroData(data, 'worker')) {
+        if (!checkIsNullData(data, 'worker')) {
             return <div className={`${clsPrefix}-cell`}>
                 {showIcons.map(item => {
                     return (<div className={`${clsPrefix}-cell-item`}>
@@ -121,7 +123,7 @@ const Workload = observer(({
             <OverviewWrap.Header title={renderTitle()} />
             <OverviewWrap.Content>
                 {projectOverviewStore.getIsFinishLoad && workloadStore.getData ? <DateTable
-                    rowHeight={138}
+                    cellHeight={138}
                     current={workloadStore.getData.size > 7 ? workloadStore.getData.size - 7 : 0}
                     quickMapData={workloadStore.getData}
                     rowIndex={workloadStore.getAssignee}

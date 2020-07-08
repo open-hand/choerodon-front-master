@@ -102,6 +102,7 @@
     width: 100%;
     // height: max-content;
     overflow-y: scroll;
+    overflow-x: hidden;
     min-height: .5rem;
 
     .c7n-project-overview-date-table-row:not(:last-child) {
@@ -170,7 +171,7 @@
   }
 
   .animate-table {
-    animation-duration: 0.8s;
+    animation-duration:.8s;
     animation-fill-mode: both;
     animation-timing-function: linear;
     animation-name: tableSwitch;
@@ -186,39 +187,5 @@
       opacity: 1;
     }
   }
-  @keyframes antSlideDownIn {
-    0% {
-      opacity: 0;
-      transform-origin: 100% 100%;
-      transform: scaleY(.8);
-    }
-    100% {
-      opacity: 1;
-      transform-origin: 100% 100%;
-      transform: scaleY(1);
-    }
-  }
-  @keyframes antSlideLeftIn {
-    0% {
-      opacity: 0;
-      transform-origin: 0% 0%;
-      transform: scaleX(.8);
-    }
-    100% {
-      opacity: 1;
-      transform-origin: 0% 0%;
-      transform: scaleX(1);
-    }
-  }
-  
-  @keyframes c7nZoomIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.2);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
+
 }
