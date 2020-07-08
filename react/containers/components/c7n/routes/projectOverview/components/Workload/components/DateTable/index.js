@@ -58,7 +58,7 @@ const DateTable = observer(({
     return data.toString();
   };
   // 单元格
-  const Cell = memo(({ children, className }) => <div className={`${clsPrefix}-cell ${className || ''}`} style={{ height: cellHeight }}>
+  const Cell = memo(({ children, className }) => <div className={`${clsPrefix}-cell ${className || ''}`} style={{ minHeight: cellHeight }}>
     {children}
   </div>);
   // 行
@@ -67,7 +67,7 @@ const DateTable = observer(({
     // 增加y轴
     cells.push(<Cell className={`${clsPrefix}-row-cell-first border-right`}><span>{rowName}</span></Cell>)
     // 增加内容页  从当前位置出发
-    for (let index = currentPosition; index < size && index < dateList.length; index++) {
+    for (let index = currentPosition; index < size + currentPosition && index < dateList.length; index++) {
       const currentDate = columns[index];
       cells.push(<Cell className={`${clsPrefix}-row-cell animate-table`}>{renderCell(sum ? data[index] : data.get(currentDate).get(rowName))}</Cell>);
     }
@@ -117,17 +117,13 @@ const DateTable = observer(({
   //  根据选择成员自动调整高度 进行滚动
   useEffect(() => {
     if (rowRef.current) {
-      if (filterRowIndex.length > 0 && filterRowIndex.length <= rowLength) {
+      if (rowLength >= rowIndex.length || (filterRowIndex.length > 0 && filterRowIndex.length <= rowLength)) {
         resetScrollHeight(true);
       } else {
         resetScrollHeight();
       }
     }
   }, [filterRowIndex]);
-  // 切换行时进行高度调整
-  useEffect(() => {
-    resetScrollHeight();
-  }, [currentPosition])
 
   /**
    * 渲染底部 （即最后一行)
