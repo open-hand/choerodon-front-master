@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
+import _ from 'lodash';
 import { useBurnDownChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';

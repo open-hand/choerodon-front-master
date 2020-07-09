@@ -67,6 +67,11 @@ const Workload = observer(({
             setSelectOption([]);
         }
     };
+    /**
+     * 检查数据是否是空数据
+     * @param {*} data 
+     * @param {*} exceptKey 
+     */
     function checkIsNullData(data, exceptKey) {
         if (!data) {
             return true;
@@ -76,9 +81,7 @@ const Workload = observer(({
         return values.length === 0 || values.reduce((sum, c) => sum + c) === 0;
     }
     const renderCell = (data) => {
-
         if (!checkIsNullData(data, 'worker')) {
-            console.log('data', data);
             return <div className={`${clsPrefix}-cell`}>
                 {showIcons.map(item => {
                     return (<div className={`${clsPrefix}-cell-item`}>
