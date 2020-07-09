@@ -42,12 +42,24 @@ const showIcons = [
         label: '工时：',
     }
 ];
+
 const Workload = observer(({
 }) => {
     const clsPrefix = 'c7n-project-overview-workload';
     const [selectOption, setSelectOption] = useState([]);
     const { workloadStore } = useWorkloadStore();
     const { projectOverviewStore } = useProjectOverviewStore();
+    const TimeIcon = () => <div className={`${clsPrefix}-icon-workTime`}>
+        <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+            <g>
+                <rect rx="3" id="svg_1" height="14.75" width="15.124999" y="0.181641" x="-0.0625" />
+                <ellipse ry="4.499996" rx="4.750006" id="svg_4" cy="7.5" cx="7.5" />
+                <line id="svg_9" y2="8.119141" x2="7.4375" y1="4.681634" x1="7.187501" />
+                <line id="svg_12" y2="8.931641" x2="10.437501" y1="7.806641" x1="7.062501" />
+            </g>
+        </svg>
+    </div>
+
     const handleChangeSelect = (value) => {
         if (value) {
             setSelectOption(value);
@@ -55,27 +67,28 @@ const Workload = observer(({
             setSelectOption([]);
         }
     };
-    function checkIsZeroData(data, exceptKey) {
+    function checkIsNullData(data, exceptKey) {
         if (!data) {
-            return false;
+            return true;
         }
         delete data[exceptKey];
         const values = Object.values(data);
-        return values.reduce((sum, c) => sum + c) > 0;
+        return values.length === 0 || values.reduce((sum, c) => sum + c) === 0;
     }
     const renderCell = (data) => {
-        // console.log('data', data);
 
-        if (checkIsZeroData(data, 'worker')) {
+        if (!checkIsNullData(data, 'worker')) {
+            console.log('data', data);
             return <div className={`${clsPrefix}-cell`}>
                 {showIcons.map(item => {
                     return (<div className={`${clsPrefix}-cell-item`}>
-                        <Icon type={item.icon}
+                        {item.typeCode !== 'workTime' ? <Icon type={item.icon}
                             className={`${clsPrefix}-cell-item-icon`}
                             style={{
                                 color: item.colour,
-                            }} />
-                        {item.typeCode !== 'story' ? `${item.label}${data[item.typeCode]}` : `${item.label}${data.storyCount}（${data.storyPointCount}点）`}
+                            }} /> : <TimeIcon />
+                        }
+                        {item.typeCode !== 'story' ? `${item.label}${data[item.typeCode] || 0}` : `${item.label}${data.storyCount || 0}（${data.storyPointCount || 0}点）`}
                     </div>)
 
                 })}
@@ -121,7 +134,7 @@ const Workload = observer(({
             <OverviewWrap.Header title={renderTitle()} />
             <OverviewWrap.Content>
                 {projectOverviewStore.getIsFinishLoad && workloadStore.getData ? <DateTable
-                    rowHeight={138}
+                    cellHeight={138}
                     current={workloadStore.getData.size > 7 ? workloadStore.getData.size - 7 : 0}
                     quickMapData={workloadStore.getData}
                     rowIndex={workloadStore.getAssignee}

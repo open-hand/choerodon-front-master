@@ -6,6 +6,37 @@
     color: rgba(128, 134, 139, 1);
     margin-bottom: .02rem;
     margin-left: .02rem;
+
+    &-workTime {
+      padding: 2px;
+      margin-right: 8px;
+      // margin-left: 2px;
+      /* left: 2px; */
+      height: 15px;
+      width: 15px;
+      display: inline-block;
+
+      svg {
+        display: block;
+
+        rect {
+          stroke: transparent;
+          stroke-width: 0;
+          fill: rgba(255, 185, 106, 1);
+        }
+
+        ellipse {
+          stroke: transparent;
+          stroke-width: 0;
+          fill: #ffffff;
+          // stroke-opacity: ;
+        }
+        line{
+          stroke: rgba(255, 185, 106, 1);
+          fill: none;
+        }
+      }
+    }
   }
 
   &-cell {
@@ -19,7 +50,7 @@
       font-weight: 400;
       color: rgba(58, 52, 95, 1);
       line-height: .20rem;
- 
+
       &-icon {
         transition: none;
         font-size: .2rem;

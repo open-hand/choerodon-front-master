@@ -14,7 +14,8 @@ const SprintCount = observer(({
   const { sprintCountDataSet, projectOverviewStore } = useProjectOverviewStore();
 
   const renderTitle = () => (
-    <div>迭代问题统计
+    <div className={`${clsPrefix}-title`}>
+      <span>迭代问题统计</span>
       <Tooltip title="当前迭代各个工作项在不同状态下的数量统计。" placement="top">
         <Icon type="help" className={`${clsPrefix}-icon`} />
       </Tooltip>
