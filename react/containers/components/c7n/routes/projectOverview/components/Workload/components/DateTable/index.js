@@ -1,8 +1,7 @@
 import React, { useState, memo, useRef, useLayoutEffect, useMemo, useEffect } from 'react';
-import { Button, Tooltip, Select, Icon } from 'choerodon-ui/pro';
+import { Button } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import './index.less';
-const { Option } = Select;
 /**
  * 行列表格
  * @param {Array<string>} headerText 左上角数据
@@ -13,11 +12,13 @@ const { Option } = Select;
  * @param {number}  current 从哪一列定位首列
  * @param {Array<string>}  rowIndex 行名数组
  * @param {Function}  render 单元格渲染
- * @param {Map<key,Map<key,object>>}  quickMapData 快速查询数据的map
+ * @param {Map<key,Map<key,object>>}  quickMapData 快速查询数据的map 第一层map key为列 第二层map key为行
  * @param {Array<number>}  filterRowIndex 筛选的行序列号
  * @param {Array<{}>}  sumArr 最后一行数据
  * @param {boolean}  isSum 是否有最后一行
  * @param {boolean}  headerSplit 头部列是否有分割线
+ * @author DingZc
+ * 
  */
 const DateTable = observer(({
   headerTexts = ['成员', '日期'],
@@ -65,17 +66,17 @@ const DateTable = observer(({
   const Row = memo(({ sum, rowName, size = columnSize, data = new Map(), children, className }) => {
     const cells = [];
     // 增加y轴
-    cells.push(<Cell className={`${clsPrefix}-row-cell-first border-right`}><span>{rowName}</span></Cell>)
+    cells.push(<Cell key={`cell-${rowName}`} className={`${clsPrefix}-row-cell-first border-right`}><span>{rowName}</span></Cell>)
     // 增加内容页  从当前位置出发
     for (let index = currentPosition; index < size + currentPosition && index < dateList.length; index++) {
       const currentDate = columns[index];
-      cells.push(<Cell className={`${clsPrefix}-row-cell animate-table`}>{renderCell(sum ? data[index] : data.get(currentDate).get(rowName))}</Cell>);
+      cells.push(<Cell key={`cell-${index}`} className={`${clsPrefix}-row-cell animate-table`}>{renderCell(sum ? data[index] : data.get(currentDate).get(rowName))}</Cell>);
     }
     // 填补空白格
     if (size > cells.length) {
       const breakLength = size - cells.length;
       for (let i = 0; i <= breakLength; i++) {
-        cells.push(<Cell className={`${clsPrefix}-row-cell`}></Cell>);
+        cells.push(<Cell key={`cell-space-${i}`} className={`${clsPrefix}-row-cell`}></Cell>);
       }
     }
     return <div className={`${clsPrefix}-row`}>
@@ -93,11 +94,9 @@ const DateTable = observer(({
     if (!isAuto) {
       let height = 0;
       scrollHeight = "";
-      const els = [];
       const elements = rowRef.current.getElementsByClassName('c7n-project-overview-date-table-row');
       for (let i = 0; elements && i < rowLength && i < elements.length; i++) {
         height += elements[i].offsetHeight;
-        els.push(elements[i]);
       }
       scrollHeight = height + 'px';
     }
@@ -154,10 +153,10 @@ const DateTable = observer(({
           });
           newSumData.push(Object.keys(newObj).length > 0 ? newObj : undefined);
         });
-        return <Row rowName="总计" data={newSumData} sum={isSum} />
+        return <Row key="row-sum" rowName="总计" data={newSumData} sum={isSum} />
       }
 
-      return <Row rowName="总计" data={sumData} sum={isSum} />
+      return <Row key="row-sum" rowName="总计" data={sumData} sum={isSum} />
     }
   };
   /**
@@ -169,8 +168,8 @@ const DateTable = observer(({
         <span className={`${clsPrefix}-row-no-data`}>暂无数据</span>
       </Row>
     }
-    const rowArr = rowIndex.filter((row, index) => filterRowIndex.length === 0 || filterRowIndex.some(f => f === index)).map((row) => {
-      return <Row rowName={row} data={quickMapData} />
+    const rowArr = rowIndex.filter((row, index) => filterRowIndex.length === 0 || filterRowIndex.some(f => f === index)).map((row, index) => {
+      return <Row key={`row-${index}`} rowName={row} data={quickMapData} />
     });
     return rowArr;
   };
@@ -219,9 +218,9 @@ const DateTable = observer(({
   const renderDate = () => {
     const dateCells = [];
     for (let index = 0; index < columnSize - 1; index++) {
-      dateCells.push(<Cell className={`${clsPrefix}-header-cell animate-table ${headerSplit ? 'border-right' : ''}`}><span className={`${clsPrefix}-header-cell-content`}>{dateList[currentPosition + index]}</span></Cell>)
+      dateCells.push(<Cell key={`cell-date-${index}`} className={`${clsPrefix}-header-cell animate-table ${headerSplit ? 'border-right' : ''}`}><span className={`${clsPrefix}-header-cell-content`}>{dateList[currentPosition + index]}</span></Cell>)
     }
-    dateCells.push(<Cell className={`${clsPrefix}-header-cell animate-table`}><span className={`${clsPrefix}-header-cell-content margin-right`}>{dateList[currentPosition + columnSize - 1]}</span></Cell>)
+    dateCells.push(<Cell key={`cell-date-${columnSize}`} className={`${clsPrefix}-header-cell animate-table`}><span className={`${clsPrefix}-header-cell-content margin-right`}>{dateList[currentPosition + columnSize - 1]}</span></Cell>)
     return dateCells;
   };
 

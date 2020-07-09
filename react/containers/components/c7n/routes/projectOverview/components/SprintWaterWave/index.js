@@ -114,7 +114,8 @@ const SprintWaterWave = observer(({
     return <EmptyPage content="暂无活跃的冲刺" />
   }
   const renderTitle = () => (
-    <div>冲刺未完成统计
+    <div className={`${clsPrefix}-title`}>
+      <span>冲刺未完成统计</span>
       <Tooltip title="统计当前迭代未完成的工作项数量、故事点数量、工时数量，以及当前迭代剩余天数。" placement="top">
         <Icon type="help" className={`${clsPrefix}-icon`} />
       </Tooltip>
