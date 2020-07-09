@@ -130,10 +130,11 @@ const DateTable = observer(({
   const renderFooter = () => {
     // 假如有数据，则增加一行总计
     if (isSum && rowIndex.length > 0 && sumData) {
-      // 如果有筛选，则计算每一列的数据的和
+      // 如果有筛选，则计算需要渲染的列的数据的和
       if (filterRowIndex.length > 0 && filterRowIndex.length !== rowIndex.length) {
-        const newSumData = [];
-        sumData.forEach((obj, index) => { //遍历总计
+        const newSumData = new Array(dateList.length);
+        // 遍历需要渲染的列，只计算需要渲染的总计单元格
+        for (let index = currentPosition; index < currentPosition + columnSize && index < dateList.length; index++) {
           const quickItem = quickMapData.get(columns[index]); // 获取当前日期天全部数据
           let newObj = {};
           // 当前日期下，筛选到的成员在当前日期的数据 
@@ -151,8 +152,8 @@ const DateTable = observer(({
               }
             }
           });
-          newSumData.push(Object.keys(newObj).length > 0 ? newObj : undefined);
-        });
+          newSumData[index] = Object.keys(newObj).length > 0 ? newObj : undefined;
+        }
         return <Row key="row-sum" rowName="总计" data={newSumData} sum={isSum} />
       }
 

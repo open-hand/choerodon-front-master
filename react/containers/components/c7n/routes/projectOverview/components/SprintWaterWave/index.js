@@ -10,7 +10,7 @@ import { EmptyPage } from '../EmptyPage';
 const clsPrefix = 'c7n-project-overview-sprint-water-wave';
 const SprintWaterWave = observer(({
 }) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { sprintWaterWaveDataSet, projectOverviewStore } = useProjectOverviewStore();
   function getOptions() {
     return {
@@ -71,14 +71,15 @@ const SprintWaterWave = observer(({
   }
   useEffect(() => {
     if (projectOverviewStore.getStaredSprint) {
-      sprintWaterWaveDataSet.query();
+      setLoading(true);
+      sprintWaterWaveDataSet.query().then(() => setLoading(false));
     }
-    setLoading(false);
   }, [projectOverviewStore.getIsFinishLoad]);
   function render() {
-    const remainingDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : 0;
-    const totalDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('totalDays') : 0;
-    if (sprintWaterWaveDataSet.current) {
+
+    if (!loading && sprintWaterWaveDataSet.current) {
+      const remainingDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : 0;
+      const totalDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('totalDays') : 0;
       return <OverviewWrap.Content className={`${clsPrefix}-content`}>
         <div className={`${clsPrefix}-content-left`}>
           {/* <Echart option={getOptions()} /> */}
@@ -124,9 +125,10 @@ const SprintWaterWave = observer(({
   return (
     <OverviewWrap height={225}>
       <OverviewWrap.Header title={renderTitle()} />
-      <Spin spinning={sprintWaterWaveDataSet && projectOverviewStore.getIsFinishLoad && loading}>
-        {render()}
-      </Spin>
+        <Spin dataSet={sprintWaterWaveDataSet}>
+          {render()}
+        </Spin>
+
     </OverviewWrap>
 
   );
