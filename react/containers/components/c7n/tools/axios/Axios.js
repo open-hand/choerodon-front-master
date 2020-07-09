@@ -9,10 +9,14 @@ import { API_HOST } from '@/utils/constants';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 // eslint-disable-next-line import/no-cycle
 import MenuStore from '../../../../stores/c7n/MenuStore';
+import JSONbig from 'json-bigint'
 
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 axios.defaults.timeout = 30000;
 axios.defaults.baseURL = API_HOST;
+axios.defaults.transformResponse = [function(data) {
+  return JSONbig.parse(data);
+}]
 
 axios.interceptors.request.use(
   config => {

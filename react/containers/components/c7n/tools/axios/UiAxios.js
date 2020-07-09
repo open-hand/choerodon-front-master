@@ -4,12 +4,16 @@ import { getAccessToken, removeAccessToken } from '@/utils/accessToken';
 import { API_HOST } from '@/utils/constants';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 import MenuStore from '../../../../stores/c7n/MenuStore';
+import JSONbig from 'json-bigint'
 
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 
 const instance = axios.create({
   timeout: 30000,
   baseURL: API_HOST,
+  transformResponse: [function(data) {
+    return JSONbig.parse(data);
+  }]
 });
 
 instance.interceptors.request.use(
