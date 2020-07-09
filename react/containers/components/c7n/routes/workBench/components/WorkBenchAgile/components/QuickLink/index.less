@@ -115,15 +115,9 @@
         margin-left: 9px;
         flex: 1;
         &-name {
-          word-break: break-all;
+          width: 0.8rem;
           overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          line-clamp: 1;
-          -webkit-line-clamp: 1;
-          -webkit-box-orient: vertical;
-          flex-basis: 50%;
-          flex-grow: 0;
+          text-overflow: ellipsis
         }
         &-scope {
           font-size:12px;
@@ -139,14 +133,14 @@
         }
         &-linkName {
           cursor: pointer;
-          font-size:13px;
-          font-family:PingFangSC-Regular,PingFang SC;
-          font-weight:400;
-          color:rgba(63,81,181,1);
           display: flex;
           align-items: center;
-          flex-basis: 50%;
-          flex-grow: 0;
+          font-size: 13px;
+          line-height: 13px;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: #3f51b5;
+          margin-right: auto !important;
           i {
             font-size: 14px;
             position: relative;
