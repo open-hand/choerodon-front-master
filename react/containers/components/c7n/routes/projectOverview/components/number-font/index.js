@@ -11,18 +11,10 @@ function isNumber(value) {
 
 }
 function numberFactory(number) {
-    let x = Number(number);
-    if (x <= 1) {
-        x = -1 - 1;
-    } else if (x === 3 || x === 4 || x === 8) {
-        x = 0;
-    } else {
-        x = -1
-    }
     return <svg  width="14px" height="37px" viewBox="0 0 14 24" version="1.1" xmlns="http://www.w3.org/2000/svg" >
         <g id="number-0" stroke="none"  strokeWidth="1" fill="none" fillRule="evenodd" fontFamily="DINAlternate-Bold, DIN Alternate" fontSize="32" fontWeight="bold">
             <text id="number" fill="#3A345F">
-                <tspan x="-1" y={Number(number) !== 6 ? '23' : '24'}>{number}</tspan>
+                <tspan x="-1" y='23'>{number}</tspan>
             </text>
         </g>
     </svg>

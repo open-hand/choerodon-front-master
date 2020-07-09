@@ -137,7 +137,7 @@ const Workload = observer(({
             <OverviewWrap.Header title={renderTitle()} />
             <OverviewWrap.Content>
                 {projectOverviewStore.getIsFinishLoad && workloadStore.getData ? <DateTable
-                    cellHeight={138}
+                    cellHeight={135}
                     current={workloadStore.getData.size > 7 ? workloadStore.getData.size - 7 : 0}
                     quickMapData={workloadStore.getData}
                     rowIndex={workloadStore.getAssignee}
