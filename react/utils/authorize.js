@@ -12,7 +12,9 @@ export function logout() {
     logoutUrl += `?${ACCESS_TOKEN}=${getCookieToken()}`;
   }
   removeAccessToken();
+  const historyPath = localStorage.getItem('historyPath');
   localStorage.clear();
+  localStorage.setItem('historyPath', historyPath);
   sessionStorage.clear();
   window.location = logoutUrl;
 }
