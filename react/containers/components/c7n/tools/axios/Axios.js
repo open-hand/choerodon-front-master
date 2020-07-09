@@ -15,7 +15,11 @@ const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTo
 axios.defaults.timeout = 30000;
 axios.defaults.baseURL = API_HOST;
 axios.defaults.transformResponse = [function(data) {
-  return JSONbig.parse(data);
+  try {
+    return JSONbig.parse(data);
+  } catch (e) {
+    return data;
+  }
 }]
 
 axios.interceptors.request.use(

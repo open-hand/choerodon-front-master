@@ -12,7 +12,11 @@ const instance = axios.create({
   timeout: 30000,
   baseURL: API_HOST,
   transformResponse: [function(data) {
-    return JSONbig.parse(data);
+    try {
+      return JSONbig.parse(data);
+    } catch (e) {
+      return data;
+    }
   }]
 });
 
