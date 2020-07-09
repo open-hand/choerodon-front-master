@@ -3,15 +3,13 @@ import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import './index.less';
+import { Spin } from 'choerodon-ui';
 import OverviewWrap from '../OverviewWrap';
 import { useDefectTreatmentStore } from './stores';
-import { Spin } from 'choerodon-ui';
 import { useProjectOverviewStore } from '../../stores';
 import { EmptyPage } from '../EmptyPage';
 
-const DefectTreatment = observer(({
-
-}) => {
+const DefectTreatment = observer(() => {
   const options = useMemo(() => [{ value: 'created', text: '提出' }, { value: 'completed', text: '解决' }], []);
   const clsPrefix = 'c7n-project-overview-defect-treatment';
   const { defectTreatmentStore } = useDefectTreatmentStore();
@@ -19,27 +17,45 @@ const DefectTreatment = observer(({
   const [loading, setLoading] = useState(false);
   const [charOption, setCharOption] = useState('created'); // createdList completedList
   const { projectOverviewStore } = useProjectOverviewStore();
+  const Legend = (data) => (
+    <div className={`${clsPrefix}-legend`}>
+      {data.map(item => (
+        <div>
+          <div className="" />
+        </div>
+      ))}
+    </div>
+  );
   useEffect(() => {
     if (projectOverviewStore.getStaredSprint) {
       setLoading(true);
       defectTreatmentStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId).then(() => {
         setLoading(false);
-      })
+      });
     }
-  }, [projectOverviewStore.getStaredSprint])
+  }, [projectOverviewStore.getStaredSprint]);
   useEffect(() => {
-    if (defectTreatmentStore.getChartList && defectTreatmentStore.getChartList.length > 6) {
+    if (defectTreatmentStore.getChartList && defectTreatmentStore.getChartList.length > 8) {
       setShow(true);
     }
-  }, [defectTreatmentStore.getChartList])
+  }, [defectTreatmentStore.getChartList]);
   function getOptions(params) {
     return {
       legend: {
-        top: show ? '0' : -5,
-        right: '8.2%',
+        // type: 'roundRect',
+        zlevel: 5,
+        icon: 'path://m 7.25,0.018229 h 5.5 c 3.878,0 7,2.1928333 7,4.9166665 0,2.7238333 -3.122,4.9166665 -7,4.9166665 h -5.5 c -3.878,0 -7,-2.1928332 -7,-4.9166665 0,-2.7238332 3.122,-4.9166665 7,-4.9166665 z',
+        itemWidth: 20,
+        itemHeight: 10,
+        borderRadius: 20,
+        top: '-4px',
+        right: 8,
       },
       grid: {
-        bottom: show ? 66 : 45,
+        left: 30,
+        right: 8,
+        // top: 37,
+        bottom: show ? 85 : 60,
       },
       tooltip: {
         backgroundColor: 'rgba(0,0,0,0.75)',
@@ -117,12 +133,14 @@ const DefectTreatment = observer(({
         },
       ],
       dataZoom: [{
-        bottom: 20,
-        show: show,
+        bottom: 40,
+        show,
         type: 'slider',
         height: 15,
+        width: '80%',
+        left: 70,
         startValue: 0,
-        endValue: 5,
+        endValue: 7,
         zoomLock: true,
         handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
         handleSize: '100%',
@@ -148,9 +166,8 @@ const DefectTreatment = observer(({
     <OverviewWrap height={348}>
       <OverviewWrap.Header title={renderTitle()} />
       <Spin spinning={loading}>
-        {projectOverviewStore.getStaredSprint ? <Echart style={{ height: '2.8rem' }} option={getOptions()} /> :
-          <EmptyPage content="暂无活跃的冲刺" />
-        }
+        {projectOverviewStore.getStaredSprint ? <Echart style={{ width: '100%' }} option={getOptions()} />
+          : <EmptyPage content="暂无活跃的冲刺" />}
       </Spin>
     </OverviewWrap>
 

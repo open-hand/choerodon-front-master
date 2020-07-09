@@ -30,12 +30,12 @@ const SprintCount = observer(({
           <span className={`${clsPrefix}-issue-name`}>{sprintCountDataSet.getField(key).pristineProps.label}</span>
           <h3 className={`${clsPrefix}-issue-number`}>{normalToSvg(sprintCountDataSet.current.get(key))}</h3>
           <Progress
-            value={sprintCountDataSet.current.get(key) > 0 ? sprintCountDataSet.current.get(key) / sprintCountDataSet.current.get("total") * 100 : 0}
+            value={sprintCountDataSet.current.get(key) > 0 ? sprintCountDataSet.current.get(key) / sprintCountDataSet.current.get('total') * 100 : 0}
             className={`${clsPrefix}-issue-${key}`}
             strokeWidth={4}
             showInfo={false}
           />
-        </div>)
+                         </div>);
       }
     }
     return progressArr;
@@ -48,16 +48,18 @@ const SprintCount = observer(({
 
   return (
     <OverviewWrap height={137}>
-      <OverviewWrap.Header title={renderTitle()} />
+      <OverviewWrap.Header titleMarginBottom={12} title={renderTitle()} />
       {
-        projectOverviewStore.getStaredSprint ? <Spin dataSet={sprintCountDataSet}>
-          <OverviewWrap.Content className={`${clsPrefix}-content`}>
-            {renderStatusProgress()}
-          </OverviewWrap.Content> </Spin> : <EmptyPage />
+        projectOverviewStore.getStaredSprint ? (
+          <Spin dataSet={sprintCountDataSet}>
+            <OverviewWrap.Content className={`${clsPrefix}-content`}>
+              {renderStatusProgress()}
+            </OverviewWrap.Content> 
+          </Spin>
+        ) : <EmptyPage />
       }
 
-
-    </OverviewWrap >
+    </OverviewWrap>
   );
 });
 

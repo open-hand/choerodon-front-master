@@ -10,6 +10,7 @@ import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import { EmptyPage } from '../EmptyPage';
+
 const moment = extendMoment(Moment);
 
 const { Option } = Select;
@@ -51,7 +52,7 @@ const BurnDownChart = observer(({
       // 如果后端给的最大日期小于结束日期
       let allDate;
       let rest = [];
-      const endDate = projectOverviewStore.getStaredSprint.endDate;
+      const { endDate } = projectOverviewStore.getStaredSprint;
       /* eslint-disable */
       if (moment(maxDate).isBefore(endDate.split(' ')[0])) {
         const result = getBetweenDateStr(minDate, endDate.split(' ')[0]);
@@ -181,8 +182,8 @@ const BurnDownChart = observer(({
         },
       },
       legend: {
-        top: '24px',
-        right: '3.2%',
+        top: 0,
+        right: 15,
         data: [{
           name: '期望值',
           icon: 'line',
@@ -192,8 +193,10 @@ const BurnDownChart = observer(({
         }],
       },
       grid: {
+        top: 40,
         bottom: 50,
         left: 5,
+        right: 16,
         containLabel: true,
       },
       xAxis: {
