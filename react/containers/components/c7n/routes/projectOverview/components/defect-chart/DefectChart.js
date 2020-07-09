@@ -33,10 +33,10 @@ const DefectChart = observer(() => {
     if (defectChartStore.getChartList) {
       const range = moment.range(projectOverviewStore.getStaredSprint.startDate, moment());
       const days = Array.from(range.by('day'));
-      let maps = new Map(days.map(day => [day.format('MM/DD'), { complete: 0, create: 0 }]));
+      const maps = new Map(days.map(day => [day.format('MM/DD'), { complete: 0, create: 0 }]));
       defectChartStore.getChartList.completedList.forEach(obj => {
         const date = Object.keys(obj)[0].substring(5).replace(/-/g, '/');
-        maps.set(date, { complete: Object.values(obj)[0], create: 0 })
+        maps.set(date, { complete: Object.values(obj)[0], create: 0 });
       });
       defectChartStore.getChartList.createdList.forEach(obj => {
         const date = Object.keys(obj)[0].substring(5).replace(/-/g, '/');
@@ -89,9 +89,9 @@ const DefectChart = observer(() => {
         ],
       },
       grid: {
-        y2: 40,
-        left: 20,
-        right: '40',
+        left: 5,
+        right: 19,
+        bottom: 42,
         containLabel: true,
       },
       xAxis: {
@@ -163,7 +163,7 @@ const DefectChart = observer(() => {
           symbol: 'circle',
         },
         {
-          name: "累计修复缺陷",
+          name: '累计修复缺陷',
           type: 'line',
           lineStyle: {
             // type: 'dotted',
@@ -176,11 +176,9 @@ const DefectChart = observer(() => {
           },
           symbol: 'circle',
         },
-      ]
+      ],
     };
-
   }
-
 
   return (
     <OverviewWrap width="57%" height={302}>
