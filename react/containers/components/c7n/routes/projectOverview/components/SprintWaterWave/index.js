@@ -6,7 +6,8 @@ import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import WaterWave from './components/WaterWave';
 import { useProjectOverviewStore } from '../../stores';
-import { EmptyPage } from '../EmptyPage';
+import EmptyPage from '../EmptyPage';
+import normalToSvg from '../number-font';
 
 const clsPrefix = 'c7n-project-overview-sprint-water-wave';
 const SprintWaterWave = observer(({
@@ -86,12 +87,12 @@ const SprintWaterWave = observer(({
             {/* <Echart option={getOptions()} /> */}
             <WaterWave
               height={120}
-            // color="rgba(77, 144, 254, 1)"
+              // color="rgba(77, 144, 254, 1)"
               title="剩余时间"
-              percent={totalDays && remainingDays > 0 ? (totalDays - remainingDays) / totalDays * 100 : 100} // "totalDays": remainingDays
+              percent={totalDays && remainingDays > 0 ? ((totalDays - remainingDays) / totalDays) * 100 : 100} // "totalDays": remainingDays
               percentRender={() => (
                 <div className={`${clsPrefix}-percent`}>
-                  {sprintWaterWaveDataSet.current.get('remainingDays')}
+                  {normalToSvg(sprintWaterWaveDataSet.current.get('remainingDays'), 20)}
                   <span>天</span>
                 </div>
               )}

@@ -6,7 +6,7 @@ import moment from 'moment';
 import OverviewWrap from '../OverviewWrap';
 import { useDefectChartStore } from './stores';
 import './index.less';
-import { EmptyPage } from '../EmptyPage';
+import EmptyPage from '../EmptyPage';
 import { useProjectOverviewStore } from '../../stores';
 
 const DefectChart = observer(() => {

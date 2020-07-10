@@ -7,7 +7,7 @@ import { Spin } from 'choerodon-ui';
 import OverviewWrap from '../OverviewWrap';
 import { useDefectTreatmentStore } from './stores';
 import { useProjectOverviewStore } from '../../stores';
-import { EmptyPage } from '../EmptyPage';
+import EmptyPage from '../EmptyPage';
 
 const DefectTreatment = observer(() => {
   const options = useMemo(() => [{ value: 'created', text: '提出' }, { value: 'completed', text: '解决' }], []);
