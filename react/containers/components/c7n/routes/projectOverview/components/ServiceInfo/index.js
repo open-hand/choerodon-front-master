@@ -1,25 +1,26 @@
 import React, { useState, memo, useEffect } from 'react';
 import { Button, Icon, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import OverviewWrap from '../OverviewWrap';
+import { useProjectOverviewStore } from '../../stores';
 
 import './index.less';
-import OverviewWrap from '../OverviewWrap';
 
-const ServiceInfo = memo(({
-  imageUrl,
-  realName = '王王王',
-  roles = ['admin', 'admin'],
-}) => {
+const ServiceInfo = () => {
   const clsPrefix = 'c7n-project-overview-service-info';
-  const [url, setUrl] = useState(0);
+  const {
+    appServiceDs,
+    envDs,
+  } = useProjectOverviewStore();
+
   const renderServiceDetail = () => (
     <React.Fragment>
       <div className={`${clsPrefix}-content-group-item`}>
-        <span>{9}</span>
+        <span>{appServiceDs.current ? appServiceDs.current.get('up') : 0}</span>
         <span>启用应用服务</span>
       </div>
       <div className={`${clsPrefix}-content-group-item`}>
-        <span>10</span>
+        <span>{appServiceDs.current ? appServiceDs.current.get('down') : 0}</span>
         <span>停用应用服务</span>
       </div>
     </React.Fragment>
@@ -27,11 +28,11 @@ const ServiceInfo = memo(({
   const renderEnvironmentDetail = () => (
     <React.Fragment>
       <div className={`${clsPrefix}-content-group-item`}>
-        <span>{28}</span>
+        <span>{envDs.current ? envDs.current.get('up') : 0}</span>
         <span>运行中环境</span>
       </div>
       <div className={`${clsPrefix}-content-group-item`}>
-        <span>11</span>
+        <span>{envDs.current ? envDs.current.get('down') : 0}</span>
         <span>未连接环境</span>
       </div>
     </React.Fragment>
@@ -56,6 +57,6 @@ const ServiceInfo = memo(({
       </OverviewWrap>
     </div>
   );
-});
+};
 
-export default ServiceInfo;
+export default observer(ServiceInfo);

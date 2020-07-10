@@ -1,9 +1,9 @@
 export default ({ projectId }) => ({
-  autoQuery: false,
+  autoQuery: true,
   selection: false,
   transport: {
     read: {
-      url: `/iam/choerodon/v1/projects/${projectId}/users/search`,
+      url: `/iam/choerodon/v1/projects/${projectId}/users/user_count`,
       method: 'get',
     },
   },
