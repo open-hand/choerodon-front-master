@@ -12,7 +12,7 @@ export default ({ projectId }) => ({
           try {
             const res = JSON.parse(response);
             if (res && res.failed) {
-              return data;
+              return res;
             } else {
               const newDate = [];
               const newFailureCount = [];
