@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route, Switch } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
+import asyncRouter from '../../util/asyncRouter';
 import './style';
 import AppState from '../../../../stores/c7n/AppState';
 
+const Unauthorized = asyncRouter(() => import('../unauthorized'));
 @withRouter
 @inject('AppState')
 @observer
@@ -18,7 +20,7 @@ class Outward extends Component {
     // eslint-disable-next-line no-underscore-dangle
     const injectOutward = window._env_.outward;
     if (injectOutward) {
-      const arr = injectOutward.split(',').map(r => r.replace(/['"']/g, ''));
+      const arr = injectOutward.split(',').concat(['/unauthorized']).map(r => r.replace(/['"']/g, ''));
       return arr.some(v => pathname.startsWith(v));
     }
     return false;
@@ -45,11 +47,14 @@ class Outward extends Component {
   }
 
   render() {
-    const { AutoRouter, history } = this.props;
+    const { AutoRouter, history, match } = this.props;
     if (this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">
-          <AutoRouter />
+          <Switch>
+            <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
+            <Route path={match.url} component={AutoRouter} />
+          </Switch>
         </div>
       );
     } else {
