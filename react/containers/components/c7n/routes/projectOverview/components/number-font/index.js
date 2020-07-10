@@ -2,7 +2,7 @@ import React from 'react';
 import './index.less';
 
 function isNumber(value) {
-  if (value === '' || value === null) {
+  if (typeof (value) === 'undefined' || value === '' || value === null) {
     return false;
   }
   if (!Number.isNaN(value)) {
@@ -63,6 +63,5 @@ export default function normalToSvg(content, height) {
   if (!isNumber(content)) {
     return '';
   }
-  // `${content}`.split('').map(i => numberFactory(i))
   return <div className="c7n-project-overview-svg">{`${content}`.split('').map(i => numberFactory(i, height))}</div>;
 }

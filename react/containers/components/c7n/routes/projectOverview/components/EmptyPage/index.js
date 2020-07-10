@@ -29,15 +29,20 @@ function EmptyImg({ height, width }) {
     </svg>
   );
 }
-export default function EmptyPage({ imgHeight, imgWidth, content }) {
+/**
+ * 
+ * @param {*} height 根据高度 自动调整位置
+ */
+export default function EmptyPage({ height, imgHeight, imgWidth, content }) {
   return (
-    <div className={clsPrefix}>
-      <EmptyImg height={80} width={80} />
-      {/* <div className={`${clsPrefix}-img`} /> */}
-      <div className={`${clsPrefix}-text`}>
-        {content || '当前暂无冲刺'}
+    <div className={clsPrefix} style={{ height }}>
+      <div className={`${clsPrefix}-body`}>
+        <EmptyImg height={80} width={80} />
+        {/* <div className={`${clsPrefix}-img`} /> */}
+        <div className={`${clsPrefix}-text`}>
+          {content || '当前暂无冲刺'}
+        </div>
       </div>
-
     </div>
   );
 }
