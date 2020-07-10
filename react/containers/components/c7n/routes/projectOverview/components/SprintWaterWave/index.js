@@ -7,6 +7,7 @@ import OverviewWrap from '../OverviewWrap';
 import WaterWave from './components/WaterWave';
 import { useProjectOverviewStore } from '../../stores';
 import { EmptyPage } from '../EmptyPage';
+
 const clsPrefix = 'c7n-project-overview-sprint-water-wave';
 const SprintWaterWave = observer(({
 }) => {
@@ -76,43 +77,44 @@ const SprintWaterWave = observer(({
     }
   }, [projectOverviewStore.getIsFinishLoad]);
   function render() {
-
     if (!loading && sprintWaterWaveDataSet.current) {
       const remainingDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : 0;
       const totalDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('totalDays') : 0;
-      return <OverviewWrap.Content className={`${clsPrefix}-content`}>
-        <div className={`${clsPrefix}-content-left`}>
-          {/* <Echart option={getOptions()} /> */}
-          <WaterWave
-            height={120}
+      return (
+        <OverviewWrap.Content className={`${clsPrefix}-content`}>
+          <div className={`${clsPrefix}-content-left`}>
+            {/* <Echart option={getOptions()} /> */}
+            <WaterWave
+              height={120}
             // color="rgba(77, 144, 254, 1)"
-            title="剩余时间"
-            percent={totalDays && remainingDays > 0 ? (totalDays - remainingDays) / totalDays * 100 : 100} // "totalDays": remainingDays
-            percentRender={() => (
-              <div className={`${clsPrefix}-percent`}>
-                {sprintWaterWaveDataSet.current.get('remainingDays')}
-                <span>天</span>
-              </div>
-            )}
-          />
-        </div>
-        <ul className={`${clsPrefix}-content-right`}>
-          <li>
-            <label>问题数</label>
-            <span>{sprintWaterWaveDataSet.current.get('issueCount')}(个)</span>
-          </li>
-          <li>
-            <label>故事点</label>
-            <span>{sprintWaterWaveDataSet.current.get('storyPoints')}(个)</span>
-          </li>
-          <li>
-            <label>剩余工时</label>
-            <span>{sprintWaterWaveDataSet.current.get('remainingEstimatedTime')}(小时)</span>
-          </li>
-        </ul>
-      </OverviewWrap.Content>
+              title="剩余时间"
+              percent={totalDays && remainingDays > 0 ? (totalDays - remainingDays) / totalDays * 100 : 100} // "totalDays": remainingDays
+              percentRender={() => (
+                <div className={`${clsPrefix}-percent`}>
+                  {sprintWaterWaveDataSet.current.get('remainingDays')}
+                  <span>天</span>
+                </div>
+              )}
+            />
+          </div>
+          <ul className={`${clsPrefix}-content-right`}>
+            <li>
+              <label>问题数</label>
+              <span>{sprintWaterWaveDataSet.current.get('issueCount')}(个)</span>
+            </li>
+            <li>
+              <label>故事点</label>
+              <span>{sprintWaterWaveDataSet.current.get('storyPoints')}(个)</span>
+            </li>
+            <li>
+              <label>剩余工时</label>
+              <span>{sprintWaterWaveDataSet.current.get('remainingEstimatedTime')}(小时)</span>
+            </li>
+          </ul>
+        </OverviewWrap.Content>
+      );
     }
-    return <EmptyPage content="暂无活跃的冲刺" />
+    return <EmptyPage content="暂无活跃的冲刺" />;
   }
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
@@ -125,9 +127,9 @@ const SprintWaterWave = observer(({
   return (
     <OverviewWrap height={225}>
       <OverviewWrap.Header title={renderTitle()} />
-        <Spin dataSet={sprintWaterWaveDataSet}>
-          {render()}
-        </Spin>
+      <Spin dataSet={sprintWaterWaveDataSet}>
+        {render()}
+      </Spin>
 
     </OverviewWrap>
 

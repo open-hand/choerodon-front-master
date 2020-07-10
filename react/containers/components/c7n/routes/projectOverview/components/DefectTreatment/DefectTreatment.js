@@ -55,7 +55,7 @@ const DefectTreatment = observer(() => {
         left: 30,
         right: 8,
         // top: 37,
-        bottom: show ? 85 : 60,
+        bottom: show ? 61 : 35,
       },
       tooltip: {
         backgroundColor: 'rgba(0,0,0,0.75)',
@@ -133,12 +133,12 @@ const DefectTreatment = observer(() => {
         },
       ],
       dataZoom: [{
-        bottom: 40,
+        bottom: 18,
         show,
         type: 'slider',
         height: 15,
         width: '80%',
-        left: 70,
+        left: 60,
         startValue: 0,
         endValue: 7,
         zoomLock: true,
@@ -165,10 +165,12 @@ const DefectTreatment = observer(() => {
   return (
     <OverviewWrap height={348}>
       <OverviewWrap.Header title={renderTitle()} />
-      <Spin spinning={loading}>
-        {projectOverviewStore.getStaredSprint ? <Echart style={{ width: '100%' }} option={getOptions()} />
-          : <EmptyPage content="暂无活跃的冲刺" />}
-      </Spin>
+      <OverviewWrap.Content className={`${clsPrefix}-content`}>
+        <Spin spinning={loading}>
+          {projectOverviewStore.getStaredSprint ? <Echart style={{ width: '100%' }} option={getOptions()} />
+            : <EmptyPage content="暂无活跃的冲刺" />}
+        </Spin>
+      </OverviewWrap.Content>
     </OverviewWrap>
 
   );
