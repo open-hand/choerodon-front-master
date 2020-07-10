@@ -56,7 +56,7 @@ const SprintWaterWave = observer(() => {
     } else if (projectOverviewStore.getStaredSprint) {
       return <LoadingBar display />;
     } else if (!sprintWaterWaveDataSet.status !== 'loading' && projectOverviewStore.getIsFinishLoad) {
-      return <EmptyPage content="暂无活跃的冲刺" />;
+      return <EmptyPage />;
     }
     return '';
   }
