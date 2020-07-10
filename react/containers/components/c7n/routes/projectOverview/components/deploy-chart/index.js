@@ -4,10 +4,10 @@ import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
-import { EmptyPage } from '../EmptyPage';
+import EmptyPage from '../EmptyPage';
+import LoadingBar from '../../../../tools/loading-bar';
 
 import './index.less';
-import LoadingBar from "../../../../tools/loading-bar";
 
 const DeployChart = () => {
   const clsPrefix = 'c7n-project-overview-deploy-chart';
