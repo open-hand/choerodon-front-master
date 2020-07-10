@@ -23,8 +23,8 @@ const DeployChart = () => {
   );
 
   function getOption() {
-    const xAxis = ['2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02'];
-    const yAxis = [20, 50, 10, 20, 30, 20, 5, 15];
+    const xAxis = deployDs.current ? deployDs.current.get('date') : [];
+    const yAxis = deployDs.current ? deployDs.current.get('value') : [];
     const color = '#7589F2';
     const count = yAxis.reduce((sum, value) => sum + value, 0);
     return {
