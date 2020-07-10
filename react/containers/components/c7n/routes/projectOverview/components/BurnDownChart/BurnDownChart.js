@@ -313,7 +313,7 @@ const BurnDownChart = observer(() => {
     if (projectOverviewStore.getStaredSprint) {
       return <Echart option={getOption()} />
     } else if (projectOverviewStore.getIsFinishLoad) {
-      return <EmptyPage />;
+      return <EmptyPage height={259} />;
     }
     return '';
   }
