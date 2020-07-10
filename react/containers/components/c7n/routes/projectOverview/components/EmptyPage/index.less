@@ -1,18 +1,27 @@
 .c7n-project-overview-empty-page {
-    display: flex;
-    flex-flow: column;
-    position: absolute;
-    left: 42%;
-    top: 30px;
-    &-img {
-        width: 100%;
-        height: 100%;
-        background-size: contain;
-        background: url("./images/empty.svg") no-repeat;
-    }
-    &-text {
-        font-size: .13rem;
-        text-align: left;
-        color: #3A345F;
-    }
+  display: flex;
+  flex-flow: column;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  &-body {
+    margin: auto;
+    // background-color: red;
+  }
+
+  &-img {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background: url("./images/empty.svg") no-repeat;
+  }
+
+  &-text {
+    font-size: .13rem;
+    text-align: left;
+    color: #3A345F;
+  }
 }

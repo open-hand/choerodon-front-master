@@ -3,6 +3,7 @@ import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import moment from 'moment';
+import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import OverviewWrap from '../OverviewWrap';
 import { useDefectChartStore } from './stores';
 import './index.less';
@@ -13,7 +14,7 @@ const DefectChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-defect-chart';
   const { defectChartStore } = useDefectChartStore();
   const { projectOverviewStore } = useProjectOverviewStore();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [dataset, setDataset] = useState({ date: [], complete: [], create: [] });
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
@@ -27,8 +28,10 @@ const DefectChart = observer(() => {
       defectChartStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId).then(() => {
         setLoading(false);
       });
+    } else if (projectOverviewStore.getIsFinishLoad) {
+      setLoading(false);
     }
-  }, [projectOverviewStore.getStaredSprint]);
+  }, [projectOverviewStore.getIsFinishLoad]);
   useEffect(() => {
     if (defectChartStore.getChartList) {
       const range = moment.range(projectOverviewStore.getStaredSprint.startDate, moment());
@@ -179,15 +182,24 @@ const DefectChart = observer(() => {
       ],
     };
   }
-
+  function render() {
+    if (projectOverviewStore.getStaredSprint) {
+      return (
+        <OverviewWrap.Content className={`${clsPrefix}-content`}>
+          <Spin spinning={loading}>
+            <Echart option={getOptions()} />
+          </Spin>
+        </OverviewWrap.Content>
+      );
+    } else if (projectOverviewStore.getIsFinishLoad) {
+      return <EmptyPage />;// 暂无活跃的冲刺" 
+    }
+    return <LoadingBar display />;
+  }
   return (
     <OverviewWrap width="57%" height={302}>
       <OverviewWrap.Header title={renderTitle()} />
-      <OverviewWrap.Content className={`${clsPrefix}-content`}>
-        <Spin spinning={loading}>
-          {projectOverviewStore.getStaredSprint ? <Echart option={getOptions()} /> : <EmptyPage content="暂无活跃的冲刺" />}
-        </Spin>
-      </OverviewWrap.Content>
+      {render()}
     </OverviewWrap>
 
   );

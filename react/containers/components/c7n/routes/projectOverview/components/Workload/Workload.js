@@ -7,6 +7,7 @@ import { useWorkloadStore } from './stores';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
 import './index.less';
+import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 
 const { Option } = Select;
 const showIcons = [
@@ -43,8 +44,7 @@ const showIcons = [
   },
 ];
 
-const Workload = observer(({
-}) => {
+const Workload = observer(() => {
   const clsPrefix = 'c7n-project-overview-workload';
   const [selectOption, setSelectOption] = useState([]);
   const { workloadStore } = useWorkloadStore();
@@ -69,11 +69,11 @@ const Workload = observer(({
       setSelectOption([]);
     }
   };
-    /**
-     * 检查数据是否是空数据
-     * @param {*} data 
-     * @param {*} exceptKey 
-     */
+  /**
+   * 检查数据是否是空数据
+   * @param {*} data 
+   * @param {*} exceptKey 
+   */
   function checkIsNullData(data, exceptKey) {
     if (!data) {
       return true;
@@ -114,45 +114,59 @@ const Workload = observer(({
         <Icon type="help" className={`${clsPrefix}-icon`} />
       </Tooltip>
       {// 若冲刺数据已加载完成 但工作量无数据则不显示
-                projectOverviewStore.getIsFinishLoad && workloadStore.getData ? (
-                  <Select
-                    multiple
-                    // searchable
-                    getPopupContainer={triggerNode => triggerNode.parentNode}
-                    style={{ marginLeft: 24 }}
-                    className="c7n-project-overview-SelectTheme"
-                    label="选择经办人"
-                    placeholder="选择经办人"
-                    clearButton
-                    maxTagCount={5}
-                    popupCls="c7n-project-overview-assignee"
-                    popupStyle={{ minWidth: '2rem' }}
-                    // defaultValue={selectValue}
-                    onChange={handleChangeSelect}
-                  >
-                    {workloadStore.getAssignee ? workloadStore.getAssignee.map((item, index) => <Option value={index}>{item}</Option>) : ''}
-                  </Select>
-                ) : ''
-            }
+        projectOverviewStore.getIsFinishLoad && workloadStore.getData ? (
+          <Select
+            multiple
+            // searchable
+            getPopupContainer={triggerNode => triggerNode.parentNode}
+            style={{ marginLeft: 24 }}
+            className="c7n-project-overview-SelectTheme"
+            label="选择经办人"
+            placeholder="选择经办人"
+            clearButton
+            maxTagCount={5}
+            popupCls="c7n-project-overview-assignee"
+            popupStyle={{ minWidth: '2rem' }}
+            // defaultValue={selectValue}
+            onChange={handleChangeSelect}
+          >
+            {workloadStore.getAssignee ? workloadStore.getAssignee.map((item, index) => <Option value={index}>{item}</Option>) : ''}
+          </Select>
+        ) : ''
+      }
 
     </div>
   );
+  function render() {
+    if (projectOverviewStore.getStaredSprint) {
+      if (workloadStore.getData) {
+        return (
+          workloadStore.getData.size > 0
+            ? (
+              <DateTable
+                cellHeight={135}
+                current={workloadStore.getData.size > 7 ? workloadStore.getData.size - 7 : 0}
+                quickMapData={workloadStore.getData}
+                rowIndex={workloadStore.getAssignee}
+                filterRowIndex={selectOption}
+                columns={workloadStore.getDate}
+                sumArr={workloadStore.getTotal}
+                render={renderCell}
+              />
+            ) : <EmptyPage content="暂无数据" />
+        );
+      } else {
+        return <LoadingBar display />;
+      }
+    } else if (projectOverviewStore.getIsFinishLoad) {
+      return <EmptyPage />; // content="暂无活跃的冲刺" 
+    }
+  }
   return (
     <OverviewWrap width="100%" style={{ minHeight: 150 }}>
       <OverviewWrap.Header title={renderTitle()} />
       <OverviewWrap.Content>
-        {projectOverviewStore.getIsFinishLoad && workloadStore.getData ? (
-          <DateTable
-            cellHeight={135}
-            current={workloadStore.getData.size > 7 ? workloadStore.getData.size - 7 : 0}
-            quickMapData={workloadStore.getData}
-            rowIndex={workloadStore.getAssignee}
-            filterRowIndex={selectOption}
-            columns={workloadStore.getDate}
-            sumArr={workloadStore.getTotal}
-            render={renderCell}
-          />
-        ) : <EmptyPage content="暂无活跃的冲刺" />}
+        {render()}
       </OverviewWrap.Content>
     </OverviewWrap>
   );
