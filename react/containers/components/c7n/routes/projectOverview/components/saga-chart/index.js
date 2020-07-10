@@ -1,17 +1,41 @@
 import React, { useState, memo, useMemo, useEffect } from 'react';
-import { Button, Tooltip } from 'choerodon-ui/pro';
+import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import moment from 'moment';
 import OverviewWrap from '../OverviewWrap';
 import DaysPicker from '../days-picker';
+import { useProjectOverviewStore } from '../../stores';
 
 import './index.less';
 
-const SagaChart = memo(() => {
-  const options = useMemo(() => [{ value: 'todo', text: '提出' }, { value: 'complete', text: '解决' }], []);
+const SagaChart = () => {
   const clsPrefix = 'c7n-project-overview-saga-chart';
-  const [charOption, setCharOption] = useState('todo'); // todo complete
+  const {
+    asgardDs,
+  } = useProjectOverviewStore();
+
+  // const [date, setDate] = useState([]);
+  // const [failureCount, setFailureCount] = useState([]);
+  // const [percentage, setPercentage] = useState([]);
+  // const [totalCount, setTotalCount] = useState([]);
+
+  // useEffect(() => {
+  //   const newDate = [];
+  //   const newFailureCount = [];
+  //   const newPercentage = [];
+  //   const newTotalCount = [];
+  //   asgardDs.forEach((record) => {
+  //     newDate.push(record.get('creationDate').split(' ')[0]);
+  //     newFailureCount.push(record.get('failureCount'));
+  //     newPercentage.push(record.get('percentage'));
+  //     newTotalCount.push(record.get('totalCount'));
+  //   });
+  //   setDate(newDate);
+  //   setFailureCount(newFailureCount);
+  //   setPercentage(newPercentage);
+  //   setTotalCount(newTotalCount);
+  // }, [asgardDs.records]);
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
@@ -20,15 +44,17 @@ const SagaChart = memo(() => {
   );
 
   function loadData(days = 7) {
-    const startTime = moment().subtract(days, 'days').format('YYYY-MM-DD HH:mm:ss');
-    const endTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    asgardDs.setQueryParameter('date', days);
+    asgardDs.query();
   }
 
   function getOption() {
-    const xAxis = ['2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02'];
-    const yAxis = [20, 50, 10, 20, 30, 20, 5, 15];
     const color = '#F48590';
-    const count = yAxis.reduce((sum, value) => sum + value, 0);
+    const date = asgardDs.current ? asgardDs.current.get('date') : [];
+    const failureCount = asgardDs.current ? asgardDs.current.get('failureCount') : [];
+    const percentage = asgardDs.current ? asgardDs.current.get('percentage') : [];
+    const totalCount = asgardDs.current ? asgardDs.current.get('totalCount') : [];
+
     return {
       grid: {
         top: 33,
@@ -43,22 +69,19 @@ const SagaChart = memo(() => {
           color: '#FFF',
         },
         extraCssText: '0px 2px 8px 0px rgba(0,0,0,0.12);padding:15px 17px',
-        // formatter(params) {
-        //   return `
-        //     日期: ${`${xAxis[0].split('-')[0]}-${params[0].name}`}</br>
-        //     事务失败率: ${percentage[params[0].dataIndex]}%</br>
-        //     失败次数: ${params[0].value}</br>
-        //     总次数: ${totalCount[params[0].dataIndex]}
-        //   `;
-        // },
-        formatter(obj) {
-          return `时间：${obj.name}<br/>失败次数：${obj.value}`;
+        formatter(params) {
+          return `
+            日期: ${params.name}</br>
+            事务失败率: ${percentage[params.dataIndex]}%</br>
+            失败次数: ${params.value}</br>
+            总次数: ${totalCount[params.dataIndex]}
+          `;
         },
       },
       xAxis: {
         boundaryGap: false,
         type: 'category',
-        data: xAxis,
+        data: date,
         axisTick: {
           show: false,
         },
@@ -117,7 +140,7 @@ const SagaChart = memo(() => {
         },
       },
       series: [{
-        data: yAxis,
+        data: failureCount,
         type: 'line',
         smooth: true,
         symbol: 'circle',
@@ -149,12 +172,14 @@ const SagaChart = memo(() => {
       <OverviewWrap.Header title={renderTitle()}>
         <DaysPicker handleChangeDays={loadData} />
       </OverviewWrap.Header>
-      <Echart
-        option={getOption()}
-        style={{ height: '280px' }}
-      />
+      <Spin spinning={asgardDs.status === 'loading'}>
+        <Echart
+          option={getOption()}
+          style={{ height: '280px' }}
+        />
+      </Spin>
     </OverviewWrap>
   );
-});
+};
 
-export default SagaChart;
+export default observer(SagaChart);

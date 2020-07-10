@@ -1,15 +1,20 @@
 import React, { useState, memo, useMemo, useEffect } from 'react';
-import { Button, Tooltip } from 'choerodon-ui/pro';
+import { Button, Spin, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import OverviewWrap from '../OverviewWrap';
+import { useProjectOverviewStore } from '../../stores';
+import { EmptyPage } from '../EmptyPage';
 
 import './index.less';
+import LoadingBar from "../../../../tools/loading-bar";
 
-const CommitChart = memo(() => {
-  const options = useMemo(() => [{ value: 'todo', text: '提出' }, { value: 'complete', text: '解决' }], []);
+const CommitChart = () => {
   const clsPrefix = 'c7n-project-overview-commit-chart';
-  const [charOption, setCharOption] = useState('todo'); // todo complete
+  const {
+    projectOverviewStore,
+    commitDs,
+  } = useProjectOverviewStore();
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
@@ -160,13 +165,22 @@ const CommitChart = memo(() => {
     };
   }
 
+  function getContent() {
+    if (!projectOverviewStore.getIsFinishLoad) {
+      return <LoadingBar display />;
+    }
+    if (!projectOverviewStore.getStaredSprint) {
+      return <EmptyPage />;
+    }
+    return <Echart option={getOption()} />;
+  }
+
   return (
     <OverviewWrap width="57%" height={302} marginRight=".2rem">
       <OverviewWrap.Header title={renderTitle()} />
-      <Echart option={getOption()} />
+      {getContent()}
     </OverviewWrap>
-
   );
-});
+};
 
-export default CommitChart;
+export default observer(CommitChart);
