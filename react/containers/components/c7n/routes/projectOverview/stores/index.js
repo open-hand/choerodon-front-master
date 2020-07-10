@@ -65,6 +65,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     envDs,
     asgardDs,
     commitDs,
+    deployDs,
   };
 
   return (
