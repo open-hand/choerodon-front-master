@@ -262,20 +262,19 @@ export default observer(() => {
             />
           </div>
           <div className="allProjects-content-item-right-down">
-            <Tooltip title={p.name} placement="bottomLeft">
-              {p.editFlag ? (
-                <p
-                  className="allProjects-content-item-right-down-pro allProjects-content-item-right-down-pro-edit"
-                  onClick={(e) => handleEditProject(e, p.id)}
-                >
-                  {p.name}
-                </p>
-              ) : (
-                <p className="allProjects-content-item-right-down-pro">
-                  {p.name}
-                </p>
-              )}
-            </Tooltip>
+
+            {p.editFlag ? (
+              <p
+                className="allProjects-content-item-right-down-pro allProjects-content-item-right-down-pro-edit"
+                onClick={(e) => handleEditProject(e, p.id)}
+              >
+                <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
+              </p>
+            ) : (
+              <p className="allProjects-content-item-right-down-pro">
+                <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
+              </p>
+            )}
 
             <Tooltip
               title={p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}
