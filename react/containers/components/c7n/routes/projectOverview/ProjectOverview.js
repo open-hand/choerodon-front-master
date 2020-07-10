@@ -11,14 +11,19 @@ import SagaChart from './components/saga-chart';
 import DeployChart from './components/deploy-chart';
 import CommitChart from './components/commit-chart';
 import DefectChart from './components/defect-chart';
+import { useProjectOverviewStore } from './stores';
+
 import './ProjectOverview.less';
 
 const ProjectOverview = () => {
+  const {
+    AppState: { currentMenuType: { category } },
+  } = useProjectOverviewStore();
+  
   return (
     <Page className="c7n-project-overview">
       <Breadcrumb />
       <Content>
-
         <div className="c7n-project-overview-content">
           <div className="c7n-project-overview-content-left">
             <ServiceInfo />
@@ -39,10 +44,12 @@ const ProjectOverview = () => {
           <SagaChart />
           <DefectChart />
         </div>
-        <div className="c7n-project-overview-item">
-          <CommitChart />
-          <DeployChart />
-        </div>
+        {category === 'GENERAL' || category === 'OPERATIONS' ? (
+          <div className="c7n-project-overview-item">
+            <CommitChart />
+            <DeployChart />
+          </div>
+        ) : null}
       </Content>
     </Page>
   );

@@ -14,7 +14,7 @@ const UserList = () => {
 
   return (
     <OverviewWrap height={459}>
-      <OverviewWrap.Header title={`项目成员(${0})`} />
+      <OverviewWrap.Header title={`活跃成员(${0})`} />
       {userListDs.map((record) => {
         const { imageUrl, loginName, realName, roles } = record.toData();
         return (
