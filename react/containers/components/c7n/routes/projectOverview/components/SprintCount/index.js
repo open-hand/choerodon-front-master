@@ -5,7 +5,7 @@ import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import normalToSvg from '../number-font';
 import './index.less';
-import { EmptyPage } from '../EmptyPage';
+import EmptyPage from '../EmptyPage';
 
 const { Option } = Select;
 const clsPrefix = 'c7n-project-overview-sprint-count';
@@ -54,7 +54,7 @@ const SprintCount = observer(({
           <Spin dataSet={sprintCountDataSet}>
             <OverviewWrap.Content className={`${clsPrefix}-content`}>
               {renderStatusProgress()}
-            </OverviewWrap.Content> 
+            </OverviewWrap.Content>
           </Spin>
         ) : <EmptyPage />
       }
