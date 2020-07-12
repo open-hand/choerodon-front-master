@@ -29,7 +29,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const projectOverviewStore = useStore(projectId);
   const sprintCountDataSet = useMemo(() => new DataSet(SprintCountDataSet({ projectId, sprint: projectOverviewStore.getStaredSprint })), [projectId, projectOverviewStore.getStaredSprint]);
   const sprintWaterWaveDataSet = useMemo(() => new DataSet(SprintWaterWaveDataSet({ projectId, sprint: projectOverviewStore.getStaredSprint })), [projectId, projectOverviewStore.getStaredSprint]);
-  const userListDs = useMemo(() => new DataSet(UserListDataSet({ projectId })), [projectId]);
+  const userListDs = useMemo(() => new DataSet(UserListDataSet({ projectId, projectOverviewStore })), [projectId]);
   const appServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ projectId })), [projectId]);
   const envDs = useMemo(() => new DataSet(EnvDataSet({ projectId })), [projectId]);
   const asgardDs = useMemo(() => new DataSet(AsgardDataSet({ projectId })), [projectId]);
