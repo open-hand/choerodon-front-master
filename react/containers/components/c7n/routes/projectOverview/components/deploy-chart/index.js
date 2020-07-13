@@ -92,6 +92,7 @@ const DeployChart = () => {
         minInterval: 1,
         nameTextStyle: {
           color: '#000',
+          padding: [0, 0, 0, 10],
         },
         axisLine: {
           show: true,
