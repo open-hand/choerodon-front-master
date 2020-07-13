@@ -9,14 +9,12 @@ import { useBurnDownChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
-import { EmptyPage } from '../EmptyPage';
+import EmptyPage from '../EmptyPage';
 
 const moment = extendMoment(Moment);
 
 const { Option } = Select;
-const BurnDownChart = observer(({
-
-}) => {
+const BurnDownChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-burn-down-chart';
   const { burnDownChartStore } = useBurnDownChartStore();
   const { projectOverviewStore } = useProjectOverviewStore();
@@ -37,7 +35,6 @@ const BurnDownChart = observer(({
   }
 
   function loadChartCoordinate() {
-    setLoading(true);
     burnDownChartStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId, selectValue).then((res) => {
       const keys = Object.keys(res.coordinate);
       let [minDate, maxDate] = [keys[0], keys[0]];
@@ -128,8 +125,9 @@ const BurnDownChart = observer(({
         burnDownChartStore.setRestDays(res.map(date => moment(date).format('YYYY-MM-DD')));
         loadChartCoordinate();
       });
+    } else if (projectOverviewStore.getIsFinishLoad) {
+      setLoading(false);
     }
-    setLoading(false);
   }, [projectOverviewStore.getIsFinishLoad]);
   useEffect(() => {
     if (projectOverviewStore.getStaredSprint) {
@@ -314,8 +312,10 @@ const BurnDownChart = observer(({
   function render() {
     if (projectOverviewStore.getStaredSprint) {
       return <Echart option={getOption()} />
+    } else if (projectOverviewStore.getIsFinishLoad) {
+      return <EmptyPage height={259} />;
     }
-    return <EmptyPage imgHeight={200} imgWidth={300} />
+    return '';
   }
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
@@ -349,9 +349,11 @@ const BurnDownChart = observer(({
   return (
     <OverviewWrap height={333}>
       <OverviewWrap.Header title={renderTitle()} />
-      <Spin spinning={projectOverviewStore.getIsFinishLoad && loading}>
-        {render()}
-      </Spin>
+      <OverviewWrap.Content className={`${clsPrefix}-content`}>
+        <Spin spinning={loading}>
+          {render()}
+        </Spin>
+      </OverviewWrap.Content>
     </OverviewWrap>
 
   );

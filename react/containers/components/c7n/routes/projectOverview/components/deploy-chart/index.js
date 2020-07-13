@@ -1,15 +1,20 @@
 import React, { useState, memo, useMemo, useEffect } from 'react';
-import { Button, Tooltip } from 'choerodon-ui/pro';
+import { Button, Spin, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import OverviewWrap from '../OverviewWrap';
+import { useProjectOverviewStore } from '../../stores';
+import EmptyPage from '../EmptyPage';
+import LoadingBar from '../../../../tools/loading-bar';
 
 import './index.less';
 
-const DeployChart = memo(() => {
-  const options = useMemo(() => [{ value: 'todo', text: '提出' }, { value: 'complete', text: '解决' }], []);
+const DeployChart = () => {
   const clsPrefix = 'c7n-project-overview-deploy-chart';
-  const [charOption, setCharOption] = useState('todo'); // todo complete
+  const {
+    projectOverviewStore,
+    deployDs,
+  } = useProjectOverviewStore();
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
@@ -18,8 +23,8 @@ const DeployChart = memo(() => {
   );
 
   function getOption() {
-    const xAxis = ['2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02'];
-    const yAxis = [20, 50, 10, 20, 30, 20, 5, 15];
+    const xAxis = deployDs.current ? deployDs.current.get('date') : [];
+    const yAxis = deployDs.current ? deployDs.current.get('value') : [];
     const color = '#7589F2';
     const count = yAxis.reduce((sum, value) => sum + value, 0);
     return {
@@ -87,6 +92,7 @@ const DeployChart = memo(() => {
         minInterval: 1,
         nameTextStyle: {
           color: '#000',
+          padding: [0, 0, 0, 10],
         },
         axisLine: {
           show: true,
@@ -132,13 +138,23 @@ const DeployChart = memo(() => {
     };
   }
 
+  function getContent() {
+    if (!projectOverviewStore.getIsFinishLoad) {
+      return <LoadingBar display />;
+    }
+    if (!projectOverviewStore.getStaredSprint) {
+      return <EmptyPage />;
+    }
+    return <Echart option={getOption()} />;
+  }
+
   return (
     <OverviewWrap width="43%" height={302}>
       <OverviewWrap.Header title={renderTitle()} />
-      <Echart option={getOption()} />
+      {getContent()}
     </OverviewWrap>
 
   );
-});
+};
 
-export default DeployChart;
+export default observer(DeployChart);

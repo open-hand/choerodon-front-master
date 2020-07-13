@@ -1,16 +1,15 @@
 import React, { useState, memo, useEffect } from 'react';
-import { Button, Tooltip, Select, Progress, Icon, Spin } from 'choerodon-ui/pro';
+import { Tooltip, Progress, Icon, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import normalToSvg from '../number-font';
 import './index.less';
-import { EmptyPage } from '../EmptyPage';
+import EmptyPage from '../EmptyPage';
+import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 
-const { Option } = Select;
 const clsPrefix = 'c7n-project-overview-sprint-count';
-const SprintCount = observer(({
-}) => {
+const SprintCount = observer(() => {
   const { sprintCountDataSet, projectOverviewStore } = useProjectOverviewStore();
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
@@ -25,17 +24,20 @@ const SprintCount = observer(({
     // 根据dataSet内的filed进行渲染
     if (sprintCountDataSet.current) {
       const keys = sprintCountDataSet.current.fields.keys();
+      // eslint-disable-next-line no-restricted-syntax
       for (const key of keys) {
-        progressArr.push(<div className={`${clsPrefix}-issue`}>
-          <span className={`${clsPrefix}-issue-name`}>{sprintCountDataSet.getField(key).pristineProps.label}</span>
-          <h3 className={`${clsPrefix}-issue-number`}>{normalToSvg(sprintCountDataSet.current.get(key))}</h3>
-          <Progress
-            value={sprintCountDataSet.current.get(key) > 0 ? sprintCountDataSet.current.get(key) / sprintCountDataSet.current.get('total') * 100 : 0}
-            className={`${clsPrefix}-issue-${key}`}
-            strokeWidth={4}
-            showInfo={false}
-          />
-                         </div>);
+        progressArr.push(
+          <div className={`${clsPrefix}-issue`}>
+            <span className={`${clsPrefix}-issue-name`}>{sprintCountDataSet.getField(key).pristineProps.label}</span>
+            <h3 className={`${clsPrefix}-issue-number`}>{normalToSvg(sprintCountDataSet.current.get(key))}</h3>
+            <Progress
+              value={sprintCountDataSet.current.get(key) > 0 ? sprintCountDataSet.current.get(key) / sprintCountDataSet.current.get('total') * 100 : 0}
+              className={`${clsPrefix}-issue-${key}`}
+              strokeWidth={4}
+              showInfo={false}
+            />
+          </div>,
+        );
       }
     }
     return progressArr;
@@ -45,20 +47,24 @@ const SprintCount = observer(({
       sprintCountDataSet.query();
     }
   }, [projectOverviewStore.getStaredSprint]);
-
+  function render() {
+    if (projectOverviewStore.getStaredSprint) {
+      return (
+        <Spin dataSet={sprintCountDataSet}>
+          <OverviewWrap.Content className={`${clsPrefix}-content`}>
+            {renderStatusProgress()}
+          </OverviewWrap.Content>
+        </Spin>
+      );
+    } else if (projectOverviewStore.getIsFinishLoad) {
+      return <EmptyPage />;
+    }
+    return <LoadingBar display />;
+  }
   return (
     <OverviewWrap height={137}>
       <OverviewWrap.Header titleMarginBottom={12} title={renderTitle()} />
-      {
-        projectOverviewStore.getStaredSprint ? (
-          <Spin dataSet={sprintCountDataSet}>
-            <OverviewWrap.Content className={`${clsPrefix}-content`}>
-              {renderStatusProgress()}
-            </OverviewWrap.Content> 
-          </Spin>
-        ) : <EmptyPage />
-      }
-
+      {render()}
     </OverviewWrap>
   );
 });

@@ -4,42 +4,37 @@ import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import './index.less';
 import { Spin } from 'choerodon-ui';
+import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import OverviewWrap from '../OverviewWrap';
 import { useDefectTreatmentStore } from './stores';
 import { useProjectOverviewStore } from '../../stores';
-import { EmptyPage } from '../EmptyPage';
+import EmptyPage from '../EmptyPage';
 
 const DefectTreatment = observer(() => {
   const options = useMemo(() => [{ value: 'created', text: '提出' }, { value: 'completed', text: '解决' }], []);
   const clsPrefix = 'c7n-project-overview-defect-treatment';
   const { defectTreatmentStore } = useDefectTreatmentStore();
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [charOption, setCharOption] = useState('created'); // createdList completedList
   const { projectOverviewStore } = useProjectOverviewStore();
-  const Legend = (data) => (
-    <div className={`${clsPrefix}-legend`}>
-      {data.map(item => (
-        <div>
-          <div className="" />
-        </div>
-      ))}
-    </div>
-  );
+
   useEffect(() => {
     if (projectOverviewStore.getStaredSprint) {
       setLoading(true);
       defectTreatmentStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId).then(() => {
         setLoading(false);
       });
+    } else if (projectOverviewStore.getIsFinishLoad) {
+      setLoading(false);
     }
-  }, [projectOverviewStore.getStaredSprint]);
+  }, [projectOverviewStore.getIsFinishLoad]);
   useEffect(() => {
     if (defectTreatmentStore.getChartList && defectTreatmentStore.getChartList.length > 8) {
       setShow(true);
     }
   }, [defectTreatmentStore.getChartList]);
-  function getOptions(params) {
+  function getOptions() {
     return {
       legend: {
         // type: 'roundRect',
@@ -159,18 +154,33 @@ const DefectTreatment = observer(() => {
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>缺陷提出与解决</span>
-      {projectOverviewStore.getStaredSprint ? <OverviewWrap.Switch defaultValue="created" onChange={setCharOption} options={options} /> : ''}
+      {projectOverviewStore.getStaredSprint && defectTreatmentStore.getChartList && defectTreatmentStore.getChartList.length > 0 ? <OverviewWrap.Switch defaultValue="created" onChange={setCharOption} options={options} /> : ''}
     </div>
   );
+  function render() {
+    if (projectOverviewStore.getStaredSprint) {
+      return (
+        <OverviewWrap.Content className={`${clsPrefix}-content`}>
+          <Spin spinning={loading}>
+            {
+              defectTreatmentStore.getChartList && !loading && defectTreatmentStore.getChartList.length > 0
+                ? <Echart style={{ width: '100%' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
+            }
+
+          </Spin>
+        </OverviewWrap.Content>
+      );
+    } else if (projectOverviewStore.getIsFinishLoad) {
+      return <EmptyPage />;// 暂无活跃的冲刺" 
+    }
+    return <LoadingBar display />;
+  }
   return (
     <OverviewWrap height={348}>
       <OverviewWrap.Header title={renderTitle()} />
-      <OverviewWrap.Content className={`${clsPrefix}-content`}>
-        <Spin spinning={loading}>
-          {projectOverviewStore.getStaredSprint ? <Echart style={{ width: '100%' }} option={getOptions()} />
-            : <EmptyPage content="暂无活跃的冲刺" />}
-        </Spin>
-      </OverviewWrap.Content>
+
+      {render()}
+
     </OverviewWrap>
 
   );

@@ -11,6 +11,8 @@ export default function useStore(projectId) {
     isFinishLoad:false,
     sprints: [],
     staredSprint: undefined,
+    totalOnlineUser: 0,
+
     get getIsFinishLoad() {
       return this.isFinishLoad;
     },
@@ -29,6 +31,14 @@ export default function useStore(projectId) {
     setStaredSprint(data) {
       this.staredSprint = data;
     },
+
+    setTotalOnlineUser(data) {
+      this.totalOnlineUser = data;
+    },
+    get getTotalOnlineUser() {
+      return this.totalOnlineUser;
+    },
+
     loadAllSprint() {
       return axios.post(`/agile/v1/projects/${projectId}/sprint/names`, ['started', 'closed']);
     },

@@ -1,15 +1,20 @@
 import React, { useState, memo, useMemo, useEffect } from 'react';
-import { Button, Tooltip } from 'choerodon-ui/pro';
+import { Button, Spin, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import OverviewWrap from '../OverviewWrap';
+import { useProjectOverviewStore } from '../../stores';
+import EmptyPage from '../EmptyPage';
+import LoadingBar from '../../../../tools/loading-bar';
 
 import './index.less';
 
-const CommitChart = memo(() => {
-  const options = useMemo(() => [{ value: 'todo', text: '提出' }, { value: 'complete', text: '解决' }], []);
+const CommitChart = () => {
   const clsPrefix = 'c7n-project-overview-commit-chart';
-  const [charOption, setCharOption] = useState('todo'); // todo complete
+  const {
+    projectOverviewStore,
+    commitDs,
+  } = useProjectOverviewStore();
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
@@ -18,8 +23,8 @@ const CommitChart = memo(() => {
   );
 
   function getOption() {
-    const xAxis = ['2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02'];
-    const yAxis = [20, 50, 10, 20, 30, 20, 5, 15];
+    const xAxis = commitDs.current ? commitDs.current.get('date') : [];
+    const yAxis = commitDs.current ? commitDs.current.get('value') : [];
     const color = '#6887E8';
     const count = yAxis.reduce((sum, value) => sum + value, 0);
     return {
@@ -95,6 +100,7 @@ const CommitChart = memo(() => {
         minInterval: 1,
         nameTextStyle: {
           color: '#000',
+          padding: [0, 0, 0, 10],
         },
         axisLine: {
           show: true,
@@ -160,13 +166,22 @@ const CommitChart = memo(() => {
     };
   }
 
+  function getContent() {
+    if (!projectOverviewStore.getIsFinishLoad) {
+      return <LoadingBar display />;
+    }
+    if (!projectOverviewStore.getStaredSprint) {
+      return <EmptyPage />;
+    }
+    return <Echart option={getOption()} />;
+  }
+
   return (
     <OverviewWrap width="57%" height={302} marginRight=".2rem">
       <OverviewWrap.Header title={renderTitle()} />
-      <Echart option={getOption()} />
+      {getContent()}
     </OverviewWrap>
-
   );
-});
+};
 
-export default CommitChart;
+export default observer(CommitChart);
