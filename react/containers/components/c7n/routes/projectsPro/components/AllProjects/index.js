@@ -236,7 +236,9 @@ export default observer(() => {
             backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : getRandomBackground(p.id),
           }}
         >
-          {!p.imageUrl && p.name && p.name.slice(0, 1)}
+          <span>
+            {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
+          </span>
         </div>
 
         <div className="allProjects-content-item-right">
