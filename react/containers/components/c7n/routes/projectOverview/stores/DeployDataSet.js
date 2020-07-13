@@ -1,4 +1,4 @@
-import forEach from 'lodash/index';
+import forEach from 'lodash/forEach';
 
 export default ({ projectId }) => ({
   autoQuery: false,
