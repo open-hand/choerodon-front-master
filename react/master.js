@@ -42,6 +42,16 @@ export default class Index extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if ((prevProps.location.pathname !== this.props.location.pathname) && prevState.loading) {
+      if (!this.isInOutward(this.props.location.pathname)) {
+        console.log('load');
+        HeaderStore.axiosGetRoles();
+        this.auth();
+      }
+    }
+  }
+
   checkOrg = async () => {
     const { email } = AppState.getUserInfo;
     try {
