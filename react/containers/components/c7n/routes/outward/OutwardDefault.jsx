@@ -14,6 +14,9 @@ class Outward extends Component {
     if (!AppState.siteInfo.systemTitle) {
       this.initFavicon();
     }
+    AppState.changeMenuType({
+      type: 'site',
+    });
   }
 
   isInOutward = (pathname) => {
