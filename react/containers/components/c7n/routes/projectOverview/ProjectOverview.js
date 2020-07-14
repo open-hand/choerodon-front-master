@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Content, Breadcrumb, Header, Page } from '../../../../../index';
 import ServiceInfo from './components/ServiceInfo';
 import BurnDownChart from './components/BurnDownChart';
@@ -19,6 +19,7 @@ const ProjectOverview = () => {
   const {
     AppState: { currentMenuType: { category } },
   } = useProjectOverviewStore();
+  const showDevops = useMemo(() => category === 'GENERAL' || category === 'OPERATIONS', [category]);
   
   return (
     <Page className="c7n-project-overview">
@@ -26,9 +27,9 @@ const ProjectOverview = () => {
       <Content>
         <div className="c7n-project-overview-content">
           <div className="c7n-project-overview-content-left">
-            <ServiceInfo />
-            <BurnDownChart />
-            <DefectTreatment />
+            {showDevops ? <ServiceInfo /> : null}
+            <BurnDownChart showDevops={showDevops} />
+            <DefectTreatment showDevops={showDevops} />
           </div>
           <div className="c7n-project-overview-content-right">
             <SprintWaterWave />
@@ -44,7 +45,7 @@ const ProjectOverview = () => {
           <SagaChart />
           <DefectChart />
         </div>
-        {category === 'GENERAL' || category === 'OPERATIONS' ? (
+        {showDevops ? (
           <div className="c7n-project-overview-item">
             <CommitChart />
             <DeployChart />

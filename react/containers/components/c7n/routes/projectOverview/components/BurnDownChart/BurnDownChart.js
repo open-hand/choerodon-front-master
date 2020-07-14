@@ -16,7 +16,7 @@ const moment = extendMoment(Moment);
 const { Option } = Select;
 const BurnDownChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-burn-down-chart';
-  const { burnDownChartStore } = useBurnDownChartStore();
+  const { burnDownChartStore, showDevops } = useBurnDownChartStore();
   const { projectOverviewStore } = useProjectOverviewStore();
   const [loading, setLoading] = useState(true);
   const [xAxis, setXAxis] = useState([]);
@@ -250,12 +250,6 @@ const BurnDownChart = observer(() => {
         axisTick: {
           show: false,
         },
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: ['#eee'],
-          },
-        },
         axisLabel: {
           textStyle: {
             color: 'rgba(0, 0, 0, 0.65)',
@@ -311,7 +305,7 @@ const BurnDownChart = observer(() => {
 
   function render() {
     if (projectOverviewStore.getStaredSprint) {
-      return <Echart option={getOption()} />
+      return <Echart option={getOption()} style={{ height: showDevops ? '300px' : '380px' }} />
     } else if (projectOverviewStore.getIsFinishLoad) {
       return <EmptyPage height={259} />;
     }
@@ -347,7 +341,7 @@ const BurnDownChart = observer(() => {
     </div>
   );
   return (
-    <OverviewWrap height={333}>
+    <OverviewWrap height={showDevops ? 333 : 413}>
       <OverviewWrap.Header title={renderTitle()} />
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
         <Spin spinning={loading}>
