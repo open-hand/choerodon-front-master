@@ -13,7 +13,7 @@ import EmptyPage from '../EmptyPage';
 const DefectTreatment = observer(() => {
   const options = useMemo(() => [{ value: 'created', text: '提出' }, { value: 'completed', text: '解决' }], []);
   const clsPrefix = 'c7n-project-overview-defect-treatment';
-  const { defectTreatmentStore } = useDefectTreatmentStore();
+  const { defectTreatmentStore, showDevops } = useDefectTreatmentStore();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [charOption, setCharOption] = useState('created'); // createdList completedList
@@ -164,7 +164,7 @@ const DefectTreatment = observer(() => {
           <Spin spinning={loading}>
             {
               defectTreatmentStore.getChartList && !loading && defectTreatmentStore.getChartList.length > 0
-                ? <Echart style={{ width: '100%' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
+                ? <Echart style={{ width: '100%', height: showDevops ? '300px' : '380px' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
             }
 
           </Spin>
@@ -176,7 +176,7 @@ const DefectTreatment = observer(() => {
     return <LoadingBar display />;
   }
   return (
-    <OverviewWrap height={348}>
+    <OverviewWrap height={showDevops ? 348 : 428}>
       <OverviewWrap.Header title={renderTitle()} />
 
       {render()}
