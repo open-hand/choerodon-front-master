@@ -23,8 +23,8 @@ const DeployChart = () => {
   );
 
   function getOption() {
-    const xAxis = deployDs.current ? deployDs.current.get('date') : [];
-    const yAxis = deployDs.current ? deployDs.current.get('count') : [];
+    const xAxis = deployDs.current ? deployDs.current.get('date') || [] : [];
+    const yAxis = deployDs.current ? deployDs.current.get('count') || [] : [];
     const color = '#7589F2';
     const count = yAxis.reduce((sum, value) => sum + value, 0);
     return {
