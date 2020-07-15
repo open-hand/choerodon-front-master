@@ -24,7 +24,7 @@ const CommitChart = () => {
 
   function getOption() {
     const xAxis = commitDs.current ? commitDs.current.get('date') : [];
-    const yAxis = commitDs.current ? commitDs.current.get('value') : [];
+    const yAxis = commitDs.current ? commitDs.current.get('count') : [];
     const color = '#6887E8';
     const count = yAxis.reduce((sum, value) => sum + value, 0);
     return {
