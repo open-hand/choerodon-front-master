@@ -268,9 +268,10 @@ export default observer(() => {
             {p.editFlag ? (
               <p
                 className="allProjects-content-item-right-down-pro allProjects-content-item-right-down-pro-edit"
-                onClick={(e) => handleEditProject(e, p.id)}
               >
-                <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
+                <Tooltip title={p.name} placement="bottomLeft">
+                  <span onClick={(e) => handleEditProject(e, p.id)}>{p.name}</span>
+                </Tooltip>
               </p>
             ) : (
               <p className="allProjects-content-item-right-down-pro">
