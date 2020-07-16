@@ -345,7 +345,7 @@ export default class Inbox extends Component {
                   <div className={`${prefixCls}-sider-content-list-description`}>
                     <div style={{ maxHeight: 63, overflow: 'hidden' }}>
                       <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(reg, '')}` }} />
-                      {document.querySelector(`#li-${id}`) && document.querySelector(`#li-${id}`).offsetHeight > 63 ? (
+                      {document.getElementById(`#li-${id}`) && document.getElementById(`#li-${id}`).offsetHeight > 63 ? (
                         <a href="#" target="_blank" rel="noreferrer noopener">
                           <span>了解更多</span>
                           <Icon type="open_in_new" />
