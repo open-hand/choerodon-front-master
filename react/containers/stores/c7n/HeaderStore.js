@@ -254,15 +254,18 @@ class HeaderStore {
   }
 
   axiosGetUserMsg(userId) {
-    return axios.get(`/hmsg/v1/0/messages/user?${queryString.stringify({
-      user_id: userId,
-      // readFlag: 0,
-      // read: false,
-      page: 1,
-      size: 9999,
-      sort: 'read_flag,asc',
-      withContent: true,
-    })}&sort=creationDate,desc`)
+    const params = new URLSearchParams();
+    params.append('user_id', userId);
+    params.append('page', 1);
+    params.append('size', 9999);
+    params.append('sort', 'read_flag,asc');
+    params.append('sort', 'creationDate,desc');
+    params.append('withContent', 1);
+    const request = {
+      params,
+    };
+
+    return axios.get('/hmsg/v1/0/messages/user', request)
       .then(action(({ list }) => {
         if (list && list.length) {
           list.forEach((item) => {
