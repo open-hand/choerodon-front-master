@@ -27,6 +27,7 @@ const UILocaleProviderAsync = asyncRouter(
 const IntlProviderAsync = asyncLocaleProvider(language,
   () => import(`./containers/locale/${language}`),
   () => import(`react-intl/locale-data/${language.split('_')[0]}`));
+const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 
 @withRouter
 @observer
@@ -80,7 +81,9 @@ export default class Index extends React.Component {
       return false;
     }
     await AppState.loadUserInfo();
-    await this.checkOrg();
+    if (HAS_AGILE_PRO) {
+      await this.checkOrg();
+    }
     this.setState({ loading: false });
   }
 
