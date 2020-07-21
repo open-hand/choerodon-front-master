@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import React, { useState, memo, useRef, useLayoutEffect, useMemo, useEffect } from 'react';
 import { Button } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
@@ -35,7 +36,6 @@ const DateTable = observer(({
   isSum = true,
   headerSplit = false,
 }) => {
-
   const rowRef = useRef();
   const clsPrefix = 'c7n-project-overview-date-table';
   const [columnSize, setColumnSize] = useState(columnLength);
@@ -59,14 +59,16 @@ const DateTable = observer(({
     return data.toString();
   };
   // 单元格
-  const Cell = memo(({ children, className }) => <div className={`${clsPrefix}-cell ${className || ''}`} style={{ minHeight: cellHeight }}>
-    {children}
-  </div>);
+  const Cell = memo(({ children, className }) => (
+    <div className={`${clsPrefix}-cell ${className || ''}`} style={{ minHeight: cellHeight }}>
+      {children}
+    </div>
+  ));
   // 行
   const Row = memo(({ sum, rowName, size = columnSize, data = new Map(), children, className }) => {
     const cells = [];
     // 增加y轴
-    cells.push(<Cell key={`cell-${rowName}`} className={`${clsPrefix}-row-cell-first border-right`}><span>{rowName}</span></Cell>)
+    cells.push(<Cell key={`cell-${rowName}`} className={`${clsPrefix}-row-cell-first border-right`}><span>{rowName}</span></Cell>);
     // 增加内容页  从当前位置出发
     for (let index = currentPosition; index < size + currentPosition && index < dateList.length; index++) {
       const currentDate = columns[index];
@@ -76,12 +78,14 @@ const DateTable = observer(({
     if (size > cells.length) {
       const breakLength = size - cells.length;
       for (let i = 0; i <= breakLength; i++) {
-        cells.push(<Cell key={`cell-space-${i}`} className={`${clsPrefix}-row-cell`}></Cell>);
+        cells.push(<Cell key={`cell-space-${i}`} className={`${clsPrefix}-row-cell`} />);
       }
     }
-    return <div className={`${clsPrefix}-row`}>
-      {children || cells}
-    </div>;
+    return (
+      <div className={`${clsPrefix}-row`}>
+        {children || cells}
+      </div>
+    );
   });
 
   /**
@@ -93,12 +97,12 @@ const DateTable = observer(({
     const element = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
     if (!isAuto) {
       let height = 0;
-      scrollHeight = "";
+      scrollHeight = '';
       const elements = rowRef.current.getElementsByClassName('c7n-project-overview-date-table-row');
       for (let i = 0; elements && i < rowLength && i < elements.length; i++) {
         height += elements[i].offsetHeight;
       }
-      scrollHeight = height + 'px';
+      scrollHeight = `${height}px`;
     }
     // 如果相等就放弃更改高度
     if (element.style.height === scrollHeight) {
@@ -136,28 +140,28 @@ const DateTable = observer(({
         // 遍历需要渲染的列，只计算需要渲染的总计单元格
         for (let index = currentPosition; index < currentPosition + columnSize && index < dateList.length; index++) {
           const quickItem = quickMapData.get(columns[index]); // 获取当前日期天全部数据
-          let newObj = {};
+          const newObj = {};
           // 当前日期下，筛选到的成员在当前日期的数据 
           filterRowIndex.forEach(i => {
             const dateData = quickItem.get(rowIndex[i]);
             if (dateData) {
-              for (const key in dateData) {
-                if (typeof dateData[key] === 'number') {
-                  if (newObj.hasOwnProperty(key)) {
+              Object.keys(dateData).forEach(key => {
+                if (typeof (dateData[key]) === 'number') {
+                  if (Object.prototype.hasOwnProperty.call(newObj, key)) {
                     newObj[key] += dateData[key];
                   } else {
-                    newObj[key] = dateData[key]
+                    newObj[key] = dateData[key];
                   }
                 }
-              }
+              });
             }
           });
           newSumData[index] = Object.keys(newObj).length > 0 ? newObj : undefined;
         }
-        return <Row key="row-sum" rowName="总计" data={newSumData} sum={isSum} />
+        return <Row key="row-sum" rowName="总计" data={newSumData} sum={isSum} />;
       }
 
-      return <Row key="row-sum" rowName="总计" data={sumData} sum={isSum} />
+      return <Row key="row-sum" rowName="总计" data={sumData} sum={isSum} />;
     }
   };
   /**
@@ -165,13 +169,13 @@ const DateTable = observer(({
    */
   const renderRows = () => {
     if (rowIndex.length === 0) {
-      return <Row>
-        <span className={`${clsPrefix}-row-no-data`}>暂无数据</span>
-      </Row>
+      return (
+        <Row>
+          <span className={`${clsPrefix}-row-no-data`}>暂无数据</span>
+        </Row>
+      );
     }
-    const rowArr = rowIndex.filter((row, index) => filterRowIndex.length === 0 || filterRowIndex.some(f => f === index)).map((row, index) => {
-      return <Row key={`row-${index}`} rowName={row} data={quickMapData} />
-    });
+    const rowArr = rowIndex.filter((row, index) => filterRowIndex.length === 0 || filterRowIndex.some(f => f === index)).map((row, index) => <Row key={`row-${index}`} rowName={row} data={quickMapData} />);
     return rowArr;
   };
   /**
@@ -183,9 +187,8 @@ const DateTable = observer(({
       if (isNext && currentPosition < dateList.length - columnSize) {
         setCurrentPosition(currentPosition + 1);
       } else if (!isNext && currentPosition !== 0) {
-        setCurrentPosition(currentPosition - 1)
+        setCurrentPosition(currentPosition - 1);
       }
-
     }
   };
   /**
@@ -194,24 +197,29 @@ const DateTable = observer(({
    */
   const renderPreOrNext = (isNext = false) => {
     if (isNext) {
-      return <span className={`${clsPrefix}-header-btn`}><Button
-        className={`${clsPrefix}-header-btn-right`}
+      return (
+        <span className={`${clsPrefix}-header-btn`}><Button
+          className={`${clsPrefix}-header-btn-right`}
+          funcType="flat"
+          icon="baseline-arrow_right"
+          color="primary"
+          disabled={columnSize >= dateList.length || currentPosition === dateList.length - columnSize}
+          onClick={handlePreOrNext.bind(this, isNext)}
+        />
+        </span>
+      );
+    }
+    return (
+      <span className={`${clsPrefix}-header-btn`}> <Button
+        className={`${clsPrefix}-header-btn-left`}
         funcType="flat"
-        icon="baseline-arrow_right"
+        icon="baseline-arrow_left"
         color="primary"
-        disabled={columnSize >= dateList.length || currentPosition === dateList.length - columnSize}
+        disabled={currentPosition === 0}
         onClick={handlePreOrNext.bind(this, isNext)}
       />
-      </span>;
-    }
-    return <span className={`${clsPrefix}-header-btn`}> <Button
-      className={`${clsPrefix}-header-btn-left`}
-      funcType="flat"
-      icon="baseline-arrow_left"
-      color="primary"
-      disabled={currentPosition === 0}
-      onClick={handlePreOrNext.bind(this, isNext)}
-    /></span>;
+      </span>
+    );
   };
   /**
    * 渲染日历行 （即列名）
@@ -219,16 +227,16 @@ const DateTable = observer(({
   const renderDate = () => {
     const dateCells = [];
     for (let index = 0; index < columnSize - 1; index++) {
-      dateCells.push(<Cell key={`cell-date-${index}`} className={`${clsPrefix}-header-cell animate-table ${headerSplit ? 'border-right' : ''}`}><span className={`${clsPrefix}-header-cell-content`}>{dateList[currentPosition + index]}</span></Cell>)
+      dateCells.push(<Cell key={`cell-date-${index}`} className={`${clsPrefix}-header-cell animate-table ${headerSplit ? 'border-right' : ''}`}><span className={`${clsPrefix}-header-cell-content`}>{dateList[currentPosition + index]}</span></Cell>);
     }
-    dateCells.push(<Cell key={`cell-date-${columnSize}`} className={`${clsPrefix}-header-cell animate-table`}><span className={`${clsPrefix}-header-cell-content margin-right`}>{dateList[currentPosition + columnSize - 1]}</span></Cell>)
+    dateCells.push(<Cell key={`cell-date-${columnSize}`} className={`${clsPrefix}-header-cell animate-table`}><span className={`${clsPrefix}-header-cell-content margin-right`}>{dateList[currentPosition + columnSize - 1]}</span></Cell>);
     return dateCells;
   };
 
   return (
     <div className={`${clsPrefix}`}>
       <div className={`${clsPrefix}-header`}>
-        < div className={`${clsPrefix}-header-cell ${clsPrefix}-header-cell-top `}>
+        <div className={`${clsPrefix}-header-cell ${clsPrefix}-header-cell-top `}>
           <div className={`${clsPrefix}-header-cell-top-y`}>{headerTexts[0]}</div>
           <div className={`${clsPrefix}-header-cell-top-x`}>{headerTexts[1]}</div>
         </div>
@@ -236,15 +244,17 @@ const DateTable = observer(({
         {renderDate()}
         {renderPreOrNext(true)}
       </div>
-      <div ref={rowRef} className={`${clsPrefix}-content`} >
+      <div ref={rowRef} className={`${clsPrefix}-content`}>
         {renderRows()}
       </div>
       { // 无数据则不显示最后一行
-        rowIndex.length > 0 ? <div className={`${clsPrefix}-footer`}>
-          {renderFooter()}
-        </div> : ''
+        rowIndex.length > 0 ? (
+          <div className={`${clsPrefix}-footer`}>
+            {renderFooter()}
+          </div>
+        ) : ''
       }
-    </div >
+    </div>
   );
 });
 
