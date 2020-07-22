@@ -59,6 +59,7 @@ const DeployChart = () => {
         top: 33,
         left: 5,
         right: 18,
+        bottom: xAxis.length > 0 ? 60 : 76,
         containLabel: true,
       },
       xAxis: {
