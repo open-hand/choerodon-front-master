@@ -256,7 +256,7 @@ class HeaderStore {
   axiosGetUserMsg(userId) {
     const params = new URLSearchParams();
     params.append('user_id', userId);
-    params.append('page', 1);
+    params.append('page', 0);
     params.append('size', 9999);
     params.append('sort', 'read_flag,asc');
     params.append('sort', 'creationDate,desc');
