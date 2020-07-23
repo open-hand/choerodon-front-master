@@ -86,13 +86,15 @@
       background:rgba(104,135,232,1);
       border-radius: 50%;
       position: absolute;
-      right: calc(82% - 4px);
+      left: -3px;
       z-index: 1;
     }
     &-right {
       margin-left: 19px;
       flex-basis: 82%;
+      width: auto;
       padding: 10px 16px;
+      position: relative;
       background:rgba(245,246,250,1);
       border-radius:4px;
       display: flex;
@@ -117,7 +119,8 @@
         &-name {
           width: 0.8rem;
           overflow: hidden;
-          text-overflow: ellipsis
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         &-scope {
           font-size:12px;
