@@ -18,13 +18,7 @@ const WorkBench = () => (
       <WorkBenchAgile />
       <div style={{ display: 'flex' }}>
         <QuickLink />
-        <Card
-          title="文档"
-          pathname="/ddd"
-          className="c7n-workbench-doc"
-        >
-          <Doc />
-        </Card>
+        <Doc />
       </div>
     </div>
     <div className="c7n-workbench-right">
