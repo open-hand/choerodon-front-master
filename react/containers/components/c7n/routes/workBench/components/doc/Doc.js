@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import map from 'lodash/map';
+import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { Tooltip } from 'choerodon-ui/pro';
 import TimePopover from '../time-popover';
@@ -47,7 +48,7 @@ function Switch({ options: propsOption, children, onChange, defaultValue, checke
     </ul>
   );
 }
-const Doc = () => {
+const Doc = ({ history }) => {
   const { docStore } = useDoc();
   const [self, setSelf] = useState(false);
   useEffect(() => {
@@ -61,6 +62,28 @@ const Doc = () => {
       </div>
     );
   }
+  const goKnowledgeLink = ({ id, projectId, organizationId, spaceId, baseName }) => {
+    const url = `/knowledge/project/doc/${id}?baseName=${baseName}&id=${projectId}&organizationId=${organizationId}&spaceId=${spaceId}&type=project`;
+    history.push(url);
+  };
+  const renderUserList = (userList) => map(userList, ({ realName, imageUrl }) => (
+    <Tooltip
+      placement="top"
+      title={realName}
+    >
+      {imageUrl ? (
+        <img
+          className="c7n-workbench-doc-item-userlist-item"
+          src={imageUrl}
+          alt=""
+        />
+      ) : (
+        <span className="c7n-workbench-doc-item-userlist-item">
+          {(realName || '').substring(0, 1).toUpperCase()}
+        </span>
+      )}
+    </Tooltip>
+  ));
   return (
     <div
       className={clsPrefix}
@@ -69,35 +92,18 @@ const Doc = () => {
       <div className="c7n-workbench-doc-content">
 
         {
-          docStore.getDocData.length > 0 ? map(docStore.getDocData, ({ knowledgeBaseName, title, updatedUserList, lastUpdateDate, type, orgName }) => (
-            <div className="c7n-workbench-doc-item">
+          docStore.getDocData.length > 0 ? map(docStore.getDocData, ({ knowledgeBaseName, id, organizationId, imageUrl, pageId, title, projectId, updatedUserList, lastUpdateDate, type, orgName }) => (
+            <div className="c7n-workbench-doc-item" onClick={goKnowledgeLink.bind(this, { id, organizationId, spaceId: pageId, baseName: knowledgeBaseName, projectId })}>
               <div className="c7n-workbench-doc-item-info">
-                <span className={`c7n-workbench-doc-item-logo c7n-workbench-doc-item-logo-${updatedUserList ? 'update' : 'create'}`}>
+                <span className="c7n-workbench-doc-item-logo c7n-workbench-doc-item-logo-create">
                   {title.toUpperCase().substring(0, 1)}
                 </span>
                 <div className="c7n-workbench-doc-item-userlist">
-                  {map(updatedUserList.slice(0, 3), ({ realName, imageUrl }) => (
-                    <Tooltip
-                      placement="top"
-                      title={realName}
-                    >
-                      {imageUrl ? (
-                        <img
-                          className="c7n-workbench-doc-item-userlist-item"
-                          src={imageUrl}
-                          alt=""
-                        />
-                      ) : (
-                        <span className="c7n-workbench-doc-item-userlist-item">
-                          {(realName || '').substring(0, 1).toUpperCase()}
-                        </span>
-                      )}
-                    </Tooltip>
-                  ))}
+                  {renderUserList(updatedUserList.slice(0, 3))}
                   {updatedUserList.length > 3 && (
                     <Tooltip
                       placement="top"
-                      title="aaa"
+                      title={renderUserList(updatedUserList.slice(3))}
                     >
                       <span className="c7n-workbench-doc-item-userlist-item">
                         +{updatedUserList.length - 3}
@@ -106,8 +112,11 @@ const Doc = () => {
                   )}
                 </div>
               </div>
-              <div className="c7n-workbench-doc-item-project">
-                <span>{knowledgeBaseName}</span>
+              <div className={`${clsPrefix}-item-project`}>
+                <div className={`${clsPrefix}-item-project-logo`}>
+                  <div style={{ [`background-${imageUrl ? 'image' : 'color'}`]: imageUrl ? `url(${imageUrl})` : '#6887e8' }}>{imageUrl ? '' : 'C'}</div>
+                </div>
+                <span className={`${clsPrefix}-item-project-text`}>{knowledgeBaseName}</span>
                 {orgName && <span className="c7n-workbench-doc-item-org">组织</span>}
               </div>
               <div className="c7n-workbench-doc-item-title">
@@ -132,4 +141,4 @@ const Doc = () => {
   );
 };
 
-export default observer(Doc);
+export default withRouter(observer(Doc));

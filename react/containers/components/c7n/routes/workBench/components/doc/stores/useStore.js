@@ -11,7 +11,7 @@ export default function useStore(AppState) {
     setDocData(data) {
       this.docData = data;
     },
-    axiosGetDoc(isSelf = false) {
+    axiosGetDoc(isSelf = false, isFistLoad = false) {
       axios({
         method: 'get',
         url: `/knowledge/v1/organizations/${AppState.currentMenuType.organizationId}/work_space/recent_project_update_list${isSelf ? '/self' : ''}`,
@@ -20,8 +20,11 @@ export default function useStore(AppState) {
           size: 6,
         },
       }).then((res) => {
-        this.setDocData(this.self === isSelf ? this.docData.concat(res.content) : res.content);
-
+        if (isFistLoad) {
+          this.setDocData(res.content);
+        } else {
+          this.setDocData(this.self === isSelf ? this.docData.concat(res.content) : res.content);
+        }
         this.self = isSelf;
       });
     },
