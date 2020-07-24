@@ -3,22 +3,26 @@ import { axios } from '@choerodon/boot';
 
 export default function useStore(AppState) {
   return useLocalStore(() => ({
-    starProjects: [],
-    get getStarProjects() {
-      return this.starProjects;
+    docData: [],
+    self: false,
+    get getDocData() {
+      return this.docData;
     },
-    setStarProjects(data) {
-      this.starProjects = data;
+    setDocData(data) {
+      this.docData = data;
     },
     axiosGetDoc(isSelf = false) {
       axios({
         method: 'get',
-        url: `/knowledge/v1/projects/${AppState.currentMenuType.id}/work_space/recent_project_update_list${isSelf ? '/self' : ''}`,
+        url: `/knowledge/v1/organizations/${AppState.currentMenuType.organizationId}/work_space/recent_project_update_list${isSelf ? '/self' : ''}`,
         params: {
-          organizationId: AppState.currentMenuType.organizationId,
+          page: 1,
+          size: 6,
         },
       }).then((res) => {
-        this.setStarProjects(res);
+        this.setDocData(this.self === isSelf ? this.docData.concat(res.content) : res.content);
+
+        this.self = isSelf;
       });
     },
   }));
