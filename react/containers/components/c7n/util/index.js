@@ -23,7 +23,7 @@ function getRandomBackground(id) {
     'linear-gradient(226deg,rgba(255,212,163,1) 0%,rgba(255,185,106,1) 100%)',
     'linear-gradient(226deg,rgba(161,188,245,1) 0%,rgba(104,135,232,1) 100%)',
     'linear-gradient(226deg,rgba(255,177,185,1) 0%,rgba(244,133,144,1) 100%)',
-  ]
+  ];
   return valiable[index];
 }
 
