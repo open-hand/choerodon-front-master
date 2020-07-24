@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { inject } from 'mobx-react';
 import useStore from './useStore';
 
@@ -13,13 +13,13 @@ export const StoreProvider = inject('AppState')((props) => {
     children,
     AppState,
   } = props;
-  const value = {
-    ...props,
-    docStore: useStore(AppState),
-  };
 
+  const docStore = useStore(AppState);
+  useEffect(() => {
+    docStore.axiosGetDoc(docStore.self, true);
+  }, [AppState.currentMenuType.organizationId]);
   return (
-    <Store.Provider value={value}>
+    <Store.Provider value={{ docStore, organizationId: AppState.currentMenuType.organizationId, ...props }}>
       {children}
     </Store.Provider>
   );
