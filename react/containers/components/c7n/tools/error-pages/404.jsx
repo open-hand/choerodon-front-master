@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'choerodon-ui';
 import './style/404.less';
 
-const NoMatch = ({ MenuStore }) => {
+const NoMatch = ({ MenuStore, button = true }) => {
   useEffect(() => {
     MenuStore.setNotFoundSignSign(false);
 
@@ -18,11 +18,13 @@ const NoMatch = ({ MenuStore }) => {
       <div className="c7n-404-page-banner" />
       <div className="c7n-404-page-banner-text">
         <span>抱歉 ，您访问的页面不存在！</span>
-        <Link to="/">
-          <Button funcType="raised" type="default">
-            返回首页
-          </Button>
-        </Link>
+        {button && (
+          <Link to="/">
+            <Button funcType="raised" type="default">
+              返回首页
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );
