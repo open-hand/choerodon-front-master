@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import map from 'lodash/map';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { Tooltip } from 'choerodon-ui/pro';
+import { Tooltip, Spin } from 'choerodon-ui/pro';
+import ScrollContext from 'react-infinite-scroll-component';
+import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import TimePopover from '../time-popover';
 import EmptyPage from '../empty-page';
 import Card from '../card';
@@ -62,8 +64,8 @@ const Doc = ({ history }) => {
       </div>
     );
   }
-  const goKnowledgeLink = ({ id, projectId, organizationId, spaceId, baseName }) => {
-    const url = `/knowledge/project/doc/${id}?baseName=${baseName}&id=${projectId}&organizationId=${organizationId}&spaceId=${spaceId}&type=project`;
+  const goKnowledgeLink = ({ baseId, projectId, organizationId, spaceId, baseName }) => {
+    const url = `/knowledge/project/doc/${baseId}?baseName=${baseName}&id=${projectId}&organizationId=${organizationId}&spaceId=${spaceId}&type=project`;
     history.push(url);
   };
   const renderUserList = (userList) => map(userList, ({ realName, imageUrl }) => (
@@ -84,6 +86,48 @@ const Doc = ({ history }) => {
       )}
     </Tooltip>
   ));
+  function renderItems() {
+    return map(docStore.getDocData, ({ knowledgeBaseName, id, baseId, organizationId, imageUrl, title, projectId, projectName, updatedUserList, lastUpdateDate, type, orgName }) => (
+      <div className="c7n-workbench-doc-item" onClick={goKnowledgeLink.bind(this, { baseId, organizationId, spaceId: id, baseName: knowledgeBaseName, projectId })}>
+        <div className="c7n-workbench-doc-item-info">
+          <span className="c7n-workbench-doc-item-logo c7n-workbench-doc-item-logo-create">
+            {title.toUpperCase().substring(0, 1)}
+          </span>
+          <div className="c7n-workbench-doc-item-userlist">
+            {renderUserList(updatedUserList.slice(0, 3))}
+            {updatedUserList.length > 3 && (
+              <Tooltip
+                placement="top"
+                title={renderUserList(updatedUserList.slice(3))}
+              >
+                <span className="c7n-workbench-doc-item-userlist-item">
+                  +{updatedUserList.length - 3}
+                </span>
+              </Tooltip>
+            )}
+          </div>
+        </div>
+        <div className={`${clsPrefix}-item-project`}>
+          <div className={`${clsPrefix}-item-project-logo`}>
+            <div style={{ [`background-${imageUrl ? 'image' : 'color'}`]: imageUrl ? `url(${imageUrl})` : '#6887e8' }}>{imageUrl ? '' : String(projectName)[0]}</div>
+          </div>
+          <span className={`${clsPrefix}-item-project-text`}>{knowledgeBaseName}</span>
+          {orgName && <span className="c7n-workbench-doc-item-org">组织</span>}
+        </div>
+        <div className="c7n-workbench-doc-item-title">
+          <Tooltip title={title}>
+            <span className="c7n-workbench-doc-item-title-text">{title}</span>
+          </Tooltip>
+          <span className="c7n-workbench-doc-item-time">
+            <TimePopover datetime={lastUpdateDate} />
+          </span>
+        </div>
+      </div>
+    ));
+  }
+  const loadMore = async () => {
+    await docStore.axiosGetDoc(self);
+  };
   return (
     <div
       className={clsPrefix}
@@ -92,48 +136,27 @@ const Doc = ({ history }) => {
       <div className="c7n-workbench-doc-content">
 
         {
-          docStore.getDocData.length > 0 ? map(docStore.getDocData, ({ knowledgeBaseName, id, organizationId, imageUrl, pageId, title, projectId, updatedUserList, lastUpdateDate, type, orgName }) => (
-            <div className="c7n-workbench-doc-item" onClick={goKnowledgeLink.bind(this, { id, organizationId, spaceId: pageId, baseName: knowledgeBaseName, projectId })}>
-              <div className="c7n-workbench-doc-item-info">
-                <span className="c7n-workbench-doc-item-logo c7n-workbench-doc-item-logo-create">
-                  {title.toUpperCase().substring(0, 1)}
-                </span>
-                <div className="c7n-workbench-doc-item-userlist">
-                  {renderUserList(updatedUserList.slice(0, 3))}
-                  {updatedUserList.length > 3 && (
-                    <Tooltip
-                      placement="top"
-                      title={renderUserList(updatedUserList.slice(3))}
-                    >
-                      <span className="c7n-workbench-doc-item-userlist-item">
-                        +{updatedUserList.length - 3}
-                      </span>
-                    </Tooltip>
-                  )}
-                </div>
-              </div>
-              <div className={`${clsPrefix}-item-project`}>
-                <div className={`${clsPrefix}-item-project-logo`}>
-                  <div style={{ [`background-${imageUrl ? 'image' : 'color'}`]: imageUrl ? `url(${imageUrl})` : '#6887e8' }}>{imageUrl ? '' : 'C'}</div>
-                </div>
-                <span className={`${clsPrefix}-item-project-text`}>{knowledgeBaseName}</span>
-                {orgName && <span className="c7n-workbench-doc-item-org">组织</span>}
-              </div>
-              <div className="c7n-workbench-doc-item-title">
-                <Tooltip title={title}>
-                  <span className="c7n-workbench-doc-item-title-text">{title}</span>
-                </Tooltip>
-                <span className="c7n-workbench-doc-item-time">
-                  <TimePopover datetime={lastUpdateDate} />
-                </span>
-              </div>
-            </div>
-          )) : (
-            <EmptyPage
-              title="暂无文档信息"
-              describe="暂无文档相关的记录，请直接前往知识库中查看"
-            />
-          )
+          docStore.getDocData.length > 0
+            ? (
+              <ScrollContext
+                className={`${clsPrefix}-scroll`}
+                dataLength={docStore.getDocData.length}
+                next={loadMore}
+                hasMore={docStore.getPageInfo.hasNext}
+                loader={<Spin className={`${clsPrefix}-scroll-load`} spinning />}
+                height={425}
+                endMessage={(
+                  <span className={`${clsPrefix}-scroll-bottom`}>到底了</span>
+                )}
+              >{renderItems()}
+              </ScrollContext>
+            )
+            : (
+              <EmptyPage
+                title="暂无文档信息"
+                describe="暂无文档相关的记录，请直接前往知识库中查看"
+              />
+            )
         }
 
       </div>
