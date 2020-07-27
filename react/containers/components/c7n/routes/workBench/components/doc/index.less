@@ -86,7 +86,7 @@
     flex-basis: 2.8rem;
     flex-grow: 1;
     height: 1.32rem;
-    max-width: 49%;
+    max-width: ~"calc(50% - 10px)";
     background: #f5f6fA;
     border-radius: .1rem;
     padding: .16rem .2rem;
@@ -98,11 +98,17 @@
     }
 
     &-info {
-      margin-bottom: .1rem;
+      display: inline-flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    margin-bottom: 0.1rem; 
     }
 
     &-title {
       color: #3a345f;
+      padding-left: .01rem;
 
       &-text {
         width: 1.75rem;
@@ -117,6 +123,7 @@
       color: rgba(58, 52, 95, 0.65);
       font-size: .12rem;
       margin-bottom: .05rem;
+      padding-left: .01rem;
       display: inline-flex;
 
       &-logo {
@@ -145,9 +152,11 @@
         display: inline-block;
         line-height: .22rem;
         height: .22rem;
-        width: ~"calc(100% - .22rem)";
+        width: 100%;
+        // width: ~"calc(100% - .22rem)";
         overflow: hidden;
         white-space: nowrap;
+        overflow: hidden;
         text-overflow: ellipsis
       }
     }
@@ -166,24 +175,35 @@
     }
 
     &-logo {
-      width: .4rem;
-      height: .48rem;
+      width: .36rem;
+      height: .42rem;
       display: inline-block;
       text-align: center;
-      line-height: .48rem;
+      line-height: .47rem;
       font-size: .16rem;
       font-weight: 500;
 
 
       &-create {
-        background: url("./image/green.svg");
+        width: .36rem;
+        height: .42rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-image: url("./image/green.svg");
         font-size: 16px;
         font-family: PingFangSC-Semibold, PingFang SC;
         font-weight: 600;
+      
         color: rgba(24, 159, 141, 1);
       }
 
       &-update {
+        width: .36rem;
+        height: .42rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
         background: url("./image/blue.svg");
         color: #514fa0;
       }

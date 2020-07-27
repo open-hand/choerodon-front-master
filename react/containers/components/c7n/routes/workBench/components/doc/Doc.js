@@ -68,10 +68,10 @@ const Doc = ({ history }) => {
     const url = `/knowledge/project/doc/${baseId}?baseName=${baseName}&id=${projectId}&organizationId=${organizationId}&spaceId=${spaceId}&type=project`;
     history.push(url);
   };
-  const renderUserList = (userList) => map(userList, ({ realName, imageUrl }) => (
+  const renderUserList = (userList) => map(userList, ({ realName, loginName, email, ldap, imageUrl }) => (
     <Tooltip
       placement="top"
-      title={realName}
+      title={ldap ? `${realName}(${loginName})` : `${realName}(${email})`}
     >
       {imageUrl ? (
         <img
@@ -90,7 +90,7 @@ const Doc = ({ history }) => {
     return map(docStore.getDocData, ({ knowledgeBaseName, id, baseId, organizationId, imageUrl, title, projectId, projectName, updatedUserList, lastUpdateDate, type, orgName }) => (
       <div className="c7n-workbench-doc-item" onClick={goKnowledgeLink.bind(this, { baseId, organizationId, spaceId: id, baseName: knowledgeBaseName, projectId })}>
         <div className="c7n-workbench-doc-item-info">
-          <span className="c7n-workbench-doc-item-logo c7n-workbench-doc-item-logo-create">
+          <span className="c7n-workbench-doc-item-logo c7n-workbench-doc-item-logo-update">
             {title.toUpperCase().substring(0, 1)}
           </span>
           <div className="c7n-workbench-doc-item-userlist">
@@ -108,9 +108,9 @@ const Doc = ({ history }) => {
           </div>
         </div>
         <div className={`${clsPrefix}-item-project`}>
-          <div className={`${clsPrefix}-item-project-logo`}>
+          {/* <div className={`${clsPrefix}-item-project-logo`}>
             <div style={{ [`background-${imageUrl ? 'image' : 'color'}`]: imageUrl ? `url(${imageUrl})` : '#6887e8' }}>{imageUrl ? '' : String(projectName)[0]}</div>
-          </div>
+          </div> */}
           <span className={`${clsPrefix}-item-project-text`}>{knowledgeBaseName}</span>
           {orgName && <span className="c7n-workbench-doc-item-org">组织</span>}
         </div>
@@ -144,7 +144,7 @@ const Doc = ({ history }) => {
                 next={loadMore}
                 hasMore={docStore.getPageInfo.hasNext}
                 loader={<Spin className={`${clsPrefix}-scroll-load`} spinning />}
-                height={425}
+                height={441}
                 endMessage={(
                   <span className={`${clsPrefix}-scroll-bottom`}>到底了</span>
                 )}
