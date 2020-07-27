@@ -197,7 +197,7 @@ const DefectChart = observer(() => {
     return <LoadingBar display />;
   }
   return (
-    <OverviewWrap width="57%" height={302}>
+    <OverviewWrap width="57%" height={302} marginRight=".2rem">
       <OverviewWrap.Header title={renderTitle()} />
       {render()}
     </OverviewWrap>
