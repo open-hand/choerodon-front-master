@@ -16,7 +16,7 @@ const UserList = () => {
 
   return (
     <OverviewWrap height={459}>
-      <OverviewWrap.Header title={`活跃成员(${projectOverviewStore.getTotalOnlineUser})`} />
+      <OverviewWrap.Header title={`在线成员(${projectOverviewStore.getTotalOnlineUser})`} />
       {projectOverviewStore.getTotalOnlineUser ? (
         <Fragment>
           <div className={`${clsPrefix}-content`}>
@@ -45,7 +45,7 @@ const UserList = () => {
               );
             })}
           </div>
-          <Pagination dataSet={userListDs} className={`${clsPrefix}-pagination`} />
+          {projectOverviewStore.getTotalOnlineUser > 8 ? <Pagination dataSet={userListDs} className={`${clsPrefix}-pagination`} /> : null}
         </Fragment>
       ) : <EmptyPage content="当前暂无数据" />}
     </OverviewWrap>
