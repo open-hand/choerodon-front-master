@@ -81,7 +81,6 @@ export default observer(() => {
     if (dataSet.current.getPristineValue('enabled') === false || enabled) {
       return (await editProject() === true);
     }
-
     try {
       const isSubProject = categories.some(c => c.code === 'PROGRAM_PROJECT');
       const okProps = {
