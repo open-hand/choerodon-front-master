@@ -115,14 +115,14 @@ class PermissionProvider extends Component {
       case 'organization':
         return {
           code,
-          organizationId: Number(organizationId),
+          organizationId,
           resourceType: type,
         };
       case 'project':
         return {
           code,
-          organizationId: Number(organizationId),
-          projectId: Number(projectId),
+          organizationId,
+          projectId,
           resourceType: type,
         };
       case 'site':
