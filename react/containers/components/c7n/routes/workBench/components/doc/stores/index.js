@@ -16,7 +16,8 @@ export const StoreProvider = inject('AppState')((props) => {
 
   const docStore = useStore(AppState);
   useEffect(() => {
-    docStore.axiosGetDoc(docStore.self, true);
+    docStore.setLoading(true);
+    docStore.axiosGetDoc(docStore.self, true).then(() => docStore.setLoading(false)).catch(() => docStore.setLoading(false));
   }, [AppState.currentMenuType.organizationId]);
   return (
     <Store.Provider value={{ docStore, organizationId: AppState.currentMenuType.organizationId, ...props }}>

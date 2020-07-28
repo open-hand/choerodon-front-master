@@ -9,6 +9,13 @@ export default function useStore(AppState) {
       size: 6,
     },
     self: false,
+    loading: true,
+    get getLoading() {
+      return this.loading;
+    },
+    setLoading(data) {
+      this.loading = data;
+    },
     get getPageInfo() {
       return this.pageInfo;
     },
@@ -22,11 +29,11 @@ export default function useStore(AppState) {
       this.docData = data;
     },
     axiosGetDoc(isSelf = false, isFistLoad = false) {
-      axios({
+      return axios({
         method: 'get',
         url: `/knowledge/v1/organizations/${AppState.currentMenuType.organizationId}/work_space/recent_project_update_list${isSelf ? '/self' : ''}`,
         params: {
-          page: this.pageInfo.page + 1,
+          page: isFistLoad || this.self !== isSelf ? 1 : this.pageInfo.page + 1,
           size: this.pageInfo.size,
         },
       }).then((res) => {
