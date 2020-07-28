@@ -1,6 +1,62 @@
-.c7n-workbench-doc{
-  flex: 1 1 60%;
+.c7n-workbench-doc {
+  flex: 1 1 56%;
   height: 520px;
+  background-color: #fff;
+  padding: .2rem .24rem;
+
+  &-title {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: .1rem;
+
+    &>span {
+      font-size: 16px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: rgba(58, 52, 95, 1);
+      line-height: 22px;
+    }
+  }
+
+  .c7n-workbench-card-header-title {
+    width: 100%;
+  }
+
+  &-switch {
+    background: rgba(245, 246, 250, 1);
+    border-radius: 2px;
+    padding: .05rem .06rem;
+    margin: 0;
+
+    .line:not(:last-child)::after {
+      float: left;
+      margin: 0 .06rem;
+      font-size: .16rem;
+      color: rgba(121, 126, 154, 1);
+      content: '|';
+    }
+
+    li {
+      float: left;
+      list-style: none;
+      border-radius: .02rem;
+      padding: .04rem;
+      font-size: .13rem;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    &-li {
+      color: rgba(58, 52, 95, 0.65);
+    }
+
+    &-active {
+      background-color: rgba(255, 255, 255, 1);
+      color: rgba(63, 81, 181, 1);
+    }
+  }
 
   &-content {
     display: flex;
@@ -8,22 +64,54 @@
     flex-wrap: wrap;
   }
 
+  &-scroll {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    &-load {
+      position: absolute;
+      left: 55%;
+      bottom: 33px;
+    }
+
+    &-bottom {
+      width: 100%;
+      text-align: center;
+      color: rgba(0, 0, 0, 0.65);
+    }
+  }
+
   &-item {
-    flex-basis: 2.4rem;
+    flex-basis: 2.8rem;
+    flex-grow: 1;
+    height: 1.32rem;
+    max-width: ~"calc(50% - 10px)";
     background: #f5f6fA;
     border-radius: .1rem;
     padding: .16rem .2rem;
     margin-bottom: .2rem;
+    cursor: pointer;
+
+    &:nth-child(odd) {
+      margin-right: .2rem;
+    }
 
     &-info {
-      margin-bottom: .16rem;
+      display: inline-flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    margin-bottom: 0.1rem; 
     }
 
     &-title {
       color: #3a345f;
+      padding-left: .01rem;
 
       &-text {
-        width: ~"calc(100% - 0.5rem)";
+        width: 1.75rem;
         overflow: hidden;
         display: inline-block;
         white-space: nowrap;
@@ -32,9 +120,45 @@
     }
 
     &-project {
-      color: rgba(58,52,95,0.65);
+      color: rgba(58, 52, 95, 0.65);
       font-size: .12rem;
       margin-bottom: .05rem;
+      padding-left: .01rem;
+      display: inline-flex;
+
+      &-logo {
+        width: .22rem;
+        height: .22rem;
+        border-radius: 50%;
+        margin-right: .06rem;
+
+        div {
+          width: .22rem;
+          height: .22rem;
+          border-radius: 50%;
+          text-align: center;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: contain;
+          line-height: .22rem;
+        }
+
+        &-background {
+          background-color: #6887e8;
+        }
+      }
+
+      &-text {
+        display: inline-block;
+        line-height: .22rem;
+        height: .22rem;
+        width: 100%;
+        // width: ~"calc(100% - .22rem)";
+        overflow: hidden;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+      }
     }
 
     &-org {
@@ -51,21 +175,35 @@
     }
 
     &-logo {
-      width: .4rem;
-      height: .48rem;
+      width: .36rem;
+      height: .42rem;
       display: inline-block;
       text-align: center;
-      line-height: .48rem;
+      line-height: .47rem;
       font-size: .16rem;
       font-weight: 500;
 
 
       &-create {
-        color: #189f8d;
-        background: url("./image/green.svg");
+        width: .36rem;
+        height: .42rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-image: url("./image/green.svg");
+        font-size: 16px;
+        font-family: PingFangSC-Semibold, PingFang SC;
+        font-weight: 600;
+      
+        color: rgba(24, 159, 141, 1);
       }
 
       &-update {
+        width: .36rem;
+        height: .42rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
         background: url("./image/blue.svg");
         color: #514fa0;
       }
@@ -101,7 +239,7 @@
     &-time {
       font-size: .12rem;
       opacity: 0.65;
-      width: .5rem;
+      min-width: .5rem;
       text-align: right;
       float: right;
     }
