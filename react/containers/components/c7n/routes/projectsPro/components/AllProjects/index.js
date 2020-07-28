@@ -10,6 +10,7 @@ import { historyPushMenu, prompt } from '@/utils';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import FormView from '../FormView';
+import EmptyPage from '../empty-page';
 
 import './index.less';
 
@@ -218,7 +219,7 @@ export default observer(() => {
 
   const renderProjects = useCallback(() => {
     const projects = ProjectsProUseStore.getAllProjects;
-    return projects.map(p => (
+    return projects.length > 0 ? projects.map(p => (
       <div
         onClick={() => {
           if (p.enabled) {
@@ -321,7 +322,7 @@ export default observer(() => {
           </div>
         </div>
       </div>
-    ));
+    )) : <EmptyPage title="组织下无项目" describe="此组织下无项目，可以选择上方创建项目进行项目的创建" />;
   }, [ProjectsProUseStore.getAllProjects]);
 
   const handleBlurProjects = ({ ...e }) => {
@@ -384,6 +385,7 @@ export default observer(() => {
       </div>
       <div className="allProjects-content">
         {renderProjects()}
+        {ProjectsProUseStore.getAllProjects.length > 0 && (
         <Pagination
           showSizeChanger
           showTotal
@@ -396,6 +398,7 @@ export default observer(() => {
             marginTop: 15,
           }}
         />
+        )}
       </div>
     </div>
   );
