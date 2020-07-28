@@ -2,7 +2,6 @@ import React, { useState, memo, useMemo, useEffect } from 'react';
 import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
-import moment from 'moment';
 import OverviewWrap from '../OverviewWrap';
 import DaysPicker from '../days-picker';
 import { useProjectOverviewStore } from '../../stores';
@@ -14,28 +13,6 @@ const SagaChart = () => {
   const {
     asgardDs,
   } = useProjectOverviewStore();
-
-  // const [date, setDate] = useState([]);
-  // const [failureCount, setFailureCount] = useState([]);
-  // const [percentage, setPercentage] = useState([]);
-  // const [totalCount, setTotalCount] = useState([]);
-
-  // useEffect(() => {
-  //   const newDate = [];
-  //   const newFailureCount = [];
-  //   const newPercentage = [];
-  //   const newTotalCount = [];
-  //   asgardDs.forEach((record) => {
-  //     newDate.push(record.get('creationDate').split(' ')[0]);
-  //     newFailureCount.push(record.get('failureCount'));
-  //     newPercentage.push(record.get('percentage'));
-  //     newTotalCount.push(record.get('totalCount'));
-  //   });
-  //   setDate(newDate);
-  //   setFailureCount(newFailureCount);
-  //   setPercentage(newPercentage);
-  //   setTotalCount(newTotalCount);
-  // }, [asgardDs.records]);
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
