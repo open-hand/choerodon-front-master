@@ -4,6 +4,10 @@
   background-color: #fff;
   padding: .2rem .24rem;
 
+  .c7n-spin-nested-loading {
+    height: 100%;
+  }
+
   &-title {
     display: inline-flex;
     justify-content: space-between;
@@ -11,7 +15,7 @@
     width: 100%;
     margin-bottom: .1rem;
 
-    &>span {
+    & >span {
       font-size: 16px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
@@ -71,8 +75,8 @@
 
     &-load {
       position: absolute;
-      left: 55%;
-      bottom: 33px;
+      left: 47%;
+      bottom: 0;
     }
 
     &-bottom {
@@ -87,7 +91,7 @@
     flex-grow: 1;
     height: 1.32rem;
     max-width: ~"calc(50% - 10px)";
-    background: #f5f6fA;
+    background: #f5f6fa;
     border-radius: .1rem;
     padding: .16rem .2rem;
     margin-bottom: .2rem;
@@ -99,16 +103,16 @@
 
     &-info {
       display: inline-flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    height: 40px;
-    margin-bottom: 0.1rem; 
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      height: 40px;
+      margin-bottom: 0.1rem;
     }
 
     &-title {
       color: #3a345f;
-      padding-left: .01rem;
+      padding-left: .03rem;
 
       &-text {
         width: 1.75rem;
@@ -123,7 +127,7 @@
       color: rgba(58, 52, 95, 0.65);
       font-size: .12rem;
       margin-bottom: .05rem;
-      padding-left: .01rem;
+      padding-left: .03rem;
       display: inline-flex;
 
       &-logo {
@@ -156,8 +160,7 @@
         // width: ~"calc(100% - .22rem)";
         overflow: hidden;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis
+        text-overflow: ellipsis;
       }
     }
 
@@ -180,9 +183,8 @@
       display: inline-block;
       text-align: center;
       line-height: .47rem;
-      font-size: .16rem;
+      font-size: .15rem;
       font-weight: 500;
-
 
       &-create {
         width: .36rem;
@@ -191,10 +193,9 @@
         background-repeat: no-repeat;
         background-size: contain;
         background-image: url("./image/green.svg");
-        font-size: 16px;
         font-family: PingFangSC-Semibold, PingFang SC;
         font-weight: 600;
-      
+
         color: rgba(24, 159, 141, 1);
       }
 
@@ -204,34 +205,70 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
-        background: url("./image/blue.svg");
+        background-image: url("./image/blue.svg");
+        font-family: PingFangSC-Semibold, PingFang SC;
         color: #514fa0;
       }
     }
 
     &-userlist {
-      display: inline-block;
+      display: block;
       float: right;
       line-height: .48rem;
 
-      &-item {
-        display: inline-block;
-        vertical-align: middle;
-        margin-left: -6px;
-        width: .32rem;
-        height: .32rem;
-        line-height: .28rem;
-        text-align: center;
-        border: 2px solid #fff;
-        border-radius: 50%;
-        overflow: hidden;
-        cursor: pointer;
-        background: #6887e8;
-        color: #fff;
+      &-hover {}
 
-        &:hover {
-          transform: scale(1.2);
-          z-index: 1;
+      &-user {
+        display: inline-block;
+
+        &-list {
+          display: block;
+          cursor: pointer;
+          margin-bottom: .02rem;
+        }
+
+        &-avatar {
+          display: inline-block;
+          width: .18rem;
+          height: .18rem;
+          line-height: .18rem;
+          margin-right: .05rem;
+          text-align: center;
+          vertical-align: middle;
+          border-radius: 50%;
+          background-color: #c5cbe8;
+          color: #3f51b5;
+        }
+
+        &-name {
+          // font-size: .13rem;
+          // color: rgba(0, 0, 0, 0.65);
+        }
+
+        &-item {
+          display: inline-block;
+          vertical-align: middle;
+          margin-left: -6px;
+          width: .32rem;
+          height: .32rem;
+          line-height: .28rem;
+          text-align: center;
+          border: 2px solid #fff;
+          border-radius: 50%;
+          overflow: hidden;
+          cursor: pointer;
+          background-color: #c5cbe8;
+          color: #3f51b5;
+
+          &-more {
+            background: #6887e8;
+            color: #fff;
+          }
+
+          &:hover {
+            transform: scale(1.2);
+            z-index: 1;
+          }
         }
       }
     }

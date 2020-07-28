@@ -54,7 +54,8 @@ const Doc = ({ history }) => {
   const { docStore } = useDoc();
   const [self, setSelf] = useState(false);
   useEffect(() => {
-    docStore.axiosGetDoc(self);
+    docStore.setLoading(true);
+    docStore.axiosGetDoc(self).then(res => docStore.setLoading(false)).catch(() => docStore.setLoading(false));
   }, [self]);
   function renderTitle() {
     return (
@@ -68,24 +69,28 @@ const Doc = ({ history }) => {
     const url = `/knowledge/project/doc/${baseId}?baseName=${baseName}&id=${projectId}&organizationId=${organizationId}&spaceId=${spaceId}&type=project`;
     history.push(url);
   };
-  const renderUserList = (userList) => map(userList, ({ realName, loginName, email, ldap, imageUrl }) => (
+  const renderUserList = (userList, visibleText = false) => map(userList, ({ realName, loginName, email, ldap, imageUrl }) => (
     <Tooltip
       placement="top"
       title={ldap ? `${realName}(${loginName})` : `${realName}(${email})`}
     >
-      {imageUrl ? (
-        <img
-          className="c7n-workbench-doc-item-userlist-item"
-          src={imageUrl}
-          alt=""
-        />
-      ) : (
-        <span className="c7n-workbench-doc-item-userlist-item">
-          {(realName || '').substring(0, 1).toUpperCase()}
-        </span>
-      )}
+      <div className={`c7n-workbench-doc-item-userlist-user${visibleText ? ' c7n-workbench-doc-item-userlist-user-list' : ''}`}>
+        {imageUrl ? (
+          <img
+            className={`c7n-workbench-doc-item-userlist-user-${visibleText ? 'avatar' : 'item'}`}
+            src={imageUrl}
+            alt=""
+          />
+        ) : (
+          <span className={`c7n-workbench-doc-item-userlist-user-${visibleText ? 'avatar' : 'item'}`}>
+            {(realName || '').substring(0, 1).toUpperCase()}
+          </span>
+        )}
+        {visibleText && <span className="c7n-workbench-doc-item-userlist-user-name">{realName}</span>}
+      </div>
     </Tooltip>
   ));
+
   function renderItems() {
     return map(docStore.getDocData, ({ knowledgeBaseName, id, baseId, organizationId, imageUrl, title, projectId, projectName, updatedUserList, lastUpdateDate, type, orgName }) => (
       <div className="c7n-workbench-doc-item" onClick={goKnowledgeLink.bind(this, { baseId, organizationId, spaceId: id, baseName: knowledgeBaseName, projectId })}>
@@ -98,9 +103,9 @@ const Doc = ({ history }) => {
             {updatedUserList.length > 3 && (
               <Tooltip
                 placement="top"
-                title={renderUserList(updatedUserList.slice(3))}
+                title={renderUserList(updatedUserList.slice(3), true)}
               >
-                <span className="c7n-workbench-doc-item-userlist-item">
+                <span className="c7n-workbench-doc-item-userlist-user-item c7n-workbench-doc-item-userlist-user-item-more">
                   +{updatedUserList.length - 3}
                 </span>
               </Tooltip>
@@ -133,33 +138,38 @@ const Doc = ({ history }) => {
       className={clsPrefix}
     >
       {renderTitle()}
-      <div className="c7n-workbench-doc-content">
+      <Spin spinning={docStore.getLoading}>
 
-        {
-          docStore.getDocData.length > 0
-            ? (
-              <ScrollContext
-                className={`${clsPrefix}-scroll`}
-                dataLength={docStore.getDocData.length}
-                next={loadMore}
-                hasMore={docStore.getPageInfo.hasNext}
-                loader={<Spin className={`${clsPrefix}-scroll-load`} spinning />}
-                height={441}
-                endMessage={(
-                  <span className={`${clsPrefix}-scroll-bottom`}>到底了</span>
-                )}
-              >{renderItems()}
-              </ScrollContext>
-            )
-            : (
-              <EmptyPage
-                title="暂无文档信息"
-                describe="暂无文档相关的记录，请直接前往知识库中查看"
-              />
-            )
-        }
+        <div className="c7n-workbench-doc-content">
+          {
+            docStore.getDocData.length > 0
+              ? (
+                <ScrollContext
+                  className={`${clsPrefix}-scroll`}
+                  dataLength={docStore.getDocData.length}
+                  next={loadMore}
+                  hasMore={docStore.getPageInfo.hasNext}
+                  loader={<Spin className={`${clsPrefix}-scroll-load`} spinning />}
+                  height={438}
+                  endMessage={(
+                    <span className={`${clsPrefix}-scroll-bottom`}>到底了</span>
+                  )}
+                >{renderItems()}
+                </ScrollContext>
+              )
+              : (!docStore.getLoading
+                && (
+                  <EmptyPage
+                    title="暂无文档信息"
+                    describe="暂无文档相关的记录，请直接前往知识库中查看"
+                  />
+                )
+              )
+          }
 
-      </div>
+        </div>
+      </Spin>
+
     </div>
   );
 };
