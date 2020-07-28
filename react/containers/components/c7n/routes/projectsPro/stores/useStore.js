@@ -1,11 +1,11 @@
 import { useLocalStore } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { axios } from '@choerodon/boot';
-import HeaderStore from "@/containers/stores/c7n/HeaderStore";
-import MenuStore from "@/containers/stores/c7n/MenuStore";
-import { getRandomBackground } from "@/containers/components/c7n/util";
-import findFirstLeafMenu from "@/containers/components/util/findFirstLeafMenu";
-import {historyPushMenu} from "@/utils";
+import HeaderStore from '@/containers/stores/c7n/HeaderStore';
+import MenuStore from '@/containers/stores/c7n/MenuStore';
+import { getRandomBackground } from '@/containers/components/c7n/util';
+import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
+import { historyPushMenu } from '@/utils';
 
 export default function useStore(AppState, history) {
   return useLocalStore(() => ({
@@ -36,7 +36,7 @@ export default function useStore(AppState, history) {
     },
     allProjects: [],
     get getAllProjects() {
-      return this.allProjects
+      return this.allProjects;
     },
     setAllProjects(data) {
       this.allProjects = data;
@@ -52,8 +52,8 @@ export default function useStore(AppState, history) {
           page: res.pageNum,
           size: res.size,
           total: res.totalElements,
-        })
-      })
+        });
+      });
     },
 
     canCreate: false,
@@ -99,10 +99,12 @@ export default function useStore(AppState, history) {
     },
 
     deleteStar(data) {
-      return axios.delete(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/star_projects?project_id=${data.id}`);
+      const orgId = AppState.currentMenuType.organizationId;
+      return orgId && axios.delete(`/iam/choerodon/v1/organizations/${orgId}/star_projects?project_id=${data.id}`);
     },
     starProject(data) {
-      return axios.post(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/star_projects`, {
+      const orgId = AppState.currentMenuType.organizationId;
+      return orgId && axios.post(`/iam/choerodon/v1/organizations/${orgId}/star_projects`, {
         projectId: data.id,
       });
     },
@@ -118,17 +120,19 @@ export default function useStore(AppState, history) {
       }
     },
     handleStarProject(data) {
+      // eslint-disable-next-line no-async-promise-executor
       return new Promise(async (resolve) => {
         if (data.starFlag) {
           try {
-            await this.deleteStar(data)
+            await this.deleteStar(data);
             data.starFlag = false;
             const item = HeaderStore.getRecentItem.find(r => String(r.id) === String(data.id));
             if (item) {
               item.starFlag = false;
-              HeaderStore.setRecentItem(item)
+              HeaderStore.setRecentItem(item);
             }
-          } catch (e) {}
+          // eslint-disable-next-line no-empty
+          } catch (e) { }
         } else {
           try {
             await this.starProject(data);
@@ -136,20 +140,22 @@ export default function useStore(AppState, history) {
             const item = HeaderStore.getRecentItem.find(r => String(r.id) === String(data.id));
             if (item) {
               item.starFlag = true;
-              HeaderStore.setRecentItem(item)
+              HeaderStore.setRecentItem(item);
             }
-          } catch (e) {}
+          // eslint-disable-next-line no-empty
+          } catch (e) { }
         }
         resolve();
-      })
+      });
     },
     axiosGetStarProjects() {
-      axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/star_projects`).then((res) => {
+      const orgId = AppState.currentMenuType.organizationId;
+      axios.get(`/iam/choerodon/v1/organizations/${orgId}/star_projects`).then((res) => {
         this.setStarProjectsList(res.map(r => {
           r.background = getRandomBackground();
           return r;
         }));
-      })
-    }
+      });
+    },
   }));
 }
