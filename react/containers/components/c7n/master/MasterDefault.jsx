@@ -4,7 +4,8 @@ import { inject, observer } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
 import queryString from 'query-string';
 import filter from 'lodash/filter';
-import getSearchString from "@/containers/components/c7n/util/gotoSome";
+import getSearchString from '@/containers/components/c7n/util/gotoSome';
+import { message } from 'choerodon-ui/pro';
 import axios from '../tools/axios';
 import CommonMenu from '../ui/menu';
 import MasterHeader from '../ui/header';
@@ -12,7 +13,6 @@ import AnnouncementBanner from '../ui/header/AnnouncementBanner';
 import RouteIndex from './RouteIndex';
 import themeColorClient from './themeColorClient';
 import './style';
-import {message} from "choerodon-ui/pro";
 
 const spinStyle = {
   textAlign: 'center',
@@ -154,10 +154,10 @@ class Masters extends Component {
     } else if (!menuType.type) {
       menuType.type = 'site';
     } else if (menuType.type === 'project' && (!menuType.category || menuType.category === 'undefined')) {
-      const project = filter(HeaderStore.getProData, ({ id, organizationId }) => String(id) === menuType.id && String(organizationId) === menuType.organizationId)[0];
-      if (project) {
-        menuType.category = project.category;
-      }
+      // const project = filter(HeaderStore.getProData, ({ id, organizationId }) => String(id) === menuType.id && String(organizationId) === menuType.organizationId)[0];
+      // if (project) {
+      //   menuType.category = project.category;
+      // }
     }
     async function checkUrl() {
       function goSafty() {
