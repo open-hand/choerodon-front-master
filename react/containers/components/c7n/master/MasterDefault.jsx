@@ -4,12 +4,15 @@ import { inject, observer } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
 import queryString from 'query-string';
 import filter from 'lodash/filter';
+import getSearchString from "@/containers/components/c7n/util/gotoSome";
+import axios from '../tools/axios';
 import CommonMenu from '../ui/menu';
 import MasterHeader from '../ui/header';
 import AnnouncementBanner from '../ui/header/AnnouncementBanner';
 import RouteIndex from './RouteIndex';
 import themeColorClient from './themeColorClient';
 import './style';
+import {message} from "choerodon-ui/pro";
 
 const spinStyle = {
   textAlign: 'center',
@@ -130,12 +133,39 @@ class Masters extends Component {
   }
 
 
-  initMenuType(props) {
+  async initMenuType(props) {
     const { location, MenuStore, HeaderStore, history, AppState } = props;
     const { pathname, search } = location;
     let isUser = false;
     let needLoad = false;
     let menuType = parseQueryToMenuType(search);
+    function goSafty() {
+      message.info('地址过期');
+      const queryObj = queryString.parse(history.location.search);
+      const search = getSearchString('organization', 'id', queryObj.organizationId);
+      MenuStore.setActiveMenu(null);
+      history.push(`/projects${search}`);
+    }
+    if (menuType.projectId) {
+      const currentProject = AppState.getCurrentProject;
+      let res;
+      if (!currentProject || String(menuType.projectId) !== String(currentProject?.id)) {
+        try {
+          res = await axios.get(`/iam/choerodon/v1/projects/${menuType.projectId}`);
+          AppState.setCurrentProject(res);
+        } catch (e) {
+          goSafty();
+          return true;
+        }
+      } else {
+        res = currentProject;
+      }
+      const { category, name, organizationId } = menuType;
+      if ((category !== res.category) || (name !== res.name) || (String(organizationId) !== String(res.organizationId))) {
+        goSafty();
+        return true;
+      }
+    }
     if (pathname === '/') {
       const recent = HeaderStore.getRecentItem;
       if (recent.length && !sessionStorage.home_first_redirect) {
