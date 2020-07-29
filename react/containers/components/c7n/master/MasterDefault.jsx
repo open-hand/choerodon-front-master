@@ -160,8 +160,12 @@ class Masters extends Component {
       } else {
         res = currentProject;
       }
-      const { category, name, organizationId } = menuType;
-      if ((category !== res.category) || (name !== res.name) || (String(organizationId) !== String(res.organizationId))) {
+      const checkArray = ['category', 'name', 'organizationId'];
+      if (checkArray.some(c => {
+        if (menuType[c] && String(menuType[c]) !== String(res[c])) {
+          return true;
+        }
+      })) {
         goSafty();
         return true;
       }
