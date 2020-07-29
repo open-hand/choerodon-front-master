@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Tooltip, Spin } from 'choerodon-ui/pro';
 import ScrollContext from 'react-infinite-scroll-component';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+import { getRandomBackground } from '@/containers/components/c7n/util';
 import TimePopover from '../time-popover';
 import EmptyPage from '../empty-page';
 import Card from '../card';
@@ -113,9 +114,9 @@ const Doc = ({ history }) => {
           </div>
         </div>
         <div className={`${clsPrefix}-item-project`}>
-          {/* <div className={`${clsPrefix}-item-project-logo`}>
-            <div style={{ [`background-${imageUrl ? 'image' : 'color'}`]: imageUrl ? `url(${imageUrl})` : '#6887e8' }}>{imageUrl ? '' : String(projectName)[0]}</div>
-          </div> */}
+          <div className={`${clsPrefix}-item-project-logo`}>
+            <div style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : getRandomBackground(projectId) }}>{imageUrl ? '' : <Tooltip title={String(projectName)}>{String(projectName)[0].toUpperCase()}</Tooltip> }</div>
+          </div>
           <span className={`${clsPrefix}-item-project-text`}>{knowledgeBaseName}</span>
           {orgName && <span className="c7n-workbench-doc-item-org">组织</span>}
         </div>

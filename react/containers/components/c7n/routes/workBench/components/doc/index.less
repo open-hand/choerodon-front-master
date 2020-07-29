@@ -140,11 +140,13 @@
           width: .22rem;
           height: .22rem;
           border-radius: 50%;
+          color: white;
           text-align: center;
           background-repeat: no-repeat;
           background-position: center;
           background-size: contain;
           line-height: .22rem;
+          font-size: 13px;
         }
 
         &-background {
@@ -161,6 +163,13 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        &::before {
+          content: '\00b7';
+          color: #000;
+          transform: scale(1.5);
+          display: inline-block;
+          margin-right: .05rem;
+        }
       }
     }
 
