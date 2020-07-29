@@ -1,5 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import axios from '../../components/c7n/tools/axios';
+import {message} from "choerodon-ui/pro";
+import getSearchString from "@/containers/components/c7n/util/gotoSome";
 
 function getDefaultLanguage() {
   let locale;
@@ -125,13 +127,16 @@ class AppState {
   }
 
   @action
-  changeMenuType(type) {
+  changeMenuType(type, func) {
     debugger;
     sessionStorage.menType = JSON.stringify(type);
     sessionStorage.selectData = JSON.stringify(type);
     sessionStorage.type = type.type;
     sessionStorage.category = type.category;
     this.menuType = type;
+    if (func) {
+      func();
+    }
   }
 
   @action

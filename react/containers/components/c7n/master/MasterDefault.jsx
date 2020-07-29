@@ -133,43 +133,12 @@ class Masters extends Component {
   }
 
 
-  async initMenuType(props) {
+  initMenuType(props) {
     const { location, MenuStore, HeaderStore, history, AppState } = props;
     const { pathname, search } = location;
     let isUser = false;
     let needLoad = false;
     let menuType = parseQueryToMenuType(search);
-    function goSafty() {
-      message.info('地址过期');
-      const queryObj = queryString.parse(history.location.search);
-      const search = getSearchString('organization', 'id', queryObj.organizationId);
-      MenuStore.setActiveMenu(null);
-      history.push(`/projects${search}`);
-    }
-    if (menuType.projectId) {
-      const currentProject = AppState.getCurrentProject;
-      let res;
-      if (!currentProject || String(menuType.projectId) !== String(currentProject?.id)) {
-        try {
-          res = await axios.get(`/iam/choerodon/v1/projects/${menuType.projectId}`);
-          AppState.setCurrentProject(res);
-        } catch (e) {
-          goSafty();
-          return true;
-        }
-      } else {
-        res = currentProject;
-      }
-      const checkArray = ['category', 'name', 'organizationId'];
-      if (checkArray.some(c => {
-        if (menuType[c] && String(menuType[c]) !== String(res[c])) {
-          return true;
-        }
-      })) {
-        goSafty();
-        return true;
-      }
-    }
     if (pathname === '/') {
       const recent = HeaderStore.getRecentItem;
       if (recent.length && !sessionStorage.home_first_redirect) {
@@ -190,8 +159,47 @@ class Masters extends Component {
         menuType.category = project.category;
       }
     }
+    async function checkUrl() {
+      function goSafty() {
+        message.info('地址过期');
+        const queryObj = queryString.parse(history.location.search);
+        const search = getSearchString('organization', 'id', queryObj.organizationId);
+        MenuStore.setActiveMenu(null);
+        history.push(`/projects${search}`);
+      }
+      if (menuType.projectId) {
+        const currentProject = AppState.getCurrentProject;
+        let res;
+        if (!currentProject || String(menuType.projectId) !== String(currentProject?.id)) {
+          try {
+            res = await axios.get(`/iam/choerodon/v1/projects/${menuType.projectId}`);
+            debugger;
+            if (String(res.id) === String(new URLSearchParams(location.search).get('id'))) {
+              AppState.setCurrentProject(res);
+            } else {
+              return true;
+            }
+          } catch (e) {
+            goSafty();
+            return true;
+          }
+        } else {
+          res = currentProject;
+        }
+        const checkArray = ['category', 'name', 'organizationId'];
+        if (checkArray.some(c => {
+          if (menuType[c] && String(menuType[c]) !== String(res[c])) {
+            return true;
+          }
+        })) {
+          goSafty();
+          return true;
+        }
+      }
+    }
+
     AppState.setTypeUser(isUser);
-    AppState.changeMenuType(menuType);
+    AppState.changeMenuType(menuType, checkUrl);
     // if (needLoad) {
     //   MenuStore.loadMenuData().then((menus) => {
     //     if (menus.length) {
