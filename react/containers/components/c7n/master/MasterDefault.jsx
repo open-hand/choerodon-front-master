@@ -173,7 +173,6 @@ class Masters extends Component {
         if (!currentProject || String(menuType.projectId) !== String(currentProject?.id)) {
           try {
             res = await axios.get(`/iam/choerodon/v1/projects/${menuType.projectId}`);
-            debugger;
             if (String(res.id) === String(new URLSearchParams(location.search).get('id'))) {
               AppState.setCurrentProject(res);
             } else {

@@ -128,7 +128,6 @@ class AppState {
 
   @action
   changeMenuType(type, func) {
-    debugger;
     sessionStorage.menType = JSON.stringify(type);
     sessionStorage.selectData = JSON.stringify(type);
     sessionStorage.type = type.type;
