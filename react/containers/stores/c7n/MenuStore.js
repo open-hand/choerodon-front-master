@@ -208,8 +208,8 @@ class MenuStore {
       const menu = this.menuData(type, id);
       if (menu.length) {
         if (type === 'site') {
-          await axios.put('iam/v1/users/tenant-id?tenantId=0');
-          AppState.loadUserInfo();
+          axios.put('iam/v1/users/tenant-id?tenantId=0');
+          // AppState.loadUserInfo();
         } else if (type === 'organization') {
           let orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
           if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
@@ -240,7 +240,6 @@ class MenuStore {
         isLoadMenu = 0;
         return child;
       }
-      isLoadMenu = 0;
       let flag = 0;
       if (type === 'site') {
         await axios.put('iam/v1/users/tenant-id?tenantId=0');
@@ -255,6 +254,7 @@ class MenuStore {
           flag = 1;
         }
       }
+      isLoadMenu = 0;
       if (!flag) {
         const data = await getMenu(this);
         AppState.loadUserInfo();
