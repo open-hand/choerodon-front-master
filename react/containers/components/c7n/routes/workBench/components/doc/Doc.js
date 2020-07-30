@@ -11,6 +11,7 @@ import EmptyPage from '../empty-page';
 import Card from '../card';
 import './index.less';
 import { useDoc } from './stores';
+import { useWorkBenchStore } from '../../stores';
 
 const clsPrefix = 'c7n-workbench-doc';
 
@@ -53,24 +54,31 @@ function Switch({ options: propsOption, children, onChange, defaultValue, checke
 }
 const Doc = ({ history }) => {
   const { docStore } = useDoc();
-  const [self, setSelf] = useState(false);
+  const { docDs, selfDoc, setSelfDoc } = useWorkBenchStore();
+  // useEffect(() => {
+  //   // 防止初次进入时二次加载
+  //   if (!docStore.getIsFistLoad) {
+  //     docStore.setLoading(true);
+  //     docStore.axiosGetDoc(self).then(res => docStore.setLoading(false)).catch(() => docStore.setLoading(false));
+  //   }
+  // }, [self]);
   useEffect(() => {
-    // 防止初次进入时二次加载
-    if (!docStore.getIsFistLoad) {
-      docStore.setLoading(true);
-      docStore.axiosGetDoc(self).then(res => docStore.setLoading(false)).catch(() => docStore.setLoading(false));
+    if (docDs.currentPage === 1) {
+      const data = docDs.toData()[0];
+      docStore.setDocData(data ? data.list : []);
     }
-  }, [self]);
+  }, [docDs.length]);
+
   function renderTitle() {
     return (
       <div className={`${clsPrefix}-title`}>
         <span>文档</span>
-        <Switch defaultValue={false} options={[{ value: false, text: '项目' }, { value: true, text: '个人' }]} onChange={setSelf} />
+        <Switch defaultValue={false} options={[{ value: false, text: '项目' }, { value: true, text: '个人' }]} onChange={setSelfDoc} />
       </div>
     );
   }
-  const goKnowledgeLink = ({ baseId, projectId, organizationId, spaceId, baseName }) => {
-    const url = `/knowledge/project/doc/${baseId}?baseName=${baseName}&id=${projectId}&organizationId=${organizationId}&spaceId=${spaceId}&type=project`;
+  const goKnowledgeLink = ({ baseId, orgFlag, projectId, organizationId, spaceId, baseName, name }) => {
+    const url = `/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}?baseName=${baseName}&id=${orgFlag ? organizationId : projectId}&organizationId=${organizationId}&spaceId=${spaceId}&name=${name}&type=${orgFlag ? 'organization' : 'project'}`;
     history.push(url);
   };
   const renderUserList = (userList, visibleText = false) => map(userList, ({ realName, loginName, email, ldap, imageUrl }) => (
@@ -96,11 +104,11 @@ const Doc = ({ history }) => {
   ));
 
   function renderItems() {
-    return map(docStore.getDocData, ({ knowledgeBaseName, id, baseId, organizationId, imageUrl, title, projectId, projectName, organizationName, updatedUserList, lastUpdateDate, type, orgName }) => (
-      <div className="c7n-workbench-doc-item" onClick={goKnowledgeLink.bind(this, { baseId, organizationId, spaceId: id, baseName: knowledgeBaseName, projectId })}>
+    return map(docStore.getDocData, ({ knowledgeBaseName, orgFlag, id, baseId, organizationId, imageUrl, title, projectId, projectName, organizationName, updatedUserList, lastUpdateDate }) => (
+      <div className="c7n-workbench-doc-item" onClick={goKnowledgeLink.bind(this, { baseId, orgFlag, organizationId, spaceId: id, baseName: knowledgeBaseName, projectId, name: orgFlag ? organizationName : projectName })}>
         <div className="c7n-workbench-doc-item-info">
           <span className="c7n-workbench-doc-item-logo c7n-workbench-doc-item-logo-update">
-            {title.toUpperCase().substring(0, 1)}
+            {`${title}`.toUpperCase().substring(0, 1)}
           </span>
           <div className="c7n-workbench-doc-item-userlist">
             {renderUserList(updatedUserList.slice(0, 3))}
@@ -117,11 +125,13 @@ const Doc = ({ history }) => {
           </div>
         </div>
         <div className={`${clsPrefix}-item-project`}>
-          <div className={`${clsPrefix}-item-project-logo`}>
-            <div style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : getRandomBackground(organizationId || projectId + 1) }}>{imageUrl ? '' : <Tooltip title={String(projectName || organizationName)}>{String(projectName || organizationName)[0].toUpperCase()}</Tooltip>}</div>
-          </div>
-          <span className={`${clsPrefix}-item-project-text`}>{knowledgeBaseName}</span>
-          {organizationName && <span className="c7n-workbench-doc-item-org">组织</span>}
+          {!orgFlag && (
+            <div className={`${clsPrefix}-item-project-logo`}>
+              <div style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : getRandomBackground(organizationId || projectId + 1) }}>{imageUrl ? '' : <Tooltip title={String(projectName || organizationName)}>{String(projectName || organizationName)[0].toUpperCase()}</Tooltip>}</div>
+            </div>
+          )}
+          <span className={`${clsPrefix}-item-project-text ${!orgFlag ? `${clsPrefix}-item-project-text-dot` : ''}`}>{knowledgeBaseName}</span>
+          {orgFlag && <span className="c7n-workbench-doc-item-org">组织</span>}
         </div>
         <div className="c7n-workbench-doc-item-title">
           <Tooltip title={title}>
@@ -135,15 +145,18 @@ const Doc = ({ history }) => {
     ));
   }
   const loadMore = async () => {
-    await docStore.axiosGetDoc(self);
+    // await docStore.axiosGetDoc(self);
+    await docDs.nextPage().then(res => {
+      docStore.setDocData(docStore.getDocData.concat(res.toData().list));
+    });
   };
+
   return (
     <div
       className={clsPrefix}
     >
       {renderTitle()}
-      <Spin spinning={docStore.getLoading}>
-
+      <Spin spinning={!docDs.length && docDs.currentPage === 1 && docDs.status === 'loading'}>
         <div className="c7n-workbench-doc-content">
           {
             docStore.getDocData.length > 0
@@ -152,7 +165,8 @@ const Doc = ({ history }) => {
                   className={`${clsPrefix}-scroll`}
                   dataLength={docStore.getDocData.length}
                   next={loadMore}
-                  hasMore={docStore.getPageInfo.hasNext}
+                  // hasMore={docStore.getPageInfo.hasNext}
+                  hasMore={docDs.currentPage < docDs.totalPage}
                   loader={<Spin className={`${clsPrefix}-scroll-load`} spinning />}
                   height={438}
                   endMessage={(

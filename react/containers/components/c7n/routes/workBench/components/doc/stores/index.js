@@ -15,10 +15,10 @@ export const StoreProvider = inject('AppState')((props) => {
   } = props;
 
   const docStore = useStore(AppState);
-  useEffect(() => {
-    docStore.setLoading(true);
-    docStore.axiosGetDoc(docStore.self, true).then(() => docStore.setLoading(false)).catch(() => docStore.setLoading(false));
-  }, [AppState.currentMenuType.organizationId]);
+  // useEffect(() => {
+  //   docStore.setLoading(true);
+  //   docStore.axiosGetDoc(docStore.self, true).then(() => docStore.setLoading(false)).catch(() => docStore.setLoading(false));
+  // }, [AppState.currentMenuType.organizationId]);
   return (
     <Store.Provider value={{ docStore, organizationId: AppState.currentMenuType.organizationId, ...props }}>
       {children}
