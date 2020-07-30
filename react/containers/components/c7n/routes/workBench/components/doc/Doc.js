@@ -55,8 +55,11 @@ const Doc = ({ history }) => {
   const { docStore } = useDoc();
   const [self, setSelf] = useState(false);
   useEffect(() => {
-    docStore.setLoading(true);
-    docStore.axiosGetDoc(self).then(res => docStore.setLoading(false)).catch(() => docStore.setLoading(false));
+    // 防止初次进入时二次加载
+    if (!docStore.getIsFistLoad) {
+      docStore.setLoading(true);
+      docStore.axiosGetDoc(self).then(res => docStore.setLoading(false)).catch(() => docStore.setLoading(false));
+    }
   }, [self]);
   function renderTitle() {
     return (
@@ -93,7 +96,7 @@ const Doc = ({ history }) => {
   ));
 
   function renderItems() {
-    return map(docStore.getDocData, ({ knowledgeBaseName, id, baseId, organizationId, imageUrl, title, projectId, projectName, updatedUserList, lastUpdateDate, type, orgName }) => (
+    return map(docStore.getDocData, ({ knowledgeBaseName, id, baseId, organizationId, imageUrl, title, projectId, projectName, organizationName, updatedUserList, lastUpdateDate, type, orgName }) => (
       <div className="c7n-workbench-doc-item" onClick={goKnowledgeLink.bind(this, { baseId, organizationId, spaceId: id, baseName: knowledgeBaseName, projectId })}>
         <div className="c7n-workbench-doc-item-info">
           <span className="c7n-workbench-doc-item-logo c7n-workbench-doc-item-logo-update">
@@ -115,10 +118,10 @@ const Doc = ({ history }) => {
         </div>
         <div className={`${clsPrefix}-item-project`}>
           <div className={`${clsPrefix}-item-project-logo`}>
-            <div style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : getRandomBackground(projectId) }}>{imageUrl ? '' : <Tooltip title={String(projectName)}>{String(projectName)[0].toUpperCase()}</Tooltip> }</div>
+            <div style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : getRandomBackground(organizationId || projectId + 1) }}>{imageUrl ? '' : <Tooltip title={String(projectName || organizationName)}>{String(projectName || organizationName)[0].toUpperCase()}</Tooltip>}</div>
           </div>
           <span className={`${clsPrefix}-item-project-text`}>{knowledgeBaseName}</span>
-          {orgName && <span className="c7n-workbench-doc-item-org">组织</span>}
+          {organizationName && <span className="c7n-workbench-doc-item-org">组织</span>}
         </div>
         <div className="c7n-workbench-doc-item-title">
           <Tooltip title={title}>
