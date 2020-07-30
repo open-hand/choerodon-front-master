@@ -167,12 +167,15 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        &::before {
-          content: '\00b7';
-          color: #000;
-          transform: scale(1.5);
-          display: inline-block;
-          margin-right: .05rem;
+
+        &-dot {
+          &::before {
+            content: '\00b7';
+            color: #000;
+            transform: scale(1.5);
+            display: inline-block;
+            margin-right: .05rem;
+          }
         }
       }
     }
@@ -232,8 +235,6 @@
       display: block;
       float: right;
       line-height: .48rem;
-
-      &-hover {}
 
       &-user {
         display: inline-block;
