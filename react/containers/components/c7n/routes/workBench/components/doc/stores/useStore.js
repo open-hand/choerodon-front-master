@@ -9,9 +9,13 @@ export default function useStore(AppState) {
       size: 6,
     },
     self: false,
+    isFistLoad: true,
     loading: true,
     get getLoading() {
       return this.loading;
+    },
+    get getIsFistLoad() {
+      return this.isFistLoad;
     },
     setLoading(data) {
       this.loading = data;
@@ -29,6 +33,7 @@ export default function useStore(AppState) {
       this.docData = data;
     },
     axiosGetDoc(isSelf = false, isFistLoad = false) {
+      this.isFistLoad = isFistLoad;
       return axios({
         method: 'get',
         url: `/knowledge/v1/organizations/${AppState.currentMenuType.organizationId}/work_space/recent_project_update_list${isSelf ? '/self' : ''}`,
@@ -38,11 +43,12 @@ export default function useStore(AppState) {
         },
       }).then((res) => {
         if (isFistLoad || this.self !== isSelf) {
+          this.isFistLoad = false;
           this.setDocData(res.content);
-          this.setPageInfo({ page: 0, size: 6, hasNext: res.totalElements - res.size * (res.number + 1) > 0 });
+          this.setPageInfo({ page: 1, size: 6, hasNext: res.totalPages > res.number });
         } else {
           this.setDocData(this.docData.concat(res.content));
-          this.setPageInfo({ page: this.pageInfo.page + 1, size: 6, hasNext: res.totalElements - res.size * (res.number + 1) > 0 });
+          this.setPageInfo({ page: this.pageInfo.page + 1, size: 6, hasNext: res.totalPages > res.number });
         }
         this.self = isSelf;
       });
