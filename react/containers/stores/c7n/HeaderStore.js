@@ -22,7 +22,8 @@ function findDataIndex(collection, value) {
 function saveRecent(collection = [], value, number) {
   const index = findDataIndex(collection, value);
   if (index !== -1) {
-    return collection.splice(index, 1).concat(collection.slice());
+    collection.splice(index, 1);
+    return [value].concat(collection.slice());
   } else {
     collection.unshift(value);
     return collection.slice(0, number);
