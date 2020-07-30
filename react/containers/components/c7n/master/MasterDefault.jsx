@@ -132,7 +132,6 @@ class Masters extends Component {
     });
   }
 
-
   initMenuType(props) {
     const { location, MenuStore, HeaderStore, history, AppState } = props;
     const { pathname, search } = location;
@@ -187,7 +186,7 @@ class Masters extends Component {
         }
         const checkArray = ['category', 'name', 'organizationId'];
         if (checkArray.some(c => {
-          if (menuType[c] && String(menuType[c]) !== String(res[c])) {
+          if (menuType[c] && menuType[c] !== 'undefined' && String(menuType[c]) !== String(res[c])) {
             return true;
           }
         })) {
