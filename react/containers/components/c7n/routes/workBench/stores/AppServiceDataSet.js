@@ -5,7 +5,7 @@ export default (({ organizationId }) => ({
   dataKey: null,
   transport: {
     read: {
-      url: `devops/v1/desktop/${organizationId}/latest_app_service`,
+      url: `devops/v1/organizations/${organizationId}/work_bench/latest_app_service`,
       method: 'get',
     },
   },

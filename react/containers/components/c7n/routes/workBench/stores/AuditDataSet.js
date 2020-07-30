@@ -4,7 +4,7 @@ export default (({ organizationId }) => ({
   paging: false,
   transport: {
     read: {
-      url: `devops/v1/desktop/${organizationId}/approval`,
+      url: `devops/v1/organizations/${organizationId}/work_bench/approval`,
       method: 'get',
     },
   },
