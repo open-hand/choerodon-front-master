@@ -127,10 +127,10 @@ const Doc = ({ history }) => {
         <div className={`${clsPrefix}-item-project`}>
           {!orgFlag && (
             <div className={`${clsPrefix}-item-project-logo`}>
-              <div style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : getRandomBackground(organizationId || projectId + 1) }}>{imageUrl ? '' : <Tooltip title={String(projectName || organizationName)}>{String(projectName || organizationName)[0].toUpperCase()}</Tooltip>}</div>
+              <Tooltip placement="top" title={String(projectName || organizationName)}><div style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : getRandomBackground(organizationId || projectId + 1) }}>{imageUrl ? '' : String(projectName || organizationName)[0].toUpperCase()}</div></Tooltip>
             </div>
           )}
-          <span className={`${clsPrefix}-item-project-text ${!orgFlag ? `${clsPrefix}-item-project-text-dot` : ''}`}>{knowledgeBaseName}</span>
+          <Tooltip placement="top" title={knowledgeBaseName}><span className={`${clsPrefix}-item-project-text ${!orgFlag ? `${clsPrefix}-item-project-text-dot` : ''}`}>{knowledgeBaseName}</span></Tooltip>
           {orgFlag && <span className="c7n-workbench-doc-item-org">组织</span>}
         </div>
         <div className="c7n-workbench-doc-item-title">
