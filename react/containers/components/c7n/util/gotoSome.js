@@ -19,7 +19,7 @@ function getSearchString(type, key, value, extraProps = {}) {
   }
   if (type === 'organization') {
     const orgData = HeaderStore.getOrgData;
-    const orgObj = orgData.find(v => String(v[key]) === String(value));
+    const orgObj = orgData?.find(v => String(v[key]) === String(value));
     if (orgObj) {
       const obj = {
         type,

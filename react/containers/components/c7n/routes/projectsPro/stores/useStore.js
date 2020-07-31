@@ -65,11 +65,13 @@ export default function useStore(AppState, history) {
     },
 
     async checkCreate(organizationId) {
-      try {
-        const res = await axios.get(`iam/choerodon/v1/organizations/${organizationId}/projects/check_enable_create`);
-        this.setCanCreate(res && !res.failed);
-      } catch (e) {
-        this.setCanCreate(false);
+      if (organizationId) {
+        try {
+          const res = await axios.get(`iam/choerodon/v1/organizations/${organizationId}/projects/check_enable_create`);
+          this.setCanCreate(res && !res.failed);
+        } catch (e) {
+          this.setCanCreate(false);
+        }
       }
     },
 
@@ -150,12 +152,14 @@ export default function useStore(AppState, history) {
     },
     axiosGetStarProjects() {
       const orgId = AppState.currentMenuType.organizationId;
-      axios.get(`/iam/choerodon/v1/organizations/${orgId}/star_projects`).then((res) => {
-        this.setStarProjectsList(res.map(r => {
-          r.background = getRandomBackground();
-          return r;
-        }));
-      });
+      if (orgId) {
+        axios.get(`/iam/choerodon/v1/organizations/${orgId}/star_projects`).then((res) => {
+          this.setStarProjectsList(res.map(r => {
+            r.background = getRandomBackground();
+            return r;
+          }));
+        });
+      }
     },
   }));
 }

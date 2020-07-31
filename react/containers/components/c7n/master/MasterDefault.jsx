@@ -13,6 +13,7 @@ import AnnouncementBanner from '../ui/header/AnnouncementBanner';
 import RouteIndex from './RouteIndex';
 import themeColorClient from './themeColorClient';
 import './style';
+import HeaderStore from "@/containers/stores/c7n/HeaderStore";
 
 const spinStyle = {
   textAlign: 'center',
@@ -160,12 +161,18 @@ class Masters extends Component {
     }
     async function checkUrl() {
       function goSafty() {
-        message.info('地址过期');
-        AppState.setCurrentProject(null);
-        const queryObj = queryString.parse(history.location.search);
-        const search = getSearchString('organization', 'id', queryObj.organizationId);
-        MenuStore.setActiveMenu(null);
-        history.push(`/projects${search}`);
+        if (!HeaderStore.getOrgData) {
+          setTimeout(() => {
+            goSafty();
+          }, 500);
+        } else {
+          message.info('地址过期');
+          AppState.setCurrentProject(null);
+          const queryObj = queryString.parse(history.location.search);
+          const search = getSearchString('organization', 'id', queryObj.organizationId);
+          MenuStore.setActiveMenu(null);
+          history.push(`/projects${search}`);
+        }
       }
       if (menuType.projectId) {
         const currentProject = AppState.getCurrentProject;
