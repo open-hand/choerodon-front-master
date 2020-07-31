@@ -42,7 +42,7 @@ function Switch({ options: propsOption, children, onChange, defaultValue, checke
               e.preventDefault();
               onClick(option.value);
             }}
-            className={value === option.value ? `${clsPrefix}-switch-active` : `${clsPrefix}-switch-active-li`}
+            className={value === option.value ? `${clsPrefix}-switch-active` : `${clsPrefix}-switch-li`}
           >
             {option.text || option}
           </li>
