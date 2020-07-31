@@ -117,13 +117,20 @@
     &-title {
       color: #3a345f;
       padding-left: .03rem;
-
+      display: inline-flex;
+      width: 100%;
+      justify-content: space-between;
       &-text {
-        width: 1.75rem;
         overflow: hidden;
         display: inline-block;
         white-space: nowrap;
         text-overflow: ellipsis;
+      }
+      &-time {
+        font-size: .12rem;
+        opacity: 0.65;
+        min-width: .5rem;
+        text-align: right;
       }
     }
 
@@ -289,14 +296,6 @@
           }
         }
       }
-    }
-
-    &-time {
-      font-size: .12rem;
-      opacity: 0.65;
-      min-width: .5rem;
-      text-align: right;
-      float: right;
     }
   }
 
