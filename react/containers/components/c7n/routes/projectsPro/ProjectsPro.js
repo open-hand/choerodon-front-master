@@ -12,12 +12,14 @@ export default () => {
     AppState: {
       currentMenuType: { organizationId },
     },
+    AppState,
   } = useProjectsProStore();
 
   useEffect(() => {
     ProjectsProUseStore.axiosGetProjects();
     ProjectsProUseStore.checkCreate(organizationId);
     ProjectsProUseStore.axiosGetStarProjects();
+    AppState.setCurrentProject(null);
   }, []);
 
   return (
