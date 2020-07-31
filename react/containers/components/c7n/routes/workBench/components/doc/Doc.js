@@ -127,7 +127,7 @@ const Doc = ({ history }) => {
         <div className={`${clsPrefix}-item-project`}>
           {!orgFlag && (
             <div className={`${clsPrefix}-item-project-logo`}>
-              <Tooltip placement="top" title={String(projectName || organizationName)}><div style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : getRandomBackground(organizationId || projectId + 1) }}>{imageUrl ? '' : String(projectName || organizationName)[0].toUpperCase()}</div></Tooltip>
+              <Tooltip placement="top" title={`所属项目：${projectName}`}><div style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : getRandomBackground(organizationId || projectId + 1) }}>{imageUrl ? '' : String(projectName || organizationName)[0].toUpperCase()}</div></Tooltip>
             </div>
           )}
           <Tooltip placement="top" title={knowledgeBaseName}><span className={`${clsPrefix}-item-project-text ${!orgFlag ? `${clsPrefix}-item-project-text-dot` : ''}`}>{knowledgeBaseName}</span></Tooltip>
@@ -170,17 +170,17 @@ const Doc = ({ history }) => {
                   loader={<Spin className={`${clsPrefix}-scroll-load`} spinning />}
                   height={438}
                   endMessage={(
-                    <span className={`${clsPrefix}-scroll-bottom`}>到底了</span>
+                    <span style={{ height: docStore.getDocData.length < 5 ? '1.32rem' : 'auto' }} className={`${clsPrefix}-scroll-bottom`}>到底了</span>
                   )}
                 >{renderItems()}
                 </ScrollContext>
               )
-              : (!docStore.getLoading
+              : (docDs.status !== 'loading' && docDs.currentPage === 1
                 && (
-                  <EmptyPage
-                    title="暂无文档信息"
-                    describe="暂无文档相关的记录，请直接前往知识库中查看"
-                  />
+                <EmptyPage
+                  title="暂无文档信息"
+                  describe="暂无最近操作的文档"
+                />
                 )
               )
           }
