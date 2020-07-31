@@ -161,6 +161,7 @@ class Masters extends Component {
     async function checkUrl() {
       function goSafty() {
         message.info('地址过期');
+        AppState.setCurrentProject(null);
         const queryObj = queryString.parse(history.location.search);
         const search = getSearchString('organization', 'id', queryObj.organizationId);
         MenuStore.setActiveMenu(null);
