@@ -192,15 +192,20 @@ class MenuStore {
   @action
   loadMenuData(menuType = AppState.currentMenuType, isUser) {
     if (isLoadMenu === 1) {
-      return setTimeout(function() {
-        return this.loadMenuData(menuType, isUser);
-      }.bind(this), 500);
+      return new Promise((resolve) => {
+        resolve(setTimeout(function() {
+          return this.loadMenuData(menuType, isUser);
+        }.bind(this), 500))
+      });
     } else {
       isLoadMenu = 1;
       return new Promise((resolve) => {
         mainFunc.call(this, resolve);
       });
     }
+    // return new Promise((resolve) => {
+    //   mainFunc.call(this, resolve);
+    // });
 
     async function mainFunc(resolve) {
       const type = getMenuType(menuType, isUser) || 'site';
