@@ -137,7 +137,7 @@ const Doc = ({ history }) => {
           <Tooltip title={title}>
             <span className="c7n-workbench-doc-item-title-text">{title}</span>
           </Tooltip>
-          <span className="c7n-workbench-doc-item-time">
+          <span className="c7n-workbench-doc-item-title-time">
             <TimePopover datetime={lastUpdateDate} />
           </span>
         </div>
@@ -170,17 +170,17 @@ const Doc = ({ history }) => {
                   loader={<Spin className={`${clsPrefix}-scroll-load`} spinning />}
                   height={438}
                   endMessage={(
-                    <span style={{ height: docStore.getDocData.length < 5 ? '1.32rem' : 'auto' }} className={`${clsPrefix}-scroll-bottom`}>到底了</span>
+                    <span style={{ height: docStore.getDocData.length < 5 ? '1.32rem' : 'auto' }} className={`${clsPrefix}-scroll-bottom`}>{docStore.getDocData.length && docDs.totalPage > 1 ? '到底了' : ''}</span>
                   )}
                 >{renderItems()}
                 </ScrollContext>
               )
               : (docDs.status !== 'loading' && docDs.currentPage === 1
                 && (
-                <EmptyPage
-                  title="暂无文档信息"
-                  describe="暂无最近操作的文档"
-                />
+                  <EmptyPage
+                    title="暂无文档信息"
+                    describe="暂无最近操作的文档"
+                  />
                 )
               )
           }
