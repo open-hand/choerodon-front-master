@@ -58,8 +58,8 @@ const CommitChart = () => {
       grid: {
         top: 33,
         left: 5,
-        right: 18,
-        bottom: xAxis.length > 0 ? 60 : 76,
+        right: 10,
+        bottom: xAxis.length > 0 ? 70 : 76,
         containLabel: true,
       },
       xAxis: {
@@ -178,7 +178,7 @@ const CommitChart = () => {
   }
 
   return (
-    <OverviewWrap width="57%" height={302} marginRight=".2rem">
+    <OverviewWrap width="calc(57% - 20px)" height={302} marginRight=".2rem">
       <OverviewWrap.Header title={renderTitle()} />
       {getContent()}
     </OverviewWrap>
