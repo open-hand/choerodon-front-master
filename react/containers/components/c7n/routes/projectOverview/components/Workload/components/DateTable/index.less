@@ -14,12 +14,14 @@
     height: @headerHeight;
     border-bottom: 1px solid @borderColor;
     display: inline-flex;
+
     // box-shadow: 0px 6px 6px -4px rgba(0, 0, 0, 0.12);
     .margin-right {
       margin-right: .09rem;
     }
 
     &-btn {
+
       .c7n-pro-btn-flat:enabled:hover,
       .c7n-pro-btn-flat:enabled:focus {
         background-color: rgba(244, 243, 248, 1);
@@ -95,19 +97,18 @@
         margin-left: .04rem;
       }
     }
-
   }
 
   &-content {
     width: 100%;
     // height: max-content;
-    overflow-y: scroll;
+    overflow-y: scroll; // 兼容ie
+    overflow-y: overlay;
     overflow-x: hidden;
     min-height: .5rem;
 
     .c7n-project-overview-date-table-row:not(:last-child) {
       border-bottom: 1px solid @borderColor;
-
     }
   }
 
@@ -131,8 +132,9 @@
       width: @columWidth;
       display: flex;
       align-items: center;
+
       &:not(:last-child) {
-        border-right: 1px solid @borderColor
+        border-right: 1px solid @borderColor;
       }
 
       &-first {
@@ -156,27 +158,24 @@
     // width: 50px;
     text-align: center;
     // border-bottom: 1px solid @borderColor;
-
   }
 
   .border-right {
     border-right: 1px solid @borderColor;
-
   }
 
   &-footer {
-    width: 99.5%;
+    width: 100%;
     border-top: 1px solid @borderColor;
     box-sizing: border-box;
     // box-shadow: 0px -6px 6px -4px rgba(0, 0, 0, 0.12);
   }
 
   .animate-table {
-    animation-duration:.8s;
+    animation-duration: .8s;
     animation-fill-mode: both;
     animation-timing-function: linear;
     animation-name: tableSwitch;
-
   }
 
   @keyframes tableSwitch {
@@ -188,5 +187,4 @@
       opacity: 1;
     }
   }
-
 }
