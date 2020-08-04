@@ -35,7 +35,7 @@ function filterEmptyMenus(menuData, parent) {
 
 function changeMenuLevel({ level, child }) {
   child.forEach(item => {
-    item.level = 'project';
+    item.level = level;
     if (item.subMenus) {
       changeMenuLevel({ level, child: item.subMenus });
     }
@@ -240,6 +240,8 @@ class MenuStore {
         const child = filterEmptyMenus(data || []);
         if (type === 'project') {
           changeMenuLevel({ level: 'project', child });
+        } else if (type === 'user') {
+          changeMenuLevel({ level: 'user', child });
         }
         that.setMenuData(child, type, id);
         isLoadMenu = 0;
