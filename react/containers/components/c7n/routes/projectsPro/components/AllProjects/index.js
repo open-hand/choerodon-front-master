@@ -1,5 +1,5 @@
 import React, { useCallback, Fragment } from 'react';
-import { TextField, Button, Pagination, Tooltip, Modal, } from 'choerodon-ui/pro';
+import { TextField, Button, Pagination, Tooltip, Modal } from 'choerodon-ui/pro';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import Permission from '@/containers/components/c7n/tools/permission';
@@ -254,6 +254,16 @@ export default observer(() => {
                 </span>
               </div>
               <Icon
+                type="mode_edit"
+                style={{
+                  color: 'rgb(86, 111, 225)',
+                  fontSize: '20px',
+                  margin: '0 10px 0 auto',
+                }}
+                className="allProjects-content-item-right-top-edit"
+                onClick={(e) => handleEditProject(e, p.id)}
+              />
+              <Icon
                 type={p.starFlag ? 'turned_in' : 'turned_in_not'}
                 style={{
                   color: p.starFlag ? 'rgb(86, 111, 225)' : 'rgb(196, 195, 225)',
@@ -274,14 +284,14 @@ export default observer(() => {
                   className="allProjects-content-item-right-down-pro allProjects-content-item-right-down-pro-edit"
                 >
                   <Tooltip title={p.name} placement="bottomLeft">
-                    <span onClick={(e) => handleEditProject(e, p.id)}>{p.name}</span>
+                    <span>{p.name}</span>
                   </Tooltip>
                 </p>
               ) : (
-                  <p className="allProjects-content-item-right-down-pro">
-                    <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
-                  </p>
-                )}
+                <p className="allProjects-content-item-right-down-pro">
+                  <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
+                </p>
+              )}
 
               <Tooltip
                 title={p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}

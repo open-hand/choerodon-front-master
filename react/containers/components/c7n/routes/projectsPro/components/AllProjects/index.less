@@ -58,6 +58,9 @@
       align-items: center;
       &:hover {
         background: rgba(140,158,255,0.06);
+        .allProjects-content-item-right-top-edit {
+            opacity: 1;
+        }
       }
       &-icon {
         width: 30px;
@@ -78,6 +81,13 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
+          &-edit {
+            color: rgb(86, 111, 225);
+            font-size: 20px;
+            margin: 0 10px 0 auto;
+            transition: .5s;
+            opacity: 0;
+          }
           &-left {
             &-code {
               font-size:12px;
