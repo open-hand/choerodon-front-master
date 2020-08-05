@@ -10,12 +10,12 @@ const LoadingBarRequiredProps = {
 
 function LoadingBar({ display = false }) {
   const spinClass = classNames({
-    'c7n-spin-hidden': !display,
-    'c7n-spin-container': display,
+    'spin-hidden': !display,
+    'spin-container': display,
   });
   return (
     <div className={spinClass}>
-      <Progress type="loading" className="c7n-spin-container-progress" />
+      <Progress type="loading" />
     </div>
   );
 }
