@@ -317,7 +317,7 @@ class MenuStore {
     if (tree.code) {
       parents.push(tree);
     }
-    return tree[childrenName]?.some((node, index) => {
+    return typeof tree[childrenName] === 'object' ? tree[childrenName]?.some((node, index) => {
       const newParents = parents.slice(0);
       node.parentName = parents[0] && parents[0].name;
       if (node[childrenName] && node[childrenName].length > 0) {
@@ -325,7 +325,7 @@ class MenuStore {
       }
       // node.parentName = parents[0].name;
       return callback(node, parents, index);
-    });
+    }) :  undefined;
   }
 }
 
