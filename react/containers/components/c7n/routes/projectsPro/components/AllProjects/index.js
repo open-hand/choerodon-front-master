@@ -220,7 +220,9 @@ export default observer(() => {
   const renderProjects = useCallback(() => {
     const projects = ProjectsProUseStore.getAllProjects;
     if (ProjectsProUseStore.getProjectLoading) {
-      return <LoadingBar display />;
+      return (
+        <LoadingBar display />
+      );
     } else {
       return projects.length > 0 ? projects.map(p => (
         <div
