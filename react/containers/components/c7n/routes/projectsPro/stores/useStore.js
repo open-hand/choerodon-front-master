@@ -34,6 +34,10 @@ export default function useStore(AppState, history) {
     setStarProjectsList(data) {
       this.starProjectsList = data;
     },
+    projectLoading: true,
+    get getProjectLoading() {
+      return this.projectLoading;
+    },
     allProjects: [],
     get getAllProjects() {
       return this.allProjects;
@@ -43,6 +47,7 @@ export default function useStore(AppState, history) {
     },
     axiosGetProjects() {
       const { page, size } = this.getPagination;
+      this.projectLoading = true;
       axios.get(queryString.parse(history.location.search).organizationId ? `/iam/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
         this.setAllProjects(res.content.map(r => {
           r.background = getRandomBackground();
@@ -53,6 +58,7 @@ export default function useStore(AppState, history) {
           size: res.size,
           total: res.totalElements,
         });
+        this.projectLoading = false;
       });
     },
 
@@ -133,7 +139,7 @@ export default function useStore(AppState, history) {
               item.starFlag = false;
               HeaderStore.setRecentItem(item);
             }
-          // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-empty
           } catch (e) { }
         } else {
           try {
@@ -144,7 +150,7 @@ export default function useStore(AppState, history) {
               item.starFlag = true;
               HeaderStore.setRecentItem(item);
             }
-          // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-empty
           } catch (e) { }
         }
         resolve();

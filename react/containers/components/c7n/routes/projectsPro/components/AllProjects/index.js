@@ -1,12 +1,13 @@
-import React, { useState, useCallback, Fragment } from 'react';
-import { TextField, Button, Pagination, Tooltip, Modal, message } from 'choerodon-ui/pro';
+import React, { useCallback, Fragment } from 'react';
+import { TextField, Button, Pagination, Tooltip, Modal } from 'choerodon-ui/pro';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import Permission from '@/containers/components/c7n/tools/permission';
 import { Icon } from 'choerodon-ui';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import axios from '@/containers/components/c7n/tools/axios';
-import { historyPushMenu, prompt } from '@/utils';
+import { prompt } from '@/utils';
+import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import FormView from '../FormView';
@@ -218,110 +219,126 @@ export default observer(() => {
 
   const renderProjects = useCallback(() => {
     const projects = ProjectsProUseStore.getAllProjects;
-    return projects.length > 0 ? projects.map(p => (
-      <div
-        onClick={() => {
-          if (p.enabled) {
-            handleClickProject(p);
-          }
-        }}
-        className="allProjects-content-item"
-        style={{
-          cursor: p.enabled ? 'pointer' : 'not-allowed',
-        }}
-      >
+    if (ProjectsProUseStore.getProjectLoading) {
+      return (
+        <LoadingBar display />
+      );
+    } else {
+      return projects.length > 0 ? projects.map(p => (
         <div
-          className="allProjects-content-item-icon"
+          onClick={() => {
+            if (p.enabled) {
+              handleClickProject(p);
+            }
+          }}
+          className="allProjects-content-item"
           style={{
-            backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : getRandomBackground(p.id),
+            cursor: p.enabled ? 'pointer' : 'not-allowed',
           }}
         >
-          <span>
-            {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
-          </span>
-        </div>
+          <div
+            className="allProjects-content-item-icon"
+            style={{
+              backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : getRandomBackground(p.id),
+            }}
+          >
+            <span>
+              {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
+            </span>
+          </div>
 
-        <div className="allProjects-content-item-right">
-          <div className="allProjects-content-item-right-top">
-            <div className="allProjects-content-item-right-top-left">
-              <span className="allProjects-content-item-right-top-left-code">{p.code && p.code.toUpperCase()}</span>
-              <span className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${p.enabled}`}>
-                {p.enabled ? '启用' : '停用'}
-              </span>
+          <div className="allProjects-content-item-right">
+            <div className="allProjects-content-item-right-top">
+              <div className="allProjects-content-item-right-top-left">
+                <span className="allProjects-content-item-right-top-left-code">{p.code && p.code.toUpperCase()}</span>
+                <span className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${p.enabled}`}>
+                  {p.enabled ? '启用' : '停用'}
+                </span>
+              </div>
+              <Icon
+                type="mode_edit"
+                style={{
+                  color: 'rgb(86, 111, 225)',
+                  fontSize: '20px',
+                  margin: '0 10px 0 auto',
+                }}
+                className="allProjects-content-item-right-top-edit"
+                onClick={(e) => handleEditProject(e, p.id)}
+              />
+              <Icon
+                type={p.starFlag ? 'turned_in' : 'turned_in_not'}
+                style={{
+                  color: p.starFlag ? 'rgb(86, 111, 225)' : 'rgb(196, 195, 225)',
+                  fontSize: '20px',
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  ProjectsProUseStore.handleStarProject(p).then(() => {
+                    ProjectsProUseStore.handleChangeStarProjects(p);
+                  });
+                }}
+              />
             </div>
-            <Icon
-              type={p.starFlag ? 'turned_in' : 'turned_in_not'}
-              style={{
-                color: p.starFlag ? 'rgb(86, 111, 225)' : 'rgb(196, 195, 225)',
-                fontSize: '20px',
-              }}
-              onClick={(e) => {
-                e.stopPropagation();
-                ProjectsProUseStore.handleStarProject(p).then(() => {
-                  ProjectsProUseStore.handleChangeStarProjects(p);
-                });
-              }}
-            />
-          </div>
-          <div className="allProjects-content-item-right-down">
+            <div className="allProjects-content-item-right-down">
 
-            {p.editFlag ? (
-              <p
-                className="allProjects-content-item-right-down-pro allProjects-content-item-right-down-pro-edit"
-              >
-                <Tooltip title={p.name} placement="bottomLeft">
-                  <span onClick={(e) => handleEditProject(e, p.id)}>{p.name}</span>
-                </Tooltip>
-              </p>
-            ) : (
-              <p className="allProjects-content-item-right-down-pro">
-                <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
-              </p>
-            )}
-
-            <Tooltip
-              title={p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}
-            >
-              <p className="allProjects-content-item-right-down-text1">
-                <span>
-                  <Icon type="project_line" />
-                </span>
-                <p>{p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
-              </p>
-            </Tooltip>
-
-            {
-              p.programName
-              && (
-                <Tooltip title={p.programName}>
-                  <p className="allProjects-content-item-right-down-text2">
-                    <React.Fragment>
-                      <span>
-                        <Icon type="project_group" />
-                      </span>
-                      <p>{p.programName}</p>
-                    </React.Fragment>
-                  </p>
-                </Tooltip>
-              )
-            }
-            <p className="allProjects-content-item-right-down-time">
-              <Tooltip title={p.createUserName} placement="top">
-                <span
-                  className="allProjects-content-item-right-down-avatar"
-                  style={{
-                    backgroundImage: `url(${p.createUserImageUrl})`,
-                  }}
+              {p.editFlag ? (
+                <p
+                  className="allProjects-content-item-right-down-pro allProjects-content-item-right-down-pro-edit"
                 >
-                  {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
-                </span>
+                  <Tooltip title={p.name} placement="bottomLeft">
+                    <span>{p.name}</span>
+                  </Tooltip>
+                </p>
+              ) : (
+                <p className="allProjects-content-item-right-down-pro">
+                  <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
+                </p>
+              )}
+
+              <Tooltip
+                title={p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}
+              >
+                <p className="allProjects-content-item-right-down-text1">
+                  <span>
+                    <Icon type="project_line" />
+                  </span>
+                  <p>{p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
+                </p>
               </Tooltip>
-              <p>{p.creationDate.split(' ')[0]} 创建</p>
-            </p>
+
+              {
+                p.programName
+                && (
+                  <Tooltip title={p.programName}>
+                    <p className="allProjects-content-item-right-down-text2">
+                      <React.Fragment>
+                        <span>
+                          <Icon type="project_group" />
+                        </span>
+                        <p>{p.programName}</p>
+                      </React.Fragment>
+                    </p>
+                  </Tooltip>
+                )
+              }
+              <p className="allProjects-content-item-right-down-time">
+                <Tooltip title={p.createUserName} placement="top">
+                  <span
+                    className="allProjects-content-item-right-down-avatar"
+                    style={{
+                      backgroundImage: `url(${p.createUserImageUrl})`,
+                    }}
+                  >
+                    {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
+                  </span>
+                </Tooltip>
+                <p>{p.creationDate.split(' ')[0]} 创建</p>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    )) : <EmptyPage title="组织下无项目" describe="此组织下无项目，可以选择上方创建项目进行项目的创建" />;
+      )) : <EmptyPage title="组织下无项目" describe="此组织下无项目，可以选择上方创建项目进行项目的创建" />;
+    }
   }, [ProjectsProUseStore.getAllProjects]);
 
   const handleBlurProjects = ({ ...e }) => {
@@ -385,18 +402,18 @@ export default observer(() => {
       <div className="allProjects-content">
         {renderProjects()}
         {ProjectsProUseStore.getAllProjects.length > 0 && (
-        <Pagination
-          showSizeChanger
-          showTotal
-          onChange={handleChangePagination}
-          page={ProjectsProUseStore.getPagination.page}
-          total={ProjectsProUseStore.getPagination.total}
-          pageSize={ProjectsProUseStore.getPagination.size}
-          style={{
-            textAlign: 'right',
-            marginTop: 15,
-          }}
-        />
+          <Pagination
+            showSizeChanger
+            showTotal
+            onChange={handleChangePagination}
+            page={ProjectsProUseStore.getPagination.page}
+            total={ProjectsProUseStore.getPagination.total}
+            pageSize={ProjectsProUseStore.getPagination.size}
+            style={{
+              textAlign: 'right',
+              marginTop: 15,
+            }}
+          />
         )}
       </div>
     </div>
