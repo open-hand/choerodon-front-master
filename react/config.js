@@ -1,5 +1,4 @@
 const path = require('path');
-const alias = require('../alias').webpack;
 
 module.exports = {
   entry: path.resolve(__dirname, './entry.js'),
@@ -9,8 +8,4 @@ module.exports = {
   buildType: 'single',
   modules: ['.'],
   dashboard: {},
-  webpackConfig(configs) {
-    configs.resolve.alias = alias;
-    return configs;
-  },
 };
