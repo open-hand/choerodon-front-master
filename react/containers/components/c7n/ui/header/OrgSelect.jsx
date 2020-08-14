@@ -9,6 +9,7 @@ import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../util';
 import Setting from './Setting';
 
+const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
 const prefixCls = 'c7n-boot-header-menu-type';
 const homePage = '/projects';
 @withRouter
@@ -144,43 +145,44 @@ export default class OrgSelect extends Component {
     }
     const buttonClass = classnames(`${prefixCls}-button`, 'block', 'org-button');
     const menu = this.renderModalContent();
+    const orgButton = <Button
+      className={buttonClass}
+      funcType="flat"
+      style={{
+        margin: 0,
+        padding: '0 20px',
+        width: 200,
+        borderLeft: '1px solid rgba(255, 255, 255, 0.3)',
+        borderRight: '1px solid rgba(255, 255, 255, 0.3)',
+        textAlign: 'left',
+      }}
+    >
+      {
+        (orgObj && orgObj.name) ? (
+          <div>
+            <div style={{ fontSize: '12px', lineHeight: '20px', color: 'rgba(255, 255, 255, 0.6)' }}>组织</div>
+            <div style={{ fontSize: '12px', lineHeight: '20px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'none' }}>{orgObj.name}</div>
+          </div>
+        ) : null
+      }
+      {
+        !(orgObj && orgObj.name) ? (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>请选择组织</span>
+            <Icon type="arrow_drop_down" />
+          </div>
+        ) : null
+      }
+      {
+        orgObj ? <Icon type="expand_more" style={{ position: 'absolute', top: 0, right: 8, color: 'rgba(255, 255, 255, .65)', fontSize: '.24rem' }} /> : null
+      }
+    </Button>
     return (
       <React.Fragment>
         <li style={{ width: 'auto' }}>
-          <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
-            <Button
-              className={buttonClass}
-              funcType="flat"
-              style={{
-                margin: 0,
-                padding: '0 20px',
-                width: 200,
-                borderLeft: '1px solid rgba(255, 255, 255, 0.3)',
-                borderRight: '1px solid rgba(255, 255, 255, 0.3)',
-                textAlign: 'left',
-              }}
-            >
-              {
-                (orgObj && orgObj.name) ? (
-                  <div>
-                    <div style={{ fontSize: '12px', lineHeight: '20px', color: 'rgba(255, 255, 255, 0.6)' }}>组织</div>
-                    <div style={{ fontSize: '12px', lineHeight: '20px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'none' }}>{orgObj.name}</div>
-                  </div>
-                ) : null
-              }
-              {
-                !(orgObj && orgObj.name) ? (
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span>请选择组织</span>
-                    <Icon type="arrow_drop_down" />
-                  </div>
-                ) : null
-              }
-              {
-                orgObj ? <Icon type="expand_more" style={{ position: 'absolute', top: 0, right: 8, color: 'rgba(255, 255, 255, .65)', fontSize: '.24rem' }} /> : null
-              }
-            </Button>
-          </Dropdown>
+          {HAS_BASE_PRO ? <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
+            {orgButton}
+          </Dropdown> : orgButton}
         </li>
         {
           (orgObj && orgObj.into) ? (
