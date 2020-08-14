@@ -174,7 +174,7 @@ export default class OrgSelect extends Component {
         ) : null
       }
       {
-        orgObj ? <Icon type="expand_more" style={{ position: 'absolute', top: 0, right: 8, color: 'rgba(255, 255, 255, .65)', fontSize: '.24rem' }} /> : null
+        HAS_BASE_PRO&&orgObj ? <Icon type="expand_more" style={{ position: 'absolute', top: 0, right: 8, color: 'rgba(255, 255, 255, .65)', fontSize: '.24rem' }} /> : null
       }
     </Button>
     return (
