@@ -14,7 +14,7 @@ import JSONbig from 'json-bigint'
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 axios.defaults.timeout = 30000;
 axios.defaults.baseURL = API_HOST;
-axios.defaults.transformResponse = [function(data) {
+axios.defaults.transformResponse = [function (data) {
   try {
     return JSONbig.parse(data);
   } catch (e) {
@@ -54,7 +54,9 @@ axios.interceptors.response.use(
     }
     if (Object.prototype.hasOwnProperty.call(response, 'data')) {
       if (response.data.failed === true) {
-        prompt(response.data.message, 'error');
+        if (!response.config.noPrompt) {
+          prompt(response.data.message, 'error');
+        }
         throw response.data;
       }
       return transformResponsePage(response.data);
