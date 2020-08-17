@@ -1,7 +1,7 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "0.22.0-test",
+  "version": "0.24.0-test",
   "description": "A package of Master for Choerodon platform.",
   "main": "./lib/index.js",
   "files": [
@@ -43,6 +43,23 @@
     "moment-range": "^4.0.2",
     "react-infinite-scroll-component": "^5.0.5",
     "react-intl": "^5.4.5",
-    "react-onclickoutside": "^6.8.0"
+    "react-onclickoutside": "^6.8.0",
+    "axios": "^0.16.2",
+    "classnames": "^2.2.5",
+    "history": "^4.6.3",
+    "lodash": "^4.17.4",
+    "mobx": "4.7.0",
+    "mobx-react": "5.1.2",
+    "mobx-react-lite": "^1.4.1",
+    "query-string": "^4.3.4",
+    "react": "^16.6.0",
+    "react-color": "2.17.0",
+    "react-dom": "^16.6.0",
+    "react-hot-loader": "^4.12.19",
+    "react-router": "^5.1.2",
+    "react-router-cache-route": "1.4.2",
+    "react-router-dom": "^5.1.2",
+    "timeago-react": "^2.0.1",
+    "universal-cookie": "^2.0.8"
   }
 }
