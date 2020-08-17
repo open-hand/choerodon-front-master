@@ -25,8 +25,7 @@ const UILocaleProviderAsync = asyncRouter(
   { locale: () => import(`choerodon-ui/lib/locale-provider/${language}.js`) },
 );
 const IntlProviderAsync = asyncLocaleProvider(language,
-  () => import(`./containers/locale/${language}`),
-  () => import(`react-intl/locale-data/${language.split('_')[0]}`));
+  () => import(`./containers/locale/${language}`));
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 
 @withRouter

@@ -20,8 +20,11 @@ export default function useStore(AppState) {
     setQuickLinkList(data) {
       this.quickLinkList = data;
     },
-    axiosGetQuickLinkList(id) {
-      axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/quick_links?page=0&size=${this.getParams.size}${id ? `&project_id=${id}` : ''}`).then((res) => {
+    axiosTopIf(data) {
+     return axios.put(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/quick_links/${data.id}/${data.top ? 'delete_top' : 'add_top'}`);
+    },
+    axiosGetQuickLinkList(id, type) {
+      axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/quick_links/scope/${type}?page=0&size=${this.getParams.size}${id ? `&project_id=${id}` : ''}`).then((res) => {
         this.setQuickLinkList(res.content);
         this.setParams({
           size: res.size,
