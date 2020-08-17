@@ -58,7 +58,7 @@ const DeployChart = () => {
       grid: {
         top: 33,
         left: 5,
-        right: 10,
+        right: 18,
         bottom: xAxis.length > 0 ? 70 : 76,
         containLabel: true,
       },
