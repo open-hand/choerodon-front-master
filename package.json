@@ -31,7 +31,8 @@
     "@choerodon/compiler": "^0.0.1",
     "babel-plugin-module-resolver": "^4.0.0",
     "babel-preset-c7n-app": "^0.0.1",
-    "choerodon-ui": "^0.8.62"
+    "choerodon-ui": "^0.8.62",
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "core-js": "^3.6.5",
