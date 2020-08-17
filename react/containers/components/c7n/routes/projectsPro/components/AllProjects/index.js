@@ -1,5 +1,6 @@
 import React, { useCallback, Fragment } from 'react';
 import { TextField, Button, Pagination, Tooltip, Modal } from 'choerodon-ui/pro';
+import { Progress } from 'choerodon-ui';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import Permission from '@/containers/components/c7n/tools/permission';
@@ -221,7 +222,9 @@ export default observer(() => {
     const projects = ProjectsProUseStore.getAllProjects;
     if (ProjectsProUseStore.getProjectLoading) {
       return (
-        <LoadingBar display />
+        <div className="allProjects-content-spin">
+          <Progress type="loading" />
+        </div>
       );
     } else {
       return projects.length > 0 ? projects.map(p => (
@@ -337,7 +340,7 @@ export default observer(() => {
             </div>
           </div>
         </div>
-      )) : <EmptyPage title="组织下无项目" describe="此组织下无项目，可以选择上方创建项目进行项目的创建" />;
+      )) : <EmptyPage title="暂无项目" describe="该组织下暂无项目" />;
     }
   }, [ProjectsProUseStore.getAllProjects]);
 

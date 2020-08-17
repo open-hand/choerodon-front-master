@@ -8,6 +8,7 @@ import { useWorkBenchStore } from '../../stores';
 import emptyImg from '../../../../../../images/owner.png';
 
 import './index.less';
+import LoadingBar from "@/containers/components/c7n/tools/loading-bar";
 
 const StarTargetPro = observer(() => {
   const {
@@ -52,6 +53,13 @@ const StarTargetPro = observer(() => {
 
   const renderContent = () => {
     const starProjects = starTargetProUseStore.getStarProjects;
+    if (starTargetProUseStore.getLoading) {
+      return (
+        <div style={{ padding: '56px 0px' }} className="c7n-starTargetPro-content">
+          <LoadingBar display/>
+        </div>
+        )
+    }
     if (starProjects.length === 0) {
       return (
         <div className="c7n-starTargetPro-content">
