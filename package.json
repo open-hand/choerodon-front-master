@@ -23,7 +23,7 @@
   "author": "qyellow",
   "license": "ISC",
   "peerDependencies": {
-    "@choerodon/boot": "0.21.x",
+    "@choerodon/boot": "0.22.0",
     "choerodon-ui": "0.8.x"
   },
   "devDependencies": {
