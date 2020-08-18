@@ -28,11 +28,13 @@ const QuickLink = observer(() => {
   } = useWorkBenchStore();
 
   const [type, setType] = useState('project');
+  const [activeId, setActiveId] = useState(undefined);
 
   const init = () => {
     let id;
     if (workBenchUseStore.getActiveStarProject) {
       id = workBenchUseStore.getActiveStarProject.id;
+      setActiveId(activeId);
     }
     quickLinkUseStore.axiosGetQuickLinkList(id, type);
   };
@@ -48,7 +50,7 @@ const QuickLink = observer(() => {
       style: {
         width: 380,
       },
-      children: <AddQuickLink AppState={AppState} data={data} useStore={quickLinkUseStore} workBenchUseStore={workBenchUseStore} />,
+      children: <AddQuickLink activeId={activeId} type={type} AppState={AppState} data={data} useStore={quickLinkUseStore} workBenchUseStore={workBenchUseStore} />,
       drawer: true,
       okText: '添加',
     });
@@ -130,7 +132,7 @@ const QuickLink = observer(() => {
                 okProps: { color: 'red' },
                 cancelProps: { color: 'dark' },
                 onOk() {
-                  quickLinkUseStore.axiosDeleteQuickLink(l.id);
+                  quickLinkUseStore.axiosDeleteQuickLink(l.id, activeId, type);
                 },
               });
             },

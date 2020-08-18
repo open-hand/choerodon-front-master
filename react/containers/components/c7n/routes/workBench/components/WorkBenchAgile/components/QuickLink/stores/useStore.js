@@ -32,19 +32,19 @@ export default function useStore(AppState) {
         })
       })
     },
-    axiosCreateQuickLink(data) {
+    axiosCreateQuickLink(data, activeId, type) {
       axios.post(`/iam/choerodon/v1/organizations/7/quick_links`, data).then(() => {
-        this.axiosGetQuickLinkList();
+        this.axiosGetQuickLinkList(activeId, type);
       })
     },
-    axiosDeleteQuickLink(id) {
+    axiosDeleteQuickLink(id, activeId, type) {
       axios.delete(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/quick_links/${id}`).then(() => {
-        this.axiosGetQuickLinkList();
+        this.axiosGetQuickLinkList(activeId, type);
       });
     },
-    axiosEditQuickLink(data) {
+    axiosEditQuickLink(data, activeId, type) {
       axios.put(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/quick_links/${data.id}`, data).then(() => {
-        this.axiosGetQuickLinkList();
+        this.axiosGetQuickLinkList(activeId, type);
       })
     },
   }));
