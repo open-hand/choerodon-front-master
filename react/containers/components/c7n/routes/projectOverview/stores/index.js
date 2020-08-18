@@ -12,6 +12,7 @@ import EnvDataSet from './EnvDataSet';
 import AsgardDataSet from './AsgardDataSet';
 import CommitDataSet from './CommitDataSet';
 import DeployDataSet from './DeployDataSet';
+import PipelineDataSet from "./PipelineDataSet";
 
 const Store = createContext();
 
@@ -35,11 +36,13 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const asgardDs = useMemo(() => new DataSet(AsgardDataSet({ projectId })), [projectId]);
   const commitDs = useMemo(() => new DataSet(CommitDataSet({ projectId })), [projectId]);
   const deployDs = useMemo(() => new DataSet(DeployDataSet({ projectId })), [projectId]);
+  const pipelineDs = useMemo(() => new DataSet(PipelineDataSet({ projectId })), [projectId]);
 
   useEffect(() => {
     function loadData() {
       commitDs.query();
       deployDs.query();
+      pipelineDs.query();
     }
 
     projectOverviewStore.loadAllSprint().then(
@@ -66,6 +69,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     asgardDs,
     commitDs,
     deployDs,
+    pipelineDs,
   };
 
   return (
