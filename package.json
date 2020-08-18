@@ -27,12 +27,10 @@
     "choerodon-ui": "0.8.x"
   },
   "devDependencies": {
-    "@choerodon/boot": "0.22.0-test",
+    "@choerodon/boot": "0.22.0",
     "@choerodon/compiler": "^0.0.1",
-    "babel-plugin-module-resolver": "^4.0.0",
     "babel-preset-c7n-app": "^0.0.1",
-    "choerodon-ui": "^0.8.62",
-    "typescript": "^3.9.7"
+    "choerodon-ui": "^0.8.62"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -42,7 +40,7 @@
     "moment": "^2.27.0",
     "moment-range": "^4.0.2",
     "react-infinite-scroll-component": "^5.0.5",
-    "react-intl": "^5.4.5",
+    "react-intl": "5.4.5",
     "react-onclickoutside": "^6.8.0",
     "axios": "^0.16.2",
     "classnames": "^2.2.5",
