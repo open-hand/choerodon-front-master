@@ -12,6 +12,7 @@ import DeployChart from './components/deploy-chart';
 import CommitChart from './components/commit-chart';
 import DefectChart from './components/defect-chart';
 import { useProjectOverviewStore } from './stores';
+import PipelineChart from "./components/pipeline-chart";
 
 import './ProjectOverview.less';
 
@@ -43,11 +44,12 @@ const ProjectOverview = () => {
         </div>
         <div className="c7n-project-overview-item">
           <DefectChart />
-          {showDevops ? <DeployChart /> : null}
+          {showDevops ? <PipelineChart /> : null}
         </div>
         {showDevops ? (
           <div className="c7n-project-overview-item">
             <CommitChart />
+            <DeployChart />
           </div>
         ) : null}
       </Content>
