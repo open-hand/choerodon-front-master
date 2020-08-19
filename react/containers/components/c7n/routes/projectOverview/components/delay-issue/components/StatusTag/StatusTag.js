@@ -13,9 +13,10 @@ function StatusTag({
   data,
   style,
   categoryCode,
+  type,
 }) {
   function renderStatusBackground() {
-    switch (categoryCode) {
+    switch (categoryCode || type) {
       case 'todo':
         return 'rgb(255, 177, 0)';
       case 'doing':
@@ -33,7 +34,7 @@ function StatusTag({
     <div
       className="c7n-statusTag"
       style={{
-        background: color || (categoryCode && renderStatusBackground(categoryCode)) || (data && STATUS[data.type]) || 'transparent',
+        background: color || ((categoryCode || type) && renderStatusBackground(categoryCode || type)) || (data && STATUS[data.type]) || 'transparent',
         lineHeight: '20px',
         height: '20px',
         ...style,
