@@ -11,8 +11,9 @@ import SagaChart from './components/saga-chart';
 import DeployChart from './components/deploy-chart';
 import CommitChart from './components/commit-chart';
 import DefectChart from './components/defect-chart';
+import DelayIssue from './components/delay-issue';
+import PipelineChart from './components/pipeline-chart';
 import { useProjectOverviewStore } from './stores';
-import PipelineChart from "./components/pipeline-chart";
 
 import './ProjectOverview.less';
 
@@ -21,7 +22,7 @@ const ProjectOverview = () => {
     AppState: { currentMenuType: { category } },
   } = useProjectOverviewStore();
   const showDevops = useMemo(() => category === 'GENERAL' || category === 'OPERATIONS', [category]);
-  
+
   return (
     <Page className="c7n-project-overview">
       <Breadcrumb />
@@ -52,6 +53,9 @@ const ProjectOverview = () => {
             <DeployChart />
           </div>
         ) : null}
+        <div className="c7n-project-overview-item">
+          <DelayIssue />
+        </div>
       </Content>
     </Page>
   );
