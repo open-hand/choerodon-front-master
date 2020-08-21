@@ -15,7 +15,7 @@ const StarTargetPro = observer(() => {
   } = useWorkBenchStore();
 
   function linkToDetail(record) {
-    const { type, projectId, projectName, pipelineRecordId, mergeRequestUrl, pipelineId, pipelineRecordIdWithoutEncrypt } = record.toData() || {};
+    const { type, projectId, projectName, pipelineRecordId, mergeRequestUrl, pipelineId, devopsPipelineRecordRelId } = record.toData() || {};
     const search = `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`;
     switch (type) {
       case 'pipeline':
@@ -25,7 +25,7 @@ const StarTargetPro = observer(() => {
         window.open(mergeRequestUrl);
         break;
       case 'ci_pipeline':
-        history.push(`/devops/pipeline-manage${search}&pipelineId=${pipelineId}&pipelineIdRecordId=${pipelineRecordIdWithoutEncrypt}`);
+        history.push(`/devops/pipeline-manage${search}&pipelineId=${pipelineId}&pipelineIdRecordId=${devopsPipelineRecordRelId}`);
         break;
       default:
     }
