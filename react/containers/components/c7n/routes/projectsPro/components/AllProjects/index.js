@@ -258,16 +258,18 @@ export default observer(() => {
                   {p.enabled ? '启用' : '停用'}
                 </span>
               </div>
-              <Icon
-                type="mode_edit"
-                style={{
-                  color: 'rgb(86, 111, 225)',
-                  fontSize: '20px',
-                  margin: '0 10px 0 auto',
-                }}
-                className="allProjects-content-item-right-top-edit"
-                onClick={(e) => handleEditProject(e, p.id)}
-              />
+              {p.editFlag ? (
+                <Icon
+                  type="mode_edit"
+                  style={{
+                    color: 'rgb(86, 111, 225)',
+                    fontSize: '20px',
+                    margin: '0 10px 0 auto',
+                  }}
+                  className="allProjects-content-item-right-top-edit"
+                  onClick={(e) => handleEditProject(e, p.id)}
+                />
+              ) : null}
               <Icon
                 type={p.starFlag ? 'turned_in' : 'turned_in_not'}
                 style={{
@@ -283,21 +285,9 @@ export default observer(() => {
               />
             </div>
             <div className="allProjects-content-item-right-down">
-
-              {p.editFlag ? (
-                <p
-                  className="allProjects-content-item-right-down-pro allProjects-content-item-right-down-pro-edit"
-                >
-                  <Tooltip title={p.name} placement="bottomLeft">
-                    <span>{p.name}</span>
-                  </Tooltip>
-                </p>
-              ) : (
-                <p className="allProjects-content-item-right-down-pro">
-                  <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
-                </p>
-              )}
-
+              <p className="allProjects-content-item-right-down-pro">
+                <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
+              </p>
               <Tooltip
                 title={p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}
               >
