@@ -25,7 +25,7 @@ const StarTargetPro = observer(() => {
         window.open(mergeRequestUrl);
         break;
       case 'ci_pipeline':
-        history.push(`/devops/pipeline-manage${search}&pipelineId=${pipelineId}&pipelineRecordId=${pipelineRecordIdWithoutEncrypt}`);
+        history.push(`/devops/pipeline-manage${search}&pipelineId=${pipelineId}&pipelineIdRecordId=${pipelineRecordIdWithoutEncrypt}`);
         break;
       default:
     }
