@@ -15,12 +15,19 @@ const StarTargetPro = observer(() => {
   } = useWorkBenchStore();
 
   function linkToDetail(record) {
-    const { type, projectId, projectName, pipelineRecordId, mergeRequestUrl } = record.toData() || {};
-    if (type === 'pipeline') {
-      const search = `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`;
-      history.push(`/devops/deployment-operation${search}&pipelineRecordId=${pipelineRecordId}`);
-    } else if (type === 'merge_request') {
-      window.open(mergeRequestUrl);
+    const { type, projectId, projectName, pipelineRecordId, mergeRequestUrl, pipelineId, devopsPipelineRecordRelId } = record.toData() || {};
+    const search = `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`;
+    switch (type) {
+      case 'pipeline':
+        history.push(`/devops/deployment-operation${search}&pipelineRecordId=${pipelineRecordId}`);
+        break;
+      case 'merge_request':
+        window.open(mergeRequestUrl);
+        break;
+      case 'ci_pipeline':
+        history.push(`/devops/pipeline-manage${search}&pipelineId=${pipelineId}&pipelineIdRecordId=${devopsPipelineRecordRelId}`);
+        break;
+      default:
     }
   }
 
