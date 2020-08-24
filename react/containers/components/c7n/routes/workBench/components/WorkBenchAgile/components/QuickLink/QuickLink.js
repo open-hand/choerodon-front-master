@@ -83,7 +83,7 @@ const QuickLink = observer(() => {
           }
         </div>
         <div className="c7n-quickLink-linkItem-right-content">
-          <p className="c7n-quickLink-linkItem-right-content-scope">{l.scope === 'project' ? '项目可见' : '仅自己可见'}</p>
+          <p className="c7n-quickLink-linkItem-right-content-scope">{l.scope === 'project' ? l.projectName : '仅自己可见'}</p>
           <div
             style={{
               display: 'flex',
