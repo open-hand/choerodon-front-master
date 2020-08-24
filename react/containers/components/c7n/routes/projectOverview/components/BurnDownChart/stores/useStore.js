@@ -1,5 +1,5 @@
 import { useLocalStore } from 'mobx-react-lite';
-import { axios } from '@choerodon/boot';
+import { axios } from '@/index';
 
 export default function useStore(organizationId, projectId,sprintId) {
   return useLocalStore(() => ({

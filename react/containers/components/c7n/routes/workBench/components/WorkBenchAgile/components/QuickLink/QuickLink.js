@@ -27,17 +27,21 @@ const QuickLink = observer(() => {
     workBenchUseStore,
   } = useWorkBenchStore();
 
+  const [type, setType] = useState('project');
+  const [activeId, setActiveId] = useState(undefined);
+
   const init = () => {
     let id;
     if (workBenchUseStore.getActiveStarProject) {
       id = workBenchUseStore.getActiveStarProject.id;
+      setActiveId(activeId);
     }
-    quickLinkUseStore.axiosGetQuickLinkList(id);
+    quickLinkUseStore.axiosGetQuickLinkList(id, type);
   };
 
   useEffect(() => {
     init();
-  }, [workBenchUseStore.getActiveStarProject, organizationId]);
+  }, [workBenchUseStore.getActiveStarProject, organizationId, type]);
 
   const handleAdd = (data) => {
     Modal.open({
@@ -46,11 +50,17 @@ const QuickLink = observer(() => {
       style: {
         width: 380,
       },
-      children: <AddQuickLink AppState={AppState} data={data} useStore={quickLinkUseStore} workBenchUseStore={workBenchUseStore} />,
+      children: <AddQuickLink activeId={activeId} type={type} AppState={AppState} data={data} useStore={quickLinkUseStore} workBenchUseStore={workBenchUseStore} />,
       drawer: true,
       okText: '添加',
     });
   };
+
+  const handleTopIf = (data) => {
+    quickLinkUseStore.axiosTopIf(data).then(() => {
+      init();
+    })
+  }
 
   const renderLinks = () => quickLinkUseStore.getQuickLinkList.map((l, index) => (
     <div className="c7n-quickLink-linkItem">
@@ -61,7 +71,7 @@ const QuickLink = observer(() => {
         </p>
       </div>
       <div className="c7n-quickLink-linkItem-right">
-        <div className="c7n-quickLink-linkItem-circle" />
+        <div style={{ display: l.top ? 'block' : 'none' }} className="c7n-quickLink-linkItem-circle" />
         <div
           className="c7n-quickLink-linkItem-right-profile"
           style={{
@@ -73,7 +83,7 @@ const QuickLink = observer(() => {
           }
         </div>
         <div className="c7n-quickLink-linkItem-right-content">
-          <p className="c7n-quickLink-linkItem-right-content-scope">{l.scope === 'project' ? '项目可见' : '仅自己可见'}</p>
+          <p className="c7n-quickLink-linkItem-right-content-scope">{l.scope === 'project' ? l.projectName : '仅自己可见'}</p>
           <div
             style={{
               display: 'flex',
@@ -100,6 +110,11 @@ const QuickLink = observer(() => {
           <Action data={[{
             service: [],
             icon: '',
+            text: l.top ? '取消置顶' : '置顶',
+            action: () => handleTopIf(l)
+          }, {
+            service: [],
+            icon: '',
             text: '修改',
             action: () => {
               handleAdd(l);
@@ -117,7 +132,7 @@ const QuickLink = observer(() => {
                 okProps: { color: 'red' },
                 cancelProps: { color: 'dark' },
                 onOk() {
-                  quickLinkUseStore.axiosDeleteQuickLink(l.id);
+                  quickLinkUseStore.axiosDeleteQuickLink(l.id, activeId, type);
                 },
               });
             },
@@ -137,11 +152,24 @@ const QuickLink = observer(() => {
     init();
   };
 
+  const handleChangeType = (type) => setType(type);
+
+  const renderClassification = () => (
+    <div style={{ display: 'flex', alignItems: 'center'}}>
+      <div className="c7ncd-classification">
+        <span onClick={() => handleChangeType('project')} className={type === 'project' && 'c7ncd-classification-checked'}>项目</span>
+        <i></i>
+        <span onClick={() => handleChangeType('self')} className={type === 'self' && 'c7ncd-classification-checked'}>个人</span>
+      </div>
+      <Icon style={{ marginLeft: 20 }} onClick={() => handleAdd()} type="playlist_add" />
+    </div>
+  );
+
   return (
     <div className="c7n-quickLink">
       <div className="c7n-quickLink-title">
         快速链接
-        <Icon onClick={() => handleAdd()} type="playlist_add" />
+        {renderClassification()}
       </div>
       <div className="c7n-quickLink-scroll">
         {

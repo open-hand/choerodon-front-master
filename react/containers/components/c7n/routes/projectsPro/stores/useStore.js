@@ -1,6 +1,6 @@
 import { useLocalStore } from 'mobx-react-lite';
 import queryString from 'query-string';
-import { axios } from '@choerodon/boot';
+import { axios } from '@/index';
 import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
 import { getRandomBackground } from '@/containers/components/c7n/util';

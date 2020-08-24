@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { addLocaleData, IntlProvider } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import esModule from './esModule';
 
-export default function asyncLocaleProvider(locale, getMessage, getLocaleData) {
+export default function asyncLocaleProvider(locale, getMessage) {
   return class AsyncLocaleProvider extends Component {
     constructor() {
       super();
@@ -12,13 +12,9 @@ export default function asyncLocaleProvider(locale, getMessage, getLocaleData) {
     }
 
     loadData = async () => {
-      const [messageData, localeData] = await Promise.all([
+      const [messageData] = await Promise.all([
         getMessage ? getMessage() : null,
-        getLocaleData ? getLocaleData() : null,
       ]);
-      if (localeData) {
-        addLocaleData(esModule(localeData));
-      }
       this.setState({
         messages: esModule(messageData),
       });

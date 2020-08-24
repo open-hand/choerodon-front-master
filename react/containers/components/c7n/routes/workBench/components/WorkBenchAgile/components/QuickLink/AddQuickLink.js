@@ -9,7 +9,7 @@ let size = 10;
 
 const { Option } = Select;
 
-export default observer(({ AppState, modal, useStore, data, workBenchUseStore }) => {
+export default observer(({ AppState, modal, useStore, data, workBenchUseStore, activeId, type }) => {
   const dataSet = useMemo(() => new DataSet(addLinkDataSet(AppState)), []);
 
   const renderer = ({ text }) => (text === '加载更多' ? (
@@ -41,9 +41,9 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore })
       if (result) {
         let res;
         if (data) {
-          res = await useStore.axiosEditQuickLink(dataSet.toData()[0]);
+          res = await useStore.axiosEditQuickLink(dataSet.toData()[0], activeId, type);
         } else {
-          res = await useStore.axiosCreateQuickLink(dataSet.toData()[0]);
+          res = await useStore.axiosCreateQuickLink(dataSet.toData()[0], activeId, type);
         }
         if (res.failed) {
           return false;
