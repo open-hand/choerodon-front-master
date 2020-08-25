@@ -1,4 +1,4 @@
-export default (AppState) => ({
+export default (AppState, detail) => ({
   autoCreate: true,
   fields: [{
     type: 'string',
@@ -32,6 +32,12 @@ export default (AppState) => ({
                 id: 'more',
                 name: '加载更多',
               });
+            }
+            if (!newRes.content.some(n => n.id === detail.projectId)) {
+              newRes.content.unshift({
+                id: detail.projectId,
+                name: detail.projectName,
+              })
             }
             return newRes;
           } catch (e) {

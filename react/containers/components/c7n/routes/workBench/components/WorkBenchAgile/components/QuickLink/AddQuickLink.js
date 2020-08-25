@@ -10,7 +10,7 @@ let size = 10;
 const { Option } = Select;
 
 export default observer(({ AppState, modal, useStore, data, workBenchUseStore, activeId, type }) => {
-  const dataSet = useMemo(() => new DataSet(addLinkDataSet(AppState)), []);
+  const dataSet = useMemo(() => new DataSet(addLinkDataSet(AppState, data)), [data]);
 
   const renderer = ({ text }) => (text === '加载更多' ? (
     <a
@@ -25,6 +25,12 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore, a
               id: 'more',
               name: '加载更多',
             });
+          }
+          if (!res.content.some(n => n.id === data.projectId)) {
+            res.content.unshift({
+              id: data.projectId,
+              name: data.projectName,
+            })
           }
           dataSet.getField('projectId').props.lookup = res.content;
         });
