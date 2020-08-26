@@ -17,7 +17,7 @@ export default ({ data, alltrue }) => {
   return (
     <div>
       <div className="starProjects-items-content">
-        <div style={{ display: 'flex', alignItems: 'center', maxWidth: '60%' }}>
+        <div style={{ display: 'flex', alignItems: 'center', width: '60%' }}>
           <div
             className="starProjects-items-content-icon"
             style={{
@@ -97,7 +97,7 @@ export default ({ data, alltrue }) => {
             <span>
               <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_line" />
             </span>
-            <p style={{ display: 'inline-block' }}>{data.categories && data.categories.find(c => c.code !== 'PROGRAM_PROJECT') && data.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
+            <p style={{ display: 'inline-block', overflow: 'hidden' }}>{data.categories && data.categories.find(c => c.code !== 'PROGRAM_PROJECT') && data.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
           </div>
         </Tooltip>
 
@@ -108,7 +108,7 @@ export default ({ data, alltrue }) => {
                 <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_group" />
               </span>
               <p
-                style={{ display: 'inline-block' }}
+                style={{ display: 'inline-block', overflow: 'hidden' }}
               >
                 {data.programName}
               </p>
