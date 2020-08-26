@@ -1,5 +1,5 @@
 const DelayIssueDataSet = ({ projectId, organizationId}) => ({
-  autoQuery: true,
+  autoQuery: false,
   selection: false,
   // transport: {
   //   read: ({ params }) => {

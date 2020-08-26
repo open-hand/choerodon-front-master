@@ -9,6 +9,7 @@ import OverviewWrap from '../OverviewWrap';
 import IssueType from './components/IssueType';
 import PriorityTag from './components/PriorityTag';
 import StatusTag from './components/StatusTag';
+import EmptyPage from '../EmptyPage';
 import { useProjectOverviewStore } from '../../stores';
 const { Column } = Table;
 
@@ -69,20 +70,37 @@ const DelayIssue = observer(() => {
     )
   };
 
-  const { delayIssueDs } = useProjectOverviewStore();
+  const { delayIssueDs, projectOverviewStore } = useProjectOverviewStore();
+
+  useEffect(() => {
+    const loadDelayIssue = async () => {
+      setLoading(true);
+      await delayIssueDs.query();
+      setLoading(false);
+    }
+    if(projectOverviewStore.getStaredSprint) {
+      loadDelayIssue();
+    }
+  }, [projectOverviewStore.getIsFinishLoad]);
 
   return (
     <OverviewWrap width="67%" height={428}>
       <OverviewWrap.Header title="任务延期情况" />
       <OverviewWrap.Content className={`${prefixCls}-content`}>
         <Spin spinning={loading}>
-            <Table dataSet={delayIssueDs} queryBar="none">
-              <Column name="summary" renderer={renderSummary}></Column>
-              <Column name="delay" width={100} renderer={renderDelay}></Column>
-              <Column name="assigneeId" width={130} renderer={renderAssignee}></Column>
-              <Column name="statusVO" width={80} renderer={({value, text, name, record, dataSet}) => <span style={{ display: 'inline-block'}}><StatusTag {...record.get('statusVO')} /></span>} />
-              <Column name="priorityVO" width={70} renderer={({value, text, name, record, dataSet}) => <span style={{ display: 'inline-block' }}><PriorityTag priority={record.get('priorityVO')}/></span> } />
-            </Table>
+            {
+              projectOverviewStore.getStaredSprint ? (
+                <Table dataSet={delayIssueDs} queryBar="none">
+                  <Column name="summary" renderer={renderSummary}></Column>
+                  <Column name="delay" width={100} renderer={renderDelay}></Column>
+                  <Column name="assigneeId" width={130} renderer={renderAssignee}></Column>
+                  <Column name="statusVO" width={80} renderer={({value, text, name, record, dataSet}) => <span style={{ display: 'inline-block'}}><StatusTag {...record.get('statusVO')} /></span>} />
+                  <Column name="priorityVO" width={70} renderer={({value, text, name, record, dataSet}) => <span style={{ display: 'inline-block' }}><PriorityTag priority={record.get('priorityVO')}/></span> } />
+                </Table>
+              ) : (
+                <EmptyPage height={259} />
+              )
+            }
         </Spin>
       </OverviewWrap.Content>
     </OverviewWrap>
