@@ -1,11 +1,22 @@
 import queryString from 'query-string';
 import HeaderStore from '../../../stores/c7n/HeaderStore';
 
-function getSearchString(type, key, value, extraProps = {}) {
+async function getSearchString(type, key, value, extraProps = {}) {
   if (type === 'project') {
     const proData = HeaderStore.getProData;
-    const proObj = proData.find(v => String(v[key]) === String(value));
+    const proObj = proData?.find(v => String(v[key]) === String(value));
     if (proObj) {
+      const obj = {
+        type,
+        id: proObj.id,
+        name: proObj.name,
+        category: proObj.category,
+        organizationId: proObj.organizationId,
+        ...extraProps,
+      };
+      return `?${queryString.stringify(obj)}`;
+    } else {
+      const proObj = await HeaderStore.axiosGetPro(key, value);
       const obj = {
         type,
         id: proObj.id,

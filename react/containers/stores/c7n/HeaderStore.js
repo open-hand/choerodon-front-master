@@ -221,24 +221,33 @@ class HeaderStore {
     this.unreadMessageCount = data;
   }
 
+  axiosGetPro(key, value) {
+    return axios.post(`/iam/choerodon/v1/projects/query_by_option`, {
+      [key]: value
+    }).then((res) => {
+      this.addProject(res[0]);
+      return res[0];
+    })
+  }
+
   axiosGetOrgAndPro(userId) {
     return axios.all([
       axios.get('/iam/choerodon/v1/users/self-tenants'),
-      axios.get(`/iam/choerodon/v1/users/${userId}/projects`),
+      // axios.get(`/iam/choerodon/v1/users/${userId}/projects`),
     ]).then((data) => {
-      const [organizations, projects] = data;
+      const [organizations] = data;
       organizations.forEach((value) => {
         value.id = value.tenantId;
         value.name = value.tenantName;
         value.organizationId = value.id;
         value.type = ORGANIZATION_TYPE;
       });
-      projects.forEach((value) => {
-        value.type = PROJECT_TYPE;
-        value.projectId = value.id;
-      });
+      // projects.forEach((value) => {
+      //   value.type = PROJECT_TYPE;
+      //   value.projectId = value.id;
+      // });
       this.setOrgData(organizations);
-      this.setProData(projects);
+      // this.setProData(projects);
       return data;
     });
   }
