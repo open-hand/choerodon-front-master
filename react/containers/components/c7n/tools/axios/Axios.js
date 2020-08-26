@@ -38,7 +38,7 @@ axios.interceptors.request.use(
       const level = MenuStore.activeMenu.level;
       const menuGroup = JSON.parse(localStorage.getItem('menuGroup'));
       if (['site', 'users'].includes(level)) {
-        correctId = menuGroup[level].find(m => m.code === MenuStore.activeMenu.code).id;
+        correctId = menuGroup[level].find(m => m.code === MenuStore.activeMenu.code)?.id;
       } else {
         const data = menuGroup[level][urlSearchParam.get('id')]
         function cursiveSetCorrectId(source) {
@@ -51,10 +51,12 @@ axios.interceptors.request.use(
             }
           }
         }
-        cursiveSetCorrectId(data);
+        if (data) {
+          cursiveSetCorrectId(data);
+        }
       }
     }
-    newConfig.headers['H-Menu-Id'] = correctId;
+    newConfig.headers['H-Menu-Id'] = correctId || 0;
     transformRequestPage(newConfig);
     const accessToken = getAccessToken();
     if (accessToken) {

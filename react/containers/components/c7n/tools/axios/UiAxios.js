@@ -48,7 +48,9 @@ instance.interceptors.request.use(
             }
           }
         }
-        cursiveSetCorrectId(data);
+        if (data) {
+          cursiveSetCorrectId(data);
+        }
       }
     }
     newConfig.headers['H-Menu-Id'] = correctId;
