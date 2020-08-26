@@ -33,7 +33,28 @@ axios.interceptors.request.use(
     newConfig.headers['Content-Type'] = 'application/json';
     newConfig.headers.Accept = 'application/json';
     newConfig.headers['H-Tenant-Id'] = id;
-    newConfig.headers['H-Menu-Id'] = MenuStore.activeMenu ? MenuStore.activeMenu.id : 0;
+    let correctId = 0;
+    if (MenuStore.activeMenu) {
+      const level = MenuStore.activeMenu.level;
+      const menuGroup = JSON.parse(localStorage.getItem('menuGroup'));
+      if (['site', 'users'].includes(level)) {
+        correctId = menuGroup[level].find(m => m.code === MenuStore.activeMenu.code).id;
+      } else {
+        const data = menuGroup[level][urlSearchParam.get('id')]
+        function cursiveSetCorrectId(source) {
+          for(let i = 0; i < source.length; i ++) {
+            if (source[i].code === MenuStore.activeMenu.code) {
+              correctId = source[i].id;
+              return false;
+            } else if (source[i].subMenus && source[i].subMenus.length > 0) {
+              return cursiveSetCorrectId(source[i].subMenus);
+            }
+          }
+        }
+        cursiveSetCorrectId(data);
+      }
+    }
+    newConfig.headers['H-Menu-Id'] = correctId;
     transformRequestPage(newConfig);
     const accessToken = getAccessToken();
     if (accessToken) {
