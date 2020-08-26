@@ -37,7 +37,6 @@ export default class Index extends React.Component {
 
   componentDidMount() {
     if (!this.isInOutward(this.props.location.pathname)) {
-      HeaderStore.axiosGetRoles();
       this.auth();
     }
   }
@@ -45,7 +44,6 @@ export default class Index extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if ((prevProps.location.pathname !== this.props.location.pathname) && prevState.loading) {
       if (!this.isInOutward(this.props.location.pathname)) {
-        HeaderStore.axiosGetRoles();
         this.auth();
       }
     }
@@ -79,6 +77,7 @@ export default class Index extends React.Component {
       authorizeC7n();
       return false;
     }
+    HeaderStore.axiosGetRoles();
     await AppState.loadUserInfo();
     if (HAS_AGILE_PRO) {
       await this.checkOrg();
