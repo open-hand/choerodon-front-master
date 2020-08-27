@@ -8,6 +8,7 @@ import { toJS } from 'mobx';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../util';
 import Setting from './Setting';
+import MouserOverWrapper from "./components/MouseOverWrapper";
 
 const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
 const prefixCls = 'c7n-boot-header-menu-type';
@@ -75,14 +76,16 @@ export default class OrgSelect extends Component {
         <Menu>
           {
             dataSource.map(org => (
-              <Menu.Item key={org.id}>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => this.selectState(org, true)}
-                >
-                  {org.name}
-                </a>
+              <Menu.Item
+                key={org.id}
+                onClick={() => this.selectState(org, true)}
+                className={`${prefixCls}-org-select-menu-item`}
+              >
+                <MouserOverWrapper width="167px" text={org.name}>
+                  <span className={`${prefixCls}-org-select-menu-item-text`}>
+                    {org.name}
+                  </span>
+                </MouserOverWrapper>
               </Menu.Item>
             ))
           }
@@ -101,7 +104,7 @@ export default class OrgSelect extends Component {
   renderModalContent() {
     const currentData = this.getCurrentData();
     return (
-      <div style={{ maxHeight: 400, marginTop: 44, overflow: 'auto', boxShadow: '0 0.02rem 0.08rem rgba(0, 0, 0, 0.12)' }}>
+      <div style={{ maxHeight: 400, marginTop: 44, overflow: 'auto', boxShadow: '0 0.02rem 0.08rem rgba(0, 0, 0, 0.12)', width: 200 }}>
         {this.renderTable(currentData)}
       </div>
     );
