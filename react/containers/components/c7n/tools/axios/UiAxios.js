@@ -32,28 +32,29 @@ instance.interceptors.request.use(
     newConfig.headers['H-Tenant-Id'] = id;
     let correctId = 0;
     if (MenuStore.activeMenu) {
+      let data;
       const level = MenuStore.activeMenu.level;
       const menuGroup = JSON.parse(localStorage.getItem('menuGroup'));
-      if (['site', 'users'].includes(level)) {
-        correctId = menuGroup[level].find(m => m.code === MenuStore.activeMenu.code).id;
-      } else {
-        const data = menuGroup[level][urlSearchParam.get('id')]
-        function cursiveSetCorrectId(source) {
-          for(let i = 0; i < source.length; i ++) {
-            if (source[i].code === MenuStore.activeMenu.code) {
-              correctId = source[i].id;
-              return false;
-            } else if (source[i].subMenus && source[i].subMenus.length > 0) {
-              return cursiveSetCorrectId(source[i].subMenus);
-            }
+      function cursiveSetCorrectId(source) {
+        for(let i = 0; i < source.length; i ++) {
+          if (source[i].code === MenuStore.activeMenu.code) {
+            correctId = source[i].id;
+            return false;
+          } else if (source[i].subMenus && source[i].subMenus.length > 0) {
+            return cursiveSetCorrectId(source[i].subMenus);
           }
         }
-        if (data) {
-          cursiveSetCorrectId(data);
-        }
+      }
+      if (['site', 'users'].includes(level)) {
+        data = menuGroup[level];
+      } else {
+        data = menuGroup[level][urlSearchParam.get('id')];
+      }
+      if (data) {
+        cursiveSetCorrectId(data);
       }
     }
-    newConfig.headers['H-Menu-Id'] = correctId;
+    newConfig.headers['H-Menu-Id'] = correctId || 0;
     newConfig.headers['Content-Type'] = 'application/json';
     newConfig.headers.Accept = 'application/json';
     transformRequestPage(newConfig);
