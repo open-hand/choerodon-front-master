@@ -53,9 +53,9 @@ const ProjectOverview = () => {
             <DeployChart />
           </div>
         ) : null}
-        <div className="c7n-project-overview-item">
+        {/* <div className="c7n-project-overview-item">
           <DelayIssue />
-        </div>
+        </div> */}
       </Content>
     </Page>
   );
