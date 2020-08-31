@@ -97,7 +97,11 @@ export default ({ data, alltrue }) => {
             <span>
               <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_line" />
             </span>
-            <p style={{ display: 'inline-block', overflow: 'hidden' }}>{data.categories && data.categories.find(c => c.code !== 'PROGRAM_PROJECT') && data.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
+            <p style={{ 
+              display: 'inline-block', 
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}>{data.categories && data.categories.find(c => c.code !== 'PROGRAM_PROJECT') && data.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
           </div>
         </Tooltip>
 
@@ -108,7 +112,11 @@ export default ({ data, alltrue }) => {
                 <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_group" />
               </span>
               <p
-                style={{ display: 'inline-block', overflow: 'hidden' }}
+                style={{ 
+                  display: 'inline-block', 
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
               >
                 {data.programName}
               </p>
