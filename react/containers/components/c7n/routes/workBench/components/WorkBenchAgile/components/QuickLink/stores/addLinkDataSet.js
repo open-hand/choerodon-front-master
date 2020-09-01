@@ -33,7 +33,7 @@ export default (AppState, detail) => ({
                 name: '加载更多',
               });
             }
-            if (!newRes.content.some(n => n.id === detail.projectId)) {
+            if (detail?.projectId && !newRes.content.some(n => n.id === detail.projectId)) {
               newRes.content.unshift({
                 id: detail.projectId,
                 name: detail.projectName,
