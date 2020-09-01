@@ -25,9 +25,9 @@ export function authorizeC7n() {
   // 为了把这个hash传到oauth里要把#换成%23
   const uri = `${window.location.origin}/#${sessionStorage.getItem('historyPath') || '/'}`;
   if (uri.indexOf('?') > 0) {
-    url += '&redirectFlag'
+    uri += '&redirectFlag'
   } else {
-    url += '?redirectFlag'
+    uri += '?redirectFlag'
   }
   const redirect_uri = escape(uri)
   window.localStorage.removeItem('lastClosedId');
