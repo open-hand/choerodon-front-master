@@ -41,7 +41,7 @@ export default (AppState, detail) => ({
             }
             return newRes;
           } catch (e) {
-            return res;
+            throw new Error(e);
           }
         },
       })
