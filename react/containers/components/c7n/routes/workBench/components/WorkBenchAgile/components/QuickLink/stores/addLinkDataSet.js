@@ -33,7 +33,7 @@ export default (AppState, detail) => ({
                 name: '加载更多',
               });
             }
-            if (!newRes.content.some(n => n.id === detail.projectId)) {
+            if (detail?.projectId && !newRes.content.some(n => n.id === detail.projectId)) {
               newRes.content.unshift({
                 id: detail.projectId,
                 name: detail.projectName,
@@ -41,7 +41,7 @@ export default (AppState, detail) => ({
             }
             return newRes;
           } catch (e) {
-            return res;
+            throw new Error(e);
           }
         },
       })
