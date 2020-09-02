@@ -38,9 +38,9 @@ const ProjectOverview = () => {
           </div>
 
         </div>
-        <div className="c7n-project-overview-item">
+        {/* <div className="c7n-project-overview-item">
           <Workload />
-        </div>
+        </div> */}
         <div className="c7n-project-overview-item">
           <DefectChart />
           {showDevops ? <DeployChart /> : null}
