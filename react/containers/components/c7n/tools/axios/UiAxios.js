@@ -1,23 +1,34 @@
 import axios from 'axios';
+import qs from 'qs';
+import BigNumber from 'bignumber.js';
 import { authorizeUrl } from '@/utils/authorize';
 import { getAccessToken, removeAccessToken } from '@/utils/accessToken';
 import { API_HOST } from '@/utils/constants';
+import JSONbig from 'json-bigint';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 import MenuStore from '../../../../stores/c7n/MenuStore';
-import JSONbig from 'json-bigint'
 
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 
 const instance = axios.create({
   timeout: 30000,
   baseURL: API_HOST,
-  transformResponse: [function(data) {
+  transformResponse: [function (data) {
     try {
       return JSONbig.parse(data);
     } catch (e) {
       return data;
     }
-  }]
+  }],
+  paramsSerializer(params) {
+    const newParams = { ...params };
+    for (const key in newParams) {
+      if (newParams[key] instanceof BigNumber) {
+        newParams[key] = newParams[key].toString();
+      }
+    }
+    return qs.stringify(newParams);
+  },
 });
 
 instance.interceptors.request.use(
@@ -33,14 +44,14 @@ instance.interceptors.request.use(
     let correctId = 0;
     if (MenuStore.activeMenu) {
       let data;
-      const level = MenuStore.activeMenu.level;
+      const { level } = MenuStore.activeMenu;
       const menuGroup = JSON.parse(localStorage.getItem('menuGroup'));
       function cursiveSetCorrectId(source) {
-        for(let i = 0; i < source.length; i ++) {
+        for (let i = 0; i < source.length; i++) {
           if (source[i].code === MenuStore.activeMenu.code) {
             correctId = source[i].id;
             return false;
-          } else if (source[i].subMenus && source[i].subMenus.length > 0) {
+          } if (source[i].subMenus && source[i].subMenus.length > 0) {
             return cursiveSetCorrectId(source[i].subMenus);
           }
         }
@@ -80,9 +91,8 @@ instance.interceptors.response.use(
         throw response.data;
       }
       return transformResponsePage(response.data);
-    } else {
-      return response;
     }
+    return response;
   },
   (error) => {
     const { response } = error;

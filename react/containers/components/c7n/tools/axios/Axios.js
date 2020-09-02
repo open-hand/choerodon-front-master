@@ -1,4 +1,6 @@
 import axios from 'axios';
+import qs from 'qs';
+import BigNumber from 'bignumber.js';
 import {
   prompt,
   getAccessToken,
@@ -6,10 +8,10 @@ import {
 } from '@/utils';
 import { authorizeUrl } from '@/utils/authorize';
 import { API_HOST } from '@/utils/constants';
+import JSONbig from 'json-bigint';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 // eslint-disable-next-line import/no-cycle
 import MenuStore from '../../../../stores/c7n/MenuStore';
-import JSONbig from 'json-bigint'
 
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 axios.defaults.timeout = 30000;
@@ -20,10 +22,18 @@ axios.defaults.transformResponse = [function (data) {
   } catch (e) {
     return data;
   }
-}]
-
+}];
+axios.defaults.paramsSerializer = function (params) {
+  const newParams = { ...params };
+  for (const key in newParams) {
+    if (newParams[key] instanceof BigNumber) {
+      newParams[key] = newParams[key].toString();
+    }
+  }
+  return qs.stringify(newParams);
+};
 axios.interceptors.request.use(
-  config => {
+  (config) => {
     const newConfig = config;
     const str = window.location.hash.split('?')[1];
     const urlSearchParam = new URLSearchParams(str);
@@ -36,14 +46,14 @@ axios.interceptors.request.use(
     let correctId = 0;
     if (MenuStore.activeMenu) {
       let data;
-      const level = MenuStore.activeMenu.level;
+      const { level } = MenuStore.activeMenu;
       const menuGroup = JSON.parse(localStorage.getItem('menuGroup'));
       function cursiveSetCorrectId(source) {
-        for(let i = 0; i < source.length; i ++) {
+        for (let i = 0; i < source.length; i++) {
           if (source[i].code === MenuStore.activeMenu.code) {
             correctId = source[i].id;
             return false;
-          } else if (source[i].subMenus && source[i].subMenus.length > 0) {
+          } if (source[i].subMenus && source[i].subMenus.length > 0) {
             return cursiveSetCorrectId(source[i].subMenus);
           }
         }
@@ -65,14 +75,14 @@ axios.interceptors.request.use(
     }
     return newConfig;
   },
-  err => {
+  (err) => {
     const error = err;
     return Promise.reject(error);
   },
 );
 
 axios.interceptors.response.use(
-  response => {
+  (response) => {
     if (response.status === 204) {
       return response;
     }
@@ -84,11 +94,10 @@ axios.interceptors.response.use(
         throw response.data;
       }
       return transformResponsePage(response.data);
-    } else {
-      return response;
     }
+    return response;
   },
-  error => {
+  (error) => {
     const { response } = error;
     if (response) {
       const { status } = response;
