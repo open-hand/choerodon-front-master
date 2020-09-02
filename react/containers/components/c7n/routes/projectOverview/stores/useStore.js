@@ -1,5 +1,5 @@
 import { useLocalStore } from 'mobx-react-lite';
-import { axios } from '@choerodon/boot';
+import { axios } from '@/index';
 import axios0 from 'axios';
 // import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 // import MenuStore from '@/containers/stores/c7n/MenuStore';

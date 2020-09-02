@@ -22,7 +22,6 @@ export default class CommonMenu extends Component {
       this.props.MenuStore.statistics = JSON.parse(localStorage.getItem('rawStatistics'));
     }
   }
-
   componentWillReceiveProps(nextProps) {
     this.loadMenu(nextProps);
   }

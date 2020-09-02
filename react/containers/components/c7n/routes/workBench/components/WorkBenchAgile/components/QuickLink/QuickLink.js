@@ -3,7 +3,14 @@ import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import Action from '@/containers/components/c7n/tools/action';
 import TimePopover from '@/containers/components/c7n/routes/workBench/components/time-popover';
-import { Modal, Form, SelectBox, Select, TextField, Tooltip } from 'choerodon-ui/pro';
+import {
+  Modal,
+  Form,
+  SelectBox,
+  Select,
+  TextField,
+  Tooltip,
+} from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import AddQuickLink from './AddQuickLink';
 import { useWorkBenchStore } from '../../../../stores';
@@ -17,38 +24,53 @@ const QuickLink = observer(() => {
     AppState,
     quickLinkUseStore,
     AppState: {
-      currentMenuType: {
-        organizationId,
-      },
+      currentMenuType: { organizationId },
     },
   } = useQuickLinkStore();
 
-  const {
-    workBenchUseStore,
-  } = useWorkBenchStore();
+  const { workBenchUseStore } = useWorkBenchStore();
+
+  const [type, setType] = useState('project');
+  const [activeId, setActiveId] = useState(undefined);
 
   const init = () => {
     let id;
     if (workBenchUseStore.getActiveStarProject) {
       id = workBenchUseStore.getActiveStarProject.id;
+      setActiveId(activeId);
     }
-    quickLinkUseStore.axiosGetQuickLinkList(id);
+    quickLinkUseStore.axiosGetQuickLinkList(id, type);
   };
 
   useEffect(() => {
     init();
-  }, [workBenchUseStore.getActiveStarProject, organizationId]);
+  }, [workBenchUseStore.getActiveStarProject, organizationId, type]);
 
-  const handleAdd = (data) => {
+  const handleAdd = data => {
     Modal.open({
       key: Modal.key(),
       title: data ? '修改链接' : '添加链接',
       style: {
         width: 380,
       },
-      children: <AddQuickLink AppState={AppState} data={data} useStore={quickLinkUseStore} workBenchUseStore={workBenchUseStore} />,
+      children: (
+        <AddQuickLink
+          activeId={activeId}
+          type={type}
+          AppState={AppState}
+          data={data}
+          useStore={quickLinkUseStore}
+          workBenchUseStore={workBenchUseStore}
+        />
+      ),
       drawer: true,
       okText: '添加',
+    });
+  };
+
+  const handleTopIf = data => {
+    quickLinkUseStore.axiosTopIf(data).then(() => {
+      init();
     });
   };
 
@@ -65,15 +87,27 @@ const QuickLink = observer(() => {
         <div
           className="c7n-quickLink-linkItem-right-profile"
           style={{
-            backgroundImage: l.user.imageUrl ? `url(${l.user.imageUrl})` : getRandomBackground(index),
+            backgroundImage: l.user.imageUrl
+              ? `url(${l.user.imageUrl})`
+              : getRandomBackground(index),
           }}
         >
-          {
-            !l.user.imageUrl && l.user.realName && l.user.realName.slice(0, 1)
-          }
+          {!l.user.imageUrl && l.user.realName && l.user.realName.slice(0, 1)}
         </div>
         <div className="c7n-quickLink-linkItem-right-content">
-          <p className="c7n-quickLink-linkItem-right-content-scope">{l.scope === 'project' ? '项目可见' : '仅自己可见'}</p>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Tooltip title={l?.projectName}>
+              <p className="c7n-quickLink-linkItem-right-content-scope">
+                {l.scope === 'project' ? l.projectName : '仅自己可见'}
+              </p>
+            </Tooltip>
+            <span
+              className="c7n-quickLink-linkItem-right-content-top"
+              style={{ display: l.top ? 'block' : 'none' }}
+            >
+              置顶
+            </span>
+          </div>
           <div
             style={{
               display: 'flex',
@@ -82,10 +116,15 @@ const QuickLink = observer(() => {
             }}
           >
             <Tooltip placement="top" title={l.name}>
-              <p className="c7n-quickLink-linkItem-right-content-name">{l.name}</p>
+              <p className="c7n-quickLink-linkItem-right-content-name">
+                {l.name}
+              </p>
             </Tooltip>
             <Tooltip placement="top" title={l.linkUrl}>
-              <p onClick={() => window.open(l.linkUrl)} className="c7n-quickLink-linkItem-right-content-linkName">
+              <p
+                onClick={() => window.open(l.linkUrl)}
+                className="c7n-quickLink-linkItem-right-content-linkName"
+              >
                 <Icon style={{ color: '#5266D4' }} type="link2" />
                 <span>{l.linkUrl}</span>
               </p>
@@ -97,31 +136,45 @@ const QuickLink = observer(() => {
             display: l.editFlag ? 'block' : 'none',
           }}
         >
-          <Action data={[{
-            service: [],
-            icon: '',
-            text: '修改',
-            action: () => {
-              handleAdd(l);
-            },
-          }, {
-            service: [],
-            icon: '',
-            text: '删除',
-            action: () => {
-              Modal.confirm({
-                okText: '删除',
-                title: '删除快速链接',
-                children: '确认删除快速链接吗?',
-                type: 'warning',
-                okProps: { color: 'red' },
-                cancelProps: { color: 'dark' },
-                onOk() {
-                  quickLinkUseStore.axiosDeleteQuickLink(l.id);
+          <Action
+            data={[
+              {
+                service: [],
+                icon: '',
+                text: l.top ? '取消置顶' : '置顶',
+                action: () => handleTopIf(l),
+              },
+              {
+                service: [],
+                icon: '',
+                text: '修改',
+                action: () => {
+                  handleAdd(l);
                 },
-              });
-            },
-          }]}
+              },
+              {
+                service: [],
+                icon: '',
+                text: '删除',
+                action: () => {
+                  Modal.confirm({
+                    okText: '删除',
+                    title: '删除快速链接',
+                    children: '确认删除快速链接吗?',
+                    type: 'warning',
+                    okProps: { color: 'red' },
+                    cancelProps: { color: 'dark' },
+                    onOk() {
+                      quickLinkUseStore.axiosDeleteQuickLink(
+                        l.id,
+                        activeId,
+                        type,
+                      );
+                    },
+                  });
+                },
+              },
+            ]}
           />
         </div>
       </div>
@@ -137,24 +190,50 @@ const QuickLink = observer(() => {
     init();
   };
 
+  const handleChangeType = type => setType(type);
+
+  const renderClassification = () => (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div className="c7ncd-classification">
+        <span
+          onClick={() => handleChangeType('project')}
+          className={type === 'project' && 'c7ncd-classification-checked'}
+        >
+          项目
+        </span>
+        <i />
+        <span
+          onClick={() => handleChangeType('self')}
+          className={type === 'self' && 'c7ncd-classification-checked'}
+        >
+          个人
+        </span>
+      </div>
+      <Icon
+        style={{ marginLeft: 20 }}
+        onClick={() => handleAdd()}
+        type="playlist_add"
+      />
+    </div>
+  );
+
   return (
     <div className="c7n-quickLink">
       <div className="c7n-quickLink-title">
         快速链接
-        <Icon onClick={() => handleAdd()} type="playlist_add" />
+        {renderClassification()}
       </div>
       <div className="c7n-quickLink-scroll">
-        {
-          quickLinkUseStore.getQuickLinkList.length > 0 ? [
+        {quickLinkUseStore.getQuickLinkList.length > 0 ? (
+          [
             renderLinks(),
-            quickLinkUseStore.getParams.hasMore && <a onClick={() => handleLoadMore()}>加载更多</a>,
-          ] : (
-            <EmptyPage
-              title="暂无快速链接"
-              describe="暂无快速链接，请创建"
-            />
-          )
-        }
+            quickLinkUseStore.getParams.hasMore && (
+              <a onClick={() => handleLoadMore()}>加载更多</a>
+            ),
+          ]
+        ) : (
+          <EmptyPage title="暂无快速链接" describe="暂无快速链接，请创建" />
+        )}
       </div>
     </div>
   );
