@@ -9,7 +9,9 @@
   ],
   "scripts": {
     "start": "choerodon-front-boot start --config ./react/config.js",
-    "compile": "choerodon-front-boot compile"
+    "compile": "compiler compile",
+    "watch": "compiler compile --watch",
+    "clean-install": "rm -rf node_modules && rm package-lock.json && npm i --registry https://nexus.choerodon.com.cn/repository/choerodon-npm && chmod -R u+x node_modules"
   },
   "keywords": [
     "choerodon",

@@ -113,7 +113,7 @@ export default class OrgSelect extends Component {
     } = this.props;
     const currentData = this.getCurrentData() || [];
     const orgObj = currentData.find(v => String(v.id) === (organizationId || id) || v.id === (organizationId || id));
-    if (!orgObj && !currentData && currentData.length === 0 && type !== 'project') {
+    if (!orgObj && currentData.length && type !== 'project') {
       if (getUserInfo.admin) {
         const obj = queryString.parse(history.location.search);
         obj.into = true;
@@ -124,11 +124,13 @@ export default class OrgSelect extends Component {
           }, 100);
           return null;
         }
-        this.selectState(obj);
-        HeaderStore.setOrgData([...currentData, {
-          ...obj,
-          enabled: true,
-        }]);
+        if (currentData?.find(c => String(c?.organizationId) === String(obj?.organizationId))) {
+          this.selectState(obj);
+          HeaderStore.setOrgData([...currentData, {
+            ...obj,
+            enabled: true,
+          }]);
+        }
         return null;
       } else {
         setTimeout(() => {
