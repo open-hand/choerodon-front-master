@@ -9,7 +9,7 @@ import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../util';
 import Setting from './Setting';
 
-const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
+const HAS_BASE_PRO = true;
 const prefixCls = 'c7n-boot-header-menu-type';
 const homePage = '/workbench';
 @withRouter
@@ -118,19 +118,17 @@ export default class OrgSelect extends Component {
         const obj = queryString.parse(history.location.search);
         obj.into = true;
         obj.name = obj.name && decodeURIComponent(obj.name);
-        if (!obj.organizationId) {
+        if (!obj.organizationId || !obj.type) {
           setTimeout(() => {
             this.autoSelect();
           }, 100);
           return null;
         }
-        if (currentData?.find(c => String(c?.organizationId) === String(obj?.organizationId))) {
-          this.selectState(obj);
-          HeaderStore.setOrgData([...currentData, {
-            ...obj,
-            enabled: true,
-          }]);
-        }
+        this.selectState(obj);
+        HeaderStore.setOrgData([...currentData, {
+          ...obj,
+          enabled: true,
+        }]);
         return null;
       } else {
         setTimeout(() => {
