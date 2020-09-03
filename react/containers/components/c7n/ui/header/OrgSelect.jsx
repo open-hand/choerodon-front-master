@@ -121,7 +121,7 @@ export default class OrgSelect extends Component {
         const obj = queryString.parse(history.location.search);
         obj.into = true;
         obj.name = obj.name && decodeURIComponent(obj.name);
-        if (!obj.organizationId) {
+        if (!obj.organizationId || !obj.type) {
           setTimeout(() => {
             this.autoSelect();
           }, 100);

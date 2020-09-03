@@ -22,15 +22,6 @@ export default class CommonMenu extends Component {
       this.props.MenuStore.statistics = JSON.parse(localStorage.getItem('rawStatistics'));
     }
   }
-
-  componentDidMount() {
-    const { MenuStore } = this.props;
-    const recentItems = JSON.parse(localStorage.getItem('recentItem'));
-    recentItems?.forEach(i => {
-      MenuStore.loadMenuData({ type: 'project', id: i.id });
-    })
-  }
-
   componentWillReceiveProps(nextProps) {
     this.loadMenu(nextProps);
   }
