@@ -25,7 +25,7 @@ axios.defaults.transformResponse = [function (data) {
 }];
 axios.defaults.paramsSerializer = function (params) {
   if (params instanceof URLSearchParams) {
-    return qs.stringify(params);
+    return params.toString();
   }
   const newParams = { ...params };
   for (const key in newParams) {
