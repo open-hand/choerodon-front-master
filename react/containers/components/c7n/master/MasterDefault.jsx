@@ -160,7 +160,7 @@ class Masters extends Component {
       // }
     }
     async function checkUrl() {
-      function goSafty() {
+      async function goSafty() {
         if (!HeaderStore.getOrgData) {
           setTimeout(() => {
             goSafty();
@@ -169,7 +169,7 @@ class Masters extends Component {
           message.info('地址过期');
           AppState.setCurrentProject(null);
           const queryObj = queryString.parse(history.location.search);
-          const search = getSearchString('organization', 'id', queryObj.organizationId);
+          const search = await getSearchString('organization', 'id', queryObj.organizationId);
           MenuStore.setActiveMenu(null);
           history.push(`/projects${search}`);
         }
@@ -178,8 +178,7 @@ class Masters extends Component {
         const currentProject = AppState.getCurrentProject;
         let res;
         if (!currentProject || String(menuType.projectId) !== String(currentProject?.id)) {
-          try {
-            res = await axios.get(`/iam/choerodon/v1/projects/${menuType.projectId}/basic_info`);
+          try {res = await axios.get(`/iam/choerodon/v1/projects/${menuType.projectId}/basic_info`);
             if (String(res.id) === String(new URLSearchParams(location.search).get('id'))) {
               AppState.setCurrentProject(res);
             } else {
