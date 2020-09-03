@@ -127,11 +127,13 @@ export default class OrgSelect extends Component {
           }, 100);
           return null;
         }
-        this.selectState(obj);
-        HeaderStore.setOrgData([...currentData, {
-          ...obj,
-          enabled: true,
-        }]);
+        if (currentData?.find(c => String(c?.organizationId) === String(obj?.organizationId))) {
+          this.selectState(obj);
+          HeaderStore.setOrgData([...currentData, {
+            ...obj,
+            enabled: true,
+          }]);
+        }
         return null;
       } else {
         setTimeout(() => {
