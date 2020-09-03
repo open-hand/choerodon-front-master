@@ -24,6 +24,9 @@ axios.defaults.transformResponse = [function (data) {
   }
 }];
 axios.defaults.paramsSerializer = function (params) {
+  if (params instanceof URLSearchParams) {
+    return qs.stringify(params);
+  }
   const newParams = { ...params };
   for (const key in newParams) {
     if (newParams[key] instanceof BigNumber) {
