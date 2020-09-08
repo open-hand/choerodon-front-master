@@ -45,10 +45,11 @@ if (module.hot) {
 }
 
 Sentry.init({
-  dsn: "https://32c9926845bf4ed8a41ace88fa6e57c4@o444568.ingest.sentry.io/5420651",
+  dsn: window._env_.SENTRY_DSN,
   integrations: [
     new Integrations.BrowserTracing(),
   ],
+  release: `choerodon-front@${window._env_.VERSION}`,
   tracesSampleRate: 1.0,
 });
 
