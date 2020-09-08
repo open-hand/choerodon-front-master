@@ -50,7 +50,7 @@ Sentry.init({
   integrations: [
     new Integrations.BrowserTracing(),
   ],
-  release: `choerodon-front@${window._env_.VERSION}`,
+  release: window._env_.VERSION,
   tracesSampleRate: 1.0,
 });
 
