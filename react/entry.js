@@ -5,6 +5,7 @@ import { render } from 'react-dom';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { Modal } from 'choerodon-ui';
+import { Button } from "choerodon-ui/pro";
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import asyncRouter from './containers/components/util/asyncRouter';
@@ -53,4 +54,19 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 
-render(<App />, document.getElementById('app'));
+render(
+  <Sentry.ErrorBoundary
+    fallback={({error, componentStack, resetError}) => (
+      <React.Fragment>
+        <p>出错了！</p>
+        <p>{error.toString()}</p>
+        <p>{componentStack}</p>
+        <Button onClick={() => window.location.reload()}>
+          刷新
+        </Button>
+      </React.Fragment>
+    )}
+  >
+    <App />
+  </Sentry.ErrorBoundary>,
+  document.getElementById('app'));
