@@ -71,15 +71,6 @@ if (module.hot) {
   module.hot.accept();
 }
 
-Sentry.init({
-  dsn: window._env_.SENTRY_DSN,
-  integrations: [
-    new Integrations.BrowserTracing(),
-  ],
-  release: window._env_.VERSION,
-  tracesSampleRate: 1.0,
-});
-
 render(
   <ErrorBoundary
   >
