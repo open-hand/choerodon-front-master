@@ -121,19 +121,17 @@ export default class OrgSelect extends Component {
         const obj = queryString.parse(history.location.search);
         obj.into = true;
         obj.name = obj.name && decodeURIComponent(obj.name);
-        if (!obj.organizationId || !obj.type) {
+        if (!obj.organizationId || !obj.type || obj.type === 'site') {
           setTimeout(() => {
             this.autoSelect();
           }, 100);
           return null;
         }
-        if (currentData?.find(c => String(c?.organizationId) === String(obj?.organizationId))) {
-          this.selectState(obj);
-          HeaderStore.setOrgData([...currentData, {
-            ...obj,
-            enabled: true,
-          }]);
-        }
+        this.selectState(obj);
+        HeaderStore.setOrgData([...currentData, {
+          ...obj,
+          enabled: true,
+        }]);
         return null;
       } else {
         setTimeout(() => {

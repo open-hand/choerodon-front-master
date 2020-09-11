@@ -11,7 +11,7 @@ export default class Avatar extends Component {
         style={
           {
             ...style,
-            backgroundImage: src && `url(${fileServer(src)})`,
+            backgroundImage: src && `url('${fileServer(src)}')`,
           }
         }
         {

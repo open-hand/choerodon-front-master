@@ -21,9 +21,9 @@ const EnvList = observer(() => {
     const env = localStorage.envRecentItem ? JSON.parse(localStorage.envRecentItem) : [];
     let realEnv;
     if (projectId) {
-      realEnv = env.filter((item) => item.projectId === projectId && item.organizationId === organizationId);
+      realEnv = env.filter((item) => String(item.projectId) === String(projectId) && String(item.organizationId) === String(organizationId));
     } else {
-      realEnv = env.filter((item) => item.organizationId === organizationId);
+      realEnv = env.filter((item) => String(item.organizationId) === String(organizationId));
     }
     setEnvList(realEnv);
   }, [workBenchUseStore.getActiveStarProject, organizationId]);
@@ -59,8 +59,11 @@ const EnvList = observer(() => {
         {!envList.length ? (
           <div className="c7n-workbench-empty-span">暂无最近操作的环境</div>
         ) : null}
-        {envList.map(({ name, code, projectName, clickTime, active, connect, id, projectId: realProjectId }) => (
+        {envList.map(({
+          name, code, projectName, clickTime, active, connect, id, projectId: realProjectId,
+        }) => (
           <div className="c7n-envList-content-item">
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
             <main onClick={() => linkToEnv({ envId: id, projectName, realProjectId })}>
               <div className="c7n-envList-content-item-main">
                 <span className="c7n-envList-content-item-main-title">
@@ -75,7 +78,10 @@ const EnvList = observer(() => {
                     {name}
                   </span>
                 </span>
-                <span className="c7n-envList-content-item-main-code">环境编码：{code}</span>
+                <span className="c7n-envList-content-item-main-code">
+                  环境编码：
+                  {code}
+                </span>
               </div>
               <span className="c7n-envList-content-item-main-date">
                 <TimePopover datetime={clickTime} />
