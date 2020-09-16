@@ -1,7 +1,7 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "0.24.0-alpha.2",
+  "version": "0.24.0",
   "description": "A package of Master for Choerodon platform.",
   "main": "./lib/index.js",
   "files": [
@@ -46,6 +46,7 @@
     "core-js": "^3.6.5",
     "echarts": "^4.8.0",
     "echarts-for-react": "^2.0.16",
+    "fundebug-javascript": "^2.4.2",
     "history": "^4.6.3",
     "json-bigint": "^0.3.1",
     "lodash": "^4.17.4",
