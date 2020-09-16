@@ -222,7 +222,7 @@ export default observer(() => {
     const projects = ProjectsProUseStore.getAllProjects;
     if (ProjectsProUseStore.getProjectLoading) {
       return (
-        <div className="allProjects-content-spin">
+        <div className="allProjects-content-spin" style={{width: '670px' }}>
           <Progress type="loading" />
         </div>
       );
