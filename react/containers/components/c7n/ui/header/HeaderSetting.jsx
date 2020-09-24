@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { Button, Icon } from 'choerodon-ui';
-import { EXTERNAL_LINK } from '@/utils/constants';
 import getSearchString from '../../util/gotoSome';
 
 const iconStyle = { marginLeft: 0, marginRight: 0 };
@@ -41,24 +40,6 @@ const Setting = ({
     }
     return '';
   }
-  const renderExternalLink = () => {
-    if (EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') {
-      const [url, text, icon] = EXTERNAL_LINK.split(',');
-      return (
-        <Button
-          key={url}
-          className="block"
-          onClick={() => {
-            window.open(url);
-          }}
-        >
-          <Icon type={icon} style={iconStyle} />
-          {text}
-        </Button>
-      );
-    }
-    return null;
-  };
   return (
     <>
       {
@@ -69,7 +50,6 @@ const Setting = ({
           </Button>
         ))
       }
-      {renderExternalLink()}
     </>
   );
 };
