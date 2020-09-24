@@ -72,3 +72,4 @@ export const TYPE = `${process.env.TYPE}`;
 export const RESOURCES_LEVEL = `${process.env.RESOURCES_LEVEL || ''}`;
 export const UI_CONFIGURE = `${process.env.UI_CONFIGURE}`;
 export const OUTWARD = `${process.env.OUTWARD || 'undefined'}`;
+export const EXTERNAL_LINK = get('EXTERNAL_LINK', process.env.EXTERNAL_LINK);

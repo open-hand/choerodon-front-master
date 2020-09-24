@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { Button, Icon } from 'choerodon-ui';
+import { EXTERNAL_LINK } from '@/utils/constants';
 import getSearchString from '../../util/gotoSome';
 
 const iconStyle = { marginLeft: 0, marginRight: 0 };
@@ -17,7 +18,9 @@ const LI_MAPPING = [
   // { title: '应用市场', icon: 'application_market', activePath: '/iam/choerodon/app-market' },
 ];
 
-const Setting = ({ AppState, HeaderStore, MenuStore, history, ...props }) => {
+const Setting = ({
+  AppState, HeaderStore, MenuStore, history, ...props
+}) => {
   async function goto(obj) {
     const queryObj = queryString.parse(history.location.search);
     const search = await getSearchString('organization', 'id', queryObj.organizationId);
@@ -38,18 +41,36 @@ const Setting = ({ AppState, HeaderStore, MenuStore, history, ...props }) => {
     }
     return '';
   }
-
+  const renderExternalLink = () => {
+    if (EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') {
+      const [url, text, icon] = EXTERNAL_LINK.split(',');
+      return (
+        <Button
+          key={url}
+          className="block"
+          onClick={() => {
+            window.open(url);
+          }}
+        >
+          <Icon type={icon} style={iconStyle} />
+          {text}
+        </Button>
+      );
+    }
+    return null;
+  };
   return (
-    <React.Fragment>
+    <>
       {
-        LI_MAPPING.map(list => (
+        LI_MAPPING.map((list) => (
           <Button key={list.activePath} className={`block ${extraCls(list)}`} onClick={() => goto(list)}>
             <Icon type={list.icon} style={iconStyle} />
             {list.title}
           </Button>
         ))
       }
-    </React.Fragment>
+      {renderExternalLink()}
+    </>
   );
 };
 
