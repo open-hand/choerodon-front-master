@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router';
-import { Tooltip, Icon } from 'choerodon-ui';
+import { Tooltip, Icon, Button } from 'choerodon-ui';
 import { EXTERNAL_LINK } from '@/utils/constants';
 import Logo from './Logo';
 import User from './User';
@@ -40,12 +40,13 @@ class Header extends Component {
       return (
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
           <Tooltip title={text}>
-            <Icon
-              type={icon}
-              style={{ margin: '0 15px', cursor: 'pointer' }}
+            <Button
+              icon={icon}
+              shape="circle"
               onClick={() => {
                 window.open(url);
               }}
+              style={{ margin: '0 15px' }}
             />
           </Tooltip>
         </li>
