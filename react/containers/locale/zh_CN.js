@@ -5,6 +5,7 @@ const zh_CN = {
   'choose': '请选择',
   'select': '选择',
   'cancel': '返回',
+  'close': '关闭',
 
   'learnmore': '了解更多',
   'boot.signout': '安全退出',
