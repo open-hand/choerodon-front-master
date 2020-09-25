@@ -44,4 +44,4 @@ export { default as Breadcrumb } from './containers/components/c7n/tools/tab-pag
 
 export { default as SagaDetails } from './containers/components/c7n/tools/saga-details';
 
-export { default as Choerodon } from '@/utils/choerodon';
+export { default as Choerodon } from './utils/choerodon';
