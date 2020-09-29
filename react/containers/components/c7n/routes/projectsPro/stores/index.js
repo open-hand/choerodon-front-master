@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
+import { DataSet } from 'choerodon-ui/pro';
+import { injectIntl } from 'react-intl';
 import useStore from './useStore';
-import {DataSet} from "choerodon-ui/pro";
 import ListDataSet from './ListDataSet';
 import CategoryDataSet from './CategoryDataSet';
 
@@ -12,7 +13,7 @@ export function useProjectsProStore() {
   return useContext(Store);
 }
 
-export const StoreProvider = withRouter(inject('AppState')((props) => {
+export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) => {
   const {
     children,
     AppState,
@@ -21,7 +22,7 @@ export const StoreProvider = withRouter(inject('AppState')((props) => {
         type,
         id,
         organizationId,
-      }
+      },
     },
     history,
   } = props;
@@ -41,4 +42,4 @@ export const StoreProvider = withRouter(inject('AppState')((props) => {
       {children}
     </Store.Provider>
   );
-}));
+})));
