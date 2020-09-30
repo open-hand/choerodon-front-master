@@ -277,10 +277,12 @@ export default observer(() => {
                   fontSize: '20px',
                 }}
                 onClick={(e) => {
-                  e.stopPropagation();
-                  ProjectsProUseStore.handleStarProject(p).then(() => {
-                    ProjectsProUseStore.handleChangeStarProjects(p);
-                  });
+                  if (p.enabled) {
+                    e.stopPropagation();
+                    ProjectsProUseStore.handleStarProject(p).then(() => {
+                      ProjectsProUseStore.handleChangeStarProjects(p);
+                    });
+                  }
                 }}
               />
             </div>
