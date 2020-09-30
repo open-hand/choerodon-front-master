@@ -34,10 +34,10 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   useEffect(() => {
     const project = workBenchUseStore.getActiveStarProject;
     if (project && project.id) {
-      auditDs.setQueryParameter('project_id', project.id);
-      appServiceDs.setQueryParameter('project_id', project.id);
-      questionDs.setQueryParameter('projectId', project.id);
-      docDs.setQueryParameter('projectId', project.id);
+      auditDs.setQueryParameter('project_id', String(project.id));
+      appServiceDs.setQueryParameter('project_id', String(project.id));
+      questionDs.setQueryParameter('projectId', String(project.id));
+      docDs.setQueryParameter('projectId', String(project.id));
       setActiveProject(project.id);
     } else {
       auditDs.setQueryParameter('project_id', null);

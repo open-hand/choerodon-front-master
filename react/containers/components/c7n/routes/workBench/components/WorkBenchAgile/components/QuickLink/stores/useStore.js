@@ -30,7 +30,7 @@ export default function useStore(AppState) {
       })
     },
     axiosCreateQuickLink(data) {
-      axios.post(`/iam/choerodon/v1/organizations/7/quick_links`, data).then(() => {
+      axios.post(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/quick_links`, data).then(() => {
         this.axiosGetQuickLinkList();
       })
     },

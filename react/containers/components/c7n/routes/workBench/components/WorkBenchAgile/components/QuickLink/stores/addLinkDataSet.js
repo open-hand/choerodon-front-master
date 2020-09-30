@@ -1,3 +1,5 @@
+import JSONbig from 'json-bigint'
+
 export default (AppState) => ({
   autoCreate: true,
   fields: [{
@@ -26,7 +28,7 @@ export default (AppState) => ({
         transformResponse: (res) => {
           let newRes;
           try {
-            newRes = JSON.parse(res);
+            newRes = JSONbig.parse(res);
             if (newRes.content.length % 10 === 0 && newRes.content.length !== 0) {
               newRes.content.push({
                 id: 'more',
