@@ -55,7 +55,11 @@ const QuickLink = observer(() => {
   const renderLinks = () => quickLinkUseStore.getQuickLinkList.map((l, index) => (
     <div className="c7n-quickLink-linkItem">
       <div className="c7n-quickLink-linkItem-left">
-        <p className="c7n-quickLink-linkItem-left-name">{l.user.realName}</p>
+        <p className="c7n-quickLink-linkItem-left-name">
+          <Tooltip title={l.user.realName} placement="top">
+            {l.user.realName}
+          </Tooltip>
+        </p>
         <p className="c7n-quickLink-linkItem-left-time">
           <TimePopover datetime={l.creationDate} />
         </p>
