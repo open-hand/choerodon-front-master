@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from 'choerodon-ui';
 import queryString from 'query-string';
+import TimeAgo from 'timeago-react';
 import { observer } from 'mobx-react-lite';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
@@ -32,7 +33,9 @@ export default observer(() => {
           <span>
             <Icon type="date_range-o" />
           </span>
-          <p>5分钟前</p>
+          <p>
+            <TimeAgo datetime={r.lastUpdateDate} locale='zh_CN' />
+          </p>
           <p style={{ marginLeft: 5 }}>使用</p>
         </div>
         <ProjectTaskContent data={r} />
