@@ -29,9 +29,9 @@ export default function useStore(AppState) {
         })
       })
     },
-    axiosCreateQuickLink(data) {
+    axiosCreateQuickLink(data, id) {
       axios.post(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/quick_links`, data).then(() => {
-        this.axiosGetQuickLinkList();
+        this.axiosGetQuickLinkList(id);
       })
     },
     axiosDeleteQuickLink(id) {
@@ -39,9 +39,9 @@ export default function useStore(AppState) {
         this.axiosGetQuickLinkList();
       });
     },
-    axiosEditQuickLink(data) {
+    axiosEditQuickLink(data, id) {
       axios.put(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/quick_links/${data.id}`, data).then(() => {
-        this.axiosGetQuickLinkList();
+        this.axiosGetQuickLinkList(id);
       })
     },
   }));
