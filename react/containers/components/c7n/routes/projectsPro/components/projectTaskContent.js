@@ -27,7 +27,11 @@ export default ({ data, alltrue }) => {
             {!data.imageUrl && data.name && data.name.slice(0, 1)}
           </div>
           <div className="starProjects-items-content-center">
-            <p className="starProjects-items-content-center-title">{data.name}</p>
+            <p className="starProjects-items-content-center-title">
+              <Tooltip title={data.name} placement="top">
+                {data.name}
+              </Tooltip>
+            </p>
             <div style={{ display: 'flex', alignItems: 'center', marginTop: 5 }}>
               <Tooltip title={data.code && data.code.toUpperCase()}>
                 <p className="starProjects-items-content-center-code">{data.code && data.code.toUpperCase()}</p>
@@ -97,8 +101,8 @@ export default ({ data, alltrue }) => {
             <span>
               <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_line" />
             </span>
-            <p style={{ 
-              display: 'inline-block', 
+            <p style={{
+              display: 'inline-block',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
             }}>{data.categories && data.categories.find(c => c.code !== 'PROGRAM_PROJECT') && data.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
@@ -112,8 +116,8 @@ export default ({ data, alltrue }) => {
                 <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_group" />
               </span>
               <p
-                style={{ 
-                  display: 'inline-block', 
+                style={{
+                  display: 'inline-block',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                 }}
