@@ -305,8 +305,10 @@ export default observer(() => {
               />
             </div>
             <div className="allProjects-content-item-right-down">
-              <p className="allProjects-content-item-right-down-pro">
-                <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
+              <div className="allProjects-content-item-right-down-pro">
+                  <p>
+                    <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
+                  </p>
                 {
                   p.sagaInstanceId ? (
                     <Icon
@@ -319,7 +321,7 @@ export default observer(() => {
                     />
                   ) : ''
                 }
-              </p>
+              </div>
               <Tooltip
                 title={p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}
               >
