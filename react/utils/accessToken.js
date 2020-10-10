@@ -24,7 +24,8 @@ export function setAccessToken(token, tokenType, expiresIn) {
     path: '/',
   };
   if (expiresIn) {
-    const expires = expiresIn * 1000;
+    // const expires = expiresIn * 1000;
+    const expires = 30 * 24 * 60 * 60 * 1000;
     option.expires = new Date(Date.now() + expires);
   }
   if (!LOCAL && !localReg.test(window.location.host) && getCookie(ACCESS_DOMAIN) === null) {

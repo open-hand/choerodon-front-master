@@ -1,14 +1,13 @@
 import React, { useCallback, Fragment } from 'react';
 import { TextField, Button, Pagination, Tooltip, Modal } from 'choerodon-ui/pro';
-import { Progress } from 'choerodon-ui';
+import { Progress, Icon } from 'choerodon-ui';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import Permission from '@/containers/components/c7n/tools/permission';
-import { Icon } from 'choerodon-ui';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import axios from '@/containers/components/c7n/tools/axios';
 import { prompt } from '@/utils';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+import SagaDetails from '../../../../tools/saga-details';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import FormView from '../FormView';
@@ -23,6 +22,9 @@ export default observer(() => {
     dataSet,
     AppState,
     intl,
+    intl: {
+      formatMessage,
+    },
   } = useProjectsProStore();
 
   function refresh() {
@@ -50,12 +52,12 @@ export default observer(() => {
       if (res.failed) {
         prompt(res.message);
         return false;
-      } else {
+      }
         prompt('创建成功');
         // HeaderStore.setRecentItem(res);
         refresh();
         return true;
-      }
+
     }
   }
 
@@ -67,9 +69,9 @@ export default observer(() => {
         }
         refresh();
         return true;
-      } else {
-        return false;
       }
+        return false;
+
     } catch (e) {
       return false;
     }
@@ -96,7 +98,7 @@ export default observer(() => {
         let extraMessage;
         if (category === 'PROGRAM') {
           extraMessage = (
-            <Fragment>
+            <>
               <div className="c7n-projects-enable-tips">
                 警告：项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
               </div>
@@ -119,7 +121,7 @@ export default observer(() => {
                   });
                 }}
               />
-            </Fragment>
+            </>
           );
         } else if (isSubProject) {
           extraMessage = (
@@ -143,7 +145,11 @@ export default observer(() => {
                 请仔细阅读下列事项！
               </p>
             )}
-            <span>确定要停用项目“{name}”吗？停用后，您和项目下其他成员将无法进入此项目。</span>
+            <span>
+              确定要停用项目“
+              {name}
+              ”吗？停用后，您和项目下其他成员将无法进入此项目。
+            </span>
             {extraMessage}
           </div>
         );
@@ -218,15 +224,29 @@ export default observer(() => {
     }
   };
 
+  const openSagaDetails = (id) => {
+    Modal.open({
+      title: formatMessage({ id: 'global.saga-instance.detail' }),
+      key: Modal.key(),
+      children: <SagaDetails sagaInstanceId={id} instance />,
+      drawer: true,
+      okCancel: false,
+      okText: formatMessage({ id: 'close' }),
+      style: {
+        width: 'calc(100% - 3.5rem)',
+      },
+    });
+  };
+
   const renderProjects = useCallback(() => {
     const projects = ProjectsProUseStore.getAllProjects;
     if (ProjectsProUseStore.getProjectLoading) {
       return (
-        <div className="allProjects-content-spin" style={{width: '670px' }}>
+        <div className="allProjects-content-spin" style={{ width: '670px' }}>
           <Progress type="loading" />
         </div>
       );
-    } else {
+    }
       return projects.length > 0 ? projects.map(p => (
         <div
           onClick={() => {
@@ -258,7 +278,7 @@ export default observer(() => {
                   {p.enabled ? '启用' : '停用'}
                 </span>
               </div>
-              {p.editFlag ? (
+              {p.editFlag && !p.sagaInstanceId ? (
                 <Icon
                   type="mode_edit"
                   style={{
@@ -285,9 +305,23 @@ export default observer(() => {
               />
             </div>
             <div className="allProjects-content-item-right-down">
-              <p className="allProjects-content-item-right-down-pro">
-                <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
-              </p>
+              <div className="allProjects-content-item-right-down-pro">
+                  <p>
+                    <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
+                  </p>
+                {
+                  p.sagaInstanceId ? (
+                    <Icon
+                      className="allProjects-content-item-right-down-pro-dashBoard"
+                      type="developer_board"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openSagaDetails(p.sagaInstanceId);
+                      }}
+                    />
+                  ) : ''
+                }
+              </div>
               <Tooltip
                 title={p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}
               >
@@ -304,12 +338,12 @@ export default observer(() => {
                 && (
                   <Tooltip title={p.programName}>
                     <p className="allProjects-content-item-right-down-text2">
-                      <React.Fragment>
+                      <>
                         <span>
                           <Icon type="project_group" />
                         </span>
                         <p>{p.programName}</p>
-                      </React.Fragment>
+                      </>
                     </p>
                   </Tooltip>
                 )
@@ -325,13 +359,17 @@ export default observer(() => {
                     {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
                   </span>
                 </Tooltip>
-                <p>{p.creationDate.split(' ')[0]} 创建</p>
+                <p>
+                  {p.creationDate.split(' ')[0]}
+                  {' '}
+                  创建
+                </p>
               </p>
             </div>
           </div>
         </div>
       )) : <EmptyPage title="暂无项目" describe="该组织下暂无项目" />;
-    }
+
   }, [ProjectsProUseStore.getAllProjects]);
 
   const handleBlurProjects = ({ ...e }) => {
@@ -348,8 +386,11 @@ export default observer(() => {
     const org = (HeaderStore.getOrgData || []).find(v => String(v.id) === organizationId) || { name: '' };
     const { getCanCreate } = ProjectsProUseStore;
     return (
-      <React.Fragment>
-        <p>{org.name}所有项目</p>
+      <>
+        <p>
+          {org.name}
+          所有项目
+        </p>
         <div className="allProjects-title-right">
           <TextField
             onBlur={handleBlurProjects}
@@ -370,12 +411,13 @@ export default observer(() => {
                 style={{
                   height: 30,
                 }}
-              >创建项目
+              >
+                创建项目
               </Button>
             </Tooltip>
           </Permission>
         </div>
-      </React.Fragment>
+      </>
     );
   };
 

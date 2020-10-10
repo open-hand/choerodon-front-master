@@ -11,7 +11,7 @@ const PROJECT_TYPE = 'project';
 
 function findDataIndex(collection, value) {
   return collection ? collection.findIndex(
-    ({ id, organizationId }) => id === value.id && (
+    ({ id, organizationId }) => String(id) === String(value.id) && (
       (!organizationId && !value.organizationId)
       || organizationId === value.organizationId
     ),
