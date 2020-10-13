@@ -9,12 +9,11 @@ let size = 10;
 
 const { Option } = Select;
 
-export default observer(({ AppState, modal, useStore, data, workBenchUseStore }) => {
-  const dataSet = useMemo(() => new DataSet(addLinkDataSet(AppState)), []);
-
+export default observer(({ AppState, modal, useStore, data, workBenchUseStore, activeId, type }) => {
+  const dataSet = useMemo(() => new DataSet(addLinkDataSet(AppState, data)), [data]);
   const renderer = ({ text }) => (text === '加载更多' ? (
     <a
-      style={{ display: 'block', width: '100%' }}
+      style={{ display: 'block', width: 'calc(100% + 24px)',marginLeft: '-12px', paddingLeft: '12px' }}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -25,6 +24,14 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore })
               id: 'more',
               name: '加载更多',
             });
+          }
+          if(data){
+            if (!res.content.some(n => n.id === data.projectId)) {
+              res.content.unshift({
+                id: data.projectId,
+                name: data.projectName,
+              })
+            }
           }
           dataSet.getField('projectId').props.lookup = res.content;
         });
@@ -45,9 +52,9 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore })
           id = workBenchUseStore.getActiveStarProject.id;
         }
         if (data) {
-          res = await useStore.axiosEditQuickLink(dataSet.toData()[0], id);
+          res = await useStore.axiosEditQuickLink(dataSet.toData()[0], activeId, type);
         } else {
-          res = await useStore.axiosCreateQuickLink(dataSet.toData()[0], id);
+          res = await useStore.axiosCreateQuickLink(dataSet.toData()[0], activeId, type);
         }
         if (res.failed) {
           return false;

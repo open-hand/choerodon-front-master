@@ -8,22 +8,20 @@ export default (AppState) => ({
     defaultValue: 'project',
   }, {
     name: 'projectId',
-    type: 'string',
+    type: 'number',
     label: '项目',
     textField: 'name',
     valueField: 'id',
     dynamicProps: {
       required: ({ record }) => record.get('scope') === 'project',
     },
-    lookupAxiosConfig: (data) => {
-      return ({
-        method: 'get',
-        url: `/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=10`,
-        data: {
-          param: [],
-          searchParams: {
-            name: data.params.name,
-          }
+    lookupAxiosConfig: (data) => ({
+      method: 'get',
+      url: `/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=10`,
+      data: {
+        param: [],
+        searchParams: {
+          name: data.params.name,
         },
         transformResponse: (res) => {
           let newRes;
@@ -39,9 +37,18 @@ export default (AppState) => ({
           } catch (e) {
             return res;
           }
-        },
-      })
-    }
+          if (detail?.projectId && !newRes.content.some((n) => n.id === detail.projectId)) {
+            newRes.content.unshift({
+              id: detail.projectId,
+              name: detail.projectName,
+            });
+          }
+          return newRes;
+        } catch (e) {
+          throw new Error(e);
+        }
+      },
+    }),
   }, {
     name: 'name',
     type: 'string',
@@ -53,5 +60,5 @@ export default (AppState) => ({
     type: 'string',
     label: '链接地址',
     required: true,
-  }]
-})
+  }],
+});

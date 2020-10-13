@@ -6,7 +6,6 @@ import { Menu, Popover, Icon } from 'choerodon-ui';
 import { historyPushMenu, logout } from '@/utils';
 import Avatar from './Avatar';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
-// import { PREFIX_CLS } from '@choerodon/boot/lib/containers/common/constants';
 
 const MenuItem = Menu.Item;
 const PREFIX_CLS = 'c7n';

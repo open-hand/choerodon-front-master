@@ -1,6 +1,6 @@
 import { useLocalStore } from 'mobx-react-lite';
 import { observable } from 'mobx';
-import { axios } from '@choerodon/boot';
+import { axios } from '@/index';
 import moment from 'moment';
 export default function useStore(projectId) {
   return useLocalStore(() => ({
