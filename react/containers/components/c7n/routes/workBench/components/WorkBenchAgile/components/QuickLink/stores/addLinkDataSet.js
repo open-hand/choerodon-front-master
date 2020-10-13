@@ -37,17 +37,8 @@ export default (AppState) => ({
           } catch (e) {
             return res;
           }
-          if (detail?.projectId && !newRes.content.some((n) => n.id === detail.projectId)) {
-            newRes.content.unshift({
-              id: detail.projectId,
-              name: detail.projectName,
-            });
-          }
-          return newRes;
-        } catch (e) {
-          throw new Error(e);
-        }
       },
+      }
     }),
   }, {
     name: 'name',
