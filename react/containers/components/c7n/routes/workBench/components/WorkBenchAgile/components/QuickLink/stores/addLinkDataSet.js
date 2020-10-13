@@ -1,4 +1,5 @@
-import JSONbig from 'json-bigint'
+/* eslint-disable import/no-anonymous-default-export */
+import JSONbig from 'json-bigint';
 
 export default (AppState) => ({
   autoCreate: true,
@@ -37,8 +38,8 @@ export default (AppState) => ({
           } catch (e) {
             return res;
           }
+        },
       },
-      }
     }),
   }, {
     name: 'name',
