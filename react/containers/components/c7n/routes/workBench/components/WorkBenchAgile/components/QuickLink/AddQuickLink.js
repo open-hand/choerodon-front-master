@@ -47,6 +47,10 @@ export default observer(({ AppState, modal, useStore, data, workBenchUseStore, a
       const result = await dataSet.validate();
       if (result) {
         let res;
+        let id;
+        if (workBenchUseStore.getActiveStarProject) {
+          id = workBenchUseStore.getActiveStarProject.id;
+        }
         if (data) {
           res = await useStore.axiosEditQuickLink(dataSet.toData()[0], activeId, type);
         } else {

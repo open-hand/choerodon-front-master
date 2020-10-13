@@ -1,15 +1,6 @@
-const isJsonString = (str) => {
-  try {
-    if (typeof JSON.parse(str) == 'object') {
-      return true;
-    }
-  // eslint-disable-next-line no-empty
-  } catch (e) {
-  }
-  return false;
-};
+import JSONbig from 'json-bigint'
 
-export default (AppState, detail) => ({
+export default (AppState) => ({
   autoCreate: true,
   fields: [{
     type: 'string',
@@ -32,16 +23,19 @@ export default (AppState, detail) => ({
         searchParams: {
           name: data.params.name,
         },
-      },
-      transformResponse: (res) => {
-        let newRes;
-        try {
-          newRes = isJsonString(res) ? JSON.parse(res) : res;
-          if (newRes.content.length % 10 === 0 && newRes.content.length !== 0) {
-            newRes.content.push({
-              id: 'more',
-              name: '加载更多',
-            });
+        transformResponse: (res) => {
+          let newRes;
+          try {
+            newRes = JSONbig.parse(res);
+            if (newRes.content.length % 10 === 0 && newRes.content.length !== 0) {
+              newRes.content.push({
+                id: 'more',
+                name: '加载更多',
+              });
+            }
+            return newRes;
+          } catch (e) {
+            return res;
           }
           if (detail?.projectId && !newRes.content.some((n) => n.id === detail.projectId)) {
             newRes.content.unshift({

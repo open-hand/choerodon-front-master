@@ -168,13 +168,20 @@ class Masters extends Component {
       // }
     }
     async function checkUrl() {
-      async function goSafty() {
+      async function goSafty(data) {
         if (!HeaderStore.getOrgData) {
           setTimeout(() => {
             goSafty();
           }, 500);
         } else {
-          message.info('地址过期');
+          message.info(data ? '该项目已停用' : '地址过期');
+          // 说明是停用项目 需要删除最近使用的数据
+          if (data) {
+            const recents = JSON.parse(localStorage.getItem('recentItem'));
+            const newRecents = recents.filter(r => r.code !== data.code);
+            localStorage.setItem('recentItem', JSON.stringify(newRecents));
+            HeaderStore.recentItem = newRecents;
+          }
           AppState.setCurrentProject(null);
           const queryObj = queryString.parse(history.location.search);
           const search = await getSearchString('organization', 'id', queryObj.organizationId);
@@ -188,6 +195,9 @@ class Masters extends Component {
         if (!currentProject || String(menuType.projectId) !== String(currentProject?.id)) {
           try {
             res = await axios.get(`/iam/choerodon/v1/projects/${menuType.projectId}/basic_info`);
+            if (!res.enabled) {
+              goSafty(res);
+            }
             if (String(res.id) === String(new URLSearchParams(location.search).get('id'))) {
               AppState.setCurrentProject(res);
             } else {

@@ -297,10 +297,12 @@ export default observer(() => {
                   fontSize: '20px',
                 }}
                 onClick={(e) => {
-                  e.stopPropagation();
-                  ProjectsProUseStore.handleStarProject(p).then(() => {
-                    ProjectsProUseStore.handleChangeStarProjects(p);
-                  });
+                  if (p.enabled) {
+                    e.stopPropagation();
+                    ProjectsProUseStore.handleStarProject(p).then(() => {
+                      ProjectsProUseStore.handleChangeStarProjects(p);
+                    });
+                  }
                 }}
               />
             </div>
@@ -353,7 +355,7 @@ export default observer(() => {
                   <span
                     className="allProjects-content-item-right-down-avatar"
                     style={{
-                      backgroundImage: p.createUserImageUrl ? `url(${p.createUserImageUrl})` : '',
+                      backgroundImage: p.createUserImageUrl ? `url(${p.createUserImageUrl})` : 'unset',
                     }}
                   >
                     {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
