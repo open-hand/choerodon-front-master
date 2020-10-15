@@ -42,8 +42,17 @@ export default observer(() => {
 
   )), [ProjectsProUseStore.getStarProjectsList]);
 
+  function swap(arr, from, to) {
+    arr.splice(to, 0, arr.splice(from, 1)[0]);
+    return arr;
+  }
+
   const onDragEnd = (data) => {
     const { source, destination } = data;
+    const temp = ProjectsProUseStore.getStarProjectsList.slice();
+    const arr = [...swap(temp, source.index, destination.index)];
+    ProjectsProUseStore.setStarProjectsList(arr);
+    ProjectsProUseStore.changeStarProjectPos(arr);
   };
 
   return (
