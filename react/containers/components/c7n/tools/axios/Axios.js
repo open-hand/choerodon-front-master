@@ -1,4 +1,6 @@
 import axios from 'axios';
+import qs from 'qs';
+import BigNumber from 'bignumber.js';
 import {
   prompt,
   getAccessToken,
@@ -21,7 +23,15 @@ axios.defaults.transformResponse = [function(data) {
     return data;
   }
 }]
-
+axios.defaults.paramsSerializer = function (params) {
+  const newParams = { ...params };
+  for (const key in newParams) {
+    if (newParams[key] instanceof BigNumber) {
+      newParams[key] = newParams[key].toString();
+    }
+  }
+  return qs.stringify(newParams);
+};
 axios.interceptors.request.use(
   config => {
     const newConfig = config;
