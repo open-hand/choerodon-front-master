@@ -8,22 +8,25 @@ import {
 } from '@/utils';
 import { authorizeUrl } from '@/utils/authorize';
 import { API_HOST } from '@/utils/constants';
+import JSONbig from 'json-bigint';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 // eslint-disable-next-line import/no-cycle
 import MenuStore from '../../../../stores/c7n/MenuStore';
-import JSONbig from 'json-bigint'
 
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 axios.defaults.timeout = 30000;
 axios.defaults.baseURL = API_HOST;
-axios.defaults.transformResponse = [function(data) {
+axios.defaults.transformResponse = [function (data) {
   try {
     return JSONbig.parse(data);
   } catch (e) {
     return data;
   }
-}]
+}];
 axios.defaults.paramsSerializer = function (params) {
+  if (params instanceof URLSearchParams) {
+    return params.toString();
+  }
   const newParams = { ...params };
   for (const key in newParams) {
     if (newParams[key] instanceof BigNumber) {
