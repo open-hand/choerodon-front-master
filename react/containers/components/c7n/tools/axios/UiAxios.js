@@ -1,4 +1,6 @@
 import axios from 'axios';
+import qs from 'qs';
+import BigNumber from 'bignumber.js';
 import { authorizeUrl } from '@/utils/authorize';
 import { getAccessToken, removeAccessToken } from '@/utils/accessToken';
 import { API_HOST } from '@/utils/constants';
@@ -17,7 +19,16 @@ const instance = axios.create({
     } catch (e) {
       return data;
     }
-  }]
+  }],
+  paramsSerializer(params) {
+    const newParams = { ...params };
+    for (const key in newParams) {
+      if (newParams[key] instanceof BigNumber) {
+        newParams[key] = newParams[key].toString();
+      }
+    }
+    return qs.stringify(newParams);
+  },
 });
 
 instance.interceptors.request.use(
