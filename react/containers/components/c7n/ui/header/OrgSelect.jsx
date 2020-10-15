@@ -9,7 +9,7 @@ import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../util';
 import Setting from './Setting';
 
-const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
+const HAS_BASE_PRO = C7NHasModule('@choerodon/base-business');
 const prefixCls = 'c7n-boot-header-menu-type';
 const homePage = '/workbench';
 @withRouter
