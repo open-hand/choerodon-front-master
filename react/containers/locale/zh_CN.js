@@ -7,6 +7,8 @@ const zh_CN = {
   'cancel': '返回',
   'close': '关闭',
 
+  'copy.success': '已复制到剪贴板',
+
   'learnmore': '了解更多',
   'boot.signout': '安全退出',
   'boot.select': '选择',
