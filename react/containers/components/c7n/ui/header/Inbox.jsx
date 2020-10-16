@@ -76,20 +76,6 @@ class RenderPopoverContentClass extends Component {
                 </Spin>
               </TabPane>
             </Tabs>
-            {
-              HeaderStore.getInboxActiveKey === '1' && (
-                <CheckBox
-                  name="controlled"
-                  value
-                  className="backlog-checkbox"
-                  checked={getIsTodo}
-                  onChange={isTodo => HeaderStore.setIsTodo(isTodo)}
-                >
-                  我的待办
-                </CheckBox>
-              )
-            }
-
           </div>
         </div>
         <RenderPopoverContentDetailClass
