@@ -98,7 +98,7 @@ export default class Index extends React.Component {
     }
     HeaderStore.axiosGetRoles();
     await AppState.loadUserInfo();
-    if (HAS_AGILE_PRO) {
+    if (HAS_AGILE_PRO && !window._env_.BUSINESS) {
       await this.checkOrg();
     }
     this.setState({ loading: false });
