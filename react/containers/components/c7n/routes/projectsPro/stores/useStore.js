@@ -15,6 +15,13 @@ export default function useStore(AppState, history) {
       size: 10,
       total: 0,
     },
+    recentProjects: [],
+    get getRecentProjects() {
+      return this.recentProjects;
+    },
+    setRecentProjects(data) {
+      this.recentProjects = data;
+    },
     allProjectsParams: '',
     get getAllProjectsParams() {
       return this.allProjectsParams;
@@ -44,6 +51,11 @@ export default function useStore(AppState, history) {
     },
     setAllProjects(data) {
       this.allProjects = data;
+    },
+    axiosGetRecentProjects() {
+      axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/projects/latest_visit`).then((res) => {
+        this.setRecentProjects(res);
+      });
     },
     axiosGetProjects() {
       const { page, size } = this.getPagination;
@@ -136,22 +148,23 @@ export default function useStore(AppState, history) {
           try {
             await this.deleteStar(data);
             data.starFlag = false;
-            const item = HeaderStore.getRecentItem.find((r) => String(r.id) === String(data.id));
-            if (item) {
-              item.starFlag = false;
-              HeaderStore.setRecentItem(item);
-            }
-            // eslint-disable-next-line no-empty
+            this.setRecentProjects(this.recentProjects.map((i) => {
+              if (String(i.projectDTO.id) === String(data.id)) {
+                i.projectDTO.starFlag = false;
+              }
+              return i;
+            }));
           } catch (e) { }
         } else {
           try {
             await this.starProject(data);
             data.starFlag = true;
-            const item = HeaderStore.getRecentItem.find((r) => String(r.id) === String(data.id));
-            if (item) {
-              item.starFlag = true;
-              HeaderStore.setRecentItem(item);
-            }
+            this.setRecentProjects(this.recentProjects.map((i) => {
+              if (String(i.projectDTO.id) === String(data.id)) {
+                i.projectDTO.starFlag = true;
+              }
+              return i;
+            }));
             // eslint-disable-next-line no-empty
           } catch (e) { }
         }

@@ -20,6 +20,7 @@ export default () => {
     ProjectsProUseStore.axiosGetProjects();
     ProjectsProUseStore.checkCreate(organizationId);
     ProjectsProUseStore.axiosGetStarProjects();
+    ProjectsProUseStore.axiosGetRecentProjects();
     AppState.setCurrentProject(null);
   }, []);
 
