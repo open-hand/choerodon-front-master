@@ -1,4 +1,5 @@
-import JSONbig from 'json-bigint'
+/* eslint-disable import/no-anonymous-default-export */
+import JSONbig from 'json-bigint';
 
 export default (AppState) => ({
   autoCreate: true,
@@ -8,22 +9,20 @@ export default (AppState) => ({
     defaultValue: 'project',
   }, {
     name: 'projectId',
-    type: 'string',
+    type: 'number',
     label: '项目',
     textField: 'name',
     valueField: 'id',
     dynamicProps: {
       required: ({ record }) => record.get('scope') === 'project',
     },
-    lookupAxiosConfig: (data) => {
-      return ({
-        method: 'get',
-        url: `/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=10`,
-        data: {
-          param: [],
-          searchParams: {
-            name: data.params.name,
-          }
+    lookupAxiosConfig: (data) => ({
+      method: 'get',
+      url: `/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=10`,
+      data: {
+        param: [],
+        searchParams: {
+          name: data.params.name,
         },
         transformResponse: (res) => {
           let newRes;
@@ -40,8 +39,8 @@ export default (AppState) => ({
             return res;
           }
         },
-      })
-    }
+      },
+    }),
   }, {
     name: 'name',
     type: 'string',
@@ -53,5 +52,5 @@ export default (AppState) => ({
     type: 'string',
     label: '链接地址',
     required: true,
-  }]
-})
+  }],
+});

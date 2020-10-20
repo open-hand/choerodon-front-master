@@ -13,11 +13,11 @@ const nameValidator = (value) => {
   if (value.trim() === '') {
     return '名称不能全为空。';
   }
-  if (value.length > 32) {
-    return '名称长度不能超过32！';
+  if (value.length > 110) {
+    return '名称长度不能超过110！';
   }
   // eslint-disable-next-line no-useless-escape
-  const reg = /^[-—\.\w\s\u4e00-\u9fa5]{1,32}$/;
+  const reg = /^[-—.\w\s\u0800-\u9fa5]{1,110}$/;
   if (!reg.test(value)) {
     return '名称只能由汉字、字母、数字、"_"、"."、"-"、"——"和空格组成';
   }

@@ -1,6 +1,6 @@
 import { useLocalStore } from 'mobx-react-lite';
 import queryString from 'query-string';
-import { axios } from '@choerodon/boot';
+import { axios } from '@/index';
 import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
 import { getRandomBackground } from '@/containers/components/c7n/util';
@@ -14,6 +14,13 @@ export default function useStore(AppState, history) {
       page: 1,
       size: 10,
       total: 0,
+    },
+    recentProjects: [],
+    get getRecentProjects() {
+      return this.recentProjects;
+    },
+    setRecentProjects(data) {
+      this.recentProjects = data;
     },
     allProjectsParams: '',
     get getAllProjectsParams() {
@@ -45,11 +52,16 @@ export default function useStore(AppState, history) {
     setAllProjects(data) {
       this.allProjects = data;
     },
+    axiosGetRecentProjects() {
+      axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/projects/latest_visit`).then((res) => {
+        this.setRecentProjects(res);
+      });
+    },
     axiosGetProjects() {
       const { page, size } = this.getPagination;
       this.projectLoading = true;
       axios.get(queryString.parse(history.location.search).organizationId ? `/iam/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
-        this.setAllProjects(res.content.map(r => {
+        this.setAllProjects(res.content.map((r) => {
           r.background = getRandomBackground();
           return r;
         }));
@@ -82,7 +94,9 @@ export default function useStore(AppState, history) {
     },
 
     handleClickProject(data) {
-      const { id, name, organizationId, category } = data;
+      const {
+        id, name, organizationId, category,
+      } = data;
       const type = 'project';
       HeaderStore.setRecentItem(data);
       MenuStore.loadMenuData({ type, id }, false).then((menus) => {
@@ -122,7 +136,7 @@ export default function useStore(AppState, history) {
         origin.unshift(data);
         this.setStarProjectsList(origin);
       } else {
-        const index = origin.findIndex(i => String(i.id) === String(data.id));
+        const index = origin.findIndex((i) => String(i.id) === String(data.id));
         origin.splice(index, 1);
         this.setStarProjectsList(origin);
       }
@@ -134,22 +148,23 @@ export default function useStore(AppState, history) {
           try {
             await this.deleteStar(data);
             data.starFlag = false;
-            const item = HeaderStore.getRecentItem.find(r => String(r.id) === String(data.id));
-            if (item) {
-              item.starFlag = false;
-              HeaderStore.setRecentItem(item);
-            }
-            // eslint-disable-next-line no-empty
+            this.setRecentProjects(this.recentProjects.map((i) => {
+              if (String(i.projectDTO.id) === String(data.id)) {
+                i.projectDTO.starFlag = false;
+              }
+              return i;
+            }));
           } catch (e) { }
         } else {
           try {
             await this.starProject(data);
             data.starFlag = true;
-            const item = HeaderStore.getRecentItem.find(r => String(r.id) === String(data.id));
-            if (item) {
-              item.starFlag = true;
-              HeaderStore.setRecentItem(item);
-            }
+            this.setRecentProjects(this.recentProjects.map((i) => {
+              if (String(i.projectDTO.id) === String(data.id)) {
+                i.projectDTO.starFlag = true;
+              }
+              return i;
+            }));
             // eslint-disable-next-line no-empty
           } catch (e) { }
         }
@@ -160,12 +175,26 @@ export default function useStore(AppState, history) {
       const orgId = AppState.currentMenuType.organizationId;
       if (orgId) {
         axios.get(`/iam/choerodon/v1/organizations/${orgId}/star_projects`).then((res) => {
-          this.setStarProjectsList(res.map(r => {
+          this.setStarProjectsList(res.map((r) => {
             r.background = getRandomBackground();
             return r;
           }));
         });
       }
+    },
+    changeStarProjectPos(arr) {
+      const orgId = AppState.currentMenuType.organizationId;
+      if (orgId) {
+        try {
+          const res = axios.put(`/iam/choerodon/v1/organizations/${orgId}/star_projects`, JSON.stringify(arr));
+          if (res && res.failed) {
+            return res;
+          }
+        } catch (error) {
+          throw new Error(error);
+        }
+      }
+      return false;
     },
   }));
 }

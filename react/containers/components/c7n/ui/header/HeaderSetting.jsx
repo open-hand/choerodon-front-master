@@ -17,10 +17,12 @@ const LI_MAPPING = [
   // { title: '应用市场', icon: 'application_market', activePath: '/iam/choerodon/app-market' },
 ];
 
-const Setting = ({ AppState, HeaderStore, MenuStore, history, ...props }) => {
-  function goto(obj) {
+const Setting = ({
+  AppState, HeaderStore, MenuStore, history, ...props
+}) => {
+  async function goto(obj) {
     const queryObj = queryString.parse(history.location.search);
-    const search = getSearchString('organization', 'id', queryObj.organizationId);
+    const search = await getSearchString('organization', 'id', queryObj.organizationId);
     MenuStore.setActiveMenu(null);
     history.push(`${obj.activePath}${search}`);
   }
@@ -38,18 +40,17 @@ const Setting = ({ AppState, HeaderStore, MenuStore, history, ...props }) => {
     }
     return '';
   }
-
   return (
-    <React.Fragment>
+    <>
       {
-        LI_MAPPING.map(list => (
+        LI_MAPPING.map((list) => (
           <Button key={list.activePath} className={`block ${extraCls(list)}`} onClick={() => goto(list)}>
             <Icon type={list.icon} style={iconStyle} />
             {list.title}
           </Button>
         ))
       }
-    </React.Fragment>
+    </>
   );
 };
 

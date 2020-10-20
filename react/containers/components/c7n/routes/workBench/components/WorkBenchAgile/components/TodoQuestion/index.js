@@ -1,4 +1,6 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, {
+  useEffect, useState, useReducer, Fragment,
+} from 'react';
 import { Icon, Tooltip, Tree } from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
@@ -6,7 +8,7 @@ import Card from '../../../card';
 import { useWorkBenchStore } from '../../../../stores';
 import EmptyPage from '../../../empty-page';
 import LoadingBar from '../../../../../../tools/loading-bar';
-
+import Switch from '../../../multiple-switch';
 import './index.less';
 
 const TodoQuestion = observer(() => {
@@ -16,12 +18,35 @@ const TodoQuestion = observer(() => {
     history,
     workBenchUseStore,
   } = useWorkBenchStore();
-
-  const [page, changePage] = useState(1);
-  const [showMore, changeShowMore] = useState(false);
+  const [pageInfo, change] = useReducer((state, action) => {
+    const { type, ...other } = action;
+    switch (type) {
+      case 'init':
+        return {
+          page: 1,
+          showMore: false,
+          totalCount: 0,
+        };
+      case 'load':
+        return { ...other };
+      case 'error':
+        return {
+          page: 1,
+          showMore: true,
+          totalCount: 0,
+        };
+      default:
+        return state;
+    }
+  }, {
+    page: 1,
+    showMore: true,
+    totalCount: 0,
+  });
+  const { page, showMore, totalCount } = pageInfo;
   const [btnLoading, changeBtnLoading] = useState(false);
   const [loading, changeLoading] = useState(false);
-
+  const [switchCode, setSwitchCode] = useState('all');
   async function loadData(newPage) {
     try {
       const oldData = questionDs.toData();
@@ -29,17 +54,22 @@ const TodoQuestion = observer(() => {
       const res = await workBenchUseStore.loadQuestions({ organizationId, projectId, page: newPage || 1 });
       if (res && !res.failed) {
         if (res.totalElements && res.number < res.totalPages) {
-          changeShowMore(true);
+          change({
+            type: 'load', showMore: true, page: res.number + 1, totalCount: res.totalElements,
+          });
         } else {
-          changeShowMore(false);
+          change({
+            type: 'load', showMore: false, page: res.number + 1, totalCount: res.totalElements,
+          });
         }
         questionDs.loadData(oldData.concat(res.content));
       }
       changeBtnLoading(false);
       changeLoading(false);
     } catch (e) {
-      changeShowMore(true);
-      changePage(1);
+      change({
+        type: 'error',
+      });
       changeBtnLoading(false);
       changeLoading(false);
     }
@@ -48,15 +78,13 @@ const TodoQuestion = observer(() => {
   useEffect(() => {
     changeLoading(true);
     questionDs.removeAll();
-    changePage(1);
     loadData();
   }, [workBenchUseStore.getActiveStarProject, organizationId]);
-  
+
   function loadMoreData() {
     const newPage = page + 1;
     changeBtnLoading(true);
     loadData(newPage);
-    changePage(newPage);
   }
 
   function handleClick(record) {
@@ -70,7 +98,7 @@ const TodoQuestion = observer(() => {
       },
     });
   }
-  
+
   function getIssueType(typeCode) {
     let mes = '';
     let icon = '';
@@ -123,11 +151,23 @@ const TodoQuestion = observer(() => {
       </span>
     );
   }
-  
-  function nodeRenderer({ record }) {
-    const { projectVO, typeCode, issueNum, summary, priorityVO, statusVO } = record.toData() || {};
+  function getUser(userInfo = {}) {
+    const { name, img } = userInfo;
     return (
-      <div className="c7n-todoQuestion-issueContent-issueItem" onClick={() => handleClick(record)}>
+      <Tooltip title="王嘉嘉" placement="top">
+        <span className="c7n-todoQuestion-issueContent-issueItem-main-user">
+          <div className="c7n-todoQuestion-issueContent-issueItem-main-user-left">王</div>
+          <span className="c7n-todoQuestion-issueContent-issueItem-main-user-right">王嘉嘉</span>
+        </span>
+      </Tooltip>
+    );
+  }
+  function nodeRenderer({ record }) {
+    const {
+      projectVO, typeCode, issueNum, summary, priorityVO, statusVO,
+    } = record.toData() || {};
+    return (
+      <div role="none" className="c7n-todoQuestion-issueContent-issueItem" onClick={() => handleClick(record)}>
         <p className="c7n-todoQuestion-issueContent-issueItem-project">{projectVO ? projectVO.name : ''}</p>
         <div className="c7n-todoQuestion-issueContent-issueItem-main">
           {getIssueType(typeCode)}
@@ -137,7 +177,9 @@ const TodoQuestion = observer(() => {
           <Tooltip title={summary} placement="top">
             <span className="c7n-todoQuestion-issueContent-issueItem-main-description">{summary}</span>
           </Tooltip>
+
           {getStatus(statusVO)}
+          {switchCode === 'putForwardDefects' && getUser()}
           <span
             className="c7n-todoQuestion-issueContent-issueItem-main-priority"
             style={{
@@ -164,33 +206,50 @@ const TodoQuestion = observer(() => {
         />
       );
     }
+    let component = <Spin spinning />;
+    if (!btnLoading) {
+      component = (
+        <div
+          role="none"
+          onClick={() => loadMoreData()}
+          className="c7n-todoQuestion-issueContent-more"
+        >
+          加载更多
+        </div>
+      );
+    }
     return (
-      <Fragment>
+      <>
         <Tree
           dataSet={questionDs}
           renderer={nodeRenderer}
           className="c7n-todoQuestion-issueContent"
         />
-        {showMore ? (btnLoading ? (
-          <Spin spinning />
-          ) : (
-            <div
-              onClick={() => loadMoreData()}
-              className="c7n-todoQuestion-issueContent-more"
-            >
-              加载更多
-            </div>
-          )
-        ) : null}
-      </Fragment>
+        {showMore ? component
+          : null}
+      </>
     );
   }
+  const renderTitle = () => (
+    <div className="c7n-todoQuestion-title">
+      <div className="c7n-todoQuestion-title-left">
+        待办问题
+        <span>{totalCount}</span>
+      </div>
 
+      <Switch
+        defaultValue="all"
+        options={[{ value: 'all', text: '所有待办' }, { value: 'putForwardDefects', text: '已提缺陷' },
+          { value: 'unsolvedDefects', text: '待修复缺陷' }]}
+        onChange={setSwitchCode}
+      />
+    </div>
+  );
   return (
     <div className="c7n-todoQuestion">
       <Card
-        title="待办问题"
-        showCount
+        title={renderTitle()}
+        // showCount
         // count={totalCount}
         className="c7n-todoQuestion-issueContent"
       >

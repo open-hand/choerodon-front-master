@@ -17,7 +17,7 @@ export default ({ data, alltrue }) => {
   return (
     <div>
       <div className="starProjects-items-content">
-        <div style={{ display: 'flex', alignItems: 'center', maxWidth: '60%' }}>
+        <div style={{ display: 'flex', alignItems: 'center', width: '60%' }}>
           <div
             className="starProjects-items-content-icon"
             style={{

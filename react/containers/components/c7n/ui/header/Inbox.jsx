@@ -296,7 +296,7 @@ export default class Inbox extends Component {
               const icon = <Icon type={isMsg ? 'textsms' : 'volume_up'} className="color-blue" />;
               const iconWithBadge = read || !isMsg ? icon : <Badge dot>{icon}</Badge>;
               let showPicUrl;
-              if (content.indexOf('<img') !== -1) {
+              if (content && content.indexOf('<img') !== -1) {
                 showPicUrl = content.slice(content.indexOf('<img src="') + '<img src="'.length, content.indexOf('">', content.indexOf('<img src="')));
               }
               return (
@@ -330,7 +330,7 @@ export default class Inbox extends Component {
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
                     <div style={{ maxHeight: 63, overflow: 'hidden' }}>
-                      <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(reg, '')}` }} />
+                      {content && <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(reg, '')}` }} />}
                       {document.getElementById(`#li-${id}`) && document.getElementById(`#li-${id}`).offsetHeight > 63 ? (
                         <a href="#" target="_blank" rel="noreferrer noopener">
                           <span>了解更多</span>

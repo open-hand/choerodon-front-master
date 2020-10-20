@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import React, { useEffect } from 'react';
 import StarProjects from './components/StarProjects';
 import AllProjects from './components/AllProjects';
@@ -19,6 +20,7 @@ export default () => {
     ProjectsProUseStore.axiosGetProjects();
     ProjectsProUseStore.checkCreate(organizationId);
     ProjectsProUseStore.axiosGetStarProjects();
+    ProjectsProUseStore.axiosGetRecentProjects();
     AppState.setCurrentProject(null);
   }, []);
 

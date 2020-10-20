@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router';
+import { Tooltip, Icon, Button } from 'choerodon-ui';
+import { EXTERNAL_LINK } from '@/utils/constants';
 import Logo from './Logo';
 import User from './User';
 import Inbox from './Inbox';
@@ -32,6 +34,27 @@ class Header extends Component {
     AppState.setGuideExpanded(!AppState.getGuideExpanded);
   }
 
+  renderExternalLink = () => {
+    if (EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') {
+      const [url, text, icon] = EXTERNAL_LINK.split(',');
+      return (
+        <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
+          <Tooltip title={text}>
+            <Button
+              icon={icon}
+              shape="circle"
+              onClick={() => {
+                window.open(url);
+              }}
+              style={{ margin: '0 15px' }}
+            />
+          </Tooltip>
+        </li>
+      );
+    }
+    return null;
+  };
+
   render() {
     const { AppState: { getUserInfo: { image_url: imgUrl } }, MenuStore: { getSiteMenuData }, history } = this.props;
     return (
@@ -44,6 +67,7 @@ class Header extends Component {
         </ul>
         <ul className={`${prefixCls}-right`}>
           <OrgSelect />
+          {this.renderExternalLink()}
           <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
             <Inbox />
           </li>

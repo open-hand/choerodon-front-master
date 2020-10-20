@@ -4,7 +4,9 @@ import queryString from 'query-string';
 import { observer, Provider } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
 import { Modal } from 'choerodon-ui/pro';
-import { authorizeC7n, getAccessToken, setAccessToken, handleResponseError } from '@/utils';
+import {
+  authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
+} from '@/utils';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
@@ -25,8 +27,7 @@ const UILocaleProviderAsync = asyncRouter(
   { locale: () => import(`choerodon-ui/lib/locale-provider/${language}.js`) },
 );
 const IntlProviderAsync = asyncLocaleProvider(language,
-  () => import(`./containers/locale/${language}`),
-  () => import(`react-intl/locale-data/${language.split('_')[0]}`));
+  () => import(`./containers/locale/${language}`));
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 
 @withRouter
@@ -37,6 +38,10 @@ export default class Index extends React.Component {
   };
 
   componentDidMount() {
+    window.addEventListener('storage', this.handleStorageChange);
+    if (!sessionStorage.getItem('historyPath')) {
+      sessionStorage.setItem('historyPath', window.location.hash.split('#')[1]);
+    }
     if (!this.isInOutward(this.props.location.pathname)) {
       this.auth();
     }
@@ -47,6 +52,17 @@ export default class Index extends React.Component {
       if (!this.isInOutward(this.props.location.pathname)) {
         this.auth();
       }
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('storage', this.handleStorageChange);
+  }
+
+  handleStorageChange = (e) => {
+    // 其他tab页重新登录，刷新当前页面
+    if (e.key === 'relogin') {
+      window.location.reload();
     }
   }
 
@@ -73,6 +89,8 @@ export default class Index extends React.Component {
     const { access_token: accessToken, token_type: tokenType, expires_in: expiresIn } = queryString.parse(window.location.hash);
     if (accessToken) {
       setAccessToken(accessToken, tokenType, expiresIn);
+      // 通知其他tab页刷新
+      localStorage.setItem('relogin', Math.random().toString());
       window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
     } else if (!getAccessToken()) {
       authorizeC7n();
@@ -90,8 +108,8 @@ export default class Index extends React.Component {
     // eslint-disable-next-line no-underscore-dangle
     const injectOutward = window._env_.outward;
     if (injectOutward) {
-      const arr = injectOutward.split(',').concat(['/unauthorized']).map(r => r.replace(/['"']/g, ''));
-      return arr.some(v => pathname.startsWith(v));
+      const arr = injectOutward.split(',').concat(['/unauthorized']).map((r) => r.replace(/['"']/g, ''));
+      return arr.some((v) => pathname.startsWith(v));
     }
     return false;
   }
@@ -112,30 +130,28 @@ export default class Index extends React.Component {
           </IntlProviderAsync>
         </UILocaleProviderAsync>
       );
-    } else {
-      if (loading) {
-        return (
-          <div style={spinStyle}>
-            <Spin />
-          </div>
-        );
-      }
+    }
+    if (loading) {
       return (
-        <UILocaleProviderAsync>
-          <IntlProviderAsync>
-            <Provider {...stores}>
-              <Switch>
-                <Route
-                  path="/"
-                // component={this.auth() ? Master : noaccess}
-                >
-                  <Master AutoRouter={this.props.AutoRouter} />
-                </Route>
-              </Switch>
-            </Provider>
-          </IntlProviderAsync>
-        </UILocaleProviderAsync>
+        <div style={spinStyle}>
+          <Spin />
+        </div>
       );
     }
+    return (
+      <UILocaleProviderAsync>
+        <IntlProviderAsync>
+          <Provider {...stores}>
+            <Switch>
+              <Route
+                path="/"
+              >
+                <Master AutoRouter={this.props.AutoRouter} />
+              </Route>
+            </Switch>
+          </Provider>
+        </IntlProviderAsync>
+      </UILocaleProviderAsync>
+    );
   }
 }

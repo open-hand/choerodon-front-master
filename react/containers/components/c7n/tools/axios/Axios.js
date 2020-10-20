@@ -36,7 +36,7 @@ axios.defaults.paramsSerializer = function (params) {
   return qs.stringify(newParams);
 };
 axios.interceptors.request.use(
-  config => {
+  (config) => {
     const newConfig = config;
     const str = window.location.hash.split('?')[1];
     const urlSearchParam = new URLSearchParams(str);
@@ -46,7 +46,31 @@ axios.interceptors.request.use(
     newConfig.headers['Content-Type'] = 'application/json';
     newConfig.headers.Accept = 'application/json';
     newConfig.headers['H-Tenant-Id'] = id;
-    newConfig.headers['H-Menu-Id'] = MenuStore.activeMenu ? MenuStore.activeMenu.id : 0;
+    let correctId = 0;
+    if (MenuStore.activeMenu) {
+      let data;
+      const { level } = MenuStore.activeMenu;
+      const menuGroup = JSON.parse(localStorage.getItem('menuGroup'));
+      function cursiveSetCorrectId(source) {
+        for (let i = 0; i < source.length; i++) {
+          if (source[i].code === MenuStore.activeMenu.code) {
+            correctId = source[i].id;
+            return false;
+          } if (source[i].subMenus && source[i].subMenus.length > 0) {
+            return cursiveSetCorrectId(source[i].subMenus);
+          }
+        }
+      }
+      if (['site', 'users'].includes(level)) {
+        data = menuGroup[level];
+      } else {
+        data = menuGroup[level][urlSearchParam.get('id')];
+      }
+      if (data) {
+        cursiveSetCorrectId(data);
+      }
+    }
+    newConfig.headers['H-Menu-Id'] = correctId || 0;
     transformRequestPage(newConfig);
     const accessToken = getAccessToken();
     if (accessToken) {
@@ -54,28 +78,29 @@ axios.interceptors.request.use(
     }
     return newConfig;
   },
-  err => {
+  (err) => {
     const error = err;
     return Promise.reject(error);
   },
 );
 
 axios.interceptors.response.use(
-  response => {
+  (response) => {
     if (response.status === 204) {
       return response;
     }
     if (Object.prototype.hasOwnProperty.call(response, 'data')) {
       if (response.data.failed === true) {
-        prompt(response.data.message, 'error');
+        if (!response.config.noPrompt) {
+          prompt(response.data.message, 'error');
+        }
         throw response.data;
       }
       return transformResponsePage(response.data);
-    } else {
-      return response;
     }
+    return response;
   },
-  error => {
+  (error) => {
     const { response } = error;
     if (response) {
       const { status } = response;
