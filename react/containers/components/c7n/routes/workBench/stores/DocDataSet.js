@@ -10,7 +10,7 @@ export default (({ organizationId, projectId, self = false }) => ({
       method: 'get',
       params: {
         ...params,
-        projectId,
+        projectId: projectId ? String(projectId) : undefined,
       },
     }),
   },

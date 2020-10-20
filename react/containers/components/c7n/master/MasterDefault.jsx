@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import filter from 'lodash/filter';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import { message } from 'choerodon-ui/pro';
+import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import axios from '../tools/axios';
 import CommonMenu from '../ui/menu';
 import MasterHeader from '../ui/header';
@@ -13,7 +14,6 @@ import AnnouncementBanner from '../ui/header/AnnouncementBanner';
 import RouteIndex from './RouteIndex';
 import themeColorClient from './themeColorClient';
 import './style';
-import HeaderStore from "@/containers/stores/c7n/HeaderStore";
 
 const spinStyle = {
   textAlign: 'center',
@@ -23,7 +23,9 @@ const spinStyle = {
 function parseQueryToMenuType(search) {
   const menuType = {};
   if (search) {
-    const { type, name, id, organizationId, category } = queryString.parse(search);
+    const {
+      type, name, id, organizationId, category,
+    } = queryString.parse(search);
     if (type) {
       menuType.type = type;
     }
@@ -104,7 +106,7 @@ class Masters extends Component {
     const injectOutward = window._env_.outward;
     if (injectOutward) {
       const arr = injectOutward.split(',').concat(['/unauthorized']);
-      return arr.some(v => pathname.startsWith(v));
+      return arr.some((v) => pathname.startsWith(v));
     }
     return false;
   }
@@ -134,7 +136,9 @@ class Masters extends Component {
   }
 
   initMenuType(props) {
-    const { location, MenuStore, HeaderStore, history, AppState } = props;
+    const {
+      location, MenuStore, HeaderStore, history, AppState,
+    } = props;
     const { pathname, search } = location;
     let isUser = false;
     let needLoad = false;
@@ -142,8 +146,12 @@ class Masters extends Component {
     if (pathname === '/') {
       const recent = HeaderStore.getRecentItem;
       if (recent.length && !sessionStorage.home_first_redirect) {
-        const { id, name, type, organizationId } = recent[0];
-        menuType = { id, name, type, organizationId };
+        const {
+          id, name, type, organizationId,
+        } = recent[0];
+        menuType = {
+          id, name, type, organizationId,
+        };
         needLoad = true;
       } else {
         menuType = {};
@@ -160,13 +168,20 @@ class Masters extends Component {
       // }
     }
     async function checkUrl() {
-      async function goSafty() {
+      async function goSafty(data) {
         if (!HeaderStore.getOrgData) {
           setTimeout(() => {
             goSafty();
           }, 500);
         } else {
-          message.info('地址过期');
+          message.info(data ? '该项目已停用' : '地址过期');
+          // 说明是停用项目 需要删除最近使用的数据
+          if (data) {
+            const recents = JSON.parse(localStorage.getItem('recentItem'));
+            const newRecents = recents.filter(r => r.code !== data.code);
+            localStorage.setItem('recentItem', JSON.stringify(newRecents));
+            HeaderStore.recentItem = newRecents;
+          }
           AppState.setCurrentProject(null);
           const queryObj = queryString.parse(history.location.search);
           const search = await getSearchString('organization', 'id', queryObj.organizationId);
@@ -178,7 +193,11 @@ class Masters extends Component {
         const currentProject = AppState.getCurrentProject;
         let res;
         if (!currentProject || String(menuType.projectId) !== String(currentProject?.id)) {
-          try {res = await axios.get(`/iam/choerodon/v1/projects/${menuType.projectId}/basic_info`);
+          try {
+            res = await axios.get(`/iam/choerodon/v1/projects/${menuType.projectId}/basic_info`);
+            if (!res.enabled) {
+              goSafty(res);
+            }
             if (String(res.id) === String(new URLSearchParams(location.search).get('id'))) {
               AppState.setCurrentProject(res);
             } else {
@@ -192,7 +211,7 @@ class Masters extends Component {
           res = currentProject;
         }
         const checkArray = ['category', 'name', 'organizationId'];
-        if (checkArray.some(c => {
+        if (checkArray.some((c) => {
           if (menuType[c] && menuType[c] !== 'undefined' && String(menuType[c]) !== String(res[c])) {
             return true;
           }
@@ -221,39 +240,40 @@ class Masters extends Component {
   }
 
   render() {
-    const { AutoRouter, AppState } = this.props;
+    const { AutoRouter, AppState, location } = this.props;
+    const search = new URLSearchParams(location.search);
+    const fullPage = search.get('fullPage');
     if (this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">
           <RouteIndex AutoRouter={AutoRouter} />
         </div>
       );
-    } else {
-      return (
-        AppState.isAuth && AppState.currentMenuType ? (
-          <div className="page-wrapper">
-            <div className="page-header">
-              <AnnouncementBanner />
-              <MasterHeader />
-            </div>
-            <div className="page-body">
-              <div className="content-wrapper">
-                <div id="menu">
-                  <CommonMenu />
-                </div>
-                <div id="autoRouter" className="content">
-                  <RouteIndex AutoRouter={AutoRouter} />
-                </div>
+    }
+    return (
+      AppState.isAuth && AppState.currentMenuType ? (
+        <div className="page-wrapper">
+          <div className="page-header" style={fullPage ? { display: 'none' } : {}}>
+            <AnnouncementBanner />
+            <MasterHeader />
+          </div>
+          <div className="page-body">
+            <div className="content-wrapper">
+              <div id="menu" style={fullPage ? { display: 'none' } : {}}>
+                <CommonMenu />
+              </div>
+              <div id="autoRouter" className="content">
+                <RouteIndex AutoRouter={AutoRouter} />
               </div>
             </div>
           </div>
-        ) : (
-          <div style={spinStyle}>
-            <Spin />
-          </div>
-        )
-      );
-    }
+        </div>
+      ) : (
+        <div style={spinStyle}>
+          <Spin />
+        </div>
+      )
+    );
   }
 }
 

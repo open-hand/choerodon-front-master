@@ -39,6 +39,9 @@ export default class Index extends React.Component {
 
   componentDidMount() {
     window.addEventListener('storage', this.handleStorageChange);
+    if (!sessionStorage.getItem('historyPath')) {
+      sessionStorage.setItem('historyPath', window.location.hash.split('#')[1]);
+    }
     if (!this.isInOutward(this.props.location.pathname)) {
       this.auth();
     }

@@ -1,0 +1,47 @@
+.c7n-saga-CodeShow {
+  .cm-s-code-show {
+    border: none;
+    background: #f1f9ff;
+    padding: 10px 16px;
+    .CodeMirror-gutters {
+      display: none;
+    }
+  }
+
+  .CodeMirror-gutters {
+    border: none;
+  }
+
+  span {
+    font-family: Consolas, Menlo, Courier, monospace;
+    font-size: 14px;
+    line-height: 2;
+    font-weight: 500;
+
+    .cm-variable {
+      color: black;
+    }
+
+    .cm-number,
+    .cm-string {
+      color: #800
+    }
+
+    .cm-string:first-child {
+      color: black;
+    }
+
+    .cm-atom {
+      color: #00bfa5;
+    }
+  }
+
+  .CodeMirror-activeline-background {
+    background: #e8f2ff;
+  }
+
+  .CodeMirror-matchingbracket {
+    outline: 1px solid grey;
+    color: black !important;
+  }
+}

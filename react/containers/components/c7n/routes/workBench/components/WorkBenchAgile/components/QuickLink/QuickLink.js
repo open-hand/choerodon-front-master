@@ -1,4 +1,7 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, {
+  useState, useEffect, useMemo, useCallback,
+} from 'react';
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import Action from '@/containers/components/c7n/tools/action';
@@ -46,7 +49,7 @@ const QuickLink = observer(() => {
     init();
   }, [workBenchUseStore.getActiveStarProject, organizationId, type]);
 
-  const handleAdd = data => {
+  const handleAdd = (data) => {
     Modal.open({
       key: Modal.key(),
       title: data ? '修改链接' : '添加链接',
@@ -68,7 +71,7 @@ const QuickLink = observer(() => {
     });
   };
 
-  const handleTopIf = data => {
+  const handleTopIf = (data) => {
     quickLinkUseStore.axiosTopIf(data).then(() => {
       init();
     });
@@ -77,7 +80,11 @@ const QuickLink = observer(() => {
   const renderLinks = () => quickLinkUseStore.getQuickLinkList.map((l, index) => (
     <div className="c7n-quickLink-linkItem">
       <div className="c7n-quickLink-linkItem-left">
-        <p className="c7n-quickLink-linkItem-left-name">{l.user.realName}</p>
+        <p className="c7n-quickLink-linkItem-left-name">
+          <Tooltip title={l.user.realName} placement="top">
+            {l.user.realName}
+          </Tooltip>
+        </p>
         <p className="c7n-quickLink-linkItem-left-time">
           <TimePopover datetime={l.creationDate} />
         </p>
@@ -124,6 +131,7 @@ const QuickLink = observer(() => {
               <p
                 onClick={() => window.open(l.linkUrl)}
                 className="c7n-quickLink-linkItem-right-content-linkName"
+                role="none"
               >
                 <Icon style={{ color: '#5266D4' }} type="link2" />
                 <span>{l.linkUrl}</span>
@@ -190,7 +198,7 @@ const QuickLink = observer(() => {
     init();
   };
 
-  const handleChangeType = type => setType(type);
+  const handleChangeType = (tempType) => setType(tempType);
 
   const renderClassification = () => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -198,6 +206,7 @@ const QuickLink = observer(() => {
         <span
           onClick={() => handleChangeType('project')}
           className={type === 'project' && 'c7ncd-classification-checked'}
+          role="none"
         >
           项目
         </span>
@@ -205,6 +214,7 @@ const QuickLink = observer(() => {
         <span
           onClick={() => handleChangeType('self')}
           className={type === 'self' && 'c7ncd-classification-checked'}
+          role="none"
         >
           个人
         </span>
@@ -228,7 +238,12 @@ const QuickLink = observer(() => {
           [
             renderLinks(),
             quickLinkUseStore.getParams.hasMore && (
-              <a onClick={() => handleLoadMore()}>加载更多</a>
+              <a
+                onClick={handleLoadMore}
+                role="none"
+              >
+                加载更多
+              </a>
             ),
           ]
         ) : (
