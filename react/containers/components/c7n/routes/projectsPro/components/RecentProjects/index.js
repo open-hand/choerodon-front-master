@@ -16,31 +16,33 @@ export default observer(() => {
   } = useProjectsProStore();
 
   const renderProjects = () => {
-    const { organizationId } = queryString.parse(history.location.search);
-    return HeaderStore.getRecentItem.filter(i => String(i.organizationId) === String(organizationId)).map(r => (
-      <div
-        onClick={() => {
-          if (r.enabled) {
-            ProjectsProUseStore.handleClickProject(r);
-          }
-        }}
-        className="recentProjects-content"
-        style={{
-          cursor: r.enabled ? 'pointer' : 'not-allowed',
-        }}
-      >
-        <div className="recentProjects-content-time">
+    return ProjectsProUseStore.getRecentProjects.map(p => {
+      const r = p.projectDTO;
+      return (
+        <div
+          onClick={() => {
+            if (r.enabled) {
+              ProjectsProUseStore.handleClickProject(r);
+            }
+          }}
+          className="recentProjects-content"
+          style={{
+            cursor: r.enabled ? 'pointer' : 'not-allowed',
+          }}
+        >1
+          <div className="recentProjects-content-time">
           <span>
             <Icon type="date_range-o" />
           </span>
-          <p>
-            <TimeAgo datetime={r.lastUpdateDate} locale='zh_CN' />
-          </p>
-          <p style={{ marginLeft: 5 }}>使用</p>
+            <p>
+              <TimeAgo datetime={r.lastUpdateDate} locale='zh_CN' />
+            </p>
+            <p style={{ marginLeft: 5 }}>使用</p>
+          </div>
+          <ProjectTaskContent data={r} />
         </div>
-        <ProjectTaskContent data={r} />
-      </div>
-    ));
+      )
+    });
   };
 
   return (
