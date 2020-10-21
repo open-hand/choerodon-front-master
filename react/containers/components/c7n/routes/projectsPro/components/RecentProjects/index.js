@@ -15,35 +15,33 @@ export default observer(() => {
     ProjectsProUseStore,
   } = useProjectsProStore();
 
-  const renderProjects = () => {
-    return ProjectsProUseStore.getRecentProjects.map(p => {
-      const r = p.projectDTO;
-      return (
-        <div
-          onClick={() => {
-            if (r.enabled) {
-              ProjectsProUseStore.handleClickProject(r);
-            }
-          }}
-          className="recentProjects-content"
-          style={{
-            cursor: r.enabled ? 'pointer' : 'not-allowed',
-          }}
-        >1
-          <div className="recentProjects-content-time">
+  const renderProjects = () => ProjectsProUseStore.getRecentProjects.map((p) => {
+    const r = p.projectDTO;
+    return (
+      <div
+        onClick={() => {
+          if (r.enabled) {
+            ProjectsProUseStore.handleClickProject(r);
+          }
+        }}
+        className="recentProjects-content"
+        style={{
+          cursor: r.enabled ? 'pointer' : 'not-allowed',
+        }}
+      >
+        <div className="recentProjects-content-time">
           <span>
             <Icon type="date_range-o" />
           </span>
-            <p>
-              <TimeAgo datetime={r.lastUpdateDate} locale='zh_CN' />
-            </p>
-            <p style={{ marginLeft: 5 }}>使用</p>
-          </div>
-          <ProjectTaskContent data={r} />
+          <p>
+            <TimeAgo datetime={p.lastVisitTime} locale="zh_CN" />
+          </p>
+          <p style={{ marginLeft: 5 }}>使用</p>
         </div>
-      )
-    });
-  };
+        <ProjectTaskContent data={r} />
+      </div>
+    );
+  });
 
   return (
     <div className="recentProjects">
