@@ -263,7 +263,7 @@ const TodoQuestion = observer(() => {
       <Switch
         defaultValue="all"
         options={[{ value: 'all', text: '所有待办' }, { value: 'reportedBug', text: '已提缺陷' },
-          { value: 'mineBug', text: '待修复缺陷' }]}
+          { value: 'myBug', text: '待修复缺陷' }]}
         onChange={setSwitchCode}
       />
     </div>
