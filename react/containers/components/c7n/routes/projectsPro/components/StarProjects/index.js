@@ -14,6 +14,14 @@ export default observer(() => {
     ProjectsProUseStore,
   } = useProjectsProStore();
 
+  const getItemStyle = (isDragging, draggableStyle, enabled) => ({
+    // some basic styles to make the items look a bit nicer
+    userSelect: 'none',
+    // styles we need to apply on draggables
+    ...draggableStyle,
+    cursor: enabled ? 'all-scroll' : 'not-allowed',
+  });
+
   const renderProjects = useCallback(() => ProjectsProUseStore.getStarProjectsList.map((p, index) => (
     <Draggable key={`pre-${p.id}`} draggableId={`pre-${p.id}`} index={index}>
       {
@@ -25,13 +33,15 @@ export default observer(() => {
               }
             }}
             className="starProjects-items"
-            style={{
-              cursor: p.enabled ? 'pointer' : 'not-allowed',
-            }}
             role="none"
             ref={dragProvided.innerRef}
             {...dragProvided.draggableProps}
             {...dragProvided.dragHandleProps}
+            style={getItemStyle(
+              snapshotinner.isDragging,
+              dragProvided.draggableProps.style,
+              p.enabled,
+            )}
           >
             <div className="starProjects-items-topborder" />
             <ProjectTaskContent alltrue data={p} />
@@ -55,6 +65,13 @@ export default observer(() => {
     ProjectsProUseStore.changeStarProjectPos(arr);
   };
 
+  const getListStyle = (isDraggingOver) => ({
+    border: isDraggingOver ? '2px dotted #5266d4' : 'none',
+    borderRadius: isDraggingOver ? '3px' : '0',
+    padding: '0.24rem',
+    background: isDraggingOver ? 'rgba(82, 102, 212, 0.1)' : 'none',
+  });
+
   return (
     <div className="starProjects">
       <div className="starProjects-title-wrap">
@@ -70,8 +87,13 @@ export default observer(() => {
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="dropPreStep" isDropDisabled={false}>
           {
-            (provided) => (
-              <div className="starProjects-content-wrap" ref={provided.innerRef}>
+            (provided, snapshot) => (
+              <div
+                className="starProjects-content-wrap"
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}
+              >
+
                 {renderProjects()}
               </div>
             )
