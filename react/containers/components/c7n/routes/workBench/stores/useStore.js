@@ -15,7 +15,9 @@ export default function useStore(history) {
       this.activeStarProject = data;
     },
     handleClickProject(data) {
-      const { id, name, organizationId, category } = data;
+      const {
+        id, name, organizationId, category,
+      } = data;
       const type = 'project';
       HeaderStore.setRecentItem(data);
       MenuStore.loadMenuData({ type, id }, false).then((menus) => {
@@ -39,8 +41,10 @@ export default function useStore(history) {
       });
     },
 
-    loadQuestions({ organizationId, projectId, page }) {
-      return axios.post(`agile/v1/organizations/${organizationId}/work_bench/personal/backlog_issues?page=${page}&size=20${projectId ? `&projectId=${projectId}` : ''}`);
+    loadQuestions({
+      organizationId, projectId, page, type,
+    }) {
+      return axios.post(`agile/v1/organizations/${organizationId}/work_bench/personal/backlog_issues?page=${page}&size=20${projectId ? `&projectId=${projectId}` : ''}`, { type });
     },
   }));
 }
