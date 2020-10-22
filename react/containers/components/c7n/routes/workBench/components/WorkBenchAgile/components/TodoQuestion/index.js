@@ -1,7 +1,9 @@
 import React, {
   useEffect, useState, useReducer, Fragment,
 } from 'react';
-import { Icon, Tooltip, Tree } from 'choerodon-ui/pro';
+import {
+  Icon, Tooltip, Tree, UrlField,
+} from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import Card from '../../../card';
@@ -11,6 +13,18 @@ import LoadingBar from '../../../../../../tools/loading-bar';
 import Switch from '../../../multiple-switch';
 import './index.less';
 
+function getFirst(str) {
+  if (!str) {
+    return '';
+  }
+  const re = /[\u4E00-\u9FA5]/g;
+  for (let i = 0, len = str.length; i < len; i += 1) {
+    if (re.test(str[i])) {
+      return str[i];
+    }
+  }
+  return str[0];
+}
 const TodoQuestion = observer(() => {
   const {
     AppState: { currentMenuType: { organizationId } },
@@ -51,7 +65,9 @@ const TodoQuestion = observer(() => {
     try {
       const oldData = questionDs.toData();
       const { id: projectId } = workBenchUseStore.getActiveStarProject || {};
-      const res = await workBenchUseStore.loadQuestions({ organizationId, projectId, page: newPage || 1 });
+      const res = await workBenchUseStore.loadQuestions({
+        organizationId, projectId, page: newPage || 1, type: switchCode === 'all' ? undefined : switchCode,
+      });
       if (res && !res.failed) {
         if (res.totalElements && res.number < res.totalPages) {
           change({
@@ -79,7 +95,7 @@ const TodoQuestion = observer(() => {
     changeLoading(true);
     questionDs.removeAll();
     loadData();
-  }, [workBenchUseStore.getActiveStarProject, organizationId]);
+  }, [workBenchUseStore.getActiveStarProject, organizationId, switchCode]);
 
   function loadMoreData() {
     const newPage = page + 1;
@@ -152,19 +168,26 @@ const TodoQuestion = observer(() => {
     );
   }
   function getUser(userInfo = {}) {
-    const { name, img } = userInfo;
-    return (
-      <Tooltip title="王嘉嘉" placement="top">
+    const {
+      assigneeId,
+      assigneeImageUrl,
+      assigneeLoginName,
+      assigneeName,
+      assigneeRealName,
+    } = userInfo;
+    return assigneeId && (
+      <Tooltip title={assigneeRealName} placement="top">
         <span className="c7n-todoQuestion-issueContent-issueItem-main-user">
-          <div className="c7n-todoQuestion-issueContent-issueItem-main-user-left">王</div>
-          <span className="c7n-todoQuestion-issueContent-issueItem-main-user-right">王嘉嘉</span>
+          <div className="c7n-todoQuestion-issueContent-issueItem-main-user-left" style={{ backgroundImage: assigneeImageUrl ? `url(${assigneeImageUrl})` : 'unset' }}>{getFirst(assigneeRealName)}</div>
+          <span className="c7n-todoQuestion-issueContent-issueItem-main-user-right">{assigneeRealName}</span>
         </span>
       </Tooltip>
     );
   }
   function nodeRenderer({ record }) {
     const {
-      projectVO, typeCode, issueNum, summary, priorityVO, statusVO,
+      projectVO, typeCode, issueNum, summary, priorityVO, statusVO, assigneeId,
+      assigneeImageUrl, assigneeRealName,
     } = record.toData() || {};
     return (
       <div role="none" className="c7n-todoQuestion-issueContent-issueItem" onClick={() => handleClick(record)}>
@@ -179,7 +202,7 @@ const TodoQuestion = observer(() => {
           </Tooltip>
 
           {getStatus(statusVO)}
-          {switchCode === 'putForwardDefects' && getUser()}
+          {switchCode === 'reportedBug' && getUser({ assigneeId, assigneeImageUrl, assigneeRealName })}
           <span
             className="c7n-todoQuestion-issueContent-issueItem-main-priority"
             style={{
@@ -233,14 +256,14 @@ const TodoQuestion = observer(() => {
   const renderTitle = () => (
     <div className="c7n-todoQuestion-title">
       <div className="c7n-todoQuestion-title-left">
-        待办问题
+        我的事项
         <span>{totalCount}</span>
       </div>
 
       <Switch
         defaultValue="all"
-        options={[{ value: 'all', text: '所有待办' }, { value: 'putForwardDefects', text: '已提缺陷' },
-          { value: 'unsolvedDefects', text: '待修复缺陷' }]}
+        options={[{ value: 'all', text: '所有待办' }, { value: 'reportedBug', text: '已提缺陷' },
+          { value: 'mineBug', text: '待修复缺陷' }]}
         onChange={setSwitchCode}
       />
     </div>
