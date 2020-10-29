@@ -178,7 +178,7 @@ const TodoQuestion = observer(() => {
     return assigneeId && (
       <Tooltip title={assigneeRealName} placement="top">
         <span className="c7n-todoQuestion-issueContent-issueItem-main-user">
-          <div className="c7n-todoQuestion-issueContent-issueItem-main-user-left" style={{ backgroundImage: assigneeImageUrl ? `url(${assigneeImageUrl})` : 'unset' }}>{getFirst(assigneeRealName)}</div>
+          <div className="c7n-todoQuestion-issueContent-issueItem-main-user-left" style={{ backgroundImage: assigneeImageUrl ? `url('${assigneeImageUrl}')` : 'unset' }}>{!assigneeImageUrl && getFirst(assigneeRealName)}</div>
           <span className="c7n-todoQuestion-issueContent-issueItem-main-user-right">{assigneeRealName}</span>
         </span>
       </Tooltip>
