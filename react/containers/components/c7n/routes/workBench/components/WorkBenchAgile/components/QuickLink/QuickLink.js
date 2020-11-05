@@ -86,7 +86,7 @@ const QuickLink = observer(() => {
           </Tooltip>
         </p>
         <p className="c7n-quickLink-linkItem-left-time">
-          <TimePopover datetime={l.creationDate} />
+          <TimePopover datetime={l.lastUpdateDate} />
         </p>
       </div>
       <div className="c7n-quickLink-linkItem-right">
