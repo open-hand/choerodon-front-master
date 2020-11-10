@@ -21,7 +21,12 @@ export function logout() {
 
 export function authorizeC7n() {
   // 为了把这个hash传到oauth里要把#换成%23
-  let uri = `${window.location.origin}/#${sessionStorage.getItem('historyPath') || '/'}`;
+  let historyPath = sessionStorage.getItem('historyPath');
+  if (historyPath.includes('access_token')) {
+    historyPath = '/';
+    sessionStorage.setItem('historyPath', '/');
+  }
+  let uri = `${window.location.origin}/#${historyPath || '/'}`;
   if (uri.indexOf('?') > 0) {
     uri += '&redirectFlag'
   } else {
