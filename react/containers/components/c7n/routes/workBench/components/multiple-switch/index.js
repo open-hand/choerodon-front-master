@@ -4,16 +4,24 @@ import './index.less';
 
 const clsPrefix = 'c7n-workbench-multiple';
 function Switch({
-  options: propsOption, children, onChange, defaultValue, checkedValue,
+  options: propsOption, children, onChange, defaultValue, checkedValue, value: propsValue,
 }) {
   const [value, setValue] = useState(defaultValue);
   const [options, setOptions] = useState(propsOption || []);
   const onClick = (v) => {
-    setValue(v);
-    if (onChange) {
-      onChange(v);
+    if (typeof (onChange) !== 'undefined') {
+      const changeResult = onChange(v);
+      typeof (changeResult) !== 'undefined' && changeResult && setValue(v);
+    } else {
+      setValue(v);
     }
   };
+  useEffect(() => {
+    if (propsValue && options.some((v) => v.value === propsValue)) {
+      setValue(propsValue);
+      // onClick(propsValue);
+    }
+  }, [options, propsValue]);
   useEffect(() => {
     if (!Array.isArray(options)) {
       setOptions([]);

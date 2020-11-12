@@ -2,10 +2,11 @@ import React, {
   useEffect, useState, useReducer, Fragment,
 } from 'react';
 import {
-  Icon, Tooltip, Tree, UrlField,
+  Icon, Tooltip, Tree, UrlField, Dropdown, Menu,
 } from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
+import { Button } from 'choerodon-ui/lib/radio';
 import Card from '../../../card';
 import { useWorkBenchStore } from '../../../../stores';
 import EmptyPage from '../../../empty-page';
@@ -13,6 +14,7 @@ import LoadingBar from '../../../../../../tools/loading-bar';
 import Switch from '../../../multiple-switch';
 import './index.less';
 
+const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
 function getFirst(str) {
   if (!str) {
     return '';
@@ -60,14 +62,36 @@ const TodoQuestion = observer(() => {
   const { page, showMore, totalCount } = pageInfo;
   const [btnLoading, changeBtnLoading] = useState(false);
   const [loading, changeLoading] = useState(false);
-  const [switchCode, setSwitchCode] = useState('all');
+  const [switchCode, setSwitchCode] = useReducer((state, action) => {
+    const { type, ...restAction } = action;
+    switch (type) {
+      case 'init':
+        return {
+          backlogCode: 'myStarBeacon',
+          switchCode: 'all',
+        };
+      case 'change':
+        return {
+          ...state,
+          backlogCode: 'myStarBeacon',
+          ...restAction,
+        };
+      default:
+        return state;
+    }
+  }, {
+    code: 'all',
+    backlogCode: 'myStarBeacon',
+  });
   async function loadData(newPage) {
     try {
       const oldData = questionDs.toData();
       const { id: projectId } = workBenchUseStore.getActiveStarProject || {};
-      const res = await workBenchUseStore.loadQuestions({
-        organizationId, projectId, page: newPage || 1, type: switchCode === 'all' ? undefined : switchCode,
-      });
+      // HAS_BACKLOG &&
+      const res = switchCode.backlogCode === 'myStarBeacon_backlog' ? await workBenchUseStore.loadBacklogs({ organizationId, projectId, page: newPage || 1 })
+        : await workBenchUseStore.loadQuestions({
+          organizationId, projectId, page: newPage || 1, type: switchCode.code === 'all' ? undefined : switchCode.code,
+        });
       if (res && !res.failed) {
         if (res.totalElements && res.number < res.totalPages) {
           change({
@@ -104,18 +128,45 @@ const TodoQuestion = observer(() => {
   }
 
   function handleClick(record) {
-    const { projectVO, issueId } = record.toData();
+    const {
+      projectVO, issueId, id, statusVO, typeCode,
+    } = record.toData();
     const { id: projectId, name: projectName } = projectVO || {};
-    history.push({
-      pathname: '/agile/scrumboard',
-      search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`,
-      state: {
-        issueId,
-      },
-    });
+    if (switchCode.code !== 'myStarBeacon') {
+      history.push({
+        pathname: '/agile/scrumboard',
+        search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`,
+        state: {
+          issueId,
+        },
+      });
+    } else if (switchCode.backlogCode === 'myStarBeacon_backlog') {
+      const { code } = statusVO;
+      let pathSuffix = 'demand';
+      if (code === 'backlog_pending_approval' || code === 'backlog_rejected') {
+        pathSuffix += '-approve';
+      }
+      history.push({
+        pathname: `/agile/${pathSuffix}`,
+        search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`,
+        state: {
+          backlogId: id,
+        },
+      });
+    } else if (typeCode !== 'feature') {
+      history.push({
+        pathname: '/agile/work-list/issue',
+        search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project&paramIssueId=${issueId}`,
+      });
+    } else {
+      history.push({
+        pathname: '/agile/feature',
+        search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&category=PROGRAM&organizationId=${organizationId}&type=project&paramIssueId=${issueId}`,
+      });
+    }
   }
 
-  function getIssueType(typeCode) {
+  function getIssueType(typeCode, featureType) {
     let mes = '';
     let icon = '';
     let color = '';
@@ -140,6 +191,18 @@ const TodoQuestion = observer(() => {
         icon = 'agile_subtask';
         color = '#4d90fe';
         break;
+      case 'backlog':
+        mes = '需求';
+        icon = 'highlight';
+        color = '#f67f5a';
+        break;
+      case 'feature': {
+        const featureTypeResult = featureType === 'business';
+        mes = featureTypeResult ? '特性' : '使能';
+        icon = featureTypeResult ? 'characteristic' : 'agile-feature';
+        color = featureTypeResult ? '#3D5AFE' : '#FFCA28';
+        break;
+      }
       default:
         mes = '任务';
         icon = 'agile_task';
@@ -167,42 +230,51 @@ const TodoQuestion = observer(() => {
       </span>
     );
   }
-  function getUser(userInfo = {}) {
+  function getUser(userInfo = {}, hiddenName = false, tooltipText) {
     const {
-      assigneeId,
-      assigneeImageUrl,
-      assigneeLoginName,
-      assigneeName,
-      assigneeRealName,
+      id,
+      imageUrl,
+      loginName,
+      name,
+      realName,
     } = userInfo;
-    return assigneeId && (
-      <Tooltip title={assigneeRealName} placement="top">
+    return id && (
+      <Tooltip title={tooltipText || realName} placement="top">
         <span className="c7n-todoQuestion-issueContent-issueItem-main-user">
-          <div className="c7n-todoQuestion-issueContent-issueItem-main-user-left" style={{ backgroundImage: assigneeImageUrl ? `url('${assigneeImageUrl}')` : 'unset' }}>{!assigneeImageUrl && getFirst(assigneeRealName)}</div>
-          <span className="c7n-todoQuestion-issueContent-issueItem-main-user-right">{assigneeRealName}</span>
+          <div className="c7n-todoQuestion-issueContent-issueItem-main-user-left" style={{ marginRight: id === 'more' ? 0 : undefined, backgroundImage: imageUrl ? `url('${imageUrl}')` : 'unset' }}>{!imageUrl && (name || getFirst(realName))}</div>
+          {!hiddenName && <span className="c7n-todoQuestion-issueContent-issueItem-main-user-right" style={{ color: id === 'more' ? 'inherit' : undefined }}>{realName}</span>}
         </span>
       </Tooltip>
     );
   }
+  function getUsers(userInfos = [{}]) {
+    return (
+      <div className="c7n-todoQuestion-issueContent-issueItem-main-users">
+        {userInfos.length > 1 ? userInfos.slice(0, 2).map((user) => getUser(user, true)) : getUser(userInfos[0])}
+        {userInfos.length > 2 && getUser({ id: 'more', name: '...' }, true, userInfos.slice(2).map((user) => [getUser(user), <br />]))}
+      </div>
+    );
+  }
   function nodeRenderer({ record }) {
     const {
-      projectVO, typeCode, issueNum, summary, priorityVO, statusVO, assigneeId,
-      assigneeImageUrl, assigneeRealName,
+      projectVO, typeCode, issueNum, summary, priorityVO: customPriorityVO, backlogPriority, statusVO, assigneeId, featureType, backlogNum,
+      assigneeImageUrl, assigneeRealName, assignees,
     } = record.toData() || {};
+    const priorityVO = customPriorityVO || backlogPriority;
     return (
       <div role="none" className="c7n-todoQuestion-issueContent-issueItem" onClick={() => handleClick(record)}>
         <p className="c7n-todoQuestion-issueContent-issueItem-project">{projectVO ? projectVO.name : ''}</p>
         <div className="c7n-todoQuestion-issueContent-issueItem-main">
-          {getIssueType(typeCode)}
+          {getIssueType(typeCode, featureType)}
           <Tooltip title={issueNum} placement="top">
-            <span className="c7n-todoQuestion-issueContent-issueItem-main-issueId">{issueNum}</span>
+            <span className="c7n-todoQuestion-issueContent-issueItem-main-issueId">{issueNum || backlogNum}</span>
           </Tooltip>
           <Tooltip title={summary} placement="top">
             <span className="c7n-todoQuestion-issueContent-issueItem-main-description">{summary}</span>
           </Tooltip>
-
+          {switchCode.code === 'myStarBeacon' && <Icon className="c7n-todoQuestion-issueContent-issueItem-main-star" type="star_border" />}
           {getStatus(statusVO)}
-          {switchCode === 'reportedBug' && getUser({ assigneeId, assigneeImageUrl, assigneeRealName })}
+          {(switchCode.code === 'reportedBug' || switchCode.code === 'myStarBeacon') && getUsers(assignees || [{ assigneeId, assigneeImageUrl, assigneeRealName }])}
           <span
             className="c7n-todoQuestion-issueContent-issueItem-main-priority"
             style={{
@@ -216,7 +288,6 @@ const TodoQuestion = observer(() => {
       </div>
     );
   }
-
   function getContent() {
     if (!questionDs || questionDs.status === 'loading' || loading) {
       return <LoadingBar display />;
@@ -253,18 +324,32 @@ const TodoQuestion = observer(() => {
       </>
     );
   }
+  const renderStarMenu = () => (
+    <Menu onClick={({ key }) => setSwitchCode({ type: 'change', code: 'myStarBeacon', backlogCode: key })}>
+      <Menu.Item key="myStarBeacon_backlog">需求</Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="myStarBeacon">问题</Menu.Item>
+    </Menu>
+  );
   const renderTitle = () => (
     <div className="c7n-todoQuestion-title">
       <div className="c7n-todoQuestion-title-left">
         我的事项
+
         <span>{totalCount}</span>
       </div>
 
       <Switch
         defaultValue="all"
-        options={[{ value: 'all', text: '所有待办' }, { value: 'reportedBug', text: '已提缺陷' },
+        value={switchCode.code}
+        options={[{ value: 'all', text: '所有待办' },
+          {
+            value: 'myStarBeacon',
+            text: (<Dropdown overlay={HAS_BACKLOG ? renderStarMenu() : undefined}><span>我的关注</span></Dropdown>),
+          },
+          { value: 'reportedBug', text: '已提缺陷' },
           { value: 'myBug', text: '待修复缺陷' }]}
-        onChange={setSwitchCode}
+        onChange={(v) => (!HAS_BACKLOG || v !== 'myStarBeacon' ? setSwitchCode({ type: 'change', code: v }) : false)}
       />
     </div>
   );
