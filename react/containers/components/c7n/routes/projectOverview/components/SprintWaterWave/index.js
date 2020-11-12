@@ -22,13 +22,13 @@ const SprintWaterWave = observer(() => {
       const remainingDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : 0;
       const totalDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('totalDays') : 0;
       return (
-        <React.Fragment>
+        <>
           <div className={`${clsPrefix}-content-left`}>
             <WaterWave
               height={120}
               // color="rgba(77, 144, 254, 1)"
               title="剩余时间"
-              percent={totalDays && remainingDays > 0 ? ((totalDays - remainingDays) / totalDays) * 100 : 100} // "totalDays": remainingDays
+              percent={totalDays && remainingDays > 0 ? ((remainingDays) / totalDays) * 100 : 0} // "totalDays": remainingDays
               percentRender={() => (
                 <div className={`${clsPrefix}-percent`}>
                   {normalToSvg(sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : '', 20)}
@@ -40,22 +40,31 @@ const SprintWaterWave = observer(() => {
           <ul className={`${clsPrefix}-content-right`}>
             <li>
               <label>问题数</label>
-              <span>{sprintWaterWaveDataSet.current.get('issueCount')}(个)</span>
+              <span>
+                {sprintWaterWaveDataSet.current.get('issueCount')}
+                (个)
+              </span>
             </li>
             <li>
               <label>故事点</label>
-              <span>{sprintWaterWaveDataSet.current.get('storyPoints')}(个)</span>
+              <span>
+                {sprintWaterWaveDataSet.current.get('storyPoints')}
+                (个)
+              </span>
             </li>
             <li>
               <label>剩余工时</label>
-              <span>{sprintWaterWaveDataSet.current.get('remainingEstimatedTime')}(小时)</span>
+              <span>
+                {sprintWaterWaveDataSet.current.get('remainingEstimatedTime')}
+                (小时)
+              </span>
             </li>
           </ul>
-        </React.Fragment>
+        </>
       );
-    } else if (projectOverviewStore.getStaredSprint) {
+    } if (projectOverviewStore.getStaredSprint) {
       return <LoadingBar display />;
-    } else if (!sprintWaterWaveDataSet.status !== 'loading' && projectOverviewStore.getIsFinishLoad) {
+    } if (!sprintWaterWaveDataSet.status !== 'loading' && projectOverviewStore.getIsFinishLoad) {
       return <EmptyPage />;
     }
     return '';
