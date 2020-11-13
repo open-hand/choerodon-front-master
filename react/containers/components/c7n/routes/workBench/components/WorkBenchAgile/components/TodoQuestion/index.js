@@ -148,7 +148,7 @@ const TodoQuestion = observer(() => {
       }
       history.push({
         pathname: `/agile/${pathSuffix}`,
-        search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`,
+        search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project&paramBacklogId=${id}`,
         state: {
           backlogId: id,
         },
@@ -166,10 +166,11 @@ const TodoQuestion = observer(() => {
     }
   }
 
-  function getIssueType(typeCode, featureType) {
+  function getIssueType(originTypeCode, featureType, isBacklogType = false) {
     let mes = '';
     let icon = '';
     let color = '';
+    const typeCode = isBacklogType ? 'backlog' : originTypeCode;
     switch (typeCode) {
       case 'story':
         mes = '故事';
@@ -211,11 +212,25 @@ const TodoQuestion = observer(() => {
 
     return (
       <Tooltip title={mes} placement="top">
-        <Icon
-          className="c7n-todoQuestion-issueContent-issueItem-main-icon"
-          type={icon}
-          style={{ color }}
-        />
+        {typeCode === 'backlog' ? (
+          <div style={{
+            backgroundColor: color, width: '.16rem', height: '.16rem', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+          >
+            <Icon
+              className="c7n-todoQuestion-issueContent-issueItem-main-icon"
+              type={icon}
+              style={{ color: '#fff', fontSize: '12px' }}
+            />
+          </div>
+        ) : (
+          <Icon
+            className="c7n-todoQuestion-issueContent-issueItem-main-icon"
+            type={icon}
+            style={{ color }}
+          />
+        )}
+
       </Tooltip>
     );
   }
@@ -239,7 +254,7 @@ const TodoQuestion = observer(() => {
       realName,
     } = userInfo;
     return id && (
-      <Tooltip title={tooltipText || realName} placement="top">
+      <Tooltip title={<div className="c7n-todoQuestion-issueContent-issueItem-main-user-tooltip">{tooltipText || realName}</div>} placement="top">
         <span className="c7n-todoQuestion-issueContent-issueItem-main-user">
           <div className="c7n-todoQuestion-issueContent-issueItem-main-user-left" style={{ marginRight: id === 'more' ? 0 : undefined, backgroundImage: imageUrl ? `url('${imageUrl}')` : 'unset' }}>{!imageUrl && (name || getFirst(realName))}</div>
           {!hiddenName && <span className="c7n-todoQuestion-issueContent-issueItem-main-user-right" style={{ color: id === 'more' ? 'inherit' : undefined }}>{realName}</span>}
@@ -257,15 +272,15 @@ const TodoQuestion = observer(() => {
   }
   function nodeRenderer({ record }) {
     const {
-      projectVO, typeCode, issueNum, summary, priorityVO: customPriorityVO, backlogPriority, statusVO, assigneeId, featureType, backlogNum,
+      projectVO, projectName, typeCode, issueNum, summary, priorityVO: customPriorityVO, backlogPriority, statusVO, assigneeId, featureType, backlogNum,
       assigneeImageUrl, assigneeRealName, assignees,
     } = record.toData() || {};
     const priorityVO = customPriorityVO || backlogPriority;
     return (
       <div role="none" className="c7n-todoQuestion-issueContent-issueItem" onClick={() => handleClick(record)}>
-        <p className="c7n-todoQuestion-issueContent-issueItem-project">{projectVO ? projectVO.name : ''}</p>
+        <p className="c7n-todoQuestion-issueContent-issueItem-project">{projectVO ? projectVO.name : projectName || ''}</p>
         <div className="c7n-todoQuestion-issueContent-issueItem-main">
-          {getIssueType(typeCode, featureType)}
+          {getIssueType(typeCode, featureType, !!backlogNum)}
           <Tooltip title={issueNum} placement="top">
             <span className="c7n-todoQuestion-issueContent-issueItem-main-issueId">{issueNum || backlogNum}</span>
           </Tooltip>
