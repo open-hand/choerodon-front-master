@@ -5,7 +5,9 @@ import {
   Icon, Tooltip, Tree, UrlField, Dropdown, Menu,
 } from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
+import { merge } from 'lodash';
 import { observer } from 'mobx-react-lite';
+import queryString from 'query-string';
 import { Button } from 'choerodon-ui/lib/radio';
 import Card from '../../../card';
 import { useWorkBenchStore } from '../../../../stores';
@@ -129,13 +131,19 @@ const TodoQuestion = observer(() => {
 
   function handleClick(record) {
     const {
-      projectVO, issueId, id, statusVO, typeCode,
+      projectVO, issueId, id, statusVO, typeCode, backlogNum, statusVO: { code: statusCode }, projectId: topProjectId, projectName: topProjectName,
     } = record.toData();
     const { id: projectId, name: projectName } = projectVO || {};
+    const queryData = {
+      id: projectId || topProjectId,
+      name: projectName || topProjectName,
+      organizationId,
+      type: 'project',
+    };
     if (switchCode.code !== 'myStarBeacon') {
       history.push({
         pathname: '/agile/scrumboard',
-        search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`,
+        search: `?${queryString.stringify(queryData)}`,
         state: {
           issueId,
         },
@@ -145,23 +153,28 @@ const TodoQuestion = observer(() => {
       let pathSuffix = 'demand';
       if (code === 'backlog_pending_approval' || code === 'backlog_rejected') {
         pathSuffix += '-approve';
+        merge(queryData, { paramBacklogStatus: statusCode });
       }
+      merge(queryData, { paramBacklogId: id, paramBacklogName: backlogNum });
       history.push({
         pathname: `/agile/${pathSuffix}`,
-        search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project&paramBacklogId=${id}`,
+        search: `?${queryString.stringify(queryData)}`,
         state: {
           backlogId: id,
         },
       });
     } else if (typeCode !== 'feature') {
+      merge(queryData, { paramIssueId: issueId });
       history.push({
         pathname: '/agile/work-list/issue',
-        search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project&paramIssueId=${issueId}`,
+        search: `?${queryString.stringify(queryData)}`,
       });
     } else {
+      merge(queryData, { paramIssueId: issueId, category: 'PROGRAM' });
+
       history.push({
         pathname: '/agile/feature',
-        search: `?id=${projectId}&name=${encodeURIComponent(projectName)}&category=PROGRAM&organizationId=${organizationId}&type=project&paramIssueId=${issueId}`,
+        search: `?${queryString.stringify(queryData)}`,
       });
     }
   }
