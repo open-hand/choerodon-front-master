@@ -10,12 +10,13 @@ import MenuStore from '../../../../stores/c7n/MenuStore';
 
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 
+const JSONbigString = JSONbig({ storeAsString: true });
 const instance = axios.create({
   timeout: 30000,
   baseURL: API_HOST,
   transformResponse: [function (data) {
     try {
-      return JSONbig.parse(data);
+      return JSONbigString.parse(data);
     } catch (e) {
       return data;
     }
