@@ -96,7 +96,7 @@ const TodoQuestion = observer(() => {
           organizationId, projectId, page: newPage || 1, type: switchCode.code === 'all' ? undefined : switchCode.code,
         });
       if (res && !res.failed) {
-        if (res.totalElements && res.number < res.totalPages) {
+        if (res.totalElements && (res.number + 1) < res.totalPages) {
           change({
             type: 'load', showMore: true, page: res.number + 1, totalCount: res.totalElements,
           });
