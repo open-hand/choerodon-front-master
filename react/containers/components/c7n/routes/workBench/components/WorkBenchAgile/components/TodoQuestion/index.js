@@ -9,6 +9,7 @@ import { merge } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { Button } from 'choerodon-ui/lib/radio';
+import { getRandomBackground } from '@/containers/components/c7n/util';
 import Card from '../../../card';
 import { useWorkBenchStore } from '../../../../stores';
 import EmptyPage from '../../../empty-page';
@@ -225,9 +226,9 @@ const TodoQuestion = observer(() => {
 
     return (
       <Tooltip title={mes} placement="top">
-        {typeCode === 'backlog' ? (
+        {typeCode === 'backlog' || featureType === 'business' ? (
           <div style={{
-            backgroundColor: color, width: '.16rem', height: '.16rem', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            backgroundColor: color, width: '.16rem', height: '.16rem', flexShrink: 0, borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}
           >
             <Icon
@@ -283,10 +284,42 @@ const TodoQuestion = observer(() => {
       </div>
     );
   }
+  function getProject(project = {}, hiddenName = false, tooltipText) {
+    const {
+      id, name, imageUrl, realId, realName,
+    } = project;
+    return (id || realId) && (
+      <Tooltip title={<div className="c7n-todoQuestion-issueContent-issueItem-main-project-tooltip">{tooltipText || name}</div>} placement="top">
+        <span className="c7n-todoQuestion-issueContent-issueItem-main-project">
+          <div
+            className="c7n-todoQuestion-issueContent-issueItem-main-project-left"
+            style={{
+              color: realId ? '#5365EA' : undefined,
+              marginRight: id === 'more' ? 0 : undefined,
+              backgroundColor: realId ? '#F0F5FF' : undefined,
+              backgroundImage: imageUrl && id ? `url('${imageUrl}')` : getRandomBackground(id),
+            }}
+          >
+            {!imageUrl && (realName || getFirst(name))}
+
+          </div>
+          {!hiddenName && <span className="c7n-todoQuestion-issueContent-issueItem-main-project-right" style={{ color: id === 'more' ? 'inherit' : undefined }}>{name}</span>}
+        </span>
+      </Tooltip>
+    );
+  }
+  function getProjects(projects = []) {
+    return projects.length > 0 ? (
+      <div className="c7n-todoQuestion-issueContent-issueItem-main-projects">
+        {projects.length > 1 ? projects.splice(0, 2).map((project) => getProject(project, true)) : getProject(projects[0])}
+        {projects.length > 2 && getProject({ realId: 'more', realName: '...' }, true, projects.slice(2).map((project) => [getProject(project), <br />]))}
+      </div>
+    ) : '';
+  }
   function nodeRenderer({ record }) {
     const {
       projectVO, projectName, typeCode, issueNum, summary, priorityVO: customPriorityVO, backlogPriority, statusVO, assigneeId, featureType, backlogNum,
-      assigneeImageUrl, assigneeRealName, assignees,
+      assigneeImageUrl, assigneeRealName, assignees, featureTeams,
     } = record.toData() || {};
     const priorityVO = customPriorityVO || backlogPriority;
     return (
@@ -302,7 +335,9 @@ const TodoQuestion = observer(() => {
           </Tooltip>
           {switchCode.code === 'myStarBeacon' && <Icon className="c7n-todoQuestion-issueContent-issueItem-main-star" type="star_border" />}
           {getStatus(statusVO)}
-          {(switchCode.code === 'reportedBug' || switchCode.code === 'myStarBeacon') && getUsers(assignees || [{ assigneeId, assigneeImageUrl, assigneeRealName }])}
+          {(switchCode.code === 'reportedBug' || (switchCode.code === 'myStarBeacon' && typeCode !== 'feature')) && getUsers(assignees || [{ assigneeId, assigneeImageUrl, assigneeRealName }])}
+          {typeCode === 'feature' && getProjects(featureTeams)}
+          {typeCode !== 'feature' && (
           <span
             className="c7n-todoQuestion-issueContent-issueItem-main-priority"
             style={{
@@ -312,6 +347,7 @@ const TodoQuestion = observer(() => {
           >
             {priorityVO ? priorityVO.name : '无'}
           </span>
+          )}
         </div>
       </div>
     );
