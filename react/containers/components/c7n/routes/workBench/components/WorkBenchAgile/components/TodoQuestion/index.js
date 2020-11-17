@@ -319,7 +319,7 @@ const TodoQuestion = observer(() => {
   function nodeRenderer({ record }) {
     const {
       projectVO, projectName, typeCode, issueNum, summary, priorityVO: customPriorityVO, backlogPriority, statusVO, assigneeId, featureType, backlogNum,
-      assigneeImageUrl, assigneeRealName, assignees, featureTeams,
+      assigneeImageUrl, assigneeRealName, assignees, featureTeams, starBeacon,
     } = record.toData() || {};
     const priorityVO = customPriorityVO || backlogPriority;
     return (
@@ -333,7 +333,7 @@ const TodoQuestion = observer(() => {
           <Tooltip title={summary} placement="top">
             <span className="c7n-todoQuestion-issueContent-issueItem-main-description">{summary}</span>
           </Tooltip>
-          {switchCode.code === 'myStarBeacon' && <Icon className="c7n-todoQuestion-issueContent-issueItem-main-star" type="star_border" />}
+          {switchCode.code === 'myStarBeacon' && starBeacon && <Icon className="c7n-todoQuestion-issueContent-issueItem-main-star" type="star_border" />}
           {getStatus(statusVO)}
           {(switchCode.code === 'reportedBug' || (switchCode.code === 'myStarBeacon' && typeCode !== 'feature')) && getUsers(assignees || [{ assigneeId, assigneeImageUrl, assigneeRealName }])}
           {typeCode === 'feature' && getProjects(featureTeams)}
