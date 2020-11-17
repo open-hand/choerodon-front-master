@@ -319,11 +319,11 @@ const TodoQuestion = observer(() => {
   function nodeRenderer({ record }) {
     const {
       projectVO, projectName, typeCode, issueNum, summary, priorityVO: customPriorityVO, backlogPriority, statusVO, assigneeId, featureType, backlogNum,
-      assigneeImageUrl, assigneeRealName, assignees, featureTeams, starBeacon,
+      assigneeImageUrl, assigneeRealName, assignees, featureTeams, starBeacon, issueId, id,
     } = record.toData() || {};
-    const priorityVO = customPriorityVO || backlogPriority;
+    const priorityVO = customPriorityVO || (backlogPriority && { colour: backlogPriority.color, name: backlogPriority.name });
     return (
-      <div role="none" className="c7n-todoQuestion-issueContent-issueItem" onClick={() => handleClick(record)}>
+      <div role="none" className="c7n-todoQuestion-issueContent-issueItem" onClick={() => handleClick(record)} key={`${typeCode}-${issueId || id}`}>
         <p className="c7n-todoQuestion-issueContent-issueItem-project">{projectVO ? projectVO.name : projectName || ''}</p>
         <div className="c7n-todoQuestion-issueContent-issueItem-main">
           {getIssueType(typeCode, featureType, !!backlogNum)}
