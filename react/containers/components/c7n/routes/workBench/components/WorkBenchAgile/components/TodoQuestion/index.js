@@ -132,7 +132,7 @@ const TodoQuestion = observer(() => {
 
   function handleClick(record) {
     const {
-      projectVO, issueId, id, statusVO, typeCode, backlogNum, statusVO: { code: statusCode }, projectId: topProjectId, projectName: topProjectName,
+      projectVO, issueId, id, statusVO, typeCode, issueNum, backlogNum, statusVO: { code: statusCode }, projectId: topProjectId, projectName: topProjectName,
     } = record.toData();
     const { id: projectId, name: projectName } = projectVO || {};
     const queryData = {
@@ -165,7 +165,7 @@ const TodoQuestion = observer(() => {
         },
       });
     } else if (typeCode !== 'feature') {
-      merge(queryData, { paramIssueId: issueId });
+      merge(queryData, { paramIssueId: issueId, paramName: issueNum });
       history.push({
         pathname: '/agile/work-list/issue',
         search: `?${queryString.stringify(queryData)}`,
@@ -338,15 +338,15 @@ const TodoQuestion = observer(() => {
           {(switchCode.code === 'reportedBug' || (switchCode.code === 'myStarBeacon' && typeCode !== 'feature')) && getUsers(assignees || [{ assigneeId, assigneeImageUrl, assigneeRealName }])}
           {typeCode === 'feature' && getProjects(featureTeams)}
           {typeCode !== 'feature' && (
-          <span
-            className="c7n-todoQuestion-issueContent-issueItem-main-priority"
-            style={{
-              backgroundColor: `${priorityVO ? priorityVO.colour : '#FFFFFF'}1F`,
-              color: priorityVO ? priorityVO.colour : '#FFFFFF',
-            }}
-          >
-            {priorityVO ? priorityVO.name : '无'}
-          </span>
+            <span
+              className="c7n-todoQuestion-issueContent-issueItem-main-priority"
+              style={{
+                backgroundColor: `${priorityVO ? priorityVO.colour : '#FFFFFF'}1F`,
+                color: priorityVO ? priorityVO.colour : '#FFFFFF',
+              }}
+            >
+              {priorityVO ? priorityVO.name : '无'}
+            </span>
           )}
         </div>
       </div>
