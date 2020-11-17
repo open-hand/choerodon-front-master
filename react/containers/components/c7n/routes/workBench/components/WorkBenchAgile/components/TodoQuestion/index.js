@@ -171,7 +171,7 @@ const TodoQuestion = observer(() => {
         search: `?${queryString.stringify(queryData)}`,
       });
     } else {
-      merge(queryData, { paramIssueId: issueId, category: 'PROGRAM' });
+      merge(queryData, { paramIssueId: issueId, paramName: issueNum, category: 'PROGRAM' });
 
       history.push({
         pathname: '/agile/feature',
