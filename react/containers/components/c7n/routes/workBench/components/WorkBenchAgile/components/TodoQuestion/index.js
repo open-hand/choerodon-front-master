@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useState, useReducer, Fragment,
+  useEffect, useState, useReducer, Fragment, useMemo,
 } from 'react';
 import {
   Icon, Tooltip, Tree, UrlField, Dropdown, Menu,
@@ -37,6 +37,7 @@ const TodoQuestion = observer(() => {
     history,
     workBenchUseStore,
   } = useWorkBenchStore();
+
   const [pageInfo, change] = useReducer((state, action) => {
     const { type, ...other } = action;
     switch (type) {
@@ -86,6 +87,17 @@ const TodoQuestion = observer(() => {
     code: 'all',
     backlogCode: 'myStarBeacon',
   });
+  const emptyPrompt = useMemo(() => {
+    let title = '暂无待办问题';
+    let describe = '当前迭代暂无待办问题';
+    if (switchCode.code === 'reportedBug') {
+      title = '暂无已提缺陷';
+      describe = '当前迭代您尚未提交任何缺陷';
+    } else if (switchCode.code === 'myStarBeacon') {
+      [title, describe] = switchCode.backlogCode === 'myStarBeacon' ? ['暂无我关注的问题', '您尚未关注任何问题项'] : ['暂无我关注的需求', '您尚未关注任何需求'];
+    }
+    return { title, describe };
+  }, [switchCode.backlogCode, switchCode.code]);
   async function loadData(newPage) {
     try {
       const oldData = questionDs.toData();
@@ -300,7 +312,7 @@ const TodoQuestion = observer(() => {
               backgroundImage: imageUrl && id ? `url('${imageUrl}')` : getRandomBackground(id),
             }}
           >
-            {!imageUrl && (realName || getFirst(name))}
+            {!imageUrl && (realName || String(name).toLocaleUpperCase().substring(0, 1))}
 
           </div>
           {!hiddenName && <span className="c7n-todoQuestion-issueContent-issueItem-main-project-right" style={{ color: id === 'more' ? 'inherit' : undefined }}>{name}</span>}
@@ -359,8 +371,8 @@ const TodoQuestion = observer(() => {
     if (!questionDs.length) {
       return (
         <EmptyPage
-          title="暂无待办问题"
-          describe="当前迭代暂无待办问题"
+          title={emptyPrompt.title}
+          describe={emptyPrompt.describe}
         />
       );
     }
