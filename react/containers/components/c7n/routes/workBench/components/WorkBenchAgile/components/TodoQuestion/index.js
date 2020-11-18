@@ -335,7 +335,7 @@ const TodoQuestion = observer(() => {
           </Tooltip>
           {switchCode.code === 'myStarBeacon' && starBeacon && <Icon className="c7n-todoQuestion-issueContent-issueItem-main-star" type="star_border" />}
           {getStatus(statusVO)}
-          {(switchCode.code === 'reportedBug' || (switchCode.code === 'myStarBeacon' && typeCode !== 'feature')) && getUsers(assignees || [{ assigneeId, assigneeImageUrl, assigneeRealName }])}
+          {(switchCode.code === 'reportedBug' || (switchCode.code === 'myStarBeacon' && typeCode !== 'feature')) && getUsers(assignees || [{ id: assigneeId, imageUrl: assigneeImageUrl, realName: assigneeRealName }])}
           {typeCode === 'feature' && getProjects(featureTeams)}
           {typeCode !== 'feature' && (
             <span
