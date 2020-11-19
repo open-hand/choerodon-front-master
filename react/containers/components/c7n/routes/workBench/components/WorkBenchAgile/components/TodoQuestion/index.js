@@ -271,7 +271,7 @@ const TodoQuestion = observer(() => {
       </span>
     );
   }
-  function getUser(userInfo = {}, hiddenName = false, tooltipText) {
+  function getUser(userInfo = {}, hiddenName = false, tooltipText, tooltipTheme = 'dark') {
     const {
       id,
       imageUrl,
@@ -280,8 +280,8 @@ const TodoQuestion = observer(() => {
       realName,
     } = userInfo;
     return id && (
-      <Tooltip title={<div className="c7n-todoQuestion-issueContent-issueItem-main-user-tooltip">{tooltipText || realName}</div>} placement="top">
-        <span className="c7n-todoQuestion-issueContent-issueItem-main-user">
+      <Tooltip theme={tooltipTheme} title={<div className="c7n-todoQuestion-issueContent-issueItem-main-user-tooltip">{tooltipText || realName}</div>} placement="top">
+        <span className={`c7n-todoQuestion-issueContent-issueItem-main-user ${hiddenName ? 'c7n-todoQuestion-issueContent-issueItem-main-user-hover' : ''}`}>
           <div className="c7n-todoQuestion-issueContent-issueItem-main-user-left" style={{ marginRight: id === 'more' ? 0 : undefined, backgroundImage: imageUrl ? `url('${imageUrl}')` : 'unset' }}>{!imageUrl && (name || getFirst(realName))}</div>
           {!hiddenName && <span className="c7n-todoQuestion-issueContent-issueItem-main-user-right" style={{ color: id === 'more' ? 'inherit' : undefined }}>{realName}</span>}
         </span>
@@ -291,18 +291,21 @@ const TodoQuestion = observer(() => {
   function getUsers(userInfos = [{}]) {
     return (
       <div className="c7n-todoQuestion-issueContent-issueItem-main-users">
-        {userInfos.length > 1 ? userInfos.slice(0, 2).map((user) => getUser(user, true)) : getUser(userInfos[0])}
-        {userInfos.length > 2 && getUser({ id: 'more', name: '...' }, true, userInfos.slice(2).map((user) => [getUser(user), <br />]))}
+        {userInfos.length > 1 ? userInfos.slice(0, 3).map((user) => getUser(user, true)) : getUser(userInfos[0])}
+        {userInfos.length > 3 && getUser({ id: 'more', name: <Icon type="more_horiz" style={{ fontSize: 'inherit', lineHeight: 'inherit' }} /> }, true,
+          <div className="c7n-todoQuestion-issueContent-issueItem-main-users-tooltip">
+            {userInfos.slice(3).map((user) => <div>{getUser(user)}</div>)}
+          </div>, 'light')}
       </div>
     );
   }
-  function getProject(project = {}, hiddenName = false, tooltipText) {
+  function getProject(project = {}, hiddenName = false, tooltipText, tooltipTheme = 'dark') {
     const {
       id, name, imageUrl, realId, realName,
     } = project;
     return (id || realId) && (
-      <Tooltip title={<div className="c7n-todoQuestion-issueContent-issueItem-main-project-tooltip">{tooltipText || name}</div>} placement="top">
-        <span className="c7n-todoQuestion-issueContent-issueItem-main-project">
+      <Tooltip theme={tooltipTheme} title={<div className="c7n-todoQuestion-issueContent-issueItem-main-project-tooltip">{tooltipText || name}</div>} placement="top">
+        <span className={`c7n-todoQuestion-issueContent-issueItem-main-project ${hiddenName ? 'c7n-todoQuestion-issueContent-issueItem-main-project-hover' : ''}`}>
           <div
             className="c7n-todoQuestion-issueContent-issueItem-main-project-left"
             style={{
@@ -323,8 +326,11 @@ const TodoQuestion = observer(() => {
   function getProjects(projects = []) {
     return projects.length > 0 ? (
       <div className="c7n-todoQuestion-issueContent-issueItem-main-projects">
-        {projects.length > 1 ? projects.splice(0, 2).map((project) => getProject(project, true)) : getProject(projects[0])}
-        {projects.length > 2 && getProject({ realId: 'more', realName: '...' }, true, projects.slice(2).map((project) => [getProject(project), <br />]))}
+        {projects.length > 1 ? projects.splice(0, 3).map((project) => getProject(project, true)) : getProject(projects[0])}
+        {projects.length > 3 && getProject({ realId: 'more', realName: <Icon type="more_horiz" style={{ fontSize: 'inherit', lineHeight: 'inherit' }} /> }, true,
+          <div className="c7n-todoQuestion-issueContent-issueItem-main-projects-tooltip">
+            {projects.slice(3).map((project) => <div>{getProject(project)}</div>)}
+          </div>, 'light')}
       </div>
     ) : '';
   }
@@ -421,11 +427,11 @@ const TodoQuestion = observer(() => {
         options={[{ value: 'all', text: '所有待办' },
           {
             value: 'myStarBeacon',
-            text: (<Dropdown overlay={HAS_BACKLOG ? renderStarMenu() : undefined}><span>我的关注</span></Dropdown>),
+            text: (<Dropdown overlay={true || HAS_BACKLOG ? renderStarMenu() : undefined}><span>我的关注</span></Dropdown>),
           },
           { value: 'reportedBug', text: '已提缺陷' },
-          { value: 'myBug', text: '待修复缺陷' }]}
-        onChange={(v) => (!HAS_BACKLOG || v !== 'myStarBeacon' ? setSwitchCode({ type: 'change', code: v }) : false)}
+          { value: 'myBug', text: '待修复缺陷' }]}//! HAS_BACKLOG ||
+        onChange={(v) => (v !== 'myStarBeacon' ? setSwitchCode({ type: 'change', code: v }) : false)}
       />
     </div>
   );
