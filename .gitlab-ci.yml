@@ -17,6 +17,7 @@ release:
       - master
       - tags
       - feature-C7NCD-4514
+      - theme-c7n-test
       - /^release-.*$/
       - /^hotfix-.*$/
 
