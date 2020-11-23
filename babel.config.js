@@ -5,6 +5,6 @@ module.exports = {
     ["c7n-app", { "absoluteRuntime": false }]
   ],
   "plugins": [
-    ...[...uedConfig.generateC7nUiConfig()],
+    ...uedConfig.generateC7nUiConfig(),
   ]
 };
