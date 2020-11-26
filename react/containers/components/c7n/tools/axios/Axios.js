@@ -13,12 +13,13 @@ import { transformResponsePage, transformRequestPage } from './transformPageData
 // eslint-disable-next-line import/no-cycle
 import MenuStore from '../../../../stores/c7n/MenuStore';
 
+const JSONbigString = JSONbig({ storeAsString: true });
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 axios.defaults.timeout = 30000;
 axios.defaults.baseURL = API_HOST;
 axios.defaults.transformResponse = [function (data) {
   try {
-    return JSONbig.parse(data);
+    return JSONbigString.parse(data);
   } catch (e) {
     return data;
   }
