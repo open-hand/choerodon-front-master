@@ -6,6 +6,7 @@ import { EXTERNAL_LINK } from '@/utils/constants';
 import Logo from './Logo';
 import User from './User';
 import Inbox from './Inbox';
+import SkinPeeler from './SkinPeeler';
 import HeaderSetting from './HeaderSetting';
 import './style';
 import OrgSelect from './OrgSelect';
@@ -68,20 +69,21 @@ class Header extends Component {
         <ul className={`${prefixCls}-right`}>
           <OrgSelect />
           <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
-            <Button
-              icon="toys"
-              onClick={() => {
-                const { AppState } = this.props;
-                const theme = AppState.getTheme;
-                let newTheme;
-                if (theme === 'theme4') {
-                  newTheme = '';
-                } else {
-                  newTheme = 'theme4';
-                }
-                AppState.setTheme(newTheme);
-              }}
-            />
+            <SkinPeeler />
+            {/*<Button*/}
+            {/*  icon="toys"*/}
+            {/*  onClick={() => {*/}
+            {/*    const { AppState } = this.props;*/}
+            {/*    const theme = AppState.getTheme;*/}
+            {/*    let newTheme;*/}
+            {/*    if (theme === 'theme4') {*/}
+            {/*      newTheme = '';*/}
+            {/*    } else {*/}
+            {/*      newTheme = 'theme4';*/}
+            {/*    }*/}
+            {/*    AppState.setTheme(newTheme);*/}
+            {/*  }}*/}
+            {/*/>*/}
           </li>
           {this.renderExternalLink()}
           <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
