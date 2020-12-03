@@ -12,8 +12,6 @@ function getDefaultLanguage() {
 }
 
 class AppState {
-  @observable theme = 'theme4';
-
   @observable currentProject = null;
 
   @observable menuType = null; // 一个菜单对象 {id:'',name:'',type:''}
@@ -29,16 +27,6 @@ class AppState {
   @observable debugger = false; // 调试模式
 
   @observable isUser = false;
-
-  @computed
-  get getTheme() {
-    return this.theme;
-  }
-
-  @action
-  setTheme(data) {
-    this.theme = data;
-  }
 
   @computed
   get getCurrentProject() {
