@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
+import { message } from 'choerodon-ui/pro';
+import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import axios from '../../components/c7n/tools/axios';
-import {message} from "choerodon-ui/pro";
-import getSearchString from "@/containers/components/c7n/util/gotoSome";
 
 function getDefaultLanguage() {
   let locale;
@@ -12,6 +12,8 @@ function getDefaultLanguage() {
 }
 
 class AppState {
+  @observable theme = 'theme4';
+
   @observable currentProject = null;
 
   @observable menuType = null; // 一个菜单对象 {id:'',name:'',type:''}
@@ -27,6 +29,16 @@ class AppState {
   @observable debugger = false; // 调试模式
 
   @observable isUser = false;
+
+  @computed
+  get getTheme() {
+    return this.theme;
+  }
+
+  @action
+  setTheme(data) {
+    this.theme = data;
+  }
 
   @computed
   get getCurrentProject() {
@@ -149,17 +161,15 @@ class AppState {
     return this.isUser;
   }
 
-  loadUserInfo = () => {
-    return axios.get('iam/choerodon/v1/users/self').then((res) => {
-      res = {
-        ...res,
-        organizationName: res.tenantName,
-        organizationCode: res.tenantNum,
-      }
-      this.setUserInfo(res);
-      return res;
-    })
-  };
+  loadUserInfo = () => axios.get('iam/choerodon/v1/users/self').then((res) => {
+    res = {
+      ...res,
+      organizationName: res.tenantName,
+      organizationCode: res.tenantNum,
+    };
+    this.setUserInfo(res);
+    return res;
+  });
 
   loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`);
 

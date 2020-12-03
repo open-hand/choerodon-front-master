@@ -67,6 +67,22 @@ class Header extends Component {
         </ul>
         <ul className={`${prefixCls}-right`}>
           <OrgSelect />
+          <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
+            <Button
+              icon="toys"
+              onClick={() => {
+                const { AppState } = this.props;
+                const theme = AppState.getTheme;
+                let newTheme;
+                if (theme === 'theme4') {
+                  newTheme = '';
+                } else {
+                  newTheme = 'theme4';
+                }
+                AppState.setTheme(newTheme);
+              }}
+            />
+          </li>
           {this.renderExternalLink()}
           <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
             <Inbox />
