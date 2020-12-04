@@ -291,9 +291,9 @@ export default observer(() => {
                 />
               ) : null}
               <Icon
-                type={p.starFlag ? 'turned_in' : 'turned_in_not'}
+                type={p.starFlag ? 'stars' : 'star_border'}
                 style={{
-                  color: p.starFlag ? 'rgb(86, 111, 225)' : 'rgb(196, 195, 225)',
+                  color: p.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
                   fontSize: '20px',
                 }}
                 onClick={(e) => {
