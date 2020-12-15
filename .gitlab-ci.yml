@@ -15,6 +15,7 @@ release:
   only:
     refs:
       - master
+      - feature-WATERFALL
       - tags
       - /^release-.*$/
       - /^hotfix-.*$/
