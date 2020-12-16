@@ -119,7 +119,10 @@ export default (AppState, history, categoryDs) => {
         type: 'date',
         label: '立项时间',
         dynamicProps: {
-          required: ({ record }) => record.get('category') === 'WATERFALL',
+          required: ({ record }) => {
+            const waterfallTimeRequired = record.get('waterfallTimeRequired');
+            return typeof (waterfallTimeRequired) !== 'undefined' ? waterfallTimeRequired : record.get('category') === 'WATERFALL';
+          },
           max: ({ record }) => {
             const endDate = record.get('endTime');
             return endDate ? moment(endDate, 'YYYY-MM-DD').subtract(1, 'day') : undefined;
@@ -131,7 +134,10 @@ export default (AppState, history, categoryDs) => {
         type: 'date',
         label: '结项时间',
         dynamicProps: {
-          required: ({ record }) => record.get('category') === 'WATERFALL',
+          required: ({ record }) => {
+            const waterfallTimeRequired = record.get('waterfallTimeRequired');
+            return typeof (waterfallTimeRequired) !== 'undefined' ? waterfallTimeRequired : record.get('category') === 'WATERFALL';
+          },
           min: ({ record }) => {
             const startDate = record.get('startTime');
             return startDate ? moment(startDate, 'YYYY-MM-DD').add(1, 'day') : moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD');

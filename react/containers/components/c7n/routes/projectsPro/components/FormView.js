@@ -98,9 +98,9 @@ export default function FormView({ context }) {
           ]
         }
         {
-          category === 'WATERFALL' ? [
-            <DatePicker name="startTime" required />,
-            <DatePicker name="endTime" required />] : null
+         dataSet.current.status === 'add' && category === 'WATERFALL' ? [
+           <DatePicker name="startTime" />,
+           <DatePicker name="endTime" />] : null
         }
 
       </Form>

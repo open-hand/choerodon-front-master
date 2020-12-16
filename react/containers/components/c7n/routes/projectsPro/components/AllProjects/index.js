@@ -191,6 +191,7 @@ export default observer(() => {
 
   const handleAddProject = () => {
     dataSet.create();
+
     Modal.open({
       key: Modal.key(),
       drawer: true,
@@ -212,7 +213,7 @@ export default observer(() => {
     try {
       dataSet.transport.read.url = `/iam/choerodon/v1/projects/${currentProjectId}`;
       await dataSet.query();
-
+      dataSet.current.set('waterfallTimeRequired', false);
       const modal = Modal.open({
         key: Modal.key(),
         drawer: true,
