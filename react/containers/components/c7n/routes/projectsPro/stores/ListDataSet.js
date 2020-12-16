@@ -140,7 +140,7 @@ export default (AppState, history, categoryDs) => {
           },
           min: ({ record }) => {
             const startDate = record.get('startTime');
-            return startDate ? moment(startDate, 'YYYY-MM-DD').add(1, 'day') : moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD');
+            return startDate ? moment.max(moment(startDate, 'YYYY-MM-DD').add(1, 'day'), moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')) : moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD');
           },
         },
       },
