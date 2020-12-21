@@ -68,6 +68,7 @@ const handelResponseError = (error) => {
     errorFormat = {
       status: response.status,
       data: response.data,
+      ...error,
     };
   }
   // 如果是主动取消了请求，做个标识
