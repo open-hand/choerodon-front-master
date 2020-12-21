@@ -16,9 +16,13 @@ export default observer(() => {
   } = useProjectsProStore();
 
   const renderProjects = () => ProjectsProUseStore.getRecentProjects.map((p) => {
-    const r = p.projectDTO;
+    if (!p || !p.projectDTO) {
+      return null;
+    }
+    const r = p.projectDTO || {};
     return (
       <div
+        key={p.projectId}
         onClick={() => {
           if (r.enabled) {
             ProjectsProUseStore.handleClickProject(r);

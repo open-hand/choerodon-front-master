@@ -249,6 +249,7 @@ export default observer(() => {
     }
       return projects.length > 0 ? projects.map(p => (
         <div
+          key={p.id}
           onClick={() => {
             if (p.enabled) {
               handleClickProject(p);
