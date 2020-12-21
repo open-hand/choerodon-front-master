@@ -76,6 +76,8 @@ const handleRequestIntercept = (config) => {
   return handleRequestCancelToken(newConfig);
 };
 
+instance.defaults.routeChangeCancel = true;
+
 instance.interceptors.request.use(
   handleRequestIntercept,
   (err) => {

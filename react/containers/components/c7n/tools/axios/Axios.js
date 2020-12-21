@@ -90,6 +90,7 @@ const ChoerodonAxios = () => {
   axios.defaults.transformResponse = [
     handleDefaultTransformResponse,
   ];
+  axios.defaults.routeChangeCancel = true;
 
   axios.defaults.paramsSerializer = handleDefaultTransformParamsSerializer;
 
