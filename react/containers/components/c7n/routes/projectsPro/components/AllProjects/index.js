@@ -256,6 +256,7 @@ export default observer(() => {
     }
     return projects.length > 0 ? projects.map((p) => (
       <div
+        key={p.id}
         onClick={() => {
           if (p.enabled) {
             handleClickProject(p);
@@ -267,7 +268,6 @@ export default observer(() => {
         }}
       >
         <div
-          key={p.id}
           className="allProjects-content-item-icon"
           style={{
             backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : getRandomBackground(p.id),
