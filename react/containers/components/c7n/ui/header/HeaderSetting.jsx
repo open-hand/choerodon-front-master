@@ -14,7 +14,7 @@ const LI_MAPPING = [
   // { title: '项目', icon: 'project_filled', activePath: '/projectsPro' },
   // { title: '应用', icon: 'widgets', activePath: '/applications' },
   { title: '知识库', icon: 'knowledge', activePath: '/knowledge/organization' },
-  { title: '应用市场', icon: 'application_market', activePath: '/market/app-market' },
+  // { title: '应用市场', icon: 'application_market', activePath: '/market/app-market' },
 
   // { title: '应用市场', icon: 'application_market', activePath: '/iam/choerodon/app-market' },
 ];
