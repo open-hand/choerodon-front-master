@@ -7,6 +7,7 @@ import { getRandomBackground } from '@/containers/components/c7n/util';
 import { useProjectsProStore } from '../stores';
 
 import './projectTaskContent.less';
+import moment from "moment";
 
 export default ({ data, alltrue }) => {
   const {
@@ -15,13 +16,14 @@ export default ({ data, alltrue }) => {
   if (alltrue) {
     data.starFlag = true;
   }
+  const unix = String(moment(data.creationDate).unix());
   return (
     <div>
       <div className="starProjects-items-content">
         <div
           className="starProjects-items-content-icon"
           style={{
-            backgroundImage: data.imageUrl ? `url("${data.imageUrl}")` : getRandomBackground(data.id),
+            backgroundImage: data.imageUrl ? `url("${data.imageUrl}")` : getRandomBackground(unix.substring(unix.length - 3)),
           }}
         >
           {!data.imageUrl && data.name && data.name.slice(0, 1)}
