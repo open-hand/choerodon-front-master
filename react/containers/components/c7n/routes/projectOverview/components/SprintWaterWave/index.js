@@ -28,7 +28,7 @@ const SprintWaterWave = observer(() => {
               height={120}
               // color="rgba(77, 144, 254, 1)"
               title="剩余时间"
-              percent={totalDays && remainingDays > 0 ? ((remainingDays) / totalDays) * 100 : 0} // "totalDays": remainingDays
+              percent={totalDays && remainingDays > 0 ? ((totalDays - remainingDays) / totalDays) * 100 : 0} // "totalDays": remainingDays
               percentRender={() => (
                 <div className={`${clsPrefix}-percent`}>
                   {normalToSvg(sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : '', 20)}

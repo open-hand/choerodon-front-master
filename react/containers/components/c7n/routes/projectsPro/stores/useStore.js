@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import { axios } from '@/index';
 import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
+import moment from 'moment';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
@@ -62,7 +63,8 @@ export default function useStore(AppState, history) {
       this.projectLoading = true;
       axios.get(queryString.parse(history.location.search).organizationId ? `/iam/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
         this.setAllProjects(res.content.map((r) => {
-          r.background = getRandomBackground();
+          const unix = String(moment(r.creationDate).unix());
+          r.background = getRandomBackground(unix.substring(unix.length - 3));
           return r;
         }));
         this.setPagination({

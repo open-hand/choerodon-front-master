@@ -55,8 +55,24 @@ class Header extends Component {
     return null;
   };
 
+  shouldHiddenHead = (pathname) => {
+    const defaultBlackList = ['/iam/enterprise'];
+    if (defaultBlackList.some((pname) => pathname.startsWith(pname))) {
+      return true;
+    }
+    return false;
+  };
+
   render() {
-    const { AppState: { getUserInfo: { image_url: imgUrl } }, MenuStore: { getSiteMenuData }, history } = this.props;
+    const {
+      AppState: { getUserInfo: { image_url: imgUrl } },
+      MenuStore: { getSiteMenuData },
+      history,
+      location: { pathname },
+    } = this.props;
+    if (this.shouldHiddenHead(pathname)) {
+      return null;
+    }
     return (
       <div className={`${prefixCls}-wrap`}>
         <div className={`${prefixCls}-left`}>
