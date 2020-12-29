@@ -58,21 +58,20 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     return null;
   };
 
+  const { AppState: { getUserInfo: { image_url: imgUrl } }, MenuStore: { getSiteMenuData }, history, location: { pathname } } = props;
 
-  const { AppState: { getUserInfo: { image_url: imgUrl } }, MenuStore: { getSiteMenuData }, history } = props;
-
-  shouldHiddenHead = (pathname) => {
+  const shouldHiddenHead = (pathname) => {
     const defaultBlackList = ['/iam/enterprise'];
     if (defaultBlackList.some((pname) => pathname.startsWith(pname))) {
       return true;
     }
     return false;
   };
-  
-  if (this.shouldHiddenHead(pathname)) {
-      return null;
-    } else {
-        (
+
+  if (shouldHiddenHead(pathname)) {
+    return null;
+  }
+  return (
     <div
       className={classNames({
         [`${prefixCls}-wrap`]: true,
@@ -114,5 +113,4 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
       </ul>
     </div>
   );
-    }
 })));
