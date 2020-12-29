@@ -162,6 +162,8 @@ class AppState {
   loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`);
 
   loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting');
+
+  checkEnterpriseInfo = () => axios.get('/iam/choerodon/v1/enterprises/default');
 }
 
 const appState = new AppState();

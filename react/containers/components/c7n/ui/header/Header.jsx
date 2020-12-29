@@ -58,9 +58,21 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     return null;
   };
 
+
   const { AppState: { getUserInfo: { image_url: imgUrl } }, MenuStore: { getSiteMenuData }, history } = props;
 
-  return (
+  shouldHiddenHead = (pathname) => {
+    const defaultBlackList = ['/iam/enterprise'];
+    if (defaultBlackList.some((pname) => pathname.startsWith(pname))) {
+      return true;
+    }
+    return false;
+  };
+  
+  if (this.shouldHiddenHead(pathname)) {
+      return null;
+    } else {
+        (
     <div
       className={classNames({
         [`${prefixCls}-wrap`]: true,
@@ -102,4 +114,5 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
       </ul>
     </div>
   );
+    }
 })));

@@ -67,6 +67,16 @@ export default class Index extends React.Component {
     }
   }
 
+  checkEnterprise = async () => {
+    try {
+      const res = await AppState.checkEnterpriseInfo();
+      localStorage.setItem('hasEnterpriseConfirmed', true);
+      return res;
+    } catch (e) {
+      return true;
+    }
+  };
+
   checkOrg = async () => {
     const { email } = AppState.getUserInfo;
     try {
@@ -92,7 +102,13 @@ export default class Index extends React.Component {
       setAccessToken(accessToken, tokenType, expiresIn);
       // 通知其他tab页刷新
       localStorage.setItem('relogin', Math.random().toString());
-      window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
+      const hasConfirmed = localStorage.getItem('hasEnterpriseConfirmed');
+      if (!HAS_AGILE_PRO && !hasConfirmed && await this.checkEnterprise() === false) {
+        window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
+        this.props.history.push('/iam/enterprise');
+      } else {
+        window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
+      }
     } else if (!getAccessToken()) {
       authorizeC7n();
       return false;

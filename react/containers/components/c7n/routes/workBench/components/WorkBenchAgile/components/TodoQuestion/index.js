@@ -378,7 +378,7 @@ const TodoQuestion = observer(() => {
       return (
         <EmptyPage
           title={emptyPrompt.title}
-          describe={emptyPrompt.describe}
+          describe={<span style={{ whiteSpace: 'nowrap' }}>{emptyPrompt.describe}</span>}
         />
       );
     }
@@ -427,11 +427,11 @@ const TodoQuestion = observer(() => {
         options={[{ value: 'all', text: '所有待办' },
           {
             value: 'myStarBeacon',
-            text: (<Dropdown overlay={true || HAS_BACKLOG ? renderStarMenu() : undefined}><span>我的关注</span></Dropdown>),
+            text: (<Dropdown overlay={HAS_BACKLOG ? renderStarMenu() : undefined}><span>我的关注</span></Dropdown>),
           },
           { value: 'reportedBug', text: '已提缺陷' },
-          { value: 'myBug', text: '待修复缺陷' }]}//! HAS_BACKLOG ||
-        onChange={(v) => (v !== 'myStarBeacon' ? setSwitchCode({ type: 'change', code: v }) : false)}
+          { value: 'myBug', text: '待修复缺陷' }]}
+        onChange={(v) => (!HAS_BACKLOG || v !== 'myStarBeacon' ? setSwitchCode({ type: 'change', code: v }) : false)}
       />
     </div>
   );

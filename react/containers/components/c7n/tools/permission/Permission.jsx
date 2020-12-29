@@ -1,7 +1,9 @@
 /* eslint-disable react/no-deprecated */
 /* eslint-disable react/state-in-constructor */
 /* eslint-disable react/static-property-placement */
-import { Children, cloneElement, Component, isValidElement } from 'react';
+import {
+  Children, cloneElement, Component, isValidElement,
+} from 'react';
 import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import omit from 'object.omit';
@@ -65,7 +67,9 @@ class Permission extends Component {
   };
 
   getPermissionProps(props) {
-    const { type: typeState = 'site', id = 0, projectId: projectIdState, organizationId: organizationIdState } = props.AppState.currentMenuType || {};
+    const {
+      type: typeState = 'site', id = 0, projectId: projectIdState, organizationId: organizationIdState,
+    } = props.AppState.currentMenuType || {};
     const {
       service,
       type = typeState,
@@ -85,13 +89,11 @@ class Permission extends Component {
       return Children.map(children, (child) => {
         if (isValidElement(child)) {
           return cloneElement(child, props);
-        } else {
-          return child;
         }
+        return child;
       });
-    } else {
-      return children;
     }
+    return children;
   }
 
   render() {
@@ -102,19 +104,17 @@ class Permission extends Component {
     ]);
     const { status } = this.state;
     if (typeof children === 'function') {
-      return children(status === SUCCESS);
+      return children(status === SUCCESS, status === PENDING);
     }
     if (status === SUCCESS) {
       return this.extendProps(children, otherProps);
-    } else if (status === FAILURE && (noAccessChildren || defaultChildren)) {
+    } if (status === FAILURE && (noAccessChildren || defaultChildren)) {
       return this.extendProps(noAccessChildren || defaultChildren, otherProps);
-    } else if (status === PENDING && defaultChildren) {
+    } if (status === PENDING && defaultChildren) {
       return this.extendProps(defaultChildren, otherProps);
-    } else {
-      return null;
     }
+    return null;
   }
 }
-
 
 export default Permission;
