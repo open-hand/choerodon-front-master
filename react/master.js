@@ -7,6 +7,7 @@ import { Modal } from 'choerodon-ui/pro';
 import {
   authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
 } from '@/utils';
+import Container from '@hzero-front-ui/cfg/lib/components/Container';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
@@ -143,7 +144,9 @@ export default class Index extends React.Component {
             <Provider {...stores}>
               <Switch>
                 <Route path="/">
-                  <Outward AutoRouter={this.props.AutoRouter} />
+                  <Container defaultTheme="">
+                    <Outward AutoRouter={this.props.AutoRouter} />
+                  </Container>
                 </Route>
               </Switch>
             </Provider>
@@ -166,7 +169,9 @@ export default class Index extends React.Component {
               <Route
                 path="/"
               >
-                <Master AutoRouter={this.props.AutoRouter} />
+                <Container defaultTheme="">
+                  <Master AutoRouter={this.props.AutoRouter} />
+                </Container>
               </Route>
             </Switch>
           </Provider>

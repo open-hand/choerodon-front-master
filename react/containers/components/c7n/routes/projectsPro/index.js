@@ -1,11 +1,14 @@
 import React from 'react';
-import { StoreProvider } from "./stores";
+import 'moment/locale/zh-cn';
+import moment from 'moment';
+import { StoreProvider } from './stores';
 import ProjectsPro from './ProjectsPro';
 
+moment.locale('zh-cn');
 const index = (props) => (
   <StoreProvider {...props}>
     <ProjectsPro />
   </StoreProvider>
-)
+);
 
-export default index
+export default index;
