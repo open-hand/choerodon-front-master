@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
+import { message } from 'choerodon-ui/pro';
+import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import axios from '../../components/c7n/tools/axios';
-import {message} from "choerodon-ui/pro";
-import getSearchString from "@/containers/components/c7n/util/gotoSome";
 
 function getDefaultLanguage() {
   let locale;
@@ -149,17 +149,15 @@ class AppState {
     return this.isUser;
   }
 
-  loadUserInfo = () => {
-    return axios.get('iam/choerodon/v1/users/self').then((res) => {
-      res = {
-        ...res,
-        organizationName: res.tenantName,
-        organizationCode: res.tenantNum,
-      }
-      this.setUserInfo(res);
-      return res;
-    })
-  };
+  loadUserInfo = () => axios.get('iam/choerodon/v1/users/self').then((res) => {
+    res = {
+      ...res,
+      organizationName: res.tenantName,
+      organizationCode: res.tenantNum,
+    };
+    this.setUserInfo(res);
+    return res;
+  });
 
   loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`);
 
