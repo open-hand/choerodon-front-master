@@ -7,7 +7,7 @@ import EmptyPage from '../empty-page';
 
 import './index.less';
 
-const StarTargetPro = observer(() => {
+const Check = observer(() => {
   const {
     auditDs,
     history,
@@ -15,7 +15,9 @@ const StarTargetPro = observer(() => {
   } = useWorkBenchStore();
 
   function linkToDetail(record) {
-    const { type, projectId, projectName, pipelineRecordId, mergeRequestUrl, pipelineId, devopsPipelineRecordRelId } = record.toData() || {};
+    const {
+      type, projectId, projectName, pipelineRecordId, mergeRequestUrl, pipelineId, devopsPipelineRecordRelId,
+    } = record.toData() || {};
     const search = `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`;
     switch (type) {
       case 'pipeline':
@@ -45,7 +47,9 @@ const StarTargetPro = observer(() => {
   }
 
   return (auditDs.map((record) => {
-    const { projectName, content, imageUrl, type } = record.toData() || {};
+    const {
+      projectName, content, imageUrl, type,
+    } = record.toData() || {};
     return (
       <div className="c7n-workbench-check-item" key={record.id}>
         <div className="c7n-workbench-check-item-border" />
@@ -67,7 +71,11 @@ const StarTargetPro = observer(() => {
             </Tooltip>
           </div>
         </div>
-        <div className="c7n-workbench-check-item-btn" onClick={() => linkToDetail(record)}>
+        <div
+          role="none"
+          className="c7n-workbench-check-item-btn"
+          onClick={() => linkToDetail(record)}
+        >
           <Icon type="find_in_page" className="c7n-workbench-check-item-btn-icon" />
           <span>详情</span>
         </div>
@@ -76,4 +84,4 @@ const StarTargetPro = observer(() => {
   }));
 });
 
-export default StarTargetPro;
+export default Check;

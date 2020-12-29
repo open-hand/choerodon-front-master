@@ -4,11 +4,9 @@ import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { Tooltip, Spin } from 'choerodon-ui/pro';
 import ScrollContext from 'react-infinite-scroll-component';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import TimePopover from '../time-popover';
 import EmptyPage from '../empty-page';
-import Card from '../card';
 import './index.less';
 import { useDoc } from './stores';
 import { useWorkBenchStore } from '../../stores';
@@ -20,12 +18,14 @@ function Switch({
 }) {
   const [value, setValue] = useState(defaultValue);
   const [options, setOptions] = useState(propsOption || []);
+
   const onClick = (v) => {
     setValue(v);
     if (onChange) {
       onChange(v);
     }
   };
+
   useEffect(() => {
     if (!Array.isArray(options)) {
       setOptions([]);
@@ -44,6 +44,7 @@ function Switch({
               e.preventDefault();
               onClick(option.value);
             }}
+            role="none"
             className={value === option.value ? `${clsPrefix}-switch-active` : `${clsPrefix}-switch-li`}
           >
             {option.text || option}
@@ -54,16 +55,11 @@ function Switch({
     </ul>
   );
 }
+
 const Doc = ({ history }) => {
   const { docStore } = useDoc();
-  const { docDs, selfDoc, setSelfDoc } = useWorkBenchStore();
-  // useEffect(() => {
-  //   // 防止初次进入时二次加载
-  //   if (!docStore.getIsFistLoad) {
-  //     docStore.setLoading(true);
-  //     docStore.axiosGetDoc(self).then(res => docStore.setLoading(false)).catch(() => docStore.setLoading(false));
-  //   }
-  // }, [self]);
+  const { docDs, setSelfDoc } = useWorkBenchStore();
+
   useEffect(() => {
     if (docDs.currentPage === 1) {
       const data = docDs.toData()[0];
@@ -162,8 +158,8 @@ const Doc = ({ history }) => {
       );
     });
   }
+
   const loadMore = async () => {
-    // await docStore.axiosGetDoc(self);
     await docDs.nextPage().then((res) => {
       docStore.setDocData(docStore.getDocData.concat(res.toData().list));
     });
@@ -183,7 +179,6 @@ const Doc = ({ history }) => {
                   className={`${clsPrefix}-scroll`}
                   dataLength={docStore.getDocData.length}
                   next={loadMore}
-                  // hasMore={docStore.getPageInfo.hasNext}
                   hasMore={docDs.currentPage < docDs.totalPage}
                   loader={<Spin className={`${clsPrefix}-scroll-load`} spinning />}
                   height={438}
@@ -203,10 +198,8 @@ const Doc = ({ history }) => {
                 )
               )
           }
-
         </div>
       </Spin>
-
     </div>
   );
 };
