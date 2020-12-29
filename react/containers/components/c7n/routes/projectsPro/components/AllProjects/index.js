@@ -270,7 +270,7 @@ export default observer(() => {
         <div
           className="allProjects-content-item-icon"
           style={{
-            backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : getRandomBackground(p.id),
+            backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : p.background,
           }}
         >
           <span>
