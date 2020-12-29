@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import uniqWith from 'lodash/uniqWith';
 import StatusDot from '../StatusDot';
 import TimePopover from '../time-popover';
 import { useWorkBenchStore } from '../../stores';
@@ -16,6 +17,15 @@ const EnvList = observer(() => {
   const [expand, changeExpand] = useState(false);
   const [envList, setEnvList] = useState([]);
   const { id: projectId, category } = workBenchUseStore.getActiveStarProject || {};
+
+  useEffect(() => {
+    const env = localStorage.envRecentItem ? JSON.parse(localStorage.envRecentItem) : [];
+    const realEnv = uniqWith(env, (arrVal, othVal) => ((arrVal.id === othVal.id || arrVal.code === othVal.code)
+      && String(arrVal.organizationId) === String(othVal.organizationId)
+      && String(arrVal.projectId) === String(othVal.projectId)
+    ));
+    localStorage.envRecentItem = JSON.stringify(realEnv);
+  }, []);
 
   useEffect(() => {
     const env = localStorage.envRecentItem ? JSON.parse(localStorage.envRecentItem) : [];
@@ -62,7 +72,7 @@ const EnvList = observer(() => {
         {envList.map(({
           name, code, projectName, clickTime, active, connect, id, projectId: realProjectId,
         }) => (
-          <div className="c7n-envList-content-item">
+          <div className="c7n-envList-content-item" id={`${realProjectId}-${id}`}>
             {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
             <main onClick={() => linkToEnv({ envId: id, projectName, realProjectId })}>
               <div className="c7n-envList-content-item-main">
