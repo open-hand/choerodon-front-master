@@ -7,7 +7,6 @@ import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
 import useStore from './useStore';
 import QuestionDataSet from './QuestionDataSet';
-import DocDataSet from './DocDataSet';
 
 const Store = createContext();
 
@@ -22,27 +21,15 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     history,
   } = props;
 
-  const [selfDoc, setSelfDoc] = useState(false);
-  const [activeProject, setActiveProject] = useState();
-
   const workBenchUseStore = useStore(history);
   const questionDs = useMemo(() => new DataSet(QuestionDataSet({ organizationId })), [organizationId]);
-  const docDs = useMemo(() => new DataSet(DocDataSet({ organizationId, projectId: activeProject, self: selfDoc })), [organizationId, activeProject, selfDoc]);
-
-  useEffect(() => {
-    docDs.query();
-  }, [selfDoc, organizationId, activeProject]);
 
   useEffect(() => {
     const project = workBenchUseStore.getActiveStarProject;
     if (project && project.id) {
       questionDs.setQueryParameter('projectId', String(project.id));
-      docDs.setQueryParameter('projectId', String(project.id));
-      setActiveProject(project.id);
     } else {
       questionDs.setQueryParameter('projectId', null);
-      docDs.setQueryParameter('projectId', null);
-      setActiveProject(undefined);
     }
   }, [workBenchUseStore.getActiveStarProject, organizationId]);
 
@@ -50,9 +37,6 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     ...props,
     questionDs,
     workBenchUseStore,
-    docDs,
-    selfDoc,
-    setSelfDoc,
   };
 
   return (
