@@ -74,8 +74,7 @@ export default class Index extends React.Component {
 
   checkEnterprise = async () => {
     try {
-      // const res = await AppState.checkEnterpriseInfo();
-      const res = false;
+      const res = await AppState.checkEnterpriseInfo();
       if (res) {
         localStorage.setItem('hasEnterpriseConfirmed', true);
       } else {
