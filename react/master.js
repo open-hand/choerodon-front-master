@@ -69,7 +69,6 @@ export default class Index extends React.Component {
   checkEnterprise = async () => {
     try {
       const res = await AppState.checkEnterpriseInfo();
-      localStorage.setItem('hasEnterpriseConfirmed', true);
       return res;
     } catch (e) {
       return true;
@@ -106,8 +105,7 @@ export default class Index extends React.Component {
       authorizeC7n();
       return false;
     }
-    const hasEnterpriseConfirmed = localStorage.getItem('hasEnterpriseConfirmed');
-    if (!HAS_AGILE_PRO && !hasEnterpriseConfirmed && await this.checkEnterprise() === false) {
+    if (!HAS_AGILE_PRO && await this.checkEnterprise() === false) {
       this.props.history.push('/iam/enterprise');
     }
     HeaderStore.axiosGetRoles();
