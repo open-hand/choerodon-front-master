@@ -354,7 +354,7 @@ const TodoQuestion = observer(() => {
           <Tooltip title={summary} placement="top">
             <span className="c7n-todoQuestion-issueContent-issueItem-main-description">{summary}</span>
           </Tooltip>
-          {switchCode.code === 'myStarBeacon' && starBeacon && <Icon className="c7n-todoQuestion-issueContent-issueItem-main-star" type="star_border" />}
+          {switchCode.code === 'myStarBeacon' && starBeacon && <Icon className="c7n-todoQuestion-issueContent-issueItem-main-star" type="stars" />}
           {getStatus(statusVO)}
           {(switchCode.code === 'reportedBug' || (switchCode.code === 'myStarBeacon' && typeCode !== 'feature')) && getUsers(assignees || [{ id: assigneeId, imageUrl: assigneeImageUrl, realName: assigneeRealName }])}
           {typeCode === 'feature' && getProjects(featureTeams)}
