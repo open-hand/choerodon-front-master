@@ -39,7 +39,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
 
   const docDs = useMemo(() => new DataSet(DocDataSet({ organizationId, selectedProjectId, self: getSelfDoc })), [getSelfDoc, organizationId, selectedProjectId]);
 
-  const opts = [{ value: false, text: '项目' }, { value: true, text: '个人' }];
+  const opts = useMemo(() => [{ value: false, text: '项目' }, { value: true, text: '个人' }], []);
 
   const value = {
     docStore,

@@ -1,13 +1,8 @@
 import { useLocalStore } from 'mobx-react-lite';
-import { axios } from '@/index';
 
 export default function useStore() {
   return useLocalStore(() => ({
     docData: [],
-    pageInfo: {
-      page: 0,
-      size: 6,
-    },
     selfDoc: false,
     self: false,
     isFistLoad: true,
@@ -26,12 +21,6 @@ export default function useStore() {
     },
     setLoading(data) {
       this.loading = data;
-    },
-    get getPageInfo() {
-      return this.pageInfo;
-    },
-    setPageInfo(data) {
-      this.pageInfo = data;
     },
     get getDocData() {
       return this.docData;

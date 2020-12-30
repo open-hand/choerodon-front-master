@@ -9,11 +9,12 @@ import { merge } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { getRandomBackground } from '@/containers/components/c7n/util';
-import Card from '../../../card';
-import { useWorkBenchStore } from '../../../../stores';
-import EmptyPage from '../../../empty-page';
-import LoadingBar from '../../../../../../tools/loading-bar';
-import Switch from '../../../multiple-switch';
+import EmptyPage from '@/containers/components/c7n/routes/workBench/components/empty-page';
+import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+import Card from '@/containers/components/c7n/routes/workBench/components/card';
+import Switch from '@/containers/components/c7n/routes/workBench/components/multiple-switch';
+import { useTodoQuestionStore } from './stores';
+
 import './index.less';
 
 const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
@@ -30,13 +31,14 @@ function getFirst(str) {
   }
   return str[0];
 }
+
 const TodoQuestion = observer(() => {
   const {
     AppState: { currentMenuType: { organizationId } },
     questionDs,
     history,
     workBenchUseStore,
-  } = useWorkBenchStore();
+  } = useTodoQuestionStore();
 
   const [pageInfo, change] = useReducer((state, action) => {
     const { type, ...other } = action;
@@ -98,6 +100,7 @@ const TodoQuestion = observer(() => {
     }
     return { title, describe };
   }, [switchCode.backlogCode, switchCode.code]);
+
   async function loadData(newPage) {
     try {
       const oldData = questionDs.toData();
@@ -417,10 +420,8 @@ const TodoQuestion = observer(() => {
     <div className="c7n-todoQuestion-title">
       <div className="c7n-todoQuestion-title-left">
         我的事项
-
         <span>{totalCount}</span>
       </div>
-
       <Switch
         defaultValue="all"
         value={switchCode.code}
@@ -435,6 +436,7 @@ const TodoQuestion = observer(() => {
       />
     </div>
   );
+
   return (
     <div className="c7n-todoQuestion">
       <Card

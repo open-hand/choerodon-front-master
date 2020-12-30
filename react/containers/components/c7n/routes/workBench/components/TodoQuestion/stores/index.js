@@ -1,15 +1,17 @@
 import React, {
-  createContext, useContext, useMemo, useEffect,
+  createContext, useContext, useMemo, useEffect, useState,
 } from 'react';
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
-import useStore from './useStore';
+import { get } from 'lodash';
+import { useWorkBenchStore } from '../../../stores';
+import QuestionDataSet from './QuestionDataSet';
 
 const Store = createContext();
 
-export function useWorkBenchStore() {
+export function useTodoQuestionStore() {
   return useContext(Store);
 }
 
@@ -20,18 +22,21 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     history,
   } = props;
 
-  const workBenchUseStore = useStore(history);
+  const {
+    workBenchUseStore,
+  } = useWorkBenchStore();
 
-  useEffect(() => {
-    const project = workBenchUseStore.getActiveStarProject;
-    if (project && project.id) {
-    } else {
-    }
-  }, [workBenchUseStore.getActiveStarProject, organizationId]);
+  const selectedProjectId = get(workBenchUseStore.getActiveStarProject, 'id');
+
+  const questionDs = useMemo(() => new DataSet(QuestionDataSet({ selectedProjectId, organizationId })), [selectedProjectId, organizationId]);
+
 
   const value = {
     ...props,
-    workBenchUseStore,
+    questionDs,
+    organizationId,
+    history,
+    workBenchUseStore
   };
 
   return (

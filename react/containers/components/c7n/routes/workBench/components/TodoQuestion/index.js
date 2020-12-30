@@ -1,10 +1,10 @@
 import React from 'react';
 import { StoreProvider } from './stores';
-import WorkBenchAgile from './WorkBenchAgile';
+import Content from './Content';
 
 const index = (props) => (
   <StoreProvider {...props}>
-    <WorkBenchAgile />
+    <Content />
   </StoreProvider>
 );
 
