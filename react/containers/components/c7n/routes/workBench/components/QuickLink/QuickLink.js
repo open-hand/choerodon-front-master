@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {
-  useState, useEffect, useMemo, useCallback,
+  useState, useEffect,
 } from 'react';
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
@@ -8,18 +8,13 @@ import Action from '@/containers/components/c7n/tools/action';
 import TimePopover from '@/containers/components/c7n/routes/workBench/components/time-popover';
 import {
   Modal,
-  Form,
-  SelectBox,
-  Select,
-  TextField,
   Tooltip,
 } from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import AddQuickLink from './AddQuickLink';
-import { useWorkBenchStore } from '../../../../stores';
+import { useWorkBenchStore } from '../../stores';
 import { useQuickLinkStore } from './stores';
-import EmptyPage from '../../../empty-page';
-import HeaderStore from '../../../../../../../../stores/c7n/HeaderStore';
+import EmptyPage from '../empty-page';
 import './index.less';
 
 const QuickLink = observer(() => {

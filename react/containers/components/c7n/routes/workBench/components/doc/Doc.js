@@ -38,6 +38,7 @@ const Doc = () => {
     const url = `/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}?baseName=${baseName}&id=${orgFlag ? organizationId : projectId}&organizationId=${organizationId}&spaceId=${spaceId}&name=${name}&type=${orgFlag ? 'organization' : 'project'}`;
     history.push(url);
   };
+
   const renderUserList = (userList, visibleText = false) => map(userList, ({
     realName, loginName, email, ldap, imageUrl,
   }) => (
@@ -81,6 +82,7 @@ const Doc = () => {
             </span>
             <div className="c7n-workbench-doc-item-userlist">
               {renderUserList(updatedUserList.slice(0, 3))}
+
               {updatedUserList.length > 3 && (
                 <Tooltip
                   placement="top"

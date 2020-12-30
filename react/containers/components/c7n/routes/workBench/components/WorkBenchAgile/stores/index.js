@@ -9,7 +9,7 @@ export function useWorkBenchAgile() {
 
 export const StoreProvider = inject('AppState')((props) => {
   const {
-    children
+    children,
   } = props;
 
   const value = {
