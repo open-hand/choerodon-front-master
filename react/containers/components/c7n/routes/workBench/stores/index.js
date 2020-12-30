@@ -4,7 +4,6 @@ import React, {
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { DataSet } from 'choerodon-ui/pro';
 import useStore from './useStore';
 
 const Store = createContext();
@@ -22,16 +21,10 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const workBenchUseStore = useStore(history);
 
-  useEffect(() => {
-    const project = workBenchUseStore.getActiveStarProject;
-    if (project && project.id) {
-    } else {
-    }
-  }, [workBenchUseStore.getActiveStarProject, organizationId]);
-
   const value = {
     ...props,
     workBenchUseStore,
+    organizationId,
   };
 
   return (
