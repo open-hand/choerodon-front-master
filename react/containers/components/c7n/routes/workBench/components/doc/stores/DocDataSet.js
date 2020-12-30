@@ -1,5 +1,6 @@
-export default (({ organizationId, projectId, self = false }) => ({
-  autoQuery: false,
+/* eslint-disable import/no-anonymous-default-export */
+export default (({ organizationId, selectedProjectId, self }) => ({
+  autoQuery: true,
   selection: false,
   paging: true,
   dataKey: null,
@@ -10,7 +11,7 @@ export default (({ organizationId, projectId, self = false }) => ({
       method: 'get',
       params: {
         ...params,
-        projectId: projectId ? String(projectId) : undefined,
+        projectId: selectedProjectId ? String(selectedProjectId) : undefined,
       },
     }),
   },

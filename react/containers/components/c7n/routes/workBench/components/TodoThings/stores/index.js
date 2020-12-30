@@ -5,12 +5,13 @@ import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
-import useStore from './useStore';
-import QuestionDataSet from './QuestionDataSet';
+import { get } from 'lodash';
+import AuditDataSet from './AuditDataSet';
+import { useWorkBenchStore } from '../../../stores';
 
 const Store = createContext();
 
-export function useWorkBenchStore() {
+export function useTodoStore() {
   return useContext(Store);
 }
 
@@ -21,22 +22,21 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     history,
   } = props;
 
-  const workBenchUseStore = useStore(history);
-  const questionDs = useMemo(() => new DataSet(QuestionDataSet({ organizationId })), [organizationId]);
+  const {
+    workBenchUseStore,
+  } = useWorkBenchStore();
 
-  useEffect(() => {
-    const project = workBenchUseStore.getActiveStarProject;
-    if (project && project.id) {
-      questionDs.setQueryParameter('projectId', String(project.id));
-    } else {
-      questionDs.setQueryParameter('projectId', null);
-    }
-  }, [workBenchUseStore.getActiveStarProject, organizationId]);
+  const selectedProjectId = get(workBenchUseStore.getActiveStarProject, 'id');
+
+  const url = !selectedProjectId ? `devops/v1/organizations/${organizationId}/work_bench/approval` : `devops/v1/organizations/${organizationId}/work_bench/approval?project_id=${selectedProjectId}`;
+
+  const auditDs = useMemo(() => new DataSet(AuditDataSet({ url })), [url]);
 
   const value = {
     ...props,
-    questionDs,
-    workBenchUseStore,
+    auditDs,
+    organizationId,
+    history,
   };
 
   return (

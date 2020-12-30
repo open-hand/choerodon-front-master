@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Button, Tooltip } from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import { observer } from 'mobx-react-lite';
@@ -31,13 +31,14 @@ const StarTargetPro = observer(() => {
   const handleClickItem = (s) => {
     const origin = starTargetProUseStore.getStarProjects;
     starTargetProUseStore.setStarProjects(origin.map((si) => {
-      if (si.id === s.id) {
+      const temp = si;
+      if (temp.id === s.id) {
         workBenchUseStore.setActiveStarProject(!s.active ? si : undefined);
-        si.active = !s.active;
+        temp.active = !s.active;
       } else {
-        si.active = false;
+        temp.active = false;
       }
-      return si;
+      return temp;
     }));
   };
 
@@ -91,6 +92,7 @@ const StarTargetPro = observer(() => {
               const unix = String(moment(s.creationDate).unix());
               return (
                 <div
+                  role="none"
                   className={s.active ? 'c7n-starTargetPro-proContainer-items c7n-starTargetPro-proContainer-focus' : 'c7n-starTargetPro-proContainer-items'}
                   onClick={() => handleClickItem(s)}
                   style={{
@@ -117,7 +119,7 @@ const StarTargetPro = observer(() => {
                   <Tooltip title={`${s.name} (${s.code})`} placement="top">
                     <p style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }} className="c7n-starTargetPro-proContainer-items-text">
                       {s.name}
-&nbsp;(
+                      &nbsp;(
                       {s.code}
                       )
                     </p>
@@ -138,6 +140,7 @@ const StarTargetPro = observer(() => {
                         e.stopPropagation();
                         workBenchUseStore.handleClickProject(s);
                       }}
+                      role="none"
                     >
                       <Icon style={{ color: s.active ? 'white' : '#6887E8' }} type="trending_flat" />
                     </span>

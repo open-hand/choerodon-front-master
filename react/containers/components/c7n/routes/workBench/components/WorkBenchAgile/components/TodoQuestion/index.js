@@ -2,13 +2,12 @@ import React, {
   useEffect, useState, useReducer, Fragment, useMemo,
 } from 'react';
 import {
-  Icon, Tooltip, Tree, UrlField, Dropdown, Menu,
+  Icon, Tooltip, Tree, Dropdown, Menu,
 } from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
 import { merge } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
-import { Button } from 'choerodon-ui/lib/radio';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import Card from '../../../card';
 import { useWorkBenchStore } from '../../../../stores';
@@ -18,6 +17,7 @@ import Switch from '../../../multiple-switch';
 import './index.less';
 
 const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
+
 function getFirst(str) {
   if (!str) {
     return '';
@@ -439,8 +439,6 @@ const TodoQuestion = observer(() => {
     <div className="c7n-todoQuestion">
       <Card
         title={renderTitle()}
-        // showCount
-        // count={totalCount}
         className="c7n-todoQuestion-issueContent"
       >
         {getContent()}

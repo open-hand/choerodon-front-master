@@ -26,7 +26,7 @@ const SelfIntro = () => {
       </span>
     );
   }
-  
+
   return (
     <div className="c7n-selfInfo">
       <div className="c7n-selfInfo-title">
