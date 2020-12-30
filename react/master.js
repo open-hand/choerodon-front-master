@@ -52,6 +52,12 @@ export default class Index extends React.Component {
       if (!this.isInOutward(this.props.location.pathname)) {
         this.auth();
       }
+    } else if ((prevProps.location.pathname !== this.props.location.pathname)
+      && !this.props.location.pathname?.startsWith('/iam/enterprise')
+      && !localStorage.getItem('hasEnterpriseConfirmed') && !HAS_AGILE_PRO) {
+      if (!this.isInOutward(this.props.location.pathname)) {
+        this.checkEnterprise();
+      }
     }
   }
 
@@ -68,8 +74,11 @@ export default class Index extends React.Component {
 
   checkEnterprise = async () => {
     try {
-      const res = await AppState.checkEnterpriseInfo();
-      if (!res) {
+      // const res = await AppState.checkEnterpriseInfo();
+      const res = false;
+      if (res) {
+        localStorage.setItem('hasEnterpriseConfirmed', true);
+      } else {
         this.props.history.push('/iam/enterprise');
       }
       return res;
