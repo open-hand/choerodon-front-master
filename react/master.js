@@ -52,6 +52,10 @@ export default class Index extends React.Component {
       if (!this.isInOutward(this.props.location.pathname)) {
         this.auth();
       }
+    } else if ((prevProps.location.pathname !== this.props.location.pathname) && this.props.location.pathname !== '/iam/enterprise' && !HAS_AGILE_PRO && !localStorage.getItem('hasEnterpriseConfirmed')) {
+      if (!this.isInOutward(this.props.location.pathname)) {
+        this.checkEnterprise();
+      }
     }
   }
 
@@ -69,6 +73,11 @@ export default class Index extends React.Component {
   checkEnterprise = async () => {
     try {
       const res = await AppState.checkEnterpriseInfo();
+      if (res) {
+        localStorage.setItem('hasEnterpriseConfirmed', true);
+      } else {
+        this.props.history.push('/iam/enterprise');
+      }
       return res;
     } catch (e) {
       return true;
@@ -105,8 +114,8 @@ export default class Index extends React.Component {
       authorizeC7n();
       return false;
     }
-    if (!HAS_AGILE_PRO && await this.checkEnterprise() === false) {
-      this.props.history.push('/iam/enterprise');
+    if (!HAS_AGILE_PRO) {
+      await this.checkEnterprise();
     }
     HeaderStore.axiosGetRoles();
     await AppState.loadUserInfo();
