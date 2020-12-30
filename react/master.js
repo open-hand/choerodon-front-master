@@ -101,16 +101,14 @@ export default class Index extends React.Component {
       setAccessToken(accessToken, tokenType, expiresIn);
       // 通知其他tab页刷新
       localStorage.setItem('relogin', Math.random().toString());
-      const hasConfirmed = localStorage.getItem('hasEnterpriseConfirmed');
-      if (!HAS_AGILE_PRO && !hasConfirmed && await this.checkEnterprise() === false) {
-        window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
-        this.props.history.push('/iam/enterprise');
-      } else {
-        window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
-      }
+      window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
     } else if (!getAccessToken()) {
       authorizeC7n();
       return false;
+    }
+    const hasEnterpriseConfirmed = localStorage.getItem('hasEnterpriseConfirmed');
+    if (!HAS_AGILE_PRO && !hasEnterpriseConfirmed && await this.checkEnterprise() === false) {
+      this.props.history.push('/iam/enterprise');
     }
     HeaderStore.axiosGetRoles();
     await AppState.loadUserInfo();
