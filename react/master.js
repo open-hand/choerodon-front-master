@@ -53,6 +53,12 @@ export default class Index extends React.Component {
       if (!this.isInOutward(this.props.location.pathname)) {
         this.auth();
       }
+    } else if ((prevProps.location.pathname !== this.props.location.pathname)
+      && !this.props.location.pathname?.startsWith('/iam/enterprise')
+      && !localStorage.getItem('hasEnterpriseConfirmed') && !HAS_AGILE_PRO) {
+      if (!this.isInOutward(this.props.location.pathname)) {
+        this.checkEnterprise();
+      }
     }
   }
 
@@ -70,7 +76,11 @@ export default class Index extends React.Component {
   checkEnterprise = async () => {
     try {
       const res = await AppState.checkEnterpriseInfo();
-      localStorage.setItem('hasEnterpriseConfirmed', true);
+      if (res) {
+        localStorage.setItem('hasEnterpriseConfirmed', true);
+      } else {
+        this.props.history.push('/iam/enterprise');
+      }
       return res;
     } catch (e) {
       return true;
@@ -102,16 +112,13 @@ export default class Index extends React.Component {
       setAccessToken(accessToken, tokenType, expiresIn);
       // 通知其他tab页刷新
       localStorage.setItem('relogin', Math.random().toString());
-      const hasConfirmed = localStorage.getItem('hasEnterpriseConfirmed');
-      if (!HAS_AGILE_PRO && !hasConfirmed && await this.checkEnterprise() === false) {
-        window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
-        this.props.history.push('/iam/enterprise');
-      } else {
-        window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
-      }
+      window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
     } else if (!getAccessToken()) {
       authorizeC7n();
       return false;
+    }
+    if (!HAS_AGILE_PRO && !this.props.location.pathname?.startsWith('/iam/enterprise')) {
+      await this.checkEnterprise();
     }
     HeaderStore.axiosGetRoles();
     await AppState.loadUserInfo();
