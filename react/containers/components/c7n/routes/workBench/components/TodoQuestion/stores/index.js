@@ -30,13 +30,12 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const questionDs = useMemo(() => new DataSet(QuestionDataSet({ selectedProjectId, organizationId })), [selectedProjectId, organizationId]);
 
-
   const value = {
     ...props,
     questionDs,
     organizationId,
     history,
-    workBenchUseStore
+    workBenchUseStore,
   };
 
   return (

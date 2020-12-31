@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
-import useStore from './useStore';
 import { inject } from 'mobx-react';
+import useStore from './useStore';
 
 const Store = createContext();
 
@@ -12,11 +12,16 @@ export const StoreProvider = inject('AppState')((props) => {
   const {
     children,
     AppState,
+    AppState: {
+      currentMenuType: { organizationId },
+    },
   } = props;
 
   const value = {
     ...props,
     starTargetProUseStore: useStore(AppState),
+    prefixCls: 'c7n-starTargetPro',
+    organizationId,
   };
 
   return (

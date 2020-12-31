@@ -4,6 +4,9 @@ import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
+import {
+  filter, forEach, get, map,
+} from 'lodash';
 
 export default function useStore(history) {
   return useLocalStore(() => ({
@@ -14,6 +17,72 @@ export default function useStore(history) {
     setActiveStarProject(data) {
       this.activeStarProject = data;
     },
+
+    // 拖拽的参数
+    layouts: {},
+    workComponents: [],
+
+    get getLayouts() {
+      return this.layouts;
+    },
+
+    get getWorkComponents() {
+      return this.workComponents;
+    },
+
+    setAllComponentStatus(isStatic) {
+      const tempStatusObj = {
+        static: !isStatic,
+        isDraggable: isStatic,
+        isResizable: isStatic,
+      };
+
+      const tempObj = this.layouts;
+
+      forEach(this.layouts, (arr, key) => {
+        let tempArr = arr;
+        tempArr = map(tempArr, (dataGrid) => {
+          const tempItem = dataGrid;
+          if (tempItem.i !== 'starTarget') {
+            return {
+              ...tempItem,
+              ...tempStatusObj,
+            };
+          }
+          return tempItem;
+        });
+        tempObj[key] = tempArr;
+      });
+
+      this.workComponents = map(this.workComponents, (item) => {
+        if (item.type !== 'starTarget') {
+          return {
+            ...item,
+            ...tempStatusObj,
+          };
+        }
+        return item;
+      });
+
+      this.layouts = tempObj;
+    },
+
+    setLayOuts(value) {
+      this.layouts = value;
+    },
+    addNewComponents(value) {
+      this.workComponents.push(value);
+    },
+    deleteComponents(value) {
+      const tempArr = filter(this.workComponents, (item) => get(value, 'i') !== get(item, 'i'));
+      this.workComponents = [...tempArr];
+    },
+
+    isEdit: false,
+    setEdit(value) {
+      this.isEdit = value;
+    },
+
     handleClickProject(data) {
       const {
         id, name, organizationId, category,
@@ -29,12 +98,10 @@ export default function useStore(history) {
           route = menuRoute;
           domain = menuDomain;
         }
-        // if (route) {
         path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
         if (String(organizationId)) {
           path += `&organizationId=${organizationId}`;
         }
-        // }
         if (path) {
           historyPushMenu(history, path, domain);
         }
