@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Tooltip } from 'choerodon-ui/pro';
+import { Button, Tooltip, Modal } from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui';
@@ -10,6 +10,7 @@ import { useWorkBenchStore } from '../../stores';
 import emptyImg from '../../../../../../images/owner.png';
 
 import './index.less';
+import AddModal from './components/addModals';
 
 const StarTargetPro = observer(() => {
   const {
@@ -206,6 +207,22 @@ const StarTargetPro = observer(() => {
     workBenchUseStore.setAllComponentStatus(false);
   }
 
+  function openAddComponents() {
+    const subPrefix = 'c7ncd-workbench-addModal';
+    Modal.open({
+      title: '添加卡片',
+      key: Modal.key(),
+      drawer: true,
+      style: {
+        width: '740px',
+      },
+      children: <AddModal
+        subPrefix={subPrefix}
+      />,
+      className: `${subPrefix}`,
+    });
+  }
+
   const renderBtns = () => {
     let btnGroups;
     if (isEdit) {
@@ -213,6 +230,7 @@ const StarTargetPro = observer(() => {
         <Button
           color="primary"
           className={`${prefixCls}-btnGroups-primary`}
+          onClick={openAddComponents}
         >
           添加卡片
         </Button>,
