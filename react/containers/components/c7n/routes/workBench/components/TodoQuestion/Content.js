@@ -34,7 +34,7 @@ function getFirst(str) {
 
 const TodoQuestion = observer(() => {
   const {
-    AppState: { currentMenuType: { organizationId } },
+    organizationId,
     questionDs,
     history,
     workBenchUseStore,
