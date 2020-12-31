@@ -116,7 +116,7 @@ export default class Index extends React.Component {
       authorizeC7n();
       return false;
     }
-    if (!HAS_AGILE_PRO) {
+    if (!HAS_AGILE_PRO && !this.props.location.pathname?.startsWith('/iam/enterprise')) {
       await this.checkEnterprise();
     }
     HeaderStore.axiosGetRoles();
