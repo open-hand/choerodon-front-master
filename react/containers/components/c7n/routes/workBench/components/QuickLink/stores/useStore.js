@@ -1,5 +1,5 @@
 import { useLocalStore } from 'mobx-react-lite';
-import axios from '../../../../../../../tools/axios';
+import axios from '@/containers/components/c7n/tools/axios';
 
 export default function useStore(AppState) {
   return useLocalStore(() => ({

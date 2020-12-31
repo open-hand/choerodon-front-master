@@ -1,13 +1,12 @@
 import React from 'react';
-import { Content, Page } from '../../../../../index';
+import { Page } from '../../../../../index';
 import StarTargetPro from './components/StarTargetPro';
 import WorkBenchAgile from './components/WorkBenchAgile';
 import SelfIntro from './components/SelfIntro';
 import ServiceList from './components/ServiceList';
-import Card from './components/card';
 import Doc from './components/doc';
 import EnvList from './components/EnvList';
-import QuickLink from './components/WorkBenchAgile/components/QuickLink';
+import QuickLink from './components/QuickLink';
 
 import './WorkBench.less';
 

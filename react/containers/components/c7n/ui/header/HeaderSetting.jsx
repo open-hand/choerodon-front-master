@@ -3,6 +3,7 @@ import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
+import { Button as ProButton } from 'choerodon-ui/pro';
 import { Button, Icon } from 'choerodon-ui';
 import getSearchString from '../../util/gotoSome';
 
@@ -14,7 +15,7 @@ const LI_MAPPING = [
   // { title: '项目', icon: 'project_filled', activePath: '/projectsPro' },
   // { title: '应用', icon: 'widgets', activePath: '/applications' },
   { title: '知识库', icon: 'knowledge', activePath: '/knowledge/organization' },
-  // { title: '应用市场', icon: 'application_market', activePath: '/market/app-market' },
+  { title: '应用市场', icon: 'application_market', activePath: '/market/app-market' },
 
   // { title: '应用市场', icon: 'application_market', activePath: '/iam/choerodon/app-market' },
 ];
@@ -46,7 +47,13 @@ const Setting = ({
     <>
       {
         LI_MAPPING.map((list) => (
-          <Button key={list.activePath} className={`block ${extraCls(list)}`} onClick={() => goto(list)}>
+          <Button
+            key={list.activePath}
+            className={`block ${extraCls(list)}`}
+            onClick={() => goto(list)}
+            type="primary"
+            funcType="flat"
+          >
             <Icon type={list.icon} style={iconStyle} />
             {list.title}
           </Button>
