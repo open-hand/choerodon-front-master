@@ -15,6 +15,7 @@ import AddQuickLink from './AddQuickLink';
 import { useWorkBenchStore } from '../../stores';
 import { useQuickLinkStore } from './stores';
 import EmptyPage from '../empty-page';
+import EmptyImg from './image/empty.svg';
 import './index.less';
 
 const QuickLink = observer(() => {
@@ -242,7 +243,7 @@ const QuickLink = observer(() => {
             ),
           ]
         ) : (
-          <EmptyPage title="暂无快速链接" describe="暂无快速链接，请创建" />
+          <EmptyPage title="暂无快速链接" describe="暂无快速链接，请创建" img={EmptyImg} />
         )}
       </div>
     </div>

@@ -14,6 +14,7 @@ import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import Switch from '@/containers/components/c7n/routes/workBench/components/multiple-switch';
 import { useTodoQuestionStore } from './stores';
+import emptyImg from './image/empty.svg';
 
 import './index.less';
 
@@ -381,6 +382,7 @@ const TodoQuestion = observer(() => {
       return (
         <EmptyPage
           title={emptyPrompt.title}
+          img={emptyImg}
           describe={<span style={{ whiteSpace: 'nowrap' }}>{emptyPrompt.describe}</span>}
         />
       );

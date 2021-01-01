@@ -4,7 +4,7 @@
   background-color: #fff;
   padding: .2rem .24rem;
 
-  .c7n-spin-nested-loading {
+  .c7n-spin-nested-loading, .c7n-spin-container {
     height: 100%;
   }
 
@@ -66,6 +66,7 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    height: 100%;
 
     .infinite-scroll-component__outerdiv {
       width: 100%;
@@ -300,21 +301,6 @@
           }
         }
       }
-    }
-  }
-
-  .c7n-workBench-empty-page {
-
-    &-text {
-      word-break: keep-all;
-    }
-
-    &-image {
-      flex: 0 0 2.82rem;
-      width: 2.82rem;
-      height: 2rem;
-      background: url("./image/empty.svg") no-repeat;
-      background-size: contain;
     }
   }
 }

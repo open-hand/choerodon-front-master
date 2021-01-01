@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Button } from 'choerodon-ui/pro';
+import defaultImg from './image/empty.svg';
 
 import './index.less';
 
@@ -14,6 +15,7 @@ const EmptyPage = withRouter(((props) => {
     describe,
     btnText,
     onClick,
+    img,
   } = props;
 
   function handleClick() {
@@ -25,7 +27,7 @@ const EmptyPage = withRouter(((props) => {
 
   return (
     <div className="c7n-workBench-empty-page">
-      <div className="c7n-workBench-empty-page-image" />
+      <img className="c7n-workBench-empty-page-image" alt="" src={img || defaultImg} />
       <div className="c7n-workBench-empty-page-text">
         <div className="c7n-workBench-empty-page-title">
           {title}

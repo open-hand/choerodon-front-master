@@ -7,6 +7,7 @@ import { getRandomBackground } from '@/containers/components/c7n/util';
 import TimePopover from '../time-popover';
 import Switch from './components/SwitchTabs';
 import EmptyPage from '../empty-page';
+import EmptyImg from './image/empty.svg';
 import './index.less';
 import { useDoc } from './stores';
 
@@ -158,6 +159,7 @@ const Doc = () => {
                   <EmptyPage
                     title="暂无文档信息"
                     describe="暂无最近操作的文档"
+                    img={EmptyImg}
                   />
                 )
               )

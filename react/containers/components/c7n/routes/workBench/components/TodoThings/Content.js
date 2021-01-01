@@ -5,6 +5,7 @@ import Card from '../card';
 import { useTodoStore } from './stores';
 import LoadingBar from '../../../../tools/loading-bar';
 import EmptyPage from '../empty-page';
+import emptyImg from './image/empty.svg';
 
 import './index.less';
 
@@ -44,6 +45,7 @@ const StarTargetPro = observer(() => {
         <EmptyPage
           title="暂无待审核任务"
           describe="暂无需您审核的任务"
+          img={emptyImg}
         />
       );
     }
