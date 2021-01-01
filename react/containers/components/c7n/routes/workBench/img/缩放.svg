@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <polygon id="不带文字circle-a" points="9.375 3.125 8.125 3.125 8.125 7.244 .881 0 0 .881 7.244 8.125 3.125 8.125 3.125 9.375 9.375 9.375"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <rect width="24" height="24" fill="#5365EA" fill-opacity=".08" rx="12"/>
+    <g transform="translate(7 7)">
+      <mask id="不带文字circle-b" fill="#fff">
+        <use xlink:href="#不带文字circle-a"/>
+      </mask>
+      <g mask="url(#不带文字circle-b)">
+        <rect width="15" height="15" fill="#5365EA" transform="translate(-2.5 -2.5)"/>
+      </g>
+    </g>
+  </g>
+</svg>

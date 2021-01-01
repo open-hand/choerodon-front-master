@@ -1,0 +1,112 @@
+@keyframes editHover {
+  0% {
+    box-shadow: 0;
+  }
+  100% {
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+      0 3px 1px -2px rgba(0, 0, 0, 0.12);
+  }
+}
+@prefixCls: c7ncd-dragCard;
+
+.@{prefixCls} {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+
+  &-isEdit {
+    &::before {
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      border-radius: 10px;
+      z-index: 9;
+      cursor: all-scroll;
+    }
+    &:hover {
+      animation: editHover 0.2s both;
+    }
+  }
+
+  &-container {
+    width: 100%;
+    height: 100%;
+    & > div:first-of-type {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &-icon {
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    z-index: 10;
+  }
+  &-delete {
+    color: rgba(83, 101, 234, 1);
+    background-color: rgba(83, 101, 234, 0.08);
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    right: 12px;
+    top: 19px;
+    opacity: 0;
+    z-index: 10;
+  }
+  &-drag {
+    position: absolute;
+    left: 8px;
+    top: 19px;
+    cursor: grab;
+    color: #e6e6e6;
+    z-index: 10;
+  }
+
+  .react-resizable-handle {
+    opacity: 0;
+    background-image: url(./img/缩放.svg);
+    width: 26px;
+    height: 26px;
+    background-position: center center;
+    background-size: cover;
+    transition: 0.3s;
+    right: 6px;
+    bottom: 6px;
+    z-index: 10;
+    &::after {
+      border: none;
+      width: 0;
+      height: 0;
+    }
+  }
+  &:hover .react-resizable-handle,
+  &:hover &-delete {
+    opacity: 1;
+  }
+  &:hover &-drag {
+    color: rgba(83, 101, 234, 1);
+  }
+  &-static {
+    .react-resizable-handle {
+      display: none;
+    }
+    &::before {
+      cursor: not-allowed;
+    }
+    &:hover {
+      animation: none;
+      .@{prefixCls}-drag {
+        display: none;
+      }
+      .@{prefixCls}-delete {
+        display: none;
+      }
+    }
+  }
+}

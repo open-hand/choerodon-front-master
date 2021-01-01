@@ -1,17 +1,32 @@
+@import "~react-grid-layout/css/styles.css";
+@import "~react-resizable/css/styles.css";
+
 .c7n-workbench {
+  background: #f5f6fa;
+  padding: 16px 11px 16px 11px;
   display: flex;
-  flex-direction: row !important;
-  height: auto !important;
-  background: rgba(245,246,250,1);
-  &-left {
-    flex: auto;
-    padding: .2rem .2rem .2rem .26rem;
-    overflow: hidden;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: scroll;
+  &-container {
+    flex-shrink: 0;
+    flex-grow: 1;
+    height: auto;
+    // background: rgba(14, 29, 128, 0.1);
+    // background-image: linear-gradient(0deg, #f8f8f8 18px, transparent 18px),
+    //   linear-gradient(90deg, #f8f8f8 9px, transparent 9px),
+    //   linear-gradient(-90deg, #f8f8f8 9px, transparent 9px);
+    // background-attachment: local, scroll;
+    // background-size: calc(100% / 12) 118px;
   }
-  &-right {
-    flex: 0 0 3.12rem;
-    overflow: hidden;
-    background: #fff;
+
+  &-layout {
+    overflow-y: scroll;
+    min-height: 100%;
+    height: inherit;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
   }
 
   .spin-container {
@@ -20,13 +35,20 @@
   }
 }
 
+
 .c7n-workbench-empty-span {
-  font-family: PingFangSC-Regular,PingFang SC;
+  font-family: PingFangSC-Regular, PingFang SC;
   color: rgba(58, 52, 95, 0.65);
-  line-height: .18rem;
-  padding-top: .1rem;
-  margin-bottom: .47rem;
+  line-height: 0.18rem;
+  padding-top: 0.1rem;
+  margin-bottom: 0.47rem;
   text-align: center;
   border-top: 1px solid;
-  border-image: linear-gradient(to right, rgba(216, 220, 235, 0.4) , rgba(216, 220, 235, 1), rgba(216, 220, 235, 0.4)) 1 10;
+  border-image: linear-gradient(
+      to right,
+      rgba(216, 220, 235, 0.4),
+      rgba(216, 220, 235, 1),
+      rgba(216, 220, 235, 0.4)
+    )
+    1 10;
 }
