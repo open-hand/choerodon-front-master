@@ -251,7 +251,10 @@ const StarTargetPro = observer(() => {
       } = mappings[get(item, 'i')];
       return {
         ...rest,
-        layout: item,
+        layout: {
+          ...item,
+          static: true,
+        },
       };
     });
     localStorage.setItem('tempComponents', JSON.stringify(tempComponents));
