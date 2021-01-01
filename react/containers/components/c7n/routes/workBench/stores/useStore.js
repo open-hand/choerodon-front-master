@@ -5,7 +5,7 @@ import MenuStore from '@/containers/stores/c7n/MenuStore';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
 import {
-  filter, forEach, get, map,
+  filter, get, map,
 } from 'lodash';
 
 export default function useStore(history) {
@@ -19,7 +19,7 @@ export default function useStore(history) {
     },
 
     // 拖拽的参数
-    layouts: {},
+    layouts: [],
     workComponents: [],
 
     get getLayouts() {
@@ -30,53 +30,39 @@ export default function useStore(history) {
       return this.workComponents;
     },
 
-    setAllComponentStatus(isStatic) {
-      const tempStatusObj = {
-        static: !isStatic,
-        isDraggable: isStatic,
-        isResizable: isStatic,
-      };
-
-      const tempObj = this.layouts;
-
-      forEach(this.layouts, (arr, key) => {
-        let tempArr = arr;
-        tempArr = map(tempArr, (dataGrid) => {
-          const tempItem = dataGrid;
-          if (tempItem.i !== 'starTarget') {
-            return {
-              ...tempItem,
-              ...tempStatusObj,
-            };
-          }
-          return tempItem;
-        });
-        tempObj[key] = tempArr;
-      });
-
-      this.workComponents = map(this.workComponents, (item) => {
-        if (item.type !== 'starTarget') {
-          return {
-            ...item,
-            ...tempStatusObj,
-          };
-        }
-        return item;
-      });
-
-      this.layouts = tempObj;
-    },
-
     setLayOuts(value) {
       this.layouts = value;
     },
     addNewComponents(value) {
       this.workComponents.push(value);
     },
+
     deleteComponents(value) {
-      const tempArr = filter(this.workComponents, (item) => get(value, 'i') !== get(item, 'i'));
+      const tempArr = filter(this.workComponents, (item) => get(value, 'type') !== get(item, 'type'));
       this.workComponents = [...tempArr];
     },
+    setComponents(value) {
+      this.workComponents = value;
+    },
+
+    // setComponentAvaliable(value) {
+    //   this.workComponents = map(this.workComponents, (item) => {
+    //     const {
+    //       layout,
+    //       ...rest
+    //     } = item;
+    //     if (item.type === 'starTarget') {
+    //       return item;
+    //     }
+    //     return {
+    //       ...rest,
+    //       layout: {
+    //         ...layout,
+    //         static: !value,
+    //       },
+    //     };
+    //   });
+    // },
 
     isEdit: false,
     setEdit(value) {

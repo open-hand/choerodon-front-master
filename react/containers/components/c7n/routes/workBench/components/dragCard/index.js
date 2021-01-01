@@ -5,12 +5,12 @@ import classnames from 'classnames';
 import React from 'react';
 
 import './index.less';
+import Grid from 'choerodon-ui/lib/card/Grid';
 
 const prefixCls = 'c7ncd-dragCard';
 
 const DragCard = (props) => {
   const {
-    customizeSubHeader,
     children,
     className,
     onDelete,
@@ -19,7 +19,7 @@ const DragCard = (props) => {
     ...rest
   } = props;
 
-  const isStatic = get(dataGrid, 'static');
+  const isStatic = get(dataGrid.layout, 'static');
 
   const getClassName = classnames({
     [prefixCls]: true,
@@ -34,7 +34,7 @@ const DragCard = (props) => {
       className={getClassName}
     >
       {
-       !isStatic && onDelete && typeof onDelete === 'function' ? (
+       isEdit && onDelete && typeof onDelete === 'function' ? (
          <Icon
            role="none"
            type="delete_forever"
@@ -43,7 +43,7 @@ const DragCard = (props) => {
          />
        ) : ''
       }
-      {!isStatic && (
+      {isEdit && (
       <Icon
         type="baseline-drag_indicator"
         className={`${prefixCls}-icon ${prefixCls}-drag`}

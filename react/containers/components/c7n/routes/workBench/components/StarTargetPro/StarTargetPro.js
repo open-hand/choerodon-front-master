@@ -5,9 +5,11 @@ import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui';
 import moment from 'moment';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+import { get, map } from 'lodash';
 import { useStarTargetPro } from './stores';
 import { useWorkBenchStore } from '../../stores';
 import emptyImg from '../../../../../../images/owner.png';
+import mappings from '../../stores/mappings';
 
 import './index.less';
 import AddModal from './components/addModals';
@@ -22,6 +24,7 @@ const StarTargetPro = observer(() => {
   const {
     workBenchUseStore,
     history,
+    componentsDs,
     location: { search },
   } = useWorkBenchStore();
 
@@ -199,16 +202,15 @@ const StarTargetPro = observer(() => {
 
   function handleEditable() {
     setEdit(true);
-    workBenchUseStore.setAllComponentStatus(true);
   }
 
   function handleCancel() {
     setEdit(false);
-    workBenchUseStore.setAllComponentStatus(false);
   }
 
   function openAddComponents() {
     const subPrefix = 'c7ncd-workbench-addModal';
+    const typeArr = map(workBenchUseStore.workComponents, (item) => item.type);
     Modal.open({
       title: '添加卡片',
       key: Modal.key(),
@@ -218,9 +220,43 @@ const StarTargetPro = observer(() => {
       },
       children: <AddModal
         subPrefix={subPrefix}
+        existTypes={typeArr}
+        addComponent={(type) => {
+          const {
+            layout,
+            ...rest
+          } = mappings[type];
+          const tempCp = {
+            ...rest,
+            layout: {
+              ...layout,
+              x: (typeArr.length * 2) % (12),
+              y: Infinity,
+              static: false,
+            },
+          };
+          workBenchUseStore.addNewComponents(tempCp);
+        }}
       />,
       className: `${subPrefix}`,
     });
+  }
+
+  function hanldeSave() {
+    const tempLayout = workBenchUseStore.layouts;
+    const tempComponents = map(tempLayout, (item) => {
+      const {
+        layout,
+        ...rest
+      } = mappings[get(item, 'i')];
+      return {
+        ...rest,
+        layout: item,
+      };
+    });
+    localStorage.setItem('tempComponents', JSON.stringify(tempComponents));
+    componentsDs.loadData(tempComponents);
+    setEdit(false);
   }
 
   const renderBtns = () => {
@@ -237,6 +273,7 @@ const StarTargetPro = observer(() => {
         <Button
           color="primary"
           className={`${prefixCls}-btnGroups-primary`}
+          onClick={hanldeSave}
         >
           保存
         </Button>,

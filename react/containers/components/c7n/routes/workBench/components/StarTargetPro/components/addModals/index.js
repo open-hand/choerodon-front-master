@@ -2,21 +2,24 @@ import React, { useEffect, useState } from 'react';
 import './index.less';
 
 import {
-  filter, findIndex, get, map, without,
+  filter, findIndex, get, includes, map, without,
 } from 'lodash';
 // import todoThings from './img/todoQuestions.png';
 import { Icon } from 'choerodon-ui';
+import classnames from 'classnames';
 import groupMappings from './groupMappings';
 
 const AddModal = (props) => {
   const {
     subPrefix,
     modal,
+    addComponent,
+    existTypes,
   } = props;
 
   const [activeItem, setActiveItem] = useState(groupMappings[0]);
   const [dis, setDis] = useState(0);
-  const [seletedComponents, setSelectedComponents] = useState([]);
+  const [seletedComponents, setSelectedComponents] = useState('');
 
   useEffect(() => {
 
@@ -28,14 +31,12 @@ const AddModal = (props) => {
   }
 
   function handleSelect(item) {
-    const hasItem = seletedComponents.includes(item.i);
-    const tempArr = seletedComponents;
+    const hasItem = seletedComponents === item.type;
     if (hasItem) {
-      setSelectedComponents(without(seletedComponents, item.i));
+      setSelectedComponents('');
       return;
     }
-    tempArr.push(item.i);
-    setSelectedComponents([...tempArr]);
+    setSelectedComponents(item.type);
   }
 
   const renderMenuItems = () => map(groupMappings, (item, index) => (
@@ -51,14 +52,20 @@ const AddModal = (props) => {
 
   const renderItems = () => (
     map(activeItem.opts, (item, i) => {
-      const hasItem = seletedComponents.includes(item.i);
+      const hasItem = seletedComponents === item.type;
+      const isExist = includes(existTypes, item.type);
+      const itemsClassname = classnames({
+        [`${subPrefix}-right-item`]: true,
+        [`${subPrefix}-right-item-selected`]: !isExist && hasItem,
+      });
       return (
         <div
-          className={`${subPrefix}-right-item ${hasItem ? `${subPrefix}-right-item-selected` : ''}`}
-          key={get(item, 'i')}
+          className={itemsClassname}
+          key={get(item, 'type')}
           role="none"
-          onClick={() => handleSelect(item)}
+          onClick={() => !isExist && handleSelect(item)}
         >
+          {isExist && <div className={`${subPrefix}-right-item-disabled`} />}
           <div className={`${subPrefix}-right-item-img`}>
             <img src={item.img} alt="" />
             <div
@@ -91,6 +98,11 @@ const AddModal = (props) => {
     }
     return 0;
   };
+
+  modal.handleOk(() => {
+    addComponent(seletedComponents);
+    return true;
+  });
 
   return (
     <div className={`${subPrefix}-container`}>

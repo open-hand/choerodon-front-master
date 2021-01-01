@@ -29,6 +29,7 @@ const WorkBench = () => {
   const {
     workBenchUseStore,
     prefixCls,
+    componentsDs,
   } = useWorkBenchStore();
 
   const {
@@ -40,7 +41,7 @@ const WorkBench = () => {
   } = workBenchUseStore;
 
   function onLayoutChange(layout, tempLayouts) {
-    setLayOuts(tempLayouts);
+    setLayOuts(layout);
   }
   function handleDelete(dataGrid) {
     deleteComponents(dataGrid);
@@ -79,26 +80,34 @@ const WorkBench = () => {
     return tempComponent;
   };
 
-  const generateDOM = useCallback(() => (
-    map(workBenchUseStore.getWorkComponents, (l, i) => (
-      <DragCard
-        dataGrid={l}
-        key={l.i}
-        data-grid={l}
-        onDelete={handleDelete}
-        isEdit={isEdit}
-      >
-        {SwitchComponents(get(l, 'type'))}
-      </DragCard>
-    ))
-  ), [handleDelete, workBenchUseStore.getWorkComponents]);
+  const generateDOM = () => {
+    const tempComponents = isEdit ? workBenchUseStore.getWorkComponents : componentsDs.toData();
+    return (
+      map(tempComponents, (item, i) => {
+        const {
+          layout,
+        } = item;
+        return (
+          <DragCard
+            dataGrid={item}
+            onDelete={handleDelete}
+            isEdit={isEdit}
+            data-grid={layout}
+            key={layout.i}
+          >
+            {SwitchComponents(get(layout, 'i'))}
+          </DragCard>
+        );
+      })
+    );
+  };
 
   const renderBg = useCallback(() => <GridBg />, []);
 
   const renderGridLayouts = () => {
     const tempObj = {
       className: `${prefixCls}-layout`,
-      layouts: workBenchUseStore.getLayouts,
+      // layouts: workBenchUseStore.getLayouts,
       onLayoutChange,
       breakpoints: {
         lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0,
