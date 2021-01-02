@@ -1111,8 +1111,8 @@
 
 "@choerodon/boot@0.23.0-test":
   version "0.23.0-test"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@choerodon/boot/-/boot-0.23.0-test.tgz#da13923d2be757d93c8f92945be533fb917be765"
-  integrity sha512-fagMREJgeuiCFz51XlYwuS8poYogAZuK1HSqeSFaAEZ5l5hpBGsRO6DfxBhgDdr5RZlzmB5573j1pdy4pNzxAw==
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@choerodon/boot/-/boot-0.23.0-test.tgz#335d4e71f0a3416b6c25818aa6c08afc04344a13"
+  integrity sha512-gaCOLx3BM40rM0B/QwsMy45MGZ/EySllYvVmj5x/MQ4q1rVYjurA7FeZxRJBKx2viwwPB1gDaoxpnxZjfXCmUA==
   dependencies:
     "@babel/cli" "^7.8.4"
     "@hzero-front-ui/cfg" "^2.0.7-alpha-c7n.5"
