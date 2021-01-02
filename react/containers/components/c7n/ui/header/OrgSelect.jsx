@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
-import { Button, Icon, Dropdown, Menu } from 'choerodon-ui';
+import {
+  Button, Icon, Dropdown, Menu,
+} from 'choerodon-ui';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
@@ -8,7 +10,7 @@ import { toJS } from 'mobx';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../util';
 import Setting from './Setting';
-import MouserOverWrapper from "./components/MouseOverWrapper";
+import MouserOverWrapper from './components/MouseOverWrapper';
 
 const HAS_BASE_PRO = C7NHasModule('@choerodon/base-business');
 const prefixCls = 'c7n-boot-header-menu-type';
@@ -22,7 +24,7 @@ export default class OrgSelect extends Component {
     const currentData = this.getCurrentData() || [];
     const localOrgId = localStorage.getItem('C7N-ORG-ID');
     if (localOrgId && localOrgId !== 'undefined') {
-      const orgObj = currentData.find(v => String(v.id) === localOrgId);
+      const orgObj = currentData.find((v) => String(v.id) === localOrgId);
       if (orgObj) {
         this.selectState(orgObj);
         return;
@@ -41,8 +43,12 @@ export default class OrgSelect extends Component {
   }
 
   selectState = (value, gotoHome) => {
-    const { AppState, HeaderStore, MenuStore, history } = this.props;
-    const { id, name, type, organizationId, category } = value;
+    const {
+      AppState, HeaderStore, MenuStore, history,
+    } = this.props;
+    const {
+      id, name, type, organizationId, category,
+    } = value;
     localStorage.setItem('C7N-ORG-ID', id || organizationId);
     let parsed;
     let path;
@@ -75,7 +81,7 @@ export default class OrgSelect extends Component {
       return (
         <Menu>
           {
-            dataSource.map(org => (
+            dataSource.map((org) => (
               <Menu.Item
                 key={org.id}
                 onClick={() => this.selectState(org, true)}
@@ -104,7 +110,10 @@ export default class OrgSelect extends Component {
   renderModalContent() {
     const currentData = this.getCurrentData();
     return (
-      <div style={{ maxHeight: 400, marginTop: 44, overflow: 'auto', boxShadow: '0 0.02rem 0.08rem rgba(0, 0, 0, 0.12)', width: 200 }}>
+      <div style={{
+        maxHeight: 400, marginTop: 44, overflow: 'auto', boxShadow: '0 0.02rem 0.08rem rgba(0, 0, 0, 0.12)', width: 200,
+      }}
+      >
         {this.renderTable(currentData)}
       </div>
     );
@@ -112,10 +121,14 @@ export default class OrgSelect extends Component {
 
   render() {
     const {
-      HeaderStore, AppState: { currentMenuType: { name: selectTitle = '选择组织', type, category, id, organizationId }, getUserInfo }, history,
+      HeaderStore, AppState: {
+        currentMenuType: {
+          name: selectTitle = '选择组织', type, category, id, organizationId,
+        }, getUserInfo, getCurrentTheme,
+      }, history,
     } = this.props;
     const currentData = this.getCurrentData() || [];
-    const orgObj = currentData.find(v => String(v.id) === (organizationId || id) || v.id === (organizationId || id));
+    const orgObj = currentData.find((v) => String(v.id) === (organizationId || id) || v.id === (organizationId || id));
     if (!orgObj && currentData.length && type !== 'project') {
       if (getUserInfo.admin) {
         const obj = queryString.parse(history.location.search);
@@ -133,12 +146,11 @@ export default class OrgSelect extends Component {
           enabled: true,
         }]);
         return null;
-      } else {
-        setTimeout(() => {
-          this.autoSelect();
-        }, 100);
-        return null;
       }
+      setTimeout(() => {
+        this.autoSelect();
+      }, 100);
+      return null;
     }
     if (history.location.pathname === '/') {
       setTimeout(() => {
@@ -146,29 +158,39 @@ export default class OrgSelect extends Component {
       }, 100);
       return null;
     }
-    const buttonClass = classnames(`${prefixCls}-button`, 'block', 'org-button');
+    const buttonClass = classnames(`${prefixCls}-button`, 'block', 'org-button', { 'theme4-orgSelect': getCurrentTheme === 'theme4' });
     const menu = this.renderModalContent();
-    const orgButton = <Button
-      className={buttonClass}
-      funcType="flat"
-      style={{
-        margin: 0,
-        padding: '0 20px',
-        width: 200,
-        borderLeft: '1px solid rgba(255, 255, 255, 0.3)',
-        borderRight: '1px solid rgba(255, 255, 255, 0.3)',
-        textAlign: 'left',
-      }}
-    >
-      {
+    const orgButton = (
+      <Button
+        className={buttonClass}
+        funcType="flat"
+        style={{
+          margin: 0,
+          padding: '0 20px',
+          width: 200,
+          borderLeft: `1px solid ${getCurrentTheme === 'theme4' ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
+          borderRight: `1px solid ${getCurrentTheme === 'theme4' ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
+          textAlign: 'left',
+        }}
+      >
+        {
         (orgObj && orgObj.name) ? (
           <div>
-            <div style={{ fontSize: '12px', lineHeight: '20px', color: 'rgba(255, 255, 255, 0.6)' }}>组织</div>
-            <div style={{ fontSize: '12px', lineHeight: '20px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'none' }}>{orgObj.name}</div>
+            {
+              getCurrentTheme === '' && (
+                <div style={{ fontSize: '12px', lineHeight: '20px', color: 'rgba(255, 255, 255, 0.6)' }}>组织</div>
+              )
+            }
+            <div style={{
+              fontSize: '12px', lineHeight: '20px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'none',
+            }}
+            >
+              {orgObj.name}
+            </div>
           </div>
         ) : null
       }
-      {
+        {
         !(orgObj && orgObj.name) ? (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span>请选择组织</span>
@@ -176,16 +198,26 @@ export default class OrgSelect extends Component {
           </div>
         ) : null
       }
-      {
-        HAS_BASE_PRO && orgObj ? <Icon type="expand_more" style={{ position: 'absolute', top: 0, right: 8, color: 'rgba(255, 255, 255, .65)', fontSize: '.24rem' }} /> : null
+        {
+        HAS_BASE_PRO && orgObj ? (
+          <Icon
+            type="expand_more"
+            style={{
+              position: 'absolute', top: 0, right: 8, color: 'rgba(255, 255, 255, .65)', fontSize: '.24rem',
+            }}
+          />
+        ) : null
       }
-    </Button>
+      </Button>
+    );
     return (
-      <React.Fragment>
+      <>
         <li style={{ width: 'auto' }}>
-          {HAS_BASE_PRO ? <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
-            {orgButton}
-          </Dropdown> : orgButton}
+          {HAS_BASE_PRO ? (
+            <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
+              {orgButton}
+            </Dropdown>
+          ) : orgButton}
         </li>
         {
           (orgObj && orgObj.into) ? (
@@ -194,7 +226,7 @@ export default class OrgSelect extends Component {
             </li>
           ) : null
         }
-      </React.Fragment>
+      </>
     );
   }
 }

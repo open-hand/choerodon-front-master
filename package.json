@@ -25,7 +25,7 @@
   "author": "qyellow",
   "license": "ISC",
   "devDependencies": {
-    "@choerodon/boot": "0.22.0",
+    "@choerodon/boot": "0.23.0-test",
     "@choerodon/compiler": "^0.0.1",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
@@ -41,9 +41,9 @@
     "eslint-plugin-react-hooks": "^4.1.0"
   },
   "dependencies": {
-    "@hzero-front-ui/c7n-ui": "^2.0.7-alpha-c7n.2",
-    "@hzero-front-ui/cfg": "^2.0.7-alpha-c7n.2",
-    "@hzero-front-ui/hzero-ui": "^2.0.7-alpha-c7n.2",
+    "@hzero-front-ui/c7n-ui": "^2.0.7-alpha-c7n.5",
+    "@hzero-front-ui/cfg": "^2.0.7-alpha-c7n.5",
+    "@hzero-front-ui/hzero-ui": "^2.0.7-alpha-c7n.5",
     "axios": "^0.16.2",
     "classnames": "^2.2.5",
     "core-js": "^3.6.5",

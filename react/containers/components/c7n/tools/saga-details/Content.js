@@ -5,7 +5,7 @@ import React, {
   createRef, useEffect, useState, useCallback,
 } from 'react';
 import { Tabs } from 'choerodon-ui';
-import { Content, Choerodon } from '@choerodon/boot';
+import { Content, Choerodon } from '@/index';
 import classnames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import { observer } from 'mobx-react-lite';

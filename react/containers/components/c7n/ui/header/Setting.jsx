@@ -26,9 +26,21 @@ export default class Setting extends Component {
   render() {
     const classString = classNames({ block: true });
     return (
-      <Button className={classString} onClick={this.gotoOrganizationManager}>
-        <Icon type="settings " style={{ marginLeft: '5px' }} />
-        管理中心
+      <Button
+        className={classNames({
+          [classString]: true,
+          'theme4-setting': this.props.AppState.getCurrentTheme === 'theme4',
+        })}
+        onClick={this.gotoOrganizationManager}
+      >
+        <Icon
+          className={classNames({
+            'theme4-setting-icon': this.props.AppState.getCurrentTheme === 'theme4'
+          })}
+          type="settings"
+          style={{ marginLeft: '5px' }}
+        />
+        { this.props.AppState.getCurrentTheme === '' && '管理中心' }
       </Button>
     );
   }

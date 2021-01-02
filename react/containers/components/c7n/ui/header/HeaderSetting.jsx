@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { Button as ProButton } from 'choerodon-ui/pro';
 import { Button, Icon } from 'choerodon-ui';
+import classNames from 'classnames';
 import getSearchString from '../../util/gotoSome';
 
 const iconStyle = { marginLeft: 0, marginRight: 0 };
@@ -43,13 +44,17 @@ const Setting = ({
     }
     return '';
   }
+
   return (
     <>
       {
         LI_MAPPING.map((list) => (
           <Button
             key={list.activePath}
-            className={`block ${extraCls(list)}`}
+            className={classNames({
+              [`block ${extraCls(list)}`]: true,
+              'theme4-headerButton': AppState.getCurrentTheme === 'theme4',
+            })}
             onClick={() => goto(list)}
             type="primary"
             funcType="flat"
