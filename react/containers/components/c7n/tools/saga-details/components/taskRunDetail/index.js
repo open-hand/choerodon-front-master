@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Choerodon } from '@choerodon/boot';
+import { Choerodon } from '@/index';
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import CodeShow from '../codeShow';

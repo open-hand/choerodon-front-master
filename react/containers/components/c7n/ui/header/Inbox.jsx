@@ -6,7 +6,9 @@ import { withRouter } from 'react-router-dom';
 import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
-import { Badge, Button, Icon, Spin, Tabs, Avatar, Tooltip } from 'choerodon-ui';
+import {
+  Badge, Button, Icon, Spin, Tabs, Avatar, Tooltip,
+} from 'choerodon-ui';
 import { Button as ButtonPro, CheckBox, Modal } from 'choerodon-ui/pro';
 import { getCookie } from '@/utils';
 import WSHandler from '../../tools/ws/WSHandler';
@@ -33,19 +35,23 @@ class RenderPopoverContentClass extends Component {
   };
 
   render() {
-    const { HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, openCleanAllModal, handleSettingReceive, readAllMsg } = this.props;
-    const { inboxVisible, getUnreadAll, announcementClosed, getUnreadMsg, getIsTodo, getUnreadOther } = HeaderStore;
+    const {
+      HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, openCleanAllModal, handleSettingReceive, readAllMsg,
+    } = this.props;
+    const {
+      inboxVisible, getUnreadAll, announcementClosed, getUnreadMsg, getIsTodo, getUnreadOther,
+    } = HeaderStore;
     const siderClasses = classNames({
       [`${prefixCls}-sider`]: true,
       [`${prefixCls}-sider-visible`]: inboxVisible,
       [`${prefixCls}-sider-move-down`]: !announcementClosed,
     });
     const operations = (
-      <React.Fragment>
+      <>
         <Tooltip title="全部已读"><ButtonPro funcType="flat" icon="all_read" color="primary" onClick={readAllMsg} /></Tooltip>
         <Tooltip title="接收设置"><ButtonPro funcType="flat" icon="settings" color="primary" onClick={handleSettingReceive} style={{ marginLeft: '.04rem' }} /></Tooltip>
         {HeaderStore.getInboxActiveKey === '1' && (<Tooltip title="全部清除"><ButtonPro funcType="flat" icon="delete_sweep" color="primary" onClick={openCleanAllModal} style={{ marginLeft: '.04rem' }} /></Tooltip>)}
-      </React.Fragment>
+      </>
     );
     return (
       <div className={siderClasses}>
@@ -63,7 +69,7 @@ class RenderPopoverContentClass extends Component {
             </div>
             <Tabs defaultActiveKey="1" activeKey={HeaderStore.getInboxActiveKey} onChange={(flag) => HeaderStore.setInboxActiveKey(flag)} tabBarExtraContent={operations}>
               <TabPane
-                tab={<span><Badge count={getUnreadMsg.filter(v => !v.read).length} style={{ transform: 'scale(.75)' }}>消息</Badge></span>}
+                tab={<span><Badge count={getUnreadMsg.filter((v) => !v.read).length} style={{ transform: 'scale(.75)' }}>消息</Badge></span>}
                 key="1"
               >
                 <Spin spinning={inboxLoading}>
@@ -99,8 +105,12 @@ class RenderPopoverContentDetailClass extends Component {
   };
 
   render() {
-    const { HeaderStore, AppState, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg } = this.props;
-    const { inboxDetailVisible, getUnreadAll, announcementClosed, getUnreadMsg, getUnreadNotice, inboxDetail } = HeaderStore;
+    const {
+      HeaderStore, AppState, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg,
+    } = this.props;
+    const {
+      inboxDetailVisible, getUnreadAll, announcementClosed, getUnreadMsg, getUnreadNotice, inboxDetail,
+    } = HeaderStore;
     const { systemLogo, systemName } = AppState.getSiteInfo;
     const realSystemLogo = systemLogo || defaultAvatar;
     // eslint-disable-next-line no-underscore-dangle
@@ -149,7 +159,7 @@ class RenderPopoverContentDetailClass extends Component {
             <div className="title">
               <span>
                 <Icon type={isMsg ? 'textsms' : 'volume_up'} style={{ marginRight: 10 }} />
-                <a onClick={e => {}}>{HeaderStore.inboxDetail.title}</a>
+                <a onClick={(e) => {}}>{HeaderStore.inboxDetail.title}</a>
               </span>
             </div>
             <div className="info">
@@ -290,7 +300,9 @@ export default class Inbox extends Component {
         <ul>
           {
             inboxData.map((data) => {
-              const { title, content, id, sendTime, read, sendDate } = data;
+              const {
+                title, content, id, sendTime, read, sendDate,
+              } = data;
               const realSendTime = 'sendDate' in data ? sendDate : sendTime;
               const isMsg = 'messageId' in data;
               const icon = <Icon type={isMsg ? 'textsms' : 'volume_up'} className="color-blue" />;
@@ -304,9 +316,12 @@ export default class Inbox extends Component {
                   <div className={`${prefixCls}-sider-content-list-title`}>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {iconWithBadge}
-                      <a onClick={e => this.handleMessageTitleClick(e, data)} style={{ marginLeft: 10 }}>{title}</a>
+                      <a onClick={(e) => this.handleMessageTitleClick(e, data)} style={{ marginLeft: 10 }}>{title}</a>
                     </span>
-                    <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0, color: 'rgba(0, 0, 0, 0.54)' }}>
+                    <div style={{
+                      display: 'flex', alignItems: 'center', flexShrink: 0, color: 'rgba(0, 0, 0, 0.54)',
+                    }}
+                    >
                       {
                         new Date() - new Date(realSendTime) >= 172800000 ? (
                           <span>{realSendTime}</span>
@@ -322,7 +337,7 @@ export default class Inbox extends Component {
                           <Icon
                             type="close"
                             style={{ cursor: 'pointer', marginLeft: 12, fontSize: '20px' }}
-                            onClick={e => this.deleteMsg(e, data)}
+                            onClick={(e) => this.deleteMsg(e, data)}
                           />
                         ) : null
                       }
@@ -355,28 +370,52 @@ export default class Inbox extends Component {
           }
         </ul>
       );
-    } else {
-      return (
-        <div className={`${prefixCls}-empty`}>
-          暂时没有站内消息
-        </div>
-      );
     }
+    return (
+      <div className={`${prefixCls}-empty`}>
+        暂时没有站内消息
+      </div>
+    );
   }
 
   render() {
-    const { AppState, HeaderStore: { inboxData, inboxLoading, getUnreadMessageCount } } = this.props;
+    const {
+      AppState, HeaderStore: {
+        inboxData, inboxLoading, getUnreadMessageCount, getCurrentTheme,
+      },
+    } = this.props;
     const popOverContent = { inboxData, inboxLoading };
     return (
-      <React.Fragment>
+      <>
         <WSHandler
           messageKey="hzero-web"
           onMessage={this.handleMessage}
         >
           {
-            data => (
-              <Badge onClick={this.handleButtonClick} className={`${prefixCls} ignore-react-onclickoutside`} count={getUnreadMessageCount}>
-                <Button functype="flat" shape="circle" style={{ color: '#fff' }}>
+            (data) => (
+              <Badge
+                onClick={this.handleButtonClick}
+                className={
+                  classNames(
+                    [prefixCls],
+                    'ignore-react-onclickoutside',
+                    { 'theme4-inbox-badge': AppState.getCurrentTheme === 'theme4' },
+                  )
+                }
+                count={getUnreadMessageCount}
+              >
+                <Button
+                  className={classNames({
+                    'theme4-inbox': AppState.getCurrentTheme === 'theme4',
+                  })}
+                  functype="flat"
+                  {
+                    ...AppState.getCurrentTheme === '' ? {
+                      shape: 'circle',
+                      style: { color: '#fff' },
+                    } : {}
+                  }
+                >
                   <Icon type="notifications" />
                 </Button>
               </Badge>
@@ -393,7 +432,7 @@ export default class Inbox extends Component {
           openCleanAllModal={this.openCleanAllModal}
         />
 
-      </React.Fragment>
+      </>
     );
   }
 }

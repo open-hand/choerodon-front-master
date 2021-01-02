@@ -44,8 +44,15 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
           <Tooltip title={text}>
             <Button
+              className={classNames({
+                'theme4-external': props.AppState.getCurrentTheme === 'theme4',
+              })}
               icon={icon}
-              shape="circle"
+              {
+                ...props.AppState.getCurrentTheme === '' ? {
+                  shape: 'circle',
+                } : {}
+              }
               onClick={() => {
                 window.open(url);
               }}
@@ -58,7 +65,9 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     return null;
   };
 
-  const { AppState: { getUserInfo: { image_url: imgUrl } }, MenuStore: { getSiteMenuData }, history, location: { pathname } } = props;
+  const {
+    AppState: { getUserInfo: { image_url: imgUrl } }, MenuStore: { getSiteMenuData }, history, location: { pathname },
+  } = props;
 
   const shouldHiddenHead = (pathname) => {
     const defaultBlackList = ['/iam/enterprise'];
@@ -82,7 +91,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         <Logo history={history} />
       </div>
       <ul className={`${prefixCls}-center`}>
-        <li><HeaderSetting /></li>
+        <li style={{ display: 'flex' }}><HeaderSetting /></li>
       </ul>
       <ul className={`${prefixCls}-right`}>
         <OrgSelect />
