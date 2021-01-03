@@ -69,6 +69,30 @@ const StarTargetPro = observer(() => {
     );
   };
 
+  const renderEmptypage = () => (
+    <div className={`${prefixCls}-content`}>
+      <img src={emptyImg} alt="empty" />
+      <div className={`${prefixCls}-content-emptyText`}>
+        <p className={`${prefixCls}-content-emptyText-emptyP`}>暂无星标</p>
+        <p className={`${prefixCls}-content-emptyText-emptySuggest`}>
+          您还没有星标项目，请前往&quot;项目管理&quot;页面进行添加
+        </p>
+        <Button
+          onClick={() => {
+            history.push({
+              pathname: '/projects',
+              search,
+            });
+          }}
+          funcType="raised"
+          color="primary"
+        >
+          转到项目管理
+        </Button>
+      </div>
+    </div>
+  );
+
   const renderContent = () => {
     const starProjects = starTargetProUseStore.getStarProjects;
     if (starTargetProUseStore.getLoading) {
@@ -79,29 +103,7 @@ const StarTargetPro = observer(() => {
       );
     }
     if (starProjects.length === 0) {
-      return (
-        <div className={`${prefixCls}-content`}>
-          <img src={emptyImg} alt="empty" />
-          <div className={`${prefixCls}-content-emptyText`}>
-            <p className={`${prefixCls}-content-emptyText-emptyP`}>暂无星标</p>
-            <p className={`${prefixCls}-content-emptyText-emptySuggest`}>
-              您还没有星标项目，请前往&quot;项目管理&quot;页面进行添加
-            </p>
-            <Button
-              onClick={() => {
-                history.push({
-                  pathname: '/projects',
-                  search,
-                });
-              }}
-              funcType="raised"
-              color="primary"
-            >
-              转到项目管理
-            </Button>
-          </div>
-        </div>
-      );
+      return renderEmptypage();
     }
     return (
       <div className={`${prefixCls}-proContainer`}>

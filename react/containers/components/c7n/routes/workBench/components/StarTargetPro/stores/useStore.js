@@ -24,7 +24,7 @@ export default function useStore(AppState) {
         this.setStarProjects(res);
       }).catch(() => {
         this.setLoading(false);
-      })
-    }
+      });
+    },
   }));
 }
