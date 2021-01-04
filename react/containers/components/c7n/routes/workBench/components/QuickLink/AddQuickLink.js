@@ -102,7 +102,7 @@ export default observer(({
   }, []);
 
   return (
-    <Form className="addQuickLinkForm" dataSet={dataSet}>
+    <Form labelLayout="float" className="addQuickLinkForm" dataSet={dataSet}>
       <p className="addQuickLinkForm-p">
         链接公开范围
         <Tooltip title="项目可见的链接创建成功后，所选项目下的所有人员均能查看并使用该链接；对于仅自己可见的链接，则只有本人能够查看与使用。">
