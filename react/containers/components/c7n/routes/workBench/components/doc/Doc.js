@@ -19,12 +19,10 @@ const Doc = () => {
     clsPrefix,
   } = useDoc();
 
-  useEffect(() => {
-    if (docDs.currentPage === 1) {
-      const data = docDs.toData()[0];
-      docStore.setDocData(data ? data.list : []);
-    }
-  }, [docDs, docDs.length, docStore]);
+  const {
+    getListHasMore,
+    rowNumber,
+  } = docStore;
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
@@ -65,7 +63,7 @@ const Doc = () => {
   ));
 
   function renderItems() {
-    return map(docStore.getDocData, ({
+    return map(docDs.toData(), ({
       knowledgeBaseName, orgFlag, id, baseId, organizationId, imageUrl, title, projectId, projectName, organizationName, updatedUserList: originUpdatedUserList, lastUpdateDate,
     }) => {
       const updatedUserList = originUpdatedUserList ? originUpdatedUserList.filter(Boolean) : [];
@@ -120,34 +118,33 @@ const Doc = () => {
   }
 
   const loadMore = async () => {
-    await docDs.nextPage().then((res) => {
-      docStore.setDocData(docStore.getDocData.concat(res.toData().list));
-    });
+    await docDs.query(docDs.currentPage + 1);
   };
+
+  // const renderHeight = () => docDs.length * 66 - 10;
 
   return (
     <div
       className={clsPrefix}
     >
       {renderTitle()}
-      <Spin spinning={!docDs.length && docDs.currentPage === 1 && docDs.status === 'loading'}>
+      <Spin spinning={docDs.status === 'loading'}>
         <div className="c7n-workbench-doc-content">
           {
-            docStore.getDocData.length > 0
+            docDs.length > 0
               ? (
                 <ScrollContext
                   className={`${clsPrefix}-scroll`}
-                  dataLength={docStore.getDocData.length}
+                  dataLength={docDs.length}
                   next={loadMore}
-                  hasMore={docDs.currentPage < docDs.totalPage}
-                  loader={<Spin className={`${clsPrefix}-scroll-load`} spinning />}
-                  height={438}
+                  hasMore={getListHasMore}
+                  height={((rowNumber - 1) * 170) + 130}
                   endMessage={(
                     <span
-                      style={{ height: docStore.getDocData.length < 5 ? '1.32rem' : 'auto' }}
+                      style={{ height: docDs.length < 5 ? '1.32rem' : 'auto' }}
                       className={`${clsPrefix}-scroll-bottom`}
                     >
-                      {docStore.getDocData.length && docDs.totalPage > 1 ? '到底了' : ''}
+                      {getListHasMore ? '到底了' : ''}
                     </span>
                   )}
                 >

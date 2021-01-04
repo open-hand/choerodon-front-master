@@ -19,5 +19,10 @@ export default function useStore(history) {
     setCacheQuickLinkData(value) {
       this.cacheQuickLinkData = value;
     },
+
+    cacheDocData: {},
+    setCacheDocData(value) {
+      this.cacheDocData = value;
+    },
   }));
 }

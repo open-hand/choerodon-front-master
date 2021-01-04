@@ -6,7 +6,7 @@ export default ({
   paging: true,
   pageSize: 10,
   transport: {
-    read: ({ data, dataSet }) => ({
+    read: ({ dataSet }) => ({
       url: `/iam/choerodon/v1/organizations/${organizationId}/quick_links/scope/${linkType}${selectedProjectId ? `?project_id=${selectedProjectId}` : ''}`,
       method: 'get',
       transformResponse(res) {
