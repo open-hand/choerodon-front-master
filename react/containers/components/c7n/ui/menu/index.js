@@ -95,9 +95,14 @@ export default class CommonMenu extends Component {
             marginLeft: collapsed && num === 0 ? 0 : parseInt(num, 10) * 20,
           }}
         >
-          <Icon
-            type={data.icon}
-          />
+          <span className={classNames({
+            'theme4-iconwrap': this.props.AppState.getCurrentTheme === 'theme4',
+          })}
+          >
+            <Icon
+              type={data.icon}
+            />
+          </span>
           <span>{data.name}</span>
         </Link>
       );
@@ -120,7 +125,14 @@ export default class CommonMenu extends Component {
               marginLeft: parseInt(num, 10) * 20,
             }}
           >
-            <Icon type={data.icon} />
+            <span className={classNames({
+              'theme4-iconwrap': this.props.AppState.getCurrentTheme === 'theme4',
+            })}
+            >
+              <Icon
+                type={data.icon}
+              />
+            </span>
             {num === 0 && collapsed ? null : <span>{data.name}</span>}
           </span>
           )}
