@@ -13,7 +13,7 @@ let size = 10;
 const { Option } = Select;
 
 export default observer(({
-  AppState, modal, useStore, data, workBenchUseStore, activeId, type,
+  AppState, modal, useStore, data, workBenchUseStore, activeId, type, handleRefresh,
 }) => {
   const dataSet = useMemo(() => new DataSet(addLinkDataSet(AppState, data)), [data, type]);
 
@@ -59,19 +59,17 @@ export default observer(({
       const result = await dataSet.validate();
       if (result) {
         let res;
-        let id;
-        if (workBenchUseStore.getActiveStarProject) {
-          id = workBenchUseStore.getActiveStarProject.id;
-        }
         if (data) {
           res = await useStore.axiosEditQuickLink(dataSet.toData()[0], activeId, type);
         } else {
           res = await useStore.axiosCreateQuickLink(dataSet.toData()[0], activeId, type);
         }
-        if (res.failed) {
+        if (res && res.failed) {
           return false;
         }
         dataSet.reset();
+        handleRefresh && handleRefresh();
+        return true;
       }
       return false;
     } catch (e) {

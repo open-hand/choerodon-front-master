@@ -34,8 +34,6 @@ const WorkBench = () => {
 
   const {
     setLayOuts,
-    layouts,
-    addNewComponents,
     deleteComponents,
     isEdit,
   } = workBenchUseStore;

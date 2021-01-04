@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Tooltip, Modal } from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import { observer } from 'mobx-react-lite';
@@ -12,13 +12,12 @@ import emptyImg from '../../../../../../images/owner.png';
 import mappings from '../../stores/mappings';
 
 import './index.less';
-import AddModal from './components/addModals';
+import AddModal from '../addComponentsModal';
 
 const StarTargetPro = observer(() => {
   const {
-    starTargetProUseStore,
     prefixCls,
-    organizationId,
+    starProjectsDs,
   } = useStarTargetPro();
 
   const {
@@ -26,32 +25,22 @@ const StarTargetPro = observer(() => {
     history,
     componentsDs,
     location: { search },
+    selectedProjectId,
   } = useWorkBenchStore();
 
   const {
     isEdit,
     setEdit,
+    setActiveStarProject,
   } = workBenchUseStore;
 
-  useEffect(() => {
-    workBenchUseStore.setActiveStarProject(undefined);
-    starTargetProUseStore.axiosGetStarProjects();
-  }, [organizationId]);
-
   const handleClickItem = (s) => {
-    const origin = starTargetProUseStore.getStarProjects;
-    starTargetProUseStore.setStarProjects(
-      origin.map((si) => {
-        const temp = si;
-        if (temp.id === s.id) {
-          workBenchUseStore.setActiveStarProject(!s.active ? si : undefined);
-          temp.active = !s.active;
-        } else {
-          temp.active = false;
-        }
-        return temp;
-      }),
-    );
+    const tempId = get(s, 'id');
+    if (tempId === selectedProjectId) {
+      setActiveStarProject(null);
+      return;
+    }
+    setActiveStarProject(s);
   };
 
   const renderGroupProjects = (s) => {
@@ -69,9 +58,33 @@ const StarTargetPro = observer(() => {
     );
   };
 
+  const renderEmptypage = () => (
+    <div className={`${prefixCls}-content`}>
+      <img src={emptyImg} alt="empty" />
+      <div className={`${prefixCls}-content-emptyText`}>
+        <p className={`${prefixCls}-content-emptyText-emptyP`}>暂无星标</p>
+        <p className={`${prefixCls}-content-emptyText-emptySuggest`}>
+          您还没有星标项目，请前往&quot;项目管理&quot;页面进行添加
+        </p>
+        <Button
+          onClick={() => {
+            history.push({
+              pathname: '/projects',
+              search,
+            });
+          }}
+          funcType="raised"
+          color="primary"
+        >
+          转到项目管理
+        </Button>
+      </div>
+    </div>
+  );
+
   const renderContent = () => {
-    const starProjects = starTargetProUseStore.getStarProjects;
-    if (starTargetProUseStore.getLoading) {
+    const starProjects = starProjectsDs.toData();
+    if (starProjectsDs.status === 'loading') {
       return (
         <div style={{ padding: '56px 0px' }} className={`${prefixCls}-content`}>
           <LoadingBar display />
@@ -79,43 +92,22 @@ const StarTargetPro = observer(() => {
       );
     }
     if (starProjects.length === 0) {
-      return (
-        <div className={`${prefixCls}-content`}>
-          <img src={emptyImg} alt="empty" />
-          <div className={`${prefixCls}-content-emptyText`}>
-            <p className={`${prefixCls}-content-emptyText-emptyP`}>暂无星标</p>
-            <p className={`${prefixCls}-content-emptyText-emptySuggest`}>
-              您还没有星标项目，请前往&quot;项目管理&quot;页面进行添加
-            </p>
-            <Button
-              onClick={() => {
-                history.push({
-                  pathname: '/projects',
-                  search,
-                });
-              }}
-              funcType="raised"
-              color="primary"
-            >
-              转到项目管理
-            </Button>
-          </div>
-        </div>
-      );
+      return renderEmptypage();
     }
     return (
       <div className={`${prefixCls}-proContainer`}>
         {starProjects.slice(0, 6).map((s, sIndex) => {
           const unix = String(moment(s.creationDate).unix());
+          const isActive = selectedProjectId === get(s, 'id');
           return (
             <div
               role="none"
               className={`${prefixCls}-proContainer-items ${
-                s.active ? `${prefixCls}-proContainer-focus` : ''
+                isActive ? `${prefixCls}-proContainer-focus` : ''
               }`}
               onClick={() => handleClickItem(s)}
             >
-              {s.active && (
+              {isActive && (
                 <div className={`${prefixCls}-proContainer-items-correct`}>
                   <i
                     className={`${prefixCls}-proContainer-items-correct-icon`}
@@ -135,7 +127,7 @@ const StarTargetPro = observer(() => {
 
               <Tooltip title={`${s.name} (${s.code})`} placement="top">
                 <p
-                  style={{ color: s.active ? 'white' : 'rgba(58,52,95,1)' }}
+                  style={{ color: isActive ? 'white' : 'rgba(58,52,95,1)' }}
                   className={`${prefixCls}-proContainer-items-text`}
                 >
                   {s.name}
@@ -146,7 +138,7 @@ const StarTargetPro = observer(() => {
               </Tooltip>
 
               <p
-                style={{ color: s.active ? 'white' : 'rgba(58,52,95,0.65)' }}
+                style={{ color: isActive ? 'white' : 'rgba(58,52,95,0.65)' }}
                 className={`${prefixCls}-proContainer-items-project`}
               >
                 {renderGroupProjects(s)}
@@ -168,7 +160,7 @@ const StarTargetPro = observer(() => {
                 <div
                   className={`${prefixCls}-proContainer-items-extra-text`}
                   style={{
-                    color: s.active ? 'white' : ' rgba(58, 52, 95, 0.65)',
+                    color: isActive ? 'white' : ' rgba(58, 52, 95, 0.65)',
                   }}
                 >
                   <p>创建于</p>
@@ -177,7 +169,7 @@ const StarTargetPro = observer(() => {
                 <span
                   className={`${prefixCls}-proContainer-items-project-goNext`}
                   style={{
-                    background: s.active
+                    background: isActive
                       ? 'rgba(255,255,255,0.12)'
                       : 'rgba(104,135,232,0.1)',
                   }}
@@ -188,7 +180,7 @@ const StarTargetPro = observer(() => {
                   role="none"
                 >
                   <Icon
-                    style={{ color: s.active ? 'white' : '#6887E8' }}
+                    style={{ color: isActive ? 'white' : '#6887E8' }}
                     type="trending_flat"
                   />
                 </span>

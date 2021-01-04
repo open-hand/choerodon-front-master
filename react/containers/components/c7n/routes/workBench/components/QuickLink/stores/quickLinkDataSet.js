@@ -1,17 +1,15 @@
 /* eslint-disable import/no-anonymous-default-export */
-export default (({
-  organizationId, selectedProjectId, self, docStore, cacheStore, rowNumber,
+export default ({
+  quickLinkUseStore, organizationId, selectedProjectId, linkType, cacheStore,
 }) => ({
   autoQuery: false,
-  selection: false,
   paging: true,
-  dataKey: null,
-  pageSize: rowNumber * 2,
+  pageSize: 10,
   transport: {
     read: ({ dataSet }) => ({
-      url: `/knowledge/v1/organizations/${organizationId}/work_space/recent_project_update_list${self ? '/self' : ''}${selectedProjectId ? `?projectId=${selectedProjectId}` : ''}`,
+      url: `/iam/choerodon/v1/organizations/${organizationId}/quick_links/scope/${linkType}${selectedProjectId ? `?project_id=${selectedProjectId}` : ''}`,
       method: 'get',
-      transformResponse: (res) => {
+      transformResponse(res) {
         try {
           const mainData = JSON.parse(res);
           const {
@@ -29,18 +27,17 @@ export default (({
             // eslint-disable-next-line no-param-reassign
             dataSet.pageSize *= (mainData.number + 1);
           }
-          docStore.setListHasMore(
+          quickLinkUseStore.setListHasMore(
             mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,
           );
-          // 这里通过ds，工作台层缓存数据，为了在编辑阶段不重新load数据，isSelf是为了标识当前的tab
+          // 这里通过ds，工作台层缓存数据，为了在编辑阶段不重新load数据，type是为了标识当前的tab
           const cacheData = {
             ...rest,
             content: newData,
-            isSelf: self,
+            type: linkType,
             selectedProjectId,
-            rowNumber,
           };
-          cacheStore.setCacheDocData(cacheData);
+          cacheStore.setCacheQuickLinkData(cacheData);
           return newData;
         } catch (error) {
           throw new Error(error);
@@ -48,5 +45,4 @@ export default (({
       },
     }),
   },
-  fields: [],
-}));
+});

@@ -1,5 +1,5 @@
 import React, {
-  createContext, useContext, useMemo,
+  createContext, useContext, useEffect, useMemo,
 } from 'react';
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
@@ -23,27 +23,27 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   } = props;
 
   const {
-    workBenchUseStore,
+    cacheStore,
+    selectedProjectId,
+    category,
   } = useWorkBenchStore();
 
-  const selectedProjectId = get(workBenchUseStore.getActiveStarProject, 'id');
-  const category = get(workBenchUseStore.getActiveStarProject, 'category');
+  const {
+    cacheAppServiceData,
+  } = cacheStore;
 
-  const url = !selectedProjectId ? `devops/v1/organizations/${organizationId}/work_bench/latest_app_service` : `devops/v1/organizations/${organizationId}/work_bench/latest_app_service?project_id=${selectedProjectId}`;
+  const appServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ selectedProjectId, cacheStore, organizationId })), [organizationId, selectedProjectId, cacheStore]);
 
-  const appServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ url })), [url]);
-
-  const goAppService = (record) => {
-    const { projectId, projectName, id } = record.toData() || {};
-    const search = `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`;
-    history.push({
-      pathname: '/devops/code-management',
-      search,
-      state: {
-        appServiceId: id,
-      },
-    });
-  };
+  useEffect(() => {
+    const mainData = cacheAppServiceData;
+    if (selectedProjectId !== get(mainData, 'selectedProjectId')) {
+      appServiceDs.query();
+      return;
+    }
+    if (cacheAppServiceData && get(cacheAppServiceData, 'length')) {
+      appServiceDs.loadData(cacheAppServiceData);
+    }
+  }, [appServiceDs, cacheAppServiceData]);
 
   const value = {
     ...props,
@@ -52,7 +52,6 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     history,
     selectedProjectId,
     category,
-    goAppService,
   };
 
   return (

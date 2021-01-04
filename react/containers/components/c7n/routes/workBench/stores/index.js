@@ -4,9 +4,10 @@ import React, {
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { map } from 'lodash';
+import { map, get } from 'lodash';
 import { DataSet } from 'choerodon-ui/pro/lib';
 import useStore from './useStore';
+import useCpCacheStore from './useCpCacheStore';
 import mappings from './mappings';
 import ComponentsDataset from './ComponentsDataset';
 
@@ -24,12 +25,12 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   } = props;
 
   const workBenchUseStore = useStore(history);
+  const cacheStore = useCpCacheStore();
+
+  const selectedProjectId = get(workBenchUseStore.getActiveStarProject, 'id');
+  const category = get(workBenchUseStore.getActiveStarProject, 'category');
 
   const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ workBenchUseStore })), [workBenchUseStore]);
-
-  const {
-    addNewComponents,
-  } = workBenchUseStore;
 
   useEffect(() => {
     const localComponents = localStorage.getItem('tempComponents');
@@ -47,8 +48,11 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     prefixCls: 'c7n-workbench',
     dragPrefixcls: 'c7ncd-dragCard',
     componentsDs,
+    cacheStore,
     workBenchUseStore,
     organizationId,
+    selectedProjectId,
+    category,
   };
 
   return (

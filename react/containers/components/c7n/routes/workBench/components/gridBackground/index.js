@@ -39,7 +39,7 @@ const GridBg = () => {
       const workbenchW = get(domTem, 'offsetWidth');
       const workbenchH = get(domTem, 'offsetHeight');
       const numC = getColsNumber(workbenchW);
-      const numR = Math.floor(workbenchH / 100);
+      const numR = Math.floor(workbenchH / 109);
       numC && setCol(numC);
       numR && setRow(numR);
     }

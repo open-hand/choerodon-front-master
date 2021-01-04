@@ -1,5 +1,5 @@
 import { filter } from 'lodash';
-import mappings from '../../../../stores/mappings';
+import mappings from '../../stores/mappings';
 
 const cardsMappings = [
   {
