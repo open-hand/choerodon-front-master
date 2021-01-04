@@ -22,13 +22,16 @@ export default class CommonMenu extends Component {
       this.props.MenuStore.statistics = JSON.parse(localStorage.getItem('rawStatistics'));
     }
   }
+
   componentWillReceiveProps(nextProps) {
     this.loadMenu(nextProps);
   }
 
   loadMenu(props) {
     const { location, AppState, MenuStore } = props;
-    const { type: currentType, isUser: currentIsUser, id: currentId, selected, collapsed } = MenuStore;
+    const {
+      type: currentType, isUser: currentIsUser, id: currentId, selected, collapsed,
+    } = MenuStore;
     const { pathname } = location;
     const { type, id } = AppState.currentMenuType;
     if (type) {
@@ -79,20 +82,22 @@ export default class CommonMenu extends Component {
 
   getMenuSingle(data, num, collapsed) {
     const paddingStyleObj = num === 0 && collapsed ? { padding: '0 !important' } : {};
-    if (!data.subMenus || data.subMenus.every(v => v.type === 'tab')) {
+    if (!data.subMenus || data.subMenus.every((v) => v.type === 'tab')) {
       const { route } = findFirstLeafMenu(data);
       const link = (
         <Link
           to={this.getMenuLink(route)}
           onClick={() => {
             this.props.MenuStore.setActiveMenu(data);
-            this.props.MenuStore.click(data.code, data.level, data.name)
+            this.props.MenuStore.click(data.code, data.level, data.name);
           }}
           style={{
             marginLeft: collapsed && num === 0 ? 0 : parseInt(num, 10) * 20,
           }}
         >
-          <Icon type={data.icon} />
+          <Icon
+            type={data.icon}
+          />
           <span>{data.name}</span>
         </Link>
       );
@@ -104,28 +109,27 @@ export default class CommonMenu extends Component {
           {link}
         </Item>
       );
-    } else {
-      return (
-        <SubMenu
-          key={data.code}
-          className="common-menu-right-popup"
-          title={(
-            <span
-              style={{
-                marginLeft: parseInt(num, 10) * 20,
-              }}
-            >
-              <Icon type={data.icon} />
-              {num === 0 && collapsed ? null : <span>{data.name}</span>}
-            </span>
-          )}
-        >
-          {data.subMenus.filter(v => v.type !== 'tab').map(
-            two => this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed),
-          )}
-        </SubMenu>
-      );
     }
+    return (
+      <SubMenu
+        key={data.code}
+        className="common-menu-right-popup"
+        title={(
+          <span
+            style={{
+              marginLeft: parseInt(num, 10) * 20,
+            }}
+          >
+            <Icon type={data.icon} />
+            {num === 0 && collapsed ? null : <span>{data.name}</span>}
+          </span>
+          )}
+      >
+        {data.subMenus.filter((v) => v.type !== 'tab').map(
+          (two) => this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed),
+        )}
+      </SubMenu>
+    );
   }
 
   TooltipMenu(reactNode, code) {
@@ -136,14 +140,15 @@ export default class CommonMenu extends Component {
           {reactNode}
         </Tooltip>
       );
-    } else {
-      return reactNode;
     }
+    return reactNode;
   }
 
   getMenuLink(route) {
     const { AppState, history } = this.props;
-    const { id, name, type, organizationId, category } = AppState.currentMenuType;
+    const {
+      id, name, type, organizationId, category,
+    } = AppState.currentMenuType;
     let search = '';
     switch (type) {
       case 'site':
@@ -239,40 +244,40 @@ export default class CommonMenu extends Component {
         </Tooltip>
       );
     }
-    if (!item.subMenus || item.subMenus.every(v => v.type === 'tab')) {
+    if (!item.subMenus || item.subMenus.every((v) => v.type === 'tab')) {
       return (
         <Item key={item.code}>
           {icon}
           {text}
         </Item>
       );
-    } else {
-      return (
-        <ItemGroup
-          // onTitleClick={this.handleClick}
-          key={item.code}
-          className="common-menu-right-popup"
-          title={item.name}
-        >
-          {
-            item.subMenus.filter(v => v.type !== 'tab').map(two => this.getMenuSingle(two, 0, collapsed))
-          }
-        </ItemGroup>
-      );
     }
+    return (
+      <ItemGroup
+          // onTitleClick={this.handleClick}
+        key={item.code}
+        className="common-menu-right-popup"
+        title={item.name}
+      >
+        {
+            item.subMenus.filter((v) => v.type !== 'tab').map((two) => this.getMenuSingle(two, 0, collapsed))
+          }
+      </ItemGroup>
+    );
   }
 
   renderRightMenu() {
-    const { MenuStore } = this.props;
+    const { MenuStore, AppState } = this.props;
     const { collapsed, openKeys, activeMenu } = MenuStore;
     const child = MenuStore.getMenuData;
     return (
-      <div className={classNames('common-menu-right', { collapsed })}>
+      <div className={classNames('common-menu-right', { collapsed, 'theme4-common-menu': AppState.getCurrentTheme === 'theme4' })}>
         <div className="common-menu-right-header">
           <Icon type="menu" onClick={this.toggleRightMenu} />
         </div>
         <div className="common-menu-right-content">
           <Menu
+            className={classNames({ 'theme4-menu-ul': AppState.getCurrentTheme === 'theme4' })}
             mode="inline"
             inlineCollapsed={collapsed}
             selectedKeys={[activeMenu && activeMenu.code]}
@@ -281,7 +286,7 @@ export default class CommonMenu extends Component {
             subMenuCloseDelay={0.1}
             subMenuOpenDelay={0.1}
           >
-            {child.map(item => this.renderLeftMenuItem(item, collapsed))}
+            {child.map((item) => this.renderLeftMenuItem(item, collapsed))}
           </Menu>
         </div>
       </div>
