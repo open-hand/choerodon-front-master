@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Tooltip } from 'choerodon-ui/pro';
+import { Button } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import uniqWith from 'lodash/uniqWith';
 import StatusDot from '../StatusDot';
@@ -12,11 +12,10 @@ const EnvList = observer(() => {
   const {
     history,
     AppState: { currentMenuType: { organizationId } },
-    workBenchUseStore,
+    selectedProjectId,
   } = useWorkBenchStore();
-  const [expand, changeExpand] = useState(false);
   const [envList, setEnvList] = useState([]);
-  const { id: projectId, category } = workBenchUseStore.getActiveStarProject || {};
+  const { id: projectId, category } = selectedProjectId || {};
 
   useEffect(() => {
     const env = localStorage.envRecentItem ? JSON.parse(localStorage.envRecentItem) : [];
@@ -36,7 +35,7 @@ const EnvList = observer(() => {
       realEnv = env.filter((item) => String(item.organizationId) === String(organizationId));
     }
     setEnvList(realEnv);
-  }, [workBenchUseStore.getActiveStarProject, organizationId]);
+  }, [selectedProjectId, organizationId]);
 
   function linkToEnv({ envId, projectName, realProjectId }) {
     history.push({
@@ -57,15 +56,8 @@ const EnvList = observer(() => {
     <div className="c7n-envList">
       <div className="c7n-envList-title">
         <span>环境（最近使用）</span>
-        <Button
-          className="c7n-envList-expand-btn"
-          onClick={() => changeExpand(!expand)}
-          icon={expand ? 'baseline-arrow_drop_down' : 'baseline-arrow_drop_up'}
-          funcType="raised"
-          size="small"
-        />
       </div>
-      <div className="c7n-serviceList-content" style={{ display: !expand ? 'block' : 'none' }}>
+      <div className="c7n-serviceList-content">
         {!envList.length ? (
           <div className="c7n-workbench-empty-span">暂无最近操作的环境</div>
         ) : null}

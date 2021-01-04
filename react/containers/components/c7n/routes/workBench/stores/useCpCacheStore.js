@@ -24,5 +24,10 @@ export default function useStore(history) {
     setCacheDocData(value) {
       this.cacheDocData = value;
     },
+
+    todoThingsData: [],
+    setTodoThingsData(value) {
+      this.todoThingsData = value;
+    },
   }));
 }

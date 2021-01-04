@@ -23,14 +23,23 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   } = props;
 
   const {
-    workBenchUseStore,
+    selectedProjectId,
+    cacheStore,
   } = useWorkBenchStore();
 
-  const selectedProjectId = get(workBenchUseStore.getActiveStarProject, 'id');
+  const {
+    todoThingsData,
+  } = cacheStore;
 
-  const url = !selectedProjectId ? `devops/v1/organizations/${organizationId}/work_bench/approval` : `devops/v1/organizations/${organizationId}/work_bench/approval?project_id=${selectedProjectId}`;
+  const auditDs = useMemo(() => new DataSet(AuditDataSet({ organizationId, selectedProjectId, cacheStore })), [organizationId, selectedProjectId]);
 
-  const auditDs = useMemo(() => new DataSet(AuditDataSet({ url })), [url]);
+  useEffect(() => {
+    if (todoThingsData.length) {
+      auditDs.loadData(todoThingsData);
+    } else {
+      auditDs.query();
+    }
+  }, [auditDs, todoThingsData]);
 
   const value = {
     ...props,

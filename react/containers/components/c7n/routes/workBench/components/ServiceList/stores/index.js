@@ -42,7 +42,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     } else {
       appServiceDs.query();
     }
-  }, []);
+  }, [appServiceDs, cacheAppServiceData]);
 
   const value = {
     ...props,
