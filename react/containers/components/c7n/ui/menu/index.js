@@ -93,6 +93,7 @@ export default class CommonMenu extends Component {
           }}
           style={{
             marginLeft: collapsed && num === 0 ? 0 : parseInt(num, 10) * 20,
+            fontSize: '0.14rem',
           }}
         >
           <span className={classNames({
@@ -123,6 +124,7 @@ export default class CommonMenu extends Component {
           <span
             style={{
               marginLeft: parseInt(num, 10) * 20,
+              fontSize: '0.14rem',
             }}
           >
             <span className={classNames({
