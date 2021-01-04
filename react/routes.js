@@ -10,7 +10,7 @@ import nomatch from './containers/components/c7n/tools/error-pages/404';
 // eslint-disable-next-line no-undef
 const routes = __ROUTES__;
 const AutoRouter = () => (
-  <Suspense fallback={<span />}>
+  <Suspense fallback={<div>假装这里有个骨架屏</div>}>
     <CacheSwitch>
       {routes.map(([path, component]) => <Route path={path} component={React.lazy(component)} />)}
       <CacheRoute path="*" component={nomatch} />
