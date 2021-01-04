@@ -121,8 +121,6 @@ const Doc = () => {
     await docDs.query(docDs.currentPage + 1);
   };
 
-  // const renderHeight = () => docDs.length * 66 - 10;
-
   return (
     <div
       className={clsPrefix}

@@ -1,16 +1,18 @@
 import React, {
-  createContext, useContext, useMemo, useEffect, useCallback,
+  createContext, useContext, useMemo, useEffect,
 } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
 import { injectIntl } from 'react-intl';
-import { get } from 'lodash';
+import { debounce, get } from 'lodash';
 import { withRouter } from 'react-router-dom';
 import useStore from './useStore';
 import DocDataSet from './DocDataSet';
 
 import { useWorkBenchStore } from '../../../stores';
+
+let resizeObserver;
 
 const Store = createContext();
 
@@ -44,17 +46,17 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
     setRowNumber,
   } = docStore;
 
-  const resizeDom = useCallback((domTem) => {
+  const resizeDom = debounce((domTem) => {
     if (domTem) {
       const docH = get(domTem, 'offsetHeight');
       const docN = Math.floor(docH / 170);
-      setRowNumber(docN || 2);
+      setRowNumber(docN || 3);
     }
-  }, []);
+  }, 500);
 
   useEffect(() => {
     const domTem = document.querySelector('.c7n-workbench-doc-content');
-    new ResizeObserver((entries) => {
+    resizeObserver = new ResizeObserver((entries) => {
       const dom = get(entries[0], 'target');
       resizeDom(dom);
     }).observe(domTem);
@@ -69,7 +71,9 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
   useEffect(() => {
     const mainData = cacheDocData;
     const tempArr = get(mainData, 'content');
-    if (getSelfDoc !== get(mainData, 'isSelf') || selectedProjectId !== get(mainData, 'selectedProjectId')) {
+    const isSelf = get(mainData, 'isSelf');
+    const tempRow = get(mainData, 'rowNumber');
+    if (getSelfDoc !== isSelf || selectedProjectId !== get(mainData, 'selectedProjectId') || (rowNumber && tempRow && rowNumber > tempRow)) {
       docDs.query();
       return;
     }
@@ -80,6 +84,12 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
       docDs.loadData(tempArr);
     }
   }, [cacheDocData, docDs]);
+
+  useEffect(() => function () {
+    if (resizeObserver) {
+      resizeObserver.disconnect();
+    }
+  }, []);
 
   const value = {
     docStore,

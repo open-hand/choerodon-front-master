@@ -38,6 +38,7 @@ export default (({
             content: newData,
             isSelf: self,
             selectedProjectId,
+            rowNumber,
           };
           cacheStore.setCacheDocData(cacheData);
           return newData;
