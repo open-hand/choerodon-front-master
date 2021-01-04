@@ -25,11 +25,19 @@ export const StoreProvider = inject('AppState')(observer((props) => {
     cacheStore,
   } = useWorkBenchStore();
 
-  const starProjectsDs = useMemo(() => new DataSet(starProjectDataset({ organizationId })), [organizationId]);
+  const {
+    starProjects,
+  } = cacheStore;
+
+  const starProjectsDs = useMemo(() => new DataSet(starProjectDataset({ organizationId, cacheStore })), [organizationId]);
 
   useEffect(() => {
+    if (starProjects.length) {
+      starProjectsDs.loadData(starProjects);
+      return;
+    }
     starProjectsDs.query();
-  }, [starProjectsDs]);
+  }, [starProjects, starProjectsDs]);
 
   const value = {
     ...props,

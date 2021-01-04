@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './index.less';
 
 import {
-  filter, findIndex, get, includes, map, without,
+  get, includes, map,
 } from 'lodash';
 // import todoThings from './img/todoQuestions.png';
 import { Icon } from 'choerodon-ui';

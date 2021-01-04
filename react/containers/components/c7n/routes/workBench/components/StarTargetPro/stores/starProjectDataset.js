@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-export default ({ organizationId }) => ({
+export default ({ organizationId, cacheStore }) => ({
   paging: false,
   autoQuery: false,
   pageSize: 6,
@@ -7,6 +7,15 @@ export default ({ organizationId }) => ({
     read: ({ data, dataSet }) => ({
       url: `/iam/choerodon/v1/organizations/${organizationId}/star_projects`,
       method: 'get',
+      transformResponse: (value) => {
+        try {
+          const temp = JSON.parse(value);
+          cacheStore.setStartProjects(temp);
+          return temp;
+        } catch (error) {
+          throw new Error(error);
+        }
+      },
     }),
   },
 });

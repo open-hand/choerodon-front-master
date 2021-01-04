@@ -12,7 +12,7 @@ import emptyImg from '../../../../../../images/owner.png';
 import mappings from '../../stores/mappings';
 
 import './index.less';
-import AddModal from './components/addModals';
+import AddModal from '../addComponentsModal';
 
 const StarTargetPro = observer(() => {
   const {

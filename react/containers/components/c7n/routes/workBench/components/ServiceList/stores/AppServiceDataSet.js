@@ -9,8 +9,13 @@ export default (({ url, cacheStore }) => ({
       url,
       method: 'get',
       transformResponse: (value) => {
-        const data = JSON.parse(value);
-        cacheStore.setCacheAppServiceData(data);
+        try {
+          const data = JSON.parse(value);
+          cacheStore.setCacheAppServiceData(data);
+          return data;
+        } catch (error) {
+          throw new Error(error);
+        }
       },
     },
   },

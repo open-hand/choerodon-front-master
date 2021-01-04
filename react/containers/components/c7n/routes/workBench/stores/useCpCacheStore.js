@@ -5,6 +5,11 @@ import {
 
 export default function useStore(history) {
   return useLocalStore(() => ({
+    starProjects: [],
+    setStartProjects(value) {
+      this.starProjects = value;
+    },
+
     cacheAppServiceData: [],
     setCacheAppServiceData(value) {
       this.cacheAppServiceData = value;
