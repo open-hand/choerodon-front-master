@@ -10,7 +10,7 @@ import {
 
 export default function useStore(history) {
   return useLocalStore(() => ({
-    activeStarProject: undefined,
+    activeStarProject: null,
     get getActiveStarProject() {
       return this.activeStarProject;
     },
@@ -44,25 +44,6 @@ export default function useStore(history) {
     setComponents(value) {
       this.workComponents = value;
     },
-
-    // setComponentAvaliable(value) {
-    //   this.workComponents = map(this.workComponents, (item) => {
-    //     const {
-    //       layout,
-    //       ...rest
-    //     } = item;
-    //     if (item.type === 'starTarget') {
-    //       return item;
-    //     }
-    //     return {
-    //       ...rest,
-    //       layout: {
-    //         ...layout,
-    //         static: !value,
-    //       },
-    //     };
-    //   });
-    // },
 
     isEdit: false,
     setEdit(value) {

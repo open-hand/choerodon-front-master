@@ -35,6 +35,7 @@ export default ({
             ...rest,
             content: newData,
             type: linkType,
+            selectedProjectId,
           };
           cacheStore.setCacheQuickLinkData(cacheData);
           return newData;

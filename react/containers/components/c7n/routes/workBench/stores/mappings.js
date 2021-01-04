@@ -1,9 +1,10 @@
 import todoThings from '../img/todoThings.png';
-import todoQuestions from '../img/todoQuestions.png';
+import todoQuestions from '../img/todoQuestions.svg';
 import serviceList from '../img/appServiceLists.png';
 import doc from '../img/doc.png';
 import quickLink from '../img/quickLink.png';
 import env from '../img/envLists.png';
+import selfInfo from '../img/selfInfo.svg';
 
 const componentsObj = {
   // 星标项目
@@ -39,6 +40,7 @@ const componentsObj = {
     groupId: 'common',
     title: '个人信息',
     describe: '展示我的用户名、邮箱以及日期',
+    img: selfInfo,
   },
   // 待办事项
   todoQustions: {

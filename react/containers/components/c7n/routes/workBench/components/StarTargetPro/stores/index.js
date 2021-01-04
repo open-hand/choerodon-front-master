@@ -1,6 +1,11 @@
-import React, { createContext, useContext } from 'react';
+import React, {
+  createContext, useContext, useEffect, useMemo,
+} from 'react';
 import { inject } from 'mobx-react';
-import useStore from './useStore';
+import { DataSet } from 'choerodon-ui/pro/lib';
+import { observer } from 'mobx-react-lite';
+import starProjectDataset from './starProjectDataset';
+import { useWorkBenchStore } from '../../../stores';
 
 const Store = createContext();
 
@@ -8,19 +13,28 @@ export function useStarTargetPro() {
   return useContext(Store);
 }
 
-export const StoreProvider = inject('AppState')((props) => {
+export const StoreProvider = inject('AppState')(observer((props) => {
   const {
     children,
-    AppState,
     AppState: {
       currentMenuType: { organizationId },
     },
   } = props;
 
+  const {
+    cacheStore,
+  } = useWorkBenchStore();
+
+  const starProjectsDs = useMemo(() => new DataSet(starProjectDataset({ organizationId })), [organizationId]);
+
+  useEffect(() => {
+    starProjectsDs.query();
+  }, [starProjectsDs]);
+
   const value = {
     ...props,
-    starTargetProUseStore: useStore(AppState),
     prefixCls: 'c7n-starTargetPro',
+    starProjectsDs,
     organizationId,
   };
 
@@ -29,4 +43,4 @@ export const StoreProvider = inject('AppState')((props) => {
       {children}
     </Store.Provider>
   );
-});
+}));

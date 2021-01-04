@@ -35,8 +35,8 @@ const QuickLink = observer(() => {
     listHasMore,
   } = quickLinkUseStore;
 
-  const handleRefresh = () => {
-    quickLinkDs.query();
+  const handleRefresh = async () => {
+    await quickLinkDs.query();
   };
 
   const handleAdd = (data) => {
@@ -68,7 +68,16 @@ const QuickLink = observer(() => {
     });
   };
 
-  const handelDelete = (l) => {
+  const handelDelete = async (l) => {
+    await quickLinkUseStore.axiosDeleteQuickLink(
+      l.id,
+      selectedProjectId,
+      type,
+    );
+    handleRefresh();
+  };
+
+  const handelOpenDelete = (l) => {
     Modal.confirm({
       okText: '删除',
       title: '删除快速链接',
@@ -76,13 +85,7 @@ const QuickLink = observer(() => {
       type: 'warning',
       okProps: { color: 'red' },
       cancelProps: { color: 'dark' },
-      onOk() {
-        quickLinkUseStore.axiosDeleteQuickLink(
-          l.id,
-          selectedProjectId,
-          type,
-        );
-      },
+      onOk: () => handelDelete(l),
     });
   };
 
@@ -106,7 +109,7 @@ const QuickLink = observer(() => {
         service: [],
         icon: '',
         text: '删除',
-        action: () => handelDelete(l),
+        action: () => handelOpenDelete(l),
       },
     ];
     return (

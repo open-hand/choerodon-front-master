@@ -48,7 +48,7 @@ export const StoreProvider = inject('AppState')(observer((props) => {
   useEffect(() => {
     const mainData = cacheQuickLinkData;
     const tempArr = get(mainData, 'content');
-    if (type !== get(mainData, 'type')) {
+    if (type !== get(mainData, 'type') || selectedProjectId !== get(mainData, 'selectedProjectId')) {
       quickLinkDs.query();
       return;
     }
