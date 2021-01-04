@@ -32,15 +32,16 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     cacheAppServiceData,
   } = cacheStore;
 
-  const url = !selectedProjectId ? `devops/v1/organizations/${organizationId}/work_bench/latest_app_service` : `devops/v1/organizations/${organizationId}/work_bench/latest_app_service?project_id=${selectedProjectId}`;
-
-  const appServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ url, cacheStore })), [url, cacheStore]);
+  const appServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ selectedProjectId, cacheStore, organizationId })), [organizationId, selectedProjectId, cacheStore]);
 
   useEffect(() => {
-    if (cacheAppServiceData.length) {
-      appServiceDs.loadData(cacheAppServiceData);
-    } else {
+    const mainData = cacheAppServiceData;
+    if (selectedProjectId !== get(mainData, 'selectedProjectId')) {
       appServiceDs.query();
+      return;
+    }
+    if (cacheAppServiceData && get(cacheAppServiceData, 'length')) {
+      appServiceDs.loadData(cacheAppServiceData);
     }
   }, [appServiceDs, cacheAppServiceData]);
 

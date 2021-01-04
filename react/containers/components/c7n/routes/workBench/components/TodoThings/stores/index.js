@@ -34,10 +34,13 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const auditDs = useMemo(() => new DataSet(AuditDataSet({ organizationId, selectedProjectId, cacheStore })), [organizationId, selectedProjectId]);
 
   useEffect(() => {
-    if (todoThingsData.length) {
-      auditDs.loadData(todoThingsData);
-    } else {
+    const mainData = todoThingsData;
+    if (selectedProjectId !== get(mainData, 'selectedProjectId')) {
       auditDs.query();
+      return;
+    }
+    if (todoThingsData && get(todoThingsData, 'length')) {
+      auditDs.loadData(todoThingsData);
     }
   }, [auditDs, todoThingsData]);
 

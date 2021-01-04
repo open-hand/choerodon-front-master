@@ -10,7 +10,12 @@ export default (({ organizationId, selectedProjectId, cacheStore }) => ({
       transformResponse: (value) => {
         try {
           const data = JSON.parse(value);
-          cacheStore.setTodoThingsData(data);
+          const tempData = {
+            content: data,
+            selectedProjectId,
+          };
+          cacheStore.setTodoThingsData(tempData);
+
           return data;
         } catch (error) {
           throw new Error(error);

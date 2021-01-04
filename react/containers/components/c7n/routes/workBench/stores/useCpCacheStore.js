@@ -10,7 +10,7 @@ export default function useStore(history) {
       this.starProjects = value;
     },
 
-    cacheAppServiceData: [],
+    cacheAppServiceData: {},
     setCacheAppServiceData(value) {
       this.cacheAppServiceData = value;
     },
@@ -25,7 +25,7 @@ export default function useStore(history) {
       this.cacheDocData = value;
     },
 
-    todoThingsData: [],
+    todoThingsData: {},
     setTodoThingsData(value) {
       this.todoThingsData = value;
     },

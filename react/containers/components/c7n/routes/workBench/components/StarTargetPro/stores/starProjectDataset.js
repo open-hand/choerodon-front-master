@@ -1,3 +1,4 @@
+import JsonBig from 'json-bigint';
 /* eslint-disable import/no-anonymous-default-export */
 export default ({ organizationId, cacheStore }) => ({
   paging: false,
@@ -9,7 +10,7 @@ export default ({ organizationId, cacheStore }) => ({
       method: 'get',
       transformResponse: (value) => {
         try {
-          const temp = JSON.parse(value);
+          const temp = JsonBig.parse(value);
           cacheStore.setStartProjects(temp);
           return temp;
         } catch (error) {

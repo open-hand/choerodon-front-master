@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import uniqWith from 'lodash/uniqWith';
 import StatusDot from '../StatusDot';
