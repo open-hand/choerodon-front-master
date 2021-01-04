@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
-export default (({ url }) => ({
-  autoQuery: true,
+export default (({ url, cacheStore }) => ({
+  autoQuery: false,
   selection: false,
   paging: false,
   dataKey: null,
@@ -8,6 +8,10 @@ export default (({ url }) => ({
     read: {
       url,
       method: 'get',
+      transformResponse: (value) => {
+        const data = JSON.parse(value);
+        cacheStore.setCacheAppServiceData(data);
+      },
     },
   },
   fields: [],

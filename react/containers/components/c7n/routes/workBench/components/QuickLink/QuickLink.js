@@ -1,7 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {
-  useState, useEffect,
-} from 'react';
+import React, { useCallback } from 'react';
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import Action from '@/containers/components/c7n/tools/action';
@@ -11,6 +9,7 @@ import {
   Tooltip,
 } from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/containers/components/c7n/util';
+import { get } from 'lodash';
 import AddQuickLink from './AddQuickLink';
 import { useWorkBenchStore } from '../../stores';
 import { useQuickLinkStore } from './stores';
@@ -22,28 +21,23 @@ const QuickLink = observer(() => {
   const {
     AppState,
     quickLinkUseStore,
-    AppState: {
-      currentMenuType: { organizationId },
-    },
+    quickLinkDs,
   } = useQuickLinkStore();
 
-  const { workBenchUseStore } = useWorkBenchStore();
+  const {
+    workBenchUseStore,
+    selectedProjectId,
+  } = useWorkBenchStore();
 
-  const [type, setType] = useState('project');
-  const [activeId, setActiveId] = useState(undefined);
+  const {
+    type,
+    setType,
+    listHasMore,
+  } = quickLinkUseStore;
 
-  const init = () => {
-    let id;
-    if (workBenchUseStore.getActiveStarProject) {
-      id = workBenchUseStore.getActiveStarProject.id;
-      setActiveId(activeId);
-    }
-    quickLinkUseStore.axiosGetQuickLinkList(id, type);
+  const handleRefresh = () => {
+    quickLinkDs.query();
   };
-
-  useEffect(() => {
-    init();
-  }, [workBenchUseStore.getActiveStarProject, organizationId, type]);
 
   const handleAdd = (data) => {
     Modal.open({
@@ -54,12 +48,13 @@ const QuickLink = observer(() => {
       },
       children: (
         <AddQuickLink
-          activeId={activeId}
+          activeId={selectedProjectId}
           type={type}
           AppState={AppState}
           data={data}
           useStore={quickLinkUseStore}
           workBenchUseStore={workBenchUseStore}
+          handleRefresh={handleRefresh}
         />
       ),
       drawer: true,
@@ -69,134 +64,152 @@ const QuickLink = observer(() => {
 
   const handleTopIf = (data) => {
     quickLinkUseStore.axiosTopIf(data).then(() => {
-      init();
+      handleRefresh();
     });
   };
 
-  const renderLinks = () => quickLinkUseStore.getQuickLinkList.map((l, index) => (
-    <div className="c7n-quickLink-linkItem">
-      <div className="c7n-quickLink-linkItem-left">
-        <p className="c7n-quickLink-linkItem-left-name">
-          <Tooltip title={l.user.realName} placement="top">
-            {l.user.realName}
-          </Tooltip>
-        </p>
-        <p className="c7n-quickLink-linkItem-left-time">
-          <TimePopover datetime={l.lastUpdateDate} />
-        </p>
-      </div>
-      <div className="c7n-quickLink-linkItem-right">
-        <div className="c7n-quickLink-linkItem-circle" />
-        <div
-          className="c7n-quickLink-linkItem-right-profile"
-          style={{
-            backgroundImage: l.user.imageUrl
-              ? `url(${l.user.imageUrl})`
-              : getRandomBackground(index),
-          }}
-        >
-          {!l.user.imageUrl && l.user.realName && l.user.realName.slice(0, 1)}
-        </div>
-        <div className="c7n-quickLink-linkItem-right-content">
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Tooltip title={l?.projectName}>
-              <p className="c7n-quickLink-linkItem-right-content-scope">
-                {l.scope === 'project' ? l.projectName : '仅自己可见'}
-              </p>
-            </Tooltip>
-            <span
-              className="c7n-quickLink-linkItem-right-content-top"
-              style={{ display: l.top ? 'block' : 'none' }}
+  const handelDelete = (l) => {
+    Modal.confirm({
+      okText: '删除',
+      title: '删除快速链接',
+      children: '确认删除快速链接吗?',
+      type: 'warning',
+      okProps: { color: 'red' },
+      cancelProps: { color: 'dark' },
+      onOk() {
+        quickLinkUseStore.axiosDeleteQuickLink(
+          l.id,
+          selectedProjectId,
+          type,
+        );
+      },
+    });
+  };
+
+  const renderActions = (l) => {
+    const datas = [
+      {
+        service: [],
+        icon: '',
+        text: l.top ? '取消置顶' : '置顶',
+        action: () => handleTopIf(l),
+      },
+      {
+        service: [],
+        icon: '',
+        text: '修改',
+        action: () => {
+          handleAdd(l);
+        },
+      },
+      {
+        service: [],
+        icon: '',
+        text: '删除',
+        action: () => handelDelete(l),
+      },
+    ];
+    return (
+      <Action
+        data={datas}
+      />
+    );
+  };
+
+  const renderLinks = () => quickLinkDs.toData().map((l, index) => {
+    const user = get(l, 'user');
+    const lastUpdateDate = get(l, 'lastUpdateDate');
+    const projectName = get(l, 'projectName');
+    const scope = get(l, 'scope');
+    const top = get(l, 'top');
+
+    const realName = get(user, 'realName');
+    const imageUrl = get(user, 'imageUrl');
+    return (
+      (
+        <div className="c7n-quickLink-linkItem">
+          <div className="c7n-quickLink-linkItem-left">
+            <p className="c7n-quickLink-linkItem-left-name">
+              <Tooltip title={realName} placement="top">
+                {realName}
+              </Tooltip>
+            </p>
+            <p className="c7n-quickLink-linkItem-left-time">
+              <TimePopover datetime={lastUpdateDate} />
+            </p>
+          </div>
+          <div className="c7n-quickLink-linkItem-right">
+            <div className="c7n-quickLink-linkItem-circle" />
+            <div
+              className="c7n-quickLink-linkItem-right-profile"
+              style={{
+                backgroundImage: imageUrl
+                  ? `url(${imageUrl})`
+                  : getRandomBackground(index),
+              }}
             >
-              置顶
-            </span>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Tooltip placement="top" title={l.name}>
-              <p className="c7n-quickLink-linkItem-right-content-name">
-                {l.name}
-              </p>
-            </Tooltip>
-            <Tooltip placement="top" title={l.linkUrl}>
-              <p
-                onClick={() => window.open(l.linkUrl)}
-                className="c7n-quickLink-linkItem-right-content-linkName"
-                role="none"
+              {!imageUrl && realName && realName.slice(0, 1)}
+            </div>
+            <div className="c7n-quickLink-linkItem-right-content">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Tooltip title={projectName}>
+                  <p className="c7n-quickLink-linkItem-right-content-scope">
+                    {scope === 'project' ? projectName : '仅自己可见'}
+                  </p>
+                </Tooltip>
+                <span
+                  className="c7n-quickLink-linkItem-right-content-top"
+                  style={{ display: top ? 'block' : 'none' }}
+                >
+                  置顶
+                </span>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
               >
-                <Icon style={{ color: '#5266D4' }} type="link2" />
-                <span>{l.linkUrl}</span>
-              </p>
-            </Tooltip>
+                <Tooltip placement="top" title={l.name}>
+                  <p className="c7n-quickLink-linkItem-right-content-name">
+                    {l.name}
+                  </p>
+                </Tooltip>
+                <Tooltip placement="top" title={l.linkUrl}>
+                  <p
+                    onClick={() => window.open(l.linkUrl)}
+                    className="c7n-quickLink-linkItem-right-content-linkName"
+                    role="none"
+                  >
+                    <Icon style={{ color: '#5266D4' }} type="link2" />
+                    <span>{l.linkUrl}</span>
+                  </p>
+                </Tooltip>
+              </div>
+            </div>
+            <div
+              style={{
+                display: l.editFlag ? 'block' : 'none',
+              }}
+            >
+              {
+               renderActions(l)
+              }
+            </div>
           </div>
         </div>
-        <div
-          style={{
-            display: l.editFlag ? 'block' : 'none',
-          }}
-        >
-          <Action
-            data={[
-              {
-                service: [],
-                icon: '',
-                text: l.top ? '取消置顶' : '置顶',
-                action: () => handleTopIf(l),
-              },
-              {
-                service: [],
-                icon: '',
-                text: '修改',
-                action: () => {
-                  handleAdd(l);
-                },
-              },
-              {
-                service: [],
-                icon: '',
-                text: '删除',
-                action: () => {
-                  Modal.confirm({
-                    okText: '删除',
-                    title: '删除快速链接',
-                    children: '确认删除快速链接吗?',
-                    type: 'warning',
-                    okProps: { color: 'red' },
-                    cancelProps: { color: 'dark' },
-                    onOk() {
-                      quickLinkUseStore.axiosDeleteQuickLink(
-                        l.id,
-                        activeId,
-                        type,
-                      );
-                    },
-                  });
-                },
-              },
-            ]}
-          />
-        </div>
-      </div>
-    </div>
-  ));
+      )
+    );
+  });
 
   const handleLoadMore = () => {
-    const originSize = quickLinkUseStore.getParams.size;
-    quickLinkUseStore.setParams({
-      size: originSize + 10,
-      hasMore: false,
-    });
-    init();
+    quickLinkDs.query(quickLinkDs.currentPage + 1);
   };
 
-  const handleChangeType = (tempType) => setType(tempType);
+  const handleChangeType = useCallback((tempType) => setType(tempType), [setType]);
 
-  const renderClassification = () => (
+  const renderClassification = useCallback(() => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <div className="c7ncd-classification">
         <span
@@ -221,7 +234,7 @@ const QuickLink = observer(() => {
         type="playlist_add"
       />
     </div>
-  );
+  ), [handleAdd, handleChangeType, type]);
 
   return (
     <div className="c7n-quickLink">
@@ -230,10 +243,10 @@ const QuickLink = observer(() => {
         {renderClassification()}
       </div>
       <div className="c7n-quickLink-scroll">
-        {quickLinkUseStore.getQuickLinkList.length > 0 ? (
+        {quickLinkDs.length > 0 ? (
           [
             renderLinks(),
-            quickLinkUseStore.getParams.hasMore && (
+            listHasMore && (
               <a
                 onClick={handleLoadMore}
                 role="none"
