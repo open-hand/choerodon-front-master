@@ -6,7 +6,6 @@ import { map, get, filter } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { Page } from '../../../../../index';
 import StarTargetPro from './components/StarTargetPro';
-// import WorkBenchAgile from './components/WorkBenchAgile';
 import SelfIntro from './components/SelfIntro';
 import ServiceList from './components/ServiceList';
 import Doc from './components/doc';
@@ -14,17 +13,16 @@ import EnvList from './components/EnvList';
 import QuickLink from './components/QuickLink';
 import DragCard from './components/dragCard';
 import TodoThings from './components/TodoThings';
-
-import './WorkBench.less';
 import { useWorkBenchStore } from './stores';
 import GridBg from './components/gridBackground';
 import TodoQuestion from './components/TodoQuestion';
+import QuestionTodo from './components/question-todo';
+import QuestionFocus from './components/question-focus';
+import QuestionBug from './components/question-bug';
+
+import './WorkBench.less';
 
 const WorkBench = () => {
-  useEffect(() => {
-
-  }, []);
-
   const {
     workBenchUseStore,
     prefixCls,
@@ -57,7 +55,7 @@ const WorkBench = () => {
         tempComponent = <SelfIntro />;
         break;
       case 'todoQustions':
-        tempComponent = <TodoQuestion />;
+        tempComponent = <QuestionTodo />;
         break;
       case 'todoThings':
         tempComponent = <TodoThings />;

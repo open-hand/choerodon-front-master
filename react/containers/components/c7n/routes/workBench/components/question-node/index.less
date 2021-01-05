@@ -1,0 +1,235 @@
+@prefixCls: c7ncd-question-issue;
+
+.@{prefixCls} {
+  padding: .1rem 0;
+
+  &-project {
+    font-size: .13rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgba(58, 52, 95, 0.65);
+    margin-bottom: 0.02rem;
+  }
+
+  &-main {
+    display: flex;
+    align-items: center;
+
+    &-icon {
+      font-size: .2rem;
+    }
+
+    &-issueId {
+      font-size: .13rem;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(63, 81, 181, 1);
+      margin: 0 .16rem 0 .04rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      min-width: .5rem;
+    }
+
+    &-star {
+      margin-left: .04rem;
+      color: #faad14;
+    }
+
+    &-description {
+      max-width: 56%;
+      font-size: 13px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(58, 52, 95, 1);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &-status {
+      background-color: rgba(255, 185, 106, 1);
+      border-radius: 2px;
+      font-size: 13px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 1);
+      text-align: center;
+      flex: 0 0 auto;
+      padding: 0 .06rem;
+      margin-left: auto;
+
+      &-doing {
+        background-color: #4d90fe;
+      }
+
+      &-done {
+        background-color: #00bfa5;
+      }
+
+      &-todo {
+        background-color: #ffb100;
+      }
+
+      &-prepare {
+        background-color: #f67f5a;
+      }
+    }
+
+    &-priority {
+      margin-left: 8px;
+      background: rgba(77, 144, 254, 0.1);
+      border-radius: 2px;
+      font-size: 13px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: rgba(77, 144, 254, 1);
+      padding: 0 6px;
+    }
+
+    &-users {
+      display: flex;
+      align-items: center;
+      margin-left: .1rem;
+      .@{prefixCls}-main-user-left {
+        margin-right: 0;
+        height: 23px;
+        width: 23px;
+        border: 2px solid #fff;
+      }
+
+      .@{prefixCls}-main-user-right {
+        margin-left: .04rem;
+      }
+      .@{prefixCls}-main-user:not(:last-child) {
+        margin-right: 0;
+      }
+
+      .@{prefixCls}-main-user:not(:first-child) {
+        margin-left: -.06rem;
+      }
+      &-tooltip {
+        & >div:not(:last-child) {
+          margin-bottom: .05rem;
+        }
+      }
+    }
+
+    &-user {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      line-height: 20px;
+      max-width: 1rem;
+
+      &-left {
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+        flex-shrink: 0;
+        margin-right: .04rem;
+        border-radius: 50%;
+        color: #3f51b5;
+        background-color: #c5cbe8;
+        background-position: center;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        text-transform: uppercase;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      &-right {
+        color: rgba(0, 0, 0, 0.65);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      &:not(:last-child) {
+        margin-right: .03rem;
+      }
+
+      &-tooltip {
+        .@{prefixCls}-main-user-right {
+          // color: #fff;
+        }
+      }
+      &-hover {
+        &:hover {
+          transform: scale(1.2);
+          z-index: 1;
+        }
+      }
+    }
+
+    &-projects {
+      display: flex;
+      align-items: center;
+      margin-left: .1rem;
+
+      .@{prefixCls}-main-project-left {
+        margin-right: 0;
+      }
+
+      .@{prefixCls}-main-project-right {
+        margin-left: .04rem;
+      }
+
+      .@{prefixCls}-main-project:not(:first-child) {
+        margin-left: -.06rem;
+      }
+      &-tooltip {
+        & >div:not(:last-child) {
+          margin-bottom: .05rem;
+        }
+      }
+    }
+
+    &-project {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      line-height: 20px;
+      max-width: 1.2rem;
+
+      &-left {
+        width: 20px;
+        height: 20px;
+        margin-right: .04rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 7px;
+        background-size: 100% 100%;
+        flex-shrink: 0;
+        color: white;
+      }
+
+      &-right {
+        color: rgba(0, 0, 0, 0.65);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      &-tooltip {
+        .@{prefixCls}-main-project-right {
+          // color: #fff;
+        }
+      }
+
+      &-hover {
+        &:hover {
+          transform: scale(1.2);
+          z-index: 1;
+        }
+      }
+    }
+  }
+}
