@@ -21,7 +21,7 @@ const componentsObj = {
     },
     name: 'starTarget',
     type: 'starTarget',
-    // groupId:''
+    groupId: '',
   },
   // 用户信息
   selfInfo: {

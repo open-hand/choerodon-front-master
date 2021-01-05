@@ -5,8 +5,9 @@ import MenuStore from '@/containers/stores/c7n/MenuStore';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
 import {
-  filter, get, map,
+  get, map,
 } from 'lodash';
+import mappings from './mappings';
 
 export default function useStore(history) {
   return useLocalStore(() => ({
@@ -22,24 +23,8 @@ export default function useStore(history) {
     layouts: [],
     workComponents: [],
 
-    get getLayouts() {
-      return this.layouts;
-    },
-
-    get getWorkComponents() {
-      return this.workComponents;
-    },
-
     setLayOuts(value) {
       this.layouts = value;
-    },
-    addNewComponents(value) {
-      this.workComponents.push(value);
-    },
-
-    deleteComponents(value) {
-      const tempArr = filter(this.workComponents, (item) => get(value, 'type') !== get(item, 'type'));
-      this.workComponents = [...tempArr];
     },
     setComponents(value) {
       this.workComponents = value;
@@ -48,6 +33,23 @@ export default function useStore(history) {
     isEdit: false,
     setEdit(value) {
       this.isEdit = value;
+    },
+
+    getLayoutsComponents(data, isStaic) {
+      return map(data, (item) => {
+        const i = get(item, 'i');
+        const {
+          layout,
+          ...rest
+        } = mappings[i];
+        return {
+          ...rest,
+          layout: {
+            ...item,
+            static: isStaic || i === 'starTarget',
+          },
+        };
+      });
     },
 
     handleClickProject(data) {
