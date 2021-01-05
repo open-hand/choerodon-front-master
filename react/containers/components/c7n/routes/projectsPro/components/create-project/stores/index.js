@@ -4,10 +4,13 @@ import React, {
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { DataSet } from 'choerodon-ui/pro';
+import forEach from 'lodash/forEach';
+import some from 'lodash/some';
 import { injectIntl } from 'react-intl';
 import FormDataSet from './FormDataSet';
 import CategoryDataSet from './CategoryDataSet';
 import axios from '../../../../../tools/axios';
+import useStore from './useStore';
 
 const Store = createContext();
 
@@ -26,7 +29,19 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     projectId,
   } = props;
 
-  const categoryDs = useMemo(() => new DataSet(CategoryDataSet(organizationId)), [organizationId]);
+  const categoryCodes = useMemo(() => ({
+    devops: 'N_DEVOPS',
+    agile: 'N_AGILE',
+    program: 'N_PROGRAM',
+    test: 'N_TEST',
+    require: 'N_REQUIREMENT',
+    operations: 'N_OPERATIONS',
+    programProject: 'N_PROGRAM_PROJECT',
+    waterfall: 'N_WATERFALL',
+  }), []);
+
+  const createProjectStore = useStore();
+  const categoryDs = useMemo(() => new DataSet(CategoryDataSet({ organizationId, categoryCodes })), [organizationId]);
   const formDs = useMemo(() => new DataSet(FormDataSet({ organizationId, categoryDs, projectId })), [organizationId]);
 
   useEffect(() => {
@@ -42,10 +57,25 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     try {
       const [, projectData] = await axios.all([categoryDs.query(), formDs.query()]);
       if (projectData && projectData.categories && projectData.categories.length) {
-        categoryDs.forEach((categoryRecord) => {
-          if (projectData.categories?.some(({ code: categoryCode }) => categoryCode === categoryRecord.get('code'))) {
-            // eslint-disable-next-line no-param-reassign
-            categoryRecord.isSelected = true;
+        let isProgram = false;
+        let isProgramProject = false;
+        forEach(projectData.categories, async ({ code: categoryCode }) => {
+          if (categoryCode === categoryCodes.program) {
+            isProgram = true;
+          }
+          if (categoryCode === categoryCodes.programProject) {
+            isProgramProject = true;
+          }
+        });
+        categoryDs.forEach(async (categoryRecord) => {
+          const currentCode = categoryRecord.get('code');
+          if (some(projectData.categories, ['code', currentCode])) {
+            categoryDs.select(categoryRecord);
+          }
+          if ((currentCode === categoryCodes.agile && isProgramProject)
+            || (currentCode === categoryCodes.program && isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))
+          ) {
+            categoryRecord.setState('disabled', true);
           }
         });
       }
@@ -57,14 +87,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   const value = {
     ...props,
     prefixCls: 'c7ncd-project-create',
-    categoryIcon: {
-      N_DEVOPS: 'devops',
-      N_AGILE: 'agile',
-      N_PROGRAM: 'agile',
-      N_TEST: 'test',
-      N_REQUIREMENT: 'require',
-      N_OPERATIONS: 'operations',
-    },
+    categoryCodes,
     organizationId,
     formDs,
     categoryDs,

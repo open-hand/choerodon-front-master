@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
 import { Button, Icon } from 'choerodon-ui';
 import {
-  Form, TextField, Select, Tooltip, SelectBox, DatePicker, Spin,
+  Form, TextField, Select, Tooltip, SelectBox, DatePicker, Spin, Modal,
 } from 'choerodon-ui/pro';
 import { fileServer, prompt } from '@/utils';
 import map from 'lodash/map';
@@ -19,18 +19,13 @@ const { Option } = Select;
 
 const CreateProject = observer(() => {
   const {
-    formDs, categoryDs, AppState, intl, prefixCls, modal, refresh,
+    formDs, categoryDs, AppState, intl, prefixCls, modal, refresh, categoryCodes,
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
 
   const record = useMemo(() => formDs.current, [formDs.current]);
   const isModify = useMemo(() => record && record.status !== 'add', [record]);
-  const hasWaterfall = useMemo(() => {
-    if (!record) {
-      return false;
-    }
-    return some(record.get('categories') || [], ({ code }) => code === 'WATERFALL');
-  }, [record]);
+  const hasWaterfall = useMemo(() => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall), [categoryDs.selected]);
 
   modal.handleOk(async () => {
     try {
@@ -44,7 +39,21 @@ const CreateProject = observer(() => {
         code: selectedRecord.get('code'),
       }));
       record.set('categories', categories);
-      if (await formDs.submit() !== false) {
+      if (isModify && record.getPristineValue('enabled') && record.get('enabled') === false) {
+        handleEdit();
+      } else {
+        editProject();
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  });
+
+  const editProject = async () => {
+    try {
+      if ((await formDs.submit()) !== false) {
+        modal.close();
         refresh();
         return true;
       }
@@ -52,7 +61,103 @@ const CreateProject = observer(() => {
     } catch (e) {
       return false;
     }
-  });
+  };
+
+  const handleEdit = () => {
+    try {
+      const isSubProject = some(record.getPristineValue('categories'), ['code', categoryCodes.programProject]);
+      const isProgram = some(categoryDs.selected, (eachRecord) => eachRecord.get('code') === categoryCodes.program);
+      const projectName = record.get('name');
+      const okProps = {
+        disabled: true,
+        color: 'red',
+        style: {
+          width: '100%', border: '1px solid rgba(27,31,35,.2)', height: 36, marginTop: -26,
+        },
+      };
+      const ModalContent = ({ modal: newModal }) => {
+        let extraMessage;
+        if (isProgram) {
+          extraMessage = (
+            <>
+              <div className={`${prefixCls}-enable-tips`}>
+                警告：项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
+              </div>
+              <div style={{ marginTop: 10 }}>
+                请输入
+                {' '}
+                <span style={{ fontWeight: 600 }}>{projectName}</span>
+                {' '}
+                来确认停用。
+              </div>
+              <TextField
+                style={{ width: '100%', marginTop: 10 }}
+                autoFocus
+                onInput={(e) => {
+                  newModal.update({
+                    okProps: {
+                      ...okProps,
+                      disabled: e.target.value !== projectName,
+                    },
+                  });
+                }}
+              />
+            </>
+          );
+        } else if (isSubProject) {
+          extraMessage = (
+            <div className={`${prefixCls}-enable-tips`}>
+              警告：子项目停用后，与项目群相关的冲刺将发生变动，进行中的冲刺会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
+            </div>
+          );
+        }
+        const content = (
+          <div style={{ marginTop: -10 }}>
+            {isProgram && (
+              <p style={{
+                marginBottom: 14,
+                background: '#fffbdd',
+                padding: '15px 26px',
+                border: '1px solid rgba(27,31,35,.15)',
+                width: 'calc(100% + 49px)',
+                marginLeft: -25,
+              }}
+              >
+                请仔细阅读下列事项！
+              </p>
+            )}
+            <span>
+              确定要停用项目“
+              {projectName}
+              ”吗？停用后，您和项目下其他成员将无法进入此项目。
+            </span>
+            {extraMessage}
+          </div>
+        );
+        return content;
+      };
+      if (isProgram) {
+        Modal.open({
+          title: '停用项目',
+          children: <ModalContent />,
+          onOk: editProject,
+          okProps,
+          okText: '我已经知道后果，停用此项目',
+          closable: true,
+          footer: (okBtn) => okBtn,
+        });
+      } else {
+        Modal.open({
+          title: '停用项目',
+          children: <ModalContent />,
+          onOk: editProject,
+        });
+      }
+    } catch (e) {
+      return false;
+    }
+    return false;
+  };
 
   const changeAvatarUploader = useCallback((flag) => {
     setIsShowAvatar(flag);
@@ -64,8 +169,14 @@ const CreateProject = observer(() => {
   }, [record]);
 
   const handleCategoryClick = useCallback((categoryRecord) => {
-    // eslint-disable-next-line no-param-reassign
-    categoryRecord.isSelected = !categoryRecord.isSelected;
+    if (categoryRecord.getState('disabled')) {
+      return;
+    }
+    if (categoryRecord.isSelected) {
+      categoryDs.unSelect(categoryRecord);
+    } else {
+      categoryDs.select(categoryRecord);
+    }
   }, []);
 
   const renderAvatar = useCallback(() => {
@@ -106,6 +217,28 @@ const CreateProject = observer(() => {
     );
   }, [record, isShowAvatar, AppState]);
 
+  const getCategoryClassNames = useCallback((categoryRecord) => (classnames({
+    [`${prefixCls}-category-item`]: true,
+    [`${prefixCls}-category-item-disabled`]: categoryRecord.getState('disabled'),
+    [`${prefixCls}-category-item-selected`]: categoryRecord.isSelected,
+  })), []);
+
+  const getTooltipContent = useCallback((categoryRecord) => {
+    if (!categoryRecord.getState('disabled')) {
+      return '';
+    }
+    if (!categoryRecord.isSelected) {
+      return '不可同时选择【敏捷管理】与【规模化敏捷项目群】项目类型';
+    }
+    if (categoryRecord.get('code') === categoryCodes.program) {
+      return '项目群中存在子项目，无法移除此项目类型';
+    }
+    if (categoryRecord.get('code') === categoryCodes.agile) {
+      return '敏捷管理项目已加入项目群，无法移除此项目类型';
+    }
+    return '';
+  }, []);
+
   if (!record) {
     return <Spin spinning />;
   }
@@ -134,14 +267,16 @@ const CreateProject = observer(() => {
       <div className={`${prefixCls}-category-label`}>项目类型</div>
       <div className={`${prefixCls}-category`}>
         {categoryDs.map((categoryRecord) => (
-          <div
-            className={`${prefixCls}-category-item ${categoryRecord.isSelected ? `${prefixCls}-category-item-selected` : ''}`}
-            onClick={() => handleCategoryClick(categoryRecord)}
-            role="none"
-          >
-            <div className={`${prefixCls}-category-item-icon ${prefixCls}-category-item-icon-${categoryRecord.get('code')}`} />
-            <span>{categoryRecord.get('name')}</span>
-          </div>
+          <Tooltip title={getTooltipContent(categoryRecord)}>
+            <div
+              className={getCategoryClassNames(categoryRecord)}
+              onClick={() => handleCategoryClick(categoryRecord)}
+              role="none"
+            >
+              <div className={`${prefixCls}-category-item-icon ${prefixCls}-category-item-icon-${categoryRecord.get('code')}`} />
+              <span>{categoryRecord.get('name')}</span>
+            </div>
+          </Tooltip>
         ))}
       </div>
       {isModify && (
