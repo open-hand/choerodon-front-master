@@ -1,5 +1,5 @@
 import React, {
-  useState, useCallback,
+  useState, useCallback, useMemo,
 } from 'react';
 import { Tree } from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
@@ -25,6 +25,11 @@ const TodoQuestion = observer(() => {
 
   const [btnLoading, changeBtnLoading] = useState(false);
   const [tabKey, changeTabKey] = useState('reportedBug');
+
+  const emptyPrompt = useMemo(() => {
+    const [title, describe] = tabKey === 'reportedBug' ? ['暂无已提缺陷', '当前迭代您尚未提交任何缺陷'] : ['暂无待办问题', '当前迭代暂无待办问题'];
+    return { title, describe };
+  }, [tabKey]);
 
   const loadMoreData = useCallback(() => {
     changeBtnLoading(true);
@@ -55,9 +60,9 @@ const TodoQuestion = observer(() => {
     if (!questionDs.length) {
       return (
         <EmptyPage
-          title="暂无已提缺陷"
+          title={emptyPrompt.title}
           img={emptyImg}
-          describe={<span style={{ whiteSpace: 'nowrap' }}>当前迭代您尚未提交任何缺陷</span>}
+          describe={<span style={{ whiteSpace: 'nowrap' }}>{emptyPrompt.describe}</span>}
         />
       );
     }
