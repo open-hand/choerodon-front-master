@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import {
-  Route, Switch, withRouter, Redirect, BrowserRouter
+  Route, Switch, withRouter, Redirect, BrowserRouter,
 } from 'react-router-dom';
 import { ModalContainer } from 'choerodon-ui/pro/lib';
 import { inject } from 'mobx-react';
@@ -13,6 +13,7 @@ const Unauthorized = asyncRouter(() => import('../routes/unauthorized'));
 const WorkBench = asyncRouter(() => import('../routes/workBench'));
 const ProjectsPro = asyncRouter(() => import('../routes/projectsPro'));
 const ProjectOverview = asyncRouter(() => import('../routes/projectOverview'));
+const Skeleton = asyncRouter(() => import('./skeleton/index.js'));
 const InnerIndex = ({ match, AutoRouter, AppState }) => (
   <div>
     <Switch>
@@ -30,6 +31,7 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
           return '';
         }}
       />
+      {/* <Route exact path={`${match.url}test`} component={Skeleton} /> */}
       <Route exact path={`${match.url}projectsPro`} component={ProjectsPro} />
       <Route exact path={`${match.url}agile/project-overview`} component={ProjectOverview} />
       <Route exact path="/">
