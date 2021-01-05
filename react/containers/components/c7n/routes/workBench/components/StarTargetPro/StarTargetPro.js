@@ -317,4 +317,4 @@ const StarTargetPro = observer(() => {
   );
 });
 
-export default useMemo;
+export default StarTargetPro;
