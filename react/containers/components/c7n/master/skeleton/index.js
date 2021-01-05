@@ -20,7 +20,7 @@ function init() {
           className="c7ncd-skeleton-rec"
         />
       </Header>
-      <Content
+      <div
         className="c7ncd-skeleton-content"
       >
         <div className="c7ncd-skeleton-content-wrap">
@@ -112,7 +112,7 @@ function init() {
             </div>
           </div>
         </div>
-      </Content>
+      </div>
     </Page>
   );
 }
