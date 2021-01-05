@@ -11,7 +11,11 @@ export default ({ organizationId, cacheStore }) => ({
       transformResponse: (value) => {
         try {
           const temp = JsonBig.parse(value);
-          cacheStore.setStartProjects(temp);
+          const tempObj = {
+            content: temp,
+            organizationId,
+          };
+          cacheStore.setStartProjects(tempObj);
           return temp;
         } catch (error) {
           throw new Error(error);

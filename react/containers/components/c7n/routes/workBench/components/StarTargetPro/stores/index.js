@@ -4,6 +4,7 @@ import React, {
 import { inject } from 'mobx-react';
 import { DataSet } from 'choerodon-ui/pro/lib';
 import { observer } from 'mobx-react-lite';
+import { get } from 'lodash';
 import starProjectDataset from './starProjectDataset';
 import { useWorkBenchStore } from '../../../stores';
 
@@ -32,11 +33,18 @@ export const StoreProvider = inject('AppState')(observer((props) => {
   const starProjectsDs = useMemo(() => new DataSet(starProjectDataset({ organizationId, cacheStore })), [organizationId]);
 
   useEffect(() => {
-    if (starProjects.length) {
-      starProjectsDs.loadData(starProjects);
+    const mainData = starProjects;
+    const tempArr = get(mainData, 'content');
+    const currentId = get(mainData, 'organizationId');
+    if (organizationId !== currentId) {
+      starProjectsDs.query();
       return;
     }
-    starProjectsDs.query();
+    if (tempArr) {
+      starProjectsDs.loadData(tempArr);
+    } else {
+      starProjectsDs.query();
+    }
   }, [starProjects, starProjectsDs]);
 
   const value = {
