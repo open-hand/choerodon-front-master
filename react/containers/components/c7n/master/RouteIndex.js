@@ -31,7 +31,7 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
           return '';
         }}
       />
-      {/* <Route exact path={`${match.url}test`} component={Skeleton} /> */}
+       <Route exact path={`${match.url}test`} component={Skeleton} />
       <Route exact path={`${match.url}projectsPro`} component={ProjectsPro} />
       <Route exact path={`${match.url}agile/project-overview`} component={ProjectOverview} />
       <Route exact path="/">
