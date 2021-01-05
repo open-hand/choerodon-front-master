@@ -42,7 +42,9 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
 
   const createProjectStore = useStore();
   const categoryDs = useMemo(() => new DataSet(CategoryDataSet({ organizationId, categoryCodes })), [organizationId]);
-  const formDs = useMemo(() => new DataSet(FormDataSet({ organizationId, categoryDs, projectId })), [organizationId]);
+  const formDs = useMemo(() => new DataSet(FormDataSet({
+    organizationId, categoryDs, projectId, categoryCodes,
+  })), [organizationId, projectId]);
 
   useEffect(() => {
     if (projectId) {

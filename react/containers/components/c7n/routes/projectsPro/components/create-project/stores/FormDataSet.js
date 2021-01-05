@@ -1,5 +1,6 @@
 import moment from 'moment';
 import forEach from 'lodash/forEach';
+import some from 'lodash/some';
 import axios from '../../../../../tools/axios';
 
 // 项目编码只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"  /^[a-z](([a-z0-9]|-(?!-))*[a-z0-9])*$/
@@ -23,7 +24,9 @@ const nameValidator = (value) => {
   return true;
 };
 
-export default ({ organizationId, categoryDs, projectId }) => {
+export default ({
+  organizationId, categoryDs, projectId, categoryCodes,
+}) => {
   const codeValidator = async (value, name, record) => {
     if (record.status !== 'add') {
       return true;
@@ -103,10 +106,7 @@ export default ({ organizationId, categoryDs, projectId }) => {
         type: 'date',
         label: '立项时间',
         dynamicProps: {
-          required: ({ record }) => {
-            const waterfallTimeRequired = record.get('waterfallTimeRequired');
-            return typeof (waterfallTimeRequired) !== 'undefined' ? waterfallTimeRequired : record.get('category') === 'WATERFALL';
-          },
+          required: ({ record }) => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall),
           max: ({ record }) => {
             const endDate = record.get('endTime');
             return endDate ? moment(endDate, 'YYYY-MM-DD').subtract(1, 'day') : undefined;
@@ -118,10 +118,7 @@ export default ({ organizationId, categoryDs, projectId }) => {
         type: 'date',
         label: '结项时间',
         dynamicProps: {
-          required: ({ record }) => {
-            const waterfallTimeRequired = record.get('waterfallTimeRequired');
-            return typeof (waterfallTimeRequired) !== 'undefined' ? waterfallTimeRequired : record.get('category') === 'WATERFALL';
-          },
+          required: ({ record }) => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall),
           min: ({ record }) => {
             const startDate = record.get('startTime');
             return startDate ? moment.max(moment(startDate, 'YYYY-MM-DD').add(1, 'day'), moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')) : moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD');
