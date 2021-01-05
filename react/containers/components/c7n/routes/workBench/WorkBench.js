@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useRef,
+} from 'react';
 import { WidthProvider, Responsive } from 'react-grid-layout';
 import { map, get } from 'lodash';
 import { observer } from 'mobx-react-lite';
@@ -18,8 +20,6 @@ import './WorkBench.less';
 import { useWorkBenchStore } from './stores';
 import GridBg from './components/gridBackground';
 import TodoQuestion from './components/TodoQuestion';
-
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 const WorkBench = () => {
   useEffect(() => {
@@ -78,6 +78,8 @@ const WorkBench = () => {
     return tempComponent;
   };
 
+  const renderBg = useCallback(() => <GridBg />, []);
+
   const generateDOM = () => {
     const tempComponents = isEdit ? workBenchUseStore.getWorkComponents : componentsDs.toData();
     return (
@@ -100,12 +102,9 @@ const WorkBench = () => {
     );
   };
 
-  const renderBg = useCallback(() => <GridBg />, []);
-
   const renderGridLayouts = () => {
     const tempObj = {
       className: `${prefixCls}-layout`,
-      // layouts: workBenchUseStore.getLayouts,
       onLayoutChange,
       breakpoints: {
         lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0,
@@ -115,11 +114,15 @@ const WorkBench = () => {
       cols: {
         lg: 12, md: 10, sm: 6, xs: 4, xxs: 2,
       },
-      measureBeforeMount: isEdit,
+      measureBeforeMount: true,
       containerPadding: [4, 0],
-      useCSSTransformss: !isEdit,
+      useCSSTransformss: true,
       rowHeight: 100,
+      shouldComponentUpdate: true,
     };
+
+    const ResponsiveReactGridLayout = WidthProvider(Responsive);
+
     return (
       <ResponsiveReactGridLayout
         {...tempObj}
@@ -135,24 +138,10 @@ const WorkBench = () => {
         className={`${prefixCls}-container`}
       >
         {isEdit && renderBg()}
-        {isEdit && renderGridLayouts()}
-        {!isEdit && renderGridLayouts() }
+        {
+          renderGridLayouts()
+        }
       </div>
-
-      {/* <div className="c7n-workbench-left">
-      <StarTargetPro />
-      <WorkBenchAgile />
-      <div style={{ display: 'flex' }}>
-        <QuickLink />
-        <Doc />
-      </div>
-    </div>
-    <div className="c7n-workbench-right">
-      <SelfIntro />
-      <ServiceList />
-      <EnvList />
-    </div> */}
-
     </Page>
   );
 };
