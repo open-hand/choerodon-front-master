@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button, Tooltip, Modal } from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import { observer } from 'mobx-react-lite';
@@ -194,6 +194,15 @@ const StarTargetPro = observer(() => {
 
   function handleEditable() {
     setEdit(true);
+    workBenchUseStore.setComponents(
+      map(componentsDs.toData(), (item) => {
+        const temp = item;
+        if (get(item, 'layout').i !== 'starTarget') {
+          temp.layout.static = false;
+        }
+        return temp;
+      }),
+    );
   }
 
   function handleCancel() {
@@ -308,4 +317,4 @@ const StarTargetPro = observer(() => {
   );
 });
 
-export default StarTargetPro;
+export default useMemo;
