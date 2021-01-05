@@ -36,12 +36,16 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   useEffect(() => {
     const mainData = cacheAppServiceData;
-    if (selectedProjectId !== get(mainData, 'selectedProjectId')) {
+    const tempArr = get(mainData, 'content');
+    const currentId = get(mainData, 'selectedProjectId');
+    if (selectedProjectId !== currentId) {
       appServiceDs.query();
       return;
     }
-    if (cacheAppServiceData && get(cacheAppServiceData, 'length')) {
-      appServiceDs.loadData(cacheAppServiceData);
+    if (tempArr) {
+      appServiceDs.loadData(tempArr);
+    } else {
+      appServiceDs.query();
     }
   }, [appServiceDs, cacheAppServiceData]);
 
