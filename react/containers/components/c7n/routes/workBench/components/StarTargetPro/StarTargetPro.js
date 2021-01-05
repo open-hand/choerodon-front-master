@@ -32,7 +32,10 @@ const StarTargetPro = observer(() => {
     isEdit,
     setEdit,
     setActiveStarProject,
+    workComponents,
   } = workBenchUseStore;
+
+  const typeArr = useMemo(() => map(workComponents, (item) => item.type), [workComponents]);
 
   const handleClickItem = (s) => {
     const tempId = get(s, 'id');
@@ -209,9 +212,27 @@ const StarTargetPro = observer(() => {
     setEdit(false);
   }
 
+  function addComponent(type) {
+    const {
+      layout,
+      ...rest
+    } = mappings[type];
+    const tempCp = {
+      ...rest,
+      layout: {
+        ...layout,
+        x: (typeArr.length * 2) % (12),
+        y: Infinity,
+        static: false,
+      },
+    };
+    const tempLayout = workBenchUseStore.layouts;
+    const tempComponents = workBenchUseStore.getLayoutsComponents(tempLayout);
+    workBenchUseStore.setComponents(tempComponents.concat(tempCp));
+  }
+
   function openAddComponents() {
     const subPrefix = 'c7ncd-workbench-addModal';
-    const typeArr = map(workBenchUseStore.workComponents, (item) => item.type);
     Modal.open({
       title: '添加卡片',
       key: Modal.key(),
@@ -222,22 +243,7 @@ const StarTargetPro = observer(() => {
       children: <AddModal
         subPrefix={subPrefix}
         existTypes={typeArr}
-        addComponent={(type) => {
-          const {
-            layout,
-            ...rest
-          } = mappings[type];
-          const tempCp = {
-            ...rest,
-            layout: {
-              ...layout,
-              x: (typeArr.length * 2) % (12),
-              y: Infinity,
-              static: false,
-            },
-          };
-          workBenchUseStore.addNewComponents(tempCp);
-        }}
+        addComponent={addComponent}
       />,
       className: `${subPrefix}`,
     });
@@ -245,19 +251,7 @@ const StarTargetPro = observer(() => {
 
   function hanldeSave() {
     const tempLayout = workBenchUseStore.layouts;
-    const tempComponents = map(tempLayout, (item) => {
-      const {
-        layout,
-        ...rest
-      } = mappings[get(item, 'i')];
-      return {
-        ...rest,
-        layout: {
-          ...item,
-          static: true,
-        },
-      };
-    });
+    const tempComponents = workBenchUseStore.getLayoutsComponents(tempLayout, true);
     localStorage.setItem('tempComponents', JSON.stringify(tempComponents));
     componentsDs.loadData(tempComponents);
     setEdit(false);

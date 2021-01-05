@@ -1,10 +1,9 @@
 import React, {
-  useCallback, useEffect, useMemo, useRef,
+  useCallback, useEffect,
 } from 'react';
 import { WidthProvider, Responsive } from 'react-grid-layout';
-import { map, get } from 'lodash';
+import { map, get, filter } from 'lodash';
 import { observer } from 'mobx-react-lite';
-import { Button } from 'choerodon-ui';
 import { Page } from '../../../../../index';
 import StarTargetPro from './components/StarTargetPro';
 // import WorkBenchAgile from './components/WorkBenchAgile';
@@ -34,15 +33,18 @@ const WorkBench = () => {
 
   const {
     setLayOuts,
-    deleteComponents,
     isEdit,
+    getLayoutsComponents,
+    workComponents,
   } = workBenchUseStore;
 
   function onLayoutChange(layout, tempLayouts) {
     setLayOuts(layout);
   }
   function handleDelete(dataGrid) {
-    deleteComponents(dataGrid);
+    const tempLayout = filter(workBenchUseStore.layouts, (item) => get(dataGrid, 'type') !== get(item, 'i'));
+    const tempComponents = getLayoutsComponents(tempLayout);
+    workBenchUseStore.setComponents(tempComponents);
   }
 
   const SwitchComponents = (type) => {
@@ -81,7 +83,7 @@ const WorkBench = () => {
   const renderBg = useCallback(() => <GridBg />, []);
 
   const generateDOM = () => {
-    const tempComponents = isEdit ? workBenchUseStore.getWorkComponents : componentsDs.toData();
+    const tempComponents = isEdit ? workComponents : componentsDs.toData();
     return (
       map(tempComponents, (item, i) => {
         const {
