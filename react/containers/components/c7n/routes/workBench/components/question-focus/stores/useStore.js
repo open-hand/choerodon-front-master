@@ -30,12 +30,5 @@ export default function useStore(focusQuestions) {
       this.hasMore = data;
     },
 
-    questionData: [],
-    get getQuestionData() {
-      return this.questionData?.slice();
-    },
-    setQuestionData(data) {
-      this.questionData = data;
-    },
   }));
 }

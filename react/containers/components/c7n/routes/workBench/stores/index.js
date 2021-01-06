@@ -32,17 +32,6 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ workBenchUseStore })), [workBenchUseStore]);
 
-  useEffect(() => {
-    const localComponents = localStorage.getItem('tempComponents');
-    let tempComponents;
-    if (localComponents) {
-      tempComponents = JSON.parse(localComponents);
-    } else {
-      tempComponents = map(mappings, (item) => item);
-    }
-    componentsDs.loadData(tempComponents);
-  }, []);
-
   const value = {
     ...props,
     prefixCls: 'c7n-workbench',
