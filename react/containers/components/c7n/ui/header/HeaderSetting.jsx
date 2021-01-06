@@ -9,21 +9,23 @@ import classNames from 'classnames';
 import getSearchString from '../../util/gotoSome';
 
 const iconStyle = { marginLeft: 0, marginRight: 0 };
-const LI_MAPPING = [
-  { title: '工作台', icon: 'home', activePath: '/workbench' },
-  // { title: '协作共享', icon: 'question_answer', activePath: '/buzz/cooperate', exclude: '/buzz/cooperate-pro' },
-  { title: '项目', icon: 'project_filled', activePath: '/projects' },
-  // { title: '项目', icon: 'project_filled', activePath: '/projectsPro' },
-  // { title: '应用', icon: 'widgets', activePath: '/applications' },
-  { title: '知识库', icon: 'knowledge', activePath: '/knowledge/organization' },
-  { title: '应用市场', icon: 'application_market', activePath: '/market/app-market' },
-
-  // { title: '应用市场', icon: 'application_market', activePath: '/iam/choerodon/app-market' },
-];
 
 const Setting = ({
   AppState, HeaderStore, MenuStore, history, ...props
 }) => {
+  const theme = AppState.getCurrentTheme;
+  const LI_MAPPING = [
+    { title: '工作台', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/workbench' },
+    // { title: '协作共享', icon: 'question_answer', activePath: '/buzz/cooperate', exclude: '/buzz/cooperate-pro' },
+    { title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects' },
+    // { title: '项目', icon: 'project_filled', activePath: '/projectsPro' },
+    // { title: '应用', icon: 'widgets', activePath: '/applications' },
+    { title: '知识库', icon: theme === 'theme4' ? 'chrome_reader_mode-o' : 'knowledge', activePath: '/knowledge/organization' },
+    { title: '应用市场', icon: theme === 'theme4' ? 'local_mall-o' : 'application_market', activePath: '/market/app-market' },
+
+    // { title: '应用市场', icon: 'application_market', activePath: '/iam/choerodon/app-market' },
+  ];
+
   async function goto(obj) {
     const queryObj = queryString.parse(history.location.search);
     const search = await getSearchString('organization', 'id', queryObj.organizationId);

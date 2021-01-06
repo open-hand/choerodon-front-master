@@ -272,11 +272,6 @@ export default class CommonMenu extends Component {
           // onTitleClick={this.handleClick}
         key={item.code}
         className="common-menu-right-popup"
-        {
-          ...this.props.AppState.getCurrentTheme !== 'theme4' ? {
-            title: item.name,
-          } : {}
-        }
       >
         {
             item.subMenus.filter((v) => v.type !== 'tab').map((two) => this.getMenuSingle(two, 0, collapsed))
@@ -289,12 +284,14 @@ export default class CommonMenu extends Component {
     const { MenuStore, AppState } = this.props;
     const { collapsed, openKeys, activeMenu } = MenuStore;
     let child;
-    if (AppState.getCurrentTheme === 'theme4') {
-      const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
-      child = MenuStore.getMenuData.filter((item) => item.id === activeMenuRoot.id);
-    } else {
-      child = MenuStore.getMenuData;
-    }
+    const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
+    child = MenuStore.getMenuData.filter((item) => item.id === activeMenuRoot.id);
+    // if (AppState.getCurrentTheme === 'theme4') {
+    //   const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
+    //   child = MenuStore.getMenuData.filter((item) => item.id === activeMenuRoot.id);
+    // } else {
+    //   child = MenuStore.getMenuData;
+    // }
     return (
       <div
         className={
@@ -303,13 +300,9 @@ export default class CommonMenu extends Component {
               'theme4-common-menu': AppState.getCurrentTheme === 'theme4'
             })
         }
-        {
-          ...AppState.getCurrentTheme === 'theme4' ? {
-            style: {
-              width: collapsed ? '50px' : 'calc(250px - 54px)',
-            }
-          } : {}
-        }
+        style={{
+          width: collapsed ? '50px' : 'calc(250px - 54px)',
+        }}
       >
         <div
           className="common-menu-right-header"
@@ -385,11 +378,23 @@ export default class CommonMenu extends Component {
     const menuData = MenuStore.getMenuData;
     const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
     return (
-      <div className="c7ncd-theme4-menuSide">
+      <div
+        className="c7ncd-theme4-menuSide"
+        {
+          ...AppState.getCurrentTheme === '' ? {
+            style: {
+              background: 'white',
+              borderRight: '1px solid #D9E6F2',
+            }
+          } : {}
+        }
+      >
         {
           menuData.map((data) => (
             <div
-              className="c7ncd-theme4-menuSide-item"
+              className={classNames('c7ncd-theme4-menuSide-item', {
+                'c7ncd-origin-menuSide': activeMenuRoot.id === data.id && AppState.getCurrentTheme === '',
+              })}
               {
                 ...activeMenuRoot.id === data.id ? {
                   style: {
@@ -399,8 +404,25 @@ export default class CommonMenu extends Component {
               }
               onClick={() => this.handleClickItemMenuSide(data)}
             >
-              <Icon style={{ color: 'white' }} type="filter_frames" />
-              <p>{data.name}</p>
+              <Icon
+                {
+                  ...AppState.getCurrentTheme === 'theme4' ? {
+                    style: {
+                      color: 'white',
+                    }
+                  } : {}
+                }
+                type="filter_frames"
+              />
+              <p
+                {
+                  ...AppState.getCurrentTheme === '' ? {
+                    style: {
+                      color: '#0F1358',
+                    }
+                  } : {}
+                }
+              >{data.name}</p>
             </div>
           ))
         }
@@ -417,9 +439,7 @@ export default class CommonMenu extends Component {
 
     return (
       <div className="common-menu">
-        {
-          this.props.AppState.getCurrentTheme === 'theme4' && this.renderNewMenuSide()
-        }
+        {this.renderNewMenuSide()}
         {this.renderRightMenu()}
       </div>
     );

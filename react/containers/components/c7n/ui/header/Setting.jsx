@@ -37,7 +37,7 @@ export default class Setting extends Component {
           className={classNames({
             'theme4-setting-icon': this.props.AppState.getCurrentTheme === 'theme4'
           })}
-          type="settings"
+          type={this.props.AppState.getCurrentTheme === 'theme4' ? 'settings-o' : "settings"}
           style={{ marginLeft: '5px' }}
         />
         { this.props.AppState.getCurrentTheme === '' && '管理中心' }

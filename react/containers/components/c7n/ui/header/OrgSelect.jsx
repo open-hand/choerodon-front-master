@@ -177,13 +177,19 @@ export default class OrgSelect extends Component {
         (orgObj && orgObj.name) ? (
           <div>
             {
-              getCurrentTheme === '' && (
+              getCurrentTheme === '' ? (
                 <div style={{ fontSize: '12px', lineHeight: '20px', color: 'rgba(255, 255, 255, 0.6)' }}>组织</div>
+              ) : (
+                <Icon type="domain" />
               )
             }
-            <div style={{
-              fontSize: '12px', lineHeight: '20px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'none',
-            }}
+            <div
+              style={{
+                fontSize: '12px', lineHeight: '20px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'none',
+                ...getCurrentTheme === 'theme4' ? {
+                  paddingLeft: 9,
+                } : {}
+              }}
             >
               {orgObj.name}
             </div>

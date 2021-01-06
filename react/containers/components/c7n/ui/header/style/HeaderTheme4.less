@@ -25,10 +25,26 @@
 .theme4-headerButton {
   height: 46px !important;
   margin-left: 20px;
+  span {
+    color: rgba(15, 19, 88, 0.65);
+  }
 }
 .theme4-orgSelect {
   border-color: rgb(217, 230, 242) !important;
   margin-top: 6px !important;
+  color: rgba(15, 19, 88, 0.65) !important;
+  .icon-domain {
+    position: absolute;
+    left: 7px;
+    font-size: 0.15rem !important;
+    top: 7px;
+  }
+  .icon-expand_more {
+    color: rgba(15, 19, 88, 0.36) !important;
+    top: 2px !important;
+    right: 0 !important;
+    left: unset !important;
+  }
 }
 .theme4-setting {
   margin-left: 12px;
@@ -101,7 +117,7 @@
     border-radius: 4px;
     width: 26px;
     height: 26px;
-    background: rgba(255, 255, 255, 0.16);
+    background: rgba(15, 19, 88, 0.08);
     position: relative;
     top: 6px;
     margin-right: 16px;
@@ -125,9 +141,11 @@
   }
   .c7n-menu-item-group-title {
     color: white !important;
+    padding: 0 !important;
   }
   li[aria-selected=true] {
     background: rgba(83, 101, 234, 0.08) !important;
+    height: 44px;
     .theme4-iconwrap {
       background: #5365EA !important;
       i {
@@ -147,7 +165,7 @@
   width: 54px;
   background: #415BC9;
   p {
-    margin: 0 !important;
+    margin: 8px 0 0 0 !important;
   }
   &-item {
     color: white;
@@ -164,7 +182,7 @@
 .theme4-iconToggle {
   position: absolute;
   right: -21px;
-  top: 22px;
+  top: 12px;
   z-index: 10;
   i {
     background: #5365EA;
@@ -174,5 +192,13 @@
     display: flex !important;
     align-items: center;
     justify-content: center;
+  }
+}
+.c7ncd-origin-menuSide {
+  i {
+    color: #5365EA !important;
+  }
+  p {
+    color: #5365EA !important;
   }
 }
