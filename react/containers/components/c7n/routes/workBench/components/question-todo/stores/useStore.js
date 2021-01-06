@@ -26,12 +26,5 @@ export default function useStore(history) {
       this.hasMore = data;
     },
 
-    questionData: [],
-    get getQuestionData() {
-      return this.questionData?.slice();
-    },
-    setQuestionData(data) {
-      this.questionData = data;
-    },
   }));
 }

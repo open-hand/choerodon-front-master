@@ -22,6 +22,7 @@ import QuestionFocus from './components/question-focus';
 import QuestionBug from './components/question-bug';
 
 import './WorkBench.less';
+import LoadingBar from '../../tools/loading-bar';
 
 const ComponetsObjs = {
   starTarget: <StarTargetPro />,

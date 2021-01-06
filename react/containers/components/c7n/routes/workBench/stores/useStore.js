@@ -5,7 +5,7 @@ import MenuStore from '@/containers/stores/c7n/MenuStore';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
 import {
-  get, map,
+  get, map, omit, pick,
 } from 'lodash';
 import mappings from './mappings';
 
@@ -85,6 +85,15 @@ export default function useStore(history) {
       organizationId, projectId, page, type,
     }) {
       return axios.post(`agile/v1/organizations/${organizationId}/work_bench/personal/backlog_issues?page=${page}&size=20${projectId ? `&projectId=${projectId}` : ''}`, { type });
+    },
+    saveConfig(value) {
+      const tempObj = map(value, (item) => {
+        const temp = pick(item, ['layout', 'type', 'name']);
+        return temp;
+      });
+      axios.post('iam/choerodon/v1/workbench_configs', JSON.stringify({
+        data: JSON.stringify(tempObj),
+      }));
     },
   }));
 }

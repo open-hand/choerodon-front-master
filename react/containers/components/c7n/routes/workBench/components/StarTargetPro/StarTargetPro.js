@@ -252,8 +252,8 @@ const StarTargetPro = observer(() => {
   function hanldeSave() {
     const tempLayout = workBenchUseStore.layouts;
     const tempComponents = workBenchUseStore.getLayoutsComponents(tempLayout, true);
-    localStorage.setItem('tempComponents', JSON.stringify(tempComponents));
     componentsDs.loadData(tempComponents);
+    workBenchUseStore.saveConfig(tempComponents);
     setEdit(false);
   }
 

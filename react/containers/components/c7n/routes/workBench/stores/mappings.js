@@ -67,9 +67,9 @@ const componentsObj = {
   myStar: {
     layout: {
       x: 0,
-      y: 2,
+      y: 11,
       h: 4,
-      w: 5,
+      w: 4,
       minH: 3,
       minW: 4,
       static: true,
@@ -85,8 +85,8 @@ const componentsObj = {
   // 我的缺陷
   myDefect: {
     layout: {
-      x: 0,
-      y: 2,
+      x: 4,
+      y: 11,
       h: 4,
       w: 5,
       minH: 3,
