@@ -1,7 +1,11 @@
 import { useLocalStore } from 'mobx-react-lite';
 
-export default function useStore(history) {
+export default function useStore(bugQuestions) {
   return useLocalStore(() => ({
+    tabKey: bugQuestions.type || 'reportedBug',
+    changeTabKey(value) {
+      this.tabKey = value;
+    },
     page: 1,
     get getPage() {
       return this.page;
@@ -28,7 +32,7 @@ export default function useStore(history) {
 
     questionData: [],
     get getQuestionData() {
-      return this.questionData;
+      return this.questionData?.slice();
     },
     setQuestionData(data) {
       this.questionData = data;

@@ -1,5 +1,7 @@
 import todoThings from '../img/todoThings.png';
 import todoQuestions from '../img/todoQuestions.svg';
+import myStar from '../img/myStar.png';
+import myDefect from '../img/myDefect.png';
 import serviceList from '../img/appServiceLists.png';
 import doc from '../img/doc.png';
 import quickLink from '../img/quickLink.png';
@@ -60,6 +62,44 @@ const componentsObj = {
     title: '待办事项',
     describe: '展示当前迭代我待办的问题项，以便高效完成工作计划。',
     img: todoQuestions,
+  },
+  // 我的关注
+  myStar: {
+    layout: {
+      x: 0,
+      y: 2,
+      h: 4,
+      w: 5,
+      minH: 3,
+      minW: 4,
+      static: true,
+      i: 'myStar',
+    },
+    name: 'myStar',
+    type: 'myStar',
+    groupId: 'jobManage',
+    title: '我的关注',
+    describe: '展示我关注的特性、问题项、需求，以便我能快速了解关注的工作内容和进展情况。',
+    img: myStar,
+  },
+  // 我的缺陷
+  myDefect: {
+    layout: {
+      x: 0,
+      y: 2,
+      h: 4,
+      w: 5,
+      minH: 3,
+      minW: 4,
+      static: true,
+      i: 'myDefect',
+    },
+    name: 'myDefect',
+    type: 'myDefect',
+    groupId: 'jobManage',
+    title: '我的缺陷',
+    describe: '展示当前迭代我提交的和待我修复的缺陷，以便我能及时处理风险漏洞。',
+    img: myDefect,
   },
   // 待审核模块
   todoThings: {

@@ -28,7 +28,7 @@ export default function useStore(history) {
 
     questionData: [],
     get getQuestionData() {
-      return this.questionData;
+      return this.questionData?.slice();
     },
     setQuestionData(data) {
       this.questionData = data;

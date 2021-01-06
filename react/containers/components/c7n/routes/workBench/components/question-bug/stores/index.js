@@ -20,22 +20,45 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
     AppState: { currentMenuType: { organizationId } },
-    history,
   } = props;
 
   const {
     workBenchUseStore,
+    cacheStore,
+    selectedProjectId,
   } = useWorkBenchStore();
 
-  const questionStore = useStore();
-  const selectedProjectId = useMemo(() => get(workBenchUseStore.getActiveStarProject, 'id'), [workBenchUseStore.getActiveStarProject]);
+  const {
+    bugQuestions,
+  } = cacheStore;
 
-  const questionDs = useMemo(() => new DataSet(QuestionDataSet({ organizationId, questionStore })), [organizationId]);
+  const questionStore = useStore(bugQuestions);
+
+  const {
+    tabKey,
+  } = questionStore;
+
+  const questionDs = useMemo(() => new DataSet(QuestionDataSet({
+    organizationId, type: tabKey, questionStore, selectedProjectId, cacheStore,
+  })), [organizationId, selectedProjectId, tabKey]);
 
   useEffect(() => {
-    questionDs.setQueryParameter('selectedProjectId', selectedProjectId);
-    questionDs.query();
-  }, [selectedProjectId]);
+    const mainData = bugQuestions;
+    const tempArr = get(mainData, 'content');
+    const currentId = get(mainData, 'selectedProjectId');
+    const tempType = get(mainData, 'type');
+    if (selectedProjectId !== currentId || tempType !== tabKey) {
+      questionDs.query();
+      return;
+    }
+    if (tempArr && get(tempArr, 'length')) {
+      questionDs.loadData(tempArr);
+      questionStore.setHasMore(
+        mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,
+      );
+      questionStore.setTotalCount(mainData.totalElements);
+    }
+  }, [bugQuestions, questionDs]);
 
   const value = {
     ...props,
