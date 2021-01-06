@@ -64,6 +64,7 @@ export default class CommonMenu extends Component {
               MenuStore.setType(type);
               MenuStore.setId(id);
               MenuStore.setIsUser(isUser);
+              MenuStore.setRootBaseOnActiveMenu();
               return true;
             }
             return false;
@@ -271,7 +272,11 @@ export default class CommonMenu extends Component {
           // onTitleClick={this.handleClick}
         key={item.code}
         className="common-menu-right-popup"
-        title={item.name}
+        {
+          ...this.props.AppState.getCurrentTheme !== 'theme4' ? {
+            title: item.name,
+          } : {}
+        }
       >
         {
             item.subMenus.filter((v) => v.type !== 'tab').map((two) => this.getMenuSingle(two, 0, collapsed))
@@ -283,11 +288,58 @@ export default class CommonMenu extends Component {
   renderRightMenu() {
     const { MenuStore, AppState } = this.props;
     const { collapsed, openKeys, activeMenu } = MenuStore;
-    const child = MenuStore.getMenuData;
+    let child;
+    if (AppState.getCurrentTheme === 'theme4') {
+      const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
+      child = MenuStore.getMenuData.filter((item) => item.id === activeMenuRoot.id);
+    } else {
+      child = MenuStore.getMenuData;
+    }
     return (
-      <div className={classNames('common-menu-right', { collapsed, 'theme4-common-menu': AppState.getCurrentTheme === 'theme4' })}>
-        <div className="common-menu-right-header">
-          <Icon type="menu" onClick={this.toggleRightMenu} />
+      <div
+        className={
+          classNames('common-menu-right', {
+              collapsed,
+              'theme4-common-menu': AppState.getCurrentTheme === 'theme4'
+            })
+        }
+        {
+          ...AppState.getCurrentTheme === 'theme4' ? {
+            style: {
+              width: collapsed ? '50px' : 'calc(250px - 54px)',
+            }
+          } : {}
+        }
+      >
+        <div
+          className="common-menu-right-header"
+          style={{
+            position: 'relative',
+            ...AppState.getCurrentTheme === 'theme4' ? {
+              height: 0,
+            } : {},
+          }}
+        >
+          <div
+            className={classNames({
+              'theme4-iconToggle': AppState.getCurrentTheme === 'theme4',
+            })}
+          >
+            <Icon
+              type={(function () {
+                if (AppState.getCurrentTheme === 'theme4') {
+                  if (collapsed) {
+                    return 'keyboard_arrow_right';
+                  } else {
+                    return 'keyboard_arrow_left'
+                  }
+                } else {
+                  return 'menu'
+                }
+              }())}
+              onClick={this.toggleRightMenu}
+            />
+          </div>
         </div>
         <div className="common-menu-right-content">
           <Menu
@@ -300,7 +352,7 @@ export default class CommonMenu extends Component {
             subMenuCloseDelay={0.1}
             subMenuOpenDelay={0.1}
           >
-            {child.map((item) => this.renderLeftMenuItem(item, collapsed))}
+            {child?.map((item) => this.renderLeftMenuItem(item, collapsed))}
           </Menu>
         </div>
       </div>
@@ -321,8 +373,43 @@ export default class CommonMenu extends Component {
     return blackListArray.some((pname) => pathname.startsWith(pname));
   }
 
+  handleClickItemMenuSide = (item) => {
+    const { MenuStore, AppState } = this.props;
+    const origin = MenuStore.getActiveMenuRoot;
+    origin[AppState.menuType.type] = item;
+    MenuStore.setActiveMenuRoot(JSON.parse(JSON.stringify(origin)));
+  }
+
+  renderNewMenuSide = () => {
+    const { MenuStore, AppState } = this.props;
+    const menuData = MenuStore.getMenuData;
+    const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
+    return (
+      <div className="c7ncd-theme4-menuSide">
+        {
+          menuData.map((data) => (
+            <div
+              className="c7ncd-theme4-menuSide-item"
+              {
+                ...activeMenuRoot.id === data.id ? {
+                  style: {
+                    background: 'rgba(140, 158, 255, 0.35)',
+                  },
+                } : {}
+              }
+              onClick={() => this.handleClickItemMenuSide(data)}
+            >
+              <Icon style={{ color: 'white' }} type="filter_frames" />
+              <p>{data.name}</p>
+            </div>
+          ))
+        }
+      </div>
+    );
+  }
+
   render() {
-    const { MenuStore, location: { pathname } } = this.props;
+    const { MenuStore, location: { pathname }, AppState } = this.props;
     const child = MenuStore.getMenuData;
     if (!(child && child.length > 0) || this.shouldHiddenMenu(pathname) || MenuStore.notFoundSign) {
       return null;
@@ -330,6 +417,9 @@ export default class CommonMenu extends Component {
 
     return (
       <div className="common-menu">
+        {
+          this.props.AppState.getCurrentTheme === 'theme4' && this.renderNewMenuSide()
+        }
         {this.renderRightMenu()}
       </div>
     );
