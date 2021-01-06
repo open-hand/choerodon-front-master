@@ -20,22 +20,42 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
     AppState: { currentMenuType: { organizationId } },
-    history,
   } = props;
 
   const {
     workBenchUseStore,
+    selectedProjectId,
+    cacheStore,
   } = useWorkBenchStore();
 
-  const questionStore = useStore();
-  const selectedProjectId = useMemo(() => get(workBenchUseStore.getActiveStarProject, 'id'), [workBenchUseStore.getActiveStarProject]);
+  const {
+    todoQuestions,
+  } = cacheStore;
 
-  const questionDs = useMemo(() => new DataSet(QuestionDataSet({ organizationId, questionStore })), [organizationId]);
+  const questionStore = useStore();
+
+  const questionDs = useMemo(() => new DataSet(QuestionDataSet({
+    organizationId, questionStore, selectedProjectId, cacheStore,
+  })), [organizationId, selectedProjectId]);
 
   useEffect(() => {
-    questionDs.setQueryParameter('selectedProjectId', selectedProjectId);
-    questionDs.query();
-  }, [selectedProjectId]);
+    const mainData = todoQuestions;
+    const tempArr = get(mainData, 'content');
+    const currentId = get(mainData, 'selectedProjectId');
+    if (selectedProjectId !== currentId) {
+      questionDs.query();
+      return;
+    }
+    if (tempArr) {
+      questionDs.loadData(tempArr);
+      questionStore.setHasMore(
+        mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,
+      );
+      questionStore.setTotalCount(mainData.totalElements);
+    } else {
+      questionDs.query();
+    }
+  }, [questionDs, todoQuestions]);
 
   const value = {
     ...props,

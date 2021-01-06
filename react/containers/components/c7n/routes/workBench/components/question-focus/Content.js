@@ -26,8 +26,11 @@ const TodoQuestion = observer(() => {
     questionStore,
   } = useTodoQuestionStore();
 
+  const {
+    tabKey,
+  } = questionStore;
+
   const [btnLoading, changeBtnLoading] = useState(false);
-  const [tabKey, changeTabKey] = useState('myStarBeacon');
 
   const emptyPrompt = useMemo(() => {
     const [title, describe] = tabKey === 'myStarBeacon' ? ['暂无我关注的问题', '您尚未关注任何问题项'] : ['暂无我关注的需求', '您尚未关注任何需求'];
@@ -38,14 +41,12 @@ const TodoQuestion = observer(() => {
     changeBtnLoading(true);
     questionStore.setPage(questionStore.getPage + 1);
     questionDs.query();
-  }, [questionStore.getPage]);
+  }, [questionDs]);
 
   const handleTabChange = useCallback((key) => {
-    changeTabKey(key);
+    questionStore.changeTabKey(key);
     questionStore.setPage(1);
-    questionDs.setQueryParameter('type', key);
-    questionDs.query();
-  }, []);
+  }, [questionStore]);
 
   const nodeRenderer = useCallback(({ record }) => (
     <QuestionNode
@@ -87,7 +88,6 @@ const TodoQuestion = observer(() => {
         <Tree
           dataSet={questionDs}
           renderer={nodeRenderer}
-          className={`${prefixCls}-issueContent`}
         />
         {questionStore.getHasMore ? component
           : null}
@@ -120,6 +120,9 @@ const TodoQuestion = observer(() => {
       <Card
         title={renderTitle()}
         className={`${prefixCls}-issueContent`}
+        style={{
+          paddingTop: HAS_BACKLOG ? '.13rem' : '.2rem',
+        }}
       >
         {getContent()}
       </Card>

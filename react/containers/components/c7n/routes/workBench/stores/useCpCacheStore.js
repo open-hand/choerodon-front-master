@@ -29,5 +29,21 @@ export default function useStore(history) {
     setTodoThingsData(value) {
       this.todoThingsData = value;
     },
+
+    todoQuestions: {},
+    setTodoQuestions(value) {
+      this.todoQuestions = value;
+    },
+
+    focusQuestions: {},
+    setFocusQuestions(value) {
+      this.focusQuestions = value;
+    },
+
+    bugQuestions: {},
+    setBugQuestions(value) {
+      this.bugQuestions = value;
+    },
+
   }));
 }

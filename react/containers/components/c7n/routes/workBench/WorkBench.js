@@ -1,8 +1,10 @@
 import React, {
-  useCallback, useEffect,
+  useCallback,
 } from 'react';
 import { WidthProvider, Responsive } from 'react-grid-layout';
-import { map, get, filter } from 'lodash';
+import {
+  map, get, filter,
+} from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { Page } from '../../../../../index';
 import StarTargetPro from './components/StarTargetPro';
@@ -15,12 +17,24 @@ import DragCard from './components/dragCard';
 import TodoThings from './components/TodoThings';
 import { useWorkBenchStore } from './stores';
 import GridBg from './components/gridBackground';
-import TodoQuestion from './components/TodoQuestion';
 import QuestionTodo from './components/question-todo';
 import QuestionFocus from './components/question-focus';
 import QuestionBug from './components/question-bug';
 
 import './WorkBench.less';
+
+const ComponetsObjs = {
+  starTarget: <StarTargetPro />,
+  selfInfo: <SelfIntro />,
+  todoQustions: <QuestionTodo />,
+  myStar: <QuestionFocus />,
+  myDefect: <QuestionBug />,
+  todoThings: <TodoThings />,
+  serviceList: <ServiceList />,
+  quickLink: <QuickLink />,
+  doc: <Doc />,
+  envList: <EnvList />,
+};
 
 const WorkBench = () => {
   const {
@@ -47,33 +61,9 @@ const WorkBench = () => {
 
   const SwitchComponents = (type) => {
     let tempComponent;
-    switch (type) {
-      case 'starTarget':
-        tempComponent = <StarTargetPro />;
-        break;
-      case 'selfInfo':
-        tempComponent = <SelfIntro />;
-        break;
-      case 'todoQustions':
-        tempComponent = <QuestionTodo />;
-        break;
-      case 'todoThings':
-        tempComponent = <TodoThings />;
-        break;
-      case 'serviceList':
-        tempComponent = <ServiceList />;
-        break;
-      case 'quickLink':
-        tempComponent = <QuickLink />;
-        break;
-      case 'doc':
-        tempComponent = <Doc />;
-        break;
-      case 'envList':
-        tempComponent = <EnvList />;
-        break;
-      default:
-        break;
+    const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
+    if (hasOwnProperty) {
+      tempComponent = ComponetsObjs[type];
     }
     return tempComponent;
   };

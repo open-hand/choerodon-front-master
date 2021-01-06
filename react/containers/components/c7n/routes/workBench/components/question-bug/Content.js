@@ -13,6 +13,7 @@ import emptyImg from './image/empty.svg';
 import QuestionNode from '../question-node';
 
 import './index.less';
+import { useWorkBenchStore } from '../../stores';
 
 const TodoQuestion = observer(() => {
   const {
@@ -23,8 +24,15 @@ const TodoQuestion = observer(() => {
     questionStore,
   } = useTodoQuestionStore();
 
+  const {
+    cacheStore,
+  } = useWorkBenchStore();
+
   const [btnLoading, changeBtnLoading] = useState(false);
-  const [tabKey, changeTabKey] = useState('reportedBug');
+
+  const {
+    tabKey,
+  } = questionStore;
 
   const emptyPrompt = useMemo(() => {
     const [title, describe] = tabKey === 'reportedBug' ? ['暂无已提缺陷', '当前迭代您尚未提交任何缺陷'] : ['暂无待办问题', '当前迭代暂无待办问题'];
@@ -35,13 +43,11 @@ const TodoQuestion = observer(() => {
     changeBtnLoading(true);
     questionStore.setPage(questionStore.getPage + 1);
     questionDs.query();
-  }, [questionStore.getPage]);
+  }, [questionDs]);
 
   const handleTabChange = useCallback((key) => {
-    changeTabKey(key);
+    questionStore.changeTabKey(key);
     questionStore.setPage(1);
-    questionDs.setQueryParameter('type', key);
-    questionDs.query();
   }, []);
 
   const nodeRenderer = useCallback(({ record }) => (
@@ -83,7 +89,6 @@ const TodoQuestion = observer(() => {
         <Tree
           dataSet={questionDs}
           renderer={nodeRenderer}
-          className={`${prefixCls}-issueContent`}
         />
         {questionStore.getHasMore ? component
           : null}

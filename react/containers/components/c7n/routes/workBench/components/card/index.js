@@ -6,13 +6,15 @@ import { Button, Icon } from 'choerodon-ui/pro';
 
 import './index.less';
 
-const Tips = withRouter(({ title, showLink, pathname, children, className, location: { search }, showCount, count }) => {
+const Tips = withRouter(({
+  title, showLink, pathname, children, className, location: { search }, showCount, count, style,
+}) => {
   function handleLink() {
 
   }
 
   return (
-    <div className={`c7n-workbench-card ${className}`}>
+    <div className={`c7n-workbench-card ${className}`} style={style}>
       <div className="c7n-workbench-card-header">
         <span className="c7n-workbench-card-header-title">{title}</span>
         {showCount && count ? (
