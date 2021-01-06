@@ -418,7 +418,7 @@ export default class Inbox extends Component {
                     } : {}
                   }
                 >
-                  <Icon type="notifications" />
+                  <Icon type={AppState.getCurrentTheme === 'theme4' ? 'notifications_none': "notifications"} />
                 </Button>
               </Badge>
             )

@@ -19,7 +19,7 @@ export default inject('AppState')((props) => {
           style: { color: '#fff' },
         } : {}
       }
-      icon="toys"
+      icon={props.AppState.getCurrentTheme === 'theme4' ? 'toys-o' : "toys"}
       onClick={() => {
         let newSchema;
         if (schema === 'theme4') {
