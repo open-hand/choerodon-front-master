@@ -205,15 +205,11 @@ class MenuStore {
   @action setRootBaseOnActiveMenu() {
     if (this.activeMenu && this.getMenuData && this.getMenuData.length > 0) {
       if (this.activeMenu.level !== this.getMenuData[0].level) {
-        debugger;
-
         this.setActiveMenu(this.getMenuData[0].subMenus[0])
       }
       const menuRoot = this.getActiveMenuRoot || {};
       const root = this.getMenuData.find(i => i.id === this.activeMenu.rootId);
       menuRoot[root.level] = root;
-      debugger;
-
       this.setActiveMenuRoot(JSON.parse(JSON.stringify(menuRoot)));
     }
   }
