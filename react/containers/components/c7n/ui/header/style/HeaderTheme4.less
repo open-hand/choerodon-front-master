@@ -70,7 +70,8 @@
   }
 }
 .theme4-common-menu {
-  background: #0F1358 !important;
+  //width: calc(250px - 54px) !important;
+  border-right: none !important;
   .common-menu-right-header {
     i {
       color: white;
@@ -78,6 +79,23 @@
   }
 }
 .theme4-menu-ul {
+  border-right: 1px solid #d3d3d3 !important;
+  height: 100%;
+  .c7n-menu-item-group-list {
+    position: relative;
+  }
+  .c7n-menu-item-group-list::after {
+    position: absolute;
+    content: "";
+    display: block;
+    top: -1px;
+    right: -1px;
+    width: 15px;
+    height: 40px;
+    border-radius: 0 2px 2px 0;
+    background: -webkit-radial-gradient(right 21px, white 50%, transparent 50%);
+    background: radial-gradient(21px at right, white 50%, transparent 50%);
+  }
   .theme4-iconwrap {
     display: inline-block;
     border-radius: 4px;
@@ -94,18 +112,13 @@
     }
   }
   .c7n-menu-submenu-title {
-    color: white !important;
-    i {
-      color: white;
-    }
+    color: black !important;
     .c7n-menu-submenu-arrow {
-      border-color: white !important;
     }
   }
   .c7n-menu-inline {
-    background: #0F1358 !important;
+    //background: #0F1358 !important;
   }
-  background: #0F1358 !important;
   .c7ncd-iconwrap {
     background: #5365EA;
     border-radius: 4px;
@@ -114,15 +127,52 @@
     color: white !important;
   }
   li[aria-selected=true] {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(83, 101, 234, 0.08) !important;
     .theme4-iconwrap {
       background: #5365EA !important;
+      i {
+        color: white !important;
+      }
     }
   }
-  a {
-    color: white !important;
-    i {
-      color: white !important;
-    }
+  li[aria-selected=true]:before {
+    display: none;
+  }
+}
+.theme4-toggleMenu {
+  position: absolute;
+  right: 0;
+}
+.c7ncd-theme4-menuSide {
+  width: 54px;
+  background: #415BC9;
+  p {
+    margin: 0 !important;
+  }
+  &-item {
+    color: white;
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+  &-item:hover {
+    background: rgba(140, 158, 255, 0.35);
+  }
+}
+.theme4-iconToggle {
+  position: absolute;
+  right: -21px;
+  top: 22px;
+  z-index: 10;
+  i {
+    background: #5365EA;
+    border-radius: 50%;
+    width: 14px !important;
+    height: 14px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
   }
 }
