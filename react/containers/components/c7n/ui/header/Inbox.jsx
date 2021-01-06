@@ -386,7 +386,9 @@ export default class Inbox extends Component {
     } = this.props;
     const popOverContent = { inboxData, inboxLoading };
     return (
-      <>
+      <div className={classNames({
+        'theme4-badge': AppState.getCurrentTheme === 'theme4',
+      })}>
         <WSHandler
           messageKey="hzero-web"
           onMessage={this.handleMessage}
@@ -432,7 +434,7 @@ export default class Inbox extends Component {
           openCleanAllModal={this.openCleanAllModal}
         />
 
-      </>
+      </div>
     );
   }
 }
