@@ -1,4 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
+import JsonBig from 'json-bigint';
+
 export default (({ organizationId, selectedProjectId, cacheStore }) => ({
   autoQuery: false,
   selection: false,
@@ -9,7 +11,10 @@ export default (({ organizationId, selectedProjectId, cacheStore }) => ({
       method: 'get',
       transformResponse: (value) => {
         try {
-          const data = JSON.parse(value);
+          const data = JsonBig.parse(value);
+          if (data && data.failed) {
+            return data;
+          }
           const tempData = {
             content: data,
             selectedProjectId,

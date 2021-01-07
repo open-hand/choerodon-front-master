@@ -1,4 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
+import Jsonbig from 'json-bigint'
+
 export default ({
   quickLinkUseStore, organizationId, selectedProjectId, linkType, cacheStore,
 }) => ({
@@ -11,7 +13,7 @@ export default ({
       method: 'get',
       transformResponse(res) {
         try {
-          const mainData = JSON.parse(res);
+          const mainData = Jsonbig.parse(res);
           const {
             content,
             ...rest

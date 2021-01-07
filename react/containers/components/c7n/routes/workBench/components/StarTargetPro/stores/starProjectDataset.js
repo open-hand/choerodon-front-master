@@ -11,6 +11,9 @@ export default ({ organizationId, cacheStore }) => ({
       transformResponse: (value) => {
         try {
           const temp = JsonBig.parse(value);
+          if (temp && temp.failed) {
+            return temp;
+          }
           const tempObj = {
             content: temp,
             organizationId,
