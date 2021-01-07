@@ -2,7 +2,7 @@ import React, { useCallback, Fragment } from 'react';
 import {
   TextField, Button, Pagination, Tooltip, Modal,
 } from 'choerodon-ui/pro';
-import { Progress, Icon } from 'choerodon-ui';
+import { Progress, Icon, Spin } from 'choerodon-ui';
 import queryString from 'query-string';
 import { merge } from 'lodash';
 import { observer } from 'mobx-react-lite';
@@ -76,7 +76,7 @@ export default observer(() => {
     if (ProjectsProUseStore.getProjectLoading) {
       return (
         <div className="allProjects-content-spin" style={{ width: '670px' }}>
-          <Progress type="loading" />
+          <Spin />
         </div>
       );
     }
