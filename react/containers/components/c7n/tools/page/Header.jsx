@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Tooltip } from 'choerodon-ui';
 import { inject } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 
@@ -65,4 +66,4 @@ const PageHeader = ({
   );
 };
 
-export default withRouter(inject('AppState', 'MenuStore')(injectIntl(PageHeader)));
+export default withRouter(inject('AppState', 'MenuStore')(injectIntl(observer(PageHeader))));
