@@ -7,11 +7,13 @@ import { observer } from 'mobx-react-lite';
 import { HEADER_TITLE_NAME } from '@/utils/constants';
 
 const PageContent = ({
-  intl, AppState: { currentMenuType: { name = HEADER_TITLE_NAME } },
+  intl, AppState: { currentMenuType: { name = HEADER_TITLE_NAME }, getCurrentTheme, },
   values, className, code, children, style, title, description, link,
   ...props
 }) => {
-  const classString = classNames('page-content', className);
+  const classString = classNames('page-content', className, {
+    'theme4-page-content': getCurrentTheme === 'theme4',
+  });
   if (code) {
     const { messages } = intl;
     title = intl.formatMessage({ id: `${code}.title` }, values || { name });

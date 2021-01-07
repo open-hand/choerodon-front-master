@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import {
   Route, Switch, withRouter, Redirect, BrowserRouter,
 } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import { ModalContainer } from 'choerodon-ui/pro/lib';
 import { inject } from 'mobx-react';
 import asyncRouter from '../util/asyncRouter';
@@ -15,7 +16,15 @@ const ProjectsPro = asyncRouter(() => import('../routes/projectsPro'));
 const ProjectOverview = asyncRouter(() => import('../routes/projectOverview'));
 const Skeleton = asyncRouter(() => import('./skeleton/index.js'));
 const InnerIndex = ({ match, AutoRouter, AppState }) => (
-  <div>
+  <div 
+    {
+      ...AppState.getCurrentTheme === 'theme4' ? {
+        style: {
+          background: '#F5F6FA',
+        }
+      } : {}
+    }
+  >
     <Switch>
       <Route exact path={`${match.url}projects`} component={ProjectsPro} />
       <Route exact path={`${match.url}applications`} component={Applications} />
@@ -43,4 +52,4 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
   </div>
 );
 
-export default withRouter(inject('AppState')(InnerIndex));
+export default observer(withRouter(inject('AppState')(InnerIndex)));
