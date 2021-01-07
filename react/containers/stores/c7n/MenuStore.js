@@ -202,6 +202,23 @@ class MenuStore {
     this.notFoundSign = value;
   }
 
+  @action setOpenkeysBaseonRoot(root) {
+    const keys = [];
+    function cursive(data, array) {
+      if (data.subMenus && data.subMenus.length > 0) {
+        array.push(data.code);
+        data.subMenus.forEach(rootItem => {
+          cursive(rootItem, array);
+        })
+      }
+    }
+    cursive(root, keys);
+    this.setOpenKeys([
+      ...keys,
+      ...this.openKeys || [],
+    ])
+  }
+
   @action setRootBaseOnActiveMenu() {
     if (this.activeMenu && this.getMenuData && this.getMenuData.length > 0) {
       if (this.activeMenu.level !== this.getMenuData[0].level) {
@@ -210,6 +227,7 @@ class MenuStore {
       const menuRoot = this.getActiveMenuRoot || {};
       const root = this.getMenuData.find(i => i.id === this.activeMenu.rootId);
       menuRoot[root.level] = root;
+      this.setOpenkeysBaseonRoot(root);
       this.setActiveMenuRoot(JSON.parse(JSON.stringify(menuRoot)));
     }
   }
