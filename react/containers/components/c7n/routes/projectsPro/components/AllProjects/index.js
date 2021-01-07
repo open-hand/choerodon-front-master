@@ -28,6 +28,7 @@ export default observer(() => {
     intl: {
       formatMessage,
     },
+    intlPrefix,
   } = useProjectsProStore();
 
   function refresh() {
@@ -57,11 +58,14 @@ export default observer(() => {
     });
   };
 
-  const openSagaDetails = (id) => {
+  const openSagaDetails = (id, projectStatus) => {
+    const [modalTitle, tips] = projectStatus === 'failed'
+      ? [formatMessage({ id: 'global.saga-instance.detail' })]
+      : [formatMessage({ id: `${intlPrefix}.saga.title.${projectStatus}` }), formatMessage({ id: `${intlPrefix}.saga.tips.${projectStatus}` })];
     Modal.open({
-      title: formatMessage({ id: 'global.saga-instance.detail' }),
+      title: modalTitle,
       key: Modal.key(),
-      children: <SagaDetails sagaInstanceId={id} instance />,
+      children: <SagaDetails sagaInstanceId={id} instance tips={tips} />,
       drawer: true,
       okCancel: false,
       okText: formatMessage({ id: 'close' }),
@@ -70,6 +74,8 @@ export default observer(() => {
       },
     });
   };
+
+  const checkOperation = useCallback((data) => data && (!data.sagaInstanceId || data.operatorTYpe === 'update'));
 
   const renderProjects = useCallback(() => {
     const projects = ProjectsProUseStore.getAllProjects;
@@ -84,7 +90,7 @@ export default observer(() => {
       <div
         key={p.id}
         onClick={() => {
-          if (p.enabled) {
+          if (p.enabled && checkOperation(p)) {
             handleClickProject(p);
           }
         }}
@@ -113,7 +119,7 @@ export default observer(() => {
                 {p.enabled ? '启用' : '停用'}
               </span>
             </div>
-            {p.editFlag && !p.sagaInstanceId ? (
+            {p.editFlag && (!p.sagaInstanceId || (p.projectStatus === 'failed' && p.operatorTYpe === 'update')) ? (
               <Icon
                 type="mode_edit"
                 style={{
@@ -125,21 +131,23 @@ export default observer(() => {
                 onClick={(e) => handleAddProject(e, p.id)}
               />
             ) : null}
-            <Icon
-              type={p.starFlag ? 'stars' : 'star_border'}
-              style={{
-                color: p.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
-                fontSize: '20px',
-              }}
-              onClick={(e) => {
-                if (p.enabled) {
-                  e.stopPropagation();
-                  ProjectsProUseStore.handleStarProject(p).then(() => {
-                    ProjectsProUseStore.handleChangeStarProjects(p);
-                  });
-                }
-              }}
-            />
+            {checkOperation(p) ? (
+              <Icon
+                type={p.starFlag ? 'stars' : 'star_border'}
+                style={{
+                  color: p.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
+                  fontSize: '20px',
+                }}
+                onClick={(e) => {
+                  if (p.enabled) {
+                    e.stopPropagation();
+                    ProjectsProUseStore.handleStarProject(p).then(() => {
+                      ProjectsProUseStore.handleChangeStarProjects(p);
+                    });
+                  }
+                }}
+              />
+            ) : null}
           </div>
           <div className="allProjects-content-item-right-down">
             <div className="allProjects-content-item-right-down-pro">
@@ -150,10 +158,11 @@ export default observer(() => {
                 p.sagaInstanceId ? (
                   <Icon
                     className="allProjects-content-item-right-down-pro-dashBoard"
+                    style={{ color: p.projectStatus === 'failed' ? 'rgb(247, 103, 118)' : '#3f51b5' }}
                     type="developer_board"
                     onClick={(e) => {
                       e.stopPropagation();
-                      openSagaDetails(p.sagaInstanceId);
+                      openSagaDetails(p.sagaInstanceId, p.projectStatus);
                     }}
                   />
                 ) : ''

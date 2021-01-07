@@ -33,6 +33,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
 
   const value = {
     ...props,
+    intlPrefix: 'c7ncd.project',
     dataSet,
     ProjectsProUseStore,
   };
