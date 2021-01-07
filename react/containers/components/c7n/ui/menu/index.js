@@ -43,7 +43,7 @@ export default class CommonMenu extends Component {
           MenuStore.setType(type);
           MenuStore.setId(id);
           MenuStore.setIsUser(isUser);
-          MenuStore.setOpenKeys([]);
+          // MenuStore.setOpenKeys([]);
         } else {
           MenuStore.treeReduce({ subMenus: menus }, (menu, parents) => {
             if (menu.route === pathname || pathname.indexOf(`${menu.route}/`) === 0) {
@@ -97,9 +97,17 @@ export default class CommonMenu extends Component {
             fontSize: '0.14rem',
           }}
         >
-          <span className={classNames({
-            'theme4-iconwrap': this.props.AppState.getCurrentTheme === 'theme4',
-          })}
+          <span
+            className={classNames({
+              'theme4-iconwrap': this.props.AppState.getCurrentTheme === 'theme4',
+            })}
+            {
+              ...this.props.AppState.getCurrentTheme === '' && collapsed ? {
+                style: {
+                  marginRight: 16,
+                }
+              } : {}
+            }
           >
             <Icon
               type={data.icon}
@@ -243,7 +251,7 @@ export default class CommonMenu extends Component {
     } else {
       this.savedOpenKeys = openKeys;
       MenuStore.setCollapsed(true);
-      MenuStore.setOpenKeys([]);
+      // MenuStore.setOpenKeys([]);
     }
   };
 
@@ -370,6 +378,7 @@ export default class CommonMenu extends Component {
     const { MenuStore, AppState } = this.props;
     const origin = MenuStore.getActiveMenuRoot;
     origin[AppState.menuType.type] = item;
+    MenuStore.setOpenkeysBaseonRoot(item);
     MenuStore.setActiveMenuRoot(JSON.parse(JSON.stringify(origin)));
   }
 
