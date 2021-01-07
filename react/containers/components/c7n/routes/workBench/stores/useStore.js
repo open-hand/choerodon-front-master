@@ -11,6 +11,11 @@ import mappings from './mappings';
 
 export default function useStore(history) {
   return useLocalStore(() => ({
+    initData: [],
+    setInitData(value) {
+      this.initData = value;
+    },
+
     activeStarProject: null,
     get getActiveStarProject() {
       return this.activeStarProject;
@@ -88,7 +93,8 @@ export default function useStore(history) {
     },
     saveConfig(value) {
       const tempObj = map(value, (item) => {
-        const temp = pick(item, ['layout', 'type', 'name']);
+        const temp = pick(mappings[item.i], ['type', 'name']);
+        temp.layout = item;
         return temp;
       });
       axios.post('iam/choerodon/v1/workbench_configs', JSON.stringify({

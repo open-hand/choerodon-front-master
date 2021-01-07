@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui';
 import moment from 'moment';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
-import { get, map } from 'lodash';
+import { get, map, forEach } from 'lodash';
 import { useStarTargetPro } from './stores';
 import { useWorkBenchStore } from '../../stores';
 import emptyImg from '../../../../../../images/owner.png';
@@ -33,9 +33,10 @@ const StarTargetPro = observer(() => {
     setEdit,
     setActiveStarProject,
     workComponents,
+    initData,
   } = workBenchUseStore;
 
-  const typeArr = useMemo(() => map(workComponents, (item) => item.type), [workComponents]);
+  const typeArr = useMemo(() => map(componentsDs.toData(), (item) => item.i), [componentsDs]);
 
   const handleClickItem = (s) => {
     const tempId = get(s, 'id');
@@ -197,38 +198,30 @@ const StarTargetPro = observer(() => {
 
   function handleEditable() {
     setEdit(true);
-    workBenchUseStore.setComponents(
-      map(componentsDs.toData(), (item) => {
-        const temp = item;
-        if (get(item, 'layout').i !== 'starTarget') {
-          temp.layout.static = false;
-        }
-        return temp;
-      }),
-    );
+    forEach(componentsDs.records, (record) => {
+      const i = record.get('i');
+      if (i !== 'starTarget') {
+        record.set('static', false);
+      }
+    });
   }
 
   function handleCancel() {
     setEdit(false);
+    componentsDs.loadData(initData);
   }
 
   function addComponent(type) {
     const {
       layout,
-      ...rest
     } = mappings[type];
     const tempCp = {
-      ...rest,
-      layout: {
-        ...layout,
-        x: (typeArr.length * 2) % (12),
-        y: Infinity,
-        static: false,
-      },
+      ...layout,
+      x: (typeArr.length * 2) % (12),
+      y: Infinity,
+      static: false,
     };
-    const tempLayout = workBenchUseStore.layouts;
-    const tempComponents = workBenchUseStore.getLayoutsComponents(tempLayout);
-    workBenchUseStore.setComponents(tempComponents.concat(tempCp));
+    componentsDs.create(tempCp);
   }
 
   function openAddComponents() {
@@ -250,10 +243,12 @@ const StarTargetPro = observer(() => {
   }
 
   function hanldeSave() {
-    const tempLayout = workBenchUseStore.layouts;
-    const tempComponents = workBenchUseStore.getLayoutsComponents(tempLayout, true);
-    componentsDs.loadData(tempComponents);
-    workBenchUseStore.saveConfig(tempComponents);
+    const tempData = componentsDs.map((record) => {
+      record.set('static', true);
+      return record.toData();
+    });
+    workBenchUseStore.setInitData(tempData);
+    workBenchUseStore.saveConfig(tempData);
     setEdit(false);
   }
 

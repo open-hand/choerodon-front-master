@@ -1,9 +1,9 @@
 import React, {
-  useCallback,
+  useCallback, useMemo,
 } from 'react';
 import { WidthProvider, Responsive } from 'react-grid-layout';
 import {
-  map, get, filter,
+  map, get, filter, omit, forEach,
 } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { Page } from '../../../../../index';
@@ -22,7 +22,6 @@ import QuestionFocus from './components/question-focus';
 import QuestionBug from './components/question-bug';
 
 import './WorkBench.less';
-import LoadingBar from '../../tools/loading-bar';
 
 const ComponetsObjs = {
   starTarget: <StarTargetPro />,
@@ -51,13 +50,12 @@ const WorkBench = () => {
     workComponents,
   } = workBenchUseStore;
 
-  function onLayoutChange(layout, tempLayouts) {
-    setLayOuts(layout);
+  function onLayoutChange(layouts, tempLayouts) {
+    componentsDs.loadData(layouts);
   }
-  function handleDelete(dataGrid) {
-    const tempLayout = filter(workBenchUseStore.layouts, (item) => get(dataGrid, 'type') !== get(item, 'i'));
-    const tempComponents = getLayoutsComponents(tempLayout);
-    workBenchUseStore.setComponents(tempComponents);
+
+  function handleDelete(record) {
+    componentsDs.remove(record);
   }
 
   const SwitchComponents = (type) => {
@@ -71,32 +69,29 @@ const WorkBench = () => {
 
   const renderBg = useCallback(() => <GridBg />, []);
 
-  const generateDOM = () => {
-    const tempComponents = isEdit ? workComponents : componentsDs.toData();
-    return (
-      map(tempComponents, (item, i) => {
-        const {
-          layout,
-        } = item;
-        return (
-          <DragCard
-            dataGrid={item}
-            onDelete={handleDelete}
-            isEdit={isEdit}
-            data-grid={layout}
-            key={layout.i}
-          >
-            {SwitchComponents(get(layout, 'i'))}
-          </DragCard>
-        );
-      })
-    );
-  };
+  const generateDOM = useMemo(() => (
+    componentsDs.map((record, i) => {
+      const layout = record.toData();
+      return (
+        <DragCard
+          record={record}
+          onDelete={() => handleDelete(record)}
+          isEdit={isEdit}
+          key={layout.i}
+        >
+          {SwitchComponents(get(layout, 'i'))}
+        </DragCard>
+      );
+    })
+  ), [componentsDs, handleDelete, isEdit]);
 
   const renderGridLayouts = () => {
     const tempObj = {
       className: `${prefixCls}-layout`,
       onLayoutChange,
+      layouts: {
+        lg: componentsDs.toData(),
+      },
       breakpoints: {
         lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0,
       },
@@ -118,7 +113,7 @@ const WorkBench = () => {
       <ResponsiveReactGridLayout
         {...tempObj}
       >
-        {generateDOM()}
+        {generateDOM}
       </ResponsiveReactGridLayout>
     );
   };
