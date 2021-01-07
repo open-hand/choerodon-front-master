@@ -4,11 +4,36 @@ import { Icon, Menu, Tooltip } from 'choerodon-ui';
 import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
+import xiezuo2 from '../header/style/icons/xiezuo2.png';
+import xiezuo1 from '../header/style/icons/xiezuo1.png';
+import ceshi2 from '../header/style/icons/ceshi2.png';
+import ceshi1 from '../header/style/icons/ceshi1.png';
+import bushu2 from '../header/style/icons/bushu2.png';
+import bushu1 from '../header/style/icons/bushu1.png';
+import shezhi2 from '../header/style/icons/shezhi2.png';
+import shezhi1 from '../header/style/icons/shezhi1.png';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../util';
 import './index.less';
 
 const { SubMenu, Item, ItemGroup } = Menu;
+
+const iconMap = {
+  // 协作
+  'choerodon.code.project.cooperation': [xiezuo1, xiezuo2],
+  // 需求
+  'choerodon.code.project.demand': [xiezuo1, xiezuo2],
+  //  开发
+  'choerodon.code.project.develop': [xiezuo1, xiezuo2],
+  //  测试
+  'choerodon.code.project.test': [ceshi1, ceshi2],
+  //  部署
+  'choerodon.code.project.deploy': [bushu1, bushu2],
+  //  运营
+  'choerodon.code.project.operation': [bushu1, bushu2],
+  // 设置
+  'choerodon.code.project.setting': [shezhi1, shezhi2],
+}
 
 @withRouter
 @inject('AppState', 'MenuStore')
@@ -413,16 +438,40 @@ export default class CommonMenu extends Component {
               }
               onClick={() => this.handleClickItemMenuSide(data)}
             >
-              <Icon
-                {
-                  ...AppState.getCurrentTheme === 'theme4' ? {
-                    style: {
-                      color: 'white',
+              {/*<Icon*/}
+              {/*  {*/}
+              {/*    ...AppState.getCurrentTheme === 'theme4' ? {*/}
+              {/*      style: {*/}
+              {/*        color: 'white',*/}
+              {/*      }*/}
+              {/*    } : {}*/}
+              {/*  }*/}
+              {/*  type="filter_frames"*/}
+              {/*/>*/}
+              <div
+                style={{
+                  background: AppState.getCurrentTheme === '' ? '#F2F5FA' : 'rgba(255, 255, 255, 0.08)',
+                  borderRadius: '8px',
+                  width: 30,
+                  height: 30,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <img
+                  style={{
+                    width: 20,
+                  }}
+                  src={(function (){
+                    if (iconMap[data.code]) {
+                      if (iconMap[data.code][AppState.getCurrentTheme === '' ? 0 : 1]) {
+                        return iconMap[data.code][AppState.getCurrentTheme === '' ? 0 : 1];
+                      }
                     }
-                  } : {}
-                }
-                type="filter_frames"
-              />
+                    return iconMap['choerodon.code.project.cooperation'][AppState.getCurrentTheme === '' ? 0 : 1];
+                  }())} alt=""/>
+              </div>
               <p
                 {
                   ...AppState.getCurrentTheme === '' ? {
