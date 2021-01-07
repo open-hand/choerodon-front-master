@@ -14,12 +14,12 @@ const DragCard = (props) => {
     children,
     className,
     onDelete,
-    dataGrid,
+    record,
     isEdit,
     ...rest
   } = props;
 
-  const isStatic = get(dataGrid.layout, 'static');
+  const isStatic = record.get('static');
 
   const getClassName = classnames({
     [prefixCls]: true,
@@ -39,7 +39,7 @@ const DragCard = (props) => {
            role="none"
            type="delete_forever"
            className={`${prefixCls}-icon ${prefixCls}-delete`}
-           onClick={() => onDelete(dataGrid)}
+           onClick={() => onDelete(record)}
          />
        ) : ''
       }

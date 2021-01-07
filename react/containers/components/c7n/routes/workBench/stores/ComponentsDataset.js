@@ -13,33 +13,21 @@ export default ({
       url: 'iam/choerodon/v1/workbench_configs/self',
       method: 'get',
       transformResponse: (value) => {
-        const defaultValues = map(mappings, (item) => item);
+        const defaultValues = map(mappings, (item) => item.layout);
         try {
           let res;
           if (value) {
             const tempData = get(JsonBig.parse(value), 'data');
-            res = tempData ? JsonBig.parse(tempData) : [];
+            res = tempData ? map(JsonBig.parse(tempData), (item) => item.layout) : [];
           } else {
             res = defaultValues;
           }
+          workBenchUseStore.setInitData(res);
           return res;
         } catch (error) {
           return defaultValues;
         }
       },
     }),
-  },
-  events: {
-    // load: ({ dataSet }) => {
-    //   const tempData = map(dataSet.toData(), (item) => {
-    //     if (item.type === 'starTarget') {
-    //       return item;
-    //     }
-    //     const tempItem = item;
-    //     tempItem.layout.static = false;
-    //     return tempItem;
-    //   });
-    //   workBenchUseStore.setComponents(tempData);
-    // },
   },
 });
