@@ -79,13 +79,13 @@ export default ({
       create: ({ data: [data] }) => ({
         url: `/iam/choerodon/v1/organizations/${organizationId}/projects`,
         method: 'post',
-        data,
+        data: { ...data, operateType: 'create' },
       }),
 
       update: ({ data: [data] }) => ({
         url: `/iam/choerodon/v1/organizations/${organizationId}/projects/${data.id}`,
         method: 'put',
-        data,
+        data: { ...data, operateType: 'update' },
       }),
     },
     fields: [

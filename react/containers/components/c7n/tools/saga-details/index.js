@@ -14,10 +14,12 @@ const Index = (props) => (
 Index.propTypes = {
   instance: PropTypes.bool,
   sagaInstanceId: PropTypes.string.isRequired,
+  tips: PropTypes.string,
 };
 
 Index.defaultProps = {
   instance: false,
+  tips: '',
 };
 
 export default Index;

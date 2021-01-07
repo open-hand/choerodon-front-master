@@ -30,6 +30,7 @@ const SagaDetails = () => {
     apiGetway,
     organizationId,
     type,
+    tips,
   } = useSagaDetailsStore();
 
   const {
@@ -260,6 +261,11 @@ const SagaDetails = () => {
 
   return (
     <Content className="sidebar-content">
+      {tips && (
+        <div className={`${clsNames}-tips`}>
+          <span>{tips}</span>
+        </div>
+      )}
       <div className={clsNames}>
         <div className="c7n-saga-img" ref={taskImg}>
           {circleWrapper('Input')}

@@ -267,7 +267,7 @@ const CreateProject = observer(() => {
       <div className={`${prefixCls}-category-label`}>项目类型</div>
       <div className={`${prefixCls}-category`}>
         {categoryDs.map((categoryRecord) => (
-          <Tooltip title={getTooltipContent(categoryRecord)}>
+          <Tooltip title={getTooltipContent(categoryRecord)} key={categoryRecord.get('code')}>
             <div
               className={getCategoryClassNames(categoryRecord)}
               onClick={() => handleCategoryClick(categoryRecord)}
