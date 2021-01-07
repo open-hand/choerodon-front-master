@@ -93,12 +93,12 @@ const WorkBench = () => {
         lg: componentsDs.toData(),
       },
       breakpoints: {
-        lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0,
+        lg: 1200,
       },
       margin: [18, 18],
       resizeHandles: ['se'],
       cols: {
-        lg: 12, md: 10, sm: 6, xs: 4, xxs: 2,
+        lg: 12,
       },
       measureBeforeMount: true,
       containerPadding: [4, 0],

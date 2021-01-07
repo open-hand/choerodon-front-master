@@ -2,21 +2,17 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { get, map } from 'lodash';
 import './index.less';
 
-function getColsNumber(domWidth) {
-  let tempNum;
-  if (domWidth < 480) {
-    tempNum = 2;
-  } else if (domWidth < 768) {
-    tempNum = 4;
-  } else if (domWidth < 996) {
-    tempNum = 8;
-  } else if (domWidth < 1200) {
-    tempNum = 10;
-  } else {
-    tempNum = 12;
-  }
-  return tempNum;
-}
+// function getColsNumber(domWidth) {
+//   let tempNum;
+//   if (domWidth < 996) {
+//     tempNum = 8;
+//   } else if (domWidth < 1200) {
+//     tempNum = 10;
+//   } else {
+//     tempNum = 12;
+//   }
+//   return tempNum;
+// }
 
 const GridBg = () => {
   const [cols, setCol] = useState(0);
@@ -36,9 +32,9 @@ const GridBg = () => {
 
   const resizeDom = useCallback((domTem) => {
     if (domTem) {
-      const workbenchW = get(domTem, 'offsetWidth');
+      // const workbenchW = get(domTem, 'offsetWidth');
       const workbenchH = get(domTem, 'offsetHeight');
-      const numC = getColsNumber(workbenchW);
+      const numC = 12;
       const numR = Math.floor(workbenchH / 109);
       numC && setCol(numC);
       numR && setRow(numR);
