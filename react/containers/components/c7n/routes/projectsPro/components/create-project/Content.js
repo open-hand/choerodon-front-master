@@ -12,6 +12,7 @@ import map from 'lodash/map';
 import some from 'lodash/some';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
+import SagaDetails from '../../../../tools/saga-details';
 
 import './index.less';
 
@@ -19,7 +20,7 @@ const { Option } = Select;
 
 const CreateProject = observer(() => {
   const {
-    formDs, categoryDs, AppState, intl, prefixCls, modal, refresh, categoryCodes,
+    formDs, categoryDs, AppState, intl, prefixCls, modal, refresh, categoryCodes, openSagaDetails
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
 
@@ -52,7 +53,11 @@ const CreateProject = observer(() => {
 
   const editProject = async () => {
     try {
-      if ((await formDs.submit()) !== false) {
+      const res = await formDs.submit();
+      if (res && !res.failed) {
+        if (res.sagaInstanceId) {
+          openSagaDetails(res.sagaInstanceId, isModify ? 'updating' : 'creating', refresh);
+        }
         modal.close();
         refresh();
         return true;

@@ -50,7 +50,12 @@ export default observer(() => {
       drawer: true,
       title: currentProjectId ? '项目设置' : '创建项目',
       className: 'c7n-projects-modal-create-project',
-      children: <CreateProject refresh={refresh} projectId={currentProjectId} />,
+      children: <CreateProject
+        refresh={refresh}
+        projectId={currentProjectId}
+        openSagaDetails={openSagaDetails}
+        intlPrefix={intlPrefix}
+      />,
       okText: currentProjectId ? '保存' : '创建',
       style: {
         width: '3.8rem',
@@ -58,7 +63,7 @@ export default observer(() => {
     });
   };
 
-  const openSagaDetails = (id, projectStatus) => {
+  const openSagaDetails = (id, projectStatus, onOk) => {
     const [modalTitle, tips] = projectStatus === 'failed'
       ? [formatMessage({ id: 'global.saga-instance.detail' })]
       : [formatMessage({ id: `${intlPrefix}.saga.title.${projectStatus}` }), formatMessage({ id: `${intlPrefix}.saga.tips.${projectStatus}` })];
@@ -69,6 +74,7 @@ export default observer(() => {
       drawer: true,
       okCancel: false,
       okText: formatMessage({ id: 'close' }),
+      onOk: onOk ? () => onOk() : null,
       style: {
         width: 'calc(100% - 3.5rem)',
       },
