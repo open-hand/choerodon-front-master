@@ -16,7 +16,7 @@ const ProjectsPro = asyncRouter(() => import('../routes/projectsPro'));
 const ProjectOverview = asyncRouter(() => import('../routes/projectOverview'));
 const Skeleton = asyncRouter(() => import('./skeleton/index.js'));
 const InnerIndex = ({ match, AutoRouter, AppState }) => (
-  <div 
+  <div
     {
       ...AppState.getCurrentTheme === 'theme4' ? {
         style: {
@@ -52,4 +52,4 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
   </div>
 );
 
-export default observer(withRouter(inject('AppState')(InnerIndex)));
+export default withRouter(inject('AppState')(observer(InnerIndex)));
