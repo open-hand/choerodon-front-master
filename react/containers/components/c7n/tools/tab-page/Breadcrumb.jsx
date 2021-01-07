@@ -4,19 +4,22 @@ import { observer } from 'mobx-react-lite';
 import { toJS } from 'mobx';
 import queryString from 'query-string';
 import { withRouter, Link } from 'react-router-dom';
+import classNames from 'classnames';
 import { Breadcrumb as Bread, Icon } from 'choerodon-ui';
 import { Context } from './PageWrap';
 import './style/Bread.less';
 
 const { Item } = Bread;
 
-const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, children, extraNode, ...props }) => {
+const Breadcrumb = ({
+  title, AppState, HeaderStore, MenuStore, history, custom, children, extraNode, ...props
+}) => {
   const { isTab } = useContext(Context);
 
   function getOrganization() {
     const { currentMenuType: { organizationId } } = AppState;
     const currentData = toJS(HeaderStore.getOrgData) || [];
-    const orgObj = currentData.find(v => String(v.id) === organizationId) || {};
+    const orgObj = currentData.find((v) => String(v.id) === organizationId) || {};
     return orgObj;
   }
 
@@ -29,7 +32,9 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
   }
 
   function getMenuLink(route) {
-    const { id, name, type, organizationId, category } = AppState.currentMenuType;
+    const {
+      id, name, type, organizationId, category,
+    } = AppState.currentMenuType;
     let search = '';
     switch (type) {
       case 'site':
@@ -60,9 +65,8 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
   function getArrayLast(arr) {
     if (Array.isArray(arr) && arr.length) {
       return arr[arr.length - 1];
-    } else {
-      return null;
     }
+    return null;
   }
 
   function getRoute(menu) {
@@ -86,7 +90,7 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
     );
   }
 
-  const icon = <Icon type="keyboard_arrow_right" style={{ color: 'rgba(0, 0, 0, .54)', fontSize: '.2rem' }} />;
+  const icon = AppState.getCurrentMenu === 'theme4' ? <span style={{ width: 1, heigth: 12, background: 'rgba(15,19,88,0.65)' }} /> : <Icon type="keyboard_arrow_right" style={{ color: 'rgba(0, 0, 0, .54)', fontSize: '.2rem' }} />;
 
   if (custom) {
     return (
@@ -106,14 +110,27 @@ const Breadcrumb = ({ title, AppState, HeaderStore, MenuStore, history, custom, 
 
   return (
     <section
-      className="page-breadcrumb"
+      className={classNames('page-breadcrumb', {
+        'theme4-page-breadcrumb': AppState.getCurrentTheme === 'theme4',
+      })}
       style={{
         marginBottom: isTab ? '33px' : 'auto',
       }}
     >
       <Bread separator={icon}>
-        {renderName()}
-        {renderMenus()}
+        {
+          AppState.getCurrentTheme === 'theme4' ? (
+            <>
+              {renderMenus()}
+              {renderName()}
+            </>
+          ) : (
+            <>
+              {renderMenus()}
+              {renderName()}
+            </>
+          )
+        }
         {title ? <Item>{title}</Item> : null}
       </Bread>
       {extraNode || null}

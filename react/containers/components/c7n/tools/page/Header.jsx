@@ -52,7 +52,13 @@ const PageHeader = ({
   }
   
   return (
-    <div className={classNames('page-head', className)}>
+    <div 
+      className={
+        classNames('page-head', className, {
+          'theme4-page-head': AppState.getCurrentTheme === 'theme4',
+        })
+      }
+    >
       {renderBackBtn()}
       {children}
     </div>
