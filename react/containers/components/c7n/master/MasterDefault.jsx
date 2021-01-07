@@ -219,6 +219,8 @@ class Masters extends Component {
           goSafty();
           return true;
         }
+        AppState.changeMenuType({ ...menuType, categories: res.categories?.slice() });
+        return true;
       }
     }
 

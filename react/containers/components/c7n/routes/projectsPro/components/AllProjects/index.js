@@ -54,7 +54,6 @@ export default observer(() => {
         refresh={refresh}
         projectId={currentProjectId}
         openSagaDetails={openSagaDetails}
-        intlPrefix={intlPrefix}
       />,
       okText: currentProjectId ? '保存' : '创建',
       style: {
@@ -74,7 +73,7 @@ export default observer(() => {
       drawer: true,
       okCancel: false,
       okText: formatMessage({ id: 'close' }),
-      onOk: onOk ? () => onOk() : null,
+      onOk: () => (onOk ? onOk() : true),
       style: {
         width: 'calc(100% - 3.5rem)',
       },
@@ -161,7 +160,7 @@ export default observer(() => {
                 <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
               </p>
               {
-                p.sagaInstanceId ? (
+                p.sagaInstanceId && p.projectStatus ? (
                   <Icon
                     className="allProjects-content-item-right-down-pro-dashBoard"
                     style={{ color: p.projectStatus === 'failed' ? 'rgb(247, 103, 118)' : '#3f51b5' }}
