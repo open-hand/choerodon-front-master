@@ -15,6 +15,7 @@ import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import EmptyPage from '../empty-page';
 import CreateProject from '../create-project';
+import ProjectCategory from '../project-category';
 
 import './index.less';
 
@@ -184,17 +185,10 @@ export default observer(() => {
                 ) : ''
               }
             </div>
-            <Tooltip
-              title={p.categories && p.categories.find((c) => c.code !== 'PROGRAM_PROJECT') && p.categories.find((c) => c.code !== 'PROGRAM_PROJECT').name}
-            >
-              <p className="allProjects-content-item-right-down-text1">
-                <span>
-                  <Icon type="project_line" />
-                </span>
-                <p>{p.categories && p.categories.find((c) => c.code !== 'PROGRAM_PROJECT') && p.categories.find((c) => c.code !== 'PROGRAM_PROJECT').name}</p>
-              </p>
-            </Tooltip>
-
+            <ProjectCategory
+              data={p.categories}
+              className="allProjects-content-item-right-down-text1"
+            />
             {
               p.programName
               && (
