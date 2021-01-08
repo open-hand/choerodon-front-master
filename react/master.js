@@ -151,7 +151,7 @@ export default class Index extends React.Component {
             <Provider {...stores}>
               <Switch>
                 <Route path="/">
-                  <Container defaultTheme="theme4">
+                  <Container defaultTheme="">
                     <Outward AutoRouter={this.props.AutoRouter} />
                   </Container>
                 </Route>
@@ -176,7 +176,7 @@ export default class Index extends React.Component {
               <Route
                 path="/"
               >
-                <Container defaultTheme="theme4">
+                <Container defaultTheme="">
                   <Master AutoRouter={this.props.AutoRouter} />
                 </Container>
               </Route>
