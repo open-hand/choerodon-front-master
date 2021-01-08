@@ -80,7 +80,7 @@ export default observer(() => {
     });
   };
 
-  const checkOperation = useCallback((data) => data && (!data.sagaInstanceId || data.operatorTYpe === 'update'));
+  const checkOperation = useCallback((data) => data && (!data.sagaInstanceId || data.operateType === 'update'));
 
   const renderProjects = useCallback(() => {
     const projects = ProjectsProUseStore.getAllProjects;
@@ -124,7 +124,7 @@ export default observer(() => {
                 {p.enabled ? '启用' : '停用'}
               </span>
             </div>
-            {p.editFlag && (!p.sagaInstanceId || (p.projectStatus === 'failed' && p.operatorTYpe === 'update')) ? (
+            {p.editFlag && (!p.sagaInstanceId || (p.projectStatus === 'failed' && p.operateType === 'update')) ? (
               <Icon
                 type="mode_edit"
                 style={{

@@ -12,9 +12,9 @@ import { observer } from 'mobx-react-lite';
 import TaskRunDetail from './components/taskRunDetail';
 import TaskDetail from './components/taskDetail';
 import CodeShow from './components/codeShow';
+import { useSagaDetailsStore } from './stores';
 
 import './index.less';
-import { useSagaDetailsStore } from './stores';
 
 const { TabPane } = Tabs;
 

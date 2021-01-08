@@ -10,6 +10,7 @@ import {
 import { fileServer, prompt } from '@/utils';
 import map from 'lodash/map';
 import some from 'lodash/some';
+import get from 'lodash/get';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 
@@ -53,9 +54,10 @@ const CreateProject = observer(() => {
   const editProject = async () => {
     try {
       const res = await formDs.submit();
-      if (res && !res.failed) {
-        if (res.sagaInstanceId) {
-          openSagaDetails(res.sagaInstanceId, isModify ? 'updating' : 'creating', refresh);
+      if (res && !res.failed && res.list && res.list.length) {
+        const sagaInstanceId = get(res.list[0], 'sagaInstanceId');
+        if (sagaInstanceId) {
+          openSagaDetails(sagaInstanceId, isModify ? 'updating' : 'creating', refresh);
         }
         modal.close();
         refresh();
