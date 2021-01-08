@@ -5,7 +5,9 @@ import { Popover } from 'choerodon-ui';
 
 import './index.less';
 
-const ProjectCategory = ({ data = [], maxTag = 1, className }) => {
+const ProjectCategory = ({
+  data = [], maxTag = 1, className, showIcon = true, style,
+}) => {
   const prefixCls = useMemo(() => 'c7ncd-project-categories', []);
   const getCategory = useCallback((category) => (
     <Tooltip title={category?.name}>
@@ -21,8 +23,8 @@ const ProjectCategory = ({ data = [], maxTag = 1, className }) => {
   }), [data]);
 
   return (
-    <div className={`${prefixCls} ${className || ''}`}>
-      <Icon type="project_line" className={`${prefixCls}-icon`} />
+    <div className={`${prefixCls} ${className || ''}`} style={style}>
+      {showIcon && <Icon type="project_line" className={`${prefixCls}-icon`} />}
       {getCategories && getCategories.length ? getCategories[0] : null}
       {getCategories && getCategories.length > maxTag && (
         <Popover

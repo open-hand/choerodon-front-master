@@ -10,9 +10,10 @@ import { useStarTargetPro } from './stores';
 import { useWorkBenchStore } from '../../stores';
 import emptyImg from '../../../../../../images/owner.png';
 import mappings from '../../stores/mappings';
+import AddModal from '../addComponentsModal';
+import ProjectCategory from '../../../projectsPro/components/project-category';
 
 import './index.less';
-import AddModal from '../addComponentsModal';
 
 const StarTargetPro = observer(() => {
   const {
@@ -141,12 +142,18 @@ const StarTargetPro = observer(() => {
                 </p>
               </Tooltip>
 
-              <p
+              {/*<p*/}
+              {/*  style={{ color: isActive ? 'white' : 'rgba(58,52,95,0.65)' }}*/}
+              {/*  className={`${prefixCls}-proContainer-items-project`}*/}
+              {/*>*/}
+              {/*  */}
+              {/*</p>*/}
+              <ProjectCategory
+                data={s.categories}
+                showIcon={false}
                 style={{ color: isActive ? 'white' : 'rgba(58,52,95,0.65)' }}
                 className={`${prefixCls}-proContainer-items-project`}
-              >
-                {renderGroupProjects(s)}
-              </p>
+              />
 
               <div className={`${prefixCls}-proContainer-items-extra`}>
                 <Tooltip title={s.createUserName} placement="top">
