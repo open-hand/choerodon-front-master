@@ -12,7 +12,7 @@ function getDefaultLanguage() {
 }
 
 class AppState {
-  @observable currentTheme = 'theme4';
+  @observable currentTheme = '';
 
   @observable currentProject = null;
 
