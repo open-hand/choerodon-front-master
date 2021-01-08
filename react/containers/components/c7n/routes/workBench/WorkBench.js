@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { WidthProvider, Responsive } from 'react-grid-layout';
 import {
-  map, get, filter, omit, forEach,
+  map, get, filter, omit, forEach, findIndex,
 } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { Page } from '../../../../../index';
@@ -44,18 +44,16 @@ const WorkBench = () => {
   } = useWorkBenchStore();
 
   const {
-    setLayOuts,
     isEdit,
-    getLayoutsComponents,
-    workComponents,
   } = workBenchUseStore;
 
   function onLayoutChange(layouts, tempLayouts) {
-    componentsDs.loadData(layouts);
+    workBenchUseStore.setEditLayout(layouts);
   }
 
-  function handleDelete(record) {
-    componentsDs.remove(record);
+  function handleDelete(dataGrid) {
+    const tempArr = workBenchUseStore.editLayout;
+    componentsDs.loadData(filter(tempArr, (item) => item.i !== dataGrid.i));
   }
 
   const SwitchComponents = (type) => {
@@ -69,29 +67,27 @@ const WorkBench = () => {
 
   const renderBg = useCallback(() => <GridBg />, []);
 
-  const generateDOM = useMemo(() => (
-    componentsDs.map((record, i) => {
-      const layout = record.toData();
-      return (
+  const generateDOM = useMemo(() => {
+    const mainData = isEdit ? componentsDs.toData() : workBenchUseStore.initData;
+    return (
+      mainData.map((dataGrid, i) => (
         <DragCard
-          record={record}
-          onDelete={() => handleDelete(record)}
+          dataGrid={dataGrid}
+          onDelete={() => handleDelete(dataGrid)}
           isEdit={isEdit}
-          key={layout.i}
+          data-grid={dataGrid}
+          key={dataGrid.i}
         >
-          {SwitchComponents(get(layout, 'i'))}
+          {SwitchComponents(get(dataGrid, 'i'))}
         </DragCard>
-      );
-    })
-  ), [componentsDs, handleDelete, isEdit]);
+      ))
+    );
+  }, [componentsDs, handleDelete, isEdit]);
 
   const renderGridLayouts = () => {
     const tempObj = {
       className: `${prefixCls}-layout`,
       onLayoutChange,
-      layouts: {
-        lg: componentsDs.toData(),
-      },
       breakpoints: {
         lg: 1200,
       },

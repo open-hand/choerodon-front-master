@@ -33,11 +33,11 @@ const StarTargetPro = observer(() => {
     isEdit,
     setEdit,
     setActiveStarProject,
-    workComponents,
     initData,
+    editLayout,
   } = workBenchUseStore;
 
-  const typeArr = useMemo(() => map(componentsDs.toData(), (item) => item.i), [componentsDs]);
+  const typeArr = useMemo(() => map(editLayout, (item) => get(item, 'i')), [editLayout]);
 
   const handleClickItem = (s) => {
     const tempId = get(s, 'id');
@@ -222,13 +222,15 @@ const StarTargetPro = observer(() => {
     const {
       layout,
     } = mappings[type];
+
     const tempCp = {
       ...layout,
-      x: (typeArr.length * 2) % (12),
+      x: 0,
       y: Infinity,
       static: false,
     };
-    componentsDs.create(tempCp);
+    const tempArr = workBenchUseStore.editLayout;
+    componentsDs.loadData(tempArr.concat([tempCp]));
   }
 
   function openAddComponents() {
@@ -250,11 +252,13 @@ const StarTargetPro = observer(() => {
   }
 
   function hanldeSave() {
-    const tempData = componentsDs.map((record) => {
-      record.set('static', true);
-      return record.toData();
+    const tempData = workBenchUseStore.editLayout.map((data) => {
+      const temp = data;
+      temp.static = true;
+      return temp;
     });
     workBenchUseStore.setInitData(tempData);
+    componentsDs.loadData(workBenchUseStore.editLayout);
     workBenchUseStore.saveConfig(tempData);
     setEdit(false);
   }

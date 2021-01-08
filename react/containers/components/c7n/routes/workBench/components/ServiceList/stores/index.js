@@ -32,7 +32,9 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     cacheAppServiceData,
   } = cacheStore;
 
-  const appServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ selectedProjectId, cacheStore, organizationId })), [organizationId, selectedProjectId, cacheStore]);
+  const appServiceDs = useMemo(() => new DataSet(
+    AppServiceDataSet({ selectedProjectId, cacheStore, organizationId }),
+  ), [organizationId, selectedProjectId, cacheStore]);
 
   useEffect(() => {
     const mainData = cacheAppServiceData;
@@ -47,7 +49,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     } else {
       appServiceDs.query();
     }
-  }, [appServiceDs, cacheAppServiceData]);
+  }, [appServiceDs]);
 
   const value = {
     ...props,
