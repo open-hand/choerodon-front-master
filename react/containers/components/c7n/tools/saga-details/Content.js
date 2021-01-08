@@ -12,9 +12,9 @@ import { observer } from 'mobx-react-lite';
 import TaskRunDetail from './components/taskRunDetail';
 import TaskDetail from './components/taskDetail';
 import CodeShow from './components/codeShow';
+import { useSagaDetailsStore } from './stores';
 
 import './index.less';
-import { useSagaDetailsStore } from './stores';
 
 const { TabPane } = Tabs;
 
@@ -262,9 +262,9 @@ const SagaDetails = () => {
   return (
     <Content className="sidebar-content">
       {tips && (
-        <div className={`${clsNames}-tips`}>
-          <span>{tips}</span>
-        </div>
+      <div className={`${clsNames}-tips`}>
+        <span>{tips}</span>
+      </div>
       )}
       <div className={clsNames}>
         <div className="c7n-saga-img" ref={taskImg}>
@@ -273,8 +273,8 @@ const SagaDetails = () => {
           {circleWrapper('Output')}
         </div>
         {isDetailShow && (
-        <div className="c7n-saga-img-detail" ref={taskDetail}>
-          {instance && (
+          <div className="c7n-saga-img-detail" ref={taskDetail}>
+            {instance && (
             <Tabs activeKey={activeTab} onChange={handleTabChange}>
               <TabPane
                 tab={<FormattedMessage id={`${intlPrefix}.task.run.title`} />}
@@ -287,16 +287,16 @@ const SagaDetails = () => {
                 key="detail"
               />
             </Tabs>
-          )}
-          {instance && activeTab === 'run' ? (
-            <TaskRunDetail
-              reload={reload}
-              handleRetry={handleRetry}
-            />
-          ) : ''}
-          {instance && activeTab !== 'run' ? <TaskDetail /> : ''}
-          {instance ? '' : renderWithoutInstance()}
-        </div>
+            )}
+            {instance && activeTab === 'run' ? (
+              <TaskRunDetail
+                reload={reload}
+                handleRetry={handleRetry}
+              />
+            ) : ''}
+            {instance && activeTab !== 'run' ? <TaskDetail /> : ''}
+            {instance ? '' : renderWithoutInstance()}
+          </div>
         )}
         {jsonTitle && (
           <div className="c7n-saga-img-detail" ref={taskDetail}>

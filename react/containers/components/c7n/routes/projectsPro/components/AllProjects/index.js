@@ -63,13 +63,24 @@ export default observer(() => {
   };
 
   const openSagaDetails = (id, projectStatus, onOk) => {
-    const [modalTitle, tips] = projectStatus === 'failed'
+    const tips = (
+      <span>
+        正在
+        {projectStatus === 'creating' ? '创建项目' : '修改项目类型'}
+        ，该过程可能会持续几分钟。待以下事务实例执行成功后，才能进入项目。
+        <br />
+        若事务执行失败，可点击下方失败的任务模块，并在右侧点击重试来重新执行操作。
+        <br />
+        若重试后依然失败，请联系管理员进行处理。
+      </span>
+    );
+    const [modalTitle, newTips] = projectStatus === 'failed'
       ? [formatMessage({ id: 'global.saga-instance.detail' })]
-      : [formatMessage({ id: `${intlPrefix}.saga.title.${projectStatus}` }), formatMessage({ id: `${intlPrefix}.saga.tips.${projectStatus}` })];
+      : [formatMessage({ id: `${intlPrefix}.saga.title.${projectStatus}` }), tips];
     Modal.open({
       title: modalTitle,
       key: Modal.key(),
-      children: <SagaDetails sagaInstanceId={id} instance tips={tips} />,
+      children: <SagaDetails sagaInstanceId={id} instance tips={newTips} />,
       drawer: true,
       okCancel: false,
       okText: formatMessage({ id: 'close' }),
@@ -80,7 +91,7 @@ export default observer(() => {
     });
   };
 
-  const checkOperation = useCallback((data) => data && (!data.sagaInstanceId || data.operatorTYpe === 'update'));
+  const checkOperation = useCallback((data) => data && (!data.sagaInstanceId || data.operateType === 'update'));
 
   const renderProjects = useCallback(() => {
     const projects = ProjectsProUseStore.getAllProjects;
@@ -124,7 +135,7 @@ export default observer(() => {
                 {p.enabled ? '启用' : '停用'}
               </span>
             </div>
-            {p.editFlag && (!p.sagaInstanceId || (p.projectStatus === 'failed' && p.operatorTYpe === 'update')) ? (
+            {p.editFlag && (!p.sagaInstanceId || (p.projectStatus === 'failed' && p.operateType === 'update')) ? (
               <Icon
                 type="mode_edit"
                 style={{
