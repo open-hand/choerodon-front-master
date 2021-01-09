@@ -45,7 +45,7 @@ export const StoreProvider = inject('AppState')(observer((props) => {
     } else {
       starProjectsDs.query();
     }
-  }, [starProjects, starProjectsDs]);
+  }, [starProjectsDs]);
 
   const value = {
     ...props,

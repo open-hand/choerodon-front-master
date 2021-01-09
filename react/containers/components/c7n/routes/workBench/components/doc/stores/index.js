@@ -49,7 +49,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
   const resizeDom = debounce((domTem) => {
     if (domTem) {
       const docH = get(domTem, 'offsetHeight');
-      const docN = Math.floor(docH / 170);
+      const docN = Math.floor(docH / 150);
       setRowNumber(docN || 3);
     }
   }, 500);
@@ -77,13 +77,15 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
       docDs.query();
       return;
     }
-    if (tempArr && get(tempArr, 'length')) {
+    if (tempArr) {
       docStore.setListHasMore(
         mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,
       );
       docDs.loadData(tempArr);
+    } else {
+      docDs.query();
     }
-  }, [cacheDocData, docDs]);
+  }, [docDs]);
 
   useEffect(() => function () {
     if (resizeObserver) {

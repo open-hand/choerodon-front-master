@@ -46,7 +46,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     } else {
       auditDs.query();
     }
-  }, [auditDs, todoThingsData]);
+  }, [auditDs]);
 
   const value = {
     ...props,

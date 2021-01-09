@@ -68,7 +68,7 @@ const WorkBench = () => {
   const renderBg = useCallback(() => <GridBg />, []);
 
   const generateDOM = useMemo(() => {
-    const mainData = isEdit ? componentsDs.toData() : workBenchUseStore.initData;
+    const mainData = componentsDs.toData();
     return (
       mainData.map((dataGrid, i) => (
         <DragCard

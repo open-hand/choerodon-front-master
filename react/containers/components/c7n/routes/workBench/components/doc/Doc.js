@@ -136,7 +136,7 @@ const Doc = () => {
                   dataLength={docDs.length}
                   next={loadMore}
                   hasMore={getListHasMore}
-                  height={((rowNumber - 1) * 170) + 130}
+                  height={((rowNumber - 1) * 150) + 120}
                   endMessage={(
                     <span
                       style={{ height: docDs.length < 5 ? '1.32rem' : 'auto' }}

@@ -51,14 +51,16 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
       questionDs.query();
       return;
     }
-    if (tempArr && get(tempArr, 'length')) {
+    if (tempArr) {
       questionDs.loadData(tempArr);
       questionStore.setHasMore(
         mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,
       );
       questionStore.setTotalCount(mainData.totalElements);
+    } else {
+      questionDs.query();
     }
-  }, [bugQuestions, questionDs]);
+  }, [questionDs]);
 
   const value = {
     ...props,

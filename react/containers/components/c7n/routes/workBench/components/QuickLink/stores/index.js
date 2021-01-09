@@ -57,8 +57,10 @@ export const StoreProvider = inject('AppState')(observer((props) => {
         mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,
       );
       quickLinkDs.loadData(tempArr);
+    } else {
+      quickLinkDs.query();
     }
-  }, [cacheQuickLinkData, quickLinkDs]);
+  }, [quickLinkDs]);
 
   const value = {
     ...props,
