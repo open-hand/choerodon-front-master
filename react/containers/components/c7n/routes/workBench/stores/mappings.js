@@ -168,7 +168,7 @@ const componentsObj = {
       y: 6,
       h: 5,
       w: 5,
-      minH: 2,
+      minH: 4,
       minW: 4,
       static: true,
       i: 'doc',

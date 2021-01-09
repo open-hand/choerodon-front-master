@@ -16,6 +16,11 @@ export default function useStore(history) {
       this.initData = value;
     },
 
+    editLayout: [],
+    setEditLayout(value) {
+      this.editLayout = value;
+    },
+
     activeStarProject: null,
     get getActiveStarProject() {
       return this.activeStarProject;
@@ -25,15 +30,6 @@ export default function useStore(history) {
     },
 
     // 拖拽的参数
-    layouts: [],
-    workComponents: [],
-
-    setLayOuts(value) {
-      this.layouts = value;
-    },
-    setComponents(value) {
-      this.workComponents = value;
-    },
 
     isEdit: false,
     setEdit(value) {
