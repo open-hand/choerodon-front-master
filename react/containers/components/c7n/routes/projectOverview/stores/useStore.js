@@ -1,14 +1,14 @@
 import { useLocalStore } from 'mobx-react-lite';
 import { axios } from '@/index';
-import axios0 from 'axios';
-// import HeaderStore from '@/containers/stores/c7n/HeaderStore';
-// import MenuStore from '@/containers/stores/c7n/MenuStore';
-// import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
-// import { historyPushMenu } from '@/utils';
 
 export default function useStore(projectId) {
   return useLocalStore(() => ({
-    isFinishLoad:false,
+    isEdit: false,
+    setEdit(value) {
+      this.isEdit = value;
+    },
+
+    isFinishLoad: false,
     sprints: [],
     staredSprint: undefined,
     totalOnlineUser: 0,

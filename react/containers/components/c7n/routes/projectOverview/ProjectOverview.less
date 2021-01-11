@@ -4,8 +4,67 @@
   // height: auto !important;
   background: rgba(245, 246, 250, 1);
 
+  &-content {
+    background: #f5f6fa;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: scroll;
+  }
+
+  .react-grid-item.react-grid-placeholder {
+    background: #0e1d80; 
+    border-radius: 10px;
+  }
+  &-container {
+    flex-shrink: 0;
+    flex-grow: 1;
+    height: auto;
+  }
+
+  &-layout {
+    overflow-y: scroll;
+    min-height: 100%;
+    height: inherit;
+    margin-bottom: 40px;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
+  &-btnGroups {
+    position: absolute;
+    top: 19px;
+    right: 20px;
+    font-size: 13px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    z-index: 10;
+    &-default {
+      background: rgba(83, 101, 234, 0.08);
+      border-radius: 6px;
+      color: #5365ea !important;
+      line-height: 20px;
+      &:hover,
+      &:focus {
+        background: rgba(83, 101, 234, 0.08) !important;
+      }
+    }
+    &-primary {
+      color: #fff;
+      background: #5365ea;
+      border-radius: 6px;
+      color: #fff !important;
+      &:hover,
+      &:focus {
+        background: #5365ea !important;
+      }
+    }
+  }
+
+
   &-SelectTheme {
-    font-size: .14rem;
+    font-size: 0.14rem;
 
     // background-color: red;
     .c7n-pro-select-multiple-value {
@@ -35,10 +94,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: .12rem .20rem;
-    margin-bottom: .2rem;
+    padding: 0.12rem 0.2rem;
+    margin-bottom: 0.2rem;
     background: rgba(255, 255, 255, 1);
-    border-radius: .04rem;
+    border-radius: 0.04rem;
   }
 
   &-content {
@@ -47,7 +106,7 @@
 
     &-left {
       flex-basis: 65%;
-      margin-right: .2rem;
+      margin-right: 0.2rem;
       width: 63%;
     }
 

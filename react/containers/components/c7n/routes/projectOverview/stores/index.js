@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useMemo, useEffect } from 'react';
+import React, {
+  createContext, useContext, useMemo, useEffect,
+} from 'react';
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
@@ -12,7 +14,7 @@ import EnvDataSet from './EnvDataSet';
 import AsgardDataSet from './AsgardDataSet';
 import CommitDataSet from './CommitDataSet';
 import DeployDataSet from './DeployDataSet';
-import PipelineDataSet from "./PipelineDataSet";
+import PipelineDataSet from './PipelineDataSet';
 import DelayIssueDataSet from './DelayIssueDataSet';
 
 const Store = createContext();
@@ -29,6 +31,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   } = props;
 
   const projectOverviewStore = useStore(projectId);
+
   const sprintCountDataSet = useMemo(() => new DataSet(SprintCountDataSet({ projectId, sprint: projectOverviewStore.getStaredSprint })), [projectId, projectOverviewStore.getStaredSprint]);
   const sprintWaterWaveDataSet = useMemo(() => new DataSet(SprintWaterWaveDataSet({ projectId, sprint: projectOverviewStore.getStaredSprint })), [projectId, projectOverviewStore.getStaredSprint]);
   const userListDs = useMemo(() => new DataSet(UserListDataSet({ projectId, projectOverviewStore })), [projectId]);
@@ -38,7 +41,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const commitDs = useMemo(() => new DataSet(CommitDataSet({ projectId })), [projectId]);
   const deployDs = useMemo(() => new DataSet(DeployDataSet({ projectId })), [projectId]);
   const pipelineDs = useMemo(() => new DataSet(PipelineDataSet({ projectId })), [projectId]);
-  const delayIssueDs = useMemo(() => new DataSet(DelayIssueDataSet({ projectId, organizationId})))
+  const delayIssueDs = useMemo(() => new DataSet(DelayIssueDataSet({ projectId, organizationId })));
 
   useEffect(() => {
     function loadData() {
@@ -48,9 +51,9 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     }
 
     projectOverviewStore.loadAllSprint().then(
-      sprints => {
+      (sprints) => {
         projectOverviewStore.setSprints(sprints);
-        const staredSprint = sprints.find(sprint => sprint.statusCode === 'started');
+        const staredSprint = sprints.find((sprint) => sprint.statusCode === 'started');
         projectOverviewStore.setStaredSprint(staredSprint);
         projectOverviewStore.setIsFinishLoad(true);
         if (staredSprint) {
@@ -64,6 +67,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     ...props,
     sprintCountDataSet,
     projectOverviewStore,
+    prefixCls: 'c7n-project-overview',
     sprintWaterWaveDataSet,
     userListDs,
     appServiceDs,

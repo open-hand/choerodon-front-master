@@ -14,7 +14,7 @@ const ServiceInfo = () => {
   } = useProjectOverviewStore();
 
   const renderServiceDetail = () => (
-    <React.Fragment>
+    <>
       <div className={`${clsPrefix}-content-group-item`}>
         <span>{appServiceDs.current ? appServiceDs.current.get('up') : 0}</span>
         <span>启用应用服务</span>
@@ -23,10 +23,10 @@ const ServiceInfo = () => {
         <span>{appServiceDs.current ? appServiceDs.current.get('down') : 0}</span>
         <span>停用应用服务</span>
       </div>
-    </React.Fragment>
+    </>
   );
   const renderEnvironmentDetail = () => (
-    <React.Fragment>
+    <>
       <div className={`${clsPrefix}-content-group-item`}>
         <span>{envDs.current ? envDs.current.get('up') : 0}</span>
         <span>运行中环境</span>
@@ -35,7 +35,7 @@ const ServiceInfo = () => {
         <span>{envDs.current ? envDs.current.get('down') : 0}</span>
         <span>未连接环境</span>
       </div>
-    </React.Fragment>
+    </>
   );
   return (
     <div className="c7n-project-overview-service-info">
