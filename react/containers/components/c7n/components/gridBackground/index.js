@@ -14,8 +14,12 @@ import './index.less';
 //   return tempNum;
 // }
 
-const GridBg = () => {
-  const [cols, setCol] = useState(0);
+const GridBg = ({
+  selector,
+  style,
+  cols: defaultCols = 12,
+}) => {
+  const [cols, setCol] = useState(defaultCols);
   const [rows, setRow] = useState(0);
 
   const renderCol = useCallback(() => {
@@ -34,15 +38,13 @@ const GridBg = () => {
     if (domTem) {
       // const workbenchW = get(domTem, 'offsetWidth');
       const workbenchH = get(domTem, 'offsetHeight');
-      const numC = 12;
       const numR = Math.floor(workbenchH / 109);
-      numC && setCol(numC);
       numR && setRow(numR);
     }
   }, []);
 
   useEffect(() => {
-    const domTem = document.querySelector('.c7n-workbench-container');
+    const domTem = document.querySelector(selector || 'body');
     new ResizeObserver((entries) => {
       const dom = get(entries[0], 'target');
       resizeDom(dom);
@@ -54,6 +56,7 @@ const GridBg = () => {
       className="c7ncd-workbench-gridBg"
       style={{
         gridTemplateColumns: `repeat(${cols},1fr)`,
+        ...style,
       }}
     >
       {renderCol()}

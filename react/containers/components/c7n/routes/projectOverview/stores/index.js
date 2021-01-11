@@ -5,6 +5,7 @@ import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
+import { map } from 'lodash';
 import SprintCountDataSet from './SprintCountDataSet';
 import useStore from './useStore';
 import SprintWaterWaveDataSet from './SprintWaterWaveDataSet';
@@ -16,6 +17,8 @@ import CommitDataSet from './CommitDataSet';
 import DeployDataSet from './DeployDataSet';
 import PipelineDataSet from './PipelineDataSet';
 import DelayIssueDataSet from './DelayIssueDataSet';
+import mappings from './mappings';
+import ComponentsDataset from './ComponentsDataSet';
 
 const Store = createContext();
 
@@ -42,6 +45,13 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const deployDs = useMemo(() => new DataSet(DeployDataSet({ projectId })), [projectId]);
   const pipelineDs = useMemo(() => new DataSet(PipelineDataSet({ projectId })), [projectId]);
   const delayIssueDs = useMemo(() => new DataSet(DelayIssueDataSet({ projectId, organizationId })));
+
+  const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ projectId })), [projectId]);
+
+  useEffect(() => {
+    const defaultValues = map(mappings, (item) => item.layout);
+    componentsDs.loadData(defaultValues);
+  }, [componentsDs]);
 
   useEffect(() => {
     function loadData() {
@@ -77,6 +87,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     deployDs,
     pipelineDs,
     delayIssueDs,
+    componentsDs,
   };
 
   return (

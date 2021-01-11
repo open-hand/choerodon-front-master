@@ -1,12 +1,17 @@
 import React, { useState, memo, useEffect } from 'react';
-import { Tooltip, Progress, Icon, Spin } from 'choerodon-ui/pro';
+import {
+  Tooltip, Progress, Icon, Spin,
+} from 'choerodon-ui/pro';
+import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+
 import { observer } from 'mobx-react-lite';
 import OverviewWrap from '../OverviewWrap';
+
 import { useProjectOverviewStore } from '../../stores';
 import normalToSvg from '../number-font';
 import './index.less';
+
 import EmptyPage from '../EmptyPage';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 
 const clsPrefix = 'c7n-project-overview-sprint-count';
 const SprintCount = observer(() => {
@@ -56,13 +61,13 @@ const SprintCount = observer(() => {
           </OverviewWrap.Content>
         </Spin>
       );
-    } else if (projectOverviewStore.getIsFinishLoad) {
+    } if (projectOverviewStore.getIsFinishLoad) {
       return <EmptyPage />;
     }
     return <LoadingBar display />;
   }
   return (
-    <OverviewWrap height={137}>
+    <OverviewWrap>
       <OverviewWrap.Header titleMarginBottom={12} title={renderTitle()} />
       {render()}
     </OverviewWrap>

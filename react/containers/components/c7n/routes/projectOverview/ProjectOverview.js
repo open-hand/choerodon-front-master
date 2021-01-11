@@ -1,10 +1,17 @@
 import React, { useMemo, useCallback } from 'react';
 import { Button } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import { WidthProvider, Responsive } from 'react-grid-layout';
+import GridBg from '@/containers/components/c7n/components/gridBackground';
+import DragCard from '@/containers/components/c7n/components/dragCard';
+
+import { get } from 'lodash';
 import {
   Content, Breadcrumb, Page,
 } from '../../../../../index';
 import ServiceInfo from './components/ServiceInfo';
+import EnvInfo from './components/EnvInfo';
+
 import BurnDownChart from './components/BurnDownChart';
 import DefectTreatment from './components/DefectTreatment';
 import SprintWaterWave from './components/SprintWaterWave';
@@ -14,7 +21,6 @@ import DeployChart from './components/deploy-chart';
 import CommitChart from './components/commit-chart';
 import DefectChart from './components/defect-chart';
 import PipelineChart from './components/pipeline-chart';
-import GridBg from './components/gridBackground';
 import { useProjectOverviewStore } from './stores';
 
 import './ProjectOverview.less';
@@ -28,6 +34,7 @@ const ProjectOverview = () => {
     },
     prefixCls,
     projectOverviewStore,
+    componentsDs,
   } = useProjectOverviewStore();
 
   const {
@@ -36,14 +43,34 @@ const ProjectOverview = () => {
 
   const showDevops = useMemo(() => category === 'GENERAL' || category === 'OPERATIONS', [category]);
 
-  const renderBg = useCallback(() => <GridBg />, []);
+  const ComponetsObjs = useMemo(() => ({
+    sprintNotDone: <SprintWaterWave />,
+    sprintCount: <SprintCount />,
+    burnDownChart: <BurnDownChart />,
+    defectTreatment: <DefectTreatment />,
+    defectChart: <DefectChart />,
+    appService: showDevops ? <ServiceInfo /> : '',
+    env: <EnvInfo />,
+    pipelineChart: showDevops ? <PipelineChart /> : '',
+    commitChart: showDevops ? <CommitChart /> : '',
+    deployChart: showDevops ? <DeployChart /> : '',
+    onlineMember: <UserList />,
+  }), [showDevops]);
+
+  const renderBg = useCallback(() => <GridBg selector={`.${prefixCls}-container`} cols={10} style={{ padding: '0' }} />, []);
 
   function handleEditable() {
     projectOverviewStore.setEdit(true);
+    componentsDs.forEach((record) => {
+      record.set('static', false);
+    });
   }
 
   function handleCancel() {
     projectOverviewStore.setEdit(false);
+    componentsDs.forEach((record) => {
+      record.set('static', true);
+    });
   }
 
   const renderBtns = () => {
@@ -92,6 +119,66 @@ const ProjectOverview = () => {
     );
   };
 
+  function onLayoutChange(layout, layouts) {
+    console.log(layout);
+  }
+
+  const SwitchComponents = (type) => {
+    let tempComponent;
+    const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
+    if (hasOwnProperty) {
+      tempComponent = ComponetsObjs[type];
+    }
+    return tempComponent;
+  };
+
+  const generateDOM = useCallback(() => {
+    const mainData = componentsDs.toData();
+    return (
+      mainData.map((dataGrid, i) => (
+        <DragCard
+          dataGrid={dataGrid}
+          // onDelete={() => handleDelete(dataGrid)}
+          isEdit={isEdit}
+          data-grid={dataGrid}
+          key={dataGrid.i}
+        >
+          {SwitchComponents(get(dataGrid, 'i'))}
+        </DragCard>
+      ))
+    );
+  }, [componentsDs, isEdit]);
+
+  const renderGridLayouts = () => {
+    const tempObj = {
+      className: `${prefixCls}-layout`,
+      onLayoutChange,
+      breakpoints: {
+        lg: 1200,
+      },
+      margin: [18, 18],
+      resizeHandles: ['se'],
+      cols: {
+        lg: 10,
+      },
+      measureBeforeMount: true,
+      containerPadding: [0, 0],
+      useCSSTransformss: true,
+      rowHeight: 100,
+      shouldComponentUpdate: true,
+    };
+
+    const ResponsiveReactGridLayout = WidthProvider(Responsive);
+
+    return (
+      <ResponsiveReactGridLayout
+        {...tempObj}
+      >
+        {generateDOM()}
+      </ResponsiveReactGridLayout>
+    );
+  };
+
   return (
     <Page className={prefixCls}>
       <Breadcrumb />
@@ -100,7 +187,7 @@ const ProjectOverview = () => {
         <div className={`${prefixCls}-container`}>
           {isEdit && renderBg()}
           {
-            // renderGridLayouts()
+            renderGridLayouts()
           }
         </div>
         {/* <div className="c7n-project-overview-content">

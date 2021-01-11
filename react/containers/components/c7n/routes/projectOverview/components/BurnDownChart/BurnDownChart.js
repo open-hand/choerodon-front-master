@@ -341,7 +341,9 @@ const BurnDownChart = observer(() => {
     </div>
   );
   return (
-    <OverviewWrap height={showDevops ? 333 : 413}>
+    <OverviewWrap style={{
+      paddingTop:'16px'
+    }}>
       <OverviewWrap.Header title={renderTitle()} />
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
         <Spin spinning={loading}>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon, Tooltip } from 'choerodon-ui/pro';
+import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import { useWorkBenchStore } from '../../stores';
 import LoadingBar from '../../../../tools/loading-bar';
-import EmptyPage from '../empty-page';
 
 import './index.less';
 

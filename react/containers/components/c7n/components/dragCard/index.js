@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import React from 'react';
 
 import './index.less';
-import Grid from 'choerodon-ui/lib/card/Grid';
 
 const prefixCls = 'c7ncd-dragCard';
 

@@ -1,4 +1,6 @@
-import React, { useState, memo, useMemo, useEffect } from 'react';
+import React, {
+  useState, memo, useMemo, useEffect,
+} from 'react';
 import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
@@ -170,17 +172,18 @@ const DefectTreatment = observer(() => {
           </Spin>
         </OverviewWrap.Content>
       );
-    } else if (projectOverviewStore.getIsFinishLoad) {
-      return <EmptyPage />;// 暂无活跃的冲刺" 
+    } if (projectOverviewStore.getIsFinishLoad) {
+      return <EmptyPage />;// 暂无活跃的冲刺"
     }
     return <LoadingBar display />;
   }
   return (
-    <OverviewWrap height={showDevops ? 348 : 428}>
+    <OverviewWrap style={{
+      paddingTop: '13px',
+    }}
+    >
       <OverviewWrap.Header title={renderTitle()} />
-
       {render()}
-
     </OverviewWrap>
 
   );

@@ -10,10 +10,10 @@ import {
 } from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import { get } from 'lodash';
+import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import AddQuickLink from './AddQuickLink';
 import { useWorkBenchStore } from '../../stores';
 import { useQuickLinkStore } from './stores';
-import EmptyPage from '../empty-page';
 import EmptyImg from './image/empty.svg';
 import './index.less';
 
