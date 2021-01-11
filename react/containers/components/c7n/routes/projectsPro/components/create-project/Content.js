@@ -233,6 +233,9 @@ const CreateProject = observer(() => {
     if (!categoryRecord.getState('disabled')) {
       return '';
     }
+    if (categoryRecord.get('code') === categoryCodes.require) {
+      return '请先选择【敏捷管理】或【敏捷项目群】项目类型';
+    }
     if (!categoryRecord.isSelected) {
       return '不可同时选择【敏捷管理】与【规模化敏捷项目群】项目类型';
     }
