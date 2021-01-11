@@ -32,9 +32,13 @@ export default (({
             const storeArr = get(cacheStore.focusQuestions, 'content')?.slice();
             const tempType = get(cacheStore.focusQuestions, 'type');
             const tempId = get(cacheStore.focusQuestions, 'selectedProjectId');
-            let tempArr;
-            if (tempType === type && tempId && tempId === selectedProjectId) {
-              tempArr = storeArr.concat(res.content);
+            let tempArr = [];
+            if (storeArr) {
+              if (tempType !== type || tempId !== selectedProjectId) {
+                tempArr = content;
+              } else {
+                tempArr = storeArr.concat(res.content);
+              }
             } else {
               tempArr = content;
             }

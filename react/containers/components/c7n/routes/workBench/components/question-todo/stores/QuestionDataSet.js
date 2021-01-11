@@ -25,8 +25,12 @@ export default (({
           const storeArr = get(cacheStore.todoQuestions, 'content');
           const tempId = get(cacheStore.todoQuestions, 'selectedProjectId');
           let tempArr;
-          if (tempId && tempId === selectedProjectId) {
-            tempArr = storeArr.concat(res.content);
+          if (storeArr) {
+            if (tempId !== selectedProjectId) {
+              tempArr = res.content;
+            } else {
+              tempArr = storeArr.concat(res.content);
+            }
           } else {
             tempArr = res.content;
           }
