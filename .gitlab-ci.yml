@@ -6,6 +6,7 @@ stages:
 release:
   stage: release
   script:
+    - npm install -g yarn
     - yarn install --registry ${NPM_REPO} --sass-binary-site=http://npm.taobao.org/mirrors/node-sass
     - chmod -R 755 node_modules
     - npm run compile
