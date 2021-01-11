@@ -7,7 +7,7 @@ export default ({
   workBenchUseStore,
 }) => ({
   paging: false,
-  autoQuery: false,
+  autoQuery: true,
   transport: {
     read: ({ data }) => ({
       url: 'iam/choerodon/v1/workbench_configs/self',
