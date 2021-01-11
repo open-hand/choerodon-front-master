@@ -32,8 +32,12 @@ export default (({
           const tempType = get(cacheStore.bugQuestions, 'type');
           const tempId = get(cacheStore.focusQuestions, 'selectedProjectId');
           let tempArr;
-          if (tempType === type && tempId && tempId === selectedProjectId) {
-            tempArr = storeArr.concat(res.content);
+          if (storeArr) {
+            if (tempType !== type || tempId !== selectedProjectId) {
+              tempArr = content;
+            } else {
+              tempArr = storeArr.concat(res.content);
+            }
           } else {
             tempArr = content;
           }

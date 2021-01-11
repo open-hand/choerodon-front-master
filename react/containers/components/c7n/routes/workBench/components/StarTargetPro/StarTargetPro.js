@@ -259,7 +259,7 @@ const StarTargetPro = observer(() => {
     });
     workBenchUseStore.setInitData(tempData);
     componentsDs.loadData(workBenchUseStore.editLayout);
-    workBenchUseStore.saveConfig(tempData);
+    // workBenchUseStore.saveConfig(tempData);
     setEdit(false);
   }
 

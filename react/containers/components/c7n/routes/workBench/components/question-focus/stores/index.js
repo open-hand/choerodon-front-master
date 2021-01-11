@@ -57,7 +57,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
         mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,
       );
       questionStore.setTotalCount(mainData.totalElements);
-    }else{
+    } else {
       questionDs.query();
     }
   }, [questionDs]);

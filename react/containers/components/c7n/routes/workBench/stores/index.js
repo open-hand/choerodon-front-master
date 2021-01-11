@@ -32,6 +32,12 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ workBenchUseStore })), [workBenchUseStore]);
 
+  useEffect(() => {
+    const defaultValues = map(mappings, (item) => item.layout);
+
+    componentsDs.loadData(defaultValues);
+  }, []);
+
   const value = {
     ...props,
     prefixCls: 'c7n-workbench',
