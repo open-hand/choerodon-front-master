@@ -50,10 +50,16 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     if (projectId) {
       loadData();
     } else {
-      categoryDs.query();
       formDs.create();
+      loadCategory();
     }
   }, [projectId, organizationId]);
+
+  const loadCategory = async () => {
+    await categoryDs.query();
+    const findRecord = categoryDs.find((eachRecord) => eachRecord.get('code') === categoryCodes.require);
+    findRecord && findRecord.setState('disabled', true);
+  };
 
   const loadData = async () => {
     try {
