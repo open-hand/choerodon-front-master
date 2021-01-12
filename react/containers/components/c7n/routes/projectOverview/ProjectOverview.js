@@ -241,7 +241,7 @@ const ProjectOverview = () => {
         <div className={`${prefixCls}-container`}>
           {isEdit && renderBg()}
           {
-            renderGridLayouts()
+            category && renderGridLayouts()
           }
         </div>
       </Content>
