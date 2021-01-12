@@ -6,7 +6,9 @@ import { Icon } from 'choerodon-ui';
 import moment from 'moment';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
-import { get, map, forEach } from 'lodash';
+import {
+  get, map, forEach, forEachRight,
+} from 'lodash';
 import { useStarTargetPro } from './stores';
 import { useWorkBenchStore } from '../../stores';
 import emptyImg from '../../../../../../images/owner.png';
@@ -211,19 +213,23 @@ const StarTargetPro = observer(() => {
     componentsDs.loadData(initData);
   }
 
-  function addComponent(type) {
-    const {
-      layout,
-    } = mappings[type];
+  function addComponent(types) {
+    const typeCp = [];
+    forEach(types, (type) => {
+      const {
+        layout,
+      } = mappings[type];
+      const tempCp = {
+        ...layout,
+        x: 0,
+        y: Infinity,
+        static: false,
+      };
+      typeCp.push(tempCp);
+    });
 
-    const tempCp = {
-      ...layout,
-      x: 0,
-      y: Infinity,
-      static: false,
-    };
     const tempArr = workBenchUseStore.editLayout;
-    componentsDs.loadData(tempArr.concat([tempCp]));
+    componentsDs.loadData(tempArr.concat(typeCp));
   }
 
   function openAddComponents() {

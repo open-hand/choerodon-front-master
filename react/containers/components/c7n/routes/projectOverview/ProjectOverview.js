@@ -6,7 +6,7 @@ import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 
-import { get, filter, map } from 'lodash';
+import { get, filter, map, forEach } from 'lodash';
 import {
   Content, Breadcrumb, Page,
 } from '../../../../../index';
@@ -74,19 +74,23 @@ const ProjectOverview = () => {
     componentsDs.loadData(projectOverviewStore.initData);
   }
 
-  function addComponent(type) {
-    const {
-      layout,
-    } = mappings[type];
+  function addComponent(types) {
+    const typeCp = [];
+    forEach(types, (type) => {
+      const {
+        layout,
+      } = mappings[type];
+      const tempCp = {
+        ...layout,
+        x: 0,
+        y: Infinity,
+        static: false,
+      };
+      typeCp.push(tempCp);
+    });
 
-    const tempCp = {
-      ...layout,
-      x: 0,
-      y: Infinity,
-      static: false,
-    };
     const tempArr = projectOverviewStore.editLayout;
-    componentsDs.loadData(tempArr.concat([tempCp]));
+    componentsDs.loadData(tempArr.concat(typeCp));
   }
 
   function openAddComponents() {
