@@ -2,18 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { get, map } from 'lodash';
 import './index.less';
 
-// function getColsNumber(domWidth) {
-//   let tempNum;
-//   if (domWidth < 996) {
-//     tempNum = 8;
-//   } else if (domWidth < 1200) {
-//     tempNum = 10;
-//   } else {
-//     tempNum = 12;
-//   }
-//   return tempNum;
-// }
-
 const GridBg = () => {
   const [cols, setCol] = useState(0);
   const [rows, setRow] = useState(0);
@@ -42,7 +30,7 @@ const GridBg = () => {
   }, []);
 
   useEffect(() => {
-    const domTem = document.querySelector('.c7n-workbench-container');
+    const domTem = document.querySelector('.c7n-project-overview-container');
     new ResizeObserver((entries) => {
       const dom = get(entries[0], 'target');
       resizeDom(dom);

@@ -6,6 +6,7 @@ import {
   map, get, filter, omit, forEach, findIndex,
 } from 'lodash';
 import { observer } from 'mobx-react-lite';
+import DragCard from '@/containers/components/c7n/components/dragCard';
 import { Page } from '../../../../../index';
 import StarTargetPro from './components/StarTargetPro';
 import SelfIntro from './components/SelfIntro';
@@ -13,10 +14,9 @@ import ServiceList from './components/ServiceList';
 import Doc from './components/doc';
 import EnvList from './components/EnvList';
 import QuickLink from './components/QuickLink';
-import DragCard from './components/dragCard';
 import TodoThings from './components/TodoThings';
 import { useWorkBenchStore } from './stores';
-import GridBg from './components/gridBackground';
+import GridBg from '../../components/gridBackground';
 import QuestionTodo from './components/question-todo';
 import QuestionFocus from './components/question-focus';
 import QuestionBug from './components/question-bug';
@@ -65,7 +65,7 @@ const WorkBench = () => {
     return tempComponent;
   };
 
-  const renderBg = useCallback(() => <GridBg />, []);
+  const renderBg = useCallback(() => <GridBg selector={`.${prefixCls}-container`} />, []);
 
   const generateDOM = useMemo(() => {
     const mainData = componentsDs.toData();

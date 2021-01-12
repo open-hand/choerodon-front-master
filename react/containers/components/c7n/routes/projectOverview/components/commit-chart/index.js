@@ -12,8 +12,9 @@ import './index.less';
 const CommitChart = () => {
   const clsPrefix = 'c7n-project-overview-commit-chart';
   const {
-    projectOverviewStore,
     commitDs,
+    startSprintDs,
+    startedRecord,
   } = useProjectOverviewStore();
 
   const renderTitle = () => (
@@ -168,17 +169,17 @@ const CommitChart = () => {
   }
 
   function getContent() {
-    if (!projectOverviewStore.getIsFinishLoad) {
+    if (startSprintDs.status === 'loading') {
       return <LoadingBar display />;
     }
-    if (!projectOverviewStore.getStaredSprint) {
+    if (!startedRecord) {
       return <EmptyPage />;
     }
     return <Echart option={getOption()} />;
   }
 
   return (
-    <OverviewWrap width="calc(57% - 20px)" height={302} marginRight=".2rem">
+    <OverviewWrap>
       <OverviewWrap.Header title={renderTitle()} />
       {getContent()}
     </OverviewWrap>

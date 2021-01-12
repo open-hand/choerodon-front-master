@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Tooltip, Icon } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import './index.less';
@@ -10,28 +10,35 @@ import EmptyPage from '../EmptyPage';
 import normalToSvg from '../number-font';
 
 const clsPrefix = 'c7n-project-overview-sprint-water-wave';
+
 const SprintWaterWave = observer(() => {
-  const { sprintWaterWaveDataSet, projectOverviewStore } = useProjectOverviewStore();
+  const {
+    sprintWaterWaveDataSet,
+    startedRecord,
+    startSprintDs,
+  } = useProjectOverviewStore();
+
   useEffect(() => {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       sprintWaterWaveDataSet.query();
     }
-  }, [projectOverviewStore.getIsFinishLoad]);
+  }, [sprintWaterWaveDataSet, startedRecord]);
+
   function render() {
-    if (sprintWaterWaveDataSet.current) {
-      const remainingDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : 0;
-      const totalDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('totalDays') : 0;
+    const { current } = sprintWaterWaveDataSet;
+    if (current) {
+      const remainingDays = current ? current.get('remainingDays') : 0;
+      const totalDays = current ? current.get('totalDays') : 0;
       return (
         <>
           <div className={`${clsPrefix}-content-left`}>
             <WaterWave
               height={120}
-              // color="rgba(77, 144, 254, 1)"
               title="剩余时间"
               percent={totalDays && remainingDays > 0 ? ((totalDays - remainingDays) / totalDays) * 100 : 0} // "totalDays": remainingDays
               percentRender={() => (
                 <div className={`${clsPrefix}-percent`}>
-                  {normalToSvg(sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : '', 20)}
+                  {normalToSvg(current ? current.get('remainingDays') : '', 20)}
                   <span>天</span>
                 </div>
               )}
@@ -41,30 +48,32 @@ const SprintWaterWave = observer(() => {
             <li>
               <label>问题数</label>
               <span>
-                {sprintWaterWaveDataSet.current.get('issueCount')}
+                {current.get('issueCount')}
                 (个)
               </span>
             </li>
             <li>
               <label>故事点</label>
               <span>
-                {sprintWaterWaveDataSet.current.get('storyPoints')}
+                {current.get('storyPoints')}
                 (个)
               </span>
             </li>
             <li>
               <label>剩余工时</label>
               <span>
-                {sprintWaterWaveDataSet.current.get('remainingEstimatedTime')}
+                {current.get('remainingEstimatedTime')}
                 (小时)
               </span>
             </li>
           </ul>
         </>
       );
-    } if (projectOverviewStore.getStaredSprint) {
+    }
+    if (startedRecord) {
       return <LoadingBar display />;
-    } if (!sprintWaterWaveDataSet.status !== 'loading' && projectOverviewStore.getIsFinishLoad) {
+    }
+    if (!sprintWaterWaveDataSet.status !== 'loading' && startSprintDs.status !== 'loading') {
       return <EmptyPage />;
     }
     return '';
@@ -77,8 +86,9 @@ const SprintWaterWave = observer(() => {
       </Tooltip>
     </div>
   );
+
   return (
-    <OverviewWrap height={225}>
+    <OverviewWrap>
       <OverviewWrap.Header title={renderTitle()} />
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
         {render()}

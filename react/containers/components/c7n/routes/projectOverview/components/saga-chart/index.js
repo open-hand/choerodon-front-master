@@ -145,7 +145,7 @@ const SagaChart = () => {
   }
 
   return (
-    <OverviewWrap width="43%" height={302} marginRight=".2rem">
+    <OverviewWrap>
       <OverviewWrap.Header title={renderTitle()}>
         <DaysPicker handleChangeDays={loadData} />
       </OverviewWrap.Header>

@@ -4,13 +4,13 @@ import { getRandomBackground } from '@/containers/components/c7n/util';
 import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui';
 import moment from 'moment';
+import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import { get, map, forEach } from 'lodash';
 import { useStarTargetPro } from './stores';
 import { useWorkBenchStore } from '../../stores';
 import emptyImg from '../../../../../../images/owner.png';
 import mappings from '../../stores/mappings';
-import AddModal from '../addComponentsModal';
 import ProjectCategory from '../../../projectsPro/components/project-category';
 
 import './index.less';
@@ -141,13 +141,6 @@ const StarTargetPro = observer(() => {
                   )
                 </p>
               </Tooltip>
-
-              {/*<p*/}
-              {/*  style={{ color: isActive ? 'white' : 'rgba(58,52,95,0.65)' }}*/}
-              {/*  className={`${prefixCls}-proContainer-items-project`}*/}
-              {/*>*/}
-              {/*  */}
-              {/*</p>*/}
               <ProjectCategory
                 data={s.categories}
                 showIcon={false}
@@ -246,6 +239,7 @@ const StarTargetPro = observer(() => {
         subPrefix={subPrefix}
         existTypes={typeArr}
         addComponent={addComponent}
+        mappings={mappings}
       />,
       className: `${subPrefix}`,
     });
@@ -259,7 +253,7 @@ const StarTargetPro = observer(() => {
     });
     workBenchUseStore.setInitData(tempData);
     componentsDs.loadData(workBenchUseStore.editLayout);
-    // workBenchUseStore.saveConfig(tempData);
+    workBenchUseStore.saveConfig(tempData);
     setEdit(false);
   }
 

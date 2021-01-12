@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Tooltip, Icon } from 'choerodon-ui';
+import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '../card';
 import { useTodoStore } from './stores';
 import LoadingBar from '../../../../tools/loading-bar';
-import EmptyPage from '../empty-page';
 import emptyImg from './image/empty.svg';
 
 import './index.less';

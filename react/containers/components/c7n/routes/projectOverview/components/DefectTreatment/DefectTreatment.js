@@ -1,4 +1,6 @@
-import React, { useState, memo, useMemo, useEffect } from 'react';
+import React, {
+  useState, memo, useMemo, useEffect,
+} from 'react';
 import { Button, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
@@ -17,18 +19,18 @@ const DefectTreatment = observer(() => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [charOption, setCharOption] = useState('created'); // createdList completedList
-  const { projectOverviewStore } = useProjectOverviewStore();
+  const { projectOverviewStore, startedRecord, startSprintDs } = useProjectOverviewStore();
 
   useEffect(() => {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       setLoading(true);
-      defectTreatmentStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId).then(() => {
+      defectTreatmentStore.axiosGetChartData(startedRecord.sprintId).then(() => {
         setLoading(false);
       });
-    } else if (projectOverviewStore.getIsFinishLoad) {
+    } else if (startSprintDs.status !== 'loading') {
       setLoading(false);
     }
-  }, [projectOverviewStore.getIsFinishLoad]);
+  }, [startedRecord]);
   useEffect(() => {
     if (defectTreatmentStore.getChartList && defectTreatmentStore.getChartList.length > 8) {
       setShow(true);
@@ -154,11 +156,11 @@ const DefectTreatment = observer(() => {
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>缺陷提出与解决</span>
-      {projectOverviewStore.getStaredSprint && defectTreatmentStore.getChartList && defectTreatmentStore.getChartList.length > 0 ? <OverviewWrap.Switch defaultValue="created" onChange={setCharOption} options={options} /> : ''}
+      {startedRecord && defectTreatmentStore.getChartList && defectTreatmentStore.getChartList.length > 0 ? <OverviewWrap.Switch defaultValue="created" onChange={setCharOption} options={options} /> : ''}
     </div>
   );
   function render() {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       return (
         <OverviewWrap.Content className={`${clsPrefix}-content`}>
           <Spin spinning={loading}>
@@ -170,17 +172,18 @@ const DefectTreatment = observer(() => {
           </Spin>
         </OverviewWrap.Content>
       );
-    } else if (projectOverviewStore.getIsFinishLoad) {
-      return <EmptyPage />;// 暂无活跃的冲刺" 
+    } if (startSprintDs.status !== 'loading') {
+      return <EmptyPage />;// 暂无活跃的冲刺"
     }
     return <LoadingBar display />;
   }
   return (
-    <OverviewWrap height={showDevops ? 348 : 428}>
+    <OverviewWrap style={{
+      paddingTop: '13px',
+    }}
+    >
       <OverviewWrap.Header title={renderTitle()} />
-
       {render()}
-
     </OverviewWrap>
 
   );

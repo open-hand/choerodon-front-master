@@ -11,7 +11,8 @@ import './index.less';
 const PipelineChart = () => {
   const clsPrefix = 'c7n-project-overview-pipeline-chart';
   const {
-    projectOverviewStore,
+    startedRecord,
+    startSprintDs,
     pipelineDs,
   } = useProjectOverviewStore();
 
@@ -167,17 +168,17 @@ const PipelineChart = () => {
   }
 
   function getContent() {
-    if (!projectOverviewStore.getIsFinishLoad) {
+    if (startSprintDs === 'loading') {
       return <LoadingBar display />;
     }
-    if (!projectOverviewStore.getStaredSprint) {
+    if (!startedRecord) {
       return <EmptyPage />;
     }
     return <Echart option={getOption()} />;
   }
 
   return (
-    <OverviewWrap width="43%" height={302}>
+    <OverviewWrap>
       <OverviewWrap.Header title={renderTitle()} />
       {getContent()}
     </OverviewWrap>

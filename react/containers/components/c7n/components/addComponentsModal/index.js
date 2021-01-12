@@ -11,13 +11,15 @@ import groupMappings from './groupMappings';
 
 const AddModal = (props) => {
   const {
-    subPrefix,
     modal,
     addComponent,
     existTypes,
+    mappings,
   } = props;
 
-  const [activeItem, setActiveItem] = useState(groupMappings[0]);
+  const subPrefix = 'c7ncd-workbench-addModal';
+
+  const [activeItem, setActiveItem] = useState(groupMappings(mappings)[0]);
   const [dis, setDis] = useState(0);
   const [seletedComponents, setSelectedComponents] = useState('');
 
@@ -39,7 +41,7 @@ const AddModal = (props) => {
     setSelectedComponents(item.type);
   }
 
-  const renderMenuItems = () => map(groupMappings, (item, index) => (
+  const renderMenuItems = () => map(groupMappings(mappings), (item, index) => (
     <div
       role="none"
       onClick={() => handleClick(item, index)}
