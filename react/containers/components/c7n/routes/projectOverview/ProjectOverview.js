@@ -122,6 +122,14 @@ const ProjectOverview = () => {
     setEdit(false);
   }
 
+  function handleReset() {
+    const defaultValues = map(mappings, (item) => item.layout);
+    projectOverviewStore.setInitData(defaultValues);
+    componentsDs.loadData(defaultValues);
+    projectOverviewStore.saveConfig(defaultValues);
+    setEdit(false);
+  }
+
   const renderBtns = () => {
     let btnGroups;
     if (isEdit) {
@@ -139,6 +147,13 @@ const ProjectOverview = () => {
           onClick={hanldeSave}
         >
           保存
+        </Button>,
+        <Button
+          color="primary"
+          className={`${prefixCls}-btnGroups-primary`}
+          onClick={handleReset}
+        >
+          重置工作台
         </Button>,
         <Button
           className={`${prefixCls}-btnGroups-default`}
