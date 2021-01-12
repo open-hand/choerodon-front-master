@@ -257,6 +257,14 @@ const StarTargetPro = observer(() => {
     setEdit(false);
   }
 
+  function handleReset() {
+    const defaultValues = map(mappings, (item) => item.layout);
+    workBenchUseStore.setInitData(defaultValues);
+    componentsDs.loadData(defaultValues);
+    workBenchUseStore.saveConfig(defaultValues);
+    setEdit(false);
+  }
+
   const renderBtns = () => {
     let btnGroups;
     if (isEdit) {
@@ -274,6 +282,13 @@ const StarTargetPro = observer(() => {
           onClick={hanldeSave}
         >
           保存
+        </Button>,
+        <Button
+          color="primary"
+          className={`${prefixCls}-btnGroups-primary`}
+          onClick={handleReset}
+        >
+          重置工作台
         </Button>,
         <Button
           className={`${prefixCls}-btnGroups-default`}
