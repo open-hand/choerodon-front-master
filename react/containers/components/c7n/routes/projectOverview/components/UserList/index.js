@@ -15,7 +15,7 @@ const UserList = () => {
   const clsPrefix = 'c7n-project-overview-user-list';
 
   return (
-    <OverviewWrap height={459}>
+    <OverviewWrap>
       <OverviewWrap.Header title={`在线成员(${projectOverviewStore.getTotalOnlineUser})`} />
       {projectOverviewStore.getTotalOnlineUser ? (
         <Fragment>

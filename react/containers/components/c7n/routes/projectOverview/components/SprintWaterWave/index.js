@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Tooltip, Icon } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import './index.less';
@@ -10,13 +10,16 @@ import EmptyPage from '../EmptyPage';
 import normalToSvg from '../number-font';
 
 const clsPrefix = 'c7n-project-overview-sprint-water-wave';
+
 const SprintWaterWave = observer(() => {
   const { sprintWaterWaveDataSet, projectOverviewStore } = useProjectOverviewStore();
+
   useEffect(() => {
     if (projectOverviewStore.getStaredSprint) {
       sprintWaterWaveDataSet.query();
     }
   }, [projectOverviewStore.getIsFinishLoad]);
+
   function render() {
     if (sprintWaterWaveDataSet.current) {
       const remainingDays = sprintWaterWaveDataSet.current ? sprintWaterWaveDataSet.current.get('remainingDays') : 0;
@@ -26,7 +29,6 @@ const SprintWaterWave = observer(() => {
           <div className={`${clsPrefix}-content-left`}>
             <WaterWave
               height={120}
-              // color="rgba(77, 144, 254, 1)"
               title="剩余时间"
               percent={totalDays && remainingDays > 0 ? ((totalDays - remainingDays) / totalDays) * 100 : 0} // "totalDays": remainingDays
               percentRender={() => (
@@ -78,7 +80,7 @@ const SprintWaterWave = observer(() => {
     </div>
   );
   return (
-    <OverviewWrap height={225}>
+    <OverviewWrap>
       <OverviewWrap.Header title={renderTitle()} />
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
         {render()}

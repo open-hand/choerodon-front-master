@@ -177,7 +177,7 @@ const PipelineChart = () => {
   }
 
   return (
-    <OverviewWrap width="43%" height={302}>
+    <OverviewWrap>
       <OverviewWrap.Header title={renderTitle()} />
       {getContent()}
     </OverviewWrap>

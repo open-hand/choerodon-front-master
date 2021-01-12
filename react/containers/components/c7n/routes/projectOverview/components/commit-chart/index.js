@@ -178,7 +178,7 @@ const CommitChart = () => {
   }
 
   return (
-    <OverviewWrap width="calc(57% - 20px)" height={302} marginRight=".2rem">
+    <OverviewWrap>
       <OverviewWrap.Header title={renderTitle()} />
       {getContent()}
     </OverviewWrap>

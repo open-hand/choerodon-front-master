@@ -163,7 +163,7 @@ const Workload = observer(() => {
     }
   }
   return (
-    <OverviewWrap width="100%" style={{ minHeight: 150 }}>
+    <OverviewWrap>
       <OverviewWrap.Header title={renderTitle()} />
       <OverviewWrap.Content>
         {render()}

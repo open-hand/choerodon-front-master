@@ -1,4 +1,6 @@
-import React, { useState, memo, useMemo, useEffect } from 'react';
+import React, {
+  useState, memo, useMemo, useEffect,
+} from 'react';
 import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
@@ -36,12 +38,12 @@ const DefectChart = observer(() => {
     if (defectChartStore.getChartList) {
       const range = moment.range(projectOverviewStore.getStaredSprint.startDate, moment());
       const days = Array.from(range.by('day'));
-      const maps = new Map(days.map(day => [day.format('MM/DD'), { complete: 0, create: 0 }]));
-      defectChartStore.getChartList.completedList.forEach(obj => {
+      const maps = new Map(days.map((day) => [day.format('MM/DD'), { complete: 0, create: 0 }]));
+      defectChartStore.getChartList.completedList.forEach((obj) => {
         const date = Object.keys(obj)[0].substring(5).replace(/-/g, '/');
         maps.set(date, { complete: Object.values(obj)[0], create: 0 });
       });
-      defectChartStore.getChartList.createdList.forEach(obj => {
+      defectChartStore.getChartList.createdList.forEach((obj) => {
         const date = Object.keys(obj)[0].substring(5).replace(/-/g, '/');
         const map = maps.get(date);
         maps.set(date, { ...map, create: Object.values(obj)[0] });
@@ -50,7 +52,7 @@ const DefectChart = observer(() => {
       const date = [];
       const complete = [];
       const create = [];
-      for (let i = 0; i < chartDataArr.length; i++) {
+      for (let i = 0; i < chartDataArr.length; i += 1) {
         const item = chartDataArr[i];
         date.push(item[0]);
         complete.push(item[1].complete);
@@ -191,13 +193,14 @@ const DefectChart = observer(() => {
           </Spin>
         </OverviewWrap.Content>
       );
-    } else if (projectOverviewStore.getIsFinishLoad) {
-      return <EmptyPage />;// 暂无活跃的冲刺" 
+    }
+    if (projectOverviewStore.getIsFinishLoad) {
+      return <EmptyPage />;// 暂无活跃的冲刺"
     }
     return <LoadingBar display />;
   }
   return (
-    <OverviewWrap width="calc(57% - 20px)" height={302} marginRight=".2rem">
+    <OverviewWrap>
       <OverviewWrap.Header title={renderTitle()} />
       {render()}
     </OverviewWrap>

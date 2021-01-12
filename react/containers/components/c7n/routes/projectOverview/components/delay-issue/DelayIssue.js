@@ -84,7 +84,7 @@ const DelayIssue = observer(() => {
   }, [projectOverviewStore.getIsFinishLoad]);
 
   return (
-    <OverviewWrap width="67%" height={428}>
+    <OverviewWrap>
       <OverviewWrap.Header title="任务延期情况" />
       <OverviewWrap.Content className={`${prefixCls}-content`}>
         <Spin spinning={loading}>
