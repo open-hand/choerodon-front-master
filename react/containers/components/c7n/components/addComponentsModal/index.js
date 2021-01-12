@@ -21,7 +21,7 @@ const AddModal = (props) => {
 
   const [activeItem, setActiveItem] = useState(groupMappings(mappings)[0]);
   const [dis, setDis] = useState(0);
-  const [seletedComponents, setSelectedComponents] = useState('');
+  const [seletedComponents, setSelectedComponents] = useState([]);
 
   useEffect(() => {
 
@@ -32,13 +32,13 @@ const AddModal = (props) => {
     setDis(index);
   }
 
-  function handleSelect(item) {
-    const hasItem = seletedComponents === item.type;
+  function handleSelect(type) {
+    const hasItem = seletedComponents.includes(type);
     if (hasItem) {
-      setSelectedComponents('');
+      setSelectedComponents(seletedComponents.filter((temp) => temp !== type));
       return;
     }
-    setSelectedComponents(item.type);
+    setSelectedComponents(seletedComponents.concat([type]));
   }
 
   const renderMenuItems = () => map(groupMappings(mappings), (item, index) => (
@@ -54,8 +54,9 @@ const AddModal = (props) => {
 
   const renderItems = () => (
     map(activeItem.opts, (item, i) => {
-      const hasItem = seletedComponents === item.type;
-      const isExist = includes(existTypes, item.type);
+      const type = get(item, 'type');
+      const hasItem = seletedComponents.includes(type);
+      const isExist = includes(existTypes, type);
       const itemsClassname = classnames({
         [`${subPrefix}-right-item`]: true,
         [`${subPrefix}-right-item-selected`]: !isExist && hasItem,
@@ -63,9 +64,9 @@ const AddModal = (props) => {
       return (
         <div
           className={itemsClassname}
-          key={get(item, 'type')}
+          key={type}
           role="none"
-          onClick={() => !isExist && handleSelect(item)}
+          onClick={() => !isExist && handleSelect(type)}
         >
           {isExist && <div className={`${subPrefix}-right-item-disabled`} />}
           <div className={`${subPrefix}-right-item-img`}>
