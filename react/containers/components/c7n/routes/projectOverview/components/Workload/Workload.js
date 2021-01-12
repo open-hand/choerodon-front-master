@@ -1,5 +1,8 @@
 import React, { useState, memo, useEffect } from 'react';
-import { Button, Tooltip, Select, Icon } from 'choerodon-ui/pro';
+import {
+  Button, Tooltip, Select, Icon,
+} from 'choerodon-ui/pro';
+import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import { observer } from 'mobx-react-lite';
 import OverviewWrap from '../OverviewWrap';
 import DateTable from './components/DateTable';
@@ -7,7 +10,6 @@ import { useWorkloadStore } from './stores';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
 import './index.less';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 
 const { Option } = Select;
 const showIcons = [
@@ -48,7 +50,7 @@ const Workload = observer(() => {
   const clsPrefix = 'c7n-project-overview-workload';
   const [selectOption, setSelectOption] = useState([]);
   const { workloadStore } = useWorkloadStore();
-  const { projectOverviewStore } = useProjectOverviewStore();
+  const { startedRecord, startSprintDs } = useProjectOverviewStore();
   const TimeIcon = () => (
     <div className={`${clsPrefix}-icon-workTime`}>
       <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
@@ -71,8 +73,8 @@ const Workload = observer(() => {
   };
   /**
    * 检查数据是否是空数据
-   * @param {*} data 
-   * @param {*} exceptKey 
+   * @param {*} data
+   * @param {*} exceptKey
    */
   function checkIsNullData(data, exceptKey) {
     if (!data) {
@@ -86,7 +88,7 @@ const Workload = observer(() => {
     if (!checkIsNullData(data, 'worker')) {
       return (
         <div className={`${clsPrefix}-cell`}>
-          {showIcons.map(item => (
+          {showIcons.map((item) => (
             <div className={`${clsPrefix}-cell-item`}>
               {item.typeCode !== 'workTime' ? (
                 <Icon
@@ -103,9 +105,8 @@ const Workload = observer(() => {
 
         </div>
       );
-    } else {
-      return '';
     }
+    return '';
   };
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
@@ -114,11 +115,11 @@ const Workload = observer(() => {
         <Icon type="help" className={`${clsPrefix}-icon`} />
       </Tooltip>
       {// 若冲刺数据已加载完成 但工作量无数据则不显示
-        projectOverviewStore.getIsFinishLoad && workloadStore.getData ? (
+        startSprintDs.status !== 'loading' && workloadStore.getData ? (
           <Select
             multiple
             // searchable
-            getPopupContainer={triggerNode => triggerNode.parentNode}
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
             style={{ marginLeft: 24 }}
             className="c7n-project-overview-SelectTheme"
             label="选择经办人"
@@ -138,7 +139,7 @@ const Workload = observer(() => {
     </div>
   );
   function render() {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       if (workloadStore.getData) {
         return (
           workloadStore.getData.size > 0
@@ -155,11 +156,10 @@ const Workload = observer(() => {
               />
             ) : <EmptyPage content="暂无数据" />
         );
-      } else {
-        return <LoadingBar display />;
       }
-    } else if (projectOverviewStore.getIsFinishLoad) {
-      return <EmptyPage />; // content="暂无活跃的冲刺" 
+      return <LoadingBar display />;
+    } if (startSprintDs.status !== 'loading') {
+      return <EmptyPage />; // content="暂无活跃的冲刺"
     }
   }
   return (

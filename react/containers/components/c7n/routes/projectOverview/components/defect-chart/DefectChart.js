@@ -15,7 +15,7 @@ import { useProjectOverviewStore } from '../../stores';
 const DefectChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-defect-chart';
   const { defectChartStore } = useDefectChartStore();
-  const { projectOverviewStore } = useProjectOverviewStore();
+  const { startedRecord, startSprintDs } = useProjectOverviewStore();
   const [loading, setLoading] = useState(true);
   const [dataset, setDataset] = useState({ date: [], complete: [], create: [] });
   const renderTitle = () => (
@@ -25,18 +25,18 @@ const DefectChart = observer(() => {
 
   );
   useEffect(() => {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       setLoading(true);
-      defectChartStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId).then(() => {
+      defectChartStore.axiosGetChartData(startedRecord.sprintId).then(() => {
         setLoading(false);
       });
-    } else if (projectOverviewStore.getIsFinishLoad) {
+    } else if (startSprintDs.status !== 'loading') {
       setLoading(false);
     }
-  }, [projectOverviewStore.getIsFinishLoad]);
+  }, [startedRecord]);
   useEffect(() => {
     if (defectChartStore.getChartList) {
-      const range = moment.range(projectOverviewStore.getStaredSprint.startDate, moment());
+      const range = moment.range(startedRecord.startDate, moment());
       const days = Array.from(range.by('day'));
       const maps = new Map(days.map((day) => [day.format('MM/DD'), { complete: 0, create: 0 }]));
       defectChartStore.getChartList.completedList.forEach((obj) => {
@@ -185,7 +185,7 @@ const DefectChart = observer(() => {
     };
   }
   function render() {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       return (
         <OverviewWrap.Content className={`${clsPrefix}-content`}>
           <Spin spinning={loading}>
@@ -194,7 +194,7 @@ const DefectChart = observer(() => {
         </OverviewWrap.Content>
       );
     }
-    if (projectOverviewStore.getIsFinishLoad) {
+    if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;// 暂无活跃的冲刺"
     }
     return <LoadingBar display />;

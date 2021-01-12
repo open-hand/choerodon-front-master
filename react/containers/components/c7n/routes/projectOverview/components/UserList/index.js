@@ -1,6 +1,6 @@
-import React, { Fragment, memo, useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Pagination, Tooltip, Select } from 'choerodon-ui/pro';
+import { Pagination, Tooltip } from 'choerodon-ui/pro';
 import { useProjectOverviewStore } from '../../stores';
 import OverviewWrap from '../OverviewWrap';
 import EmptyPage from '../EmptyPage';
@@ -18,10 +18,12 @@ const UserList = () => {
     <OverviewWrap>
       <OverviewWrap.Header title={`在线成员(${projectOverviewStore.getTotalOnlineUser})`} />
       {projectOverviewStore.getTotalOnlineUser ? (
-        <Fragment>
+        <>
           <div className={`${clsPrefix}-content`}>
             {userListDs.map((record) => {
-              const { imageUrl, loginName, realName, roleNames } = record.toData();
+              const {
+                imageUrl, loginName, realName, roleNames,
+              } = record.toData();
               return (
                 <div className={`${clsPrefix}-item`} key={record.id}>
                   <Tooltip title={`${realName} (${loginName})`} placement="top">
@@ -46,7 +48,7 @@ const UserList = () => {
             })}
           </div>
           {projectOverviewStore.getTotalOnlineUser > 8 ? <Pagination dataSet={userListDs} className={`${clsPrefix}-pagination`} /> : null}
-        </Fragment>
+        </>
       ) : <EmptyPage content="当前暂无数据" />}
     </OverviewWrap>
   );

@@ -1,4 +1,6 @@
-import React, { useState, memo, useMemo, useEffect } from 'react';
+import React, {
+  useState, memo, useMemo, useEffect,
+} from 'react';
 import { Button, Tooltip, Table } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import './index.less';
@@ -11,6 +13,7 @@ import PriorityTag from './components/PriorityTag';
 import StatusTag from './components/StatusTag';
 import EmptyPage from '../EmptyPage';
 import { useProjectOverviewStore } from '../../stores';
+
 const { Column } = Table;
 
 function calcDays(endDate, startDate) {
@@ -21,24 +24,29 @@ const prefixCls = 'c7n-project-overview-delay-issue';
 const DelayIssue = observer(() => {
   const [loading, setLoading] = useState(false);
 
-  const renderSummary = ({ value, text, name, record, dataSet }) => {
-    return (<div className={`${prefixCls}-summaryColumn`}>
+  const renderSummary = ({
+    value, text, name, record, dataSet,
+  }) => (
+    <div className={`${prefixCls}-summaryColumn`}>
       <span className={`${prefixCls}-summaryColumn-issueType`}><IssueType typeCode={record.get('issueTypeVO') && record.get('issueTypeVO').typeCode} /></span>
       <span className={`${prefixCls}-summaryColumn-issueNum`}>{record.get('issueNum')}</span>
       <Tooltip title={text}>
         <span className={`${prefixCls}-summaryColumn-summary`}>{text}</span>
       </Tooltip>
-    </div>)
-  }
+    </div>
+  );
 
-  const renderDelay = ({ value, text, name, record, dataSet }) => {
+  const renderDelay = ({
+    value, text, name, record, dataSet,
+  }) => {
     const { issueEndDate } = record.data;
     let diffDays = 0;
     if (issueEndDate) {
       diffDays = calcDays(moment(), issueEndDate);
     }
-    return (<div className={`${prefixCls}-delayColumn`}>
-      {
+    return (
+      <div className={`${prefixCls}-delayColumn`}>
+        {
           issueEndDate && (
             diffDays > 0 || (diffDays >= -1 || diffDays < 0)) && (
             <div className={`${prefixCls}-delayColumn-${diffDays > 0 ? 'delay' : 'soonDelay'}`}>
@@ -48,10 +56,13 @@ const DelayIssue = observer(() => {
             </div>
           )
       }
-    </div>)
-  }
+      </div>
+    );
+  };
 
-  const renderAssignee = ({ value, text, name, record, dataSet }) => {
+  const renderAssignee = ({
+    value, text, name, record, dataSet,
+  }) => {
     const { realName, loginName, imageUrl } = record.data;
     return (
       <div className={`${prefixCls}-assigneeColumn`}>
@@ -67,35 +78,47 @@ const DelayIssue = observer(() => {
           <span>{`${loginName} ${realName}`}</span>
         </Tooltip>
       </div>
-    )
+    );
   };
 
-  const { delayIssueDs, projectOverviewStore } = useProjectOverviewStore();
+  const { delayIssueDs, startedRecord } = useProjectOverviewStore();
 
   useEffect(() => {
     const loadDelayIssue = async () => {
       setLoading(true);
       await delayIssueDs.query();
       setLoading(false);
-    }
-    if(projectOverviewStore.getStaredSprint) {
+    };
+    if (startedRecord) {
       loadDelayIssue();
     }
-  }, [projectOverviewStore.getIsFinishLoad]);
+  }, [startedRecord]);
 
   return (
     <OverviewWrap>
       <OverviewWrap.Header title="任务延期情况" />
       <OverviewWrap.Content className={`${prefixCls}-content`}>
         <Spin spinning={loading}>
-            {
-              projectOverviewStore.getStaredSprint ? (
+          {
+              startedRecord ? (
                 <Table dataSet={delayIssueDs} queryBar="none">
-                  <Column name="summary" renderer={renderSummary}></Column>
-                  <Column name="delay" width={100} renderer={renderDelay}></Column>
-                  <Column name="assigneeId" width={130} renderer={renderAssignee}></Column>
-                  <Column name="statusVO" width={80} renderer={({value, text, name, record, dataSet}) => <span style={{ display: 'inline-block'}}><StatusTag {...record.get('statusVO')} /></span>} />
-                  <Column name="priorityVO" width={70} renderer={({value, text, name, record, dataSet}) => <span style={{ display: 'inline-block' }}><PriorityTag priority={record.get('priorityVO')}/></span> } />
+                  <Column name="summary" renderer={renderSummary} />
+                  <Column name="delay" width={100} renderer={renderDelay} />
+                  <Column name="assigneeId" width={130} renderer={renderAssignee} />
+                  <Column
+                    name="statusVO"
+                    width={80}
+                    renderer={({
+                      value, text, name, record, dataSet,
+                    }) => <span style={{ display: 'inline-block' }}><StatusTag {...record.get('statusVO')} /></span>}
+                  />
+                  <Column
+                    name="priorityVO"
+                    width={70}
+                    renderer={({
+                      value, text, name, record, dataSet,
+                    }) => <span style={{ display: 'inline-block' }}><PriorityTag priority={record.get('priorityVO')} /></span>}
+                  />
                 </Table>
               ) : (
                 <EmptyPage height={259} />

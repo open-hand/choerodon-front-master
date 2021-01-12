@@ -1,11 +1,12 @@
 import React, { useMemo, useCallback } from 'react';
-import { Button } from 'choerodon-ui/pro';
+import { Button, Modal } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import { WidthProvider, Responsive } from 'react-grid-layout';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
+import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 
-import { get } from 'lodash';
+import { get, filter, map } from 'lodash';
 import {
   Content, Breadcrumb, Page,
 } from '../../../../../index';
@@ -21,6 +22,7 @@ import DeployChart from './components/deploy-chart';
 import CommitChart from './components/commit-chart';
 import DefectChart from './components/defect-chart';
 import PipelineChart from './components/pipeline-chart';
+import mappings from './stores/mappings';
 import { useProjectOverviewStore } from './stores';
 
 import './ProjectOverview.less';
@@ -39,6 +41,7 @@ const ProjectOverview = () => {
 
   const {
     isEdit,
+    setEdit,
   } = projectOverviewStore;
 
   const showDevops = useMemo(() => category === 'GENERAL' || category === 'OPERATIONS', [category]);
@@ -60,17 +63,63 @@ const ProjectOverview = () => {
   const renderBg = useCallback(() => <GridBg selector={`.${prefixCls}-container`} cols={10} style={{ padding: '0' }} />, []);
 
   function handleEditable() {
-    projectOverviewStore.setEdit(true);
+    setEdit(true);
     componentsDs.forEach((record) => {
       record.set('static', false);
     });
   }
 
   function handleCancel() {
-    projectOverviewStore.setEdit(false);
-    componentsDs.forEach((record) => {
-      record.set('static', true);
+    setEdit(false);
+    componentsDs.loadData(projectOverviewStore.initData);
+  }
+
+  function addComponent(type) {
+    const {
+      layout,
+    } = mappings[type];
+
+    const tempCp = {
+      ...layout,
+      x: 0,
+      y: Infinity,
+      static: false,
+    };
+    const tempArr = projectOverviewStore.editLayout;
+    componentsDs.loadData(tempArr.concat([tempCp]));
+  }
+
+  function openAddComponents() {
+    const subPrefix = 'c7ncd-workbench-addModal';
+    const typeArr = map(projectOverviewStore.editLayout, (item) => get(item, 'i'));
+
+    Modal.open({
+      title: '添加卡片',
+      key: Modal.key(),
+      drawer: true,
+      style: {
+        width: '740px',
+      },
+      children: <AddModal
+        subPrefix={subPrefix}
+        existTypes={typeArr}
+        addComponent={addComponent}
+        mappings={mappings}
+      />,
+      className: `${subPrefix}`,
     });
+  }
+
+  function hanldeSave() {
+    const tempData = projectOverviewStore.editLayout.map((data) => {
+      const temp = data;
+      temp.static = true;
+      return temp;
+    });
+    projectOverviewStore.setInitData(tempData);
+    componentsDs.loadData(projectOverviewStore.editLayout);
+    projectOverviewStore.saveConfig(tempData);
+    setEdit(false);
   }
 
   const renderBtns = () => {
@@ -80,14 +129,14 @@ const ProjectOverview = () => {
         <Button
           color="primary"
           className={`${prefixCls}-btnGroups-primary`}
-          // onClick={openAddComponents}
+          onClick={openAddComponents}
         >
           添加卡片
         </Button>,
         <Button
           color="primary"
           className={`${prefixCls}-btnGroups-primary`}
-          // onClick={hanldeSave}
+          onClick={hanldeSave}
         >
           保存
         </Button>,
@@ -120,7 +169,7 @@ const ProjectOverview = () => {
   };
 
   function onLayoutChange(layout, layouts) {
-    console.log(layout);
+    projectOverviewStore.setEditLayout(layout);
   }
 
   const SwitchComponents = (type) => {
@@ -132,13 +181,18 @@ const ProjectOverview = () => {
     return tempComponent;
   };
 
+  function handleDelete(dataGrid) {
+    const tempArr = projectOverviewStore.editLayout;
+    componentsDs.loadData(filter(tempArr, (item) => item.i !== dataGrid.i));
+  }
+
   const generateDOM = useCallback(() => {
     const mainData = componentsDs.toData();
     return (
       mainData.map((dataGrid, i) => (
         <DragCard
           dataGrid={dataGrid}
-          // onDelete={() => handleDelete(dataGrid)}
+          onDelete={() => handleDelete(dataGrid)}
           isEdit={isEdit}
           data-grid={dataGrid}
           key={dataGrid.i}
@@ -190,28 +244,6 @@ const ProjectOverview = () => {
             renderGridLayouts()
           }
         </div>
-        {/* <div className="c7n-project-overview-content">
-          <div className="c7n-project-overview-content-left">
-            {showDevops ? <ServiceInfo /> : null}
-            <BurnDownChart showDevops={showDevops} />
-            <DefectTreatment showDevops={showDevops} />
-          </div>
-          <div className="c7n-project-overview-content-right">
-            <SprintWaterWave />
-            <SprintCount />
-            <UserList />
-          </div>
-        </div>
-        <div className="c7n-project-overview-item">
-          <DefectChart />
-          {showDevops ? <PipelineChart /> : null}
-        </div>
-        {showDevops ? (
-          <div className="c7n-project-overview-item">
-            <CommitChart />
-            <DeployChart />
-          </div>
-        ) : null} */}
       </Content>
     </Page>
   );

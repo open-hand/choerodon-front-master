@@ -1,7 +1,6 @@
 import { filter } from 'lodash';
-import mappings from '../../stores/mappings';
 
-const cardsMappings = [
+const cardsMappings = (mappings) => [
   {
     name: '全部分类',
     key: 'all',

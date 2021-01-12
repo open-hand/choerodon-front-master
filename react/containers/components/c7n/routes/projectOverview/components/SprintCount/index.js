@@ -15,7 +15,7 @@ import EmptyPage from '../EmptyPage';
 
 const clsPrefix = 'c7n-project-overview-sprint-count';
 const SprintCount = observer(() => {
-  const { sprintCountDataSet, projectOverviewStore } = useProjectOverviewStore();
+  const { sprintCountDataSet, startSprintDs, startedRecord } = useProjectOverviewStore();
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>迭代问题统计</span>
@@ -48,12 +48,13 @@ const SprintCount = observer(() => {
     return progressArr;
   };
   useEffect(() => {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       sprintCountDataSet.query();
     }
-  }, [projectOverviewStore.getStaredSprint]);
+  }, [startedRecord]);
+
   function render() {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       return (
         <Spin dataSet={sprintCountDataSet}>
           <OverviewWrap.Content className={`${clsPrefix}-content`}>
@@ -61,11 +62,12 @@ const SprintCount = observer(() => {
           </OverviewWrap.Content>
         </Spin>
       );
-    } if (projectOverviewStore.getIsFinishLoad) {
+    } if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;
     }
     return <LoadingBar display />;
   }
+
   return (
     <OverviewWrap>
       <OverviewWrap.Header titleMarginBottom={12} title={renderTitle()} />

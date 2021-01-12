@@ -1,10 +1,12 @@
 import React, { useState, memo, useEffect } from 'react';
-import { Button, Select, CheckBox, Spin, Tooltip } from 'choerodon-ui/pro';
+import {
+  Button, Select, CheckBox, Spin, Tooltip,
+} from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
-import _ from 'lodash';
+import _, { get } from 'lodash';
 import { useBurnDownChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
@@ -17,7 +19,7 @@ const { Option } = Select;
 const BurnDownChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-burn-down-chart';
   const { burnDownChartStore, showDevops } = useBurnDownChartStore();
-  const { projectOverviewStore } = useProjectOverviewStore();
+  const { startedRecord, startSprintDs } = useProjectOverviewStore();
   const [loading, setLoading] = useState(true);
   const [xAxis, setXAxis] = useState([]);
   const [yAxis, setYAxis] = useState([]);
@@ -29,13 +31,13 @@ const BurnDownChart = observer(() => {
     // 是否显示非工作日
     const range = moment.range(start, end);
     const days = Array.from(range.by('day'));
-    const result = days.map(day => day.format('YYYY-MM-DD'));
-    const rest = days.filter(day => burnDownChartStore.getRestDays.includes(day.format('YYYY-MM-DD'))).map(day => day.format('YYYY-MM-DD'));
+    const result = days.map((day) => day.format('YYYY-MM-DD'));
+    const rest = days.filter((day) => burnDownChartStore.getRestDays.includes(day.format('YYYY-MM-DD'))).map((day) => day.format('YYYY-MM-DD'));
     return { result, rest };
   }
 
   function loadChartCoordinate() {
-    burnDownChartStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId, selectValue).then((res) => {
+    burnDownChartStore.axiosGetChartData(get(startedRecord, 'sprintId'), selectValue).then((res) => {
       const keys = Object.keys(res.coordinate);
       let [minDate, maxDate] = [keys[0], keys[0]];
       for (let a = 1, len = keys.length; a < len; a += 1) {
@@ -49,7 +51,7 @@ const BurnDownChart = observer(() => {
       // 如果后端给的最大日期小于结束日期
       let allDate;
       let rest = [];
-      const { endDate } = projectOverviewStore.getStaredSprint;
+      const { endDate } = startedRecord;
       /* eslint-disable */
       if (moment(maxDate).isBefore(endDate.split(' ')[0])) {
         const result = getBetweenDateStr(minDate, endDate.split(' ')[0]);
@@ -120,17 +122,18 @@ const BurnDownChart = observer(() => {
     });
   }
   useEffect(() => {
-    if (projectOverviewStore.getStaredSprint) {
-      burnDownChartStore.axiosGetRestDays(projectOverviewStore.getStaredSprint.sprintId).then(res => {
+    if (startedRecord) {
+      burnDownChartStore.axiosGetRestDays(startedRecord.sprintId).then(res => {
         burnDownChartStore.setRestDays(res.map(date => moment(date).format('YYYY-MM-DD')));
         loadChartCoordinate();
       });
-    } else if (projectOverviewStore.getIsFinishLoad) {
+    } else if (startSprintDs.status !== 'loading') {
       setLoading(false);
     }
-  }, [projectOverviewStore.getIsFinishLoad]);
+  }, [startedRecord]);
+
   useEffect(() => {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       loadChartCoordinate();
     }
 
@@ -304,9 +307,9 @@ const BurnDownChart = observer(() => {
   }
 
   function render() {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       return <Echart option={getOption()} style={{ height: showDevops ? '300px' : '380px' }} />
-    } else if (projectOverviewStore.getIsFinishLoad) {
+    } else if (startSprintDs.status !== 'loading') {
       return <EmptyPage height={259} />;
     }
     return '';
@@ -314,7 +317,7 @@ const BurnDownChart = observer(() => {
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>燃尽图</span>
-      {projectOverviewStore.getStaredSprint ? <React.Fragment>
+      {startedRecord ? <React.Fragment>
         <Select
           getPopupContainer={triggerNode => triggerNode.parentNode}
           style={{ width: 100, marginLeft: 34 }}
