@@ -9,16 +9,24 @@ function handleDisabled({
     setRequireModule({ dataSet, selected: isSelected, categoryCodes });
   }
   if (record.get('code') === categoryCodes.program) {
-    const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.agile);
-    findRecord && findRecord.setState('disabled', isSelected);
+    if (!record.getState('isProgram')) {
+      const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.agile);
+      findRecord && findRecord.setState('disabled', isSelected);
+    }
     setRequireModule({ dataSet, selected: isSelected, categoryCodes });
   }
 }
 
 function setRequireModule({ dataSet, selected, categoryCodes }) {
   const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.require);
+  if (!findRecord) {
+    return;
+  }
   if (selected) {
-    findRecord && findRecord.setState('disabled', false);
+    findRecord.setState('disabled', false);
+    if (findRecord.getState('isRequire') && !findRecord.getState('isEdit')) {
+      dataSet.select(findRecord);
+    }
   } else {
     const codeArr = [categoryCodes.agile, categoryCodes.program];
     const hasSelected = dataSet.some((eachRecord) => (codeArr.includes(eachRecord.get('code')) && eachRecord.isSelected));

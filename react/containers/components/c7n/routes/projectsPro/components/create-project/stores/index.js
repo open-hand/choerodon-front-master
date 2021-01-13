@@ -67,6 +67,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       if (projectData && projectData.categories && projectData.categories.length) {
         let isProgram = false;
         let isProgramProject = false;
+        let isRequire = false;
         forEach(projectData.categories, async ({ code: categoryCode }) => {
           if (categoryCode === categoryCodes.program) {
             isProgram = true;
@@ -74,11 +75,20 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           if (categoryCode === categoryCodes.programProject) {
             isProgramProject = true;
           }
+          if (categoryCode === categoryCodes.require) {
+            isRequire = true;
+          }
         });
         categoryDs.forEach(async (categoryRecord) => {
           const currentCode = categoryRecord.get('code');
           if (some(projectData.categories, ['code', currentCode])) {
             categoryDs.select(categoryRecord);
+          }
+          if (currentCode === categoryCodes.program && isProgram) {
+            categoryRecord.setState('isProgram', true);
+          }
+          if (currentCode === categoryCodes.require && isRequire) {
+            categoryRecord.setState('isRequire', true);
           }
           if ((currentCode === categoryCodes.agile && isProgramProject)
             || (currentCode === categoryCodes.program && isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))
