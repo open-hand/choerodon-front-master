@@ -60,7 +60,7 @@ const DeployChart = () => {
         top: 33,
         left: 5,
         right: 18,
-        bottom: xAxis.length > 0 ? 70 : 76,
+        bottom: xAxis.length ? 10 : 16,
         containLabel: true,
       },
       xAxis: {
@@ -147,7 +147,7 @@ const DeployChart = () => {
     if (!startedRecord) {
       return <EmptyPage />;
     }
-    return <Echart option={getOption()} />;
+    return <Echart option={getOption()} style={{ height: '100%' }} />;
   }
 
   return (

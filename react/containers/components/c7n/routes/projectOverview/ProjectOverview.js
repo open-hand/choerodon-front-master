@@ -6,7 +6,9 @@ import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 
-import { get, filter, map, forEach } from 'lodash';
+import {
+  get, filter, map, forEach, some,
+} from 'lodash';
 import {
   Content, Breadcrumb, Page,
 } from '../../../../../index';
@@ -32,6 +34,7 @@ const ProjectOverview = () => {
     AppState: {
       currentMenuType: {
         category,
+        categories,
       },
     },
     prefixCls,
@@ -44,7 +47,7 @@ const ProjectOverview = () => {
     setEdit,
   } = projectOverviewStore;
 
-  const showDevops = useMemo(() => category === 'GENERAL' || category === 'OPERATIONS', [category]);
+  const showDevops = useMemo(() => some(categories, ['code', 'N_DEVOPS']), [categories]);
 
   const ComponetsObjs = useMemo(() => ({
     sprintNotDone: <SprintWaterWave />,

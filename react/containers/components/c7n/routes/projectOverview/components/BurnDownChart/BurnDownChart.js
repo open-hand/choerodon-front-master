@@ -195,7 +195,7 @@ const BurnDownChart = observer(() => {
       },
       grid: {
         top: 40,
-        bottom: 50,
+        bottom: 10,
         left: 5,
         right: 16,
         containLabel: true,
@@ -308,7 +308,7 @@ const BurnDownChart = observer(() => {
 
   function render() {
     if (startedRecord) {
-      return <Echart option={getOption()} style={{ height: showDevops ? '300px' : '380px' }} />
+      return <Echart option={getOption()} style={{ height: '100%' }} />
     } else if (startSprintDs.status !== 'loading') {
       return <EmptyPage height={259} />;
     }
