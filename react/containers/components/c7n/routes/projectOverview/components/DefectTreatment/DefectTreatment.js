@@ -52,7 +52,7 @@ const DefectTreatment = observer(() => {
         left: 30,
         right: 8,
         // top: 37,
-        bottom: show ? 61 : 35,
+        bottom: show ? 30 : 20,
       },
       tooltip: {
         backgroundColor: 'rgba(0,0,0,0.75)',
@@ -166,7 +166,7 @@ const DefectTreatment = observer(() => {
           <Spin spinning={loading}>
             {
               defectTreatmentStore.getChartList && !loading && defectTreatmentStore.getChartList.length > 0
-                ? <Echart style={{ width: '100%', height: showDevops ? '300px' : '380px' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
+                ? <Echart style={{ width: '100%', height: '100%' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
             }
 
           </Spin>

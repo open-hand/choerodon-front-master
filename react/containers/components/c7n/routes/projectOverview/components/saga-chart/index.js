@@ -152,7 +152,7 @@ const SagaChart = () => {
       <Spin spinning={asgardDs.status === 'loading'}>
         <Echart
           option={getOption()}
-          style={{ height: '280px' }}
+          style={{ height: '100%' }}
         />
       </Spin>
     </OverviewWrap>

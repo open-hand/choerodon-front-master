@@ -96,7 +96,7 @@ const DefectChart = observer(() => {
       grid: {
         left: 5,
         right: 19,
-        bottom: 42,
+        bottom: 10,
         containLabel: true,
       },
       xAxis: {
@@ -189,7 +189,7 @@ const DefectChart = observer(() => {
       return (
         <OverviewWrap.Content className={`${clsPrefix}-content`}>
           <Spin spinning={loading}>
-            <Echart option={getOptions()} />
+            <Echart option={getOptions()} style={{ height: '100%' }} />
           </Spin>
         </OverviewWrap.Content>
       );
