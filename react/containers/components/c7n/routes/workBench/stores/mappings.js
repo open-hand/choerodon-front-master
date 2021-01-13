@@ -66,14 +66,14 @@ const componentsObj = {
   // 我的关注
   myStar: {
     layout: {
-      x: 0,
-      y: 11,
       h: 4,
       w: 4,
       minH: 3,
       minW: 4,
       static: true,
       i: 'myStar',
+      x: 0,
+      y: 6,
     },
     name: 'myStar',
     type: 'myStar',
@@ -86,7 +86,7 @@ const componentsObj = {
   myDefect: {
     layout: {
       x: 4,
-      y: 11,
+      y: 6,
       h: 4,
       w: 5,
       minH: 3,
@@ -145,7 +145,7 @@ const componentsObj = {
   quickLink: {
     layout: {
       x: 0,
-      y: 6,
+      y: 10,
       h: 5,
       w: 4,
       minH: 3,
@@ -165,7 +165,7 @@ const componentsObj = {
   doc: {
     layout: {
       x: 4,
-      y: 6,
+      y: 10,
       h: 5,
       w: 5,
       minH: 4,
