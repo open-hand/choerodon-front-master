@@ -178,6 +178,9 @@ const CreateProject = observer(() => {
     if (categoryRecord.getState('disabled')) {
       return;
     }
+    if (categoryRecord.get('code') === categoryCodes.require) {
+      categoryRecord.setState('isEdit', true);
+    }
     if (categoryRecord.isSelected) {
       categoryDs.unSelect(categoryRecord);
     } else {
