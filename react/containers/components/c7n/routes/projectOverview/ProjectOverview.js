@@ -205,7 +205,9 @@ const ProjectOverview = () => {
 
   function handleDelete(dataGrid) {
     const tempArr = projectOverviewStore.editLayout;
-    componentsDs.loadData(filter(tempArr, (item) => item.i !== dataGrid.i));
+    const filterData = filter(tempArr, (item) => item.i !== dataGrid.i);
+    componentsDs.loadData(filterData);
+    projectOverviewStore.setEditLayout(filterData);
   }
 
   const generateDOM = useCallback(() => {

@@ -14,6 +14,9 @@ export default (({ projectId, loadStartedSprintBlock, projectOverviewStore }) =>
       transformResponse: (value) => {
         try {
           const res = JSONbig.parse(value);
+          if (res && res.failed) {
+            return res;
+          }
           return res.find((sprint) => sprint.statusCode === 'started');
         } catch (error) {
           return value;
