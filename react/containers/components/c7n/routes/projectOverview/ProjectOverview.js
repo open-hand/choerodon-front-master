@@ -92,8 +92,8 @@ const ProjectOverview = () => {
   }
 
   function handleCancel() {
-    setEdit(false);
     componentsDs.loadData(projectOverviewStore.initData);
+    setEdit(false);
   }
 
   function addComponent(types) {
@@ -227,9 +227,9 @@ const ProjectOverview = () => {
 
   const generateDOM = useMemo(() => componentsDs.map((record) => (
     <DragCard
+      record={record}
       onDelete={() => handleDelete(record)}
       isEdit={isEdit}
-      data-grid={record.toData()}
       key={record.get('i')}
     >
       {SwitchComponents(record.get('i'))}
@@ -241,6 +241,7 @@ const ProjectOverview = () => {
     const tempObj = {
       className: `${prefixCls}-layout`,
       onLayoutChange,
+      layout: componentsDs.toData(),
       breakpoints: 1200,
       margin: [18, 18],
       resizeHandles: ['se'],

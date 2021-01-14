@@ -38,7 +38,6 @@ const StarTargetPro = observer(() => {
     initData,
   } = workBenchUseStore;
 
-  const typeArr = useMemo(() => map(componentsDs.toData(), (item) => get(item, 'i')), [componentsDs]);
 
   const handleClickItem = (s) => {
     const tempId = get(s, 'id');
@@ -202,8 +201,8 @@ const StarTargetPro = observer(() => {
   }
 
   function handleCancel() {
+    componentsDs.loadData(workBenchUseStore.initData);
     setEdit(false);
-    componentsDs.loadData(initData);
   }
 
   function addComponent(types) {
@@ -222,6 +221,7 @@ const StarTargetPro = observer(() => {
 
   function openAddComponents() {
     const subPrefix = 'c7ncd-workbench-addModal';
+    const typeArr = map(componentsDs.toData(), (item) => get(item, 'i'));
     Modal.open({
       title: '添加卡片',
       key: Modal.key(),
