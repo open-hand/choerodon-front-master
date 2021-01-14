@@ -4,8 +4,10 @@ function handleDisabled({
   dataSet, record, categoryCodes, isSelected,
 }) {
   if (record.get('code') === categoryCodes.agile) {
-    const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.program);
-    findRecord && findRecord.setState('disabled', isSelected);
+    if (!record.getState('isAgile')) {
+      const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.program);
+      findRecord && findRecord.setState('disabled', isSelected);
+    }
     setRequireModule({ dataSet, selected: isSelected, categoryCodes });
   }
   if (record.get('code') === categoryCodes.program) {
@@ -38,6 +40,7 @@ function setRequireModule({ dataSet, selected, categoryCodes }) {
 }
 
 export default ({ organizationId, categoryCodes }) => ({
+  autoCreate: false,
   autoQuery: false,
   selection: 'multiple',
   paging: false,

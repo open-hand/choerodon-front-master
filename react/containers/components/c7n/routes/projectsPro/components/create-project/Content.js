@@ -21,6 +21,7 @@ const { Option } = Select;
 const CreateProject = observer(() => {
   const {
     formDs, categoryDs, AppState, intl, prefixCls, modal, refresh, categoryCodes, openSagaDetails,
+    intl: { formatMessage }, intlPrefix,
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
 
@@ -233,20 +234,28 @@ const CreateProject = observer(() => {
   })), []);
 
   const getTooltipContent = useCallback((categoryRecord) => {
+    const code = categoryRecord.get('code');
     if (!categoryRecord.getState('disabled')) {
       return '';
     }
-    if (categoryRecord.get('code') === categoryCodes.require) {
+    if (code === categoryCodes.require) {
       return '请先选择【敏捷管理】或【敏捷项目群】项目类型';
     }
-    if (!categoryRecord.isSelected) {
+    if (categoryRecord.isSelected) {
+      if (code === categoryCodes.program) {
+        return '项目群中存在子项目，无法移除此项目类型';
+      }
+      if (code === categoryCodes.agile) {
+        return '敏捷管理项目已加入项目群，无法移除此项目类型';
+      }
+    } else {
+      if (code === categoryCodes.program && !some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.agile)) {
+        return '【敏捷管理】类型无法修改为【敏捷项目群】类型';
+      }
+      if (code === categoryCodes.agile && !some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.program)) {
+        return '【敏捷项目群】类型无法修改为【敏捷管理】类型';
+      }
       return '不可同时选择【敏捷管理】与【规模化敏捷项目群】项目类型';
-    }
-    if (categoryRecord.get('code') === categoryCodes.program) {
-      return '项目群中存在子项目，无法移除此项目类型';
-    }
-    if (categoryRecord.get('code') === categoryCodes.agile) {
-      return '敏捷管理项目已加入项目群，无法移除此项目类型';
     }
     return '';
   }, []);

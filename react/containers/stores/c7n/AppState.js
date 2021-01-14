@@ -30,6 +30,8 @@ class AppState {
 
   @observable isUser = false;
 
+  @observable modules = []; // 后端已安装模块
+
   @computed
   get getCurrentTheme() {
     return this.currentTheme;
@@ -161,6 +163,11 @@ class AppState {
     return this.isUser;
   }
 
+  @computed
+  get currentModules() {
+    return this.modules.slice();
+  }
+
   loadUserInfo = () => axios.get('iam/choerodon/v1/users/self').then((res) => {
     res = {
       ...res,
@@ -176,6 +183,17 @@ class AppState {
   loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting');
 
   checkEnterpriseInfo = () => axios.get('/iam/choerodon/v1/enterprises/default');
+
+  loadModules = async () => {
+    try {
+      const res = await axios.get('/iam/choerodon/v1/servers');
+      if (res && !res.failed) {
+        this.modules = res;
+      }
+    } catch (e) {
+      //
+    }
+  }
 }
 
 const appState = new AppState();
