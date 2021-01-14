@@ -1,9 +1,9 @@
 import React, {
-  useCallback, useMemo,
+  useCallback, useMemo, useState, useEffect,
 } from 'react';
-import { WidthProvider, Responsive } from 'react-grid-layout';
+import ResponsiveReactGridLayout from 'react-grid-layout';
 import {
-  map, get, filter, omit, forEach, findIndex,
+  map, get, filter,
 } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import DragCard from '@/containers/components/c7n/components/dragCard';
@@ -22,6 +22,8 @@ import QuestionFocus from './components/question-focus';
 import QuestionBug from './components/question-bug';
 
 import './WorkBench.less';
+
+let observerLayout;
 
 const ComponetsObjs = {
   starTarget: <StarTargetPro />,
@@ -47,13 +49,31 @@ const WorkBench = () => {
     isEdit,
   } = workBenchUseStore;
 
+  const [layOutWidth, setWidth] = useState(0);
+
+  useEffect(() => {
+    if (!observerLayout) {
+      const domTem = document.querySelector(`.${prefixCls}-container`);
+      if (domTem) {
+        new ResizeObserver((entries) => {
+          const dom = get(entries[0], 'target');
+          const width = get(dom, 'offsetWidth');
+          setWidth(width);
+        }).observe(domTem);
+      }
+    }
+  }, []);
+
+  useEffect(() => function () {
+    observerLayout && observerLayout.disconnect();
+  });
+
   function onLayoutChange(layouts, tempLayouts) {
-    workBenchUseStore.setEditLayout(layouts);
+    componentsDs.loadData(layouts);
   }
 
-  function handleDelete(dataGrid) {
-    const tempArr = workBenchUseStore.editLayout;
-    componentsDs.loadData(filter(tempArr, (item) => item.i !== dataGrid.i));
+  function handleDelete(record) {
+    componentsDs.remove(record);
   }
 
   const SwitchComponents = (type) => {
@@ -67,43 +87,38 @@ const WorkBench = () => {
 
   const renderBg = useCallback(() => <GridBg selector={`.${prefixCls}-container`} />, []);
 
-  const generateDOM = useMemo(() => {
-    const mainData = componentsDs.toData();
-    return (
-      mainData.map((dataGrid, i) => (
-        <DragCard
-          dataGrid={dataGrid}
-          onDelete={() => handleDelete(dataGrid)}
-          isEdit={isEdit}
-          data-grid={dataGrid}
-          key={dataGrid.i}
-        >
-          {SwitchComponents(get(dataGrid, 'i'))}
-        </DragCard>
-      ))
-    );
-  }, [componentsDs, handleDelete, isEdit]);
+  const generateDOM = useMemo(() => (
+    componentsDs.map((record) => (
+      <DragCard
+        record={record}
+        onDelete={() => handleDelete(record)}
+        isEdit={isEdit}
+        data-grid={record.toData()}
+        key={record.get('i')}
+        isStatic={record.get('i') === 'starTarget'}
+      >
+        {SwitchComponents(record.get('i'))}
+      </DragCard>
+    ))
+  ), [componentsDs, handleDelete, isEdit]);
 
   const renderGridLayouts = () => {
     const tempObj = {
       className: `${prefixCls}-layout`,
       onLayoutChange,
-      breakpoints: {
-        lg: 1200,
-      },
+      breakpoints: 1200,
       margin: [18, 18],
       resizeHandles: ['se'],
-      cols: {
-        lg: 12,
-      },
+      cols: 12,
       measureBeforeMount: true,
-      containerPadding: [4, 0],
+      containerPadding: [0, 0],
       useCSSTransformss: true,
       rowHeight: 100,
       shouldComponentUpdate: true,
+      width: layOutWidth,
+      isDraggable: isEdit,
+      isResizable: isEdit,
     };
-
-    const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
     return (
       <ResponsiveReactGridLayout

@@ -16,11 +16,6 @@ export default function useStore(history) {
       this.initData = value;
     },
 
-    editLayout: [],
-    setEditLayout(value) {
-      this.editLayout = value;
-    },
-
     activeStarProject: null,
     get getActiveStarProject() {
       return this.activeStarProject;
@@ -34,23 +29,6 @@ export default function useStore(history) {
     isEdit: false,
     setEdit(value) {
       this.isEdit = value;
-    },
-
-    getLayoutsComponents(data, isStaic) {
-      return map(data, (item) => {
-        const i = get(item, 'i');
-        const {
-          layout,
-          ...rest
-        } = mappings[i];
-        return {
-          ...rest,
-          layout: {
-            ...item,
-            static: isStaic || i === 'starTarget',
-          },
-        };
-      });
     },
 
     handleClickProject(data) {

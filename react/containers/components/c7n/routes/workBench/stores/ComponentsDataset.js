@@ -23,11 +23,9 @@ export default ({
             res = defaultValues;
           }
           workBenchUseStore.setInitData(res);
-          workBenchUseStore.setEditLayout(res);
-
           return res;
         } catch (error) {
-          return defaultValues;
+          throw new Error(error);
         }
       },
     }),
