@@ -4,63 +4,27 @@ import React, {
 import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
-import moment from 'moment';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import OverviewWrap from '../OverviewWrap';
-import { useDefectChartStore } from './stores';
 import './index.less';
 import EmptyPage from '../EmptyPage';
 import { useProjectOverviewStore } from '../../stores';
 
 const DefectChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-defect-chart';
-  const { defectChartStore } = useDefectChartStore();
-  const { startedRecord, startSprintDs } = useProjectOverviewStore();
-  const [loading, setLoading] = useState(true);
-  const [dataset, setDataset] = useState({ date: [], complete: [], create: [] });
+  const { startedRecord, startSprintDs, defectCountDs } = useProjectOverviewStore();
+
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>缺陷累积趋势图</span>
     </div>
-
   );
   useEffect(() => {
     if (startedRecord) {
-      setLoading(true);
-      defectChartStore.axiosGetChartData(startedRecord.sprintId).then(() => {
-        setLoading(false);
-      });
-    } else if (startSprintDs.status !== 'loading') {
-      setLoading(false);
+      defectCountDs.query();
     }
-  }, [startedRecord]);
-  useEffect(() => {
-    if (defectChartStore.getChartList) {
-      const range = moment.range(startedRecord.startDate, moment());
-      const days = Array.from(range.by('day'));
-      const maps = new Map(days.map((day) => [day.format('MM/DD'), { complete: 0, create: 0 }]));
-      defectChartStore.getChartList.completedList.forEach((obj) => {
-        const date = Object.keys(obj)[0].substring(5).replace(/-/g, '/');
-        maps.set(date, { complete: Object.values(obj)[0], create: 0 });
-      });
-      defectChartStore.getChartList.createdList.forEach((obj) => {
-        const date = Object.keys(obj)[0].substring(5).replace(/-/g, '/');
-        const map = maps.get(date);
-        maps.set(date, { ...map, create: Object.values(obj)[0] });
-      });
-      const chartDataArr = Array.from(maps);
-      const date = [];
-      const complete = [];
-      const create = [];
-      for (let i = 0; i < chartDataArr.length; i += 1) {
-        const item = chartDataArr[i];
-        date.push(item[0]);
-        complete.push(item[1].complete);
-        create.push(item[1].create);
-      }
-      setDataset({ date, complete, create });
-    }
-  }, [defectChartStore.getChartList]);
+  }, [defectCountDs, startedRecord]);
+
   function getOptions() {
     return {
       tooltip: {
@@ -86,7 +50,7 @@ const DefectChart = observer(() => {
         }],
       },
       dataset: {
-        source: dataset,
+        source: defectCountDs.toData(),
         dimensions: [
           { name: 'date', type: 'ordinal' },
           { name: 'create', type: 'number' },
@@ -188,7 +152,7 @@ const DefectChart = observer(() => {
     if (startedRecord) {
       return (
         <OverviewWrap.Content className={`${clsPrefix}-content`}>
-          <Spin spinning={loading}>
+          <Spin spinning={defectCountDs.status === 'loading'}>
             <Echart option={getOptions()} style={{ height: '100%' }} />
           </Spin>
         </OverviewWrap.Content>
@@ -204,7 +168,6 @@ const DefectChart = observer(() => {
       <OverviewWrap.Header title={renderTitle()} />
       {render()}
     </OverviewWrap>
-
   );
 });
 

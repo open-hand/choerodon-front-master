@@ -12,17 +12,16 @@ import SprintWaterWaveDataSet from './SprintWaterWaveDataSet';
 import UserListDataSet from './UserListDataSet';
 import AppServiceDataSet from './AppServiceDataSet';
 import EnvDataSet from './EnvDataSet';
-import AsgardDataSet from './AsgardDataSet';
 import CommitDataSet from './CommitDataSet';
 import DeployDataSet from './DeployDataSet';
 import PipelineDataSet from './PipelineDataSet';
-import DelayIssueDataSet from './DelayIssueDataSet';
 import mappings from './mappings';
 import ComponentsDataset from './ComponentsDataSet';
 import StartSprintDataSet from './StartSprintDataSet';
 import ChartDataSet from './ChartDataSet';
 import ChartDatesDataSet from './ChartDatesDataSet';
 import defectTreatmentDataSet from './DefectTreatmentDataSet';
+import DefectCountDataSet from './DefectCountDataSet';
 
 const Store = createContext();
 
@@ -57,13 +56,15 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const sprintCountDataSet = useMemo(() => new DataSet(SprintCountDataSet({ projectId, sprint: startedRecord })), [projectId, startedRecord]);
   const sprintWaterWaveDataSet = useMemo(() => new DataSet(SprintWaterWaveDataSet({ projectId, sprint: startedRecord })), [projectId, startedRecord]);
+  // 在线成员
   const userListDs = useMemo(() => new DataSet(UserListDataSet({ projectId })), [projectId]);
   const appServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ projectId })), [projectId]);
   const envDs = useMemo(() => new DataSet(EnvDataSet({ projectId })), [projectId]);
-  const delayIssueDs = useMemo(() => new DataSet(DelayIssueDataSet({ projectId, organizationId })), [organizationId, projectId]);
 
   // 缺陷提出和解决ds
   const defectTreatDs = useMemo(() => new DataSet(defectTreatmentDataSet({ startedRecord, projectId })), [projectId, startedRecord]);
+  // 缺陷累积趋势ds
+  const defectCountDs = useMemo(() => new DataSet(DefectCountDataSet({ projectId, startedRecord })), [projectId, startedRecord]);
   const charDatesDs = useMemo(() => new DataSet(ChartDatesDataSet({ organizationId, projectId, startedRecord })), [organizationId, projectId, startedRecord]);
   const chartDs = useMemo(() => new DataSet(ChartDataSet({ projectId, startedRecord, charDatesDs })), [charDatesDs, projectId, startedRecord]);
 
@@ -87,12 +88,12 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     commitDs,
     deployDs,
     pipelineDs,
-    delayIssueDs,
     componentsDs,
     startedRecord,
     chartDs,
     charDatesDs,
     defectTreatDs,
+    defectCountDs,
   };
 
   return (
