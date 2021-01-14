@@ -84,8 +84,11 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           if (some(projectData.categories, ['code', currentCode])) {
             categoryDs.select(categoryRecord);
           }
-          if (currentCode === categoryCodes.program && isProgram) {
+          if (currentCode === categoryCodes.program && (projectData.beforeCategory || '').includes(categoryCodes.program)) {
             categoryRecord.setState('isProgram', true);
+          }
+          if (currentCode === categoryCodes.agile && (projectData.beforeCategory || '').includes(categoryCodes.agile)) {
+            categoryRecord.setState('isAgile', true);
           }
           if (currentCode === categoryCodes.require && isRequire) {
             categoryRecord.setState('isRequire', true);
@@ -105,6 +108,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   const value = {
     ...props,
     prefixCls: 'c7ncd-project-create',
+    intlPrefix: 'c7ncd.project',
     categoryCodes,
     organizationId,
     formDs,

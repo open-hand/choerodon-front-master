@@ -121,6 +121,7 @@ export default class Index extends React.Component {
       await this.checkEnterprise();
     }
     HeaderStore.axiosGetRoles();
+    AppState.loadModules();
     await AppState.loadUserInfo();
     if (HAS_AGILE_PRO && !window._env_.BUSINESS) {
       const hasConfirmed = localStorage.getItem('hasConfirmed');
@@ -130,7 +131,7 @@ export default class Index extends React.Component {
       }
     }
     this.setState({ loading: false });
-  }
+  };
 
   isInOutward = (pathname) => {
     // eslint-disable-next-line no-underscore-dangle
