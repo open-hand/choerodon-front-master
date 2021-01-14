@@ -210,22 +210,18 @@ const ProjectOverview = () => {
     projectOverviewStore.setEditLayout(filterData);
   }
 
-  const generateDOM = useCallback(() => {
-    const mainData = componentsDs.toData();
-    return (
-      mainData.map((dataGrid, i) => (
-        <DragCard
-          dataGrid={dataGrid}
-          onDelete={() => handleDelete(dataGrid)}
-          isEdit={isEdit}
-          data-grid={dataGrid}
-          key={dataGrid.i}
-        >
-          {SwitchComponents(get(dataGrid, 'i'))}
-        </DragCard>
-      ))
-    );
-  }, [componentsDs, isEdit]);
+  const generateDOM = useMemo(() => componentsDs.toData().map((dataGrid, i) => (
+    <DragCard
+      dataGrid={dataGrid}
+      onDelete={() => handleDelete(dataGrid)}
+      isEdit={isEdit}
+      data-grid={dataGrid}
+      key={dataGrid.i}
+    >
+      {SwitchComponents(get(dataGrid, 'i'))}
+    </DragCard>
+  )),
+  [componentsDs, handleDelete, isEdit]);
 
   const renderGridLayouts = () => {
     const tempObj = {
@@ -252,7 +248,7 @@ const ProjectOverview = () => {
       <ResponsiveReactGridLayout
         {...tempObj}
       >
-        {generateDOM()}
+        {generateDOM}
       </ResponsiveReactGridLayout>
     );
   };

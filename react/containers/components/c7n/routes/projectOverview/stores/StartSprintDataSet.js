@@ -17,9 +17,10 @@ export default (({ projectId, loadStartedSprintBlock, projectOverviewStore }) =>
           if (res && res.failed) {
             return res;
           }
-          return res.find((sprint) => sprint.statusCode === 'started');
+          const mainData = res.find((sprint) => sprint.statusCode === 'started');
+          return mainData;
         } catch (error) {
-          return value;
+          throw new Error(error);
         }
       },
     },

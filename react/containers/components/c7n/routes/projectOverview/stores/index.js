@@ -5,7 +5,7 @@ import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
-import { map } from 'lodash';
+import { get } from 'lodash';
 import SprintCountDataSet from './SprintCountDataSet';
 import useStore from './useStore';
 import SprintWaterWaveDataSet from './SprintWaterWaveDataSet';
@@ -20,6 +20,9 @@ import DelayIssueDataSet from './DelayIssueDataSet';
 import mappings from './mappings';
 import ComponentsDataset from './ComponentsDataSet';
 import StartSprintDataSet from './StartSprintDataSet';
+import ChartDataSet from './ChartDataSet';
+import ChartDatesDataSet from './ChartDatesDataSet';
+import defectTreatmentDataSet from './DefectTreatmentDataSet';
 
 const Store = createContext();
 
@@ -54,11 +57,22 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const sprintCountDataSet = useMemo(() => new DataSet(SprintCountDataSet({ projectId, sprint: startedRecord })), [projectId, startedRecord]);
   const sprintWaterWaveDataSet = useMemo(() => new DataSet(SprintWaterWaveDataSet({ projectId, sprint: startedRecord })), [projectId, startedRecord]);
-  const userListDs = useMemo(() => new DataSet(UserListDataSet({ projectId, projectOverviewStore })), [projectId]);
+  const userListDs = useMemo(() => new DataSet(UserListDataSet({ projectId })), [projectId]);
   const appServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ projectId })), [projectId]);
   const envDs = useMemo(() => new DataSet(EnvDataSet({ projectId })), [projectId]);
-  const asgardDs = useMemo(() => new DataSet(AsgardDataSet({ projectId })), [projectId]);
-  const delayIssueDs = useMemo(() => new DataSet(DelayIssueDataSet({ projectId, organizationId })));
+  const delayIssueDs = useMemo(() => new DataSet(DelayIssueDataSet({ projectId, organizationId })), [organizationId, projectId]);
+
+  // 缺陷提出和解决ds
+  const defectTreatDs = useMemo(() => new DataSet(defectTreatmentDataSet({ startedRecord, projectId })), [projectId, startedRecord]);
+  const charDatesDs = useMemo(() => new DataSet(ChartDatesDataSet({ organizationId, projectId, startedRecord })), [organizationId, projectId, startedRecord]);
+  const chartDs = useMemo(() => new DataSet(ChartDataSet({ projectId, startedRecord, charDatesDs })), [charDatesDs, projectId, startedRecord]);
+
+  // useEffect(()=>{
+  //   const existCps = projectOverviewStore.tempQueryComponents;
+  //   if(get(existCps,'length')){
+  //     forEach()
+  //   }
+  // },[]);
 
   const value = {
     ...props,
@@ -70,13 +84,15 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     userListDs,
     appServiceDs,
     envDs,
-    asgardDs,
     commitDs,
     deployDs,
     pipelineDs,
     delayIssueDs,
     componentsDs,
     startedRecord,
+    chartDs,
+    charDatesDs,
+    defectTreatDs,
   };
 
   return (

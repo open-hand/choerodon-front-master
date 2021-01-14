@@ -5,6 +5,10 @@ import mappings from './mappings';
 
 export default function useStore(projectId) {
   return useLocalStore(() => ({
+    queryComponents: [],
+    setQueryComponents(value) {
+      this.queryComponents = value;
+    },
     initData: [],
     setInitData(value) {
       this.initData = value;

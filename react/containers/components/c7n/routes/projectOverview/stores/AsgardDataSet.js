@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 export default ({ projectId }) => ({
   autoQuery: false,
   selection: false,
@@ -13,24 +14,25 @@ export default ({ projectId }) => ({
             const res = JSON.parse(response);
             if (res && res.failed) {
               return res;
-            } else {
-              const newDate = [];
-              const newFailureCount = [];
-              const newPercentage = [];
-              const newTotalCount = [];
-              res.forEach(({ creationDate, failureCount, percentage, totalCount }) => {
-                newDate.push(creationDate.split(' ')[0]);
-                newFailureCount.push(failureCount);
-                newPercentage.push(percentage);
-                newTotalCount.push(totalCount);
-              });
-              return ({
-                date: newDate,
-                failureCount: newFailureCount,
-                percentage: newPercentage,
-                totalCount: newTotalCount,
-              });
             }
+            const newDate = [];
+            const newFailureCount = [];
+            const newPercentage = [];
+            const newTotalCount = [];
+            res.forEach(({
+              creationDate, failureCount, percentage, totalCount,
+            }) => {
+              newDate.push(creationDate.split(' ')[0]);
+              newFailureCount.push(failureCount);
+              newPercentage.push(percentage);
+              newTotalCount.push(totalCount);
+            });
+            return ({
+              date: newDate,
+              failureCount: newFailureCount,
+              percentage: newPercentage,
+              totalCount: newTotalCount,
+            });
           } catch (e) {
             return response;
           }

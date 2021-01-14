@@ -88,7 +88,7 @@ instance.interceptors.response.use(
       return response;
     }
     if (Object.prototype.hasOwnProperty.call(response, 'data')) {
-      if (response.data.failed === true) {
+      if (response.data?.failed === true) {
         throw response.data;
       }
       return transformResponsePage(response.data);

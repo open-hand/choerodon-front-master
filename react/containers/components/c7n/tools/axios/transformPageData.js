@@ -1,7 +1,7 @@
 import queryString from 'query-string';
 
 export function transformResponsePage(data) {
-  if (data.content) {
+  if (data?.content) {
     data.list = data.content;
     data.total = data.totalElements;
     data.pageSize = data.size;
