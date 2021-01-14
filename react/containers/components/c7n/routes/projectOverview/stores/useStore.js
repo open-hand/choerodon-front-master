@@ -9,6 +9,9 @@ export default function useStore(projectId) {
     setQueryComponents(value) {
       this.queryComponents = value;
     },
+    addQueryComponents(value) {
+      this.queryComponents.push(value);
+    },
     initData: [],
     setInitData(value) {
       this.initData = value;

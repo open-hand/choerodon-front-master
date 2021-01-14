@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import JSONbig from 'json-bigint';
 
-export default (({ projectId, loadStartedSprintBlock, projectOverviewStore }) => ({
+export default (({ projectId, loadStartedSprintBlock }) => ({
   autoQuery: true,
   selection: false,
   paging: false,

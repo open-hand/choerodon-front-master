@@ -7,7 +7,7 @@ import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 
 import {
-  get, filter, map, forEach, some,
+  get, filter, map, forEach, some, without,
 } from 'lodash';
 import {
   Content, Breadcrumb, Page,
@@ -40,6 +40,7 @@ const ProjectOverview = () => {
     prefixCls,
     projectOverviewStore,
     componentsDs,
+    cpOptsObj,
   } = useProjectOverviewStore();
 
   const {
@@ -79,6 +80,7 @@ const ProjectOverview = () => {
 
   function addComponent(types) {
     const typeCp = [];
+    const existCps = projectOverviewStore.queryComponents;
     forEach(types, (type) => {
       const {
         layout,
@@ -90,6 +92,10 @@ const ProjectOverview = () => {
         static: false,
       };
       typeCp.push(tempCp);
+      if (!existCps.includes(type)) {
+        cpOptsObj[type]();
+        projectOverviewStore.addQueryComponents(type);
+      }
     });
 
     const tempArr = projectOverviewStore.editLayout;
@@ -135,6 +141,10 @@ const ProjectOverview = () => {
     componentsDs.loadData(defaultValues);
     projectOverviewStore.saveConfig(defaultValues);
     setEdit(false);
+    const withoutData = without(cpOptsObj.keys(), projectOverviewStore.queryComponents);
+    forEach(withoutData, (item) => {
+      cpOptsObj[item]();
+    });
   }
 
   const renderBtns = () => {

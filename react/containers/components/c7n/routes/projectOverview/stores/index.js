@@ -5,7 +5,7 @@ import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
-import { get } from 'lodash';
+import { forEach, get } from 'lodash';
 import SprintCountDataSet from './SprintCountDataSet';
 import useStore from './useStore';
 import SprintWaterWaveDataSet from './SprintWaterWaveDataSet';
@@ -33,7 +33,6 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
     AppState: { currentMenuType: { organizationId, projectId } },
-    history,
   } = props;
 
   const projectOverviewStore = useStore(projectId);
@@ -42,7 +41,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const deployDs = useMemo(() => new DataSet(DeployDataSet({ projectId })), [projectId]);
   const pipelineDs = useMemo(() => new DataSet(PipelineDataSet({ projectId })), [projectId]);
 
-  const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ projectId, projectOverviewStore })), [projectId]);
+  const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ projectId, projectOverviewStore })), [projectId, projectOverviewStore]);
 
   const loadStartedSprintBlock = useCallback(() => {
     commitDs.query();
@@ -51,10 +50,11 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   }, [commitDs, deployDs, pipelineDs]);
 
   // 已开启的迭代DS
-  const startSprintDs = useMemo(() => new DataSet(StartSprintDataSet({ projectId, loadStartedSprintBlock, projectOverviewStore })), [loadStartedSprintBlock, projectId]);
+  const startSprintDs = useMemo(() => new DataSet(StartSprintDataSet({ projectId, loadStartedSprintBlock })), [loadStartedSprintBlock, projectId]);
   const startedRecord = startSprintDs.toData()[0];
 
   const sprintCountDataSet = useMemo(() => new DataSet(SprintCountDataSet({ projectId, sprint: startedRecord })), [projectId, startedRecord]);
+  // 冲刺未完成
   const sprintWaterWaveDataSet = useMemo(() => new DataSet(SprintWaterWaveDataSet({ projectId, sprint: startedRecord })), [projectId, startedRecord]);
   // 在线成员
   const userListDs = useMemo(() => new DataSet(UserListDataSet({ projectId })), [projectId]);
@@ -68,12 +68,82 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const charDatesDs = useMemo(() => new DataSet(ChartDatesDataSet({ organizationId, projectId, startedRecord })), [organizationId, projectId, startedRecord]);
   const chartDs = useMemo(() => new DataSet(ChartDataSet({ projectId, startedRecord, charDatesDs })), [charDatesDs, projectId, startedRecord]);
 
-  // useEffect(()=>{
-  //   const existCps = projectOverviewStore.tempQueryComponents;
-  //   if(get(existCps,'length')){
-  //     forEach()
-  //   }
-  // },[]);
+  const loadBurnDownData = useCallback(async () => {
+    try {
+      const res = await charDatesDs.query();
+      if (res && res.failed) {
+        return;
+      }
+      chartDs.setQueryParameter('datesData', res);
+      await chartDs.query();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }, [charDatesDs, chartDs]);
+
+  const cpOptsObj = useMemo(() => ({
+    sprintNotDone: () => {
+      if (startedRecord) {
+        sprintWaterWaveDataSet.query();
+      }
+    },
+    sprintCount: () => {
+      if (startedRecord) {
+        sprintCountDataSet.query();
+      }
+    },
+    burnDownChart: () => {
+      if (startedRecord) {
+        loadBurnDownData();
+      }
+    },
+    defectTreatment: () => {
+      if (startedRecord) {
+        defectTreatDs.query();
+      }
+    },
+    defectChart: () => {
+      if (startedRecord) {
+        defectCountDs.query();
+      }
+    },
+    appService: () => {
+      appServiceDs.query();
+    },
+    env: () => {
+      envDs.query();
+    },
+    pipelineChart: () => {
+      if (startedRecord) {
+        pipelineDs.query();
+      }
+    },
+    commitChart: () => {
+      if (startedRecord) {
+        commitDs.query();
+      }
+    },
+    deployChart: () => {
+      if (startedRecord) {
+        deployDs.query();
+      }
+    },
+    onlineMember: () => {
+      userListDs.query();
+    },
+  }), [appServiceDs, commitDs, defectCountDs, defectTreatDs, deployDs, envDs, loadBurnDownData, pipelineDs, sprintCountDataSet, sprintWaterWaveDataSet, startedRecord, userListDs]);
+
+  useEffect(() => {
+    const existCps = projectOverviewStore.queryComponents.slice();
+    if (get(existCps, 'length')) {
+      forEach(existCps, (item) => {
+        const isFunc = typeof cpOptsObj[item] === 'function';
+        if (isFunc) {
+          cpOptsObj[item]();
+        }
+      });
+    }
+  }, [cpOptsObj, projectOverviewStore.queryComponents]);
 
   const value = {
     ...props,
@@ -94,6 +164,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     charDatesDs,
     defectTreatDs,
     defectCountDs,
+    cpOptsObj,
   };
 
   return (

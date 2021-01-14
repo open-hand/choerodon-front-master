@@ -21,7 +21,6 @@ const BurnDownChart = observer(() => {
     startedRecord,
     startSprintDs,
     chartDs,
-    charDatesDs,
   } = useProjectOverviewStore();
 
   const {
@@ -42,25 +41,6 @@ const BurnDownChart = observer(() => {
     chartDs.setQueryParameter('checkedValue', value);
     chartDs.query();
   }
-
-  const loadData = useCallback(async () => {
-    try {
-      const res = await charDatesDs.query();
-      if (res && res.failed) {
-        return;
-      }
-      chartDs.setQueryParameter('datesData', res);
-      await chartDs.query();
-    } catch (error) {
-      throw new Error(error);
-    }
-  }, [charDatesDs, chartDs]);
-
-  useEffect(() => {
-    if (startedRecord) {
-      loadData();
-    }
-  }, [loadData, startedRecord]);
 
   function renderChartTitle() {
     let result = '';
@@ -243,7 +223,8 @@ const BurnDownChart = observer(() => {
   function render() {
     if (startedRecord) {
       return <Echart option={getOption()} style={{ height: '100%' }} />;
-    } if (startSprintDs.status !== 'loading') {
+    }
+    if (startSprintDs.status !== 'loading') {
       return <EmptyPage height={259} />;
     }
     return '';
@@ -287,7 +268,7 @@ const BurnDownChart = observer(() => {
     >
       <OverviewWrap.Header title={renderTitle()} />
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
-        <Spin spinning={chartDs.status === 'loading'}>
+        <Spin spinning={chartDs.status === 'loading' || startSprintDs.status === 'loading'}>
           {render()}
         </Spin>
       </OverviewWrap.Content>

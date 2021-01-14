@@ -16,12 +16,6 @@ const DefectTreatment = observer(() => {
   const [charOption, setCharOption] = useState('created'); // createdList completedList
   const { startedRecord, startSprintDs, defectTreatDs } = useProjectOverviewStore();
 
-  useEffect(() => {
-    if (startedRecord) {
-      defectTreatDs.query();
-    }
-  }, [defectTreatDs, startedRecord]);
-
   function getOptions() {
     return {
       legend: {

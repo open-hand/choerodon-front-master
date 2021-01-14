@@ -19,11 +19,6 @@ const DefectChart = observer(() => {
       <span>缺陷累积趋势图</span>
     </div>
   );
-  useEffect(() => {
-    if (startedRecord) {
-      defectCountDs.query();
-    }
-  }, [defectCountDs, startedRecord]);
 
   function getOptions() {
     return {
