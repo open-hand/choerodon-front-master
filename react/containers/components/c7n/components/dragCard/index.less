@@ -39,7 +39,7 @@
     position: absolute;
     right: 12px;
     top: 19px;
-    opacity: 0.5;
+    opacity: 0;
     z-index: 10;
   }
   &-drag {
@@ -48,11 +48,12 @@
     top: 19px;
     cursor: grab;
     color: #e6e6e6;
+    
     z-index: 10;
   }
 
   .react-resizable-handle {
-    opacity: .5;
+    opacity: 0;
     background-image: url(./img/缩放.svg);
     width: 26px;
     height: 26px;
@@ -84,7 +85,8 @@
     &:hover {
       animation: editHover 0.2s both;
     }
-    &:hover .react-resizable-handle,&:hover .@{prefixCls}-delete {
+    &:hover .react-resizable-handle,
+    &:hover .@{prefixCls}-delete {
       opacity: 1;
     }
     &:hover .@{prefixCls}-drag {

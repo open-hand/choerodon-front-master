@@ -87,20 +87,20 @@ const WorkBench = () => {
 
   const renderBg = useCallback(() => <GridBg selector={`.${prefixCls}-container`} />, []);
 
-  const generateDOM = useMemo(() => (
+  const generateDOM = () => (
     componentsDs.map((record) => (
       <DragCard
         record={record}
         onDelete={() => handleDelete(record)}
         isEdit={isEdit}
-        data-grid={record.toData()}
+        // data-grid={record.toData()}
         key={record.get('i')}
         isStatic={record.get('i') === 'starTarget'}
       >
         {SwitchComponents(record.get('i'))}
       </DragCard>
     ))
-  ), [componentsDs, handleDelete, isEdit]);
+  );
 
   const renderGridLayouts = () => {
     const tempObj = {
@@ -108,6 +108,7 @@ const WorkBench = () => {
       onLayoutChange,
       breakpoints: 1200,
       margin: [18, 18],
+      layout: componentsDs.toData(),
       resizeHandles: ['se'],
       cols: 12,
       measureBeforeMount: true,
@@ -124,7 +125,7 @@ const WorkBench = () => {
       <ResponsiveReactGridLayout
         {...tempObj}
       >
-        {generateDOM}
+        {generateDOM()}
       </ResponsiveReactGridLayout>
     );
   };
