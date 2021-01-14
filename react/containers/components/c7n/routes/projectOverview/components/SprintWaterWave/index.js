@@ -18,12 +18,6 @@ const SprintWaterWave = observer(() => {
     startSprintDs,
   } = useProjectOverviewStore();
 
-  useEffect(() => {
-    if (startedRecord) {
-      sprintWaterWaveDataSet.query();
-    }
-  }, [sprintWaterWaveDataSet, startedRecord]);
-
   function render() {
     const { current } = sprintWaterWaveDataSet;
     if (current) {

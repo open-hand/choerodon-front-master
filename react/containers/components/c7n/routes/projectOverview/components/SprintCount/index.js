@@ -47,11 +47,6 @@ const SprintCount = observer(() => {
     }
     return progressArr;
   };
-  useEffect(() => {
-    if (startedRecord) {
-      sprintCountDataSet.query();
-    }
-  }, [startedRecord]);
 
   function render() {
     if (startedRecord) {

@@ -1,5 +1,6 @@
+/* eslint-disable import/no-anonymous-default-export */
 export default ({ projectId }) => ({
-  autoQuery: true,
+  autoQuery: false,
   selection: false,
   paging: false,
   transport: {

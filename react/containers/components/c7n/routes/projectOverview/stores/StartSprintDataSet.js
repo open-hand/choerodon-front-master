@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import JSONbig from 'json-bigint';
 
-export default (({ projectId, loadStartedSprintBlock, projectOverviewStore }) => ({
+export default (({ projectId, loadStartedSprintBlock }) => ({
   autoQuery: true,
   selection: false,
   paging: false,
@@ -14,9 +14,13 @@ export default (({ projectId, loadStartedSprintBlock, projectOverviewStore }) =>
       transformResponse: (value) => {
         try {
           const res = JSONbig.parse(value);
-          return res.find((sprint) => sprint.statusCode === 'started');
+          if (res && res.failed) {
+            return res;
+          }
+          const mainData = res.find((sprint) => sprint.statusCode === 'started');
+          return mainData;
         } catch (error) {
-          return value;
+          throw new Error(error);
         }
       },
     },

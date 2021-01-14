@@ -1,16 +1,10 @@
-import axios from 'axios';
+/* eslint-disable import/no-anonymous-default-export */
+
 export default (({ projectId, sprint }) => ({
   autoQuery: false,
   selection: false,
   paging: false,
   dataKey: null,
-  // data: [{
-  //   "total": 51,
-  //   "completedCount": 50,
-  //   "uncompletedCount": 1,
-  //   "todoCount": 1,
-  //   "unassignCount": 0
-  // }],
   transport: {
     read: {
       url: `/agile/v1/projects/${projectId}/project_overview/${sprint ? sprint.sprintId : ''}/sprint_statistics`,

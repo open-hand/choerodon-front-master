@@ -1,13 +1,15 @@
-import React, { useMemo, useCallback } from 'react';
+import React, {
+  useMemo, useCallback, useState, useEffect,
+} from 'react';
 import { Button, Modal } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
-import { WidthProvider, Responsive } from 'react-grid-layout';
+import ResponsiveReactGridLayout from 'react-grid-layout';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 
 import {
-  get, filter, map, forEach, some,
+  get, filter, map, forEach, some, without, keys,
 } from 'lodash';
 import {
   Content, Breadcrumb, Page,
@@ -29,6 +31,8 @@ import { useProjectOverviewStore } from './stores';
 
 import './ProjectOverview.less';
 
+let observerLayout;
+
 const ProjectOverview = () => {
   const {
     AppState: {
@@ -40,6 +44,7 @@ const ProjectOverview = () => {
     prefixCls,
     projectOverviewStore,
     componentsDs,
+    cpOptsObj,
   } = useProjectOverviewStore();
 
   const {
@@ -48,6 +53,23 @@ const ProjectOverview = () => {
   } = projectOverviewStore;
 
   const showDevops = useMemo(() => some(categories, ['code', 'N_DEVOPS']), [categories]);
+
+  const [layOutWidth, setWidth] = useState(0);
+
+  useEffect(() => {
+    if (!observerLayout) {
+      const domTem = document.querySelector('.c7n-project-overview-container');
+      new ResizeObserver((entries) => {
+        const dom = get(entries[0], 'target');
+        const width = get(dom, 'offsetWidth');
+        setWidth(width);
+      }).observe(domTem);
+    }
+  }, []);
+
+  useEffect(() => function () {
+    observerLayout && observerLayout.disconnect();
+  });
 
   const ComponetsObjs = useMemo(() => ({
     sprintNotDone: <SprintWaterWave />,
@@ -67,9 +89,6 @@ const ProjectOverview = () => {
 
   function handleEditable() {
     setEdit(true);
-    componentsDs.forEach((record) => {
-      record.set('static', false);
-    });
   }
 
   function handleCancel() {
@@ -78,7 +97,7 @@ const ProjectOverview = () => {
   }
 
   function addComponent(types) {
-    const typeCp = [];
+    const existCps = projectOverviewStore.queryComponents;
     forEach(types, (type) => {
       const {
         layout,
@@ -87,18 +106,18 @@ const ProjectOverview = () => {
         ...layout,
         x: 0,
         y: Infinity,
-        static: false,
       };
-      typeCp.push(tempCp);
+      componentsDs.create(tempCp);
+      if (!existCps.includes(type)) {
+        cpOptsObj[type]();
+        projectOverviewStore.addQueryComponents(type);
+      }
     });
-
-    const tempArr = projectOverviewStore.editLayout;
-    componentsDs.loadData(tempArr.concat(typeCp));
   }
 
   function openAddComponents() {
     const subPrefix = 'c7ncd-workbench-addModal';
-    const typeArr = map(projectOverviewStore.editLayout, (item) => get(item, 'i'));
+    const typeArr = map(componentsDs.toData(), (item) => get(item, 'i'));
 
     Modal.open({
       title: '添加卡片',
@@ -118,13 +137,8 @@ const ProjectOverview = () => {
   }
 
   function hanldeSave() {
-    const tempData = projectOverviewStore.editLayout.map((data) => {
-      const temp = data;
-      temp.static = true;
-      return temp;
-    });
+    const tempData = componentsDs.toData();
     projectOverviewStore.setInitData(tempData);
-    componentsDs.loadData(projectOverviewStore.editLayout);
     projectOverviewStore.saveConfig(tempData);
     setEdit(false);
   }
@@ -135,6 +149,10 @@ const ProjectOverview = () => {
     componentsDs.loadData(defaultValues);
     projectOverviewStore.saveConfig(defaultValues);
     setEdit(false);
+    const withoutData = without(keys(cpOptsObj), projectOverviewStore.queryComponents);
+    forEach(withoutData, (item) => {
+      cpOptsObj[item]();
+    });
   }
 
   const renderBtns = () => {
@@ -191,7 +209,7 @@ const ProjectOverview = () => {
   };
 
   function onLayoutChange(layout, layouts) {
-    projectOverviewStore.setEditLayout(layout);
+    componentsDs.loadData(layout);
   }
 
   const SwitchComponents = (type) => {
@@ -203,54 +221,45 @@ const ProjectOverview = () => {
     return tempComponent;
   };
 
-  function handleDelete(dataGrid) {
-    const tempArr = projectOverviewStore.editLayout;
-    componentsDs.loadData(filter(tempArr, (item) => item.i !== dataGrid.i));
+  function handleDelete(record) {
+    componentsDs.remove(record);
   }
 
-  const generateDOM = useCallback(() => {
-    const mainData = componentsDs.toData();
-    return (
-      mainData.map((dataGrid, i) => (
-        <DragCard
-          dataGrid={dataGrid}
-          onDelete={() => handleDelete(dataGrid)}
-          isEdit={isEdit}
-          data-grid={dataGrid}
-          key={dataGrid.i}
-        >
-          {SwitchComponents(get(dataGrid, 'i'))}
-        </DragCard>
-      ))
-    );
-  }, [componentsDs, isEdit]);
+  const generateDOM = useMemo(() => componentsDs.map((record) => (
+    <DragCard
+      onDelete={() => handleDelete(record)}
+      isEdit={isEdit}
+      data-grid={record.toData()}
+      key={record.get('i')}
+    >
+      {SwitchComponents(record.get('i'))}
+    </DragCard>
+  )),
+  [componentsDs, handleDelete, isEdit]);
 
   const renderGridLayouts = () => {
     const tempObj = {
       className: `${prefixCls}-layout`,
       onLayoutChange,
-      breakpoints: {
-        lg: 1200,
-      },
+      breakpoints: 1200,
       margin: [18, 18],
       resizeHandles: ['se'],
-      cols: {
-        lg: 10,
-      },
+      cols: 10,
       measureBeforeMount: true,
       containerPadding: [0, 0],
       useCSSTransformss: true,
       rowHeight: 100,
       shouldComponentUpdate: true,
+      width: layOutWidth,
+      isDraggable: isEdit,
+      isResizable: isEdit,
     };
-
-    const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
     return (
       <ResponsiveReactGridLayout
         {...tempObj}
       >
-        {generateDOM()}
+        {generateDOM}
       </ResponsiveReactGridLayout>
     );
   };

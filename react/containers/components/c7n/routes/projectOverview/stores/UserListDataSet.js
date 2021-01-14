@@ -1,5 +1,6 @@
-export default ({ projectId, projectOverviewStore }) => ({
-  autoQuery: true,
+/* eslint-disable import/no-anonymous-default-export */
+export default ({ projectId }) => ({
+  autoQuery: false,
   selection: false,
   pageSize: 8,
   transport: {
@@ -11,10 +12,8 @@ export default ({ projectId, projectOverviewStore }) => ({
           const res = JSON.parse(response);
           if (res && res.failed) {
             return res;
-          } else {
-            projectOverviewStore.setTotalOnlineUser(res.totalOnlineUser || 0);
-            return res.onlineUserList;
           }
+          return res.onlineUserList;
         } catch (e) {
           return response;
         }

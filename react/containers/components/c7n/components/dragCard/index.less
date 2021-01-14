@@ -15,23 +15,6 @@
   overflow: hidden;
   position: relative;
 
-  &-isEdit {
-    &::before {
-      content: "";
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      left: 0;
-      top: 0;
-      border-radius: 10px;
-      z-index: 9;
-      cursor: all-scroll;
-    }
-    &:hover {
-      animation: editHover 0.2s both;
-    }
-  }
-
   &-container {
     width: 100%;
     height: 100%;
@@ -56,7 +39,7 @@
     position: absolute;
     right: 12px;
     top: 19px;
-    opacity: 0;
+    opacity: 0.5;
     z-index: 10;
   }
   &-drag {
@@ -69,7 +52,7 @@
   }
 
   .react-resizable-handle {
-    opacity: 0;
+    opacity: .5;
     background-image: url(./img/缩放.svg);
     width: 26px;
     height: 26px;
@@ -85,28 +68,52 @@
       height: 0;
     }
   }
-  &:hover .react-resizable-handle,
-  &:hover &-delete {
-    opacity: 1;
-  }
-  &:hover &-drag {
-    color: rgba(83, 101, 234, 1);
+
+  &-isEdit {
+    &::before {
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      border-radius: 10px;
+      z-index: 9;
+      cursor: all-scroll;
+    }
+    &:hover {
+      animation: editHover 0.2s both;
+    }
+    &:hover .react-resizable-handle,&:hover .@{prefixCls}-delete {
+      opacity: 1;
+    }
+    &:hover .@{prefixCls}-drag {
+      color: rgba(83, 101, 234, 1);
+    }
   }
   &-static {
     .react-resizable-handle {
       display: none;
     }
     &::before {
-      cursor: not-allowed;
+      cursor: default;
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      border-radius: 10px;
+      z-index: 9;
     }
     &:hover {
       animation: none;
-      .@{prefixCls}-drag {
-        display: none;
-      }
-      .@{prefixCls}-delete {
-        display: none;
-      }
+    }
+    .@{prefixCls}-drag {
+      display: none;
+    }
+    .@{prefixCls}-delete {
+      display: none;
     }
   }
 }

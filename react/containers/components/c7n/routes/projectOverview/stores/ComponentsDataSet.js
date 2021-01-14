@@ -21,7 +21,8 @@ export default ({ projectId, projectOverviewStore }) => ({
             res = defaultValues;
           }
           projectOverviewStore.setInitData(res);
-          projectOverviewStore.setEditLayout(res);
+          const tempQueryComponents = map(res, (item) => get(item, 'i'));
+          projectOverviewStore.setQueryComponents(tempQueryComponents);
           return res;
         } catch (error) {
           return defaultValues;

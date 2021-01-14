@@ -1,143 +1,47 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, {
+  useEffect, useCallback,
+} from 'react';
 import {
-  Button, Select, CheckBox, Spin, Tooltip,
+  Select, CheckBox, Spin,
 } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
-import Moment from 'moment';
-import { extendMoment } from 'moment-range';
-import _, { get } from 'lodash';
+import { get } from 'lodash';
 import { useBurnDownChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
 
-const moment = extendMoment(Moment);
-
 const { Option } = Select;
 const BurnDownChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-burn-down-chart';
-  const { burnDownChartStore, showDevops } = useBurnDownChartStore();
-  const { startedRecord, startSprintDs } = useProjectOverviewStore();
-  const [loading, setLoading] = useState(true);
-  const [xAxis, setXAxis] = useState([]);
-  const [yAxis, setYAxis] = useState([]);
-  const [markArea, setMarkArea] = useState([]);
-  const [exportAxis, setExportAxis] = useState([]);
-  const [selectValue, setSelectValue] = useState('remainingEstimatedTime');
-  const [checkedValue, setCheckedValue] = useState(true);
-  function getBetweenDateStr(start, end) {
-    // 是否显示非工作日
-    const range = moment.range(start, end);
-    const days = Array.from(range.by('day'));
-    const result = days.map((day) => day.format('YYYY-MM-DD'));
-    const rest = days.filter((day) => burnDownChartStore.getRestDays.includes(day.format('YYYY-MM-DD'))).map((day) => day.format('YYYY-MM-DD'));
-    return { result, rest };
+  const { burnDownChartStore } = useBurnDownChartStore();
+  const {
+    startedRecord,
+    startSprintDs,
+    chartDs,
+  } = useProjectOverviewStore();
+
+  const {
+    selectValue,
+    setSelectValue,
+    checkedValue,
+    setCheckedValue,
+  } = burnDownChartStore;
+
+  function handleSelect(value) {
+    setSelectValue(value);
+    chartDs.setQueryParameter('selectType', value);
+    chartDs.query();
   }
 
-  function loadChartCoordinate() {
-    burnDownChartStore.axiosGetChartData(get(startedRecord, 'sprintId'), selectValue).then((res) => {
-      const keys = Object.keys(res.coordinate);
-      let [minDate, maxDate] = [keys[0], keys[0]];
-      for (let a = 1, len = keys.length; a < len; a += 1) {
-        if (moment(keys[a]).isAfter(maxDate)) {
-          maxDate = keys[a];
-        }
-        if (moment(keys[a]).isBefore(minDate)) {
-          minDate = keys[a];
-        }
-      }
-      // 如果后端给的最大日期小于结束日期
-      let allDate;
-      let rest = [];
-      const { endDate } = startedRecord;
-      /* eslint-disable */
-      if (moment(maxDate).isBefore(endDate.split(' ')[0])) {
-        const result = getBetweenDateStr(minDate, endDate.split(' ')[0]);
-        allDate = result.result;
-        rest = result.rest;
-      } else if (moment(minDate).isSame(maxDate)) {
-        allDate = [minDate];
-      } else {
-        const result = getBetweenDateStr(minDate, maxDate);
-        allDate = result.result;
-        rest = result.rest;
-      }
-      // const allDate = getBetweenDateStr(minDate, maxDate);
-      const allDateValues = [res.expectCount];
-      const markAreaData = [];
-      let exportAxisData = [res.expectCount];
-      // 如果展示非工作日，期望为一条连续斜线
-      if (!checkedValue) {
-        if (allDate.length) {
-          exportAxisData = [
-            ['', res.expectCount],
-            [allDate[allDate.length - 1].split(' ')[0].slice(5).replace('-', '/'), 0],
-          ];
-        }
-      }
-      for (let b = 0, len = allDate.length; b < len; b += 1) {
-        const nowKey = allDate[b];
-        // 显示非工作日，则非工作日期望为水平线
-        if (checkedValue) {
-          // 工作日天数
-          const countWorkDay = (allDate.length - rest.length) || 1;
-          // 日工作量
-          const dayAmount = res.expectCount / countWorkDay;
-          if (rest.includes(allDate[b])) {
-            // 非工作日
-            if (b < len) {
-              markAreaData.push([
-                {
-                  xAxis: b === 0 ? '' : allDate[b - 1].split(' ')[0].slice(5).replace('-', '/'),
-                },
-                {
-                  xAxis: allDate[b].split(' ')[0].slice(5).replace('-', '/'),
-                },
-              ]);
-            }
-            exportAxisData[b + 1] = exportAxisData[b];
-          } else {
-            // 工作量取整
-            exportAxisData[b + 1] = (exportAxisData[b] - dayAmount) < 0 ? 0 : exportAxisData[b] - dayAmount;
-          }
-        }
-        if (res.coordinate.hasOwnProperty(nowKey)) {
-          allDateValues.push(res.coordinate[allDate[b]]);
-        } else if (moment(nowKey).isAfter(moment())) {
-          allDateValues.push(null);
-        } else {
-          const beforeKey = allDate[b - 1];
-          allDateValues.push(res.coordinate[beforeKey]);
-          res.coordinate[nowKey] = res.coordinate[beforeKey];
-        }
-      }
-      const sliceDate = _.map(allDate, item => item.slice(5).replace('-', '/'));
-      setXAxis(['', ...sliceDate]);
-      setYAxis(allDateValues);
-      setExportAxis(exportAxisData);
-      setMarkArea(markAreaData);
-      setLoading(false);
-    });
+  function handleCheckValueSelect(value) {
+    setCheckedValue(value);
+    chartDs.setQueryParameter('checkedValue', value);
+    chartDs.query();
   }
-  useEffect(() => {
-    if (startedRecord) {
-      burnDownChartStore.axiosGetRestDays(startedRecord.sprintId).then(res => {
-        burnDownChartStore.setRestDays(res.map(date => moment(date).format('YYYY-MM-DD')));
-        loadChartCoordinate();
-      });
-    } else if (startSprintDs.status !== 'loading') {
-      setLoading(false);
-    }
-  }, [startedRecord]);
 
-  useEffect(() => {
-    if (startedRecord) {
-      loadChartCoordinate();
-    }
-
-  }, [selectValue, checkedValue]);
   function renderChartTitle() {
     let result = '';
     if (selectValue === 'remainingEstimatedTime') {
@@ -153,6 +57,16 @@ const BurnDownChart = observer(() => {
   }
 
   function getOption() {
+    if (!chartDs.length) {
+      return {};
+    }
+    const {
+      xAxis,
+      exportAxis,
+      yAxis,
+      markArea,
+    } = chartDs.toData()[0];
+
     return {
       tooltip: {
         trigger: 'axis',
@@ -213,7 +127,8 @@ const BurnDownChart = observer(() => {
         },
         axisLabel: {
           show: true,
-          interval: parseInt(xAxis.length / 7) ? parseInt(xAxis.length / 7) - 1 : 0,
+          // eslint-disable-next-line radix
+          interval: parseInt(get(xAxis, 'length') / 7) ? parseInt(get(xAxis, 'length') / 7) - 1 : 0,
           textStyle: {
             color: 'rgba(0, 0, 0, 0.65)',
             fontSize: 12,
@@ -261,9 +176,8 @@ const BurnDownChart = observer(() => {
           formatter(value, index) {
             if (selectValue === 'remainingEstimatedTime' && value) {
               return `${value}h`;
-            } else {
-              return value;
             }
+            return value;
           },
         },
       },
@@ -308,48 +222,53 @@ const BurnDownChart = observer(() => {
 
   function render() {
     if (startedRecord) {
-      return <Echart option={getOption()} style={{ height: '100%' }} />
-    } else if (startSprintDs.status !== 'loading') {
+      return <Echart option={getOption()} style={{ height: '100%' }} />;
+    }
+    if (startSprintDs.status !== 'loading') {
       return <EmptyPage height={259} />;
     }
     return '';
   }
+
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>燃尽图</span>
-      {startedRecord ? <React.Fragment>
-        <Select
-          getPopupContainer={triggerNode => triggerNode.parentNode}
-          style={{ width: 100, marginLeft: 34 }}
-          className="c7n-project-overview-SelectTheme"
-          label="单位"
-          clearButton={false}
-          defaultValue={selectValue}
-          onChange={setSelectValue}
-        >
-          <Option value="remainingEstimatedTime">剩余时间</Option>
-          <Option value="storyPoints">故事点</Option>
-          <Option value="issueCount">问题计数</Option>
-        </Select>
-        <CheckBox
-          style={{ marginLeft: 24 }}
-          // value={checkedValue}
-          checked={checkedValue}
-          onChange={setCheckedValue}
-        >
-          显示非工作日
-      </CheckBox>
-      </React.Fragment>
+      {startedRecord ? (
+        <>
+          <Select
+            getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            style={{ width: 100, marginLeft: 34 }}
+            className="c7n-project-overview-SelectTheme"
+            label="单位"
+            clearButton={false}
+            defaultValue={selectValue}
+            onChange={handleSelect}
+          >
+            <Option value="remainingEstimatedTime">剩余时间</Option>
+            <Option value="storyPoints">故事点</Option>
+            <Option value="issueCount">问题计数</Option>
+          </Select>
+          <CheckBox
+            style={{ marginLeft: 24 }}
+            checked={checkedValue}
+            onChange={handleCheckValueSelect}
+          >
+            显示非工作日
+          </CheckBox>
+        </>
+      )
         : ''}
     </div>
   );
+
   return (
     <OverviewWrap style={{
-      paddingTop:'16px'
-    }}>
+      paddingTop: '16px',
+    }}
+    >
       <OverviewWrap.Header title={renderTitle()} />
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
-        <Spin spinning={loading}>
+        <Spin spinning={chartDs.status === 'loading' || startSprintDs.status === 'loading'}>
           {render()}
         </Spin>
       </OverviewWrap.Content>
