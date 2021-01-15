@@ -68,15 +68,23 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
         let isProgram = false;
         let isProgramProject = false;
         let isRequire = false;
+        let isAgile = false;
         forEach(projectData.categories, async ({ code: categoryCode }) => {
-          if (categoryCode === categoryCodes.program) {
-            isProgram = true;
-          }
-          if (categoryCode === categoryCodes.programProject) {
-            isProgramProject = true;
-          }
-          if (categoryCode === categoryCodes.require) {
-            isRequire = true;
+          switch (categoryCode) {
+            case categoryCodes.program:
+              isProgram = true;
+              break;
+            case categoryCodes.programProject:
+              isProgramProject = true;
+              break;
+            case categoryCodes.require:
+              isRequire = true;
+              break;
+            case categoryCodes.agile:
+              isAgile = true;
+              break;
+            default:
+              break;
           }
         });
         categoryDs.forEach(async (categoryRecord) => {
@@ -84,19 +92,29 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           if (some(projectData.categories, ['code', currentCode])) {
             categoryDs.select(categoryRecord);
           }
-          if (currentCode === categoryCodes.program && (projectData.beforeCategory || '').includes(categoryCodes.program)) {
-            categoryRecord.setState('isProgram', true);
-          }
-          if (currentCode === categoryCodes.agile && (projectData.beforeCategory || '').includes(categoryCodes.agile)) {
-            categoryRecord.setState('isAgile', true);
-          }
-          if (currentCode === categoryCodes.require && isRequire) {
-            categoryRecord.setState('isRequire', true);
-          }
-          if ((currentCode === categoryCodes.agile && isProgramProject)
-            || (currentCode === categoryCodes.program && isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))
-          ) {
-            categoryRecord.setState('disabled', true);
+          switch (currentCode) {
+            case categoryCodes.program:
+              if ((projectData.beforeCategory || '').includes(categoryCodes.program)) {
+                categoryRecord.setState('isProgram', true);
+              }
+              if (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId)) {
+                categoryRecord.setState('disabled', true);
+              }
+              break;
+            case categoryCodes.agile:
+              if ((projectData.beforeCategory || '').includes(categoryCodes.agile)) {
+                categoryRecord.setState('isAgile', true);
+              }
+              if (isProgramProject) {
+                categoryRecord.setState('disabled', true);
+              }
+              break;
+            case categoryCodes.require:
+              categoryRecord.setState('isRequire', isRequire);
+              categoryRecord.setState('disabled', !isProgram && !isAgile);
+              break;
+            default:
+              break;
           }
         });
       }
