@@ -12,7 +12,7 @@ import {
   get, filter, map, forEach, some, without, keys,
 } from 'lodash';
 import {
-  Content, Breadcrumb, Page,
+  Content, Breadcrumb, Page, Permission,
 } from '../../../../../index';
 import ServiceInfo from './components/ServiceInfo';
 import EnvInfo from './components/EnvInfo';
@@ -268,7 +268,10 @@ const ProjectOverview = () => {
   return (
     <Page className={prefixCls}>
       <Breadcrumb />
-      {renderBtns()}
+      <Permission service={['choerodon.code.project.project.overview.edit']}>
+        {renderBtns()}
+
+      </Permission>
       <Content className={`${prefixCls}-content`}>
         <div className={`${prefixCls}-container`}>
           {isEdit && renderBg()}

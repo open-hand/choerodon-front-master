@@ -42,15 +42,8 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const pipelineDs = useMemo(() => new DataSet(PipelineDataSet({ projectId })), [projectId]);
 
   const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ projectId, projectOverviewStore })), [projectId, projectOverviewStore]);
-
-  const loadStartedSprintBlock = useCallback(() => {
-    commitDs.query();
-    deployDs.query();
-    pipelineDs.query();
-  }, [commitDs, deployDs, pipelineDs]);
-
   // 已开启的迭代DS
-  const startSprintDs = useMemo(() => new DataSet(StartSprintDataSet({ projectId, loadStartedSprintBlock })), [loadStartedSprintBlock, projectId]);
+  const startSprintDs = useMemo(() => new DataSet(StartSprintDataSet({ projectId })), [projectId]);
   const startedRecord = startSprintDs.toData()[0];
 
   const sprintCountDataSet = useMemo(() => new DataSet(SprintCountDataSet({ projectId, sprint: startedRecord })), [projectId, startedRecord]);
