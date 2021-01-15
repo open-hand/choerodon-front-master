@@ -44,7 +44,7 @@ const Home = (props) => {
   }
 
   function renderContentLinks() {
-    const groupArr = groupBy(list, 'reportType');
+    const groupArr = groupBy(sortBy(list, 'typeSequence'), 'reportType');
     const keyArr = Object.keys(groupArr);
     const len = keyArr.length;
     return keyArr.map((groupName, i) => (
