@@ -32,6 +32,8 @@ class AppState {
 
   @observable modules = []; // 后端已安装模块
 
+  @observable deployServices = []; // 后端已部署的服务
+
   @computed
   get getCurrentTheme() {
     return this.currentTheme;
@@ -168,6 +170,11 @@ class AppState {
     return this.modules.slice();
   }
 
+  @computed
+  get currentServices() {
+    return this.deployServices.slice();
+  }
+
   loadUserInfo = () => axios.get('iam/choerodon/v1/users/self').then((res) => {
     res = {
       ...res,
@@ -189,6 +196,17 @@ class AppState {
       const res = await axios.get('/iam/choerodon/v1/servers');
       if (res && !res.failed) {
         this.modules = res;
+      }
+    } catch (e) {
+      //
+    }
+  }
+
+  loadDeployServices = async () => {
+    try {
+      const res = await axios.get('/hadm/choerodon/v1/services');
+      if (res && !res.failed) {
+        this.deployServices = res;
       }
     } catch (e) {
       //
