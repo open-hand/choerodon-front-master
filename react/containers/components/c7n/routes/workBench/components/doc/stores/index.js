@@ -56,10 +56,12 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
 
   useEffect(() => {
     const domTem = document.querySelector('.c7n-workbench-doc-content');
-    resizeObserver = new ResizeObserver((entries) => {
-      const dom = get(entries[0], 'target');
-      resizeDom(dom);
-    }).observe(domTem);
+    if (!resizeObserver) {
+      resizeObserver = new ResizeObserver((entries) => {
+        const dom = get(entries[0], 'target');
+        resizeDom(dom);
+      }).observe(domTem);
+    }
   }, []);
 
   const docDs = useMemo(() => new DataSet(DocDataSet({
