@@ -122,6 +122,7 @@ export default class Index extends React.Component {
     }
     HeaderStore.axiosGetRoles();
     AppState.loadModules();
+    AppState.loadDeployServices();
     await AppState.loadUserInfo();
     if (HAS_AGILE_PRO && !window._env_.BUSINESS) {
       const hasConfirmed = localStorage.getItem('hasConfirmed');
