@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import JSONbig from 'json-bigint';
 
-export default (({ projectId, loadStartedSprintBlock }) => ({
+export default (({ projectId }) => ({
   autoQuery: true,
   selection: false,
   paging: false,
@@ -23,13 +23,6 @@ export default (({ projectId, loadStartedSprintBlock }) => ({
           throw new Error(error);
         }
       },
-    },
-  },
-  events: {
-    load: ({ dataSet }) => {
-      if (dataSet.length) {
-        loadStartedSprintBlock();
-      }
     },
   },
 }));
