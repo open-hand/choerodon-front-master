@@ -42,6 +42,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     organizationId,
     selectedProjectId,
     category,
+    history,
   };
 
   return (

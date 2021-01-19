@@ -5,7 +5,6 @@ import { render } from 'react-dom';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { Modal } from 'choerodon-ui';
-import { Button } from "choerodon-ui/pro";
 
 import asyncRouter from './containers/components/util/asyncRouter';
 

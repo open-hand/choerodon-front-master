@@ -17,7 +17,7 @@ export default (({ projectId }) => ({
           if (res && res.failed) {
             return res;
           }
-          const mainData = res.find((sprint) => sprint.statusCode === 'started');
+          const mainData = res.length ? res.find((sprint) => sprint.statusCode === 'started') : [];
           return mainData;
         } catch (error) {
           throw new Error(error);

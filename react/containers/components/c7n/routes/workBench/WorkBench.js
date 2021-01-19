@@ -7,6 +7,7 @@ import {
 } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import DragCard from '@/containers/components/c7n/components/dragCard';
+import { Modal } from 'choerodon-ui/pro';
 import { Page } from '../../../../../index';
 import StarTargetPro from './components/StarTargetPro';
 import SelfIntro from './components/SelfIntro';
@@ -20,6 +21,7 @@ import GridBg from '../../components/gridBackground';
 import QuestionTodo from './components/question-todo';
 import QuestionFocus from './components/question-focus';
 import QuestionBug from './components/question-bug';
+import UserConfirmationTwo from '../../components/UserConfirm';
 
 import './WorkBench.less';
 
@@ -43,6 +45,7 @@ const WorkBench = () => {
     workBenchUseStore,
     prefixCls,
     componentsDs,
+    history,
   } = useWorkBenchStore();
 
   const {
@@ -67,6 +70,27 @@ const WorkBench = () => {
   useEffect(() => function () {
     observerLayout && observerLayout.disconnect();
   });
+
+  function openEditAlertModal(props) {
+    Modal.open({
+      title: '提示',
+      children: '工作台改动未保存，是否进行保存?',
+      cancelProps: {
+        color: 'dark',
+      },
+      onOk() {
+        const tempData = componentsDs.toData();
+        workBenchUseStore.setInitData(tempData);
+        workBenchUseStore.saveConfig(tempData);
+        workBenchUseStore.setEdit(false);
+      },
+      onCancel() {
+        history.push({ ...props });
+        return true;
+      },
+    });
+    return false;
+  }
 
   function onLayoutChange(layouts, tempLayouts) {
     componentsDs.loadData(layouts);
@@ -93,7 +117,6 @@ const WorkBench = () => {
         record={record}
         onDelete={() => handleDelete(record)}
         isEdit={isEdit}
-        // data-grid={record.toData()}
         key={record.get('i')}
         isStatic={record.get('i') === 'starTarget'}
       >
@@ -139,6 +162,7 @@ const WorkBench = () => {
         {
           renderGridLayouts()
         }
+        <UserConfirmationTwo when={workBenchUseStore.isEdit} title="提示" content="工作台配置尚未保存，是否跳转到新页面？" />
       </div>
     </Page>
   );
