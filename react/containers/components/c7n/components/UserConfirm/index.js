@@ -17,6 +17,7 @@ const UserConfirmation = (props) => {
   const [unblock, setUnblock] = useState(null);
 
   useEffect(() => {
+    !when && unblock && unblock();
     if (!when || unblock) {
       return;
     }
@@ -28,12 +29,12 @@ const UserConfirmation = (props) => {
       setAction(taction);
       return false;
     });
-    cancel && setUnblock(() => cancel);
+    setUnblock(() => cancel);
   }, [unblock, when]);
 
   useEffect(() => () => {
     unblock && unblock();
-  }, [unblock]);
+  }, []);
 
   function onConfirm() {
     unblock && unblock();
