@@ -38,7 +38,6 @@ const StarTargetPro = observer(() => {
     initData,
   } = workBenchUseStore;
 
-
   const handleClickItem = (s) => {
     const tempId = get(s, 'id');
     if (tempId === selectedProjectId) {
@@ -274,7 +273,7 @@ const StarTargetPro = observer(() => {
         </Button>,
         <Button
           color="primary"
-          className={`${prefixCls}-btnGroups-primary`}
+          className={`${prefixCls}-btnGroups-default`}
           onClick={handleReset}
         >
           重置工作台

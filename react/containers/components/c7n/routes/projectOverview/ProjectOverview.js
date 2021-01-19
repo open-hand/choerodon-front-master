@@ -30,6 +30,7 @@ import mappings from './stores/mappings';
 import { useProjectOverviewStore } from './stores';
 
 import './ProjectOverview.less';
+import UserConfirmation from '../../components/UserConfirm';
 
 let observerLayout;
 
@@ -280,6 +281,7 @@ const ProjectOverview = () => {
           }
         </div>
       </Content>
+      <UserConfirmation title="提示" content="项目概览配置未保存，确认跳转新页面？" when={isEdit} />
     </Page>
   );
 };
