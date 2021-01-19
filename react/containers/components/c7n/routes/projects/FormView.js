@@ -64,7 +64,7 @@ export default function FormView({ context }) {
   return (
     <React.Fragment>
       {renderAvatar()}
-      <Form record={dataSet.current} className="c7n-project-sider">
+      <Form labelLayout="float" record={dataSet.current} className="c7n-project-sider">
         <TextField name="name" />
         <TextField name="code" disabled={dataSet.current.status !== 'add'} />
         <Select

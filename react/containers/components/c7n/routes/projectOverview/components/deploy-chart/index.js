@@ -12,7 +12,8 @@ import './index.less';
 const DeployChart = () => {
   const clsPrefix = 'c7n-project-overview-deploy-chart';
   const {
-    projectOverviewStore,
+    startSprintDs,
+    startedRecord,
     deployDs,
   } = useProjectOverviewStore();
 
@@ -59,7 +60,7 @@ const DeployChart = () => {
         top: 33,
         left: 5,
         right: 18,
-        bottom: xAxis.length > 0 ? 70 : 76,
+        bottom: xAxis.length ? 10 : 16,
         containLabel: true,
       },
       xAxis: {
@@ -140,17 +141,17 @@ const DeployChart = () => {
   }
 
   function getContent() {
-    if (!projectOverviewStore.getIsFinishLoad) {
+    if (startSprintDs.status === 'loading') {
       return <LoadingBar display />;
     }
-    if (!projectOverviewStore.getStaredSprint) {
+    if (!startedRecord) {
       return <EmptyPage />;
     }
-    return <Echart option={getOption()} />;
+    return <Echart option={getOption()} style={{ height: '100%' }} />;
   }
 
   return (
-    <OverviewWrap width="43%" height={302}>
+    <OverviewWrap>
       <OverviewWrap.Header title={renderTitle()} />
       {getContent()}
     </OverviewWrap>

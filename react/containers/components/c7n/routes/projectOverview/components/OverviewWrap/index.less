@@ -4,14 +4,19 @@
   padding: .2rem .16rem;
   margin-bottom: .2rem;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  .c7n-spin-nested-loading, .c7n-spin-container {
+    flex: 1;
+    height: 100%;
+  }
   &-title {
     display: inline-flex;
     align-items: center;
     font-size: .16rem;
     font-weight: 500;
     color: rgba(58, 52, 95, 1);
-    // line-height: .22rem;
-    // height: .22rem;
+    padding-left: 13px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

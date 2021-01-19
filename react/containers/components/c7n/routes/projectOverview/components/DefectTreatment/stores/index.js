@@ -18,7 +18,7 @@ export const StoreProvider = inject('AppState')(observer((props) => {
     children,
     AppState: { currentMenuType: { organizationId, projectId } },
   } = props;
-  const { projectOverviewStore } = useProjectOverviewStore();
+
   const defectTreatmentStore = useStore(organizationId, projectId);
 
   const value = {

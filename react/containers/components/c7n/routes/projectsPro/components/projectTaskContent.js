@@ -8,6 +8,7 @@ import { useProjectsProStore } from '../stores';
 
 import './projectTaskContent.less';
 import moment from "moment";
+import ProjectCategory from "./project-category";
 
 export default ({ data, alltrue }) => {
   const {
@@ -96,21 +97,10 @@ export default ({ data, alltrue }) => {
         </div>
       </div>
       <div className="starProjects-items-down">
-        <Tooltip
-          title={data.categories && data.categories.find(c => c.code !== 'PROGRAM_PROJECT') && data.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}
-        >
-          <div>
-            <span>
-              <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_line" />
-            </span>
-            <p style={{
-              display: 'inline-block',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}>{data.categories && data.categories.find(c => c.code !== 'PROGRAM_PROJECT') && data.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
-          </div>
-        </Tooltip>
-
+        <ProjectCategory
+          data={data.categories}
+          className="allProjects-content-item-right-down-text1"
+        />
         {data.programName && (
           <Tooltip title={data.programName}>
             <div>

@@ -1,21 +1,26 @@
 .c7n-workbench-doc {
-  flex: 1 1 56%;
-  height: 520px;
   background-color: #fff;
-  padding: .2rem .24rem;
+  padding: 0.13rem 0.24rem .2rem;
+  display: flex;
+  flex-direction: column;
 
   .c7n-spin-nested-loading {
+    flex-grow: 1;
+    overflow: hidden;
+  }
+  .c7n-spin-container {
     height: 100%;
   }
 
   &-title {
-    display: inline-flex;
     justify-content: space-between;
+    display: flex;
     align-items: center;
-    width: 100%;
-    margin-bottom: .1rem;
+    margin-bottom: 0.2rem;
+    margin-left: 5px;
+    margin-right: 20px;
 
-    & >span {
+    & > span {
       font-size: 16px;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
@@ -31,23 +36,23 @@
   &-switch {
     background: rgba(245, 246, 250, 1);
     border-radius: 2px;
-    padding: .05rem .06rem;
+    padding: 0.05rem 0.06rem;
     margin: 0;
 
     .line:not(:last-child)::after {
       float: left;
-      margin: 0 .06rem;
-      font-size: .16rem;
+      margin: 0 0.06rem;
+      font-size: 0.16rem;
       color: rgba(121, 126, 154, 1);
-      content: '|';
+      content: "|";
     }
 
     li {
       float: left;
       list-style: none;
-      border-radius: .02rem;
-      padding: .04rem;
-      font-size: .13rem;
+      border-radius: 0.02rem;
+      padding: 0.04rem;
+      font-size: 0.13rem;
       margin: 0;
       cursor: pointer;
     }
@@ -66,6 +71,7 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    height: 100%;
 
     .infinite-scroll-component__outerdiv {
       width: 100%;
@@ -73,9 +79,10 @@
   }
 
   &-scroll {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    display: grid;
+    grid-row-gap: 20px;
+    grid-column-gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
 
     &-load {
       position: absolute;
@@ -92,20 +99,15 @@
   }
 
   &-item {
-    flex-basis: 50%;
-    flex-grow: 1;
-    height: 1.32rem;
-    max-width: ~"calc(50% - 10px)";
+    min-width: 50%;
+    height: 1.30rem;
     background: #f5f6fa;
-    border-radius: .1rem;
-    padding: .16rem .2rem;
-    margin-bottom: .2rem;
+    border-radius: 0.1rem;
+    padding: 0.16rem 0.2rem;
     cursor: pointer;
-
-    &:nth-child(odd) {
-      margin-right: .2rem;
-    }
-
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     &-info {
       display: inline-flex;
       width: 100%;
@@ -117,7 +119,7 @@
 
     &-title {
       color: #3a345f;
-      padding-left: .03rem;
+      padding-left: 0.03rem;
       display: inline-flex;
       width: 100%;
       justify-content: space-between;
@@ -130,37 +132,37 @@
       }
 
       &-time {
-        font-size: .12rem;
+        font-size: 0.12rem;
         opacity: 0.65;
-        min-width: .5rem;
+        min-width: 0.5rem;
         text-align: right;
       }
     }
 
     &-project {
       color: rgba(58, 52, 95, 0.65);
-      font-size: .12rem;
-      margin-bottom: .05rem;
-      padding-left: .03rem;
+      font-size: 0.12rem;
+      margin-bottom: 0.05rem;
+      padding-left: 0.03rem;
       display: inline-flex;
       width: 100%;
 
       &-logo {
-        width: .22rem;
-        height: .22rem;
+        width: 0.22rem;
+        height: 0.22rem;
         border-radius: 50%;
-        margin-right: .06rem;
+        margin-right: 0.06rem;
 
         div {
-          width: .22rem;
-          height: .22rem;
+          width: 0.22rem;
+          height: 0.22rem;
           border-radius: 50%;
           color: white;
           text-align: center;
           background-repeat: no-repeat;
           background-position: center;
           background-size: contain;
-          line-height: .22rem;
+          line-height: 0.22rem;
           font-size: 13px;
         }
 
@@ -171,8 +173,8 @@
 
       &-text {
         display: inline-block;
-        line-height: .22rem;
-        height: .22rem;
+        line-height: 0.22rem;
+        height: 0.22rem;
         max-width: 2rem;
         // width: ~"calc(100% - .22rem)";
         overflow: hidden;
@@ -181,11 +183,11 @@
 
         &-dot {
           &::before {
-            content: '\00b7';
+            content: "\00b7";
             color: #000;
             transform: scale(1.5);
             display: inline-block;
-            margin-right: .05rem;
+            margin-right: 0.05rem;
           }
         }
       }
@@ -193,33 +195,33 @@
 
     &-org {
       // width: .24rem;
-      height: .17rem;
+      height: 0.17rem;
       // line-height: .17rem;
-      padding: 0 .06rem;
+      padding: 0 0.06rem;
       text-align: center;
       white-space: nowrap;
       text-overflow: ellipsis;
       background: rgba(104, 135, 232, 0.1);
-      border-radius: .1rem;
+      border-radius: 0.1rem;
       color: #6887e8;
-      font-size: .12rem;
+      font-size: 0.12rem;
       display: inline-block;
-      margin-top: .02rem;
-      margin-left: .06rem;
+      margin-top: 0.02rem;
+      margin-left: 0.06rem;
     }
 
     &-logo {
-      width: .36rem;
-      height: .42rem;
+      width: 0.36rem;
+      height: 0.42rem;
       display: inline-block;
       text-align: center;
-      line-height: .47rem;
-      font-size: .15rem;
+      line-height: 0.47rem;
+      font-size: 0.15rem;
       font-weight: 500;
 
       &-create {
-        width: .36rem;
-        height: .42rem;
+        width: 0.36rem;
+        height: 0.42rem;
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
@@ -231,8 +233,8 @@
       }
 
       &-update {
-        width: .36rem;
-        height: .42rem;
+        width: 0.36rem;
+        height: 0.42rem;
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
@@ -245,7 +247,7 @@
     &-userlist {
       display: block;
       float: right;
-      line-height: .48rem;
+      line-height: 0.48rem;
 
       &-user {
         display: inline-block;
@@ -253,15 +255,15 @@
         &-list {
           display: block;
           cursor: pointer;
-          margin-bottom: .02rem;
+          margin-bottom: 0.02rem;
         }
 
         &-avatar {
           display: inline-block;
-          width: .18rem;
-          height: .18rem;
-          line-height: .18rem;
-          margin-right: .05rem;
+          width: 0.18rem;
+          height: 0.18rem;
+          line-height: 0.18rem;
+          margin-right: 0.05rem;
           text-align: center;
           vertical-align: middle;
           border-radius: 50%;
@@ -278,9 +280,9 @@
           display: inline-block;
           vertical-align: middle;
           margin-left: -6px;
-          width: .32rem;
-          height: .32rem;
-          line-height: .28rem;
+          width: 0.32rem;
+          height: 0.32rem;
+          line-height: 0.28rem;
           text-align: center;
           border: 2px solid #fff;
           border-radius: 50%;
@@ -300,21 +302,6 @@
           }
         }
       }
-    }
-  }
-
-  .c7n-workBench-empty-page {
-
-    &-text {
-      word-break: keep-all;
-    }
-
-    &-image {
-      flex: 0 0 2.82rem;
-      width: 2.82rem;
-      height: 2rem;
-      background: url("./image/empty.svg") no-repeat;
-      background-size: contain;
     }
   }
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Suspense, lazy, Component } from 'react';
 import esModule from './esModule';
 
 function transformInjects(getInjects, inject) {

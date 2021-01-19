@@ -1,0 +1,155 @@
+.c7ncd-project-create-avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  border-radius: 26px;
+  background: #fff;
+
+  &-wrap {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 26px;
+    font-size: 40px;
+    line-height: 80px;
+    font-weight: 700;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #3f51b5;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  &-button {
+    position: absolute !important;
+    width: 100%;
+    height: 100% !important;
+    border-radius: inherit !important;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    transition: opacity 0.3s;
+
+    .c7n-upload {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    &-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+      width: 80px;
+      height: 80px;
+      border-radius: 26px;
+      background-color: rgba(0, 0, 0, 0.26);
+      color: #fff;
+
+      .icon {
+        font-size: 24px;
+        line-height: 80px;
+      }
+    }
+
+    &-create {
+      opacity: 1;
+    }
+
+    &-edit {
+      opacity: 0;
+    }
+  }
+
+  &:hover &-button {
+    opacity: 1;
+  }
+}
+
+.c7ncd-project-create {
+
+  &-form {
+    .c7n-pro-validation-message {
+      white-space: unset;
+    }
+
+    .c7n-pro-select-box-wrapper {
+      margin-top: .2rem;
+
+      .c7n-pro-radio-label {
+        display: inline-block;
+        min-width: 1rem;
+      }
+    }
+  }
+
+  &-category {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+    &-item {
+      text-align: center;
+      width: .9rem;
+      height: .88rem;
+      border-radius: 10px;
+      border: 2px solid #D9E6F2;
+      padding: .1rem 0;
+      margin: 0 0 .2rem 0;
+      cursor: pointer;
+      line-height: 20px;
+
+      &-disabled {
+        cursor: not-allowed;
+        background: rgba(158, 173, 190, 0.08);
+        border: 1px solid #D9E6F2;
+        opacity: 45%;
+      }
+
+      &-selected {
+        border: 2px solid #5365EA;
+        background: rgba(83, 101, 234, 0.08);
+      }
+
+      &-icon {
+        width: .4rem;
+        height: .4rem;
+        line-height: .4rem;
+        margin: 0 auto .08rem;
+        background: url("./images/devops.svg");
+        background-repeat: no-repeat;
+
+        &-N_DEVOPS {
+          background: url("./images/devops.svg");
+        }
+        &-N_AGILE,
+        &-N_PROGRAM {
+          background: url("./images/agile.svg");
+        }
+        &-N_TEST {
+          background: url("./images/test.svg");
+        }
+        &-N_REQUIREMENT {
+          background: url("./images/require.svg");
+        }
+        &-N_OPERATIONS {
+          background: url("./images/operations.svg");
+        }
+      }
+    }
+
+    &-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 15px;
+      margin: .1rem 0;
+    }
+  }
+}

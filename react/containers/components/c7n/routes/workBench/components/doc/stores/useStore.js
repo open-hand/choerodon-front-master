@@ -1,57 +1,27 @@
 import { useLocalStore } from 'mobx-react-lite';
-import { axios } from '@/index';
 
-export default function useStore(AppState) {
+export default function useStore() {
   return useLocalStore(() => ({
-    docData: [],
-    pageInfo: {
-      page: 0,
-      size: 6,
+    listHasMore: false,
+    get getListHasMore() {
+      return this.listHasMore;
     },
-    self: false,
-    isFistLoad: true,
-    loading: true,
-    get getLoading() {
-      return this.loading;
+    setListHasMore(flag) {
+      this.listHasMore = flag;
     },
-    get getIsFistLoad() {
-      return this.isFistLoad;
+
+    selfDoc: false,
+    setSelfDoc(value) {
+      this.selfDoc = value;
     },
-    setLoading(data) {
-      this.loading = data;
+    get getSelfDoc() {
+      return this.selfDoc;
     },
-    get getPageInfo() {
-      return this.pageInfo;
+
+    rowNumber: 3,
+    setRowNumber(value) {
+      this.rowNumber = value;
     },
-    setPageInfo(data) {
-      this.pageInfo = data;
-    },
-    get getDocData() {
-      return this.docData;
-    },
-    setDocData(data) {
-      this.docData = data;
-    },
-    axiosGetDoc(isSelf = false, isFistLoad = false) {
-      this.isFistLoad = isFistLoad;
-      return axios({
-        method: 'get',
-        url: `/knowledge/v1/organizations/${AppState.currentMenuType.organizationId}/work_space/recent_project_update_list${isSelf ? '/self' : ''}`,
-        params: {
-          page: isFistLoad || this.self !== isSelf ? 1 : this.pageInfo.page + 1,
-          size: this.pageInfo.size,
-        },
-      }).then((res) => {
-        if (isFistLoad || this.self !== isSelf) {
-          this.isFistLoad = false;
-          this.setDocData(res.content);
-          this.setPageInfo({ page: 1, size: 6, hasNext: res.totalPages > res.number });
-        } else {
-          this.setDocData(this.docData.concat(res.content));
-          this.setPageInfo({ page: this.pageInfo.page + 1, size: 6, hasNext: res.totalPages > res.number });
-        }
-        this.self = isSelf;
-      });
-    },
+
   }));
 }

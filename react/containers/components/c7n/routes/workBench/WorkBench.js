@@ -1,32 +1,147 @@
-import React from 'react';
-import { Content, Page } from '../../../../../index';
+import React, {
+  useCallback, useMemo, useState, useEffect,
+} from 'react';
+import ResponsiveReactGridLayout from 'react-grid-layout';
+import {
+  map, get, filter,
+} from 'lodash';
+import { observer } from 'mobx-react-lite';
+import DragCard from '@/containers/components/c7n/components/dragCard';
+import { Page } from '../../../../../index';
 import StarTargetPro from './components/StarTargetPro';
-import WorkBenchAgile from './components/WorkBenchAgile';
 import SelfIntro from './components/SelfIntro';
 import ServiceList from './components/ServiceList';
-import Card from './components/card';
 import Doc from './components/doc';
 import EnvList from './components/EnvList';
-import QuickLink from './components/WorkBenchAgile/components/QuickLink';
+import QuickLink from './components/QuickLink';
+import TodoThings from './components/TodoThings';
+import { useWorkBenchStore } from './stores';
+import GridBg from '../../components/gridBackground';
+import QuestionTodo from './components/question-todo';
+import QuestionFocus from './components/question-focus';
+import QuestionBug from './components/question-bug';
 
 import './WorkBench.less';
 
-const WorkBench = () => (
-  <Page className="c7n-workbench">
-    <div className="c7n-workbench-left">
-      <StarTargetPro />
-      <WorkBenchAgile />
-      <div style={{ display: 'flex' }}>
-        <QuickLink />
-        <Doc />
-      </div>
-    </div>
-    <div className="c7n-workbench-right">
-      <SelfIntro />
-      <ServiceList />
-      <EnvList />
-    </div>
-  </Page>
-);
+let observerLayout;
 
-export default WorkBench;
+const ComponetsObjs = {
+  starTarget: <StarTargetPro />,
+  selfInfo: <SelfIntro />,
+  todoQustions: <QuestionTodo />,
+  myStar: <QuestionFocus />,
+  myDefect: <QuestionBug />,
+  todoThings: <TodoThings />,
+  serviceList: <ServiceList />,
+  quickLink: <QuickLink />,
+  doc: <Doc />,
+  envList: <EnvList />,
+};
+
+const WorkBench = () => {
+  const {
+    workBenchUseStore,
+    prefixCls,
+    componentsDs,
+  } = useWorkBenchStore();
+
+  const {
+    isEdit,
+  } = workBenchUseStore;
+
+  const [layOutWidth, setWidth] = useState(0);
+
+  useEffect(() => {
+    if (!observerLayout) {
+      const domTem = document.querySelector(`.${prefixCls}-container`);
+      if (domTem) {
+        new ResizeObserver((entries) => {
+          const dom = get(entries[0], 'target');
+          const width = get(dom, 'offsetWidth');
+          setWidth(width);
+        }).observe(domTem);
+      }
+    }
+  }, []);
+
+  useEffect(() => function () {
+    observerLayout && observerLayout.disconnect();
+  });
+
+  function onLayoutChange(layouts, tempLayouts) {
+    componentsDs.loadData(layouts);
+  }
+
+  function handleDelete(record) {
+    componentsDs.remove(record);
+  }
+
+  const SwitchComponents = (type) => {
+    let tempComponent;
+    const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
+    if (hasOwnProperty) {
+      tempComponent = ComponetsObjs[type];
+    }
+    return tempComponent;
+  };
+
+  const renderBg = useCallback(() => <GridBg selector={`.${prefixCls}-container`} />, []);
+
+  const generateDOM = () => (
+    componentsDs.map((record) => (
+      <DragCard
+        record={record}
+        onDelete={() => handleDelete(record)}
+        isEdit={isEdit}
+        // data-grid={record.toData()}
+        key={record.get('i')}
+        isStatic={record.get('i') === 'starTarget'}
+      >
+        {SwitchComponents(record.get('i'))}
+      </DragCard>
+    ))
+  );
+
+  const renderGridLayouts = () => {
+    const tempObj = {
+      className: `${prefixCls}-layout`,
+      onLayoutChange,
+      breakpoints: 1200,
+      margin: [18, 18],
+      layout: componentsDs.toData(),
+      resizeHandles: ['se'],
+      cols: 12,
+      measureBeforeMount: true,
+      containerPadding: [0, 0],
+      useCSSTransformss: true,
+      rowHeight: 100,
+      shouldComponentUpdate: true,
+      width: layOutWidth,
+      isDraggable: isEdit,
+      isResizable: isEdit,
+    };
+
+    return (
+      <ResponsiveReactGridLayout
+        {...tempObj}
+      >
+        {generateDOM()}
+      </ResponsiveReactGridLayout>
+    );
+  };
+
+  return (
+    <Page className={`${prefixCls}`}>
+      <div
+        className={`${prefixCls}-container`}
+      >
+        {isEdit && renderBg()}
+        {
+          renderGridLayouts()
+        }
+      </div>
+    </Page>
+  );
+};
+
+export default observer(WorkBench);

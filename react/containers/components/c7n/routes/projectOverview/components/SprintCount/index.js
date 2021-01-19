@@ -1,16 +1,21 @@
 import React, { useState, memo, useEffect } from 'react';
-import { Tooltip, Progress, Icon, Spin } from 'choerodon-ui/pro';
+import {
+  Tooltip, Progress, Icon, Spin,
+} from 'choerodon-ui/pro';
+import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+
 import { observer } from 'mobx-react-lite';
 import OverviewWrap from '../OverviewWrap';
+
 import { useProjectOverviewStore } from '../../stores';
 import normalToSvg from '../number-font';
 import './index.less';
+
 import EmptyPage from '../EmptyPage';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 
 const clsPrefix = 'c7n-project-overview-sprint-count';
 const SprintCount = observer(() => {
-  const { sprintCountDataSet, projectOverviewStore } = useProjectOverviewStore();
+  const { sprintCountDataSet, startSprintDs, startedRecord } = useProjectOverviewStore();
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>迭代问题统计</span>
@@ -42,13 +47,9 @@ const SprintCount = observer(() => {
     }
     return progressArr;
   };
-  useEffect(() => {
-    if (projectOverviewStore.getStaredSprint) {
-      sprintCountDataSet.query();
-    }
-  }, [projectOverviewStore.getStaredSprint]);
+
   function render() {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       return (
         <Spin dataSet={sprintCountDataSet}>
           <OverviewWrap.Content className={`${clsPrefix}-content`}>
@@ -56,13 +57,14 @@ const SprintCount = observer(() => {
           </OverviewWrap.Content>
         </Spin>
       );
-    } else if (projectOverviewStore.getIsFinishLoad) {
+    } if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;
     }
     return <LoadingBar display />;
   }
+
   return (
-    <OverviewWrap height={137}>
+    <OverviewWrap>
       <OverviewWrap.Header titleMarginBottom={12} title={renderTitle()} />
       {render()}
     </OverviewWrap>

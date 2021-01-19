@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Tooltip } from 'choerodon-ui';
 import { inject } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 
@@ -52,11 +53,17 @@ const PageHeader = ({
   }
   
   return (
-    <div className={classNames('page-head', className)}>
+    <div 
+      className={
+        classNames('page-head', className, {
+          'theme4-page-head': AppState.getCurrentTheme === 'theme4',
+        })
+      }
+    >
       {renderBackBtn()}
       {children}
     </div>
   );
 };
 
-export default withRouter(inject('AppState', 'MenuStore')(injectIntl(PageHeader)));
+export default withRouter(inject('AppState', 'MenuStore')(injectIntl(observer(PageHeader))));

@@ -4,11 +4,36 @@ import { Icon, Menu, Tooltip } from 'choerodon-ui';
 import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
+import xiezuo2 from '../header/style/icons/xiezuo2.png';
+import xiezuo1 from '../header/style/icons/xiezuo1.png';
+import ceshi2 from '../header/style/icons/ceshi2.png';
+import ceshi1 from '../header/style/icons/ceshi1.png';
+import bushu2 from '../header/style/icons/bushu2.png';
+import bushu1 from '../header/style/icons/bushu1.png';
+import shezhi2 from '../header/style/icons/shezhi2.png';
+import shezhi1 from '../header/style/icons/shezhi1.png';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../util';
 import './index.less';
 
 const { SubMenu, Item, ItemGroup } = Menu;
+
+const iconMap = {
+  // 协作
+  'choerodon.code.project.cooperation': [xiezuo1, xiezuo2],
+  // 需求
+  'choerodon.code.project.demand': [xiezuo1, xiezuo2],
+  //  开发
+  'choerodon.code.project.develop': [xiezuo1, xiezuo2],
+  //  测试
+  'choerodon.code.project.test': [ceshi1, ceshi2],
+  //  部署
+  'choerodon.code.project.deploy': [bushu1, bushu2],
+  //  运营
+  'choerodon.code.project.operation': [bushu1, bushu2],
+  // 设置
+  'choerodon.code.project.setting': [shezhi1, shezhi2],
+}
 
 @withRouter
 @inject('AppState', 'MenuStore')
@@ -22,13 +47,16 @@ export default class CommonMenu extends Component {
       this.props.MenuStore.statistics = JSON.parse(localStorage.getItem('rawStatistics'));
     }
   }
+
   componentWillReceiveProps(nextProps) {
     this.loadMenu(nextProps);
   }
 
   loadMenu(props) {
     const { location, AppState, MenuStore } = props;
-    const { type: currentType, isUser: currentIsUser, id: currentId, selected, collapsed } = MenuStore;
+    const {
+      type: currentType, isUser: currentIsUser, id: currentId, selected, collapsed,
+    } = MenuStore;
     const { pathname } = location;
     const { type, id } = AppState.currentMenuType;
     if (type) {
@@ -40,7 +68,7 @@ export default class CommonMenu extends Component {
           MenuStore.setType(type);
           MenuStore.setId(id);
           MenuStore.setIsUser(isUser);
-          MenuStore.setOpenKeys([]);
+          // MenuStore.setOpenKeys([]);
         } else {
           MenuStore.treeReduce({ subMenus: menus }, (menu, parents) => {
             if (menu.route === pathname || pathname.indexOf(`${menu.route}/`) === 0) {
@@ -61,6 +89,7 @@ export default class CommonMenu extends Component {
               MenuStore.setType(type);
               MenuStore.setId(id);
               MenuStore.setIsUser(isUser);
+              MenuStore.setRootBaseOnActiveMenu();
               return true;
             }
             return false;
@@ -79,20 +108,36 @@ export default class CommonMenu extends Component {
 
   getMenuSingle(data, num, collapsed) {
     const paddingStyleObj = num === 0 && collapsed ? { padding: '0 !important' } : {};
-    if (!data.subMenus || data.subMenus.every(v => v.type === 'tab')) {
+    if (!data.subMenus || data.subMenus.every((v) => v.type === 'tab')) {
       const { route } = findFirstLeafMenu(data);
       const link = (
         <Link
           to={this.getMenuLink(route)}
           onClick={() => {
             this.props.MenuStore.setActiveMenu(data);
-            this.props.MenuStore.click(data.code, data.level, data.name)
+            this.props.MenuStore.click(data.code, data.level, data.name);
           }}
           style={{
             marginLeft: collapsed && num === 0 ? 0 : parseInt(num, 10) * 20,
+            fontSize: '0.14rem',
           }}
         >
-          <Icon type={data.icon} />
+          <span
+            className={classNames({
+              'theme4-iconwrap': this.props.AppState.getCurrentTheme === 'theme4',
+            })}
+            {
+              ...this.props.AppState.getCurrentTheme === '' && collapsed ? {
+                style: {
+                  marginRight: 16,
+                }
+              } : {}
+            }
+          >
+            <Icon
+              type={data.icon}
+            />
+          </span>
           <span>{data.name}</span>
         </Link>
       );
@@ -104,28 +149,35 @@ export default class CommonMenu extends Component {
           {link}
         </Item>
       );
-    } else {
-      return (
-        <SubMenu
-          key={data.code}
-          className="common-menu-right-popup"
-          title={(
-            <span
-              style={{
-                marginLeft: parseInt(num, 10) * 20,
-              }}
-            >
-              <Icon type={data.icon} />
-              {num === 0 && collapsed ? null : <span>{data.name}</span>}
-            </span>
-          )}
-        >
-          {data.subMenus.filter(v => v.type !== 'tab').map(
-            two => this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed),
-          )}
-        </SubMenu>
-      );
     }
+    return (
+      <SubMenu
+        key={data.code}
+        className="common-menu-right-popup"
+        title={(
+          <span
+            style={{
+              marginLeft: parseInt(num, 10) * 20,
+              fontSize: '0.14rem',
+            }}
+          >
+            <span className={classNames({
+              'theme4-iconwrap': this.props.AppState.getCurrentTheme === 'theme4',
+            })}
+            >
+              <Icon
+                type={data.icon}
+              />
+            </span>
+            {num === 0 && collapsed ? null : <span>{data.name}</span>}
+          </span>
+          )}
+      >
+        {data.subMenus.filter((v) => v.type !== 'tab').map(
+          (two) => this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed),
+        )}
+      </SubMenu>
+    );
   }
 
   TooltipMenu(reactNode, code) {
@@ -136,14 +188,15 @@ export default class CommonMenu extends Component {
           {reactNode}
         </Tooltip>
       );
-    } else {
-      return reactNode;
     }
+    return reactNode;
   }
 
   getMenuLink(route) {
     const { AppState, history } = this.props;
-    const { id, name, type, organizationId, category } = AppState.currentMenuType;
+    const {
+      id, name, type, organizationId, category,
+    } = AppState.currentMenuType;
     let search = '';
     switch (type) {
       case 'site':
@@ -223,7 +276,7 @@ export default class CommonMenu extends Component {
     } else {
       this.savedOpenKeys = openKeys;
       MenuStore.setCollapsed(true);
-      MenuStore.setOpenKeys([]);
+      // MenuStore.setOpenKeys([]);
     }
   };
 
@@ -239,40 +292,84 @@ export default class CommonMenu extends Component {
         </Tooltip>
       );
     }
-    if (!item.subMenus || item.subMenus.every(v => v.type === 'tab')) {
+    if (!item.subMenus || item.subMenus.every((v) => v.type === 'tab')) {
       return (
         <Item key={item.code}>
           {icon}
           {text}
         </Item>
       );
-    } else {
-      return (
-        <ItemGroup
-          // onTitleClick={this.handleClick}
-          key={item.code}
-          className="common-menu-right-popup"
-          title={item.name}
-        >
-          {
-            item.subMenus.filter(v => v.type !== 'tab').map(two => this.getMenuSingle(two, 0, collapsed))
-          }
-        </ItemGroup>
-      );
     }
+    return (
+      <ItemGroup
+          // onTitleClick={this.handleClick}
+        key={item.code}
+        className="common-menu-right-popup"
+      >
+        {
+            item.subMenus.filter((v) => v.type !== 'tab').map((two) => this.getMenuSingle(two, 0, collapsed))
+          }
+      </ItemGroup>
+    );
   }
 
   renderRightMenu() {
-    const { MenuStore } = this.props;
+    const { MenuStore, AppState } = this.props;
     const { collapsed, openKeys, activeMenu } = MenuStore;
-    const child = MenuStore.getMenuData;
+    let child;
+    const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
+    child = MenuStore.getMenuData.filter((item) => item.id === activeMenuRoot.id);
+    // if (AppState.getCurrentTheme === 'theme4') {
+    //   const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
+    //   child = MenuStore.getMenuData.filter((item) => item.id === activeMenuRoot.id);
+    // } else {
+    //   child = MenuStore.getMenuData;
+    // }
     return (
-      <div className={classNames('common-menu-right', { collapsed })}>
-        <div className="common-menu-right-header">
-          <Icon type="menu" onClick={this.toggleRightMenu} />
+      <div
+        className={
+          classNames('common-menu-right', {
+              collapsed,
+              'theme4-common-menu': AppState.getCurrentTheme === 'theme4'
+            })
+        }
+        style={{
+          width: collapsed ? '50px' : 'calc(250px - 54px)',
+        }}
+      >
+        <div
+          className="common-menu-right-header"
+          style={{
+            position: 'relative',
+            ...AppState.getCurrentTheme === 'theme4' ? {
+              height: 0,
+            } : {},
+          }}
+        >
+          <div
+            className={classNames({
+              'theme4-iconToggle': AppState.getCurrentTheme === 'theme4',
+            })}
+          >
+            <Icon
+              type={(function () {
+                if (AppState.getCurrentTheme === 'theme4') {
+                  if (collapsed) {
+                    return 'keyboard_arrow_right';
+                  } else {
+                    return 'keyboard_arrow_left'
+                  }
+                } else {
+                  return 'menu'
+                }
+              }())}
+              onClick={this.toggleRightMenu}
+            />
+          </div>
         </div>
         <div className="common-menu-right-content">
           <Menu
+            className={classNames({ 'theme4-menu-ul': AppState.getCurrentTheme === 'theme4' })}
             mode="inline"
             inlineCollapsed={collapsed}
             selectedKeys={[activeMenu && activeMenu.code]}
@@ -281,7 +378,7 @@ export default class CommonMenu extends Component {
             subMenuCloseDelay={0.1}
             subMenuOpenDelay={0.1}
           >
-            {child.map(item => this.renderLeftMenuItem(item, collapsed))}
+            {child?.map((item) => this.renderLeftMenuItem(item, collapsed))}
           </Menu>
         </div>
       </div>
@@ -302,8 +399,94 @@ export default class CommonMenu extends Component {
     return blackListArray.some((pname) => pathname.startsWith(pname));
   }
 
+  handleClickItemMenuSide = (item) => {
+    const { MenuStore, AppState } = this.props;
+    const origin = MenuStore.getActiveMenuRoot;
+    origin[AppState.menuType.type] = item;
+    MenuStore.setOpenkeysBaseonRoot(item);
+    MenuStore.setActiveMenuRoot(JSON.parse(JSON.stringify(origin)));
+  }
+
+  renderNewMenuSide = () => {
+    const { MenuStore, AppState } = this.props;
+    const menuData = MenuStore.getMenuData;
+    const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
+    return (
+      <div
+        className="c7ncd-theme4-menuSide"
+        {
+          ...AppState.getCurrentTheme === '' ? {
+            style: {
+              background: 'white',
+              borderRight: '1px solid #D9E6F2',
+            }
+          } : {}
+        }
+      >
+        {
+          menuData.map((data) => (
+            <div
+              className={classNames('c7ncd-theme4-menuSide-item', {
+                'c7ncd-origin-menuSide': activeMenuRoot.id === data.id && AppState.getCurrentTheme === '',
+                'c7ncd-origin-menuSide-item': AppState.getCurrentTheme === '',
+                'c7ncd-theme4-menuSide-item-hover': AppState.getCurrentTheme === 'theme4',
+              })}
+              {
+                ...(activeMenuRoot.id === data.id) && AppState.getCurrentTheme === 'theme4' ? {
+                  style: {
+                    background: 'rgba(140, 158, 255, 0.35)',
+                  },
+                } : {}
+              }
+              onClick={() => this.handleClickItemMenuSide(data)}
+            >
+              {
+                (activeMenuRoot.id === data.id) && AppState.getCurrentTheme === '' && (
+                  <div className="c7ncd-origin-selected-line" />
+                )
+              }
+              <div
+                style={{
+                  background: AppState.getCurrentTheme === '' ? '' : 'rgba(255, 255, 255, 0.08)',
+                  borderRadius: '8px',
+                  width: 30,
+                  height: 30,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <img
+                  style={{
+                    width: 20,
+                  }}
+                  src={(function (){
+                    if (iconMap[data.code]) {
+                      if (iconMap[data.code][AppState.getCurrentTheme === '' ? 0 : 1]) {
+                        return iconMap[data.code][AppState.getCurrentTheme === '' ? 0 : 1];
+                      }
+                    }
+                    return iconMap['choerodon.code.project.cooperation'][AppState.getCurrentTheme === '' ? 0 : 1];
+                  }())} alt=""/>
+              </div>
+              <p
+                {
+                  ...AppState.getCurrentTheme === '' ? {
+                    style: {
+                      color: '#0F1358',
+                    }
+                  } : {}
+                }
+              >{data.name}</p>
+            </div>
+          ))
+        }
+      </div>
+    );
+  }
+
   render() {
-    const { MenuStore, location: { pathname } } = this.props;
+    const { MenuStore, location: { pathname }, AppState } = this.props;
     const child = MenuStore.getMenuData;
     if (!(child && child.length > 0) || this.shouldHiddenMenu(pathname) || MenuStore.notFoundSign) {
       return null;
@@ -311,6 +494,7 @@ export default class CommonMenu extends Component {
 
     return (
       <div className="common-menu">
+        {this.renderNewMenuSide()}
         {this.renderRightMenu()}
       </div>
     );

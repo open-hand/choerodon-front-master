@@ -1,7 +1,10 @@
 import React, { useCallback, Fragment } from 'react';
-import { TextField, Button, Pagination, Tooltip, Modal } from 'choerodon-ui/pro';
-import { Progress, Icon } from 'choerodon-ui';
+import {
+  TextField, Button, Pagination, Tooltip, Modal,
+} from 'choerodon-ui/pro';
+import { Progress, Icon, Spin } from 'choerodon-ui';
 import queryString from 'query-string';
+import { merge } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import Permission from '@/containers/components/c7n/tools/permission';
 import { getRandomBackground } from '@/containers/components/c7n/util';
@@ -10,8 +13,9 @@ import { prompt } from '@/utils';
 import SagaDetails from '../../../../tools/saga-details';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
-import FormView from '../FormView';
 import EmptyPage from '../empty-page';
+import CreateProject from '../create-project';
+import ProjectCategory from '../project-category';
 
 import './index.less';
 
@@ -25,6 +29,7 @@ export default observer(() => {
     intl: {
       formatMessage,
     },
+    intlPrefix,
   } = useProjectsProStore();
 
   function refresh() {
@@ -37,260 +42,113 @@ export default observer(() => {
     ProjectsProUseStore.handleClickProject(data);
   };
 
-  async function handleCreate() {
-    const { currentMenuType: { organizationId } } = AppState;
-    const { current } = dataSet;
-    if (await current.validate() === true) {
-      const { category, code, name, imageUrl } = current.toData();
-      const data = {
-        name,
-        code,
-        category,
-        imageUrl,
-      };
-      const res = await axios.post(`/iam/choerodon/v1/organizations/${organizationId}/projects`, data);
-      if (res.failed) {
-        prompt(res.message);
-        return false;
-      }
-        prompt('创建成功');
-        // HeaderStore.setRecentItem(res);
-        refresh();
-        return true;
-
+  const handleAddProject = (e, currentProjectId) => {
+    if (currentProjectId) {
+      e.stopPropagation();
     }
-  }
-
-  async function editProject(modal) {
-    try {
-      if ((await dataSet.submit()) !== false) {
-        if (modal) {
-          modal.close();
-        }
-        refresh();
-        return true;
-      }
-        return false;
-
-    } catch (e) {
-      return false;
-    }
-  }
-
-  async function handleOkEdit(editModal) {
-    const { enabled, name, category, categories } = dataSet.current.toData();
-    if (dataSet.current.status === 'add') {
-      return (await handleCreate() === true);
-    }
-    if (dataSet.current.getPristineValue('enabled') === false || enabled) {
-      return (await editProject() === true);
-    }
-    try {
-      const isSubProject = categories.some(c => c.code === 'PROGRAM_PROJECT');
-      const okProps = {
-        disabled: true,
-        color: 'red',
-        style: {
-          width: '100%', border: '1px solid rgba(27,31,35,.2)', height: 36, marginTop: -26,
-        },
-      };
-      const ModalContent = ({ modal }) => {
-        let extraMessage;
-        if (category === 'PROGRAM') {
-          extraMessage = (
-            <>
-              <div className="c7n-projects-enable-tips">
-                警告：项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
-              </div>
-              <div style={{ marginTop: 10 }}>
-                请输入
-                {' '}
-                <span style={{ fontWeight: 600 }}>{name}</span>
-                {' '}
-                来确认停用。
-              </div>
-              <TextField
-                style={{ width: '100%', marginTop: 10 }}
-                autoFocus
-                onInput={(e) => {
-                  modal.update({
-                    okProps: {
-                      ...okProps,
-                      disabled: e.target.value !== name,
-                    },
-                  });
-                }}
-              />
-            </>
-          );
-        } else if (isSubProject) {
-          extraMessage = (
-            <div className="c7n-projects-enable-tips">
-              警告：子项目停用后，与项目群相关的冲刺将发生变动，进行中的冲刺会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
-            </div>
-          );
-        }
-        const content = (
-          <div style={{ marginTop: -10 }}>
-            {category === 'PROGRAM' && (
-              <p style={{
-                marginBottom: 14,
-                background: '#fffbdd',
-                padding: '15px 26px',
-                border: '1px solid rgba(27,31,35,.15)',
-                width: 'calc(100% + 49px)',
-                marginLeft: -25,
-              }}
-              >
-                请仔细阅读下列事项！
-              </p>
-            )}
-            <span>
-              确定要停用项目“
-              {name}
-              ”吗？停用后，您和项目下其他成员将无法进入此项目。
-            </span>
-            {extraMessage}
-          </div>
-        );
-        return content;
-      };
-
-      if (category === 'PROGRAM') {
-        Modal.open({
-          title: '停用项目',
-          children: <ModalContent />,
-          onOk: () => editProject(editModal),
-          okProps,
-          okText: '我已经知道后果，停用此项目',
-          closable: true,
-          footer: okBtn => okBtn,
-        });
-      } else {
-        Modal.open({
-          title: '停用项目',
-          children: <ModalContent />,
-          onOk: () => editProject(editModal),
-        });
-      }
-    } catch (e) {
-      return false;
-    }
-    return false;
-  }
-
-  function handleRemove() {
-    dataSet.removeAll();
-  }
-
-  const handleAddProject = () => {
-    dataSet.create();
     Modal.open({
       key: Modal.key(),
       drawer: true,
-      title: '创建项目',
+      title: currentProjectId ? '项目设置' : '创建项目',
       className: 'c7n-projects-modal-create-project',
-      children: <FormView context={{ dataSet, AppState, intl }} />,
-      onOk: handleOkEdit,
-      okText: '创建',
-      afterClose: handleRemove,
+      children: <CreateProject
+        refresh={refresh}
+        projectId={currentProjectId}
+        openSagaDetails={openSagaDetails}
+      />,
+      okText: currentProjectId ? '保存' : '创建',
       style: {
         width: '3.8rem',
       },
     });
   };
 
-  const handleEditProject = async (e, currentProjectId) => {
-    e.stopPropagation();
-
-    try {
-      dataSet.transport.read.url = `/iam/choerodon/v1/projects/${currentProjectId}`;
-      await dataSet.query();
-
-      const modal = Modal.open({
-        key: Modal.key(),
-        drawer: true,
-        title: '项目设置',
-        children: <FormView context={{ dataSet, AppState, intl }} />,
-        onOk: () => handleOkEdit(modal),
-        afterClose: handleRemove,
-        okText: '保存',
-        style: {
-          width: '3.8rem',
-        },
-      });
-    } catch (error) {
-      return false;
-    }
-  };
-
-  const openSagaDetails = (id) => {
+  const openSagaDetails = (id, projectStatus, onOk) => {
+    const tips = (
+      <span>
+        正在
+        {projectStatus === 'creating' ? '创建项目' : '修改项目类型'}
+        ，该过程可能会持续几分钟。待以下事务实例执行成功后，才能进入项目。
+        <br />
+        若事务执行失败，可点击下方失败的任务模块，并在右侧点击重试来重新执行操作。
+        <br />
+        若重试后依然失败，请联系管理员进行处理。
+      </span>
+    );
+    const [modalTitle, newTips] = projectStatus === 'failed'
+      ? [formatMessage({ id: 'global.saga-instance.detail' })]
+      : [formatMessage({ id: `${intlPrefix}.saga.title.${projectStatus}` }), tips];
     Modal.open({
-      title: formatMessage({ id: 'global.saga-instance.detail' }),
+      title: modalTitle,
       key: Modal.key(),
-      children: <SagaDetails sagaInstanceId={id} instance />,
+      children: <SagaDetails sagaInstanceId={id} instance tips={newTips} />,
       drawer: true,
       okCancel: false,
       okText: formatMessage({ id: 'close' }),
+      onOk: () => (onOk ? onOk() : true),
       style: {
         width: 'calc(100% - 3.5rem)',
       },
     });
   };
 
+  const checkOperation = useCallback((data) => data && (!data.sagaInstanceId || data.operateType === 'update'));
+
   const renderProjects = useCallback(() => {
     const projects = ProjectsProUseStore.getAllProjects;
     if (ProjectsProUseStore.getProjectLoading) {
       return (
         <div className="allProjects-content-spin" style={{ width: '670px' }}>
-          <Progress type="loading" />
+          <Spin />
         </div>
       );
     }
-      return projects.length > 0 ? projects.map(p => (
+    return projects.length > 0 ? projects.map((p) => (
+      <div
+        key={p.id}
+        onClick={() => {
+          if (p.enabled && checkOperation(p)) {
+            handleClickProject(p);
+          }
+        }}
+        className="allProjects-content-item"
+        style={{
+          cursor: p.enabled ? 'pointer' : 'not-allowed',
+        }}
+        role="none"
+      >
         <div
-          key={p.id}
-          onClick={() => {
-            if (p.enabled) {
-              handleClickProject(p);
-            }
-          }}
-          className="allProjects-content-item"
+          className="allProjects-content-item-icon"
           style={{
-            cursor: p.enabled ? 'pointer' : 'not-allowed',
+            backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : p.background,
           }}
         >
-          <div
-            className="allProjects-content-item-icon"
-            style={{
-              backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : p.background,
-            }}
-          >
-            <span>
-              {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
-            </span>
-          </div>
+          <span>
+            {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
+          </span>
+        </div>
 
-          <div className="allProjects-content-item-right">
-            <div className="allProjects-content-item-right-top">
-              <div className="allProjects-content-item-right-top-left">
-                <span className="allProjects-content-item-right-top-left-code">{p.code && p.code.toUpperCase()}</span>
-                <span className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${p.enabled}`}>
-                  {p.enabled ? '启用' : '停用'}
-                </span>
-              </div>
-              {p.editFlag && !p.sagaInstanceId ? (
-                <Icon
-                  type="mode_edit"
-                  style={{
-                    color: 'rgb(86, 111, 225)',
-                    fontSize: '20px',
-                    margin: '0 10px 0 auto',
-                  }}
-                  className="allProjects-content-item-right-top-edit"
-                  onClick={(e) => handleEditProject(e, p.id)}
-                />
-              ) : null}
+        <div className="allProjects-content-item-right">
+          <div className="allProjects-content-item-right-top">
+            <div className="allProjects-content-item-right-top-left">
+              <span className="allProjects-content-item-right-top-left-code">{p.code && p.code.toUpperCase()}</span>
+              <span className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${p.enabled}`}>
+                {p.enabled ? '启用' : '停用'}
+              </span>
+            </div>
+            {p.editFlag && (!p.sagaInstanceId || (p.projectStatus === 'failed' && p.operateType === 'update')) ? (
+              <Icon
+                type="mode_edit"
+                style={{
+                  color: 'rgb(86, 111, 225)',
+                  fontSize: '20px',
+                  margin: '0 10px 0 auto',
+                }}
+                className="allProjects-content-item-right-top-edit"
+                onClick={(e) => handleAddProject(e, p.id)}
+              />
+            ) : null}
+            {checkOperation(p) ? (
               <Icon
                 type={p.starFlag ? 'stars' : 'star_border'}
                 style={{
@@ -306,73 +164,67 @@ export default observer(() => {
                   }
                 }}
               />
-            </div>
-            <div className="allProjects-content-item-right-down">
-              <div className="allProjects-content-item-right-down-pro">
-                  <p>
-                    <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
-                  </p>
-                {
-                  p.sagaInstanceId ? (
-                    <Icon
-                      className="allProjects-content-item-right-down-pro-dashBoard"
-                      type="developer_board"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openSagaDetails(p.sagaInstanceId);
-                      }}
-                    />
-                  ) : ''
-                }
-              </div>
-              <Tooltip
-                title={p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}
-              >
-                <p className="allProjects-content-item-right-down-text1">
-                  <span>
-                    <Icon type="project_line" />
-                  </span>
-                  <p>{p.categories && p.categories.find(c => c.code !== 'PROGRAM_PROJECT') && p.categories.find(c => c.code !== 'PROGRAM_PROJECT').name}</p>
-                </p>
-              </Tooltip>
-
-              {
-                p.programName
-                && (
-                  <Tooltip title={p.programName}>
-                    <p className="allProjects-content-item-right-down-text2">
-                      <>
-                        <span>
-                          <Icon type="project_group" />
-                        </span>
-                        <p>{p.programName}</p>
-                      </>
-                    </p>
-                  </Tooltip>
-                )
-              }
-              <p className="allProjects-content-item-right-down-time">
-                <Tooltip title={p.createUserName} placement="top">
-                  <span
-                    className="allProjects-content-item-right-down-avatar"
-                    style={{
-                      backgroundImage: p.createUserImageUrl ? `url(${p.createUserImageUrl})` : 'unset',
-                    }}
-                  >
-                    {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
-                  </span>
-                </Tooltip>
-                <p>
-                  {p.creationDate.split(' ')[0]}
-                  {' '}
-                  创建
-                </p>
+            ) : null}
+          </div>
+          <div className="allProjects-content-item-right-down">
+            <div className="allProjects-content-item-right-down-pro">
+              <p>
+                <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
               </p>
+              {
+                p.sagaInstanceId && p.projectStatus ? (
+                  <Icon
+                    className="allProjects-content-item-right-down-pro-dashBoard"
+                    style={{ color: p.projectStatus === 'failed' ? 'rgb(247, 103, 118)' : '#3f51b5' }}
+                    type="developer_board"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openSagaDetails(p.sagaInstanceId, p.projectStatus);
+                    }}
+                  />
+                ) : ''
+              }
             </div>
+            <ProjectCategory
+              data={p.categories}
+              className="allProjects-content-item-right-down-text1"
+            />
+            {
+              p.programName
+              && (
+                <Tooltip title={p.programName}>
+                  <p className="allProjects-content-item-right-down-text2">
+                    <>
+                      <span>
+                        <Icon type="project_group" />
+                      </span>
+                      <p>{p.programName}</p>
+                    </>
+                  </p>
+                </Tooltip>
+              )
+            }
+            <p className="allProjects-content-item-right-down-time">
+              <Tooltip title={p.createUserName} placement="top">
+                <span
+                  className="allProjects-content-item-right-down-avatar"
+                  style={{
+                    backgroundImage: p.createUserImageUrl ? `url(${p.createUserImageUrl})` : 'unset',
+                  }}
+                >
+                  {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
+                </span>
+              </Tooltip>
+              <p>
+                {p.creationDate.split(' ')[0]}
+                {' '}
+                创建
+              </p>
+            </p>
           </div>
         </div>
-      )) : <EmptyPage title="暂无项目" describe="该组织下暂无项目" />;
-
+      </div>
+    )) : <EmptyPage title="暂无项目" describe="该组织下暂无项目" />;
   }, [ProjectsProUseStore.getAllProjects]);
 
   const handleBlurProjects = ({ ...e }) => {
@@ -386,7 +238,7 @@ export default observer(() => {
 
   const renderTitle = () => {
     const { organizationId } = queryString.parse(history.location.search);
-    const org = (HeaderStore.getOrgData || []).find(v => String(v.id) === organizationId) || { name: '' };
+    const org = (HeaderStore.getOrgData || []).find((v) => String(v.id) === organizationId) || { name: '' };
     const { getCanCreate } = ProjectsProUseStore;
     return (
       <>

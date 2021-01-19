@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect } from 'react';
-import useStore from './useStore';
 import { inject } from 'mobx-react';
 
 import { observer } from 'mobx-react-lite';
 
 import moment from 'moment';
+import useStore from './useStore';
 import { useProjectOverviewStore } from '../../../stores';
 
 const Store = createContext();
@@ -18,13 +18,13 @@ export const StoreProvider = inject('AppState')(observer((props) => {
     children,
     AppState: { currentMenuType: { organizationId, projectId } },
   } = props;
-  const { projectOverviewStore } = useProjectOverviewStore();
+  const { startedRecord } = useProjectOverviewStore();
   const workloadStore = useStore(projectId);
-  useEffect(()=>{
-    if(projectOverviewStore.getStaredSprint){
-      workloadStore.axiosGetTableData(projectOverviewStore.getStaredSprint.sprintId);
+  useEffect(() => {
+    if (startedRecord) {
+      workloadStore.axiosGetTableData(startedRecord.sprintId);
     }
-  },[projectOverviewStore.getStaredSprint])
+  }, [startedRecord]);
   const value = {
     ...props,
     workloadStore,

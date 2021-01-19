@@ -109,6 +109,13 @@ const zh_CN = {
   'global.saga-instance.failedCount': '失败',
   'global.saga-instance.runningCount': '运行中',
   'global.saga-instance.waitToBePulledCount': '等待被拉取',
+
+  // 项目列表页
+  'c7ncd.project.saga.title.creating': '创建项目事务进度',
+  'c7ncd.project.saga.tips.creating': '正在创建项目，该过程可能会持续几分钟。待以下事务实例执行成功后，才能进入项目。<br />若事务执行失败，可点击下方失败的任务模块，并在右侧点击重试来重新执行操作。若重试后依然失败，请联系管理员进行处理。',
+  'c7ncd.project.saga.title.updating': '修改项目事务进度',
+  'c7ncd.project.saga.tips.updating': '正在修改项目类型，该过程可能会持续几分钟。待以下事务实例执行成功后，进入项目刷新页面即可。若以下事务未执行完成，将无法看到新增项目类型对应的功能菜单；若事务执行失败，可点击下方失败的任务模块，并在右侧点击重试来重新执行操作。若重试后依然失败，请联系管理员进行处理。',
+  'c7ncd.project.category': '',
 };
 
 export default zh_CN;
