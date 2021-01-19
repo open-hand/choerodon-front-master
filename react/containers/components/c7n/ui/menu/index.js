@@ -428,9 +428,11 @@ export default class CommonMenu extends Component {
             <div
               className={classNames('c7ncd-theme4-menuSide-item', {
                 'c7ncd-origin-menuSide': activeMenuRoot.id === data.id && AppState.getCurrentTheme === '',
+                'c7ncd-origin-menuSide-item': AppState.getCurrentTheme === '',
+                'c7ncd-theme4-menuSide-item-hover': AppState.getCurrentTheme === 'theme4',
               })}
               {
-                ...activeMenuRoot.id === data.id ? {
+                ...(activeMenuRoot.id === data.id) && AppState.getCurrentTheme === 'theme4' ? {
                   style: {
                     background: 'rgba(140, 158, 255, 0.35)',
                   },
@@ -438,19 +440,14 @@ export default class CommonMenu extends Component {
               }
               onClick={() => this.handleClickItemMenuSide(data)}
             >
-              {/*<Icon*/}
-              {/*  {*/}
-              {/*    ...AppState.getCurrentTheme === 'theme4' ? {*/}
-              {/*      style: {*/}
-              {/*        color: 'white',*/}
-              {/*      }*/}
-              {/*    } : {}*/}
-              {/*  }*/}
-              {/*  type="filter_frames"*/}
-              {/*/>*/}
+              {
+                (activeMenuRoot.id === data.id) && AppState.getCurrentTheme === '' && (
+                  <div className="c7ncd-origin-selected-line" />
+                )
+              }
               <div
                 style={{
-                  background: AppState.getCurrentTheme === '' ? '#F2F5FA' : 'rgba(255, 255, 255, 0.08)',
+                  background: AppState.getCurrentTheme === '' ? '' : 'rgba(255, 255, 255, 0.08)',
                   borderRadius: '8px',
                   width: 30,
                   height: 30,

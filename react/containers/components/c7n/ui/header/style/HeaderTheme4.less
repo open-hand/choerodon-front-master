@@ -175,9 +175,10 @@
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-  }
-  &-item:hover {
-    background: rgba(140, 158, 255, 0.35);
+    position: relative;
+    &-hover:hover {
+      background: rgba(140, 158, 255, 0.35);
+    }
   }
 }
 .theme4-iconToggle {
@@ -235,4 +236,15 @@
   padding: 0 !important;
   margin: 12px 12px 0 12px !important;
   background: white;
+}
+.c7ncd-origin-menuSide-item {
+  border-bottom: 1px solid #d9e6f2;
+}
+.c7ncd-origin-selected-line {
+  height: 100%;
+  width: 3px;
+  background: #5266d4;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
