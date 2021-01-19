@@ -119,6 +119,7 @@ axios.interceptors.response.use(
           break;
         }
         default:
+          prompt(response.data, 'error');
           break;
       }
     }
