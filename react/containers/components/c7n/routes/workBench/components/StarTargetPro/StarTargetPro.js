@@ -245,12 +245,23 @@ const StarTargetPro = observer(() => {
     setEdit(false);
   }
 
+  function handleResetModal() {
+    Modal.open({
+      title: '重置工作台',
+      children: '确认重置工作台吗？',
+      onOk: handleReset,
+      okProps: {
+        color: 'red',
+      },
+      cancelProps: {
+        color: 'dark',
+      },
+    });
+  }
+
   function handleReset() {
     const defaultValues = map(mappings, (item) => item.layout);
-    workBenchUseStore.setInitData(defaultValues);
     componentsDs.loadData(defaultValues);
-    workBenchUseStore.saveConfig(defaultValues);
-    setEdit(false);
   }
 
   const renderBtns = () => {
@@ -274,9 +285,9 @@ const StarTargetPro = observer(() => {
         <Button
           color="primary"
           className={`${prefixCls}-btnGroups-default`}
-          onClick={handleReset}
+          onClick={handleResetModal}
         >
-          重置工作台
+          重置
         </Button>,
         <Button
           className={`${prefixCls}-btnGroups-default`}
