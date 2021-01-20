@@ -37,7 +37,7 @@ const Setting = ({
       }
     });
     return mapping;
-  }, [currentServices]);
+  }, [currentServices, theme]);
 
   async function goto(obj) {
     const queryObj = queryString.parse(history.location.search);
