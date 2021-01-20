@@ -176,10 +176,10 @@ const ProjectOverview = () => {
         </Button>,
         <Button
           color="primary"
-          className={`${prefixCls}-btnGroups-primary`}
+          className={`${prefixCls}-btnGroups-default`}
           onClick={handleReset}
         >
-          重置工作台
+          重置
         </Button>,
         <Button
           className={`${prefixCls}-btnGroups-default`}

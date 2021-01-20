@@ -276,7 +276,7 @@ const StarTargetPro = observer(() => {
           className={`${prefixCls}-btnGroups-default`}
           onClick={handleReset}
         >
-          重置工作台
+          重置
         </Button>,
         <Button
           className={`${prefixCls}-btnGroups-default`}
