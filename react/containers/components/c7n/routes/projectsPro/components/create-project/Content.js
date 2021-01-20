@@ -3,9 +3,9 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
-import { Button, Icon } from 'choerodon-ui';
+import { notification } from 'choerodon-ui';
 import {
-  Form, TextField, Select, Tooltip, SelectBox, DatePicker, Spin, Modal,
+  Form, TextField, Select, Tooltip, SelectBox, DatePicker, Spin, Modal, Icon, Button,
 } from 'choerodon-ui/pro';
 import { fileServer, prompt } from '@/utils';
 import map from 'lodash/map';
@@ -13,6 +13,7 @@ import some from 'lodash/some';
 import get from 'lodash/get';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
+import ProjectNotification from './components/project-notification';
 
 import './index.less';
 
@@ -28,6 +29,18 @@ const CreateProject = observer(() => {
   const record = useMemo(() => formDs.current, [formDs.current]);
   const isModify = useMemo(() => record && record.status !== 'add', [record]);
   const hasWaterfall = useMemo(() => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall), [categoryDs.selected]);
+
+  // useEffect(() => {
+  //   notification.open({
+  //     key: 'key',
+  //     message: <span className={`${prefixCls}-notification-title`}>{isModify ? '修改项目' : '创建项目'}</span>,
+  //     description: <ProjectNotification key="key" isModify={isModify} />,
+  //     duration: null,
+  //     // icon: <Icon type="info" className={`${prefixCls}-notification-icon`} />,
+  //     placement: 'bottomLeft',
+  //     className: `${prefixCls}-notification`,
+  //   });
+  // }, []);
 
   modal.handleOk(async () => {
     try {
@@ -57,7 +70,9 @@ const CreateProject = observer(() => {
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
         const sagaInstanceId = get(res.list[0], 'sagaInstanceId');
-        if (sagaInstanceId) {
+        const projectId = get(res.list[0], 'id');
+        if (sagaInstanceId && projectId) {
+          // openNotification({ projectId, sagaInstanceId });
           openSagaDetails(sagaInstanceId, isModify ? 'updating' : 'creating', refresh);
         }
         modal.close();
@@ -165,6 +180,18 @@ const CreateProject = observer(() => {
     }
     return false;
   };
+
+  const openNotification = useCallback(({ projectId, sagaInstanceId }) => {
+    const notificationKey = `${projectId}-${sagaInstanceId}`;
+    notification.open({
+      key: notificationKey,
+      message: isModify ? '修改项目' : '创建项目',
+      description: isModify ? '正在更新项目，该过程可能会持续几分钟' : '正在创建项目',
+      duration: null,
+      placement: 'bottomLeft',
+      className: `${prefixCls}-notification`,
+    });
+  }, []);
 
   const changeAvatarUploader = useCallback((flag) => {
     setIsShowAvatar(flag);
