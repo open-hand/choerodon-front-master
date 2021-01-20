@@ -193,7 +193,7 @@ class AppState {
 
   loadModules = async () => {
     try {
-      const res = await axios.get('/iam/choerodon/v1/servers');
+      const res = await axios.get('/hadm/choerodon/v1/services/model');
       if (res && !res.failed) {
         this.modules = res;
       }
