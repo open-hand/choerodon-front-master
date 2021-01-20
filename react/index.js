@@ -2,6 +2,8 @@ export { default as MasterHeader } from './containers/components/c7n/ui/header';
 
 export { default as CommonMenu } from './containers/components/c7n/ui/menu';
 
+export { default as C7NIcon } from './containers/components/c7n/ui/c7n-icon';
+
 export { default as Page } from './containers/components/c7n/tools/page';
 
 export { default as Content } from './containers/components/c7n/tools/page/Content';

@@ -1,0 +1,37 @@
+{
+  "id": "891039",
+  "name": "猪齿鱼icon",
+  "font_family": "c7n-icon",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "19533332",
+      "name": "button_list",
+      "font_class": "button_list",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "19524069",
+      "name": "button_tree",
+      "font_class": "button_tree",
+      "unicode": "e642",
+      "unicode_decimal": 58946
+    },
+    {
+      "icon_id": "19522462",
+      "name": "zip",
+      "font_class": "zip",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "19520318",
+      "name": "Quote",
+      "font_class": "Quote",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    }
+  ]
+}
