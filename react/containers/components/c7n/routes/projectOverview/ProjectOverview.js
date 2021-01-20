@@ -146,13 +146,24 @@ const ProjectOverview = () => {
 
   function handleReset() {
     const defaultValues = map(mappings, (item) => item.layout);
-    projectOverviewStore.setInitData(defaultValues);
     componentsDs.loadData(defaultValues);
-    projectOverviewStore.saveConfig(defaultValues);
-    setEdit(false);
     const withoutData = without(keys(cpOptsObj), projectOverviewStore.queryComponents);
     forEach(withoutData, (item) => {
       cpOptsObj[item]();
+    });
+  }
+
+  function handleResetModal() {
+    Modal.open({
+      title: '重置工作台',
+      children: '确认重置工作台吗？',
+      onOk: handleReset,
+      okProps: {
+        color: 'red',
+      },
+      cancelProps: {
+        color: 'dark',
+      },
     });
   }
 
@@ -177,7 +188,7 @@ const ProjectOverview = () => {
         <Button
           color="primary"
           className={`${prefixCls}-btnGroups-default`}
-          onClick={handleReset}
+          onClick={handleResetModal}
         >
           重置
         </Button>,
