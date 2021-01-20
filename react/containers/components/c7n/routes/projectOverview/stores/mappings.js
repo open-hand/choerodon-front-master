@@ -26,7 +26,7 @@ const componentsObj = {
     type: 'sprintNotDone',
     groupId: 'jobManage',
     title: '冲刺未完成统计',
-    describe: '展示当前迭代我待办的问题项，以便高效完成工作计划。',
+    describe: '此模块统计当前迭代未完成的工作项数量、故事点数量、工时数量，以及当前迭代剩余天数。',
     img: sprintNotDone,
   },
   // 迭代问题统计
@@ -45,7 +45,7 @@ const componentsObj = {
     groupId: 'jobManage',
     title: '迭代问题统计',
     describe:
-      '展示我关注的特性、问题项、需求，以便我能快速了解关注的工作内容和进展情况。',
+      '此模块展示当前迭代各个工作项在不同状态下的数量。',
     img: sprintCount,
   },
   // 燃尽图
@@ -64,7 +64,7 @@ const componentsObj = {
     groupId: 'jobManage',
     title: '燃尽图',
     describe:
-      '展示当前迭代我提交的和待我修复的缺陷，以便我能及时处理风险漏洞。',
+      '此模块以故事点、预估工时、问题计数三种维度，显示当前迭代下问题项的燃尽情况，以预估当前迭达是否能按期完成。',
     img: burnDownChart,
   },
   // 缺陷提出与解决
@@ -82,7 +82,7 @@ const componentsObj = {
     type: 'defectTreatment',
     groupId: 'jobManage',
     title: '缺陷提出与解决',
-    describe: '此模块将会显示待我审核的“流水线人工卡点任务”与“代码合并请求”。',
+    describe: '此模块显示当前迭代团队成员提出和解决缺陷的数量。',
     img: defectTreatment,
   },
   // 缺陷累计趋势图
@@ -101,7 +101,7 @@ const componentsObj = {
     groupId: 'jobManage',
     title: '缺陷累计趋势图',
     describe:
-      '此模块将显示我近7天操作过的应用服务，以便我能从工作台快速进入对应的代码仓库。',
+      '此模块显示当前迭代时间范围内，每天缺陷提出和解决的变化趋势。',
     img: defectChart,
   },
   // 应用服务
@@ -120,7 +120,7 @@ const componentsObj = {
     groupId: 'devops',
     title: '应用服务',
     describe:
-      '此模块将显示我近7天使用过的环境，以便我能从工作台快速进入对应的环境管理资源。',
+      '此模块显示了本项目下应用服务的状态与数量。',
     img: appService,
   },
   // 环境
@@ -139,7 +139,7 @@ const componentsObj = {
     groupId: 'devops',
     title: '环境',
     describe:
-      '此模块将显示我所在项目共享的网址链接，同时支持创建个人的网址链接；以便从工作台快速进入目标地址。',
+      '此模块显示了本项目下环境的状态与数量。',
     img: env,
   },
 
@@ -159,7 +159,7 @@ const componentsObj = {
     groupId: 'devops',
     title: '流水线触发次数',
     describe:
-      '此模块将显示我所在项目更新的知识库文档动态，同时支持筛选出我操作过的文档。',
+      '此模块显示该项目下当前迭代应用流水线每天的触发情况以及总的触发次数。',
     img: pipelineChart,
   },
   // 迭代代码提交次数
@@ -178,7 +178,7 @@ const componentsObj = {
     groupId: 'devops',
     title: '迭代代码提交次数',
     describe:
-      '此模块将显示我近7天使用过的环境，以便我能从工作台快速进入对应的环境管理资源。',
+      '此模块显示该项目下当前迭代每天的代码提交情况以及总的提交次数。',
     img: commitChart,
   },
   // 迭代部署次数
@@ -197,7 +197,7 @@ const componentsObj = {
     groupId: 'devops',
     title: '迭代部署次数',
     describe:
-      '此模块将显示我所在项目共享的网址链接，同时支持创建个人的网址链接；以便从工作台快速进入目标地址。',
+      '此模块显示该项目下当前迭代每天的部署情况以及总的部署次数。',
     img: deployChart,
   },
 
@@ -217,7 +217,7 @@ const componentsObj = {
     groupId: 'common',
     title: '在线成员',
     describe:
-      '此模块将显示我所在项目更新的知识库文档动态，同时支持筛选出我操作过的文档。',
+      '此模块显示该项目下所有在线的团队成员。',
     img: onlineMember,
   },
 };
