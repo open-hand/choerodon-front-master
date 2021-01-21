@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 8</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.65">
+        <g id="旧主题-菜单" transform="translate(-12.000000, -219.000000)" fill="#0F1358">
+            <g id="编组-5" transform="translate(-1.000000, 48.000000)">
+                <g id="编组" transform="translate(13.000000, 171.000000)">
+                    <g id="1" transform="translate(6.000000, 5.000000)">
+                        <path d="M16,13.443 L13.462,12.018 L13.462,12.596 L13.102,12.808 L15.432,14.115 L16,13.81 L16,13.443 Z M4.538,12.596 L4.538,12 L2,13.423 L2,13.809 L2.552,14.099 L4.885,12.789 L4.538,12.596 Z M8.983,4.913 L9.425,5.155 L9.425,2.783 L9.008,2.56 L8.541,2.81 L8.541,5.157 L8.983,4.913 Z" id="形状" opacity="0.5"></path>
+                        <path d="M9.008,0 L0,5 L0,15 L9.008,20 L18,15 L18,5 L9.008,0 Z M9.008,17.56 L2.552,14.106 L2,13.81 L2,6.31 L8.54,2.81 L9.008,2.56 L9.425,2.783 L16,6.31 L16,13.81 L15.43,14.115 L9.008,17.56 L9.008,17.56 Z" id="形状"></path>
+                        <polygon id="路径" points="9.425 5.155 8.983 4.913 8.541 5.157 5.151 7.037 9.031 9.164 12.871 7.038"></polygon>
+                        <polygon id="路径" opacity="0.8" points="4.538 8.005 4.538 12.595 4.885 12.795 8.267 14.743 8.267 10.153"></polygon>
+                        <polygon id="路径" opacity="0.6" points="9.804 10.15 9.804 14.743 13.102 12.808 13.462 12.596 13.462 8.006"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

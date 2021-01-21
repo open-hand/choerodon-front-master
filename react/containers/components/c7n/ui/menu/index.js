@@ -4,14 +4,8 @@ import { Icon, Menu, Tooltip } from 'choerodon-ui';
 import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
-import xiezuo2 from '../header/style/icons/xiezuo2.png';
-import xiezuo1 from '../header/style/icons/xiezuo1.png';
-import ceshi2 from '../header/style/icons/ceshi2.png';
-import ceshi1 from '../header/style/icons/ceshi1.png';
-import bushu2 from '../header/style/icons/bushu2.png';
-import bushu1 from '../header/style/icons/bushu1.png';
-import shezhi2 from '../header/style/icons/shezhi2.png';
-import shezhi1 from '../header/style/icons/shezhi1.png';
+import MenuSideIcon from '@/containers/components/c7n/ui/menu/MenuSideIcon';
+import './RequireSvgResources';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../util';
 import './index.less';
@@ -20,20 +14,16 @@ const { SubMenu, Item, ItemGroup } = Menu;
 
 const iconMap = {
   // 协作
-  'choerodon.code.project.cooperation': [xiezuo1, xiezuo2],
-  // 需求
-  'choerodon.code.project.demand': [xiezuo1, xiezuo2],
-  //  开发
-  'choerodon.code.project.develop': [xiezuo1, xiezuo2],
+  'choerodon.code.project.cooperation': 'xiezuo',
+  // 部署
+  'choerodon.code.project.deploy': 'bushu',
+  // 开发
+  'choerodon.code.project.develop': 'kaifa',
   //  测试
-  'choerodon.code.project.test': [ceshi1, ceshi2],
-  //  部署
-  'choerodon.code.project.deploy': [bushu1, bushu2],
-  //  运营
-  'choerodon.code.project.operation': [bushu1, bushu2],
+  'choerodon.code.project.test': 'ceshi',
   // 设置
-  'choerodon.code.project.setting': [shezhi1, shezhi2],
-}
+  'choerodon.code.project.setting': 'shezhi',
+};
 
 @withRouter
 @inject('AppState', 'MenuStore')
@@ -130,7 +120,7 @@ export default class CommonMenu extends Component {
               ...this.props.AppState.getCurrentTheme === '' && collapsed ? {
                 style: {
                   marginRight: 16,
-                }
+                },
               } : {}
             }
           >
@@ -329,9 +319,9 @@ export default class CommonMenu extends Component {
       <div
         className={
           classNames('common-menu-right', {
-              collapsed,
-              'theme4-common-menu': AppState.getCurrentTheme === 'theme4'
-            })
+            collapsed,
+            'theme4-common-menu': AppState.getCurrentTheme === 'theme4',
+          })
         }
         style={{
           width: collapsed ? '50px' : 'calc(250px - 54px)',
@@ -356,12 +346,10 @@ export default class CommonMenu extends Component {
                 if (AppState.getCurrentTheme === 'theme4') {
                   if (collapsed) {
                     return 'keyboard_arrow_right';
-                  } else {
-                    return 'keyboard_arrow_left'
                   }
-                } else {
-                  return 'menu'
+                  return 'keyboard_arrow_left';
                 }
+                return 'menu';
               }())}
               onClick={this.toggleRightMenu}
             />
@@ -399,6 +387,19 @@ export default class CommonMenu extends Component {
     return blackListArray.some((pname) => pathname.startsWith(pname));
   }
 
+  renderMenuSideIconName = (data) => {
+    const { MenuStore, AppState } = this.props;
+    const str = iconMap[data.code] || 'xiezuo';
+    const root = MenuStore.getActiveMenuRoot;
+    if (AppState.getCurrentTheme === 'theme4') {
+      return `${str}new.sprite`;
+    }
+    if (root && data.code === root[AppState.menuType.type]?.code) {
+      return `${str}click.sprite`;
+    }
+    return `${str}.sprite`;
+  }
+
   handleClickItemMenuSide = (item) => {
     const { MenuStore, AppState } = this.props;
     const origin = MenuStore.getActiveMenuRoot;
@@ -419,7 +420,7 @@ export default class CommonMenu extends Component {
             style: {
               background: 'white',
               borderRight: '1px solid #D9E6F2',
-            }
+            },
           } : {}
         }
       >
@@ -456,28 +457,19 @@ export default class CommonMenu extends Component {
                   justifyContent: 'center',
                 }}
               >
-                <img
-                  style={{
-                    width: 20,
-                  }}
-                  src={(function (){
-                    if (iconMap[data.code]) {
-                      if (iconMap[data.code][AppState.getCurrentTheme === '' ? 0 : 1]) {
-                        return iconMap[data.code][AppState.getCurrentTheme === '' ? 0 : 1];
-                      }
-                    }
-                    return iconMap['choerodon.code.project.cooperation'][AppState.getCurrentTheme === '' ? 0 : 1];
-                  }())} alt=""/>
+                <MenuSideIcon name={this.renderMenuSideIconName(data)} />
               </div>
               <p
                 {
                   ...AppState.getCurrentTheme === '' ? {
                     style: {
                       color: '#0F1358',
-                    }
+                    },
                   } : {}
                 }
-              >{data.name}</p>
+              >
+                {data.name}
+              </p>
             </div>
           ))
         }
