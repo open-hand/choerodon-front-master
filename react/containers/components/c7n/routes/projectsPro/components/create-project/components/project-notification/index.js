@@ -1,37 +1,104 @@
-import React, { useMemo, useState } from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { observer } from 'mobx-react-lite';
-import { Icon } from 'choerodon-ui';
+import { Icon, notification } from 'choerodon-ui';
+import { axios } from '@/index';
 
 import './index.less';
 
-const ProjectNotification = observer(({ notificationKey, isModify }) => {
+const ProjectNotification = observer(({
+  organizationId, projectId, notificationKey, operateType, intlPrefix, formatMessage,
+}) => {
+  let interval;
   const prefixCls = 'c7ncd-project-create-notification';
-  const [progress, setProgress] = useState(50);
-  const [status, setStatus] = useState('pending');
+  const iconType = useMemo(() => ({
+    success: 'check_circle',
+    failed: 'cancel',
+  }), []);
+  const [progress, setProgress] = useState(0);
+  const [status, setStatus] = useState(operateType === 'create' ? 'creating' : 'updating');
+  const [sagaInstanceIds, setSagaInstanceIds] = useState();
 
-  const getTitle = useMemo(() => {
-    let [iconType, title, des] = ['info', '创建项目', '正在创建项目'];
-    switch (status) {
-      case 'updating':
-        [title, des] = ['修改项目', '正在修改项目'];
-        break;
-      case 'failed':
-        [iconType, title, des] = ['cancel', '修改项目', '正在修改项目'];
-        break;
-      case 'success':
-        [iconType, title, des] = ['check_circle', '修改项目', '正在修改项目'];
-        break;
+  useEffect(() => {
+    setNewInterval();
+    return () => { handleClearInterval(); };
+  }, []);
+
+  const setNewInterval = useCallback(() => {
+    interval = setInterval(loadData, 1000);
+  }, []);
+
+  const handleClearInterval = useCallback(() => {
+    if (interval) {
+      clearInterval(interval);
     }
-  }, [status]);
+  }, [interval]);
+
+  const loadData = useCallback(async () => {
+    try {
+      const res = await axios.get(`/iam/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
+      if (res && !res.failed) {
+        setStatus(res.status);
+        if (res.status === 'success') {
+          handleClearInterval();
+          setTimeout(() => {
+            notification.close(notificationKey);
+          }, 2000);
+        }
+        if (res.status === 'failed') {
+          handleClearInterval();
+          setSagaInstanceIds(res.setSagaInstanceIds);
+        }
+        setProgress(res.completedCount / res.allTask);
+      }
+    } catch (e) {
+      // res
+    }
+  }, []);
+
+  const handleRetry = useCallback(async () => {
+    try {
+      const res = await axios.put(`/hagd/v1/sagas/projects/${projectId}/tasks/instances/retry`, sagaInstanceIds);
+      if (res && !res.failed) {
+        setNewInterval();
+      }
+    } catch (e) {
+      // a
+    }
+  }, []);
+
+  const getDescription = useMemo(() => {
+    if (status !== 'failed') {
+      return formatMessage({ id: `${intlPrefix}.saga.des.${status}.${operateType}` });
+    }
+    return (
+      <div>
+        <span>
+          项目
+          {operateType === 'create' ? '创建' : '更新'}
+          失败, 您可在此
+        </span>
+        <span className={`${prefixCls}-retry`} onClick={handleRetry}>重试</span>
+        此操作。
+      </div>
+    );
+  }, [status, operateType]);
 
   return (
     <>
-      <div className={`${prefixCls}-progress`} style={{ width: `${progress}%` }} />
-      <div className={`${prefixCls}-progress-line`} style={{ width: `${progress}%` }} />
+      {!['success', 'failed'].includes(status) && ([
+        <div className={`${prefixCls}-progress`} style={{ width: `${progress}%` }} />,
+        <div className={`${prefixCls}-progress-line`} style={{ width: `${progress}%` }} />,
+      ])}
+      <Icon type={iconType[status] || 'info'} className={`${prefixCls}-icon-${status} c7n-notification-notice-icon`} />
       <div className={`${prefixCls}-content`}>
-        <Icon type="info" className={`${prefixCls}-notification-icon`} />
-        <div className={`${prefixCls}-title .c7n-notification-notice-message`}>创建项目</div>
-        <div className={`${prefixCls}-des`}>正在创建项目</div>
+        <div className={`${prefixCls}-title c7n-notification-notice-message`}>
+          {formatMessage({ id: `${intlPrefix}.saga.title.${status}.${operateType}` })}
+        </div>
+        <div className={`${prefixCls}-des`}>
+          {getDescription}
+        </div>
       </div>
     </>
   );

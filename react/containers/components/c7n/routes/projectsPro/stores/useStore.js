@@ -198,5 +198,29 @@ export default function useStore(AppState, history) {
       }
       return false;
     },
+
+    async retryProjectSaga(projectId, sagaInstanceIds) {
+      try {
+        const res = await axios.put(`/hagd/v1/sagas/projects/${projectId}/tasks/instances/retry`, sagaInstanceIds);
+        if (res && res.failed) {
+          return false;
+        }
+        return true;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+
+    async deleteProject(projectId) {
+      try {
+        const res = await axios.delete(`/iam/choerodon/v1/projects/${projectId}`);
+        if (res && res.failed) {
+          return false;
+        }
+        return true;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
   }));
 }

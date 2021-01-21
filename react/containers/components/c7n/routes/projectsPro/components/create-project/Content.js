@@ -23,24 +23,17 @@ const CreateProject = observer(() => {
   const {
     formDs, categoryDs, AppState, intl, prefixCls, modal, refresh, categoryCodes, openSagaDetails,
     intl: { formatMessage }, intlPrefix,
+    AppState: {
+      currentMenuType: {
+        organizationId,
+      },
+    },
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
 
   const record = useMemo(() => formDs.current, [formDs.current]);
   const isModify = useMemo(() => record && record.status !== 'add', [record]);
   const hasWaterfall = useMemo(() => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall), [categoryDs.selected]);
-
-  // useEffect(() => {
-  //   notification.open({
-  //     key: 'key',
-  //     message: <span className={`${prefixCls}-notification-title`}>{isModify ? '修改项目' : '创建项目'}</span>,
-  //     description: <ProjectNotification key="key" isModify={isModify} />,
-  //     duration: null,
-  //     // icon: <Icon type="info" className={`${prefixCls}-notification-icon`} />,
-  //     placement: 'bottomLeft',
-  //     className: `${prefixCls}-notification`,
-  //   });
-  // }, []);
 
   modal.handleOk(async () => {
     try {
@@ -69,11 +62,9 @@ const CreateProject = observer(() => {
     try {
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
-        const sagaInstanceId = get(res.list[0], 'sagaInstanceId');
         const projectId = get(res.list[0], 'id');
-        if (sagaInstanceId && projectId) {
-          // openNotification({ projectId, sagaInstanceId });
-          openSagaDetails(sagaInstanceId, isModify ? 'updating' : 'creating', refresh);
+        if (projectId) {
+          openNotification({ projectId, operateType: isModify ? 'update' : 'create' });
         }
         modal.close();
         refresh();
@@ -181,12 +172,19 @@ const CreateProject = observer(() => {
     return false;
   };
 
-  const openNotification = useCallback(({ projectId, sagaInstanceId }) => {
-    const notificationKey = `${projectId}-${sagaInstanceId}`;
+  const openNotification = useCallback(({ projectId, operateType }) => {
+    const notificationKey = `${organizationId}-${projectId}`;
     notification.open({
       key: notificationKey,
-      message: isModify ? '修改项目' : '创建项目',
-      description: isModify ? '正在更新项目，该过程可能会持续几分钟' : '正在创建项目',
+      message: <span className={`${prefixCls}-notification-title`}>{isModify ? '修改项目' : '创建项目'}</span>,
+      description: <ProjectNotification
+        notificationKey={notificationKey}
+        organizationId={organizationId}
+        projectId={projectId}
+        operateType={operateType}
+        formatMessage={formatMessage}
+        intlPrefix={intlPrefix}
+      />,
       duration: null,
       placement: 'bottomLeft',
       className: `${prefixCls}-notification`,
