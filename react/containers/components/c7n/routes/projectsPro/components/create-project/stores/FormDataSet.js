@@ -71,6 +71,10 @@ export default ({
     autoCreate: false,
     paging: false,
     autoQueryAfterSubmit: false,
+    feedback: {
+      submitSuccess() {},
+      submitFailed() {},
+    },
     transport: {
       read: {
         url: `/iam/choerodon/v1/projects/${projectId}`,

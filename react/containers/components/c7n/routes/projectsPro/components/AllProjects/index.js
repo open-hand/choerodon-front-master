@@ -16,6 +16,7 @@ import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import EmptyPage from '../empty-page';
 import CreateProject from '../create-project';
 import ProjectCategory from '../project-category';
+import Action from '../../../../tools/action';
 
 import './index.less';
 
@@ -42,10 +43,7 @@ export default observer(() => {
     ProjectsProUseStore.handleClickProject(data);
   };
 
-  const handleAddProject = (e, currentProjectId) => {
-    if (currentProjectId) {
-      e.stopPropagation();
-    }
+  const handleAddProject = (currentProjectId) => {
     Modal.open({
       key: Modal.key(),
       drawer: true,
@@ -92,7 +90,59 @@ export default observer(() => {
     });
   };
 
-  const checkOperation = useCallback((data) => data && (!data.sagaInstanceId || data.operateType === 'update'));
+  const handleRetry = useCallback(async (projectId, sagaInstanceIds) => {
+    if (await ProjectsProUseStore.retryProjectSaga(projectId, sagaInstanceIds)) {
+      refresh();
+    }
+  }, []);
+
+  const handleDelete = useCallback(async (projectId) => {
+    if (await ProjectsProUseStore.deleteProject(projectId)) {
+      refresh();
+    }
+  }, []);
+
+  const checkOperation = useCallback((data) => data && (data.operateType === 'update' || data.projectStatus === 'success'), []);
+
+  const getActionData = useCallback((data) => {
+    const { projectStatus } = data;
+    const { editFlag } = data;
+    const editData = ({
+      text: '修改',
+      action: () => handleAddProject(data.id),
+    });
+    let actionData;
+    switch (projectStatus) {
+      case 'success':
+        if (editFlag) {
+          actionData = [editData];
+        }
+        break;
+      case 'failed':
+        actionData = [{
+          text: '重试',
+          action: () => handleRetry(data.id, data.sagaInstanceIds),
+        }];
+        if (data.operateType === 'create') {
+          actionData.push({
+            text: '删除',
+            action: () => handleDelete(data.id),
+          });
+        } else if (editFlag) {
+          actionData.unshift(editData);
+        }
+        break;
+      default:
+        break;
+    }
+    return actionData ? (
+      <Action
+        data={actionData}
+        onClick={(e) => e.stopPropagation()}
+        className="allProjects-content-item-right-top-edit"
+      />
+    ) : null;
+  }, []);
 
   const renderProjects = useCallback(() => {
     const projects = ProjectsProUseStore.getAllProjects;
@@ -132,22 +182,14 @@ export default observer(() => {
           <div className="allProjects-content-item-right-top">
             <div className="allProjects-content-item-right-top-left">
               <span className="allProjects-content-item-right-top-left-code">{p.code && p.code.toUpperCase()}</span>
-              <span className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${p.enabled}`}>
-                {p.enabled ? '启用' : '停用'}
+              <span className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${!p.projectStatus || p.projectStatus === 'success' ? p.enabled : p.projectStatus}`}>
+                {/* eslint-disable-next-line no-nested-ternary */}
+                {!p.projectStatus || p.projectStatus === 'success' ? (p.enabled ? '启用' : '停用') : (
+                  formatMessage({ id: `${intlPrefix}.${p.projectStatus}${p.projectStatus === 'failed' ? `.${p.operateType}` : ''}` })
+                )}
               </span>
             </div>
-            {p.editFlag && (!p.sagaInstanceId || (p.projectStatus === 'failed' && p.operateType === 'update')) ? (
-              <Icon
-                type="mode_edit"
-                style={{
-                  color: 'rgb(86, 111, 225)',
-                  fontSize: '20px',
-                  margin: '0 10px 0 auto',
-                }}
-                className="allProjects-content-item-right-top-edit"
-                onClick={(e) => handleAddProject(e, p.id)}
-              />
-            ) : null}
+            {getActionData(p)}
             {checkOperation(p) ? (
               <Icon
                 type={p.starFlag ? 'stars' : 'star_border'}
@@ -171,19 +213,6 @@ export default observer(() => {
               <p>
                 <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
               </p>
-              {
-                p.sagaInstanceId && p.projectStatus ? (
-                  <Icon
-                    className="allProjects-content-item-right-down-pro-dashBoard"
-                    style={{ color: p.projectStatus === 'failed' ? 'rgb(247, 103, 118)' : '#3f51b5' }}
-                    type="developer_board"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openSagaDetails(p.sagaInstanceId, p.projectStatus);
-                    }}
-                  />
-                ) : ''
-              }
             </div>
             <ProjectCategory
               data={p.categories}
@@ -262,7 +291,7 @@ export default observer(() => {
                 funcType="raised"
                 color="primary"
                 disabled={!getCanCreate}
-                onClick={handleAddProject}
+                onClick={() => handleAddProject()}
                 style={{
                   height: 30,
                 }}

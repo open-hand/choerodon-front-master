@@ -1,21 +1,16 @@
 @import '~choerodon-ui/lib/style/themes/default';
+@success: #00bf96;
+@failed: #f44336;
+@running: #4d90fe;
 
 .c7ncd-project-create-notification {
-  background: #fff;
-  box-shadow: 0 2px 6px 0 rgba(55, 177, 236, 0.25);
-  border-radius: 4px;
-  border: 1px solid rgba(55, 177, 236, 0.54);
-  border-left: 4px solid #37b1ec;
-  padding: .16rem .12rem .26rem;
+  //background: #fff;
+  //box-shadow: 0 2px 6px 0 rgba(55, 177, 236, 0.25);
+  //border-radius: 4px;
+  //border: 1px solid rgba(55, 177, 236, 0.54);
+  //border-left: 4px solid #37b1ec;
+  //padding: .16rem .12rem .26rem;
   position: relative;
-
-  &-content {
-    position: relative;
-
-    .@{c7n-prefix}-notification-notice-message {
-      display: block;
-    }
-  }
 
   .@{c7n-prefix}-notification-notice-message {
     display: none;
@@ -25,17 +20,18 @@
     position: inherit;
   }
 
-  &-title {
-    //font-size: .15rem;
-    //font-weight: 500;
-    //color: #37b1ec;
-    //line-height: .22rem;
-    margin-bottom: .06rem;
+  &-content {
+    position: relative;
+    margin: .06rem 0 .1rem .48rem;
+
+    .@{c7n-prefix}-notification-notice-message {
+      display: block;
+      margin: 0;
+    }
   }
 
-  .@{c7n-prefix}-notification-notice-icon-info {
-    color: #37b1ec;
-    z-index: 1;
+  &-title {
+    //margin-bottom: .06rem;
   }
 
   &-des {
@@ -58,5 +54,27 @@
       bottom: 15px;
       left: 0;
     }
+  }
+
+  &-icon {
+
+    &-success {
+      color: @success;
+    }
+    &-failed {
+      color: @failed;
+    }
+    &-creating,
+    &-updating {
+      color: @running;
+    }
+
+  }
+
+  &-retry {
+    color: #3f51b5;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0 .02rem;
   }
 }
