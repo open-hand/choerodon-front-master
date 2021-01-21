@@ -121,13 +121,13 @@ const Breadcrumb = ({
         {
           AppState.getCurrentTheme === 'theme4' ? (
             <>
-              {renderMenus()}
               {renderName()}
+              {renderMenus()}
             </>
           ) : (
             <>
-              {renderMenus()}
               {renderName()}
+              {renderMenus()}
             </>
           )
         }
