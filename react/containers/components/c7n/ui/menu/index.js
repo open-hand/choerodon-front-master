@@ -341,7 +341,7 @@ export default class CommonMenu extends Component {
           })
         }
         style={{
-          width: collapsed ? '50px' : 'calc(250px - 54px)',
+          width: collapsed ? '50px' : 'calc(250px - 50px)',
         }}
       >
         <div
