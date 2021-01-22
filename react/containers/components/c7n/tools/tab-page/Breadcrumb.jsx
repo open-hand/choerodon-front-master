@@ -56,10 +56,46 @@ const Breadcrumb = ({
 
   function renderName() {
     const { currentMenuType: { type, name }, isTypeUser } = AppState;
-    if (isTypeUser) return <Item>{name}</Item>;
-    if (type === 'site' && history.location.pathname !== '/buzz/cooperate') return <Item>平台管理</Item>;
-    if (type === 'organization' || history.location.pathname === '/buzz/cooperate') return <Item>{getOrganization().name || ''}</Item>;
-    if (type === 'project') return <Item>{name}</Item>;
+    if (isTypeUser) {
+      return (
+        <Item className={classNames({
+          'c7ncd-theme4-bread-name': AppState.getCurrentTheme === 'theme4',
+        })}
+        >
+          {name}
+        </Item>
+      );
+    }
+    if (type === 'site' && history.location.pathname !== '/buzz/cooperate') {
+      return (
+        <Item className={classNames({
+          'c7ncd-theme4-bread-name': AppState.getCurrentTheme === 'theme4',
+        })}
+        >
+          平台管理
+        </Item>
+      );
+    }
+    if (type === 'organization' || history.location.pathname === '/buzz/cooperate') {
+      return (
+        <Item className={classNames({
+          'c7ncd-theme4-bread-name': AppState.getCurrentTheme === 'theme4',
+        })}
+        >
+          {getOrganization().name || ''}
+        </Item>
+      );
+    }
+    if (type === 'project') {
+      return (
+        <Item className={classNames({
+          'c7ncd-theme4-bread-name': AppState.getCurrentTheme === 'theme4',
+        })}
+        >
+          {name}
+        </Item>
+      );
+    }
   }
 
   function getArrayLast(arr) {
@@ -80,7 +116,10 @@ const Breadcrumb = ({
     const currentMenu = getCurrentMenu();
     if (!currentMenu) return null;
     return (
-      <Item>
+      <Item className={classNames({
+        'c7ncd-theme4-bread-menu': AppState.getCurrentTheme === 'theme4',
+      })}
+      >
         {
           getRoute(currentMenu) && title
             ? <Link to={getMenuLink(getRoute(currentMenu))}>{currentMenu.name}</Link>
@@ -121,8 +160,8 @@ const Breadcrumb = ({
         {
           AppState.getCurrentTheme === 'theme4' ? (
             <>
-              {renderName()}
               {renderMenus()}
+              {renderName()}
             </>
           ) : (
             <>
