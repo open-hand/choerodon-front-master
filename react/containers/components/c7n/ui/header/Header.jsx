@@ -56,7 +56,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
               onClick={() => {
                 window.open(url);
               }}
-              style={{ margin: '0 15px' }}
+              style={{ margin: `0 ${props.AppState.getCurrentTheme === 'theme4' ? '20px' : '15px'}` }}
             />
           </Tooltip>
         </li>
