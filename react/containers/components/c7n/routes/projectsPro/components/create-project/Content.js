@@ -60,6 +60,9 @@ const CreateProject = observer(() => {
 
   const editProject = async () => {
     try {
+      modal.update({
+        okProps: { loading: true },
+      });
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
         const projectId = get(res.list[0], 'id');

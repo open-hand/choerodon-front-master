@@ -11,6 +11,7 @@ const ProjectNotification = observer(({
   organizationId, projectId, notificationKey, operateType,
   intlPrefix, formatMessage, refresh,
 }) => {
+  let interval;
   const prefixCls = 'c7ncd-project-create-notification';
   const iconType = useMemo(() => ({
     success: 'check_circle',
@@ -21,8 +22,20 @@ const ProjectNotification = observer(({
   const [sagaInstanceIds, setSagaInstanceIds] = useState();
 
   useEffect(() => {
-    loadData();
+    setNewInterval();
+    return () => { handleClearInterval(); };
   }, []);
+
+  const setNewInterval = useCallback(() => {
+    handleClearInterval();
+    interval = setInterval(loadData, 1500);
+  }, []);
+
+  const handleClearInterval = useCallback(() => {
+    if (interval) {
+      clearInterval(interval);
+    }
+  }, [interval]);
 
   const refreshList = useCallback(() => {
     const pathname = window.location.hash.match(/#(\S*)\?/)[1];
@@ -37,6 +50,7 @@ const ProjectNotification = observer(({
       if (res && !res.failed) {
         setStatus(res.status);
         if (res.status === 'success') {
+          handleClearInterval();
           refreshList();
           setTimeout(() => {
             notification.close(notificationKey);
@@ -44,12 +58,12 @@ const ProjectNotification = observer(({
           return;
         }
         if (res.status === 'failed') {
+          handleClearInterval();
           setSagaInstanceIds(res.sagaInstanceIds);
           refreshList();
           return;
         }
         setProgress(res.completedCount / res.allTask * 100);
-        loadData();
       }
     } catch (e) {
       throw new Error(e);
@@ -58,12 +72,11 @@ const ProjectNotification = observer(({
 
   const handleRetry = useCallback(async () => {
     try {
-      console.log(sagaInstanceIds);
       const res = await axios.put(`/hagd/v1/sagas/projects/${projectId}/tasks/instances/retry`, sagaInstanceIds);
       if (res && res.failed) {
         return;
       }
-      loadData();
+      setNewInterval();
       refreshList();
     } catch (e) {
       throw new Error(e);
