@@ -59,7 +59,8 @@ const Breadcrumb = ({
     if (isTypeUser) {
       return (
         <Item className={classNames({
-          'c7ncd-theme4-bread-name': AppState.getCurrentTheme === 'theme4',
+          'c7ncd-theme4-bread-menu': AppState.getCurrentTheme === 'theme4',
+          'c7n-breadcrumb-link': AppState.getCurrentTheme !== 'theme4',
         })}
         >
           {name}
@@ -69,7 +70,8 @@ const Breadcrumb = ({
     if (type === 'site' && history.location.pathname !== '/buzz/cooperate') {
       return (
         <Item className={classNames({
-          'c7ncd-theme4-bread-name': AppState.getCurrentTheme === 'theme4',
+          'c7ncd-theme4-bread-menu': AppState.getCurrentTheme === 'theme4',
+          'c7n-breadcrumb-link': AppState.getCurrentTheme !== 'theme4',
         })}
         >
           平台管理
@@ -79,7 +81,8 @@ const Breadcrumb = ({
     if (type === 'organization' || history.location.pathname === '/buzz/cooperate') {
       return (
         <Item className={classNames({
-          'c7ncd-theme4-bread-name': AppState.getCurrentTheme === 'theme4',
+          'c7ncd-theme4-bread-menu': AppState.getCurrentTheme === 'theme4',
+          'c7n-breadcrumb-link': AppState.getCurrentTheme !== 'theme4',
         })}
         >
           {getOrganization().name || ''}
@@ -89,7 +92,8 @@ const Breadcrumb = ({
     if (type === 'project') {
       return (
         <Item className={classNames({
-          'c7ncd-theme4-bread-name': AppState.getCurrentTheme === 'theme4',
+          'c7ncd-theme4-bread-menu': AppState.getCurrentTheme === 'theme4',
+          'c7n-breadcrumb-link': AppState.getCurrentTheme !== 'theme4',
         })}
         >
           {name}
@@ -118,6 +122,7 @@ const Breadcrumb = ({
     return (
       <Item className={classNames({
         'c7ncd-theme4-bread-menu': AppState.getCurrentTheme === 'theme4',
+        'c7n-breadcrumb-link': AppState.getCurrentTheme !== 'theme4',
       })}
       >
         {
