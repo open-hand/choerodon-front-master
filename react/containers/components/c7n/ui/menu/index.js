@@ -5,6 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import MenuSideIcon from '@/containers/components/c7n/ui/menu/MenuSideIcon';
+import bg from '../header/style/icons/bg.svg';
 import './RequireSvgResources';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../util';
@@ -23,6 +24,18 @@ const iconMap = {
   'choerodon.code.project.test': 'ceshi',
   // 设置
   'choerodon.code.project.setting': 'shezhi',
+  // 组织层管理
+  'choerodon.code.organization.manager': 'guanli',
+  //  组织层设置
+  'choerodon.code.organization.setting': 'shezhi',
+  //  平台层管理
+  'choerodon.code.site.manager': 'guanli',
+  //  平台层设置
+  'choerodon.code.site.setting': 'shezhi',
+  //  平台层市场
+  'choerodon.code.site.market': 'shichang',
+  //  平台层hzero
+  'choerodon.code.site.hzero.manager': 'hzero',
 };
 
 @withRouter
@@ -128,7 +141,11 @@ export default class CommonMenu extends Component {
               type={data.icon}
             />
           </span>
-          <span>{data.name}</span>
+          <span
+            className={classNames({
+              'theme4-iconwrap-text': this.props.AppState.getCurrentTheme === 'theme4',
+            })}
+          >{data.name}</span>
         </Link>
       );
       return (
@@ -421,7 +438,11 @@ export default class CommonMenu extends Component {
               background: 'white',
               borderRight: '1px solid #D9E6F2',
             },
-          } : {}
+          } : {
+            style: {
+              backgroundImage: `url(${bg})`,
+            },
+          }
         }
       >
         {
