@@ -8,9 +8,9 @@ import { axios } from '@/index';
 import './index.less';
 
 const ProjectNotification = observer(({
-  organizationId, projectId, notificationKey, operateType, intlPrefix, formatMessage,
+  organizationId, projectId, notificationKey, operateType,
+  intlPrefix, formatMessage, refresh,
 }) => {
-  let interval;
   const prefixCls = 'c7ncd-project-create-notification';
   const iconType = useMemo(() => ({
     success: 'check_circle',
@@ -21,19 +21,15 @@ const ProjectNotification = observer(({
   const [sagaInstanceIds, setSagaInstanceIds] = useState();
 
   useEffect(() => {
-    setNewInterval();
-    return () => { handleClearInterval(); };
+    loadData();
   }, []);
 
-  const setNewInterval = useCallback(() => {
-    interval = setInterval(loadData, 1000);
-  }, []);
-
-  const handleClearInterval = useCallback(() => {
-    if (interval) {
-      clearInterval(interval);
+  const refreshList = useCallback(() => {
+    const pathname = window.location.hash.match(/#(\S*)\?/)[1];
+    if (pathname === '/projects') {
+      refresh();
     }
-  }, [interval]);
+  }, [window.location.hash]);
 
   const loadData = useCallback(async () => {
     try {
@@ -41,32 +37,38 @@ const ProjectNotification = observer(({
       if (res && !res.failed) {
         setStatus(res.status);
         if (res.status === 'success') {
-          handleClearInterval();
+          refreshList();
           setTimeout(() => {
             notification.close(notificationKey);
-          }, 2000);
+          }, 3000);
+          return;
         }
         if (res.status === 'failed') {
-          handleClearInterval();
-          setSagaInstanceIds(res.setSagaInstanceIds);
+          setSagaInstanceIds(res.sagaInstanceIds);
+          refreshList();
+          return;
         }
-        setProgress(res.completedCount / res.allTask);
+        setProgress(res.completedCount / res.allTask * 100);
+        loadData();
       }
     } catch (e) {
-      // res
+      throw new Error(e);
     }
-  }, []);
+  }, [organizationId, projectId, operateType]);
 
   const handleRetry = useCallback(async () => {
     try {
+      console.log(sagaInstanceIds);
       const res = await axios.put(`/hagd/v1/sagas/projects/${projectId}/tasks/instances/retry`, sagaInstanceIds);
-      if (res && !res.failed) {
-        setNewInterval();
+      if (res && res.failed) {
+        return;
       }
+      loadData();
+      refreshList();
     } catch (e) {
-      // a
+      throw new Error(e);
     }
-  }, []);
+  }, [projectId, sagaInstanceIds]);
 
   const getDescription = useMemo(() => {
     if (status !== 'failed') {
@@ -79,11 +81,17 @@ const ProjectNotification = observer(({
           {operateType === 'create' ? '创建' : '更新'}
           失败, 您可在此
         </span>
-        <span className={`${prefixCls}-retry`} onClick={handleRetry}>重试</span>
+        <span
+          className={`${prefixCls}-retry`}
+          onClick={handleRetry}
+          role="none"
+        >
+          重试
+        </span>
         此操作。
       </div>
     );
-  }, [status, operateType]);
+  }, [status, operateType, sagaInstanceIds]);
 
   return (
     <>

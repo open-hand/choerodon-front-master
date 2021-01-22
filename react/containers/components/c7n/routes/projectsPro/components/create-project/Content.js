@@ -184,6 +184,7 @@ const CreateProject = observer(() => {
         operateType={operateType}
         formatMessage={formatMessage}
         intlPrefix={intlPrefix}
+        refresh={refresh}
       />,
       duration: null,
       placement: 'bottomLeft',
