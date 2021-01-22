@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "19578608",
+      "name": "button_add_Subproject",
+      "font_class": "button_add_Subproject",
+      "unicode": "e645",
+      "unicode_decimal": 58949
+    },
+    {
+      "icon_id": "19578524",
+      "name": "button_add_characteristic",
+      "font_class": "button_add_characteristic",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
       "icon_id": "19533332",
       "name": "button_list",
       "font_class": "button_list",
