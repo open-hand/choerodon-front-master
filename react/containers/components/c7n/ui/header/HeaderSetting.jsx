@@ -63,13 +63,18 @@ const Setting = ({
   return (
     <>
       {
-        LI_MAPPING.map((list) => (
+        LI_MAPPING.map((list, index) => (
           <Button
             key={list.activePath}
             className={classNames({
               [`block ${extraCls(list)}`]: true,
               'theme4-headerButton': AppState.getCurrentTheme === 'theme4',
             })}
+            {...AppState.getCurrentTheme === 'theme4' && index === 0 ? {
+              style: {
+                marginLeft: '-8px',
+              },
+            } : {}}
             onClick={() => goto(list)}
             type="primary"
             funcType="flat"
