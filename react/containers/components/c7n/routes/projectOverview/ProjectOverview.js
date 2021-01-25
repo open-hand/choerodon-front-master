@@ -42,6 +42,7 @@ const ProjectOverview = () => {
         categories,
       },
     },
+    MenuStore,
     prefixCls,
     projectOverviewStore,
     componentsDs,
@@ -60,7 +61,7 @@ const ProjectOverview = () => {
   useEffect(() => {
     if (!observerLayout) {
       const domTem = document.querySelector('.c7n-project-overview-container');
-      new ResizeObserver((entries) => {
+      observerLayout = new ResizeObserver((entries) => {
         const dom = get(entries[0], 'target');
         const width = get(dom, 'offsetWidth');
         setWidth(width);
@@ -277,9 +278,10 @@ const ProjectOverview = () => {
     );
   };
 
-  const renderConfirm = useCallback(() => (
-    <UserConfirmation title="提示" content="项目概览配置未保存，确认跳转新页面？" when={isEdit} />
-  ), [isEdit]);
+  function renderConfirm() {
+    MenuStore.setHasPrompt(isEdit);
+    return <UserConfirmation title="提示" content="项目概览配置未保存，确认跳转新页面？" when={isEdit} />;
+  }
 
   return (
     <Page className={prefixCls}>
