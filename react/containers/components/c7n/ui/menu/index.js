@@ -117,11 +117,9 @@ export default class CommonMenu extends Component {
         <Link
           to={this.getMenuLink(route)}
           onClick={() => {
-            const hasPrompt = this.props.MenuStore.getHasPrompt;
-            if (!hasPrompt) {
-              this.props.MenuStore.setActiveMenu(data);
-              this.props.MenuStore.click(data.code, data.level, data.name);
-            }
+            // 路由拦截时，url无变化但菜单发生变化了，暂时去除，后续测试
+            // this.props.MenuStore.setActiveMenu(data);
+            this.props.MenuStore.click(data.code, data.level, data.name);
           }}
           style={{
             marginLeft: collapsed && num === 0 ? 0 : parseInt(num, 10) * 20,
