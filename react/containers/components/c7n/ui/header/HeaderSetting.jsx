@@ -24,15 +24,21 @@ const Setting = ({
   const LI_MAPPING = useMemo(() => {
     const mapping = [
       { title: '工作台', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/workbench' },
-      { title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects' },
+      {
+        title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects', style: { marginLeft: 3 },
+      },
     ];
     forEach(currentServices, ({ serviceCode }) => {
       switch (serviceCode) {
         case SERVICE_CODE.knowledge:
-          mapping.push({ title: '知识库', icon: theme === 'theme4' ? 'chrome_reader_mode-o' : 'knowledge', activePath: '/knowledge/organization' });
+          mapping.push({
+            title: '知识库', icon: theme === 'theme4' ? 'chrome_reader_mode-o' : 'knowledge', activePath: '/knowledge/organization', style: { marginLeft: 4 },
+          });
           break;
         case SERVICE_CODE.market:
-          mapping.push({ title: '应用市场', icon: theme === 'theme4' ? 'local_mall-o' : 'application_market', activePath: '/market/app-market' });
+          mapping.push({
+            title: '应用市场', icon: theme === 'theme4' ? 'local_mall-o' : 'application_market', activePath: '/market/app-market', style: { marginLeft: 2 },
+          });
           break;
       }
     });
@@ -80,7 +86,13 @@ const Setting = ({
             funcType="flat"
           >
             <Icon type={list.icon} style={iconStyle} />
-            {list.title}
+            <span
+              {...AppState.getCurrentTheme === 'theme4' && list.style ? {
+                style: list.style,
+              } : {}}
+            >
+              {list.title}
+            </span>
           </Button>
         ))
       }
