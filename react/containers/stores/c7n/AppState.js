@@ -34,6 +34,18 @@ class AppState {
 
   @observable deployServices = []; // 后端已部署的服务
 
+  @observable projectCategorys = {};
+
+  @computed
+  get getProjectCategorys() {
+    return this.projectCategorys;
+  }
+
+  @action
+  setProjectCategorys(id, categorys) {
+    this.projectCategorys[id] = categorys;
+  }
+
   @computed
   get getCurrentTheme() {
     return this.currentTheme;
@@ -142,13 +154,34 @@ class AppState {
     this.isAuthenticated = flag;
   }
 
+  /**
+   * 根据menutype是否为项目层 设置项目categorys是否有变化 来判断是否重新查菜单
+   * @param data
+   */
+  setProjectMenuTypeCategorys(data) {
+    const newData = data;
+    if (data.type === 'project') {
+      if (data.categories) {
+        if (this.projectCategorys[data?.projectId]) {
+          if (JSON.stringify(data.categories) !== JSON.stringify(this.projectCategorys[data?.projectId])) {
+            newData.hasChangeCategorys = true;
+          }
+        }
+        this.setProjectCategorys(data.projectId, data.categories);
+      }
+    }
+    return newData;
+  }
+
   @action
   changeMenuType(type, func) {
-    sessionStorage.menType = JSON.stringify(type);
-    sessionStorage.selectData = JSON.stringify(type);
-    sessionStorage.type = type.type;
-    sessionStorage.category = type.category;
-    this.menuType = type;
+    const newType = this.setProjectMenuTypeCategorys(type);
+    sessionStorage.menType = JSON.stringify(newType);
+    sessionStorage.selectData = JSON.stringify(newType);
+    sessionStorage.type = newType.type;
+    sessionStorage.category = newType.category;
+    this.menuType = newType;
+
     if (func) {
       func();
     }

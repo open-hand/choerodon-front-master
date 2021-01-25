@@ -219,25 +219,25 @@ class MenuStore {
     function cursive(data, array) {
       if (data.subMenus && data.subMenus.length > 0) {
         array.push(data.code);
-        data.subMenus.forEach(rootItem => {
+        data.subMenus.forEach((rootItem) => {
           cursive(rootItem, array);
-        })
+        });
       }
     }
     cursive(root, keys);
     this.setOpenKeys([
       ...keys,
       ...this.openKeys || [],
-    ])
+    ]);
   }
 
   @action setRootBaseOnActiveMenu() {
     if (this.activeMenu && this.getMenuData && this.getMenuData.length > 0) {
       if (this.activeMenu.level !== this.getMenuData[0].level) {
-        this.setActiveMenu(this.getMenuData[0].subMenus[0])
+        this.setActiveMenu(this.getMenuData[0].subMenus[0]);
       }
       const menuRoot = this.getActiveMenuRoot || {};
-      const root = this.getMenuData.find(i => i.id === this.activeMenu.rootId);
+      const root = this.getMenuData.find((i) => i.id === this.activeMenu.rootId);
       menuRoot[root.level] = root;
       this.setOpenkeysBaseonRoot(root);
       this.setActiveMenuRoot(JSON.parse(JSON.stringify(menuRoot)));
@@ -276,8 +276,11 @@ class MenuStore {
             AppState.loadUserInfo();
           }
         }
-        isLoadMenu = 0;
-        return resolve(menu);
+        if (!AppState.currentMenuType.hasChangeCategorys) {
+          isLoadMenu = 0;
+          return resolve(menu);
+        }
+        delete AppState.menuType.hasChangeCategorys;
       }
       async function getMenu(that) {
         let url = '/iam/choerodon/v1/menu';
@@ -345,14 +348,14 @@ class MenuStore {
     }
     params.rootId = newRootId;
     if (params.subMenus && params.subMenus.length > 0) {
-      params.subMenus = params.subMenus.map(bItem => this.cursiveSetRootId(bItem, newRootId))
+      params.subMenus = params.subMenus.map((bItem) => this.cursiveSetRootId(bItem, newRootId));
     }
     return params;
   }
 
   @action
   setMenuData(child, childType, id = AppState.currentMenuType.id) {
-    const data = filterEmptyMenus(child).map(item => this.cursiveSetRootId(item, undefined));
+    const data = filterEmptyMenus(child).map((item) => this.cursiveSetRootId(item, undefined));
     this.setRootBaseOnActiveMenu();
     if (String(id) && !['user', 'site'].includes(childType)) {
       set(this.menuGroup[childType], id, data);
