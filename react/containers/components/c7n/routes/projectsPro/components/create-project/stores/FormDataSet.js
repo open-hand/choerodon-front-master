@@ -73,7 +73,6 @@ export default ({
     autoQueryAfterSubmit: false,
     feedback: {
       submitSuccess() {},
-      submitFailed() {},
     },
     transport: {
       read: {
