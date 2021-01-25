@@ -29,10 +29,11 @@ export function useProjectOverviewStore() {
   return useContext(Store);
 }
 
-export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
+export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer((props) => {
   const {
     children,
     AppState: { currentMenuType: { organizationId, projectId } },
+    MenuStore,
   } = props;
 
   const projectOverviewStore = useStore(projectId);
@@ -158,6 +159,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     defectTreatDs,
     defectCountDs,
     cpOptsObj,
+    MenuStore,
   };
 
   return (

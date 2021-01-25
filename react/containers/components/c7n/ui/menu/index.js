@@ -117,8 +117,11 @@ export default class CommonMenu extends Component {
         <Link
           to={this.getMenuLink(route)}
           onClick={() => {
-            this.props.MenuStore.setActiveMenu(data);
-            this.props.MenuStore.click(data.code, data.level, data.name);
+            const hasPrompt = this.props.MenuStore.getHasPrompt;
+            if (!hasPrompt) {
+              this.props.MenuStore.setActiveMenu(data);
+              this.props.MenuStore.click(data.code, data.level, data.name);
+            }
           }}
           style={{
             marginLeft: collapsed && num === 0 ? 0 : parseInt(num, 10) * 20,
@@ -145,7 +148,9 @@ export default class CommonMenu extends Component {
             className={classNames({
               'theme4-iconwrap-text': this.props.AppState.getCurrentTheme === 'theme4',
             })}
-          >{data.name}</span>
+          >
+            {data.name}
+          </span>
         </Link>
       );
       return (
