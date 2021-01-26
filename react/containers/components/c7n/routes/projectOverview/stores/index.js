@@ -38,9 +38,7 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
 
   function getAllCode() {
     let allowedModules = [...modulesMapping.GENERAL];
-    forEach([{
-      code:'N_DEVOPS'
-    }], (item) => {
+    forEach(categories, (item) => {
       const tempCode = get(item, 'code');
       if (Object.prototype.hasOwnProperty.call(modulesMapping, tempCode)) {
         allowedModules = allowedModules.concat(modulesMapping[tempCode]);
