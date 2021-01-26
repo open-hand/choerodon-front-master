@@ -7,6 +7,8 @@ import {
 } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import DragCard from '@/containers/components/c7n/components/dragCard';
+import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
+
 import { Modal } from 'choerodon-ui/pro';
 import { Page } from '../../../../../index';
 import StarTargetPro from './components/StarTargetPro';
@@ -17,6 +19,7 @@ import EnvList from './components/EnvList';
 import QuickLink from './components/QuickLink';
 import TodoThings from './components/TodoThings';
 import { useWorkBenchStore } from './stores';
+import componnetsMapping from './stores/mappings';
 import GridBg from '../../components/gridBackground';
 import QuestionTodo from './components/question-todo';
 import QuestionFocus from './components/question-focus';
@@ -46,6 +49,7 @@ const WorkBench = () => {
     prefixCls,
     componentsDs,
     history,
+    allowedModules,
   } = useWorkBenchStore();
 
   const {
@@ -100,11 +104,14 @@ const WorkBench = () => {
     componentsDs.remove(record);
   }
 
-  const SwitchComponents = (type) => {
+  const SwitchComponents = (type, title, emptyDiscribe) => {
     let tempComponent;
     const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
-    if (hasOwnProperty) {
+    const hasType = allowedModules.includes(type);
+    if (hasOwnProperty && hasType) {
       tempComponent = ComponetsObjs[type];
+    } else {
+      tempComponent = <EmptyCard title={title} emptyDiscribe={emptyDiscribe} emptyTitle="暂未安装对应模块" />;
     }
     return tempComponent;
   };
@@ -112,17 +119,22 @@ const WorkBench = () => {
   const renderBg = useCallback(() => <GridBg selector={`.${prefixCls}-container`} />, []);
 
   const generateDOM = () => (
-    componentsDs.map((record) => (
-      <DragCard
-        record={record}
-        onDelete={() => handleDelete(record)}
-        isEdit={isEdit}
-        key={record.get('i')}
-        isStatic={record.get('i') === 'starTarget'}
-      >
-        {SwitchComponents(record.get('i'))}
-      </DragCard>
-    ))
+    componentsDs.map((record) => {
+      const key = record.get('i');
+      const title = get(componnetsMapping[key], 'title');
+      const emptyDiscribe = get(componnetsMapping[key], 'groupId') !== 'devops' ? '安装部署【任务管理】模块后，才能使用该卡片。' : '安装部署【DevOps管理】模块后，才能使用该卡片。';
+      return (
+        <DragCard
+          record={record}
+          onDelete={() => handleDelete(record)}
+          isEdit={isEdit}
+          key={key}
+          isStatic={key === 'starTarget'}
+        >
+          {SwitchComponents(key, title, emptyDiscribe)}
+        </DragCard>
+      );
+    })
   );
 
   const renderGridLayouts = () => {

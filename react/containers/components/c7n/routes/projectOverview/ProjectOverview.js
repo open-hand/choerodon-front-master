@@ -31,6 +31,7 @@ import { useProjectOverviewStore } from './stores';
 
 import './ProjectOverview.less';
 import UserConfirmation from '../../components/UserConfirm';
+import EmptyCard from '../../components/EmptyCard';
 
 let observerLayout;
 
@@ -47,14 +48,13 @@ const ProjectOverview = () => {
     projectOverviewStore,
     componentsDs,
     cpOptsObj,
+    allCode,
   } = useProjectOverviewStore();
 
   const {
     isEdit,
     setEdit,
   } = projectOverviewStore;
-
-  const showDevops = useMemo(() => some(categories, ['code', 'N_DEVOPS']), [categories]);
 
   const [layOutWidth, setWidth] = useState(0);
 
@@ -79,13 +79,13 @@ const ProjectOverview = () => {
     burnDownChart: <BurnDownChart />,
     defectTreatment: <DefectTreatment />,
     defectChart: <DefectChart />,
-    appService: showDevops ? <ServiceInfo /> : '',
+    appService: <ServiceInfo />,
     env: <EnvInfo />,
-    pipelineChart: showDevops ? <PipelineChart /> : '',
-    commitChart: showDevops ? <CommitChart /> : '',
-    deployChart: showDevops ? <DeployChart /> : '',
+    pipelineChart: <PipelineChart />,
+    commitChart: <CommitChart />,
+    deployChart: <DeployChart />,
     onlineMember: <UserList />,
-  }), [showDevops]);
+  }), []);
 
   const renderBg = useCallback(() => <GridBg selector={`.${prefixCls}-container`} cols={10} style={{ padding: '0' }} />, []);
 
@@ -132,7 +132,9 @@ const ProjectOverview = () => {
         subPrefix={subPrefix}
         existTypes={typeArr}
         addComponent={addComponent}
-        mappings={mappings}
+        mappings={allCode.map((item) => (
+          mappings[item]
+        ))}
       />,
       className: `${subPrefix}`,
     });
@@ -225,11 +227,14 @@ const ProjectOverview = () => {
     componentsDs.loadData(layout);
   }
 
-  const SwitchComponents = (type) => {
+  const SwitchComponents = (type, title) => {
     let tempComponent;
     const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
-    if (hasOwnProperty) {
+    const hasType = allCode.includes(type);
+    if (hasOwnProperty && hasType) {
       tempComponent = ComponetsObjs[type];
+    } else {
+      tempComponent = <EmptyCard title={title} emptyTitle="项目类型无对应的模块" emptyDiscribe="此项目无对应的模块" />;
     }
     return tempComponent;
   };
@@ -238,16 +243,21 @@ const ProjectOverview = () => {
     componentsDs.remove(record);
   }
 
-  const generateDOM = useMemo(() => componentsDs.map((record) => (
-    <DragCard
-      record={record}
-      onDelete={() => handleDelete(record)}
-      isEdit={isEdit}
-      key={record.get('i')}
-    >
-      {SwitchComponents(record.get('i'))}
-    </DragCard>
-  )),
+  const generateDOM = useMemo(() => componentsDs.map((record) => {
+    const key = record.get('i');
+    const title = get(mappings[key], 'title');
+    // const emptyDiscribe = get(mappings[key], 'groupId') !== 'devops' ? '安装部署【任务管理】模块后，才能使用该卡片。' : '安装部署【DevOps管理】模块后，才能使用该卡片。';
+    return (
+      <DragCard
+        record={record}
+        onDelete={() => handleDelete(record)}
+        isEdit={isEdit}
+        key={record.get('i')}
+      >
+        {SwitchComponents(record.get('i'), title)}
+      </DragCard>
+    );
+  }),
   [componentsDs, handleDelete, isEdit]);
 
   const renderGridLayouts = () => {
