@@ -29,6 +29,7 @@ const StarTargetPro = observer(() => {
     componentsDs,
     location: { search },
     selectedProjectId,
+    allowedModules,
   } = useWorkBenchStore();
 
   const {
@@ -45,21 +46,6 @@ const StarTargetPro = observer(() => {
       return;
     }
     setActiveStarProject(s);
-  };
-
-  const renderGroupProjects = (s) => {
-    const array = s.categories || [];
-    return array.map(
-      (value, key) => value.code !== 'PROGRAM_PROJECT' && (
-      <Tooltip title={value && value.name} placement="top">
-        <span
-          className={`${prefixCls}-proContainer-items-project-categories`}
-        >
-          {value.name}
-        </span>
-      </Tooltip>
-      ),
-    );
   };
 
   const renderEmptypage = () => (
@@ -232,7 +218,9 @@ const StarTargetPro = observer(() => {
         subPrefix={subPrefix}
         existTypes={typeArr}
         addComponent={addComponent}
-        mappings={mappings}
+        mappings={allowedModules.map((item) => (
+          mappings[item]
+        ))}
       />,
       className: `${subPrefix}`,
     });

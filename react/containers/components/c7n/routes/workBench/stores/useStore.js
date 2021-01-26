@@ -67,7 +67,7 @@ export default function useStore(history) {
     },
     saveConfig(value) {
       const tempObj = map(value, (item) => {
-        const temp = pick(mappings[item.i], ['type', 'name']);
+        const temp = pick(mappings[item.i], ['type', 'name', 'groupId']);
         temp.layout = item;
         return temp;
       });

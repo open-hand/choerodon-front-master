@@ -13,13 +13,13 @@ export default ({
       url: 'iam/choerodon/v1/workbench_configs/self',
       method: 'get',
       transformResponse: (value) => {
-        const defaultValues = map(mappings, (item) => item.layout);
         try {
           let res;
           if (value) {
             const tempData = get(JsonBig.parse(value), 'data');
             res = tempData ? map(JsonBig.parse(tempData), (item) => item.layout) : [];
           } else {
+            const defaultValues = map(mappings, (item) => item.layout);
             res = defaultValues;
           }
           workBenchUseStore.setInitData(res);

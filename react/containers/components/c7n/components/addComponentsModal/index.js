@@ -4,10 +4,10 @@ import './index.less';
 import {
   get, includes, map,
 } from 'lodash';
-// import todoThings from './img/todoQuestions.png';
 import { Icon } from 'choerodon-ui';
 import classnames from 'classnames';
 import groupMappings from './groupMappings';
+import EmptyPage from '../empty-page';
 
 const AddModal = (props) => {
   const {
@@ -15,6 +15,7 @@ const AddModal = (props) => {
     addComponent,
     existTypes,
     mappings,
+    // modules,
   } = props;
 
   const subPrefix = 'c7ncd-workbench-addModal';
@@ -41,7 +42,7 @@ const AddModal = (props) => {
     setSelectedComponents(seletedComponents.concat([type]));
   }
 
-  const renderMenuItems = () => map(groupMappings(mappings), (item, index) => (
+  const renderMenuItems = () => map(groupMappings(mappings), (item, index) => ((
     <div
       role="none"
       onClick={() => handleClick(item, index)}
@@ -50,10 +51,17 @@ const AddModal = (props) => {
     >
       {item.name}
     </div>
-  ));
+  )));
 
-  const renderItems = () => (
-    map(activeItem.opts, (item, i) => {
+  const renderItems = () => {
+    const arr = activeItem.opts;
+    if (!get(arr, 'length')) {
+      return <EmptyPage title="暂未安装对应模块" describe="暂未安装对应模块，无卡片信息" />;
+    }
+    return map(arr, (item, i) => {
+      if (get(item, 'type') === 'starTarget') {
+        return null;
+      }
       const type = get(item, 'type');
       const hasItem = seletedComponents.includes(type);
       const isExist = includes(existTypes, type);
@@ -92,8 +100,8 @@ const AddModal = (props) => {
           </div>
         </div>
       );
-    })
-  );
+    });
+  };
 
   const renderDis = () => {
     if (dis) {

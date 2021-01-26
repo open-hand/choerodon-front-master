@@ -4,11 +4,11 @@ import React, {
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { map, get } from 'lodash';
+import { forEach, get } from 'lodash';
 import { DataSet } from 'choerodon-ui/pro/lib';
 import useStore from './useStore';
 import useCpCacheStore from './useCpCacheStore';
-import mappings from './mappings';
+import modulesMapping from './modulesMapping';
 import ComponentsDataset from './ComponentsDataset';
 
 const Store = createContext();
@@ -20,9 +20,19 @@ export function useWorkBenchStore() {
 export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
-    AppState: { currentMenuType: { organizationId } },
+    AppState: { currentMenuType: { organizationId }, currentModules },
     history,
   } = props;
+
+  function getAllCode() {
+    let allowedModules = [...modulesMapping.common];
+    forEach(currentModules, (item) => {
+      if (Object.prototype.hasOwnProperty.call(modulesMapping, item)) {
+        allowedModules = allowedModules.concat(modulesMapping[item]);
+      }
+    });
+    return [...new Set(allowedModules)];
+  }
 
   const workBenchUseStore = useStore(history);
   const cacheStore = useCpCacheStore();
@@ -43,6 +53,8 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     selectedProjectId,
     category,
     history,
+    currentModules,
+    allowedModules: getAllCode(),
   };
 
   return (

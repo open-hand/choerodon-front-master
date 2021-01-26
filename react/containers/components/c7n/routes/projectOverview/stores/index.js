@@ -15,7 +15,7 @@ import EnvDataSet from './EnvDataSet';
 import CommitDataSet from './CommitDataSet';
 import DeployDataSet from './DeployDataSet';
 import PipelineDataSet from './PipelineDataSet';
-import mappings from './mappings';
+import modulesMapping from './modulesMapping';
 import ComponentsDataset from './ComponentsDataSet';
 import StartSprintDataSet from './StartSprintDataSet';
 import ChartDataSet from './ChartDataSet';
@@ -32,9 +32,22 @@ export function useProjectOverviewStore() {
 export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer((props) => {
   const {
     children,
-    AppState: { currentMenuType: { organizationId, projectId } },
+    AppState: { currentMenuType: { organizationId, projectId, categories } },
     MenuStore,
   } = props;
+
+  function getAllCode() {
+    let allowedModules = [...modulesMapping.GENERAL];
+    forEach([{
+      code:'N_DEVOPS'
+    }], (item) => {
+      const tempCode = get(item, 'code');
+      if (Object.prototype.hasOwnProperty.call(modulesMapping, tempCode)) {
+        allowedModules = allowedModules.concat(modulesMapping[tempCode]);
+      }
+    });
+    return [...new Set(allowedModules)];
+  }
 
   const projectOverviewStore = useStore(projectId);
 
@@ -160,6 +173,7 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
     defectCountDs,
     cpOptsObj,
     MenuStore,
+    allCode: getAllCode(),
   };
 
   return (
