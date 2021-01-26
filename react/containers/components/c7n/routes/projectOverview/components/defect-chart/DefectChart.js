@@ -45,7 +45,7 @@ const DefectChart = observer(() => {
         }],
       },
       dataset: {
-        source: defectCountDs.toData(),
+        source: defectCountDs.toData()[0] || [],
         dimensions: [
           { name: 'date', type: 'ordinal' },
           { name: 'create', type: 'number' },
