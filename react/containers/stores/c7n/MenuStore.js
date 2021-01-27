@@ -191,7 +191,11 @@ class MenuStore {
 
   @action
   setOpenKeys(openKeys) {
-    this.openKeys = openKeys;
+    if (openKeys && openKeys.length > 0) {
+      this.openKeys = Array.from(new Set([...this.openKeys, ...openKeys]));
+    } else {
+      this.openKeys = openKeys;
+    }
   }
 
   @action
@@ -225,10 +229,10 @@ class MenuStore {
       }
     }
     cursive(root, keys);
-    this.setOpenKeys([
+    this.setOpenKeys(Array.from(new Set([
       ...keys,
       ...this.openKeys || [],
-    ]);
+    ])));
   }
 
   @action setRootBaseOnActiveMenu() {
