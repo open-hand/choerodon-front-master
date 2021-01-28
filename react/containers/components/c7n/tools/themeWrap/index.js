@@ -8,23 +8,26 @@ export default inject('AppState')((props) => {
     AppState,
   } = props;
 
+  let theme;
+  switch (AppState.getCurrentTheme) {
+    case '':
+      theme = 'origin';
+      break;
+    case 'theme4':
+      theme = 'theme4';
+      break;
+    default:
+      theme = 'origin';
+      break;
+  }
+
   const renderParams = () => {
-    let theme;
-    switch (AppState.getCurrentTheme) {
-      case '':
-        theme = 'origin';
-        break;
-      case 'theme4':
-        theme = 'theme4';
-        break;
-      default:
-        theme = 'origin';
-        break;
-    }
     const result = {};
     Object.entries(map).forEach((item) => {
       result[item[0]] = item[1][theme];
     });
+    result.styles = map?.style[AppState.getCurrentTheme] || null;
+
     return result;
   };
 
