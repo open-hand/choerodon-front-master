@@ -23,10 +23,14 @@ export default inject('AppState')((props) => {
 
   const renderParams = () => {
     const result = {};
-    Object.entries(map.key).forEach((item) => {
-      result[item[0]] = item[1][theme];
-    });
-    result.styles = map?.style[AppState.getCurrentTheme] || null;
+    if (map.key) {
+      Object.entries(map.key).forEach((item) => {
+        result[item[0]] = item[1][theme];
+      });
+    }
+    if (map.style) {
+      result.styles = map?.style[AppState.getCurrentTheme] || null;
+    }
 
     return result;
   };
