@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import queryString from 'query-string';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { observer, Provider } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
 import { Modal } from 'choerodon-ui/pro';
@@ -18,6 +19,7 @@ import stores from './containers/stores';
 import Master from './containers/components/c7n/master';
 import './containers/components/style';
 
+const queryClient = new QueryClient();
 const spinStyle = {
   textAlign: 'center',
   paddingTop: 300,
@@ -148,19 +150,21 @@ export default class Index extends React.Component {
     const { loading } = this.state;
     if (this.isInOutward(this.props.location.pathname)) {
       return (
-        <UILocaleProviderAsync>
-          <IntlProviderAsync>
-            <Provider {...stores}>
-              <Switch>
-                <Route path="/">
-                  <Container defaultTheme="">
-                    <Outward AutoRouter={this.props.AutoRouter} />
-                  </Container>
-                </Route>
-              </Switch>
-            </Provider>
-          </IntlProviderAsync>
-        </UILocaleProviderAsync>
+        <QueryClientProvider client={queryClient}>
+          <UILocaleProviderAsync>
+            <IntlProviderAsync>
+              <Provider {...stores}>
+                <Switch>
+                  <Route path="/">
+                    <Container defaultTheme="">
+                      <Outward AutoRouter={this.props.AutoRouter} />
+                    </Container>
+                  </Route>
+                </Switch>
+              </Provider>
+            </IntlProviderAsync>
+          </UILocaleProviderAsync>
+        </QueryClientProvider>
       );
     }
     if (loading) {
@@ -171,21 +175,23 @@ export default class Index extends React.Component {
       );
     }
     return (
-      <UILocaleProviderAsync>
-        <IntlProviderAsync>
-          <Provider {...stores}>
-            <Switch>
-              <Route
-                path="/"
-              >
-                <Container defaultTheme="">
-                  <Master AutoRouter={this.props.AutoRouter} />
-                </Container>
-              </Route>
-            </Switch>
-          </Provider>
-        </IntlProviderAsync>
-      </UILocaleProviderAsync>
+      <QueryClientProvider client={queryClient}>
+        <UILocaleProviderAsync>
+          <IntlProviderAsync>
+            <Provider {...stores}>
+              <Switch>
+                <Route
+                  path="/"
+                >
+                  <Container defaultTheme="">
+                    <Master AutoRouter={this.props.AutoRouter} />
+                  </Container>
+                </Route>
+              </Switch>
+            </Provider>
+          </IntlProviderAsync>
+        </UILocaleProviderAsync>
+      </QueryClientProvider>
     );
   }
 }
