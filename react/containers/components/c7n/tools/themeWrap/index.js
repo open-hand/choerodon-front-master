@@ -23,12 +23,12 @@ export default inject('AppState')((props) => {
 
   const renderParams = () => {
     const result = {};
-    if (map.key) {
+    if (map && map.key) {
       Object.entries(map.key).forEach((item) => {
         result[item[0]] = item[1][theme];
       });
     }
-    if (map.style) {
+    if (map && map.style) {
       result.styles = map?.style[AppState.getCurrentTheme] || null;
     }
 
