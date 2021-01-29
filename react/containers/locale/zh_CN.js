@@ -122,7 +122,7 @@ const zh_CN = {
   'c7ncd.project.saga.title.failed.create': '创建项目失败',
   'c7ncd.project.saga.title.failed.update': '更新项目失败',
   'c7ncd.project.saga.des.creating.create': '正在创建项目，该过程可能会持续几分钟。待以下步骤成功后，才能进入项目。',
-  'c7ncd.project.saga.des.updating.update': '正在更新项目，该过程可能会持续几分钟。待以下步骤成功后，才能见到新增的功能菜单。',
+  'c7ncd.project.saga.des.updating.update': '正在更新项目，该过程可能会持续几分钟。待修改成功，进入项目刷新页面后即可见到项目的新菜单。',
   'c7ncd.project.saga.des.success.create': '项目创建成功，开启您的项目之旅吧！',
   'c7ncd.project.saga.des.success.update': '项目更新成功，进入项目后刷新即可。',
 };
