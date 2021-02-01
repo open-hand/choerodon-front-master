@@ -1,10 +1,9 @@
-
 .c7ncd-emptyCard {
   background-color: #fff;
   padding: 0.2rem 0;
   border-radius: 10px;
   height: 100%;
-  >header {
+  > header {
     margin-bottom: 0.2rem;
     display: -webkit-box;
     display: -webkit-flex;
@@ -15,16 +14,42 @@
     -ms-flex-align: center;
     align-items: center;
     padding: 0 0.34rem;
-    >span {
+    > span {
       font-size: 0.16rem;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
       color: #3a345f;
     }
   }
-  >main {
-    height: calc(100% - .44rem);
+  > main {
+    height: calc(100% - 0.24rem);
     overflow-y: scroll;
     padding: 0 0.24rem;
+  }
+  .c7n-workBench-empty-page {
+    flex-direction: column;
+    flex-wrap: inherit;
+  }
+  .c7n-workBench-empty-page-title {
+    font-size: 0.13rem;
+    text-align: left;
+    color: #3a345f;
+  }
+  .c7n-workBench-empty-page-image {
+    width: 105px;
+    height: 84px;
+    margin: 4px;
+  }
+  .c7n-workBench-empty-page-text {
+    margin: 0;
+  }
+  &-onlyText {
+    height: calc(100% - 0.04rem);
+    > header {
+      margin: 0;
+    }
+    .c7n-workBench-empty-page-image {
+      display: none;
+    }
   }
 }

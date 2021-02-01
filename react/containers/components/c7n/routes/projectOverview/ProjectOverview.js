@@ -135,6 +135,7 @@ const ProjectOverview = () => {
         mappings={allCode.map((item) => (
           mappings[item]
         ))}
+        isProjects
       />,
       className: `${subPrefix}`,
     });
@@ -234,7 +235,16 @@ const ProjectOverview = () => {
     if (hasOwnProperty && hasType) {
       tempComponent = ComponetsObjs[type];
     } else {
-      tempComponent = <EmptyCard title={title} emptyTitle="项目类型无对应的模块" emptyDiscribe="此项目无对应的模块" />;
+      tempComponent = (
+        <EmptyCard
+          title={title}
+          emptyTitle={
+          mappings[type].groupId === 'devops' ? '未选择【DevOps流程】项目类型，卡片暂不可用' : '不含【敏捷管理】项目类型时，敏捷相关模块的卡片就显示为空'
+        }
+          index={type}
+          sizeObserver={['appService', 'env'].includes(type)}
+        />
+      );
     }
     return tempComponent;
   };
@@ -246,7 +256,6 @@ const ProjectOverview = () => {
   const generateDOM = useMemo(() => componentsDs.map((record) => {
     const key = record.get('i');
     const title = get(mappings[key], 'title');
-    // const emptyDiscribe = get(mappings[key], 'groupId') !== 'devops' ? '安装部署【任务管理】模块后，才能使用该卡片。' : '安装部署【DevOps管理】模块后，才能使用该卡片。';
     return (
       <DragCard
         record={record}
@@ -289,7 +298,6 @@ const ProjectOverview = () => {
   };
 
   function renderConfirm() {
-    MenuStore.setHasPrompt(isEdit);
     return <UserConfirmation title="提示" content="项目概览配置未保存，确认跳转新页面？" when={isEdit} />;
   }
 

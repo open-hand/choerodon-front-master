@@ -15,6 +15,7 @@ const AddModal = (props) => {
     addComponent,
     existTypes,
     mappings,
+    isProjects,
     // modules,
   } = props;
 
@@ -56,7 +57,9 @@ const AddModal = (props) => {
   const renderItems = () => {
     const arr = activeItem.opts;
     if (!get(arr, 'length')) {
-      return <EmptyPage title="暂未安装对应模块" describe="暂未安装对应模块，无卡片信息" />;
+      const title = (isProjects && get(activeItem, 'emptyTitle')) || '暂未安装对应模块';
+      const describe = (isProjects && get(activeItem, 'emptyDesc')) || '暂未安装对应模块，无卡片信息';
+      return <EmptyPage title={title} describe={describe} />;
     }
     return map(arr, (item, i) => {
       if (get(item, 'type') === 'starTarget') {
