@@ -105,8 +105,6 @@ class MenuStore {
 
   @observable notFoundSign = false;
 
-  @observable hasPrompt = false;
-
   statistics = {};
 
   counter = 0;
@@ -142,16 +140,6 @@ class MenuStore {
         this.statistics = {};
       }
     });
-  }
-
-  @computed
-  get getHasPrompt() {
-    return this.hasPrompt;
-  }
-
-  @action
-  setHasPrompt(value) {
-    this.hasPrompt = value;
   }
 
   @computed
