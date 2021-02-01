@@ -58,7 +58,7 @@ const AddModal = (props) => {
     const arr = activeItem.opts;
     if (!get(arr, 'length')) {
       const title = (isProjects && get(activeItem, 'emptyTitle')) || '暂未安装对应模块';
-      const describe = (isProjects && get(activeItem, 'describe')) || '暂未安装对应模块，无卡片信息';
+      const describe = (isProjects && get(activeItem, 'emptyDesc')) || '暂未安装对应模块，无卡片信息';
       return <EmptyPage title={title} describe={describe} />;
     }
     return map(arr, (item, i) => {
