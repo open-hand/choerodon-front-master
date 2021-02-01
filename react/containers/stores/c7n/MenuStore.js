@@ -271,8 +271,10 @@ class MenuStore {
       const menu = this.menuData(type, id);
       if (menu.length) {
         if (type === 'site') {
-          axios.put('iam/v1/users/tenant-id?tenantId=0');
-          // AppState.loadUserInfo();
+          if (AppState.getUserInfo?.currentRoleLevel !== 'site') {
+            await axios.put('iam/v1/users/tenant-id?tenantId=0');
+            await AppState.loadUserInfo();
+          }
         } else if (type === 'organization') {
           const orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
           if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
