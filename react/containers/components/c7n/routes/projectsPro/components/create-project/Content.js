@@ -30,16 +30,26 @@ const CreateProject = observer(() => {
     },
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const record = useMemo(() => formDs.current, [formDs.current]);
   const isModify = useMemo(() => record && record.status !== 'add', [record]);
   const hasWaterfall = useMemo(() => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall), [categoryDs.selected]);
 
+  useEffect(() => {
+    modal.update({
+      okProps: { loading: isLoading },
+      cancelProps: { disabled: isLoading },
+    });
+  }, [isLoading]);
+
   modal.handleOk(async () => {
     try {
+      setIsLoading(true);
       const selectedRecords = categoryDs.selected;
       if (!selectedRecords || !selectedRecords.length) {
         prompt('请至少选择一个项目类型');
+        setIsLoading(false);
         return false;
       }
       const categories = map(selectedRecords, (selectedRecord) => ({
@@ -54,15 +64,13 @@ const CreateProject = observer(() => {
       }
       return false;
     } catch (e) {
+      setIsLoading(false);
       return false;
     }
   });
 
   const editProject = async () => {
     try {
-      modal.update({
-        okProps: { loading: true },
-      });
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
         const projectId = get(res.list[0], 'id');
@@ -75,6 +83,7 @@ const CreateProject = observer(() => {
       }
       return false;
     } catch (e) {
+      setIsLoading(false);
       return false;
     }
   };
