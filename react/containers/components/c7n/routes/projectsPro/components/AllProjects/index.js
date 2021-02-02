@@ -1,15 +1,10 @@
 import React, { useCallback, Fragment } from 'react';
 import {
-  TextField, Button, Pagination, Tooltip, Modal,
+  TextField, Button, Pagination, Tooltip, Modal, Icon, Spin,
 } from 'choerodon-ui/pro';
-import { Progress, Icon, Spin } from 'choerodon-ui';
 import queryString from 'query-string';
-import { merge } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import Permission from '@/containers/components/c7n/tools/permission';
-import { getRandomBackground } from '@/containers/components/c7n/util';
-import axios from '@/containers/components/c7n/tools/axios';
-import { prompt } from '@/utils';
 import SagaDetails from '../../../../tools/saga-details';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
@@ -148,8 +143,8 @@ export default observer(() => {
     const projects = ProjectsProUseStore.getAllProjects;
     if (ProjectsProUseStore.getProjectLoading) {
       return (
-        <div className="allProjects-content-spin" style={{ width: '670px' }}>
-          <Spin />
+        <div className="allProjects-content-spin" style={{ width: '100%' }}>
+          <Spin spinning />
         </div>
       );
     }
