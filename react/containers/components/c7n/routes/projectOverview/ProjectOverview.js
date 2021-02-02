@@ -239,7 +239,7 @@ const ProjectOverview = () => {
         <EmptyCard
           title={title}
           emptyTitle={
-          mappings[type].groupId === 'devops' ? '未选择【DevOps流程】项目类型，卡片暂不可用' : '不含【敏捷管理】项目类型时，敏捷相关模块的卡片就显示为空'
+          get(mappings[type], 'groupId') === 'devops' ? '未选择【DevOps流程】项目类型，卡片暂不可用' : '不含【敏捷管理】项目类型时，敏捷相关模块的卡片就显示为空'
         }
           index={type}
           sizeObserver={['appService', 'env'].includes(type)}
