@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "19783840",
+      "name": "button_PI_check",
+      "font_class": "button_PI_check",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
       "icon_id": "19578608",
       "name": "button_add_Subproject",
       "font_class": "button_add_Subproject",
