@@ -57,7 +57,7 @@ export default class UserPreferences extends Component {
     if (key === 'site-setting') {
       this.getGlobalMenuData(organizationId);
     } else {
-      history.push(`${key}?type=site&organizationId=${organizationId}`);
+      history.push(`${key}?type=${key.includes('user-info') ? 'user' : 'site'}&organizationId=${organizationId}`);
     }
     this.handleVisibleChange(false);
   };

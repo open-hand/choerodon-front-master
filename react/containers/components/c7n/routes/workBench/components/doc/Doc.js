@@ -1,90 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import map from 'lodash/map';
-import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { Tooltip, Spin } from 'choerodon-ui/pro';
 import ScrollContext from 'react-infinite-scroll-component';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import { getRandomBackground } from '@/containers/components/c7n/util';
+import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import TimePopover from '../time-popover';
-import EmptyPage from '../empty-page';
-import Card from '../card';
+import Switch from './components/SwitchTabs';
+import EmptyImg from './image/empty.svg';
 import './index.less';
 import { useDoc } from './stores';
-import { useWorkBenchStore } from '../../stores';
 
-const clsPrefix = 'c7n-workbench-doc';
+const Doc = () => {
+  const {
+    docStore,
+    docDs,
+    history,
+    clsPrefix,
+  } = useDoc();
 
-function Switch({
-  options: propsOption, children, onChange, defaultValue, checkedValue,
-}) {
-  const [value, setValue] = useState(defaultValue);
-  const [options, setOptions] = useState(propsOption || []);
-  const onClick = (v) => {
-    setValue(v);
-    if (onChange) {
-      onChange(v);
-    }
-  };
-  useEffect(() => {
-    if (!Array.isArray(options)) {
-      setOptions([]);
-    } else if (!options.some((v) => v.value)) {
-      setOptions(options.map((v, index) => ({ text: v, value: index })));
-    }
-    propsOption = options;
-  }, []);
+  const {
+    getListHasMore,
+    rowNumber,
+  } = docStore;
 
-  return (
-    <ul className={`${clsPrefix}-switch`}>
-      {options.map((option, index) => (
-        <>
-          <li
-            onClick={(e) => {
-              e.preventDefault();
-              onClick(option.value);
-            }}
-            className={value === option.value ? `${clsPrefix}-switch-active` : `${clsPrefix}-switch-li`}
-          >
-            {option.text || option}
-          </li>
-          <span className="line" />
-        </>
-      ))}
-    </ul>
+  const renderTitle = () => (
+    <div className={`${clsPrefix}-title`}>
+      <span>文档</span>
+      <Switch />
+    </div>
   );
-}
-const Doc = ({ history }) => {
-  const { docStore } = useDoc();
-  const { docDs, selfDoc, setSelfDoc } = useWorkBenchStore();
-  // useEffect(() => {
-  //   // 防止初次进入时二次加载
-  //   if (!docStore.getIsFistLoad) {
-  //     docStore.setLoading(true);
-  //     docStore.axiosGetDoc(self).then(res => docStore.setLoading(false)).catch(() => docStore.setLoading(false));
-  //   }
-  // }, [self]);
-  useEffect(() => {
-    if (docDs.currentPage === 1) {
-      const data = docDs.toData()[0];
-      docStore.setDocData(data ? data.list : []);
-    }
-  }, [docDs.length]);
 
-  function renderTitle() {
-    return (
-      <div className={`${clsPrefix}-title`}>
-        <span>文档</span>
-        <Switch defaultValue={false} options={[{ value: false, text: '项目' }, { value: true, text: '个人' }]} onChange={setSelfDoc} />
-      </div>
-    );
-  }
   const goKnowledgeLink = ({
     baseId, orgFlag, projectId, organizationId, spaceId, baseName, name,
   }) => {
     const url = `/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}?baseName=${baseName}&id=${orgFlag ? organizationId : projectId}&organizationId=${organizationId}&spaceId=${spaceId}&name=${name}&type=${orgFlag ? 'organization' : 'project'}`;
     history.push(url);
   };
+
   const renderUserList = (userList, visibleText = false) => map(userList, ({
     realName, loginName, email, ldap, imageUrl,
   }) => (
@@ -110,7 +63,7 @@ const Doc = ({ history }) => {
   ));
 
   function renderItems() {
-    return map(docStore.getDocData, ({
+    return map(docDs.toData(), ({
       knowledgeBaseName, orgFlag, id, baseId, organizationId, imageUrl, title, projectId, projectName, organizationName, updatedUserList: originUpdatedUserList, lastUpdateDate,
     }) => {
       const updatedUserList = originUpdatedUserList ? originUpdatedUserList.filter(Boolean) : [];
@@ -128,6 +81,7 @@ const Doc = ({ history }) => {
             </span>
             <div className="c7n-workbench-doc-item-userlist">
               {renderUserList(updatedUserList.slice(0, 3))}
+
               {updatedUserList.length > 3 && (
                 <Tooltip
                   placement="top"
@@ -162,11 +116,9 @@ const Doc = ({ history }) => {
       );
     });
   }
+
   const loadMore = async () => {
-    // await docStore.axiosGetDoc(self);
-    await docDs.nextPage().then((res) => {
-      docStore.setDocData(docStore.getDocData.concat(res.toData().list));
-    });
+    await docDs.query(docDs.currentPage + 1);
   };
 
   return (
@@ -174,21 +126,24 @@ const Doc = ({ history }) => {
       className={clsPrefix}
     >
       {renderTitle()}
-      <Spin spinning={!docDs.length && docDs.currentPage === 1 && docDs.status === 'loading'}>
+      <Spin spinning={docDs.status === 'loading'}>
         <div className="c7n-workbench-doc-content">
           {
-            docStore.getDocData.length > 0
+            docDs.length > 0
               ? (
                 <ScrollContext
                   className={`${clsPrefix}-scroll`}
-                  dataLength={docStore.getDocData.length}
+                  dataLength={docDs.length}
                   next={loadMore}
-                  // hasMore={docStore.getPageInfo.hasNext}
-                  hasMore={docDs.currentPage < docDs.totalPage}
-                  loader={<Spin className={`${clsPrefix}-scroll-load`} spinning />}
-                  height={438}
+                  hasMore={getListHasMore}
+                  height={((rowNumber - 1) * 150) + 120}
                   endMessage={(
-                    <span style={{ height: docStore.getDocData.length < 5 ? '1.32rem' : 'auto' }} className={`${clsPrefix}-scroll-bottom`}>{docStore.getDocData.length && docDs.totalPage > 1 ? '到底了' : ''}</span>
+                    <span
+                      style={{ height: docDs.length < 5 ? '1.32rem' : 'auto' }}
+                      className={`${clsPrefix}-scroll-bottom`}
+                    >
+                      {getListHasMore ? '到底了' : ''}
+                    </span>
                   )}
                 >
                   {renderItems()}
@@ -199,16 +154,15 @@ const Doc = ({ history }) => {
                   <EmptyPage
                     title="暂无文档信息"
                     describe="暂无最近操作的文档"
+                    img={EmptyImg}
                   />
                 )
               )
           }
-
         </div>
       </Spin>
-
     </div>
   );
 };
 
-export default withRouter(observer(Doc));
+export default observer(Doc);

@@ -1,0 +1,70 @@
+@prefixCls: c7ncd-workbench-question-focus;
+
+.@{prefixCls} {
+  flex: 1 1 62%;
+  margin-right: .20rem;
+  overflow: hidden;
+
+  &-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 10px;
+
+    &-count {
+      display: inline-block;
+      margin-left: .08rem;
+      padding: 0 .06rem;
+      background: rgba(244, 133, 144, 0.1);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #f48590;
+      line-height: 20px;
+    }
+  }
+
+  &-issueContent {
+
+    .c7n-tree .c7n-tree-treenode {
+      width: 100%;
+      padding: 0;
+      border-top: 1px transparent solid;
+      border-image: linear-gradient(to right, rgba(216, 220, 235, 0.4), #d8dceb, rgba(216, 220, 235, 0.4)) 1 10;
+    }
+
+    .c7n-tree .c7n-tree-treenode:last-of-type {
+      border-bottom: 1px transparent solid;
+    }
+
+    .c7n-tree .c7n-tree-node-content-wrapper {
+      width: 100%;
+      padding: 0;
+      overflow: hidden;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    .c7n-tree .c7n-tree-switcher {
+      padding-top: .08rem;
+    }
+
+    &-more {
+      color: #3f51b5;
+      padding: .2rem 0 0 .2rem;
+      cursor: pointer;
+    }
+
+    &-loading {
+      text-align: center;
+    }
+
+    .c7n-workbench-card-header-title {
+      width: 100%;
+    }
+  }
+
+}

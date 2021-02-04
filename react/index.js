@@ -2,6 +2,8 @@ export { default as MasterHeader } from './containers/components/c7n/ui/header';
 
 export { default as CommonMenu } from './containers/components/c7n/ui/menu';
 
+export { default as C7NIcon } from './containers/components/c7n/ui/c7n-icon';
+
 export { default as Page } from './containers/components/c7n/tools/page';
 
 export { default as Content } from './containers/components/c7n/tools/page/Content';
@@ -41,6 +43,8 @@ export { default as TabPage } from './containers/components/c7n/tools/tab-page/T
 export { default as StatusTag } from './containers/components/c7n/tools/statusTag/StatusTag';
 
 export { default as Breadcrumb } from './containers/components/c7n/tools/tab-page/Breadcrumb';
+
+export { default as ThemeWrap } from './containers/components/c7n/tools/themeWrap';
 
 export { default as SagaDetails } from './containers/components/c7n/tools/saga-details';
 

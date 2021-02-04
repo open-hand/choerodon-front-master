@@ -5,6 +5,7 @@ import { authorizeUrl } from '@/utils/authorize';
 import { getAccessToken, removeAccessToken } from '@/utils/accessToken';
 import { API_HOST } from '@/utils/constants';
 import JSONbig from 'json-bigint';
+import { prompt } from '@/utils';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 import MenuStore from '../../../../stores/c7n/MenuStore';
 
@@ -88,7 +89,7 @@ instance.interceptors.response.use(
       return response;
     }
     if (Object.prototype.hasOwnProperty.call(response, 'data')) {
-      if (response.data.failed === true) {
+      if (response.data?.failed === true) {
         throw response.data;
       }
       return transformResponsePage(response.data);
@@ -113,6 +114,7 @@ instance.interceptors.response.use(
           break;
         }
         default:
+          prompt(response.data, 'error');
           break;
       }
     }

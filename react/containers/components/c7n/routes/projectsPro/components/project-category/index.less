@@ -1,0 +1,40 @@
+.c7ncd-project-categories {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(58, 52, 95, 1);
+  margin-right: auto !important;
+
+  &-icon {
+    font-size: 14px;
+    color: rgba(104, 135, 232, 1);
+    margin-right: .03rem;
+  }
+
+  &-more {
+    margin-left: .04rem;
+  }
+
+  &-tag {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: rgba(15, 19, 88, 0.06);
+    border-radius: 5px;
+    padding: 0 4px;
+  }
+}
+
+.c7ncd-project-categories-popover {
+
+  .c7ncd-project-categories-tag {
+    display: block;
+    margin-bottom: .08rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

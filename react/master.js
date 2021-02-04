@@ -1,12 +1,14 @@
 import React from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import queryString from 'query-string';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { observer, Provider } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
 import { Modal } from 'choerodon-ui/pro';
 import {
   authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
 } from '@/utils';
+import Container from '@hzero-front-ui/cfg/lib/components/Container';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
@@ -17,6 +19,7 @@ import stores from './containers/stores';
 import Master from './containers/components/c7n/master';
 import './containers/components/style';
 
+const queryClient = new QueryClient();
 const spinStyle = {
   textAlign: 'center',
   paddingTop: 300,
@@ -120,6 +123,8 @@ export default class Index extends React.Component {
       await this.checkEnterprise();
     }
     HeaderStore.axiosGetRoles();
+    AppState.loadModules();
+    AppState.loadDeployServices();
     await AppState.loadUserInfo();
     if (HAS_AGILE_PRO && !window._env_.BUSINESS) {
       const hasConfirmed = localStorage.getItem('hasConfirmed');
@@ -129,7 +134,7 @@ export default class Index extends React.Component {
       }
     }
     this.setState({ loading: false });
-  }
+  };
 
   isInOutward = (pathname) => {
     // eslint-disable-next-line no-underscore-dangle
@@ -145,17 +150,21 @@ export default class Index extends React.Component {
     const { loading } = this.state;
     if (this.isInOutward(this.props.location.pathname)) {
       return (
-        <UILocaleProviderAsync>
-          <IntlProviderAsync>
-            <Provider {...stores}>
-              <Switch>
-                <Route path="/">
-                  <Outward AutoRouter={this.props.AutoRouter} />
-                </Route>
-              </Switch>
-            </Provider>
-          </IntlProviderAsync>
-        </UILocaleProviderAsync>
+        <QueryClientProvider client={queryClient}>
+          <UILocaleProviderAsync>
+            <IntlProviderAsync>
+              <Provider {...stores}>
+                <Switch>
+                  <Route path="/">
+                    <Container defaultTheme="">
+                      <Outward AutoRouter={this.props.AutoRouter} />
+                    </Container>
+                  </Route>
+                </Switch>
+              </Provider>
+            </IntlProviderAsync>
+          </UILocaleProviderAsync>
+        </QueryClientProvider>
       );
     }
     if (loading) {
@@ -166,19 +175,23 @@ export default class Index extends React.Component {
       );
     }
     return (
-      <UILocaleProviderAsync>
-        <IntlProviderAsync>
-          <Provider {...stores}>
-            <Switch>
-              <Route
-                path="/"
-              >
-                <Master AutoRouter={this.props.AutoRouter} />
-              </Route>
-            </Switch>
-          </Provider>
-        </IntlProviderAsync>
-      </UILocaleProviderAsync>
+      <QueryClientProvider client={queryClient}>
+        <UILocaleProviderAsync>
+          <IntlProviderAsync>
+            <Provider {...stores}>
+              <Switch>
+                <Route
+                  path="/"
+                >
+                  <Container defaultTheme="">
+                    <Master AutoRouter={this.props.AutoRouter} />
+                  </Container>
+                </Route>
+              </Switch>
+            </Provider>
+          </IntlProviderAsync>
+        </UILocaleProviderAsync>
+      </QueryClientProvider>
     );
   }
 }

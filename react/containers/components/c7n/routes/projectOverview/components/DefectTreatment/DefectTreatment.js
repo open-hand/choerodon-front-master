@@ -1,39 +1,21 @@
-import React, { useState, memo, useMemo, useEffect } from 'react';
-import { Button, Tooltip } from 'choerodon-ui/pro';
+import React, {
+  useState, memo, useMemo, useEffect,
+} from 'react';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import './index.less';
 import { Spin } from 'choerodon-ui';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import OverviewWrap from '../OverviewWrap';
-import { useDefectTreatmentStore } from './stores';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
 
 const DefectTreatment = observer(() => {
   const options = useMemo(() => [{ value: 'created', text: '提出' }, { value: 'completed', text: '解决' }], []);
   const clsPrefix = 'c7n-project-overview-defect-treatment';
-  const { defectTreatmentStore, showDevops } = useDefectTreatmentStore();
-  const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [charOption, setCharOption] = useState('created'); // createdList completedList
-  const { projectOverviewStore } = useProjectOverviewStore();
+  const { startedRecord, startSprintDs, defectTreatDs } = useProjectOverviewStore();
 
-  useEffect(() => {
-    if (projectOverviewStore.getStaredSprint) {
-      setLoading(true);
-      defectTreatmentStore.axiosGetChartData(projectOverviewStore.getStaredSprint.sprintId).then(() => {
-        setLoading(false);
-      });
-    } else if (projectOverviewStore.getIsFinishLoad) {
-      setLoading(false);
-    }
-  }, [projectOverviewStore.getIsFinishLoad]);
-  useEffect(() => {
-    if (defectTreatmentStore.getChartList && defectTreatmentStore.getChartList.length > 8) {
-      setShow(true);
-    }
-  }, [defectTreatmentStore.getChartList]);
   function getOptions() {
     return {
       legend: {
@@ -50,7 +32,7 @@ const DefectTreatment = observer(() => {
         left: 30,
         right: 8,
         // top: 37,
-        bottom: show ? 61 : 35,
+        bottom: defectTreatDs.length > 8 ? 30 : 20,
       },
       tooltip: {
         backgroundColor: 'rgba(0,0,0,0.75)',
@@ -59,7 +41,7 @@ const DefectTreatment = observer(() => {
         },
       },
       dataset: {
-        source: defectTreatmentStore.getChartList ? defectTreatmentStore.getChartList : [],
+        source: defectTreatDs.toData() || [],
       },
       xAxis: {
         type: 'category',
@@ -129,7 +111,7 @@ const DefectTreatment = observer(() => {
       ],
       dataZoom: [{
         bottom: 18,
-        show,
+        show: defectTreatDs.length > 8,
         type: 'slider',
         height: 15,
         width: '80%',
@@ -154,35 +136,35 @@ const DefectTreatment = observer(() => {
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>缺陷提出与解决</span>
-      {projectOverviewStore.getStaredSprint && defectTreatmentStore.getChartList && defectTreatmentStore.getChartList.length > 0 ? <OverviewWrap.Switch defaultValue="created" onChange={setCharOption} options={options} /> : ''}
+      {startedRecord && defectTreatDs.length ? <OverviewWrap.Switch defaultValue="created" onChange={setCharOption} options={options} /> : ''}
     </div>
   );
   function render() {
-    if (projectOverviewStore.getStaredSprint) {
+    if (startedRecord) {
       return (
         <OverviewWrap.Content className={`${clsPrefix}-content`}>
-          <Spin spinning={loading}>
+          <Spin spinning={defectTreatDs.status === 'loading'}>
             {
-              defectTreatmentStore.getChartList && !loading && defectTreatmentStore.getChartList.length > 0
-                ? <Echart style={{ width: '100%', height: showDevops ? '300px' : '380px' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
+               defectTreatDs.length > 0
+                 ? <Echart style={{ width: '100%', height: '100%' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
             }
 
           </Spin>
         </OverviewWrap.Content>
       );
-    } else if (projectOverviewStore.getIsFinishLoad) {
-      return <EmptyPage />;// 暂无活跃的冲刺" 
+    } if (startSprintDs.status !== 'loading') {
+      return <EmptyPage />;// 暂无活跃的冲刺"
     }
     return <LoadingBar display />;
   }
   return (
-    <OverviewWrap height={showDevops ? 348 : 428}>
+    <OverviewWrap style={{
+      paddingTop: '13px',
+    }}
+    >
       <OverviewWrap.Header title={renderTitle()} />
-
       {render()}
-
     </OverviewWrap>
-
   );
 });
 

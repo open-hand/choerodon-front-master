@@ -1,6 +1,6 @@
-import React, { Fragment, memo, useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Pagination, Tooltip, Select } from 'choerodon-ui/pro';
+import { Pagination, Tooltip } from 'choerodon-ui/pro';
 import { useProjectOverviewStore } from '../../stores';
 import OverviewWrap from '../OverviewWrap';
 import EmptyPage from '../EmptyPage';
@@ -10,18 +10,20 @@ import './index.less';
 const UserList = () => {
   const {
     userListDs,
-    projectOverviewStore,
   } = useProjectOverviewStore();
+
   const clsPrefix = 'c7n-project-overview-user-list';
 
   return (
-    <OverviewWrap height={459}>
-      <OverviewWrap.Header title={`在线成员(${projectOverviewStore.getTotalOnlineUser})`} />
-      {projectOverviewStore.getTotalOnlineUser ? (
-        <Fragment>
+    <OverviewWrap>
+      <OverviewWrap.Header title={`在线成员(${userListDs.length})`} />
+      {userListDs.length ? (
+        <>
           <div className={`${clsPrefix}-content`}>
             {userListDs.map((record) => {
-              const { imageUrl, loginName, realName, roleNames } = record.toData();
+              const {
+                imageUrl, loginName, realName, roleNames,
+              } = record.toData();
               return (
                 <div className={`${clsPrefix}-item`} key={record.id}>
                   <Tooltip title={`${realName} (${loginName})`} placement="top">
@@ -45,8 +47,12 @@ const UserList = () => {
               );
             })}
           </div>
-          {projectOverviewStore.getTotalOnlineUser > 8 ? <Pagination dataSet={userListDs} className={`${clsPrefix}-pagination`} /> : null}
-        </Fragment>
+          <Pagination
+            dataSet={userListDs}
+            className={`${clsPrefix}-pagination`}
+            hideOnSinglePage
+          />
+        </>
       ) : <EmptyPage content="当前暂无数据" />}
     </OverviewWrap>
   );

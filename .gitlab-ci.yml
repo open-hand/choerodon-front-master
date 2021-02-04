@@ -1,4 +1,4 @@
-image: registry.cn-hangzhou.aliyuncs.com/choerodon-tools/cibase:0.8.1
+image: registry.cn-shanghai.aliyuncs.com/c7n/cibase:0.11.0
 
 stages:
   - release
@@ -6,7 +6,7 @@ stages:
 release:
   stage: release
   script:
-    - npm install --registry ${NPM_REPO} --sass-binary-site=http://npm.taobao.org/mirrors/node-sass
+    - yarn install --registry ${NPM_REPO} --sass-binary-site=http://npm.taobao.org/mirrors/node-sass
     - chmod -R 755 node_modules
     - npm run compile
     - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>.npmrc

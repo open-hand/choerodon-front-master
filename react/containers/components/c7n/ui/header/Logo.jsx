@@ -1,24 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
+import { inject } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
+import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
 import classnames from 'classnames';
 
 const PREFIX_CLS = 'c7n';
 const prefixCls = `${PREFIX_CLS}-boot-header-logo`;
 
-@withRouter
-@inject('AppState', 'MenuStore')
-@observer
-export default class Logo extends Component {
-  render() {
-    const { AppState } = this.props;
-    const { systemLogo, systemName } = AppState.getSiteInfo;
-    
-    return (
-      <div className={`${prefixCls}-wrap`}>
-        <div className={classnames(`${prefixCls}-icon`, systemLogo ? null : `${prefixCls}-default-icon`)} style={{ backgroundImage: systemLogo ? `url(${systemLogo})` : null }} />
-        <div className={classnames(`${prefixCls}`, systemName ? null : `${prefixCls}-default-logo`)}>{systemName}</div>
-      </div>
-    );
-  }
-}
+export default withRouter(inject('AppState', 'MenuStore')(observer((props) => {
+  const { setTheme, schema } = useContext(ThemeContext);
+  const { AppState } = props;
+  const { systemLogo, systemName } = AppState.getSiteInfo;
+  return (
+    <div
+      className={classnames({
+        [`${prefixCls}-wrap`]: true,
+        [`${prefixCls}-wrap-theme4`]: schema === 'theme4',
+      })}
+    >
+      <div className={classnames(`${prefixCls}-icon`, systemLogo ? null : `${prefixCls}-default-icon`)} style={{ backgroundImage: systemLogo ? `url(${systemLogo})` : null }} />
+      <div className={classnames(schema === 'theme4' ? `${prefixCls}-theme4` : null, `${prefixCls}`, systemName ? null : `${prefixCls}-default-logo`)}>{systemName}</div>
+    </div>
+  );
+})));

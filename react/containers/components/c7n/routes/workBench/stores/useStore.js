@@ -4,16 +4,33 @@ import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
+import {
+  get, map, omit, pick,
+} from 'lodash';
+import mappings from './mappings';
 
 export default function useStore(history) {
   return useLocalStore(() => ({
-    activeStarProject: undefined,
+    initData: [],
+    setInitData(value) {
+      this.initData = value;
+    },
+
+    activeStarProject: null,
     get getActiveStarProject() {
       return this.activeStarProject;
     },
     setActiveStarProject(data) {
       this.activeStarProject = data;
     },
+
+    // 拖拽的参数
+
+    isEdit: false,
+    setEdit(value) {
+      this.isEdit = value;
+    },
+
     handleClickProject(data) {
       const {
         id, name, organizationId, category,
@@ -29,12 +46,10 @@ export default function useStore(history) {
           route = menuRoute;
           domain = menuDomain;
         }
-        // if (route) {
         path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
         if (String(organizationId)) {
           path += `&organizationId=${organizationId}`;
         }
-        // }
         if (path) {
           historyPushMenu(history, path, domain);
         }
@@ -49,6 +64,16 @@ export default function useStore(history) {
       organizationId, projectId, page, type,
     }) {
       return axios.post(`agile/v1/organizations/${organizationId}/work_bench/personal/backlog_issues?page=${page}&size=20${projectId ? `&projectId=${projectId}` : ''}`, { type });
+    },
+    saveConfig(value) {
+      const tempObj = map(value, (item) => {
+        const temp = pick(mappings[item.i], ['type', 'name', 'groupId']);
+        temp.layout = item;
+        return temp;
+      });
+      axios.post('iam/choerodon/v1/workbench_configs', JSON.stringify({
+        data: JSON.stringify(tempObj),
+      }));
     },
   }));
 }

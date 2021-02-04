@@ -1,13 +1,15 @@
-import React, { createContext, useContext, useMemo, useEffect, useState } from 'react';
+import React, {
+  createContext, useContext, useMemo, useEffect,
+} from 'react';
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { DataSet } from 'choerodon-ui/pro';
-import AuditDataSet from './AuditDataSet';
+import { forEach, get } from 'lodash';
+import { DataSet } from 'choerodon-ui/pro/lib';
 import useStore from './useStore';
-import AppServiceDataSet from './AppServiceDataSet';
-import QuestionDataSet from './QuestionDataSet';
-import DocDataSet from './DocDataSet';
+import useCpCacheStore from './useCpCacheStore';
+import modulesMapping from './modulesMapping';
+import ComponentsDataset from './ComponentsDataset';
 
 const Store = createContext();
 
@@ -18,47 +20,41 @@ export function useWorkBenchStore() {
 export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
-    AppState: { currentMenuType: { organizationId } },
+    AppState: { currentMenuType: { organizationId }, currentModules },
     history,
   } = props;
-  const [selfDoc, setSelfDoc] = useState(false);
-  const [activeProject, setActiveProject] = useState();
+
+  function getAllCode() {
+    let allowedModules = [...modulesMapping.common];
+    forEach(currentModules, (item) => {
+      if (Object.prototype.hasOwnProperty.call(modulesMapping, item)) {
+        allowedModules = allowedModules.concat(modulesMapping[item]);
+      }
+    });
+    return [...new Set(allowedModules)];
+  }
+
   const workBenchUseStore = useStore(history);
-  const auditDs = useMemo(() => new DataSet(AuditDataSet({ organizationId })), [organizationId]);
-  const appServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ organizationId })), [organizationId]);
-  const questionDs = useMemo(() => new DataSet(QuestionDataSet({ organizationId })), [organizationId]);
-  const docDs = useMemo(() => new DataSet(DocDataSet({ organizationId, projectId: activeProject, self: selfDoc })), [organizationId, activeProject, selfDoc]);
-  useEffect(() => {
-    docDs.query();
-  }, [selfDoc, organizationId, activeProject]);
-  useEffect(() => {
-    const project = workBenchUseStore.getActiveStarProject;
-    if (project && project.id) {
-      auditDs.setQueryParameter('project_id', String(project.id));
-      appServiceDs.setQueryParameter('project_id', String(project.id));
-      questionDs.setQueryParameter('projectId', String(project.id));
-      docDs.setQueryParameter('projectId', String(project.id));
-      setActiveProject(project.id);
-    } else {
-      auditDs.setQueryParameter('project_id', null);
-      appServiceDs.setQueryParameter('project_id', null);
-      questionDs.setQueryParameter('projectId', null);
-      docDs.setQueryParameter('projectId', null);
-      setActiveProject(undefined);
-    }
-    auditDs.query();
-    appServiceDs.query();
-  }, [workBenchUseStore.getActiveStarProject, organizationId]);
+  const cacheStore = useCpCacheStore();
+
+  const selectedProjectId = get(workBenchUseStore.getActiveStarProject, 'id');
+  const category = get(workBenchUseStore.getActiveStarProject, 'category');
+
+  const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ workBenchUseStore })), [workBenchUseStore]);
 
   const value = {
     ...props,
-    auditDs,
-    appServiceDs,
-    questionDs,
+    prefixCls: 'c7n-workbench',
+    dragPrefixcls: 'c7ncd-dragCard',
+    componentsDs,
+    cacheStore,
     workBenchUseStore,
-    docDs,
-    selfDoc,
-    setSelfDoc,
+    organizationId,
+    selectedProjectId,
+    category,
+    history,
+    currentModules,
+    allowedModules: getAllCode(),
   };
 
   return (

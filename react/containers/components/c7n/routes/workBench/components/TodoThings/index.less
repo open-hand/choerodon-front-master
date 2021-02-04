@@ -3,3 +3,99 @@
   flex: 1 1 44%;
   overflow: hidden;
 }
+
+.c7n-workbench-check {
+  flex: 1 1 44%;
+  overflow: hidden;
+
+  &-item {
+    background-color: #f5f6fa;
+    border-radius: 4px;
+    padding: 0.1rem 0.1rem 0.1rem 0;
+    display: flex;
+    color: #3a345f;
+    margin-bottom: 0.13rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &-content {
+      flex: 1 1 auto;
+      margin: 0 0.24rem 0 0.16rem;
+      overflow: hidden;
+    }
+
+    &-project {
+      color: rgba(58, 52, 95, 0.65);
+      font-size: 0.12rem;
+      line-height: 0.2rem;
+      margin-bottom: 0.02rem;
+    }
+
+    &-des {
+      line-height: 0.2rem;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+
+      &-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    &-btn {
+      -webkit-box-flex: 0;
+      -webkit-flex: 0 0 0.4rem;
+      -ms-flex: 0 0 0.4rem;
+      flex: 0 0 0.46rem;
+      height: 0.4rem;
+      line-height: 0.4rem;
+      text-align: center;
+      border-radius: 0.1rem;
+      background-color: #fff;
+      cursor: pointer;
+      font-size: 0.12rem;
+      &-icon {
+        font-size: 0.14rem;
+        color: #6887e8;
+        margin: 0 0.02rem 0 0;
+        vertical-align: text-bottom;
+      }
+    }
+
+    &-border {
+      flex: 0 0 0.04rem;
+      background-color: #ffb96a;
+      border-radius: 4px;
+      margin-left: -0.02rem;
+    }
+
+    &-user {
+      display: inline-block;
+      border-radius: 50%;
+      border: none;
+      text-align: center;
+      overflow: hidden;
+      height: 0.18rem;
+      line-height: 0.18rem;
+      flex: 0 0 0.18rem;
+      margin-right: 0.05rem;
+
+      &-text {
+        color: #3f51b5;
+        background-color: #c5cbe8;
+        width: 0.18rem;
+        display: inline-block;
+      }
+
+      &-image {
+        width: 0.18rem;
+        height: 0.18rem;
+        background-size: contain;
+      }
+    }
+  }
+}
