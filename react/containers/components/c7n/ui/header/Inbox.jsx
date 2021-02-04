@@ -190,7 +190,7 @@ class RenderPopoverContentDetailClass extends Component {
               <div
                 className="c7n-boot-header-inbox-content"
                 // eslint-disable-next-line react/no-danger
-                dangerouslySetInnerHTML={{ __html: `${HeaderStore.inboxDetail.content?.replace(reg, '')}` }}
+                dangerouslySetInnerHTML={{ __html: `${HeaderStore.inboxDetail.content}` }}
               />
             </div>
           </div>
