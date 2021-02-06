@@ -26,12 +26,16 @@ import DeployChart from './components/deploy-chart';
 import CommitChart from './components/commit-chart';
 import DefectChart from './components/defect-chart';
 import PipelineChart from './components/pipeline-chart';
+import AssigneeChart from './components/assignee-chart';
 import mappings from './stores/mappings';
 import { useProjectOverviewStore } from './stores';
 
 import './ProjectOverview.less';
 import UserConfirmation from '../../components/UserConfirm';
 import EmptyCard from '../../components/EmptyCard';
+import PriorityChart from './components/priority-chart';
+import IssueTypeChart from './components/issue-type-chart';
+import IssueTable from './components/issue-table';
 
 let observerLayout;
 
@@ -85,6 +89,11 @@ const ProjectOverview = () => {
     commitChart: <CommitChart />,
     deployChart: <DeployChart />,
     onlineMember: <UserList />,
+    assigneeChart: <AssigneeChart />,
+    priorityChart: <PriorityChart />,
+    issueTypeChart: <IssueTypeChart />,
+    issueTable: <IssueTable />,
+
   }), []);
 
   const renderBg = useCallback(() => <GridBg selector={`.${prefixCls}-container`} cols={10} style={{ padding: '0' }} />, []);

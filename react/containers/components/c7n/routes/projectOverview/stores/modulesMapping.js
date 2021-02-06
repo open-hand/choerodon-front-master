@@ -8,7 +8,8 @@ const modulesMapping = {
     'deployChart',
   ],
   N_AGILE: [
-    'sprintNotDone', 'sprintCount', 'burnDownChart', 'defectTreatment', 'defectChart',
+    'sprintNotDone', 'sprintCount', 'burnDownChart', 'defectTreatment',
+    'defectChart', 'assigneeChart', 'priorityChart', 'issueTypeChart', 'issueTable',
   ],
 };
 

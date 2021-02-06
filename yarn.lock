@@ -2379,10 +2379,10 @@ babel-plugin-try-import@^0.0.2:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/babel-plugin-try-import/-/babel-plugin-try-import-0.0.2.tgz#a6b76fa9bbbabe7a331db0c1f1c6ccb11f37b652"
   integrity sha1-prdvqbu6vnozHbDB8cbMsR83tlI=
 
-babel-preset-c7n-app@^0.0.1:
+babel-preset-c7n@^0.0.1:
   version "0.0.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/babel-preset-c7n-app/-/babel-preset-c7n-app-0.0.1.tgz#36f9bbf6e66ef574708988649c4a6642ddb7e79f"
-  integrity sha512-//fn3uYoCp2JsbnN5efoGr2Pg6qhr6mZnxgV82W44ZrxSZN5IuhoNlIawVGQAYZgLuZH3T+m5KWiQ9h8YJGOTA==
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/babel-preset-c7n/-/babel-preset-c7n-0.0.1.tgz#e0d99c8be8828b5584e642694fe4ab169e7d8a8d"
+  integrity sha1-4Nmci+iCi1WE5kJpT+SrFp59io0=
   dependencies:
     "@babel/core" "7.10.1"
     "@babel/plugin-proposal-class-properties" "7.10.1"
@@ -9331,16 +9331,7 @@ react-dom-factories@^1.0.0:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/react-dom-factories/-/react-dom-factories-1.0.2.tgz#eb7705c4db36fb501b3aa38ff759616aa0ff96e0"
   integrity sha1-63cFxNs2+1AbOqOP91lhaqD/luA=
 
-react-dom@>=16.6.0:
-  version "17.0.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/react-dom/-/react-dom-17.0.1.tgz#1de2560474ec9f0e334285662ede52dbc5426fc6"
-  integrity sha1-HeJWBHTsnw4zQoVmLt5S28VCb8Y=
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    scheduler "^0.20.1"
-
-react-dom@^16.6.0:
+react-dom@16.14.0, react-dom@>=16.6.0, react-dom@^16.6.0:
   version "16.14.0"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
   integrity sha1-etg47Cmnd/s8dcOhkPZhz5Kri4k=
@@ -9575,15 +9566,7 @@ react-slick@~0.25.2:
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
 
-react@>=16.6.0:
-  version "17.0.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/react/-/react-17.0.1.tgz#6e0600416bd57574e3f86d92edba3d9008726127"
-  integrity sha1-bgYAQWvVdXTj+G2S7bo9kAhyYSc=
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-
-react@^16.6.0:
+react@16.14.0, react@>=16.6.0, react@^16.6.0:
   version "16.14.0"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha1-lNd23dCqo32j7aj8W2sYpMmjEU0=
@@ -10204,14 +10187,6 @@ scheduler@^0.19.1:
   version "0.19.1"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/scheduler/-/scheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"
   integrity sha1-Tz4u0sGn1laB9MhU+oxaHMtA8ZY=
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-
-scheduler@^0.20.1:
-  version "0.20.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/scheduler/-/scheduler-0.20.1.tgz#da0b907e24026b01181ecbc75efdc7f27b5a000c"
-  integrity sha1-2guQfiQCawEYHsvHXv3H8ntaAAw=
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
