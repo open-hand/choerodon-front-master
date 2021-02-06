@@ -98,6 +98,12 @@ export default ({
       {
         name: 'code', type: 'string', label: '项目编码', required: true, validator: codeValidator,
       },
+      {
+        name: 'description',
+        type: 'string',
+        label: '项目描述',
+        maxLength: 100,
+      },
       { name: 'enabled', type: 'boolean', label: '项目状态' },
       {
         name: 'categories', label: '项目类型', required: true,
