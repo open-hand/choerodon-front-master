@@ -22,6 +22,10 @@ import ChartDataSet from './ChartDataSet';
 import ChartDatesDataSet from './ChartDatesDataSet';
 import defectTreatmentDataSet from './DefectTreatmentDataSet';
 import DefectCountDataSet from './DefectCountDataSet';
+import AssigneeChartDsDataSet from './AssigneeChartDsDataSet';
+import PriorityChartDsDataSet from './PriorityChartDsDataSet';
+import IssueTypeChartDsDataSet from './IssueTypeChartDataSet';
+import IssueTableDataSet from './IssueTableDataSet';
 
 const Store = createContext();
 
@@ -72,6 +76,18 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
   const defectCountDs = useMemo(() => new DataSet(DefectCountDataSet({ projectId, startedRecord })), [projectId, startedRecord]);
   const charDatesDs = useMemo(() => new DataSet(ChartDatesDataSet({ organizationId, projectId, startedRecord })), [organizationId, projectId, startedRecord]);
   const chartDs = useMemo(() => new DataSet(ChartDataSet({ projectId, startedRecord, charDatesDs })), [charDatesDs, projectId, startedRecord]);
+
+  // 经办人分布 ds
+  const assigneeChartDs = useMemo(() => new DataSet(AssigneeChartDsDataSet({ projectId, startedRecord, organizationId })), [organizationId, projectId, startedRecord]);
+
+  // 优先级分布
+  const priorityChartDs = useMemo(() => new DataSet(PriorityChartDsDataSet({ projectId, startedRecord, organizationId })), [organizationId, projectId, startedRecord]);
+
+  // 迭代问题类型分布ds
+  const issueTypeChartDs = useMemo(() => new DataSet(IssueTypeChartDsDataSet({ projectId, startedRecord, organizationId })), [organizationId, projectId, startedRecord]);
+
+  // 冲刺详情 ds
+  const issueTableDs = useMemo(() => new DataSet(IssueTableDataSet({ projectId, startedRecord, organizationId })), [organizationId, projectId, startedRecord]);
 
   const loadBurnDownData = useCallback(async () => {
     try {
@@ -136,7 +152,27 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
     onlineMember: () => {
       userListDs.query();
     },
-  }), [appServiceDs, commitDs, defectCountDs, defectTreatDs, deployDs, envDs, loadBurnDownData, pipelineDs, sprintCountDataSet, sprintWaterWaveDataSet, startedRecord, userListDs]);
+    assigneeChart: () => {
+      if (startedRecord) {
+        assigneeChartDs.query();
+      }
+    },
+    priorityChart: () => {
+      if (startedRecord) {
+        priorityChartDs.query();
+      }
+    },
+    issueTypeChart: () => {
+      if (startedRecord) {
+        issueTypeChartDs.query();
+      }
+    },
+    issueTable: () => {
+      if (startedRecord) {
+        issueTableDs.query();
+      }
+    },
+  }), [appServiceDs, assigneeChartDs, commitDs, defectCountDs, defectTreatDs, deployDs, envDs, issueTableDs, issueTypeChartDs, loadBurnDownData, pipelineDs, priorityChartDs, sprintCountDataSet, sprintWaterWaveDataSet, startedRecord, userListDs]);
 
   useEffect(() => {
     const existCps = projectOverviewStore.queryComponents.slice();
@@ -169,6 +205,10 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
     charDatesDs,
     defectTreatDs,
     defectCountDs,
+    assigneeChartDs,
+    priorityChartDs,
+    issueTypeChartDs,
+    issueTableDs,
     cpOptsObj,
     MenuStore,
     allCode: getAllCode(),

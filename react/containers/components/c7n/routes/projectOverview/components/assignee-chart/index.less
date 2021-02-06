@@ -1,0 +1,48 @@
+
+.c7n-project-overview-assignee-chart {
+   &-content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    & >div {
+      width: 100%;
+    }
+  }
+
+  &-title {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &-icon {
+    width: .18rem;
+    height: .18rem;
+    color: rgba(128, 134, 139, 1);
+    margin-bottom: .02rem;
+    margin-left: .02rem;
+    z-index: 1;
+  }
+
+  &-issue {
+    // max-width: .6rem;
+    flex-basis: .54rem;
+
+    &-name {
+      font-size: .12rem;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.65);
+      line-height: .17rem;
+    }
+
+    &-number {
+      font-size: .32rem;
+      font-weight: bold;
+      color: rgba(58, 52, 95, 1);
+      line-height: .2rem;
+      margin-top: .09rem;
+      margin-bottom: .05rem;
+    }
+  }
+}

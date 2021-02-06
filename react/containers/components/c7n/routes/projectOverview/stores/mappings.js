@@ -9,6 +9,10 @@ import pipelineChart from '../img/8.png';
 import commitChart from '../img/9.png';
 import deployChart from '../img/10.png';
 import onlineMember from '../img/11.png';
+import assigneeChart from '../img/12.png';
+import priorityChart from '../img/13.png';
+import issueTypeChart from '../img/14.png';
+import issueTable from '../img/15.png';
 
 const componentsObj = {
   // 冲刺未完成统计
@@ -161,6 +165,78 @@ const componentsObj = {
     describe:
       '此模块显示该项目下当前迭代应用流水线每天的触发情况以及总的触发次数。',
     img: pipelineChart,
+  },
+  assigneeChart: {
+    layout: {
+      h: 4,
+      i: 'assigneeChart',
+      minH: 3,
+      minW: 4,
+      w: 5,
+      x: 0,
+      y: 13,
+    },
+    name: 'assigneeChart',
+    type: 'assigneeChart',
+    groupId: 'agile',
+    title: '经办人分布',
+    describe:
+      '此模块以问题的经办人为维度， 统计冲刺下各个经办人所经办的问题数量与所占百分比。',
+    img: assigneeChart,
+  },
+  priorityChart: {
+    layout: {
+      h: 4,
+      i: 'priorityChart',
+      minH: 3,
+      minW: 4,
+      w: 5,
+      x: 7,
+      y: 13,
+    },
+    name: 'priorityChart',
+    type: 'priorityChart',
+    groupId: 'agile',
+    title: '优先级分布',
+    describe:
+      '此模块以问题的优先级（高、中、低）为维度，统计冲刺下问题已完成和总计数的数量。',
+    img: priorityChart,
+  },
+  issueTypeChart: {
+    layout: {
+      h: 5,
+      i: 'issueTypeChart',
+      minH: 3,
+      minW: 4,
+      w: 10,
+      x: 0,
+      y: 17,
+    },
+    name: 'issueTypeChart',
+    type: 'issueTypeChart',
+    groupId: 'agile',
+    title: '迭代问题类型分布',
+    describe:
+      '此模块按照问题类型统计不同状态类别下的问题数量，可快速分析冲刺下问题分布情况。',
+    img: issueTypeChart,
+  },
+  issueTable: {
+    layout: {
+      h: 6,
+      i: 'issueTable',
+      minH: 5,
+      minW: 10,
+      w: 10,
+      x: 0,
+      y: 22,
+    },
+    name: 'issueTable',
+    type: 'issueTable',
+    groupId: 'agile',
+    title: '冲刺详情',
+    describe:
+      '此模块展示当前迭代中未完成的问题项清单和已完成的问题项清单。',
+    img: issueTable,
   },
   // 迭代代码提交次数
   commitChart: {
