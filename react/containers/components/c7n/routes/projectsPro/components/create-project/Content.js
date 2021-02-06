@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
 import { notification } from 'choerodon-ui';
 import {
-  Form, TextField, Select, Tooltip, SelectBox, DatePicker, Spin, Modal, Icon, Button,
+  Form, TextField, Select, Tooltip, SelectBox, DatePicker, Spin, Modal, Icon, Button, TextArea,
 } from 'choerodon-ui/pro';
 import { fileServer, prompt } from '@/utils';
 import map from 'lodash/map';
@@ -308,6 +308,7 @@ const CreateProject = observer(() => {
       <Form record={record} className={`${prefixCls}-form`} labelLayout="float">
         <TextField name="name" />
         <TextField name="code" disabled={isModify} />
+        <TextArea name="description" resize="vertical" />
         {
           isModify && [
             <TextField name="creationDate" disabled />,
