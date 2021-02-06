@@ -7,6 +7,7 @@ import doc from '../img/doc.png';
 import quickLink from '../img/quickLink.png';
 import env from '../img/envLists.png';
 import selfInfo from '../img/selfInfo.svg';
+import selfCode from '../img/selfCode.svg';
 
 const componentsObj = {
   // 星标项目
@@ -190,6 +191,25 @@ const componentsObj = {
     title: '环境（最近使用）',
     describe: '此模块将显示我近7天使用过的环境，以便我能从工作台快速进入对应的环境管理资源。',
     img: env,
+  },
+
+  // 最近代码提交记录
+  selfCode: {
+    layout: {
+      x: 9,
+      y: 12,
+      h: 3,
+      w: 3,
+      minH: 2,
+      minW: 3,
+      i: 'selfCode',
+    },
+    name: 'selfCode',
+    type: 'selfCode',
+    groupId: 'devops',
+    title: '代码提交记录',
+    describe: '用于展示我近7天的代码提交记录',
+    img: selfCode,
   },
 };
 

@@ -4,6 +4,7 @@ const modulesMapping = {
     'todoThings',
     'serviceList',
     'envList',
+    'selfCode',
   ],
   agile: [
     'todoQustions', 'myStar', 'myDefect',

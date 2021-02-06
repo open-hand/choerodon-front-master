@@ -27,6 +27,7 @@ import QuestionBug from './components/question-bug';
 import UserConfirmationTwo from '../../components/UserConfirm';
 
 import './WorkBench.less';
+import SelfCode from './components/SelfCode';
 
 let observerLayout;
 
@@ -41,6 +42,7 @@ const ComponetsObjs = {
   quickLink: <QuickLink />,
   doc: <Doc />,
   envList: <EnvList />,
+  selfCode: <SelfCode />
 };
 
 const WorkBench = () => {
