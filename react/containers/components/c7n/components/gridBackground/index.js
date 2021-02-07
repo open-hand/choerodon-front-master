@@ -18,6 +18,7 @@ const GridBg = ({
   selector,
   style,
   cols: defaultCols = 12,
+  rowHeight,
 }) => {
   const [cols, setCol] = useState(defaultCols);
   const [rows, setRow] = useState(0);
@@ -27,7 +28,12 @@ const GridBg = ({
       const tempArr = new Array(cols * rows).fill(0);
       return (
         map(tempArr, (item, index) => (
-          <div key={index} />
+          <div
+            key={index}
+            style={{
+              height: `${rowHeight}px`,
+            }}
+          />
         ))
       );
     }

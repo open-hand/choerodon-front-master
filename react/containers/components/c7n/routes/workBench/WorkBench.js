@@ -42,7 +42,7 @@ const ComponetsObjs = {
   quickLink: <QuickLink />,
   doc: <Doc />,
   envList: <EnvList />,
-  selfCode: <SelfCode />
+  selfCode: <SelfCode />,
 };
 
 const WorkBench = () => {
@@ -118,7 +118,7 @@ const WorkBench = () => {
     return tempComponent;
   };
 
-  const renderBg = useCallback(() => <GridBg selector={`.${prefixCls}-container`} />, []);
+  const renderBg = useCallback(() => <GridBg rowHeight={(layOutWidth - 11 * 18) / 12} selector={`.${prefixCls}-container`} />, [layOutWidth]);
 
   const generateDOM = () => (
     componentsDs.map((record) => {
@@ -151,7 +151,7 @@ const WorkBench = () => {
       measureBeforeMount: true,
       containerPadding: [0, 0],
       useCSSTransformss: true,
-      rowHeight: 100,
+      rowHeight: (layOutWidth - 11 * 18) / 12,
       shouldComponentUpdate: true,
       width: layOutWidth,
       isDraggable: isEdit,

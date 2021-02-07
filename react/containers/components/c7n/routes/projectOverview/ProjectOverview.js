@@ -96,7 +96,7 @@ const ProjectOverview = () => {
 
   }), []);
 
-  const renderBg = useCallback(() => <GridBg selector={`.${prefixCls}-container`} cols={10} style={{ padding: '0' }} />, []);
+  const renderBg = useCallback(() => <GridBg rowHeight={(layOutWidth - 11 * 18) / 10} selector={`.${prefixCls}-container`} cols={10} style={{ padding: '0' }} />, [layOutWidth]);
 
   function handleEditable() {
     setEdit(true);
@@ -168,12 +168,9 @@ const ProjectOverview = () => {
 
   function handleResetModal() {
     Modal.open({
-      title: '重置工作台',
-      children: '确认重置工作台吗？',
+      title: '重置项目概览页面',
+      children: '确定要重置项目概览页面吗？',
       onOk: handleReset,
-      okProps: {
-        color: 'red',
-      },
       cancelProps: {
         color: 'dark',
       },
@@ -290,7 +287,7 @@ const ProjectOverview = () => {
       measureBeforeMount: true,
       containerPadding: [0, 0],
       useCSSTransformss: true,
-      rowHeight: 100,
+      rowHeight: (layOutWidth - 11 * 18) / 10,
       shouldComponentUpdate: true,
       width: layOutWidth,
       isDraggable: isEdit,
