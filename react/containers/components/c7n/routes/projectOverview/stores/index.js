@@ -26,6 +26,7 @@ import AssigneeChartDsDataSet from './AssigneeChartDsDataSet';
 import PriorityChartDsDataSet from './PriorityChartDsDataSet';
 import IssueTypeChartDsDataSet from './IssueTypeChartDataSet';
 import IssueTableDataSet from './IssueTableDataSet';
+import { localPageCacheStore } from './LocalPageCacheStore';
 
 const Store = createContext();
 
@@ -39,7 +40,7 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
     AppState: { currentMenuType: { organizationId, projectId, categories } },
     MenuStore,
   } = props;
-
+  localPageCacheStore.setProjectId(projectId); // 设置页面缓存项目id
   function getAllCode() {
     let allowedModules = [...modulesMapping.GENERAL];
     forEach(categories, (item) => {
