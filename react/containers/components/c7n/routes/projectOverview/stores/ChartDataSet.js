@@ -2,6 +2,7 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 import Jsonbig from 'json-bigint';
 import { get, map } from 'lodash';
+import { localPageCacheStore } from './LocalPageCacheStore';
 
 const moment = extendMoment(Moment);
 
@@ -22,7 +23,7 @@ export default ({ projectId, startedRecord }) => {
     paging: false,
     transport: {
       read: ({ params, data }) => {
-        const { selectType = 'remainingEstimatedTime', checkedValue = true, datesData = [] } = data || {};
+        const { selectType = (localPageCacheStore.getItem('project.overview.selectType') || 'remainingEstimatedTime'), checkedValue = true, datesData = [] } = data || {};
         return {
           url: `/agile/v1/projects/${projectId}/reports/${get(startedRecord, 'sprintId')}/burn_down_report/coordinate`,
           method: 'post',
