@@ -49,6 +49,7 @@
     "@hzero-front-ui/c7n-ui": "^2.0.7-alpha-c7n.6",
     "@hzero-front-ui/cfg": "2.0.7-alpha-c7n.6",
     "@hzero-front-ui/hzero-ui": "2.0.7-alpha-c7n.6",
+    "@types/lodash": "^4.14.168",
     "axios": "^0.16.2",
     "babel-preset-c7n-app": "^0.0.1",
     "classnames": "^2.2.5",
