@@ -1,10 +1,11 @@
 import { useLocalStore } from 'mobx-react-lite';
 import { axios } from '@/index';
+import { localPageCacheStore } from '../../../stores/LocalPageCacheStore';
 
 export default function useStore(organizationId, projectId, sprintId) {
   return useLocalStore(() => ({
 
-    selectValue: 'remainingEstimatedTime',
+    selectValue: localPageCacheStore.getItem('project.overview.selectType') || 'remainingEstimatedTime',
     setSelectValue(value) {
       this.selectValue = value;
     },

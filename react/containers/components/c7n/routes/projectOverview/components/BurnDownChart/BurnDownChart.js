@@ -11,6 +11,8 @@ import { useBurnDownChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
+import { localPageCacheStore } from '../../stores/LocalPageCacheStore';
+
 import EmptyPage from '../EmptyPage';
 
 const { Option } = Select;
@@ -32,6 +34,7 @@ const BurnDownChart = observer(() => {
 
   function handleSelect(value) {
     setSelectValue(value);
+    localPageCacheStore.setItem('project.overview.selectType', value);
     chartDs.setQueryParameter('selectType', value);
     chartDs.query();
   }
