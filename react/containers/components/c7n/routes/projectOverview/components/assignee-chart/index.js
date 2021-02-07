@@ -52,7 +52,7 @@ const SprintCount = observer(() => {
         {
           color: ['#9665e2', '#f7667f', '#fad352', '#45a3fc', '#56ca77'],
           type: 'pie',
-          radius: '60px',
+          radius: '70%',
           hoverAnimation: false,
           center: ['50%', '50%'],
           data,

@@ -28,7 +28,7 @@ const QuestionNode = observer(({
   history, record, organizationId, switchCode, isStar,
 }) => {
   const {
-    projectVO, typeCode, issueNum, summary, priorityVO: customPriorityVO,
+    projectVO, typeCode, issueTypeVO, issueNum, summary, priorityVO: customPriorityVO,
     backlogPriority, statusVO, assigneeId, featureType, backlogNum, statusVO: { code: statusCode },
     assigneeImageUrl, assigneeRealName, assignees, featureTeams, starBeacon, issueId, id,
     projectId: topProjectId, projectName: topProjectName,
@@ -131,7 +131,11 @@ const QuestionNode = observer(({
         icon = 'agile_task';
         color = '#4d90fe';
     }
-
+    if (issueTypeVO) {
+      mes = issueTypeVO.name || mes;
+      icon = issueTypeVO.icon || icon;
+      color = issueTypeVO.colour || color;
+    }
     return (
       <Tooltip title={mes} placement="top">
         {typeCode === 'backlog' || featureType === 'business' ? (
@@ -261,7 +265,7 @@ const QuestionNode = observer(({
               color: priorityVO ? priorityVO.colour : '#FFFFFF',
             }}
           >
-              {priorityVO ? priorityVO.name : '无'}
+            {priorityVO ? priorityVO.name : '无'}
           </span>
         )}
       </div>

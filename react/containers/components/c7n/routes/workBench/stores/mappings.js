@@ -211,6 +211,23 @@ const componentsObj = {
     describe: '用于展示我近7天的代码提交记录',
     img: selfCode,
   },
+  myReport: {
+    layout: {
+      x: 0,
+      y: 12,
+      h: 4,
+      w: 5,
+      minH: 3,
+      minW: 4,
+      i: 'myReport',
+    },
+    name: 'myReport',
+    type: 'myReport',
+    groupId: 'agile',
+    title: '报告我的',
+    describe: '展示当前迭代我报告的问题。',
+    img: todoThings,
+  },
 };
 
 export default componentsObj;

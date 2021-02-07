@@ -24,6 +24,7 @@ import GridBg from '../../components/gridBackground';
 import QuestionTodo from './components/question-todo';
 import QuestionFocus from './components/question-focus';
 import QuestionBug from './components/question-bug';
+import QuestionReport from './components/question-report';
 import UserConfirmationTwo from '../../components/UserConfirm';
 
 import './WorkBench.less';
@@ -35,6 +36,7 @@ const ComponetsObjs = {
   starTarget: <StarTargetPro />,
   selfInfo: <SelfIntro />,
   todoQustions: <QuestionTodo />,
+  myReport: <QuestionReport />,
   myStar: <QuestionFocus />,
   myDefect: <QuestionBug />,
   todoThings: <TodoThings />,

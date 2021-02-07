@@ -9,7 +9,7 @@ import {
   Table, Button, Spin, DataSet, Tabs,
 } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
-import Echart from 'echarts-for-react';
+import queryString from 'query-string';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
@@ -21,19 +21,21 @@ import './index.less';
 
 const { TabPane } = Tabs;
 const { Column } = Table;
-function IssueTable({ dataSet }) {
+function IssueTable({ dataSet, onClickSummary }) {
   return (
     <Table dataSet={dataSet} queryBar="none">
       <Column
         name="summary"
-        width={200}
-        renderer={({ text: summary }) => (
+        width={300}
+        renderer={({ text: summary, record }) => (
           <Tooltip title={`概要：${summary}`}>
             <div
               role="none"
               style={{
                 maxWidth: '250px', minWidth: '50px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
               }}
+              className="c7n-project-overview-issue-table-content-summary"
+              onClick={() => onClickSummary({ issueId: record.get('issueId'), issueNum: record.get('issueNum') })}
             >
               {summary}
             </div>
@@ -45,7 +47,7 @@ function IssueTable({ dataSet }) {
         width={100}
         renderer={({ text, record }) => (
           <Tooltip mouseEnterDelay={0.5} title={`问题编号：${text}`}>
-            <span>
+            <span style={{ color: 'rgba(0,0,0,.65)' }}>
               {/* <span> */}
               {text}
               {' '}
@@ -97,7 +99,7 @@ function IssueTable({ dataSet }) {
       />
       <Column
         name="status"
-        width={120}
+        // width={120}
         renderer={({ record }) => {
           const statusVO = record.get('statusVO');
           return (
@@ -105,7 +107,7 @@ function IssueTable({ dataSet }) {
               <Tooltip mouseEnterDelay={0.5} title={`任务状态： ${statusVO.name}`}>
                 <div>
                   <StatusTag
-                    style={{ minWidth: 40, width: 50 }}
+                    style={{ minWidth: 40, maxWidth: 110 }}
                     data={statusVO}
                   />
                 </div>
@@ -116,14 +118,14 @@ function IssueTable({ dataSet }) {
       />
       <Column
         name="remainingTime"
-        // width={90}
-        renderer={({ text, value }) => <span style={{ display: 'inline-block', minWidth: 15 }}>{`${isEmpty(value) ? '' : (`${value}`)}`}</span>}
+        // width={130}
+        renderer={({ text, value }) => <span style={{ display: 'inline-block', minWidth: 15, color: 'rgba(0,0,0,.65)' }}>{`${isEmpty(value) ? '' : (`${value}`)}`}</span>}
       />
       <Column
         name="storyPoints"
         // width={70}
         renderer={({ record, text }) => (
-          <div style={{ minWidth: 15 }}>
+          <div style={{ minWidth: 15, color: 'rgba(0,0,0,.65)' }}>
             {record.get('typeCode') === 'story' ? text || '0' : ''}
           </div>
         )}
@@ -138,6 +140,8 @@ const DeployChart = () => {
     startSprintDs,
     startedRecord,
     issueTableDs,
+    history,
+    AppState,
   } = useProjectOverviewStore();
   const [activeKey, setActiveKey] = useState('done');
   const renderTitle = () => (
@@ -145,7 +149,24 @@ const DeployChart = () => {
       <span>冲刺详情</span>
     </div>
   );
-
+  const handleToIssue = ({ issueId, issueNum }) => {
+    const {
+      id: projectId, name, category, organizationId,
+    } = AppState.currentMenuType;
+    const params = {
+      type: 'project',
+      id: String(projectId),
+      name,
+      category,
+      organizationId: String(organizationId),
+      paramIssueId: issueId,
+      paramName: issueNum,
+    };
+    history.push({
+      pathname: '/agile/work-list/issue',
+      search: `?${queryString.stringify(params)}`,
+    });
+  };
   const handleTabChange = (key) => {
     // const { sprintId } = this.state;
     setActiveKey(key);
@@ -165,7 +186,6 @@ const DeployChart = () => {
     //   });
     // }
   };
-  console.log('issueTableDs..', issueTableDs);
   function getContent() {
     if (startSprintDs.status === 'loading') {
       return <LoadingBar display />;
@@ -183,19 +203,13 @@ const DeployChart = () => {
                 {/* <Table dataSet={issueTableDs}>
                   <Column name="summary" />
                 </Table> */}
-                <IssueTable dataSet={issueTableDs} />
+                <IssueTable dataSet={issueTableDs} onClickSummary={handleToIssue} />
                 {/* {this.renderDoneIssues(column)} */}
               </TabPane>
               <TabPane tab="未完成的问题" key="unfinished">
-                <IssueTable dataSet={issueTableDs} />
+                <IssueTable dataSet={issueTableDs} onClickSummary={handleToIssue} />
 
                 {/* {this.renderUndoIssues(column)} */}
-              </TabPane>
-              <TabPane tab="未完成的未预估问题" key="unfinished">
-                <IssueTable dataSet={issueTableDs} />
-
-                {/* {getTable()} */}
-                {/* {this.renderUndoAndNotEstimatedIssues(column)} */}
               </TabPane>
             </Tabs>
           </div>

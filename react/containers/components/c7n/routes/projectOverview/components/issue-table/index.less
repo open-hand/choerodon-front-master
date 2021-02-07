@@ -1,4 +1,6 @@
-.c7n-project-overview-priority-chart {
+@import '~choerodon-ui/lib/style/themes/default';
+
+.c7n-project-overview-issue-table {
 
  &-title {
     display: inline-flex;
@@ -8,89 +10,12 @@
     }
  }
  &-content {
-     &-priority-tag {
-        // margin-left: 8px;
-        background: rgba(77, 144, 254, 0.1);
-        border-radius: 2px;
-        font-size: 13px;
-        font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 400;
-        color: rgba(77, 144, 254, 1);
-        padding: 0 6px;
+   &-summary {
+    cursor: pointer;
+     &:hover {
+      color: @primary-color;
+      text-decoration: underline;
      }
-    .text-overflow-hidden {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .flex-shrink {
-        flex-shrink: 0;
-      }
-
-      .loading-wrap {
-        height: 2.32rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .lists {
-        min-height: 2.3rem;
-        padding-left: 0.04rem;
-        padding-right: 0.04rem;
-        padding-top: 0.02rem;
-        padding-bottom: 0.22rem;
-
-        .title {
-          font-size: 0.13rem;
-          line-height: 0.18rem;
-          color: rgba(0, 0, 0, 0.64);
-        }
-
-        .wrapper {
-          height: 1.85rem;
-          overflow-y: scroll;
-          padding-right: 0.05rem;
-        }
-
-        .list {
-          display: flex;
-          flex-direction: column;
-          margin-top: 0.09rem;
-          margin-bottom: 0.22rem;
-
-          .tip {
-            font-size: 0.13rem;
-            line-height: 0.18rem;
-            color: #000;
-            display: flex;
-            justify-content: flex-end;
-          }
-
-          .body {
-            display: flex;
-
-            .progress {
-              margin-left: 0.19rem;
-              padding-top: 0.04rem;
-              flex: 1;
-              max-width: unset;
-              position: relative;
-
-              .progress-bg {
-                height: 0.12rem;
-              }
-
-              .progress-inner {
-                position: absolute;
-                height: 0.12rem;
-                top: 0.04rem;
-                left: 0;
-              }
-            }
-          }
-        }
-      }
+   }
  }
 }
