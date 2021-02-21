@@ -492,7 +492,12 @@ export default class CommonMenu extends Component {
                   } : {}
                 }
               >
-                {data.name}
+                {(function () {
+                  if (data.name.includes('HZERO')) {
+                    return 'HZERO...';
+                  }
+                  return data.name;
+                }())}
               </p>
             </div>
           ))
