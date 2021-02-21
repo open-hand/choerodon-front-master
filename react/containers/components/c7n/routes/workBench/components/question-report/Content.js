@@ -32,6 +32,7 @@ const TodoQuestion = observer(() => {
     return (
       <QuestionNode
         record={record}
+        isStar
         organizationId={organizationId}
         history={history}
         switchCode="all"
