@@ -66,6 +66,7 @@ const ProjectNotification = observer(({
         setProgress(res.completedCount / res.allTask * 100);
       }
     } catch (e) {
+      handleClearInterval();
       throw new Error(e);
     }
   }, [organizationId, projectId, operateType]);
