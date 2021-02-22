@@ -29,7 +29,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   } = useWorkBenchStore();
 
   const {
-    todoQuestions,
+    reportQuestions,
   } = cacheStore;
 
   const questionStore = useStore();
@@ -39,7 +39,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   })), [organizationId, selectedProjectId]);
 
   useEffect(() => {
-    const mainData = todoQuestions;
+    const mainData = reportQuestions;
     const tempArr = get(mainData, 'content');
     const currentId = get(mainData, 'selectedProjectId');
     if (selectedProjectId !== currentId) {

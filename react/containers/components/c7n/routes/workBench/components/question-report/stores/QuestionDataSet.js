@@ -22,8 +22,8 @@ export default (({
           }
           questionStore.setTotalCount(res.totalElements);
           questionStore.setHasMore(res.totalElements && (res.number + 1) < res.totalPages);
-          const storeArr = get(cacheStore.todoQuestions, 'content');
-          const tempId = get(cacheStore.todoQuestions, 'selectedProjectId');
+          const storeArr = get(cacheStore.reportQuestions, 'content');
+          const tempId = get(cacheStore.reportQuestions, 'selectedProjectId');
           let tempArr;
           if (storeArr) {
             if (tempId !== selectedProjectId) {
@@ -39,7 +39,7 @@ export default (({
             content: tempArr,
             selectedProjectId,
           };
-          cacheStore.setTodoQuestions(tempObj);
+          cacheStore.setReportQuestions(tempObj);
           return tempArr;
         } catch (e) {
           return response;
