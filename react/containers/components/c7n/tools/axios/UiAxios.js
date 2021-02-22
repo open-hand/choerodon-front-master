@@ -44,6 +44,7 @@ instance.interceptors.request.use(
     const id = !type || type === 'site' ? 0 : orgId || 0;
     newConfig.headers['H-Tenant-Id'] = id;
     let correctId = 0;
+    let flag = 0;
     if (MenuStore.activeMenu) {
       let data;
       const { level } = MenuStore.activeMenu;
@@ -52,9 +53,12 @@ instance.interceptors.request.use(
         for (let i = 0; i < source.length; i++) {
           if (source[i].code === MenuStore.activeMenu.code) {
             correctId = source[i].id;
-            return false;
+            flag = 1;
           } if (source[i].subMenus && source[i].subMenus.length > 0) {
             return cursiveSetCorrectId(source[i].subMenus);
+          }
+          if (flag === 1) {
+            break;
           }
         }
       }
