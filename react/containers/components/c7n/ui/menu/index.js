@@ -218,6 +218,9 @@ export default class CommonMenu extends Component {
       case 'project':
         search = `?type=${type}&id=${id}${name && `&name=${encodeURIComponent(name)}`}&category=${category}`;
         break;
+      case 'user':
+        search = `?type=${type}`;
+        break;
       default:
     }
     return `${route}${search}${search === '' ? `?organizationId=${organizationId}` : `&organizationId=${organizationId}`}`;
@@ -492,7 +495,12 @@ export default class CommonMenu extends Component {
                   } : {}
                 }
               >
-                {data.name}
+                {(function () {
+                  if (data.name.includes('HZERO')) {
+                    return 'HZERO...';
+                  }
+                  return data.name;
+                }())}
               </p>
             </div>
           ))

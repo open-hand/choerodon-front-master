@@ -45,5 +45,10 @@ export default function useStore(history) {
       this.bugQuestions = value;
     },
 
+    reportQuestions: {},
+    setReportQuestions(value) {
+      this.reportQuestions = value;
+    },
+
   }));
 }

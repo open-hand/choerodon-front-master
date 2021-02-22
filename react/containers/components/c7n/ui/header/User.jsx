@@ -52,12 +52,13 @@ export default class UserPreferences extends Component {
   };
 
   handleMenuItemClick = ({ key }) => {
-    const { history } = this.props;
+    const { history, AppState } = this.props;
     const { organizationId } = queryString.parse(history.location.search);
     if (key === 'site-setting') {
       this.getGlobalMenuData(organizationId);
     } else {
-      history.push(`${key}?type=${key.includes('user-info') ? 'user' : 'site'}&organizationId=${organizationId}`);
+      AppState.menuType.type = 'user';
+      history.push(`${key}?type=user&organizationId=${organizationId}`);
     }
     this.handleVisibleChange(false);
   };
