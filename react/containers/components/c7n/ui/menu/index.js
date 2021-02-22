@@ -218,6 +218,9 @@ export default class CommonMenu extends Component {
       case 'project':
         search = `?type=${type}&id=${id}${name && `&name=${encodeURIComponent(name)}`}&category=${category}`;
         break;
+      case 'user':
+        search = `?type=${type}`;
+        break;
       default:
     }
     return `${route}${search}${search === '' ? `?organizationId=${organizationId}` : `&organizationId=${organizationId}`}`;
