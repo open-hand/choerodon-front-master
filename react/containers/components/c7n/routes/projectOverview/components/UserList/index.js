@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Pagination, Tooltip } from 'choerodon-ui/pro';
+import { fileServer } from '@/utils';
 import { useProjectOverviewStore } from '../../stores';
 import OverviewWrap from '../OverviewWrap';
 import EmptyPage from '../EmptyPage';
@@ -30,7 +31,7 @@ const UserList = () => {
                     <span
                       className={`${clsPrefix}-item-avatar`}
                       style={{
-                        backgroundImage: imageUrl ? `url(${imageUrl})` : '',
+                        backgroundImage: imageUrl ? `url('${imageUrl}')` : '',
                       }}
                     >
                       {!imageUrl && realName && realName.slice(0, 1)}
