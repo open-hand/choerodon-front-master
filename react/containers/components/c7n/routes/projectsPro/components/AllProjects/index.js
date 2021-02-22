@@ -109,9 +109,7 @@ export default observer(() => {
     let actionData;
     switch (projectStatus) {
       case 'success':
-        if (editFlag) {
-          actionData = [editData];
-        }
+        actionData = [editData];
         break;
       case 'failed':
         actionData = [{
@@ -123,14 +121,14 @@ export default observer(() => {
             text: '删除',
             action: () => handleDelete(data.id),
           });
-        } else if (editFlag) {
+        } else {
           actionData.unshift(editData);
         }
         break;
       default:
         break;
     }
-    return actionData ? (
+    return editFlag && actionData ? (
       <Action
         data={actionData}
         onClick={(e) => e.stopPropagation()}
