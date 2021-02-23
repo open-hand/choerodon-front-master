@@ -80,7 +80,7 @@ const TodoQuestion = observer(() => {
 
   const renderTitle = () => (
     <>
-      <span>报告我的</span>
+      <span>向我报告的</span>
       <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
     </>
   );

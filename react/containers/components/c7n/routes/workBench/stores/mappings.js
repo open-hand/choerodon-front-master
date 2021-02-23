@@ -224,9 +224,9 @@ const componentsObj = {
     name: 'myReport',
     type: 'myReport',
     groupId: 'agile',
-    title: '报告我的',
-    describe: '展示当前迭代我报告的问题。',
-    img: todoThings,
+    title: '向我报告的',
+    describe: '展示当前迭代中报告人是我的问题项。',
+    img: todoQuestions,
   },
 };
 
