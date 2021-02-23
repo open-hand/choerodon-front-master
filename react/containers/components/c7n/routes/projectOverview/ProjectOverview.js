@@ -44,10 +44,8 @@ const ProjectOverview = () => {
     AppState: {
       currentMenuType: {
         category,
-        categories,
       },
     },
-    MenuStore,
     prefixCls,
     projectOverviewStore,
     componentsDs,
@@ -93,7 +91,6 @@ const ProjectOverview = () => {
     priorityChart: <PriorityChart />,
     issueTypeChart: <IssueTypeChart />,
     issueTable: <IssueTable />,
-
   }), []);
 
   const renderBg = useCallback(() => <GridBg rowHeight={(layOutWidth - 11 * 18) / 10} selector={`.${prefixCls}-container`} cols={10} style={{ padding: '0' }} />, [layOutWidth]);
