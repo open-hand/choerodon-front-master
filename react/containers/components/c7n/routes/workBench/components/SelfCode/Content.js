@@ -50,7 +50,7 @@ const SelfCode = () => {
         <footer>
           <UserInfo
             avatar={imgUrl}
-            realName={`${realName}(${ldap ? loginName : email})`}
+            realName={`${realName}`}
             loginName={ldap ? loginName : email}
             showTooltip
           />
