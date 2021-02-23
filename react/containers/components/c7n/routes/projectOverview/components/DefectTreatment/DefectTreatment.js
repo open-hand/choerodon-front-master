@@ -162,7 +162,12 @@ const DefectTreatment = observer(() => {
       paddingTop: '13px',
     }}
     >
-      <OverviewWrap.Header title={renderTitle()} />
+      <OverviewWrap.Header
+        title={renderTitle()}
+        style={{
+          margin: '6px 0 10px 10px',
+        }}
+      />
       {render()}
     </OverviewWrap>
   );

@@ -108,7 +108,13 @@ const SprintCount = observer(() => {
 
   return (
     <OverviewWrap>
-      <OverviewWrap.Header titleMarginBottom={12} title={renderTitle()} />
+      <OverviewWrap.Header
+        titleMarginBottom={12}
+        title={renderTitle()}
+        style={{
+          margin: '0 0 10px 10px',
+        }}
+      />
       {render()}
     </OverviewWrap>
   );

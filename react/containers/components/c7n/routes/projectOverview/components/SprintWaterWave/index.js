@@ -83,7 +83,12 @@ const SprintWaterWave = observer(() => {
 
   return (
     <OverviewWrap>
-      <OverviewWrap.Header title={renderTitle()} />
+      <OverviewWrap.Header
+        title={renderTitle()}
+        style={{
+          margin: '0 0 10px 10px',
+        }}
+      />
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
         {render()}
       </OverviewWrap.Content>

@@ -1,4 +1,6 @@
-import React, { useState, memo, useMemo, useEffect } from 'react';
+import React, {
+  useState, memo, useMemo, useEffect,
+} from 'react';
 import { Button, Spin, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
@@ -152,7 +154,12 @@ const DeployChart = () => {
 
   return (
     <OverviewWrap>
-      <OverviewWrap.Header title={renderTitle()} />
+      <OverviewWrap.Header
+        title={renderTitle()}
+        style={{
+          margin: '0 0 10px 10px',
+        }}
+      />
       {getContent()}
     </OverviewWrap>
 
