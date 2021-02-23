@@ -28,7 +28,7 @@ const OverviewWrap = observer((props) => {
     </div>
   );
 });
-OverviewWrap.Header = function Header({ titleMarginBottom, title, children }) {
+OverviewWrap.Header = function Header({ style, titleMarginBottom, title, children }) {
   const renderTitleRight = () => {
 
   };
@@ -37,6 +37,7 @@ OverviewWrap.Header = function Header({ titleMarginBottom, title, children }) {
       marginBottom: titleMarginBottom || 10,
       display: 'flex',
       justifyContent: 'space-between',
+      ...style,
     }}
     >
       <span className="c7n-project-overview-wrap-title">{title}</span>

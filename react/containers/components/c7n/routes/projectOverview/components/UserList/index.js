@@ -17,7 +17,12 @@ const UserList = () => {
 
   return (
     <OverviewWrap>
-      <OverviewWrap.Header title={`在线成员(${userListDs.length})`} />
+      <OverviewWrap.Header
+        title={`在线成员(${userListDs.length})`}
+        style={{
+          margin: '0 0 10px 10px',
+        }}
+      />
       {userListDs.length ? (
         <>
           <div className={`${clsPrefix}-content`}>

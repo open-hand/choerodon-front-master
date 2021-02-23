@@ -269,7 +269,12 @@ const BurnDownChart = observer(() => {
       paddingTop: '16px',
     }}
     >
-      <OverviewWrap.Header title={renderTitle()} />
+      <OverviewWrap.Header
+        title={renderTitle()}
+        style={{
+          margin: '2px 0 10px 10px',
+        }}
+      />
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
         <Spin spinning={chartDs.status === 'loading' || startSprintDs.status === 'loading'}>
           {render()}
