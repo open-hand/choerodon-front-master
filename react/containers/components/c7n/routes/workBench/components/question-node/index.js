@@ -92,6 +92,7 @@ const QuestionNode = observer(({
     let mes = '';
     let icon = '';
     let color = '';
+    let otherStyle = {};
     const newTypeCode = isBacklogType ? 'backlog' : originTypeCode;
     switch (newTypeCode) {
       case 'story':
@@ -136,6 +137,12 @@ const QuestionNode = observer(({
       icon = issueTypeVO.icon || icon;
       color = issueTypeVO.colour || color;
     }
+    const reverse = ['agile_epic', 'agile_story', 'agile_fault', 'agile_task', 'agile_subtask', 'test-case', 'test-automation', 'agile-feature'].includes(icon);
+    if (!reverse) {
+      otherStyle = { background: color, fontSize: 14.5, borderRadius: '2px' };
+      color = 'white';
+    }
+
     return (
       <Tooltip title={mes} placement="top">
         {typeCode === 'backlog' || featureType === 'business' ? (
@@ -153,7 +160,7 @@ const QuestionNode = observer(({
           <Icon
             className={`${prefixCls}-main-icon`}
             type={icon}
-            style={{ color }}
+            style={{ ...otherStyle, color }}
           />
         )}
 
