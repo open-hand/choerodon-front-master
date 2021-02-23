@@ -81,6 +81,7 @@ const CreateProject = observer(() => {
         refresh();
         return true;
       }
+      setIsLoading(false);
       return false;
     } catch (e) {
       setIsLoading(false);
@@ -90,6 +91,7 @@ const CreateProject = observer(() => {
 
   const handleEdit = () => {
     try {
+      setIsLoading(false);
       const isSubProject = some(record.getPristineValue('categories'), ['code', categoryCodes.programProject]);
       const isProgram = some(categoryDs.selected, (eachRecord) => eachRecord.get('code') === categoryCodes.program);
       const projectName = record.get('name');
