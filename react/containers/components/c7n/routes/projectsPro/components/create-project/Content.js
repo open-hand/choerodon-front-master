@@ -60,7 +60,7 @@ const CreateProject = observer(() => {
       if (isModify && record.getPristineValue('enabled') && record.get('enabled') === false) {
         handleEdit();
       } else {
-        editProject();
+        editProject(true);
       }
       return false;
     } catch (e) {
@@ -69,12 +69,12 @@ const CreateProject = observer(() => {
     }
   });
 
-  const editProject = async () => {
+  const editProject = async (showNotification = false) => {
     try {
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
         const projectId = get(res.list[0], 'id');
-        if (projectId) {
+        if (projectId && showNotification) {
           openNotification({ projectId, operateType: isModify ? 'update' : 'create' });
         }
         modal.close();
@@ -167,7 +167,7 @@ const CreateProject = observer(() => {
         Modal.open({
           title: '停用项目',
           children: <ModalContent />,
-          onOk: editProject,
+          onOk: () => editProject(false),
           okProps,
           okText: '我已经知道后果，停用此项目',
           closable: true,
@@ -177,7 +177,7 @@ const CreateProject = observer(() => {
         Modal.open({
           title: '停用项目',
           children: <ModalContent />,
-          onOk: editProject,
+          onOk: () => editProject(false),
         });
       }
     } catch (e) {
