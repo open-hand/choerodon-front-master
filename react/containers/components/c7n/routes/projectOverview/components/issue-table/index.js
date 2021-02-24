@@ -23,7 +23,7 @@ const { TabPane } = Tabs;
 const { Column } = Table;
 function IssueTable({ dataSet, onClickSummary }) {
   return (
-    <Table dataSet={dataSet} queryBar="none">
+    <Table dataSet={dataSet} queryBar="none" className="c7n-project-overview-issue-table-content-table">
       <Column
         name="summary"
         width={300}

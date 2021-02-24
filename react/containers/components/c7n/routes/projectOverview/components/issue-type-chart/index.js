@@ -91,13 +91,14 @@ const DeployChart = () => {
       },
       xAxis: {
         type: 'category',
-        data: ['故事', '故障', '任务', '子任务'],
+        data: ['故事', '缺陷', '任务', '子任务'],
         axisLabel: {
           margin: 15,
         },
       },
       yAxis: {
         name: '问题计数',
+        minInterval: 1,
         nameTextStyle: {
           color: 'rgba(0,0,0,0.64)',
         },

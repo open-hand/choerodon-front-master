@@ -33,7 +33,7 @@ const DefectChart = observer(() => {
         extraCssText: '0px 2px 8px 0px rgba(0,0,0,0.12);padding:15px 17px',
       },
       legend: {
-        top: '-3px',
+        top: 24,
         zlevel: 5,
         right: '3.2%',
         data: [{
@@ -89,6 +89,7 @@ const DefectChart = observer(() => {
         nameTextStyle: {
           color: '#000',
         },
+        minInterval: 1,
         type: 'value',
         axisLine: {
           show: true,
