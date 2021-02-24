@@ -27,18 +27,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       },
     },
     projectId,
+    categoryCodes,
   } = props;
-
-  const categoryCodes = useMemo(() => ({
-    devops: 'N_DEVOPS',
-    agile: 'N_AGILE',
-    program: 'N_PROGRAM',
-    test: 'N_TEST',
-    require: 'N_REQUIREMENT',
-    operations: 'N_OPERATIONS',
-    programProject: 'N_PROGRAM_PROJECT',
-    waterfall: 'N_WATERFALL',
-  }), []);
 
   const createProjectStore = useStore();
   const categoryDs = useMemo(() => new DataSet(CategoryDataSet({ organizationId, categoryCodes })), [organizationId]);
@@ -127,7 +117,6 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     ...props,
     prefixCls: 'c7ncd-project-create',
     intlPrefix: 'c7ncd.project',
-    categoryCodes,
     organizationId,
     formDs,
     categoryDs,
