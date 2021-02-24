@@ -25,7 +25,8 @@ const DefectTreatment = observer(() => {
         itemWidth: 20,
         itemHeight: 10,
         borderRadius: 20,
-        top: '-4px',
+        top: 24,
+        // bottom: 0,
         right: 8,
       },
       grid: {
@@ -71,6 +72,7 @@ const DefectTreatment = observer(() => {
         nameTextStyle: {
           color: '#000',
         },
+        minInterval: 1,
         nameGap: 23,
         axisTick: { show: false },
         axisLine: {
@@ -145,8 +147,8 @@ const DefectTreatment = observer(() => {
         <OverviewWrap.Content className={`${clsPrefix}-content`}>
           <Spin spinning={defectTreatDs.status === 'loading'}>
             {
-               defectTreatDs.length > 0
-                 ? <Echart style={{ width: '100%', height: '100%' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
+              defectTreatDs.length > 0
+                ? <Echart style={{ width: '100%', height: '100%' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
             }
 
           </Spin>
