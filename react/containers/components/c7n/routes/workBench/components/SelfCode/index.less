@@ -5,6 +5,13 @@
   display: flex;
   flex-direction: column;
 
+  &-scroll-bottom {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.65);
+  }
+
   &-title {
     margin-bottom: 20px;
     margin-left: 5px;
@@ -19,11 +26,10 @@
   }
 
   &-content {
-    overflow: scroll;
     padding-right: 2px;
-
-    &::-webkit-scrollbar {
-      width: 2px;
+    height: calc(100% - 44px);
+    .infinite-scroll-component__outerdiv {
+      width: 100%;
     }
   }
 
@@ -35,7 +41,7 @@
       font-size: 13px;
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
-      color: #3A345F;
+      color: #3a345f;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -71,7 +77,7 @@
       }
     }
 
-    &+& {
+    & + & {
       margin-top: 13px;
     }
 
@@ -79,10 +85,12 @@
       content: "";
       width: 100%;
       height: 1px;
-      background: linear-gradient(to right,
-          rgba(216, 220, 235, 0.4),
-          rgba(216, 220, 235, 1),
-          rgba(216, 220, 235, 0.4));
+      background: linear-gradient(
+        to right,
+        rgba(216, 220, 235, 0.4),
+        rgba(216, 220, 235, 1),
+        rgba(216, 220, 235, 0.4)
+      );
       display: block;
       margin-bottom: 10px;
     }

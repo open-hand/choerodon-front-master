@@ -82,10 +82,6 @@ const ServiceList = observer((props) => {
     </div>
   ));
 
-  if (selectedProjectId && (category === 'AGILE' || category === 'PROGRAM')) {
-    return null;
-  }
-
   return (
     <div className="c7n-serviceList">
       <div className="c7n-serviceList-title">

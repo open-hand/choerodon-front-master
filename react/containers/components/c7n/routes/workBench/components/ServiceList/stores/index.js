@@ -23,33 +23,13 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   } = props;
 
   const {
-    cacheStore,
     selectedProjectId,
     category,
   } = useWorkBenchStore();
 
-  const {
-    cacheAppServiceData,
-  } = cacheStore;
-
   const appServiceDs = useMemo(() => new DataSet(
-    AppServiceDataSet({ selectedProjectId, cacheStore, organizationId }),
-  ), [organizationId, selectedProjectId, cacheStore]);
-
-  useEffect(() => {
-    const mainData = cacheAppServiceData;
-    const tempArr = get(mainData, 'content');
-    const currentId = get(mainData, 'selectedProjectId');
-    if (selectedProjectId !== currentId) {
-      appServiceDs.query();
-      return;
-    }
-    if (tempArr) {
-      appServiceDs.loadData(tempArr);
-    } else {
-      appServiceDs.query();
-    }
-  }, [appServiceDs]);
+    AppServiceDataSet({ selectedProjectId, organizationId }),
+  ), [organizationId, selectedProjectId]);
 
   const value = {
     ...props,
