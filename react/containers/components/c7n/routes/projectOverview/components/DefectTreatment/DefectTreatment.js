@@ -33,7 +33,7 @@ const DefectTreatment = observer(() => {
         left: 30,
         right: 8,
         // top: 37,
-        bottom: defectTreatDs.length > 8 ? 30 : 20,
+        bottom: defectTreatDs.length > 8 ? 40 : 20,
       },
       tooltip: {
         backgroundColor: 'rgba(0,0,0,0.75)',
@@ -112,7 +112,7 @@ const DefectTreatment = observer(() => {
         },
       ],
       dataZoom: [{
-        bottom: 18,
+        bottom: 0,
         show: defectTreatDs.length > 8,
         type: 'slider',
         height: 15,
