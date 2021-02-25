@@ -180,7 +180,7 @@ class MenuStore {
   @action
   setOpenKeys(openKeys) {
     if (openKeys && openKeys.length > 0) {
-      this.openKeys = Array.from(new Set([...this.openKeys, ...openKeys]));
+      this.openKeys = Array.from(new Set([...openKeys]));
     } else {
       this.openKeys = openKeys;
     }

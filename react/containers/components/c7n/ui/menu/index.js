@@ -384,7 +384,7 @@ export default class CommonMenu extends Component {
             mode="inline"
             inlineCollapsed={collapsed}
             selectedKeys={[activeMenu && activeMenu.code]}
-            defaultOpenKeys={openKeys.slice()}
+            openKeys={openKeys.slice()}
             onOpenChange={this.handleOpenChange}
             subMenuCloseDelay={0.1}
             subMenuOpenDelay={0.1}
