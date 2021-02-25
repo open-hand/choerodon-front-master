@@ -14,8 +14,6 @@ const EnvList = observer(() => {
     selectedProjectId,
   } = useWorkBenchStore();
   const [envList, setEnvList] = useState([]);
-  const { id: projectId, category } = selectedProjectId || {};
-
   useEffect(() => {
     const env = localStorage.envRecentItem ? JSON.parse(localStorage.envRecentItem) : [];
     const realEnv = uniqWith(env, (arrVal, othVal) => ((arrVal.id === othVal.id || arrVal.code === othVal.code)
@@ -28,8 +26,8 @@ const EnvList = observer(() => {
   useEffect(() => {
     const env = localStorage.envRecentItem ? JSON.parse(localStorage.envRecentItem) : [];
     let realEnv;
-    if (projectId) {
-      realEnv = env.filter((item) => String(item.projectId) === String(projectId) && String(item.organizationId) === String(organizationId));
+    if (selectedProjectId) {
+      realEnv = env.filter((item) => String(item.projectId) === String(selectedProjectId) && String(item.organizationId) === String(organizationId));
     } else {
       realEnv = env.filter((item) => String(item.organizationId) === String(organizationId));
     }
@@ -45,10 +43,6 @@ const EnvList = observer(() => {
         viewType: 'instance',
       },
     });
-  }
-
-  if (projectId && (category === 'AGILE' || category === 'PROGRAM')) {
-    return null;
   }
 
   return (
