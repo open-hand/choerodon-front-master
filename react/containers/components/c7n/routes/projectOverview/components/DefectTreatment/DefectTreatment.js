@@ -25,14 +25,14 @@ const DefectTreatment = observer(() => {
         itemWidth: 20,
         itemHeight: 10,
         borderRadius: 20,
-        top: 24,
+        top: 0,
         // bottom: 0,
         right: 8,
       },
       grid: {
         left: 30,
         right: 8,
-        // top: 37,
+        top: 37,
         bottom: defectTreatDs.length > 8 ? 40 : 20,
       },
       tooltip: {
