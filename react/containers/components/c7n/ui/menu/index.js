@@ -497,7 +497,11 @@ export default class CommonMenu extends Component {
               >
                 {(function () {
                   if (data.name.includes('HZERO')) {
-                    return 'HZERO...';
+                    return (
+                      <Tooltip title={data.name}>
+                        HZERO...
+                      </Tooltip>
+                    );
                   }
                   return data.name;
                 }())}
