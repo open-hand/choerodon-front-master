@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
 import { notification } from 'choerodon-ui';
 import {
-  Form, TextField, Select, Tooltip, SelectBox, DatePicker, Spin, Modal, Icon, Button, TextArea,
+  Form, TextField, Tooltip, DatePicker, Spin, Icon, Button, TextArea,
 } from 'choerodon-ui/pro';
 import { fileServer, prompt } from '@/utils';
 import map from 'lodash/map';
@@ -17,11 +17,9 @@ import ProjectNotification from './components/project-notification';
 
 import './index.less';
 
-const { Option } = Select;
-
 const CreateProject = observer(() => {
   const {
-    formDs, categoryDs, AppState, intl, prefixCls, modal, refresh, categoryCodes, openSagaDetails,
+    formDs, categoryDs, AppState, intl, prefixCls, modal, refresh, categoryCodes,
     intl: { formatMessage }, intlPrefix,
     AppState: {
       currentMenuType: {
@@ -57,27 +55,12 @@ const CreateProject = observer(() => {
         code: selectedRecord.get('code'),
       }));
       record.set('categories', categories);
-      if (isModify && record.getPristineValue('enabled') && record.get('enabled') === false) {
-        handleEdit();
-      } else {
-        editProject();
-      }
-      return false;
-    } catch (e) {
-      setIsLoading(false);
-      return false;
-    }
-  });
-
-  const editProject = async () => {
-    try {
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
         const projectId = get(res.list[0], 'id');
         if (projectId) {
           openNotification({ projectId, operateType: isModify ? 'update' : 'create' });
         }
-        modal.close();
         refresh();
         return true;
       }
@@ -87,104 +70,7 @@ const CreateProject = observer(() => {
       setIsLoading(false);
       return false;
     }
-  };
-
-  const handleEdit = () => {
-    try {
-      setIsLoading(false);
-      const isSubProject = some(record.getPristineValue('categories'), ['code', categoryCodes.programProject]);
-      const isProgram = some(categoryDs.selected, (eachRecord) => eachRecord.get('code') === categoryCodes.program);
-      const projectName = record.get('name');
-      const okProps = {
-        disabled: true,
-        color: 'red',
-        style: {
-          width: '100%', border: '1px solid rgba(27,31,35,.2)', height: 36, marginTop: -26,
-        },
-      };
-      const ModalContent = ({ modal: newModal }) => {
-        let extraMessage;
-        if (isProgram) {
-          extraMessage = (
-            <>
-              <div className={`${prefixCls}-enable-tips`}>
-                警告：项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
-              </div>
-              <div style={{ marginTop: 10 }}>
-                请输入
-                {' '}
-                <span style={{ fontWeight: 600 }}>{projectName}</span>
-                {' '}
-                来确认停用。
-              </div>
-              <TextField
-                style={{ width: '100%', marginTop: 10 }}
-                autoFocus
-                onInput={(e) => {
-                  newModal.update({
-                    okProps: {
-                      ...okProps,
-                      disabled: e.target.value !== projectName,
-                    },
-                  });
-                }}
-              />
-            </>
-          );
-        } else if (isSubProject) {
-          extraMessage = (
-            <div className={`${prefixCls}-enable-tips`}>
-              警告：子项目停用后，与项目群相关的冲刺将发生变动，进行中的冲刺会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
-            </div>
-          );
-        }
-        const content = (
-          <div style={{ marginTop: -10 }}>
-            {isProgram && (
-              <p style={{
-                marginBottom: 14,
-                background: '#fffbdd',
-                padding: '15px 26px',
-                border: '1px solid rgba(27,31,35,.15)',
-                width: 'calc(100% + 49px)',
-                marginLeft: -25,
-              }}
-              >
-                请仔细阅读下列事项！
-              </p>
-            )}
-            <span>
-              确定要停用项目“
-              {projectName}
-              ”吗？停用后，您和项目下其他成员将无法进入此项目。
-            </span>
-            {extraMessage}
-          </div>
-        );
-        return content;
-      };
-      if (isProgram) {
-        Modal.open({
-          title: '停用项目',
-          children: <ModalContent />,
-          onOk: editProject,
-          okProps,
-          okText: '我已经知道后果，停用此项目',
-          closable: true,
-          footer: (okBtn) => okBtn,
-        });
-      } else {
-        Modal.open({
-          title: '停用项目',
-          children: <ModalContent />,
-          onOk: editProject,
-        });
-      }
-    } catch (e) {
-      return false;
-    }
-    return false;
-  };
+  });
 
   const openNotification = useCallback(({ projectId, operateType }) => {
     const notificationKey = `${organizationId}-${projectId}`;
@@ -341,14 +227,6 @@ const CreateProject = observer(() => {
           </Tooltip>
         ))}
       </div>
-      {isModify && (
-        <Form record={record} className={`${prefixCls}-form`} labelLayout="float">
-          <SelectBox name="enabled">
-            <Option value>启用</Option>
-            <Option value={false}>停用</Option>
-          </SelectBox>
-        </Form>
-      )}
     </>
   );
 });

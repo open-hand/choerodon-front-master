@@ -222,5 +222,16 @@ export default function useStore(AppState, history) {
         throw new Error(error);
       }
     },
+    async handleEnable({ organizationId, projectId, type }) {
+      try {
+        const res = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${projectId}/${type}`);
+        if (res && res.failed) {
+          return false;
+        }
+        return true;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
   }));
 }

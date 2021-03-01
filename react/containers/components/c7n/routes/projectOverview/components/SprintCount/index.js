@@ -95,7 +95,7 @@ const SprintCount = observer(() => {
     if (startedRecord) {
       return (
         <Spin dataSet={sprintCountDataSet}>
-          <OverviewWrap.Content className={`${clsPrefix}-content`}>
+          <OverviewWrap.Content className={`${clsPrefix}-content`} style={{ padding: '0 .14rem' }}>
             {renderStatusProgress()}
           </OverviewWrap.Content>
         </Spin>

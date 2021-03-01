@@ -1,4 +1,4 @@
-import sprintNotDone from '../img/1.png';
+import sprintNotDone from '../img/1.svg';
 import sprintCount from '../img/2.png';
 import burnDownChart from '../img/3.png';
 import defectTreatment from '../img/4.png';

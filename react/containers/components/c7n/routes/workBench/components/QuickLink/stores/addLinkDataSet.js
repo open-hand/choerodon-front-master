@@ -8,6 +8,10 @@ export default (AppState) => ({
     name: 'scope',
     defaultValue: 'project',
   }, {
+    name: 'size',
+    type: 'number',
+    defaultValue: 10,
+  }, {
     name: 'projectId',
     type: 'number',
     label: '项目',
@@ -18,27 +22,34 @@ export default (AppState) => ({
     },
     lookupAxiosConfig: (data) => ({
       method: 'get',
-      url: `/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=10`,
+      url: `/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=${
+        (function () {
+          if (data && data.record && data.record.get) {
+            return data.record.get('size');
+          }
+          return 10;
+        }())
+      }`,
       data: {
         param: [],
         searchParams: {
           name: data.params.name,
         },
-        transformResponse: (res) => {
-          let newRes;
-          try {
-            newRes = JSONbig.parse(res);
-            if (newRes.content.length % 10 === 0 && newRes.content.length !== 0) {
-              newRes.content.push({
-                id: 'more',
-                name: '加载更多',
-              });
-            }
-            return newRes;
-          } catch (e) {
-            return res;
+      },
+      transformResponse(res) {
+        let newRes;
+        try {
+          newRes = JSONbig.parse(res);
+          if (newRes.content.length % 10 === 0 && newRes.content.length !== 0) {
+            newRes.content.push({
+              id: 'more',
+              name: '加载更多',
+            });
           }
-        },
+          return newRes;
+        } catch (e) {
+          return res;
+        }
       },
     }),
   }, {

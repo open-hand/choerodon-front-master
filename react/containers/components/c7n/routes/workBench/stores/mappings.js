@@ -202,6 +202,7 @@ const componentsObj = {
       w: 3,
       minH: 2,
       minW: 3,
+      maxH: 8,
       i: 'selfCode',
     },
     name: 'selfCode',

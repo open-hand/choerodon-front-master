@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="66" viewBox="0 0 120 66">
+  <defs>
+    <linearGradient id="冲刺未完成-a" x1="50%" x2="50%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#88A4FF" stop-opacity=".54"/>
+      <stop offset="100%" stop-color="#6887E8"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <rect width="40" height="7" x="62" y="14.5" fill="#0E1D80" fill-opacity=".06" rx="2"/>
+    <rect width="40" height="7" x="62" y="29.5" fill="#0E1D80" fill-opacity=".06" rx="2"/>
+    <rect width="40" height="7" x="62" y="44.5" fill="#0E1D80" fill-opacity=".06" rx="2"/>
+    <g transform="translate(18 18)">
+      <circle cx="14.25" cy="14.25" r="14.25" stroke="#6887E8"/>
+      <path fill="url(#冲刺未完成-a)" d="M14.2333149,28.025 C21.8410374,28.025 28.0083149,21.8577224 28.0083149,14.25 C26.5990792,15.0165443 24.857286,15.9545744 20.1843808,16.1625692 C17.9780942,16.2607727 15.9554895,16.8875573 12.6222392,16.3875 C8.86883525,15.8244108 7.66208124,15.2187421 5.30770171,15.0472083 C3.45877393,14.9125004 2.26686712,14.903439 0.458314948,14.25 C0.458314948,21.8577224 6.62559252,28.025 14.2333149,28.025 Z"/>
+    </g>
+  </g>
+</svg>

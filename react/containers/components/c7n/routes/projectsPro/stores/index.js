@@ -31,11 +31,23 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   const categoryDs = useMemo(() => new DataSet(CategoryDataSet(AppState, history)), [type, id, organizationId]);
   const dataSet = useMemo(() => new DataSet(ListDataSet(AppState, history, categoryDs)), [type, id, organizationId]);
 
+  const categoryCodes = useMemo(() => ({
+    devops: 'N_DEVOPS',
+    agile: 'N_AGILE',
+    program: 'N_PROGRAM',
+    test: 'N_TEST',
+    require: 'N_REQUIREMENT',
+    operations: 'N_OPERATIONS',
+    programProject: 'N_PROGRAM_PROJECT',
+    waterfall: 'N_WATERFALL',
+  }), []);
+
   const value = {
     ...props,
     intlPrefix: 'c7ncd.project',
     dataSet,
     ProjectsProUseStore,
+    categoryCodes,
   };
 
   return (

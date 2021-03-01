@@ -8,8 +8,6 @@ import { Icon } from 'choerodon-ui';
 import axios from '@/containers/components/c7n/tools/axios';
 import addLinkDataSet from './stores/addLinkDataSet';
 
-let size = 10;
-
 const { Option } = Select;
 
 export default observer(({
@@ -17,27 +15,50 @@ export default observer(({
 }) => {
   const dataSet = useMemo(() => new DataSet(addLinkDataSet(AppState, data)), [data, type]);
 
-  const handleLoadMore = (e) => {
+  const handleLoadMore = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    let size = dataSet.current.get('size');
     size += 10;
-    axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=${size}`).then((res) => {
-      if (res.content.length % 10 === 0) {
-        res.content.push({
-          id: 'more',
-          name: '加载更多',
+    dataSet.current.set('size', size);
+    const res = await axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=${size}`);
+    if (res.content.length % 10 === 0) {
+      res.content.push({
+        id: 'more',
+        name: '加载更多',
+      });
+    }
+    if (data) {
+      if (!res.content.some((n) => n.id === data.projectId)) {
+        res.content.unshift({
+          id: data.projectId,
+          name: data.projectName,
         });
       }
-      if (data) {
-        if (!res.content.some((n) => n.id === data.projectId)) {
-          res.content.unshift({
-            id: data.projectId,
-            name: data.projectName,
-          });
-        }
-      }
-      dataSet.getField('projectId').props.lookup = res.content;
-    });
+    }
+    dataSet.current.getField('projectId').options.loadData(res.content, res.content.length);
+    // axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=${size}`).then((res) => {
+    //   console.log(dataSet);
+    //   debugger;
+    //   if (res.content.length % 10 === 0) {
+    //     res.content.push({
+    //       id: 'more',
+    //       name: '加载更多',
+    //     });
+    //   }
+    //   if (data) {
+    //     if (!res.content.some((n) => n.id === data.projectId)) {
+    //       res.content.unshift({
+    //         id: data.projectId,
+    //         name: data.projectName,
+    //       });
+    //     }
+    //   }
+    //   console.log(dataSet.getField('projectId'));
+    //   debugger;
+    //   dataSet.current.getField('projectId').options.loadData(res.content, res.content.length);
+    //   dataSet.current.set('size', size);
+    // });
   };
 
   const renderer = ({ text }) => (text === '加载更多' ? (

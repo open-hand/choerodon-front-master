@@ -5,7 +5,7 @@ import {
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import Permission from '@/containers/components/c7n/tools/permission';
-import SagaDetails from '../../../../tools/saga-details';
+import some from 'lodash/some';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import EmptyPage from '../empty-page';
@@ -26,10 +26,15 @@ export default observer(() => {
       formatMessage,
     },
     intlPrefix,
+    categoryCodes,
+    AppState: {
+      currentMenuType: {
+        organizationId,
+      },
+    },
   } = useProjectsProStore();
 
   function refresh() {
-    const { currentMenuType: { organizationId } } = AppState;
     ProjectsProUseStore.axiosGetProjects();
     ProjectsProUseStore.checkCreate(organizationId);
   }
@@ -47,40 +52,11 @@ export default observer(() => {
       children: <CreateProject
         refresh={refresh}
         projectId={currentProjectId}
-        openSagaDetails={openSagaDetails}
+        categoryCodes={categoryCodes}
       />,
       okText: currentProjectId ? '保存' : '创建',
       style: {
         width: '3.8rem',
-      },
-    });
-  };
-
-  const openSagaDetails = (id, projectStatus, onOk) => {
-    const tips = (
-      <span>
-        正在
-        {projectStatus === 'creating' ? '创建项目' : '修改项目类型'}
-        ，该过程可能会持续几分钟。待以下事务实例执行成功后，才能进入项目。
-        <br />
-        若事务执行失败，可点击下方失败的任务模块，并在右侧点击重试来重新执行操作。
-        <br />
-        若重试后依然失败，请联系管理员进行处理。
-      </span>
-    );
-    const [modalTitle, newTips] = projectStatus === 'failed'
-      ? [formatMessage({ id: 'global.saga-instance.detail' })]
-      : [formatMessage({ id: `${intlPrefix}.saga.title.${projectStatus}` }), tips];
-    Modal.open({
-      title: modalTitle,
-      key: Modal.key(),
-      children: <SagaDetails sagaInstanceId={id} instance tips={newTips} />,
-      drawer: true,
-      okCancel: false,
-      okText: formatMessage({ id: 'close' }),
-      onOk: () => (onOk ? onOk() : true),
-      style: {
-        width: 'calc(100% - 3.5rem)',
       },
     });
   };
@@ -97,19 +73,135 @@ export default observer(() => {
     }
   }, []);
 
+  const openDisableModal = useCallback((projectData) => {
+    try {
+      const {
+        categories, name: projectName, id: projectId, programName,
+      } = projectData || {};
+      const isProgram = some(categories, ['code', categoryCodes.program]);
+      const okProps = {
+        disabled: true,
+        color: 'red',
+        style: {
+          width: '100%', border: '1px solid rgba(27,31,35,.2)', height: 36, marginTop: -26,
+        },
+      };
+      const ModalContent = ({ modal: newModal }) => {
+        let extraMessage;
+        if (isProgram) {
+          extraMessage = (
+            <>
+              <div>
+                警告：项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
+              </div>
+              <div style={{ marginTop: 10 }}>
+                请输入
+                {' '}
+                <span style={{ fontWeight: 600 }}>{projectName}</span>
+                {' '}
+                来确认停用。
+              </div>
+              <TextField
+                style={{ width: '100%', marginTop: 10 }}
+                autoFocus
+                onInput={(e) => {
+                  newModal.update({
+                    okProps: {
+                      ...okProps,
+                      disabled: e.target.value !== projectName,
+                    },
+                  });
+                }}
+              />
+            </>
+          );
+        } else if (programName) {
+          extraMessage = (
+            <div>
+              警告：子项目停用后，与项目群相关的冲刺将发生变动，进行中的冲刺会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
+            </div>
+          );
+        }
+        const content = (
+          <div style={{ marginTop: -10 }}>
+            {isProgram && (
+              <p style={{
+                marginBottom: 14,
+                background: '#fffbdd',
+                padding: '15px 26px',
+                border: '1px solid rgba(27,31,35,.15)',
+                width: 'calc(100% + 49px)',
+                marginLeft: -25,
+              }}
+              >
+                请仔细阅读下列事项！
+              </p>
+            )}
+            <span>
+              确定要停用项目“
+              {projectName}
+              ”吗？停用后，您和项目下其他成员将无法进入此项目。
+            </span>
+            {extraMessage}
+          </div>
+        );
+        return content;
+      };
+      if (isProgram) {
+        Modal.open({
+          title: '停用项目',
+          children: <ModalContent />,
+          onOk: () => handleEnable(projectId, 'disable'),
+          okProps,
+          okText: '我已经知道后果，停用此项目',
+          closable: true,
+          footer: (okBtn) => okBtn,
+        });
+      } else {
+        Modal.open({
+          title: '停用项目',
+          children: <ModalContent />,
+          onOk: () => handleEnable(projectId, 'disable'),
+        });
+      }
+    } catch (e) {
+      return false;
+    }
+    return false;
+  }, []);
+
+  const handleEnable = useCallback(async (projectId, type) => {
+    if (await ProjectsProUseStore.handleEnable({ organizationId, projectId, type })) {
+      refresh();
+      return true;
+    }
+    return false;
+  }, []);
+
   const checkOperation = useCallback((data) => data && (data.operateType === 'update' || data.projectStatus === 'success'), []);
 
   const getActionData = useCallback((data) => {
-    const { projectStatus } = data;
-    const { editFlag } = data;
+    const {
+      projectStatus, editFlag, enabled, id: currentProjectId,
+    } = data;
     const editData = ({
       text: '修改',
       action: () => handleAddProject(data.id),
     });
+    const disableData = ({
+      text: '停用',
+      action: () => openDisableModal(data),
+    });
     let actionData;
+    if (!enabled) {
+      actionData = [{
+        text: '启用',
+        action: () => handleEnable(currentProjectId, 'enable'),
+      }];
+    }
     switch (projectStatus) {
       case 'success':
-        actionData = [editData];
+        actionData = [editData, disableData];
         break;
       case 'failed':
         actionData = [{
@@ -123,6 +215,7 @@ export default observer(() => {
           });
         } else {
           actionData.unshift(editData);
+          actionData.push(disableData);
         }
         break;
       default:
@@ -259,8 +352,8 @@ export default observer(() => {
   };
 
   const renderTitle = () => {
-    const { organizationId } = queryString.parse(history.location.search);
-    const org = (HeaderStore.getOrgData || []).find((v) => String(v.id) === organizationId) || { name: '' };
+    const { organizationId: searchOrgId } = queryString.parse(history.location.search);
+    const org = (HeaderStore.getOrgData || []).find((v) => String(v.id) === searchOrgId) || { name: '' };
     const { getCanCreate } = ProjectsProUseStore;
     return (
       <>

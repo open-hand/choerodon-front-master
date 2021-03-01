@@ -5,9 +5,9 @@ import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
-import { get } from 'lodash';
 import SelfCodeDataSet from './SelfCodeDataSet';
 import { useWorkBenchStore } from '../../../stores';
+import useStore from './useStore';
 
 const Store = createContext();
 
@@ -23,42 +23,26 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   } = props;
 
   const {
-    cacheStore,
     selectedProjectId,
     category,
   } = useWorkBenchStore();
 
-  const {
-    cacheAppServiceData,
-  } = cacheStore;
+  const mainStore = useStore();
+  const prefixCls = 'c7ncd-selfCode';
 
   const selfCodeDs = useMemo(() => new DataSet(
-    SelfCodeDataSet({ selectedProjectId, cacheStore, organizationId }),
-  ), [organizationId, selectedProjectId, cacheStore]);
-
-  //   useEffect(() => {
-  //     const mainData = cacheAppServiceData;
-  //     const tempArr = get(mainData, 'content');
-  //     const currentId = get(mainData, 'selectedProjectId');
-  //     if (selectedProjectId !== currentId) {
-  //       appServiceDs.query();
-  //       return;
-  //     }
-  //     if (tempArr) {
-  //       appServiceDs.loadData(tempArr);
-  //     } else {
-  //       appServiceDs.query();
-  //     }
-  //   }, [appServiceDs]);
+    SelfCodeDataSet({ selectedProjectId, organizationId, mainStore }),
+  ), [mainStore, organizationId, selectedProjectId]);
 
   const value = {
     ...props,
     selfCodeDs,
-    prefixCls: 'c7ncd-selfCode',
+    prefixCls,
     organizationId,
     history,
     selectedProjectId,
     category,
+    mainStore,
   };
 
   return (

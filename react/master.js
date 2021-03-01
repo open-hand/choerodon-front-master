@@ -14,12 +14,17 @@ import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
 import AppState from './containers/stores/c7n/AppState';
 import HeaderStore from './containers/stores/c7n/HeaderStore';
-import noaccess from './containers/components/c7n/tools/error-pages/403';
 import stores from './containers/stores';
 import Master from './containers/components/c7n/master';
 import './containers/components/style';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 const spinStyle = {
   textAlign: 'center',
   paddingTop: 300,
