@@ -165,6 +165,7 @@ const ProjectOverview = () => {
 
   function handleResetModal() {
     Modal.open({
+      className: 'c7n-reset-modal',
       title: '重置项目概览页面',
       children: '确定要重置项目概览页面吗？',
       onOk: handleReset,
