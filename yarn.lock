@@ -6815,11 +6815,6 @@ js-base64@^2.1.9:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/js-base64/-/js-base64-2.6.4.tgz#f4e686c5de1ea1f867dbcad3d46d969428df98c4"
   integrity sha1-9OaGxd4eofhn28rT1G2WlCjfmMQ=
 
-js-cookie@^2.2.1:
-  version "2.2.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
-  integrity sha1-aeEG3F1YBolFYpAqpbrsN0Tpsrg=
-
 js-sha3@0.8.0:
   version "0.8.0"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/js-sha3/-/js-sha3-0.8.0.tgz#b9b7a5da73afad7dedd0f8c463954cbde6818840"
