@@ -37,10 +37,10 @@ const DefectChart = observer(() => {
         zlevel: 5,
         right: '3.2%',
         data: [{
-          name: '累计新增缺陷',
+          name: '新增缺陷',
           icon: 'line',
         }, {
-          name: '累计修复缺陷',
+          name: '修复缺陷',
           icon: 'line',
         }],
       },
