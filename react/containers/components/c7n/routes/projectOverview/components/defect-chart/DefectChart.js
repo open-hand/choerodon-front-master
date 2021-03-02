@@ -16,7 +16,7 @@ const DefectChart = observer(() => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>缺陷累积趋势图</span>
+      <span>缺陷趋势图</span>
     </div>
   );
 
