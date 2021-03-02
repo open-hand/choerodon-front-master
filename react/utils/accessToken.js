@@ -1,5 +1,7 @@
 import { getCookie, removeCookie, setCookie } from './cookie';
-import { ACCESS_DOMAIN, ACCESS_TOKEN, COOKIE_SERVER, LOCAL, TOKEN_TYPE } from './constants';
+import {
+  ACCESS_DOMAIN, ACCESS_TOKEN, COOKIE_SERVER, LOCAL, TOKEN_TYPE,
+} from './constants';
 
 let cachedToken = null;
 
@@ -22,6 +24,8 @@ export function getCookieToken() {
 export function setAccessToken(token, tokenType, expiresIn) {
   const option = {
     path: '/',
+    sameSite: 'none',
+    secure: true,
   };
   if (expiresIn) {
     // const expires = expiresIn * 1000;
