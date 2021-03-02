@@ -112,7 +112,7 @@ const SprintCount = observer(() => {
         titleMarginBottom={12}
         title={renderTitle()}
         style={{
-          margin: '0 0 10px 10px',
+          margin: '0 0 10px 4px',
         }}
       />
       {render()}

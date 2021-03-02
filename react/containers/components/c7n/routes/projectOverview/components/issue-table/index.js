@@ -222,7 +222,7 @@ const DeployChart = () => {
       <OverviewWrap.Header
         title={renderTitle()}
         style={{
-          margin: '0 0 10px 10px',
+          margin: '0 0 10px 4px',
         }}
       />
       {getContent()}
