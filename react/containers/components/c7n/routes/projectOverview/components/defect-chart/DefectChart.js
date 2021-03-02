@@ -116,7 +116,7 @@ const DefectChart = observer(() => {
       },
       series: [
         {
-          name: '累计新增缺陷',
+          name: '新增缺陷',
           type: 'line',
           lineStyle: {
             color: 'rgba(244, 133, 144, 1)',
@@ -129,7 +129,7 @@ const DefectChart = observer(() => {
           symbol: 'circle',
         },
         {
-          name: '累计修复缺陷',
+          name: '修复缺陷',
           type: 'line',
           lineStyle: {
             // type: 'dotted',
