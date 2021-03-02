@@ -24,8 +24,8 @@ export function getCookieToken() {
 export function setAccessToken(token, tokenType, expiresIn) {
   const option = {
     path: '/',
-    sameSite: 'none',
-    secure: true,
+    // sameSite: 'none',
+    // secure: true,
   };
   if (expiresIn) {
     // const expires = expiresIn * 1000;
