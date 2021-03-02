@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
+import _ from 'lodash';
 import { Icon, Menu, Tooltip } from 'choerodon-ui';
 import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
@@ -36,6 +37,8 @@ const iconMap = {
   'choerodon.code.site.market': 'shichang',
   //  平台层hzero
   'choerodon.code.site.hzero.manager': 'hzero',
+  //  用户层 个人
+  'choerodon.code.person.setting': 'shezhi',
 };
 
 @withRouter
@@ -83,8 +86,8 @@ export default class CommonMenu extends Component {
                 || isUser !== currentIsUser
                 || currentId !== id
               ) {
-                MenuStore.setOpenKeys(collapsed ? [] : [menu, ...parents].map(({ code }) => code));
-                this.savedOpenKeys = [menu, ...parents].map(({ code }) => code);
+                // MenuStore.setOpenKeys(collapsed ? [] : [menu, ...parents].map(({ code }) => code));
+                // this.savedOpenKeys = [menu, ...parents].map(({ code }) => code);
               }
               MenuStore.setActiveMenu(menu.type === 'tab' ? parents[parents.length - 1] : menu);
               MenuStore.setActiveMenuParents(parents);
@@ -267,6 +270,14 @@ export default class CommonMenu extends Component {
   };
 
   handleOpenChange = (openKeys) => {
+    let rest;
+    if (openKeys.length < this.props.MenuStore.openKeys.length) {
+      rest = _.difference(JSON.parse(JSON.stringify(this.props.MenuStore.openKeys)), openKeys);
+      this.props.MenuStore.setClosedKeys(rest);
+    } else {
+      rest = _.difference(openKeys, JSON.parse(JSON.stringify(this.props.MenuStore.openKeys)));
+      this.props.MenuStore.setClosedKeys(rest, true);
+    }
     this.props.MenuStore.setOpenKeys(openKeys);
   };
 
