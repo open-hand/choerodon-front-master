@@ -156,7 +156,6 @@ export default class Index extends React.Component {
   render() {
     const { loading } = this.state;
     if (this.isInOutward(this.props.location.pathname)) {
-      debugger;
       return (
         <QueryClientProvider client={queryClient}>
           <UILocaleProviderAsync>
@@ -182,7 +181,6 @@ export default class Index extends React.Component {
         </div>
       );
     }
-    debugger;
     return (
       <QueryClientProvider client={queryClient}>
         <UILocaleProviderAsync>

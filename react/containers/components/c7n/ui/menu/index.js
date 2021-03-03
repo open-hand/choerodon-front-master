@@ -110,7 +110,6 @@ export default class CommonMenu extends Component {
           document.getElementsByTagName('title')[0].innerText = AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle;
         }
       });
-      AppState.setCanShowRoute(true);
     }
   }
 
