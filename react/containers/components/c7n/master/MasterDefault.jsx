@@ -242,7 +242,7 @@ class Masters extends Component {
   }
 
   render() {
-    const { AutoRouter, AppState, location } = this.props;
+    const { AutoRouter, AppState, location, MenuStore } = this.props;
     const search = new URLSearchParams(location.search);
     const fullPage = search.get('fullPage');
     if (this.isInOutward(this.props.location.pathname)) {
@@ -265,7 +265,11 @@ class Masters extends Component {
                 <CommonMenu />
               </div>
               <div id="autoRouter" className="content">
-                <RouteIndex AutoRouter={AutoRouter} />
+                {
+                  MenuStore.activeMenu && (
+                    <RouteIndex AutoRouter={AutoRouter} />
+                  )
+                }
               </div>
             </div>
           </div>
