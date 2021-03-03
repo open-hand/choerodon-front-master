@@ -11,12 +11,16 @@ import Skeleton from './containers/components/c7n/master/skeleton/index.js';
 // eslint-disable-next-line no-undef
 const routes = __ROUTES__;
 const AutoRouter = () => (
-  <Suspense fallback={<Skeleton />}>
-    <CacheSwitch>
-      {routes.map(([path, component]) => <Route path={path} component={React.lazy(component)} />)}
-      <CacheRoute path="*" component={nomatch} />
-    </CacheSwitch>
-  </Suspense>
+  <CacheSwitch>
+    {routes.map(([path, component]) => <Route path={path} component={React.lazy(component)} />)}
+    <CacheRoute path="*" component={nomatch} />
+  </CacheSwitch>
+  // <Suspense fallback={<Skeleton />}>
+  //   <CacheSwitch>
+  //     {routes.map(([path, component]) => <Route path={path} component={React.lazy(component)} />)}
+  //     <CacheRoute path="*" component={nomatch} />
+  //   </CacheSwitch>
+  // </Suspense>
 );
 
 export default AutoRouter;

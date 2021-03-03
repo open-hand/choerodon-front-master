@@ -1,4 +1,4 @@
-import React, { Component, useContext } from 'react';
+import React, { Component, useContext, Suspense } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
@@ -14,6 +14,7 @@ import AnnouncementBanner from '../ui/header/AnnouncementBanner';
 import RouteIndex from './RouteIndex';
 import themeColorClient from './themeColorClient';
 import './style';
+import Skeleton from './skeleton';
 
 const spinStyle = {
   textAlign: 'center',
@@ -254,26 +255,24 @@ class Masters extends Component {
     }
     return (
       AppState.isAuth && AppState.currentMenuType ? (
-        <div className="page-wrapper">
-          <div className="page-header" style={fullPage ? { display: 'none' } : {}}>
-            <AnnouncementBanner />
-            <MasterHeader />
-          </div>
-          <div className="page-body">
-            <div className="content-wrapper">
-              <div id="menu" style={fullPage ? { display: 'none' } : {}}>
-                <CommonMenu />
-              </div>
-              <div id="autoRouter" className="content">
-                {
-                  MenuStore.activeMenu && (
-                    <RouteIndex AutoRouter={AutoRouter} />
-                  )
-                }
+        <Suspense fallback={<Skeleton />}>
+          <div className="page-wrapper">
+            <div className="page-header" style={fullPage ? { display: 'none' } : {}}>
+              <AnnouncementBanner />
+              <MasterHeader />
+            </div>
+            <div className="page-body">
+              <div className="content-wrapper">
+                <div id="menu" style={fullPage ? { display: 'none' } : {}}>
+                  <CommonMenu />
+                </div>
+                <div id="autoRouter" className="content">
+                  <RouteIndex AutoRouter={AutoRouter} />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </Suspense>
       ) : (
         <div style={spinStyle}>
           <Spin />
