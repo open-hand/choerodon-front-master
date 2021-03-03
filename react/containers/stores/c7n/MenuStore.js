@@ -1,9 +1,11 @@
+/* eslint-disable */
 /**
  * Created by jaywoods on 2017/6/24.
  */
 import {
   action, computed, get, observable, set,
 } from 'mobx';
+import _ from 'lodash';
 import groupBy from 'lodash/groupBy';
 import concat from 'lodash/concat';
 import orderBy from 'lodash/orderBy';
@@ -105,6 +107,22 @@ class MenuStore {
 
   @observable notFoundSign = false;
 
+  @observable closedKeys = [];
+
+  @computed
+  get getClosedKeys() {
+    return this.closedKeys;
+  }
+
+  @action
+  setClosedKeys(data, isDelete = false) {
+    if (!isDelete) {
+      this.closedKeys = Array.from(new Set([...this.closedKeys, ...data]));
+    } else {
+      this.closedKeys = _.difference(this.closedKeys, data);
+    }
+  }
+
   statistics = {};
 
   counter = 0;
@@ -180,7 +198,7 @@ class MenuStore {
   @action
   setOpenKeys(openKeys) {
     if (openKeys && openKeys.length > 0) {
-      this.openKeys = Array.from(new Set([...openKeys]));
+      this.openKeys = _.difference(Array.from(new Set([...openKeys])), this.closedKeys);
     } else {
       this.openKeys = openKeys;
     }

@@ -16,7 +16,7 @@ const DefectChart = observer(() => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>缺陷累积趋势图</span>
+      <span>缺陷趋势图</span>
     </div>
   );
 
@@ -37,10 +37,10 @@ const DefectChart = observer(() => {
         zlevel: 5,
         right: '3.2%',
         data: [{
-          name: '累计新增缺陷',
+          name: '新增缺陷',
           icon: 'line',
         }, {
-          name: '累计修复缺陷',
+          name: '修复缺陷',
           icon: 'line',
         }],
       },
@@ -116,7 +116,7 @@ const DefectChart = observer(() => {
       },
       series: [
         {
-          name: '累计新增缺陷',
+          name: '新增缺陷',
           type: 'line',
           lineStyle: {
             color: 'rgba(244, 133, 144, 1)',
@@ -129,7 +129,7 @@ const DefectChart = observer(() => {
           symbol: 'circle',
         },
         {
-          name: '累计修复缺陷',
+          name: '修复缺陷',
           type: 'line',
           lineStyle: {
             // type: 'dotted',
@@ -165,7 +165,7 @@ const DefectChart = observer(() => {
       <OverviewWrap.Header
         title={renderTitle()}
         style={{
-          margin: '0 0 10px 10px',
+          margin: '0 0 10px 4px',
         }}
       />
       {render()}

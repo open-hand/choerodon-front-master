@@ -1,5 +1,7 @@
 import { getCookie, removeCookie, setCookie } from './cookie';
-import { ACCESS_DOMAIN, ACCESS_TOKEN, COOKIE_SERVER, LOCAL, TOKEN_TYPE } from './constants';
+import {
+  ACCESS_DOMAIN, ACCESS_TOKEN, COOKIE_SERVER, LOCAL, TOKEN_TYPE,
+} from './constants';
 
 let cachedToken = null;
 
@@ -20,9 +22,15 @@ export function getCookieToken() {
  * 前端存储cookie token
  */
 export function setAccessToken(token, tokenType, expiresIn) {
+  const isHttps = window.location.protocol === 'https';
   const option = {
     path: '/',
+
   };
+  if (isHttps) {
+    option.sameSite = 'None';
+    option.secure = true;
+  }
   if (expiresIn) {
     // const expires = expiresIn * 1000;
     const expires = 30 * 24 * 60 * 60 * 1000;

@@ -89,7 +89,7 @@ const componentsObj = {
     describe: '此模块显示当前迭代团队成员提出和解决缺陷的数量。',
     img: defectTreatment,
   },
-  // 缺陷累计趋势图
+  // 缺陷趋势图
   defectChart: {
     layout: {
       h: 4,
@@ -103,7 +103,7 @@ const componentsObj = {
     name: 'defectChart',
     type: 'defectChart',
     groupId: 'agile',
-    title: '缺陷累计趋势图',
+    title: '缺陷趋势图',
     describe:
       '此模块显示当前迭代时间范围内，每天缺陷提出和解决的变化趋势。',
     img: defectChart,
