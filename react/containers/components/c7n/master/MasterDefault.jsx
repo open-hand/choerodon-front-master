@@ -1,4 +1,4 @@
-import React, { Component, useContext } from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
@@ -14,6 +14,8 @@ import AnnouncementBanner from '../ui/header/AnnouncementBanner';
 import RouteIndex from './RouteIndex';
 import themeColorClient from './themeColorClient';
 import './style';
+import Skeleton from './skeleton';
+import { defaultBlackList } from "../ui/menu";
 
 const spinStyle = {
   textAlign: 'center',
@@ -242,7 +244,7 @@ class Masters extends Component {
   }
 
   render() {
-    const { AutoRouter, AppState, location } = this.props;
+    const { AutoRouter, AppState, location, MenuStore } = this.props;
     const search = new URLSearchParams(location.search);
     const fullPage = search.get('fullPage');
     if (this.isInOutward(this.props.location.pathname)) {
@@ -265,7 +267,15 @@ class Masters extends Component {
                 <CommonMenu />
               </div>
               <div id="autoRouter" className="content">
-                <RouteIndex AutoRouter={AutoRouter} />
+                {
+                  AppState.getCanShowRoute || defaultBlackList.some(v => this.props.location.pathname.startsWith(v)) ? (
+                    <RouteIndex AutoRouter={AutoRouter} />
+                  ) : (
+                    <div>
+                      <Skeleton />
+                    </div>
+                  )
+                }
               </div>
             </div>
           </div>

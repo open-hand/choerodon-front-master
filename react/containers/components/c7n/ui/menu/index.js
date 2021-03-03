@@ -38,6 +38,10 @@ const iconMap = {
   'choerodon.code.site.hzero.manager': 'hzero',
 };
 
+const defaultBlackList = ['/projects', '/applications', '/iam/app-market', '/knowledge/organization', '/workbench', '/market/app-market', '/iam/enterprise'];
+
+export { defaultBlackList };
+
 @withRouter
 @inject('AppState', 'MenuStore')
 @observer
@@ -397,7 +401,6 @@ export default class CommonMenu extends Component {
   }
 
   shouldHiddenMenu = (pathname) => {
-    const defaultBlackList = ['/projects', '/applications', '/iam/app-market', '/knowledge/organization', '/workbench', '/market/app-market', '/iam/enterprise'];
     if (pathname.startsWith('/buzz/cooperate') && !pathname.startsWith('/buzz/cooperate-pro')) return true;
     if (defaultBlackList.some((pname) => pathname.startsWith(pname))) {
       return true;

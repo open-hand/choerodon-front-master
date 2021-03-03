@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { observer, Provider } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
 import { Modal } from 'choerodon-ui/pro';
+import _ from 'lodash';
 import {
   authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
 } from '@/utils';
@@ -17,6 +18,7 @@ import HeaderStore from './containers/stores/c7n/HeaderStore';
 import stores from './containers/stores';
 import Master from './containers/components/c7n/master';
 import './containers/components/style';
+import { defaultBlackList } from "@/containers/components/c7n/ui/menu";
 
 const queryClient = new QueryClient({
   defaultOptions: {
