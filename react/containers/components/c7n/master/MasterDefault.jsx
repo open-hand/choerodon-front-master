@@ -267,7 +267,11 @@ class Masters extends Component {
                   <CommonMenu />
                 </div>
                 <div id="autoRouter" className="content">
-                  <RouteIndex AutoRouter={AutoRouter} />
+                  {
+                    MenuStore.activeMenu && (
+                      <RouteIndex AutoRouter={AutoRouter} />
+                    )
+                  }
                 </div>
               </div>
             </div>
