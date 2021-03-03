@@ -262,6 +262,7 @@ class MenuStore {
         resolve(setTimeout(() => this.loadMenuData(menuType, isUser), 500));
       });
     }
+    AppState.setCanShowRoute(false);
     isLoadMenu = 1;
     return new Promise((resolve) => {
       mainFunc.call(this, resolve);
@@ -290,9 +291,11 @@ class MenuStore {
         }
         if (!AppState.currentMenuType.hasChangeCategorys) {
           isLoadMenu = 0;
+          AppState.setCanShowRoute(true);
           return resolve(menu);
         }
         delete AppState.menuType.hasChangeCategorys;
+        AppState.setCanShowRoute(true);
       }
       async function getMenu(that) {
         let url = '/iam/choerodon/v1/menu';
@@ -334,8 +337,10 @@ class MenuStore {
       if (!flag) {
         const data = await getMenu(this);
         AppState.loadUserInfo();
+        AppState.setCanShowRoute(true);
         return resolve(data);
       }
+      AppState.setCanShowRoute(true);
       // const item = roles.find(r => (type === 'site' ? r.level === type : r.level === 'organization'));
       // if (item) {
       //   isLoadMenu = 0;

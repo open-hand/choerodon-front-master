@@ -55,7 +55,7 @@ instance.interceptors.request.use(
             correctId = source[i].id;
             flag = 1;
           } if (source[i].subMenus && source[i].subMenus.length > 0) {
-            return cursiveSetCorrectId(source[i].subMenus);
+            cursiveSetCorrectId(source[i].subMenus);
           }
           if (flag === 1) {
             break;
