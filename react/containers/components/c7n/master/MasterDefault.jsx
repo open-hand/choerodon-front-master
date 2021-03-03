@@ -1,4 +1,4 @@
-import React, { Component, useContext, Suspense } from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
@@ -15,6 +15,7 @@ import RouteIndex from './RouteIndex';
 import themeColorClient from './themeColorClient';
 import './style';
 import Skeleton from './skeleton';
+import { defaultBlackList } from "../ui/menu";
 
 const spinStyle = {
   textAlign: 'center',
@@ -255,28 +256,30 @@ class Masters extends Component {
     }
     return (
       AppState.isAuth && AppState.currentMenuType ? (
-        <Suspense fallback={<Skeleton />}>
-          <div className="page-wrapper">
-            <div className="page-header" style={fullPage ? { display: 'none' } : {}}>
-              <AnnouncementBanner />
-              <MasterHeader />
-            </div>
-            <div className="page-body">
-              <div className="content-wrapper">
-                <div id="menu" style={fullPage ? { display: 'none' } : {}}>
-                  <CommonMenu />
-                </div>
-                <div id="autoRouter" className="content">
-                  {
-                    MenuStore.activeMenu && (
-                      <RouteIndex AutoRouter={AutoRouter} />
-                    )
-                  }
-                </div>
+        <div className="page-wrapper">
+          <div className="page-header" style={fullPage ? { display: 'none' } : {}}>
+            <AnnouncementBanner />
+            <MasterHeader />
+          </div>
+          <div className="page-body">
+            <div className="content-wrapper">
+              <div id="menu" style={fullPage ? { display: 'none' } : {}}>
+                <CommonMenu />
+              </div>
+              <div id="autoRouter" className="content">
+                {
+                  AppState.getCanShowRoute || defaultBlackList.some(v => this.props.location.pathname.startsWith(v)) ? (
+                    <RouteIndex AutoRouter={AutoRouter} />
+                  ) : (
+                    <div>
+                      <Skeleton />
+                    </div>
+                  )
+                }
               </div>
             </div>
           </div>
-        </Suspense>
+        </div>
       ) : (
         <div style={spinStyle}>
           <Spin />
