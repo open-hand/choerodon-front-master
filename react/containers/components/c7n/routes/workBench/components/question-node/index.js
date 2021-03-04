@@ -31,7 +31,7 @@ const QuestionNode = observer(({
     projectVO, typeCode, issueTypeVO, issueNum, summary, priorityVO: customPriorityVO,
     backlogPriority, statusVO, assigneeId, featureType, backlogNum, statusVO: { code: statusCode },
     assigneeImageUrl, assigneeRealName, assignees, featureTeams, starBeacon, issueId, id,
-    projectId: topProjectId, projectName: topProjectName,
+    projectId: topProjectId, projectName: topProjectName, ...otherData
   } = record.toData() || {};
   const prefixCls = 'c7ncd-question-issue';
 
@@ -77,6 +77,17 @@ const QuestionNode = observer(({
           search: `?${queryString.stringify(queryData)}`,
         });
       }
+      return;
+    }
+    if (typeCode === 'test-execution') {
+      const {
+        planId, executeId, cycleId, assignedTo,
+      } = otherData;
+      merge(queryData, { cycle_id: cycleId, plan_id: planId, assignerId: assignedTo });
+      history.push({
+        pathname: `/testManager/TestPlan/execute/${executeId}`,
+        search: `?${queryString.stringify(queryData)}`,
+      });
       return;
     }
     history.push({
@@ -138,7 +149,7 @@ const QuestionNode = observer(({
       color = issueTypeVO.colour || color;
     }
     const reverse = ['agile_epic', 'agile_story', 'agile_fault', 'agile_task', 'agile_subtask', 'test-case', 'test-automation', 'agile-feature'].includes(icon);
-    if (!reverse) {
+    if (!reverse && newTypeCode !== 'test-execution') {
       otherStyle = { background: color, fontSize: 14.5, borderRadius: '2px' };
       color = 'white';
     }
@@ -169,13 +180,16 @@ const QuestionNode = observer(({
   }
 
   function getStatus() {
-    const { type, name } = statusVO || {};
+    const { type, name, colour } = statusVO || {};
     return (
-      <span
-        className={`${prefixCls}-main-status ${prefixCls}-main-status-${type}`}
-      >
-        {name}
-      </span>
+      <Tooltip title={name} placement="top">
+        <span
+          className={`${prefixCls}-main-status ${prefixCls}-main-status-${type}`}
+          style={{ backgroundColor: colour }}
+        >
+          {name}
+        </span>
+      </Tooltip>
     );
   }
   function getUser(userInfo = {}, hiddenName = false, tooltipText, tooltipTheme = 'dark') {

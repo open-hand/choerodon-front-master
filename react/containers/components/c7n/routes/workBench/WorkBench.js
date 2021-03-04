@@ -26,7 +26,7 @@ import QuestionFocus from './components/question-focus';
 import QuestionBug from './components/question-bug';
 import QuestionReport from './components/question-report';
 import UserConfirmationTwo from '../../components/UserConfirm';
-
+import ExecutionQuestions from './components/question-execution';
 import './WorkBench.less';
 import SelfCode from './components/SelfCode';
 
@@ -45,6 +45,7 @@ const ComponetsObjs = {
   doc: <Doc />,
   envList: <EnvList />,
   selfCode: <SelfCode />,
+  myExecution: <ExecutionQuestions />,
 };
 
 const WorkBench = () => {
