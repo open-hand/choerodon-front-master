@@ -7,7 +7,7 @@ const modulesMapping = {
     'selfCode',
   ],
   agile: [
-    'todoQustions', 'myStar', 'myDefect', 'myReport',
+    'todoQustions', 'myStar', 'myDefect', 'myReport', 'myExecution',
   ],
 };
 

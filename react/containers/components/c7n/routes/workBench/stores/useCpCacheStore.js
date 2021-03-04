@@ -49,6 +49,10 @@ export default function useStore(history) {
     setReportQuestions(value) {
       this.reportQuestions = value;
     },
+    myExecutionQuestions: {},
+    setMyExecutionQuestions(value) {
+      this.myExecutionQuestions = value;
+    },
 
   }));
 }
