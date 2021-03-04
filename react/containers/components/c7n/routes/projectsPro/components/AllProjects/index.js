@@ -240,71 +240,72 @@ export default observer(() => {
       );
     }
     return projects.length > 0 ? projects.map((p) => (
-      <div
-        key={p.id}
-        onClick={() => {
-          if (p.enabled && checkOperation(p)) {
-            handleClickProject(p);
-          }
-        }}
-        className="allProjects-content-item"
-        style={{
-          cursor: p.enabled ? 'pointer' : 'not-allowed',
-        }}
-        role="none"
-      >
+      <Tooltip title={p.description} placement="right">
         <div
-          className="allProjects-content-item-icon"
-          style={{
-            backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : p.background,
+          key={p.id}
+          onClick={() => {
+            if (p.enabled && checkOperation(p)) {
+              handleClickProject(p);
+            }
           }}
+          className="allProjects-content-item"
+          style={{
+            cursor: p.enabled ? 'pointer' : 'not-allowed',
+          }}
+          role="none"
         >
-          <span>
-            {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
-          </span>
-        </div>
-
-        <div className="allProjects-content-item-right">
-          <div className="allProjects-content-item-right-top">
-            <div className="allProjects-content-item-right-top-left">
-              <span className="allProjects-content-item-right-top-left-code">{p.code && p.code.toUpperCase()}</span>
-              <span className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${!p.projectStatus || p.projectStatus === 'success' ? p.enabled : p.projectStatus}`}>
-                {/* eslint-disable-next-line no-nested-ternary */}
-                {!p.projectStatus || p.projectStatus === 'success' ? (p.enabled ? '启用' : '停用') : (
-                  formatMessage({ id: `${intlPrefix}.${p.projectStatus}${p.projectStatus === 'failed' ? `.${p.operateType}` : ''}` })
-                )}
-              </span>
-            </div>
-            {getActionData(p)}
-            {checkOperation(p) ? (
-              <Icon
-                type={p.starFlag ? 'stars' : 'star_border'}
-                style={{
-                  color: p.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
-                  fontSize: '20px',
-                }}
-                onClick={(e) => {
-                  if (p.enabled) {
-                    e.stopPropagation();
-                    ProjectsProUseStore.handleStarProject(p).then(() => {
-                      ProjectsProUseStore.handleChangeStarProjects(p);
-                    });
-                  }
-                }}
-              />
-            ) : null}
+          <div
+            className="allProjects-content-item-icon"
+            style={{
+              backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : p.background,
+            }}
+          >
+            <span>
+              {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
+            </span>
           </div>
-          <div className="allProjects-content-item-right-down">
-            <div className="allProjects-content-item-right-down-pro">
-              <p>
-                <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
-              </p>
+
+          <div className="allProjects-content-item-right">
+            <div className="allProjects-content-item-right-top">
+              <div className="allProjects-content-item-right-top-left">
+                <span className="allProjects-content-item-right-top-left-code">{p.code && p.code.toUpperCase()}</span>
+                <span className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${!p.projectStatus || p.projectStatus === 'success' ? p.enabled : p.projectStatus}`}>
+                  {/* eslint-disable-next-line no-nested-ternary */}
+                  {!p.projectStatus || p.projectStatus === 'success' ? (p.enabled ? '启用' : '停用') : (
+                    formatMessage({ id: `${intlPrefix}.${p.projectStatus}${p.projectStatus === 'failed' ? `.${p.operateType}` : ''}` })
+                  )}
+                </span>
+              </div>
+              {getActionData(p)}
+              {checkOperation(p) ? (
+                <Icon
+                  type={p.starFlag ? 'stars' : 'star_border'}
+                  style={{
+                    color: p.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
+                    fontSize: '20px',
+                  }}
+                  onClick={(e) => {
+                    if (p.enabled) {
+                      e.stopPropagation();
+                      ProjectsProUseStore.handleStarProject(p).then(() => {
+                        ProjectsProUseStore.handleChangeStarProjects(p);
+                      });
+                    }
+                  }}
+                />
+              ) : null}
             </div>
-            <ProjectCategory
-              data={p.categories}
-              className="allProjects-content-item-right-down-text1"
-            />
-            {
+            <div className="allProjects-content-item-right-down">
+              <div className="allProjects-content-item-right-down-pro">
+                <p>
+                  <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
+                </p>
+              </div>
+              <ProjectCategory
+                data={p.categories}
+                className="allProjects-content-item-right-down-text1"
+              />
+              {
               p.programName
               && (
                 <Tooltip title={p.programName}>
@@ -319,26 +320,27 @@ export default observer(() => {
                 </Tooltip>
               )
             }
-            <p className="allProjects-content-item-right-down-time">
-              <Tooltip title={p.createUserName} placement="top">
-                <span
-                  className="allProjects-content-item-right-down-avatar"
-                  style={{
-                    backgroundImage: p.createUserImageUrl ? `url(${p.createUserImageUrl})` : 'unset',
-                  }}
-                >
-                  {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
-                </span>
-              </Tooltip>
-              <p>
-                {p.creationDate.split(' ')[0]}
-                {' '}
-                创建
+              <p className="allProjects-content-item-right-down-time">
+                <Tooltip title={p.createUserName} placement="top">
+                  <span
+                    className="allProjects-content-item-right-down-avatar"
+                    style={{
+                      backgroundImage: p.createUserImageUrl ? `url(${p.createUserImageUrl})` : 'unset',
+                    }}
+                  >
+                    {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
+                  </span>
+                </Tooltip>
+                <p>
+                  {p.creationDate.split(' ')[0]}
+                  {' '}
+                  创建
+                </p>
               </p>
-            </p>
+            </div>
           </div>
         </div>
-      </div>
+      </Tooltip>
     )) : <EmptyPage title="暂无项目" describe="该组织下暂无项目" />;
   }, [ProjectsProUseStore.getAllProjects]);
 
