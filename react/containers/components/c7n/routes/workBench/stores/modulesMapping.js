@@ -9,6 +9,9 @@ const modulesMapping = {
   agile: [
     'todoQustions', 'myStar', 'myDefect', 'myReport', 'myExecution',
   ],
+  backlog: [
+    'backlogApprove',
+  ],
 };
 
 export default modulesMapping;
