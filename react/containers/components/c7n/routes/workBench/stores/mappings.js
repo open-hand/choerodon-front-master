@@ -248,6 +248,24 @@ const componentsObj = {
     describe: '此模块展示当前进行的的测试计划中指派给我的用例。',
     img: myExecution,
   },
+  backlogApprove: {
+    layout: {
+      h: 6,
+      i: 'backlogApprove',
+      minH: 5,
+      minW: 9,
+      w: 9,
+      x: 0,
+      y: 16,
+    },
+    name: 'backlogApprove',
+    type: 'backlogApprove',
+    groupId: 'backlog',
+    title: '需求待审核',
+    describe:
+      '此模块显示该项目下待您审核的需求列表。',
+    img: myExecution,
+  },
 };
 
 export default componentsObj;

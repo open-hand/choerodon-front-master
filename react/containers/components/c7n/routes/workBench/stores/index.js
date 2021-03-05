@@ -10,6 +10,7 @@ import useStore from './useStore';
 import useCpCacheStore from './useCpCacheStore';
 import modulesMapping from './modulesMapping';
 import ComponentsDataset from './ComponentsDataset';
+import ApproveListDataSet from './ApproveListDataSet';
 
 const Store = createContext();
 
@@ -20,12 +21,12 @@ export function useWorkBenchStore() {
 export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
-    AppState: { currentMenuType: { organizationId }, currentModules },
+    AppState: { currentMenuType: { organizationId, projectId }, currentModules },
     history,
   } = props;
 
   function getAllCode() {
-    let allowedModules = [...modulesMapping.common];
+    let allowedModules = [...modulesMapping.common, ...modulesMapping.backlog];
     forEach(currentModules, (item) => {
       if (Object.prototype.hasOwnProperty.call(modulesMapping, item)) {
         allowedModules = allowedModules.concat(modulesMapping[item]);
@@ -42,6 +43,8 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ workBenchUseStore })), [workBenchUseStore]);
 
+  const approveListDs = useMemo(() => new DataSet(ApproveListDataSet({ projectId })), [projectId]);
+
   const value = {
     ...props,
     prefixCls: 'c7n-workbench',
@@ -55,6 +58,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     history,
     currentModules,
     allowedModules: getAllCode(),
+    approveListDs,
   };
 
   return (
