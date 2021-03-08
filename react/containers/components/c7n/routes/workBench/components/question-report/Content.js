@@ -25,7 +25,9 @@ const TodoQuestion = observer(() => {
   function loadMoreData() {
     changeBtnLoading(true);
     questionStore.setPage(questionStore.getPage + 1);
-    questionDs.query();
+    questionDs.query().finally(() => {
+      changeBtnLoading(false);
+    });
   }
 
   function nodeRenderer({ record }) {
