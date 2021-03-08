@@ -324,7 +324,7 @@ export default observer(() => {
                 <span
                   className="allProjects-content-item-right-down-avatar"
                   style={{
-                    backgroundImage: p.createUserImageUrl ? `url(${p.createUserImageUrl})` : 'unset',
+                    backgroundImage: p.createUserImageUrl ? `url("${p.createUserImageUrl}")` : 'unset',
                   }}
                 >
                   {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
