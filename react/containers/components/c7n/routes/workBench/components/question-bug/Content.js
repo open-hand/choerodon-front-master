@@ -42,7 +42,9 @@ const TodoQuestion = observer(() => {
   const loadMoreData = useCallback(() => {
     changeBtnLoading(true);
     questionStore.setPage(questionStore.getPage + 1);
-    questionDs.query();
+    questionDs.query().finally(() => {
+      changeBtnLoading(false);
+    });
   }, [questionDs]);
 
   const handleTabChange = useCallback((key) => {
