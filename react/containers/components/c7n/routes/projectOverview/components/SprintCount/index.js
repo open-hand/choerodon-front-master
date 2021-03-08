@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Tooltip, Progress, Icon, Spin,
 } from 'choerodon-ui/pro';
@@ -20,6 +20,7 @@ const SprintCount = observer(() => {
   const { sprintCountDataSet, startSprintDs, startedRecord } = useProjectOverviewStore();
   const history = useHistory();
   const urlParams = useQueryString();
+  const issueTypeIds = useMemo(() => (sprintCountDataSet.current?.get('issueTypeVOS') ? sprintCountDataSet.current.get('issueTypeVOS').map((i) => i.id) : []), [sprintCountDataSet, sprintCountDataSet.current?.get('issueTypeVOS')]);
   const {
     type, id, name, organizationId, category,
   } = urlParams;
@@ -69,6 +70,9 @@ const SprintCount = observer(() => {
                 }
                 if (key === 'unassignCount') {
                   search.assigneeId = '0';
+                }
+                if (issueTypeIds.length > 0) {
+                  search.issueTypeIds = issueTypeIds.join(',');
                 }
                 history.push({
                   pathname: '/agile/work-list/issue',
