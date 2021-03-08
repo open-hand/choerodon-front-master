@@ -2,26 +2,41 @@
 
 .c7n-project-overview-issue-table {
 
- &-title {
+  &-title {
     display: inline-flex;
     align-items: center;
+
     & >* {
-        margin-right: .26rem;
+      margin-right: .26rem;
     }
- }
- &-content {
-   &-summary {
-    cursor: pointer;
-     &:hover {
-      color: @primary-color;
-      text-decoration: underline;
-     }
-   }
-   &-table {
-     margin-top: -17px;
-     .c7n-pro-table {
-       border-top: none;
-     }
-   }
- }
+  }
+
+  &-content {
+    height: ~"calc(100% - 34px)";
+    &-summary {
+      cursor: pointer;
+
+      &:hover {
+        color: @primary-color;
+        text-decoration: underline;
+      }
+    }
+
+    &-table {
+      margin-top: -17px;
+      height: ~"calc(100% - 34px)";
+      overflow-x: hidden;
+      overflow-y: auto;
+      .c7n-pro-table {
+        border-top: none;
+      }
+      .c7n-spin-nested-loading,.c7n-spin-container {
+        flex: none;
+        height: initial;
+      }
+    }
+    .c7n-tabs,.c7n-tabs-content,.c7n-tabs-tabpane-active {
+      height: 100%;
+    }
+  }
 }
