@@ -263,7 +263,7 @@ const componentsObj = {
     groupId: 'backlog',
     title: '需求待审核',
     describe:
-      '此模块显示该项目下待您审核的需求列表。',
+      '此模块显示该组织下待您审核的需求列表。',
     img: myExecution,
   },
 };
