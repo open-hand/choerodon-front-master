@@ -20,7 +20,6 @@ const SprintCount = observer(() => {
   const { sprintCountDataSet, startSprintDs, startedRecord } = useProjectOverviewStore();
   const history = useHistory();
   const urlParams = useQueryString();
-  const issueTypeIds = useMemo(() => (sprintCountDataSet.current?.get('issueTypeVOS') ? sprintCountDataSet.current.get('issueTypeVOS').map((i) => i.id) : []), [sprintCountDataSet, sprintCountDataSet.current?.get('issueTypeVOS')]);
   const {
     type, id, name, organizationId, category,
   } = urlParams;
@@ -42,8 +41,8 @@ const SprintCount = observer(() => {
       const sprint = sprintCountDataSet.current.get('sprintId');
       for (const key of keys) {
         const { label } = sprintCountDataSet.getField(key).pristineProps;
-        const objectKey = ['completedCount', 'todoCount', 'uncompletedCount'];
-        const count = objectKey.includes(key) ? sprintCountDataSet.current.get(key).count : sprintCountDataSet.current.get(key);
+        const ignoreStatusKeys = ['unassignCount'];
+        const { count } = sprintCountDataSet.current.get(key);
         const clickable = count > 0;
         progressArr.push(
           <div className={`${clsPrefix}-issue`}>
@@ -55,7 +54,8 @@ const SprintCount = observer(() => {
                 if (!clickable) {
                   return;
                 }
-                const statusIds = objectKey.includes(key) ? sprintCountDataSet.current.get(key).statusIds ?? [] : [];
+                const statusIds = !ignoreStatusKeys.includes(key) ? sprintCountDataSet.current.get(key).statusIds ?? [] : [];
+                const issueTypeIds = sprintCountDataSet.current.get(key).issueTypeIds ?? [];
                 const search = {
                   type,
                   id,
@@ -72,8 +72,9 @@ const SprintCount = observer(() => {
                   search.assigneeId = '0';
                 }
                 if (issueTypeIds.length > 0) {
-                  search.issueTypeIds = issueTypeIds.join(',');
+                  search.issueTypeId = issueTypeIds.join(',');
                 }
+
                 history.push({
                   pathname: '/agile/work-list/issue',
                   search: queryString.stringify(search),
