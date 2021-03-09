@@ -164,6 +164,7 @@ const componentsObj = {
       w: 5,
       minH: 4,
       minW: 4,
+      maxH: 8,
       i: 'doc',
     },
     name: 'doc',

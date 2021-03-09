@@ -42,31 +42,11 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
 
   const {
     getSelfDoc,
-    rowNumber,
-    setRowNumber,
   } = docStore;
 
-  const resizeDom = debounce((domTem) => {
-    if (domTem) {
-      const docH = get(domTem, 'offsetHeight');
-      const docN = Math.floor(docH / 150);
-      setRowNumber(docN || 3);
-    }
-  }, 500);
-
-  useEffect(() => {
-    const domTem = document.querySelector('.c7n-workbench-doc-content');
-    if (!resizeObserver) {
-      resizeObserver = new ResizeObserver((entries) => {
-        const dom = get(entries[0], 'target');
-        resizeDom(dom);
-      }).observe(domTem);
-    }
-  }, []);
-
   const docDs = useMemo(() => new DataSet(DocDataSet({
-    organizationId, selectedProjectId, self: getSelfDoc, docStore, cacheStore, rowNumber,
-  })), [getSelfDoc, organizationId, rowNumber, selectedProjectId]);
+    organizationId, selectedProjectId, self: getSelfDoc, docStore, cacheStore,
+  })), [getSelfDoc, organizationId, selectedProjectId]);
 
   const opts = useMemo(() => [{ value: false, text: '项目' }, { value: true, text: '个人' }], []);
 
@@ -74,8 +54,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
     const mainData = cacheDocData;
     const tempArr = get(mainData, 'content');
     const isSelf = get(mainData, 'isSelf');
-    const tempRow = get(mainData, 'rowNumber');
-    if (getSelfDoc !== isSelf || selectedProjectId !== get(mainData, 'selectedProjectId') || (rowNumber && tempRow && rowNumber > tempRow)) {
+    if (getSelfDoc !== isSelf || selectedProjectId !== get(mainData, 'selectedProjectId')) {
       docDs.query();
       return;
     }

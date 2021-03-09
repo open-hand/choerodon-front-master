@@ -1,12 +1,12 @@
 /* eslint-disable import/no-anonymous-default-export */
 export default (({
-  organizationId, selectedProjectId, self, docStore, cacheStore, rowNumber,
+  organizationId, selectedProjectId, self, docStore, cacheStore,
 }) => ({
   autoQuery: false,
   selection: false,
   paging: true,
   dataKey: null,
-  pageSize: rowNumber * 2,
+  pageSize: 10,
   transport: {
     read: ({ dataSet }) => ({
       url: `/knowledge/v1/organizations/${organizationId}/work_space/recent_project_update_list${self ? '/self' : ''}${selectedProjectId ? `?projectId=${selectedProjectId}` : ''}`,
@@ -38,7 +38,6 @@ export default (({
             content: newData,
             isSelf: self,
             selectedProjectId,
-            rowNumber,
           };
           cacheStore.setCacheDocData(cacheData);
           return newData;

@@ -68,13 +68,12 @@
   }
 
   &-content {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
     height: 100%;
+    overflow: hidden;
 
     .infinite-scroll-component__outerdiv {
       width: 100%;
+      height: 100%;
     }
   }
 
@@ -83,7 +82,8 @@
     grid-row-gap: 20px;
     grid-column-gap: 20px;
     grid-template-columns: repeat(2, 1fr);
-
+    grid-auto-rows: 130px;
+    height: 100%;
     &-load {
       position: absolute;
       left: 47%;
