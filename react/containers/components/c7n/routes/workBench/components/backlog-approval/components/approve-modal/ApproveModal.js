@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Modal, Button } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui';
@@ -18,10 +18,6 @@ const Tabs = [
     key: 'suggest',
   },
   {
-    title: '流程信息',
-    key: 'processInfo',
-  },
-  {
     title: '审核历史',
     key: 'history',
   },
@@ -30,9 +26,18 @@ const Tabs = [
     key: 'miniPic',
   },
 ];
-const ApproveModal = ({ record, modal }) => {
+const ApproveModal = ({
+  record, demandDetailStore, organizationId, modal,
+}) => {
   const [activeTab, setActiveTab] = useState('detail');
   console.log(record);
+
+  useEffect(() => {
+    demandDetailStore.select(record.get('id') || '150913943852666880');
+    demandDetailStore.initApi(organizationId);
+    demandDetailStore.refresh();
+  }, [demandDetailStore, organizationId, record]);
+
   const handleClickClose = useCallback(() => {
     modal.close();
   }, [modal]);
@@ -60,7 +65,7 @@ const ApproveModal = ({ record, modal }) => {
         </div>
       </div>
       <div className={`${prefix}-container-content`}>
-        <Detail />
+        <Detail demandDetailStore={demandDetailStore} />
       </div>
       <div className={`${prefix}-container-footer`}>
         <ApproveBtns>
