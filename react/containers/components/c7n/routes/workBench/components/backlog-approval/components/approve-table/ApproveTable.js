@@ -11,8 +11,10 @@ const { Column } = Table;
 
 const DemandTable = () => {
   const {
-    approveListDs,
+    approveListDs, demandDetailStore, AppState,
   } = useApproveStore();
+
+  const { currentMenuType: { organizationId } } = AppState;
 
   const renderPriority = useCallback(({ value }) => {
     const { id, color, name } = value || {};
@@ -42,9 +44,9 @@ const DemandTable = () => {
 
   const renderApproveBtn = useCallback(({ record }) => (
     <div className="c7n-backlogApprove-table-approveBtn">
-      <Button onClick={() => openApproveModal({ record })}>审核</Button>
+      <Button onClick={() => openApproveModal({ record, demandDetailStore, organizationId })}>审核</Button>
     </div>
-  ), []);
+  ), [demandDetailStore, organizationId]);
 
   return (
     <Table

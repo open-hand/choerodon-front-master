@@ -5,6 +5,7 @@ import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
 import ApproveListDataSet from './ApproveListDataSet';
+import demandDetailStore from './DetailStore';
 
 const Store = createContext();
 
@@ -24,6 +25,7 @@ export const StoreProvider = inject('AppState')(observer((props) => {
   const value = {
     ...props,
     approveListDs,
+    demandDetailStore,
   };
 
   return (
