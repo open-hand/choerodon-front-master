@@ -90,7 +90,7 @@ function handleResponseCancelToken(config) {
 
 function handelResponseError(error) {
   const { response } = error;
-  let errorFormat = {};
+  let errorFormat = error;
   if (response) {
     const { status } = response;
     switch (status) {
@@ -115,12 +115,13 @@ function handelResponseError(error) {
     errorFormat = {
       status: response.status,
       data: response.data,
-      ...error,
+      ...errorFormat,
     };
   }
   // 如果是主动取消了请求，做个标识
   if (axios.isCancel(error)) {
     errorFormat.selfCancel = true;
+    errorFormat.message = null;
   }
   throw errorFormat;
 }

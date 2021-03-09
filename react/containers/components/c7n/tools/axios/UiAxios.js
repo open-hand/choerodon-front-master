@@ -2,6 +2,7 @@ import axios from 'axios';
 import { getAccessToken } from '@/utils/accessToken';
 import { API_HOST } from '@/utils/constants';
 import JSONbig from 'json-bigint';
+import get from 'lodash/get';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 import MenuStore from '../../../../stores/c7n/MenuStore';
 
@@ -24,7 +25,7 @@ function handleDefaultTransformResponse(data) {
 }
 
 function handleResponseInttercept(response) {
-  if (response.status === 204) {
+  if (get(response, 'status') === 204) {
     return response;
   }
   if (Object.prototype.hasOwnProperty.call(response, 'data')) {

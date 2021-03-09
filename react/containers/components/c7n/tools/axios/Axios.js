@@ -5,6 +5,7 @@ import {
 } from '@/utils';
 import { API_HOST } from '@/utils/constants';
 import JSONbig from 'json-bigint';
+import get from 'lodash/get';
 import { transformResponsePage, transformRequestPage } from './transformPageData';
 import {
   cursiveSetCorrectId,
@@ -70,7 +71,7 @@ function handleRequestIntercept(config) {
 }
 
 function handleResponseInttercept(response) {
-  if (response.status === 204) {
+  if (get(response, 'status') === 204) {
     return response;
   }
   if (Object.prototype.hasOwnProperty.call(response, 'data')) {
