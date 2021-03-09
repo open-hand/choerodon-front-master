@@ -11600,6 +11600,11 @@ typescript@^3.9.7:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/typescript/-/typescript-3.9.9.tgz#e69905c54bc0681d0518bd4d587cc6f2d0b1a674"
   integrity sha1-5pkFxUvAaB0FGL1NWHzG8tCxpnQ=
 
+typescript@^4.2.3:
+  version "4.2.3"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/typescript/-/typescript-4.2.3.tgz#39062d8019912d43726298f09493d598048c1ce3"
+  integrity sha1-OQYtgBmRLUNyYpjwlJPVmASMHOM=
+
 ua-parser-js@^0.7.18:
   version "0.7.24"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/ua-parser-js/-/ua-parser-js-0.7.24.tgz#8d3ecea46ed4f1f1d63ec25f17d8568105dc027c"
