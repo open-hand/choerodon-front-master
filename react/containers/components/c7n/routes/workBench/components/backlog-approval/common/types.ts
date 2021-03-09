@@ -122,4 +122,73 @@ export interface IField {
     system: boolean
     defaultValue: string | null
     defaultValueObj?: Object
-  }
+}
+export interface INodeHistory {
+  instanceId: string,
+  nodeId: string,
+  nodeCode: string,
+  nodeType: string,
+  historyType: string,
+  startDate: string
+  endDate: string
+  tenantId: string
+
+  nodeHistoryId: string,
+  nodeName: string,
+  taskHistoryList: ITaskHistory[]
+}
+
+export interface ITaskHistory {
+  instanceId: string,
+  nodeId: string,
+  nodeCode: string,
+  nodeType: string,
+  historyType: string,
+  startDate: string
+  endDate: string
+  tenantId: string
+
+  parentNodeId: string,
+  taskHistoryId: string,
+  taskId: string,
+  // assignee: string,
+  assignee: User,
+  status: string,
+  statusMeaning: string,
+  commentContent: string,
+  positionName:null | string,
+  unitName: null | string,
+}
+
+export interface ITaskHistoryWithNodeName extends ITaskHistory {
+  nodeName: string
+}
+
+export interface ApproveLog {
+  assignee?: User
+  attachmentUuid?: string
+  commentContent?: string
+  createdBy: string | number
+  creationDate: string
+  deploymentId: number
+  endDate: string
+  historyType: string
+  instanceId: string | number
+  lastUpdateDate:string
+  lastUpdatedBy: string | number
+  nodeCode: string
+  nodeId: string | number
+  nodeName: string
+  nodeType: string
+  objectVersionNumber: number
+  parentNodeId?: string | number
+  parentTaskId?: string | number
+  startDate: string
+  status: string
+  statusMeaning?: string
+  taskHistoryId: string | number
+  taskId?: string | number
+  tenantId: string | number
+  remark?: string
+  toPerson?: string
+}

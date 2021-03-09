@@ -14,10 +14,11 @@ interface Props {
   showName?: boolean,
   showTooltip?: boolean,
   className?: string,
+  avatarProps?: object
 }
 
 const UserInfo: FC<Props> = memo(({
-  realName, showName = true, size = 'small', avatar, imageUrl, loginName, showTooltip = true, className,
+  realName, showName = true, size = 'small', avatar, imageUrl, loginName, showTooltip = true, className, avatarProps,
 }) => {
   const ava = useMemo(() => {
     if (avatar || imageUrl) {
@@ -27,15 +28,23 @@ const UserInfo: FC<Props> = memo(({
           src={avatar || imageUrl}
           alt="avatar"
           className={`c7ncd-test-user-info-wrap-avatar c7ncd-test-user-info-wrap-avatar-${size}`}
+          {
+            ...avatarProps
+          }
         />
       );
     }
     return (
-      <span className={`c7ncd-test-user-info-wrap-avatar-txt c7ncd-test-user-info-wrap-avatar-${size}`}>
+      <span
+        className={`c7ncd-test-user-info-wrap-avatar-txt c7ncd-test-user-info-wrap-avatar-${size}`}
+        {
+          ...avatarProps
+        }
+      >
         {(realName || '').toUpperCase().substring(0, 1)}
       </span>
     );
-  }, [avatar, imageUrl, size, realName]);
+  }, [avatar, imageUrl, size, avatarProps, realName]);
 
   return (
     <div className={`c7ncd-test-user-info-wrap ${className || ''}`}>
