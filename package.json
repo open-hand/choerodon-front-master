@@ -26,6 +26,7 @@
   "license": "ISC",
   "devDependencies": {
     "@choerodon/boot": "0.23.0-test",
+    "@choerodon/components": "^0.0.1",
     "@choerodon/compiler": "^0.0.2",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
