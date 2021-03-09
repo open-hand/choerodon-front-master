@@ -5,6 +5,7 @@ import { Icon } from 'choerodon-ui';
 import { Btns as ApproveBtns } from './useBtns';
 import './ApproveModal.less';
 import Detail from './components/detail';
+import History from './components/history';
 
 const prefix = 'c7n-backlogApprove-modal';
 
@@ -30,7 +31,6 @@ const ApproveModal = ({
   record, demandDetailStore, organizationId, modal,
 }) => {
   const [activeTab, setActiveTab] = useState('detail');
-  console.log(record);
 
   useEffect(() => {
     demandDetailStore.select(record.get('id') || '150913943852666880');
@@ -65,7 +65,16 @@ const ApproveModal = ({
         </div>
       </div>
       <div className={`${prefix}-container-content`}>
-        <Detail demandDetailStore={demandDetailStore} />
+        {
+          activeTab === 'detail' && (
+            <Detail store={demandDetailStore} />
+          )
+        }
+        {
+          activeTab === 'history' && (
+            <History store={demandDetailStore} />
+          )
+        }
       </div>
       <div className={`${prefix}-container-footer`}>
         <ApproveBtns>

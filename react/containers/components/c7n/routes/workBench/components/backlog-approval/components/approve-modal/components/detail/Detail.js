@@ -8,11 +8,11 @@ import Attachment from './components/attachment';
 
 const prefix = 'c7n-backlogApprove-backlogDetail';
 
-const Detail = ({ demandDetailStore }) => {
+const Detail = ({ store }) => {
   useEffect(() => {
 
   });
-  const { backlogNum, summary } = demandDetailStore.demand;
+  const { backlogNum, summary } = store.demand;
 
   return (
     <div className={prefix}>
@@ -29,7 +29,7 @@ const Detail = ({ demandDetailStore }) => {
               <div className={`${prefix}-left-detail-summary-num`}>{backlogNum}</div>
               <span>{summary}</span>
             </div>
-            <Fields store={demandDetailStore} />
+            <Fields store={store} />
           </div>
         </Part>
       </div>
@@ -40,7 +40,7 @@ const Detail = ({ demandDetailStore }) => {
             height: '50%',
           }}
         >
-          <Description store={demandDetailStore} />
+          <Description store={store} />
         </Part>
         <Part
           title="附件"
@@ -48,7 +48,7 @@ const Detail = ({ demandDetailStore }) => {
             height: '50%',
           }}
         >
-          <Attachment store={demandDetailStore} />
+          <Attachment store={store} />
         </Part>
       </div>
     </div>

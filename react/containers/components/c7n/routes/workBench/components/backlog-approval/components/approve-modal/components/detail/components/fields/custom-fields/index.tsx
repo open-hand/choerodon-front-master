@@ -28,7 +28,6 @@ const CustomFields: React.FC<{
         .filter((field: IField) => !filterFields.includes(field.fieldCode))
         .map((field: IField) => {
           const { fieldType, valueStr, fieldCode } = field;
-          console.log(field);
           if (fieldCode === 'estimatedStartTime') {
             return <StartTime store={store} />;
           } if (fieldCode === 'estimatedEndTime') {

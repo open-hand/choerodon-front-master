@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { axios } from '@/index';
-import { Demand, IField } from '../common/types';
+import { ApproveLog, Demand, IField } from '../common/types';
 
 class DemandApi {
   get prefix() {
@@ -32,6 +32,16 @@ class DemandApi {
         schemeCode: 'backlog',
       },
     }) as unknown as Promise<IField[]>;
+  }
+
+  loadLogs(backlogId: string): Promise<ApproveLog[]> {
+    return axios({
+      method: 'get',
+      url: `${this.prefix}/backlog_data_log/list`,
+      params: {
+        backlogId,
+      },
+    });
   }
 }
 
