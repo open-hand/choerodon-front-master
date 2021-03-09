@@ -52,12 +52,13 @@
       cursor: pointer;
       background: rgba(255, 255, 255, 1);
       border-radius: 10px;
-      height: auto;
-      padding: 16px 17px 16px 16px;
+      height: fit-content;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      // align-items: center;
-      // justify-content: center;
+      > * {
+        margin-top: auto !important;
+      }
       &-correct {
         border-radius: 8px;
         position: absolute;
@@ -101,7 +102,6 @@
         font-size: 13px;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
-        margin-top: 8px !important;
         line-height: 18px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -112,7 +112,6 @@
         height: 36px;
       }
       &-project {
-        margin-top: 5px !important;
         font-size: 12px;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
@@ -133,8 +132,6 @@
         }
       }
       &-extra {
-        margin-top: 6px;
-
         display: flex;
         align-items: center;
         &-icon {
