@@ -6,6 +6,7 @@ import { Btns as ApproveBtns } from './useBtns';
 import './ApproveModal.less';
 import Detail from './components/detail';
 import History from './components/history';
+import openCCModal from './components/cc-modal/CCModal';
 
 const prefix = 'c7n-backlogApprove-modal';
 
@@ -41,6 +42,10 @@ const ApproveModal = ({
   const handleClickClose = useCallback(() => {
     modal.close();
   }, [modal]);
+
+  const handleClickCC = useCallback(() => {
+    openCCModal({ record });
+  }, [record]);
 
   return (
     <div className={`${prefix}-container`}>
@@ -99,6 +104,7 @@ const ApproveModal = ({
         <Button
           className={`${prefix}-container-footer-btn`}
           funcType="raised"
+          onClick={handleClickCC}
         >
           抄送
         </Button>
