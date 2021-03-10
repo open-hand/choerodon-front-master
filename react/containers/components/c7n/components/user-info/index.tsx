@@ -8,32 +8,43 @@ import './index.less';
 interface Props {
   realName: string,
   avatar?: string | null | undefined,
+  imageUrl?: string | null | undefined,
   size?: string,
   loginName?: string,
   showName?: boolean,
   showTooltip?: boolean,
   className?: string,
+  avatarProps?: object
 }
 
 const UserInfo: FC<Props> = memo(({
-  realName, showName = true, size = 'small', avatar, loginName, showTooltip = true, className,
+  realName, showName = true, size = 'small', avatar, imageUrl, loginName, showTooltip = true, className, avatarProps,
 }) => {
   const ava = useMemo(() => {
-    if (avatar) {
+    if (avatar || imageUrl) {
       return (
         <img
-          src={avatar}
+        // @ts-ignore
+          src={avatar || imageUrl}
           alt="avatar"
           className={`c7ncd-test-user-info-wrap-avatar c7ncd-test-user-info-wrap-avatar-${size}`}
+          {
+            ...avatarProps
+          }
         />
       );
     }
     return (
-      <span className={`c7ncd-test-user-info-wrap-avatar-txt c7ncd-test-user-info-wrap-avatar-${size}`}>
+      <span
+        className={`c7ncd-test-user-info-wrap-avatar-txt c7ncd-test-user-info-wrap-avatar-${size}`}
+        {
+          ...avatarProps
+        }
+      >
         {(realName || '').toUpperCase().substring(0, 1)}
       </span>
     );
-  }, [avatar, size, realName]);
+  }, [avatar, imageUrl, size, avatarProps, realName]);
 
   return (
     <div className={`c7ncd-test-user-info-wrap ${className || ''}`}>

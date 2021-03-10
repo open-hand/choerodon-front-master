@@ -20,12 +20,12 @@ export function useWorkBenchStore() {
 export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
-    AppState: { currentMenuType: { organizationId }, currentModules },
+    AppState: { currentMenuType: { organizationId, projectId }, currentModules },
     history,
   } = props;
 
   function getAllCode() {
-    let allowedModules = [...modulesMapping.common];
+    let allowedModules = [...modulesMapping.common, ...modulesMapping.backlog];
     forEach(currentModules, (item) => {
       if (Object.prototype.hasOwnProperty.call(modulesMapping, item)) {
         allowedModules = allowedModules.concat(modulesMapping[item]);

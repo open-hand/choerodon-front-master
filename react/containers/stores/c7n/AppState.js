@@ -37,6 +37,18 @@ class AppState {
 
   @observable projectCategorys = {};
 
+  @observable canShowRoute = false;
+
+  @computed
+  get getCanShowRoute() {
+    return this.canShowRoute;
+  }
+
+  @action
+  setCanShowRoute(data) {
+    this.canShowRoute = data;
+  }
+
   @computed
   get getProjectCategorys() {
     return this.projectCategorys;

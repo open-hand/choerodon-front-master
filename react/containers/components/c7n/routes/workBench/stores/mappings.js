@@ -8,6 +8,7 @@ import quickLink from '../img/quickLink.png';
 import env from '../img/envLists.png';
 import selfInfo from '../img/selfInfo.svg';
 import selfCode from '../img/selfCode.svg';
+import myExecution from '../img/myExecution.png';
 
 const componentsObj = {
   // 星标项目
@@ -229,6 +230,42 @@ const componentsObj = {
     title: '向我报告的',
     describe: '展示当前迭代中报告人是我的问题项。',
     img: todoQuestions,
+  },
+  // 我执行的用例
+  myExecution: {
+    layout: {
+      x: 5,
+      y: 12,
+      h: 4,
+      w: 4,
+      minH: 3,
+      minW: 4,
+      i: 'myExecution',
+    },
+    name: 'myExecution',
+    type: 'myExecution',
+    groupId: 'agile',
+    title: '我执行的用例',
+    describe: '此模块展示当前进行的的测试计划中指派给我的用例。',
+    img: myExecution,
+  },
+  backlogApprove: {
+    layout: {
+      h: 6,
+      i: 'backlogApprove',
+      minH: 5,
+      minW: 9,
+      w: 9,
+      x: 0,
+      y: 16,
+    },
+    name: 'backlogApprove',
+    type: 'backlogApprove',
+    groupId: 'backlog',
+    title: '需求待审核',
+    describe:
+      '此模块显示该组织下待您审核的需求列表。',
+    img: myExecution,
   },
 };
 

@@ -68,7 +68,7 @@ export default observer(() => {
   const getListStyle = (isDraggingOver) => ({
     border: isDraggingOver ? '2px dotted #5266d4' : 'none',
     borderRadius: isDraggingOver ? '3px' : '0',
-    padding: '0.24rem',
+    padding: isDraggingOver ? '4px' : 0,
     background: isDraggingOver ? 'rgba(82, 102, 212, 0.1)' : 'none',
   });
 

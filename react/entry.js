@@ -7,6 +7,7 @@ import { createBrowserHistory } from 'history';
 import { Modal } from 'choerodon-ui';
 
 import asyncRouter from './containers/components/util/asyncRouter';
+import autoRefresh from './utils/autoRefresh';
 
 const history = createBrowserHistory();
 const { confirm } = Modal;
@@ -42,6 +43,8 @@ if (module.hot) {
   module.hot.accept();
 }
 
+autoRefresh();
 render(
-    <App />,
-  document.getElementById('app'));
+  <App />,
+  document.getElementById('app'),
+);

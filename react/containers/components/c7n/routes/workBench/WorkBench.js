@@ -26,9 +26,10 @@ import QuestionFocus from './components/question-focus';
 import QuestionBug from './components/question-bug';
 import QuestionReport from './components/question-report';
 import UserConfirmationTwo from '../../components/UserConfirm';
-
+import ExecutionQuestions from './components/question-execution';
 import './WorkBench.less';
 import SelfCode from './components/SelfCode';
+import ApproveList from './components/backlog-approval';
 
 let observerLayout;
 
@@ -45,7 +46,15 @@ const ComponetsObjs = {
   doc: <Doc />,
   envList: <EnvList />,
   selfCode: <SelfCode />,
+  myExecution: <ExecutionQuestions />,
+  backlogApprove: <ApproveList />,
 };
+
+const groupMap = new Map([
+  ['devops', 'DevOps管理'],
+  ['agile', '敏捷管理'],
+  ['backlog', '需求管理'],
+]);
 
 const WorkBench = () => {
   const {
@@ -126,7 +135,8 @@ const WorkBench = () => {
     componentsDs.map((record) => {
       const key = record.get('i');
       const title = get(componnetsMapping[key], 'title');
-      const emptyDiscribe = get(componnetsMapping[key], 'groupId') !== 'devops' ? '安装部署【任务管理】模块后，才能使用该卡片。' : '安装部署【DevOps管理】模块后，才能使用该卡片。';
+      const emptyDiscribe = `安装部署【${groupMap.get(get(componnetsMapping[key], 'groupId') || 'agile')}】模块后，才能使用该卡片。`;
+
       return (
         <DragCard
           record={record}
