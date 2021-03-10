@@ -18,10 +18,5 @@ export default function useStore() {
       return this.selfDoc;
     },
 
-    rowNumber: 3,
-    setRowNumber(value) {
-      this.rowNumber = value;
-    },
-
   }));
 }

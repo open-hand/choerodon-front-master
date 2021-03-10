@@ -320,22 +320,21 @@ export default observer(() => {
                 </Tooltip>
               )
             }
-              <p className="allProjects-content-item-right-down-time">
-                <Tooltip title={p.createUserName} placement="top">
-                  <span
-                    className="allProjects-content-item-right-down-avatar"
-                    style={{
-                      backgroundImage: p.createUserImageUrl ? `url(${p.createUserImageUrl})` : 'unset',
-                    }}
-                  >
-                    {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
-                  </span>
-                </Tooltip>
-                <p>
-                  {p.creationDate.split(' ')[0]}
-                  {' '}
-                  创建
-                </p>
+            <p className="allProjects-content-item-right-down-time">
+              <Tooltip title={p.createUserName} placement="top">
+                <span
+                  className="allProjects-content-item-right-down-avatar"
+                  style={{
+                    backgroundImage: p.createUserImageUrl ? `url("${p.createUserImageUrl}")` : 'unset',
+                  }}
+                >
+                  {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
+                </span>
+              </Tooltip>
+              <p>
+                {p.creationDate.split(' ')[0]}
+                {' '}
+                创建
               </p>
             </div>
           </div>

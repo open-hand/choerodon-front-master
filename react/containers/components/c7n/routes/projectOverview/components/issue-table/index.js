@@ -195,25 +195,20 @@ const DeployChart = () => {
     }
     return (
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
-        <div className="c7n-SprintDetails">
-          <div className="c7n-SprintDetails-tabs">
-
-            <Tabs activeKey={activeKey} onChange={handleTabChange}>
-              <TabPane tab="已完成的问题" key="done">
-                {/* <Table dataSet={issueTableDs}>
+        <Tabs activeKey={activeKey} onChange={handleTabChange}>
+          <TabPane tab="已完成的问题" key="done">
+            {/* <Table dataSet={issueTableDs}>
                   <Column name="summary" />
                 </Table> */}
-                <IssueTable dataSet={issueTableDs} onClickSummary={handleToIssue} />
-                {/* {this.renderDoneIssues(column)} */}
-              </TabPane>
-              <TabPane tab="未完成的问题" key="unfinished">
-                <IssueTable dataSet={issueTableDs} onClickSummary={handleToIssue} />
+            <IssueTable dataSet={issueTableDs} onClickSummary={handleToIssue} />
+            {/* {this.renderDoneIssues(column)} */}
+          </TabPane>
+          <TabPane tab="未完成的问题" key="unfinished">
+            <IssueTable dataSet={issueTableDs} onClickSummary={handleToIssue} />
 
-                {/* {this.renderUndoIssues(column)} */}
-              </TabPane>
-            </Tabs>
-          </div>
-        </div>
+            {/* {this.renderUndoIssues(column)} */}
+          </TabPane>
+        </Tabs>
       </OverviewWrap.Content>
     );
   }

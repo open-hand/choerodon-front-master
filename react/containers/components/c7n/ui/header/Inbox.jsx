@@ -20,6 +20,7 @@ const prefixCls = `${PREFIX_CLS}-boot-header-inbox`;
 
 /* eslint-disable-next-line */
 const reg = /\n|&nbsp;|&lt|&gt|<[^a\/][^>]*>|<\/[^a][^>]*>/g;
+const imgreg = /(<img[\s\S]*?src\s*=\s*["|']|\[img\])(.*?)(["|'][\s\S]*?>|\[\/img\])/;
 const cleanModalKey = Modal.key();
 
 @inject('HeaderStore', 'AppState')
@@ -159,7 +160,7 @@ class RenderPopoverContentDetailClass extends Component {
             <div className="title">
               <span>
                 <Icon type={isMsg ? 'textsms' : 'volume_up'} style={{ marginRight: 10 }} />
-                <a onClick={(e) => {}}>{HeaderStore.inboxDetail.title}</a>
+                <a onClick={(e) => { }}>{HeaderStore.inboxDetail.title}</a>
               </span>
             </div>
             <div className="info">
@@ -307,10 +308,8 @@ export default class Inbox extends Component {
               const isMsg = 'messageId' in data;
               const icon = <Icon type={isMsg ? 'textsms' : 'volume_up'} className="color-blue" />;
               const iconWithBadge = read || !isMsg ? icon : <Badge dot>{icon}</Badge>;
-              let showPicUrl;
-              if (content && content.indexOf('<img') !== -1) {
-                showPicUrl = content.slice(content.indexOf('<img src="') + '<img src="'.length, content.indexOf('">', content.indexOf('<img src="')));
-              }
+              const imageMatch = content.match(imgreg);
+              const showPicUrl = imageMatch && imageMatch.length > 0 ? imageMatch[2] : undefined;
               return (
                 <li className={`${prefixCls}-sider-content-list`} key={data.id}>
                   <div className={`${prefixCls}-sider-content-list-title`}>
@@ -388,7 +387,8 @@ export default class Inbox extends Component {
     return (
       <div className={classNames({
         'theme4-badge': AppState.getCurrentTheme === 'theme4',
-      })}>
+      })}
+      >
         <WSHandler
           messageKey="hzero-web"
           onMessage={this.handleMessage}
@@ -412,13 +412,13 @@ export default class Inbox extends Component {
                   })}
                   functype="flat"
                   {
-                    ...AppState.getCurrentTheme === '' ? {
-                      shape: 'circle',
-                      style: { color: '#fff' },
-                    } : {}
+                  ...AppState.getCurrentTheme === '' ? {
+                    shape: 'circle',
+                    style: { color: '#fff' },
+                  } : {}
                   }
                 >
-                  <Icon type={AppState.getCurrentTheme === 'theme4' ? 'notifications_none': "notifications"} />
+                  <Icon type={AppState.getCurrentTheme === 'theme4' ? 'notifications_none' : 'notifications'} />
                 </Button>
               </Badge>
             )
