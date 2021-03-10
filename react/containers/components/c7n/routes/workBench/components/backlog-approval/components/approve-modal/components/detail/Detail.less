@@ -1,0 +1,37 @@
+.c7n-backlogApprove-backlogDetail {
+  display: flex;
+  height: 100%;
+  &-left {
+    flex: 1;
+    border-right: 1px solid #D9E6F2;
+    &-detail {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      &-summary {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        & > span {
+          font-size: 16px;
+          font-weight: 500;
+          color: #0F1358;
+          line-height: 20px;
+          margin-top: -3px;
+        }
+        &-num {
+          height: 20px;
+          padding: 0 5px;
+          margin-right: 8px;
+          background: rgba(0, 0, 0, 0.06);
+          border-radius: 2px;
+          color: #0F1358;
+        }
+      }
+    }
+  }
+  &-right {
+    flex: 1;
+  }
+}

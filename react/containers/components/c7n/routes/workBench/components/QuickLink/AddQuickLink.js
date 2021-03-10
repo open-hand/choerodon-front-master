@@ -39,7 +39,6 @@ export default observer(({
     dataSet.current.getField('projectId').options.loadData(res.content, res.content.length);
     // axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=${size}`).then((res) => {
     //   console.log(dataSet);
-    //   debugger;
     //   if (res.content.length % 10 === 0) {
     //     res.content.push({
     //       id: 'more',
