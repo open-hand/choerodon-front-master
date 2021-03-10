@@ -29,7 +29,6 @@ import UserConfirmationTwo from '../../components/UserConfirm';
 import ExecutionQuestions from './components/question-execution';
 import './WorkBench.less';
 import SelfCode from './components/SelfCode';
-import ApproveList from './components/backlog-approval';
 
 let observerLayout;
 
@@ -47,9 +46,10 @@ const ComponetsObjs = {
   envList: <EnvList />,
   selfCode: <SelfCode />,
   myExecution: <ExecutionQuestions />,
-  backlogApprove: <ApproveList />,
 };
-
+export function injectWorkBench(key, component) {
+  ComponetsObjs[key] = component;
+}
 const groupMap = new Map([
   ['devops', 'DevOps管理'],
   ['agile', '敏捷管理'],
