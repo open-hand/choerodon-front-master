@@ -6,7 +6,7 @@ stages:
 release:
   stage: release
   script:
-    - yarn install --registry ${NPM_REPO} --sass-binary-site=http://npm.taobao.org/mirrors/node-sass
+    - yarn install --registry ${NPM_REPO} --sass-binary-site=http://npm.taobao.org/mirrors/node-sass --ignore-engines
     - chmod -R 755 node_modules
     - npm run compile
     - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>.npmrc
