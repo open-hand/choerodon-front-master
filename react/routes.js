@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Suspense } from 'react';
 import { Route } from 'react-router-dom';
 import CacheRoute, { CacheSwitch } from 'react-router-cache-route';
@@ -8,6 +9,8 @@ import Skeleton from './containers/components/c7n/master/skeleton/index.js';
 //   ['work-list', () => import('./routes/WorkList')],
 //   ['storyMap', () => import('./routes/StoryMap')],
 // ];
+
+__INSTALLS__;
 // eslint-disable-next-line no-undef
 const routes = __ROUTES__;
 const AutoRouter = () => (
