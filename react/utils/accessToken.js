@@ -67,8 +67,10 @@ export function removeAccessToken() {
     path: '/',
   };
   if (!LOCAL && !localReg.test(window.location.host)) {
+    console.log(COOKIE_SERVER);
     option.domain = COOKIE_SERVER;
   }
+  console.log(option);
   removeCookie(ACCESS_TOKEN, option);
   removeCookie(TOKEN_TYPE, option);
 }
