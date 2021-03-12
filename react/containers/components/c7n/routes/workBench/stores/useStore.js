@@ -58,7 +58,7 @@ export default function useStore(history) {
     loadBacklogs({
       organizationId, projectId, page, type,
     }) {
-      return axios.get(`agile/v1/organizations/${organizationId}/backlog/star_beacon/personal/backlog_myStarBeacon?page=${page}&size=20${projectId ? `&projectId=${projectId}` : ''}`);
+      return axios.get(`agile/v1/organizations/${organizationId}/backlog/work_bench/personal/backlog_my_star_beacon?page=${page}&size=20${projectId ? `&projectId=${projectId}` : ''}`);
     },
     loadQuestions({
       organizationId, projectId, page, type,
