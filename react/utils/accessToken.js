@@ -36,9 +36,9 @@ export function setAccessToken(token, tokenType, expiresIn) {
     const expires = 30 * 24 * 60 * 60 * 1000;
     option.expires = new Date(Date.now() + expires);
   }
-  if (!LOCAL && !localReg.test(window.location.host) && getCookie(ACCESS_DOMAIN) === null) {
-    option.domain = COOKIE_SERVER;
-  }
+  // if (!LOCAL && !localReg.test(window.location.host) && getCookie(ACCESS_DOMAIN) === null) {
+  //   option.domain = COOKIE_SERVER;
+  // }
   setCookie(ACCESS_TOKEN, token, option);
   setCookie(TOKEN_TYPE, tokenType, option);
   cachedToken = token;
@@ -66,11 +66,11 @@ export function removeAccessToken() {
   const option = {
     path: '/',
   };
-  if (!LOCAL && !localReg.test(window.location.host)) {
-    console.log(COOKIE_SERVER);
-    option.domain = COOKIE_SERVER;
-  }
-  console.log(option);
+  // if (!LOCAL && !localReg.test(window.location.host)) {
+  //   console.log(COOKIE_SERVER);
+  //   option.domain = COOKIE_SERVER;
+  // }
+  // console.log(option);
   removeCookie(ACCESS_TOKEN, option);
   removeCookie(TOKEN_TYPE, option);
 }
