@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { Button as ProButton } from 'choerodon-ui/pro';
 import { Button, Icon } from 'choerodon-ui';
+import { Permission } from '@/index';
 import classNames from 'classnames';
 import forEach from 'lodash/forEach';
 import getSearchString from '../../util/gotoSome';
@@ -32,12 +33,22 @@ const Setting = ({
       switch (serviceCode) {
         case SERVICE_CODE.knowledge:
           mapping.push({
-            title: '知识库', icon: theme === 'theme4' ? 'chrome_reader_mode-o' : 'knowledge', activePath: '/knowledge/organization', style: { marginLeft: 4 },
+            title: '知识库',
+            icon: theme === 'theme4' ? 'chrome_reader_mode-o' : 'knowledge',
+            activePath: '/knowledge/organization',
+            style: { marginLeft: 4 },
+            permission: [
+              'choerodon.code.organization.knowledge.ps.default',
+              'choerodon.code.organization.knowledge.ps.recycle',
+            ],
           });
           break;
         case SERVICE_CODE.market:
           mapping.push({
-            title: '应用市场', icon: theme === 'theme4' ? 'local_mall-o' : 'application_market', activePath: '/market/app-market', style: { marginLeft: 2 },
+            title: '应用市场',
+            icon: theme === 'theme4' ? 'local_mall-o' : 'application_market',
+            activePath: '/market/app-market',
+            style: { marginLeft: 2 },
           });
           break;
       }
@@ -69,32 +80,39 @@ const Setting = ({
   return (
     <>
       {
-        LI_MAPPING.map((list, index) => (
-          <Button
-            key={list.activePath}
-            className={classNames({
-              [`block ${extraCls(list)}`]: true,
-              'theme4-headerButton': AppState.getCurrentTheme === 'theme4',
-            })}
-            {...AppState.getCurrentTheme === 'theme4' && index === 0 ? {
-              style: {
-                marginLeft: '-8px',
-              },
-            } : {}}
-            onClick={() => goto(list)}
-            type="primary"
-            funcType="flat"
-          >
-            <Icon type={list.icon} style={iconStyle} />
-            <span
-              {...AppState.getCurrentTheme === 'theme4' && list.style ? {
-                style: list.style,
+        LI_MAPPING.map((list, index) => {
+          const button = (
+            <Button
+              key={list.activePath}
+              className={classNames({
+                [`block ${extraCls(list)}`]: true,
+                'theme4-headerButton': AppState.getCurrentTheme === 'theme4',
+              })}
+              {...AppState.getCurrentTheme === 'theme4' && index === 0 ? {
+                style: {
+                  marginLeft: '-8px',
+                },
               } : {}}
+              onClick={() => goto(list)}
+              type="primary"
+              funcType="flat"
             >
-              {list.title}
-            </span>
-          </Button>
-        ))
+              <Icon type={list.icon} style={iconStyle} />
+              <span
+                {...AppState.getCurrentTheme === 'theme4' && list.style ? {
+                  style: list.style,
+                } : {}}
+              >
+                {list.title}
+              </span>
+            </Button>
+          );
+          return list.permission ? (
+            <Permission type="organization" service={list.permission}>
+              {button}
+            </Permission>
+          ) : button;
+        })
       }
     </>
   );
