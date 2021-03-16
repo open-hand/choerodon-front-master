@@ -71,7 +71,7 @@ const componentsObj = {
       minH: 3,
       minW: 4,
       i: 'myStar',
-      x: 0,
+      x: 5,
       y: 6,
     },
     name: 'myStar',
@@ -81,12 +81,31 @@ const componentsObj = {
     describe: '展示我关注的特性、问题项、需求，以便我能快速了解关注的工作内容和进展情况。',
     img: myStar,
   },
+
+  backlogApprove: {
+    layout: {
+      h: 4,
+      i: 'backlogApprove',
+      minH: 4,
+      minW: 5,
+      w: 5,
+      x: 0,
+      y: 6,
+    },
+    name: 'backlogApprove',
+    type: 'backlogApprove',
+    groupId: 'backlog',
+    title: '需求待审核',
+    describe:
+      '此模块显示该组织下待您审核的需求列表。',
+    img: myExecution,
+  },
   // 我的缺陷
   myDefect: {
     layout: {
       x: 4,
-      y: 6,
-      h: 4,
+      y: 10,
+      h: 5,
       w: 5,
       minH: 3,
       minW: 4,
@@ -159,8 +178,8 @@ const componentsObj = {
   // 文档
   doc: {
     layout: {
-      x: 4,
-      y: 10,
+      x: 0,
+      y: 16,
       h: 5,
       w: 5,
       minH: 4,
@@ -200,7 +219,7 @@ const componentsObj = {
     layout: {
       x: 9,
       y: 12,
-      h: 3,
+      h: 5,
       w: 3,
       minH: 2,
       minW: 3,
@@ -247,24 +266,6 @@ const componentsObj = {
     groupId: 'agile',
     title: '我执行的用例',
     describe: '此模块展示当前进行的的测试计划中指派给我的用例。',
-    img: myExecution,
-  },
-  backlogApprove: {
-    layout: {
-      h: 6,
-      i: 'backlogApprove',
-      minH: 5,
-      minW: 9,
-      w: 9,
-      x: 0,
-      y: 16,
-    },
-    name: 'backlogApprove',
-    type: 'backlogApprove',
-    groupId: 'backlog',
-    title: '需求待审核',
-    describe:
-      '此模块显示该组织下待您审核的需求列表。',
     img: myExecution,
   },
 };
