@@ -49,3 +49,5 @@ export { default as ThemeWrap } from './containers/components/c7n/tools/themeWra
 export { default as SagaDetails } from './containers/components/c7n/tools/saga-details';
 
 export { default as Choerodon } from './utils/choerodon';
+
+export { default as PermissionRoute } from './components/permission-route';
