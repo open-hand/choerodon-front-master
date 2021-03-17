@@ -1,12 +1,13 @@
 /* eslint-disable react/no-deprecated */
 /* eslint-disable react/state-in-constructor */
 /* eslint-disable react/static-property-placement */
-import {
+import React, {
   Children, cloneElement, Component, isValidElement,
 } from 'react';
 import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import omit from 'object.omit';
+import Skeleton from '../../master/skeleton';
 import { FAILURE, PENDING, SUCCESS } from './PermissionStatus';
 
 @inject('AppState')
