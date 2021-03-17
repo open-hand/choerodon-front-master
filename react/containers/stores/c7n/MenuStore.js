@@ -274,6 +274,9 @@ class MenuStore {
 
     async function mainFunc(resolve) {
       const type = getMenuType(menuType, isUser) || 'site';
+      if (type !== 'user') {
+        AppState.currentMenuType.type = type;
+      }
       const { id = 0, organizationId } = menuType;
       const menu = this.menuData(type, id);
       if (menu.length) {
@@ -316,13 +319,14 @@ class MenuStore {
           changeMenuLevel({ level: 'user', child });
         }
         that.setMenuData(child, type, id);
-        isLoadMenu = 0;
         return child;
       }
       let flag = 0;
       if (type === 'site') {
-        await axios.put('iam/v1/users/tenant-id?tenantId=0');
-        await axios.get('/iam/choerodon/v1/switch/site');
+        if (AppState.getUserInfo?.currentRoleLevel !== 'site') {
+          await axios.put('iam/v1/users/tenant-id?tenantId=0');
+          await axios.get('/iam/choerodon/v1/switch/site');
+        }
       } else if (id && (['project', 'organization'].includes(type))) {
         const orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
         if (!loadingTenant.includes(orgId)) {
@@ -333,13 +337,21 @@ class MenuStore {
           flag = 1;
         }
       }
-      isLoadMenu = 0;
       if (!flag) {
-        const data = await getMenu(this);
-        AppState.loadUserInfo();
+        let data;
+        const menu = this.menuData(type, id);
+        if (!menu.length && !menu.level) {
+          data = await getMenu(this);
+        }
+        if (AppState.userInfo.currentRoleLevel !== type) {
+          AppState.loadUserInfo();
+        }
         AppState.setCanShowRoute(true);
+        AppState.userInfo.currentRoleLevel = type;
+        isLoadMenu = 0;
         return resolve(data);
       }
+      isLoadMenu = 0;
       AppState.setCanShowRoute(true);
       // const item = roles.find(r => (type === 'site' ? r.level === type : r.level === 'organization'));
       // if (item) {
@@ -395,7 +407,7 @@ class MenuStore {
   menuData(type = getMenuType(), id = AppState.currentMenuType.id) {
     let data;
     if (type) {
-      if (id) {
+      if (id && !['site', 'user'].includes(type)) {
         data = get(this.menuGroup[type], id);
       } else {
         data = get(this.menuGroup, type);
