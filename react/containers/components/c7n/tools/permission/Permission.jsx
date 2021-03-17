@@ -7,7 +7,6 @@ import React, {
 import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import omit from 'object.omit';
-import Skeleton from '../../master/skeleton';
 import { FAILURE, PENDING, SUCCESS } from './PermissionStatus';
 
 @inject('AppState')
