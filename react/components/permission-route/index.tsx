@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Route, RouteProps } from 'react-router-dom';
 import { noaccess as NoAccess, Permission } from '@/index';
 import useQueryString from '@/hooks/useQueryString';
+import Skeleton from '@/containers/components/c7n/master/skeleton';
 
 interface PermissionRouteProps extends RouteProps {
   service: string[] | ((type: 'project' | 'organization' | 'site') => string[])
@@ -20,6 +21,7 @@ const PermissionRoute: React.FC<PermissionRouteProps> = ({ service, ...rest }) =
       <Permission
         service={codes}
         noAccessChildren={<NoAccess />}
+        defaultChildren={<Skeleton />}
       >
         {route}
       </Permission>
