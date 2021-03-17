@@ -112,7 +112,7 @@ class Permission extends Component {
     } if (status === FAILURE && (noAccessChildren || defaultChildren)) {
       return this.extendProps(noAccessChildren || defaultChildren, otherProps);
     } if (status === PENDING && defaultChildren) {
-      return (<Skeleton />);
+      return this.extendProps(defaultChildren, otherProps);
     }
     return null;
   }
