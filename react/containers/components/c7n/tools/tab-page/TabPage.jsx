@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Spin } from 'choerodon-ui';
+import { Spin } from 'choerodon-ui/pro';
 import Permission from '../permission';
 import NoAccess from '../error-pages/403';
 import '../page/style';
