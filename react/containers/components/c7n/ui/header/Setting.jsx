@@ -12,7 +12,6 @@ import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 export default class Setting extends Component {
   gotoOrganizationManager = () => {
     const { org: { id, name, type, category, organizationId }, history, MenuStore } = this.props;
-    debugger;
     MenuStore.loadMenuData({ type: 'organization', id }, false).then((menus) => {
       if (menus.length) {
         const { route, domain } = findFirstLeafMenu(menus[0]);
