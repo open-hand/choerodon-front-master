@@ -287,7 +287,6 @@ const ListView = observer(() => {
     const { id, name, organizationId, category } = record.toData();
     const type = 'project';
     HeaderStore.setRecentItem(record.toData());
-    debugger;
     MenuStore.loadMenuData({ type, id }, false).then((menus) => {
       let route = '';
       let path;
