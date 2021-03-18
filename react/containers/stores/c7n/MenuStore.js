@@ -256,8 +256,10 @@ class MenuStore {
 
   @action
   loadMenuData(menuType = AppState.currentMenuType, isUser) {
+    debugger;
     this.setRootBaseOnActiveMenu();
     if (isLoadMenu === 1) {
+      debugger;
       return new Promise((resolve) => {
         resolve(setTimeout(() => this.loadMenuData(menuType, isUser), 500));
       });
@@ -273,12 +275,14 @@ class MenuStore {
     // });
 
     async function mainFunc(resolve) {
+      debugger;
       const type = getMenuType(menuType, isUser) || 'site';
       if (type !== 'user') {
         AppState.currentMenuType.type = type;
       }
       const { id = 0, organizationId } = menuType;
       const menu = this.menuData(type, id);
+      debugger;
       if (menu.length) {
         if (type === 'site') {
           if (AppState.getUserInfo?.currentRoleLevel !== 'site') {
@@ -286,6 +290,7 @@ class MenuStore {
             await AppState.loadUserInfo();
           }
         } else if (type === 'organization') {
+          debugger;
           const orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
           if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
             await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId}`);
@@ -301,6 +306,7 @@ class MenuStore {
         AppState.setCanShowRoute(true);
       }
       async function getMenu(that) {
+        debugger;
         let url = '/iam/choerodon/v1/menu';
         if (type === 'project') {
           url += `?projectId=${id}`;
@@ -328,19 +334,33 @@ class MenuStore {
           await axios.get('/iam/choerodon/v1/switch/site');
         }
       } else if (id && (['project', 'organization'].includes(type))) {
+        debugger;
         const orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
+        console.log(orgId, loadingTenant);
+        debugger;
         if (!loadingTenant.includes(orgId)) {
+          debugger;
           loadingTenant.push(String(orgId));
+          debugger;
           await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`);
           loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);
+          debugger;
         } else {
           flag = 1;
         }
       }
+      debugger;
       if (!flag) {
+        debugger;
         let data;
         const menu = this.menuData(type, id);
-        if (!menu.length && !menu.level) {
+        debugger;
+        if (['organization', 'project'].includes(type)) {
+          if (!Object.keys(menuStore.menuGroup[type]).includes(id)) {
+            debugger;
+            data = await getMenu(this);
+          }
+        } else if (!menu.length && !menu.level) {
           data = await getMenu(this);
         }
         if (AppState.userInfo.currentRoleLevel !== type) {

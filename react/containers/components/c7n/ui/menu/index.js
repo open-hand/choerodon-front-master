@@ -58,9 +58,10 @@ export default class CommonMenu extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.loadMenu(nextProps);
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   debugger;
+  //   this.loadMenu(nextProps);
+  // }
 
   loadMenu(props) {
     const { location, AppState, MenuStore } = props;
@@ -70,6 +71,8 @@ export default class CommonMenu extends Component {
     const { pathname } = location;
     const { type, id } = AppState.currentMenuType;
     if (type) {
+      debugger;
+
       MenuStore.loadMenuData().then((menus) => {
         const isUser = AppState.isTypeUser;
         if (pathname === '/') {
