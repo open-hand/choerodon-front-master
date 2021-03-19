@@ -6,6 +6,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import MenuSideIcon from '@/containers/components/c7n/ui/menu/MenuSideIcon';
+import folding from '../../../../images/folding.svg';
+import unfold from '../../../../images/unfold.svg';
 import bg from '../header/style/icons/bg.svg';
 import './RequireSvgResources';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
@@ -379,18 +381,32 @@ export default class CommonMenu extends Component {
               'theme4-iconToggle': AppState.getCurrentTheme === 'theme4',
             })}
           >
-            <Icon
-              type={(function () {
-                if (AppState.getCurrentTheme === 'theme4') {
-                  if (collapsed) {
-                    return 'keyboard_arrow_right';
-                  }
-                  return 'keyboard_arrow_left';
-                }
-                return 'menu';
-              }())}
-              onClick={this.toggleRightMenu}
-            />
+            {
+              AppState.getCurrentTheme === 'theme4' ? (
+                <img
+                  role="none"
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                  src={collapsed ? unfold : folding}
+                  alt=""
+                  onClick={this.toggleRightMenu}
+                />
+              ) : (
+                <Icon
+                  type={(function () {
+                    // if (AppState.getCurrentTheme === 'theme4') {
+                    //   if (collapsed) {
+                    //     return 'keyboard_arrow_right';
+                    //   }
+                    //   return 'keyboard_arrow_left';
+                    // }
+                    return 'menu';
+                  }())}
+                  onClick={this.toggleRightMenu}
+                />
+              )
+            }
           </div>
         </div>
         <div className="common-menu-right-content">
