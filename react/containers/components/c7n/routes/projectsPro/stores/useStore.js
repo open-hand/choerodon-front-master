@@ -101,7 +101,6 @@ export default function useStore(AppState, history) {
       } = data;
       const type = 'project';
       HeaderStore.setRecentItem(data);
-
       MenuStore.loadMenuData({ type, id }, false).then((menus) => {
         let route = '';
         let path;
