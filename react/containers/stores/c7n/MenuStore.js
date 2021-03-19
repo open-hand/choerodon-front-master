@@ -277,9 +277,10 @@ class MenuStore {
       if (type !== 'user') {
         AppState.currentMenuType.type = type;
       }
-      const { id = 0, organizationId } = menuType;
+      const { id = 0, organizationId, orgId } = menuType;
       const menu = this.menuData(type, id);
-      if (menu.length || (id && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(id)))) {
+      let hasMenu = type === 'organization' ? (orgId && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(orgId))) : (id && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(id)))
+      if (menu.length || hasMenu) {
         if (type === 'site') {
           if (AppState.getUserInfo?.currentRoleLevel !== 'site') {
             await axios.put('iam/v1/users/tenant-id?tenantId=0');

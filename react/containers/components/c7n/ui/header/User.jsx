@@ -22,13 +22,11 @@ export default class UserPreferences extends Component {
       history.push('/');
     }
     HeaderStore.axiosShowSiteMenu();
-
     MenuStore.loadMenuData({ type: 'site' }, true);
   }
 
   preferences = () => {
     const { MenuStore, history, HeaderStore } = this.props;
-
     MenuStore.loadMenuData({ type: 'site' }, true).then((menus) => {
       if (menus.length) {
         const { route, domain } = findFirstLeafMenu(menus[0]);
@@ -44,7 +42,6 @@ export default class UserPreferences extends Component {
 
   getGlobalMenuData = (organizationId) => {
     const { MenuStore, history } = this.props;
-
     MenuStore.loadMenuData({ type: 'site' }, false).then((menus) => {
       if (menus.length) {
         const { route, domain } = findFirstLeafMenu(menus[0]);
