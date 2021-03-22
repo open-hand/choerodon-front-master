@@ -7,6 +7,7 @@ import ResponsiveReactGridLayout from 'react-grid-layout';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
+import useTheme from '@/hooks/useTheme';
 
 import {
   get, filter, map, forEach, some, without, keys,
@@ -59,6 +60,7 @@ const ProjectOverview = () => {
   } = projectOverviewStore;
 
   const [layOutWidth, setWidth] = useState(0);
+  const [theme] = useTheme();
 
   useEffect(() => {
     if (!observerLayout) {
@@ -177,32 +179,39 @@ const ProjectOverview = () => {
 
   const renderBtns = () => {
     let btnGroups;
+    const secondBtnObj = {
+      funcType: 'raised',
+    };
+    const primaryBtnObj = {
+      color: 'primary',
+      funcType: 'raised',
+    };
+    if (theme !== 'theme4') {
+      secondBtnObj.color = 'primary';
+      primaryBtnObj.funcType = 'flat';
+    }
     if (isEdit) {
       btnGroups = [
         <Button
-          color="primary"
-          className={`${prefixCls}-btnGroups-primary`}
+          {...primaryBtnObj}
           onClick={openAddComponents}
         >
           添加卡片
         </Button>,
         <Button
-          color="primary"
-          className={`${prefixCls}-btnGroups-primary`}
+          {...primaryBtnObj}
           onClick={hanldeSave}
         >
           保存
         </Button>,
         <Button
-          color="primary"
-          className={`${prefixCls}-btnGroups-default`}
+          {...secondBtnObj}
           onClick={handleResetModal}
         >
           重置
         </Button>,
         <Button
-          className={`${prefixCls}-btnGroups-default`}
-          color="primary"
+          {...secondBtnObj}
           onClick={handleCancel}
         >
           取消
@@ -211,8 +220,7 @@ const ProjectOverview = () => {
     } else {
       btnGroups = [
         <Button
-          color="primary"
-          className={`${prefixCls}-btnGroups-default`}
+          {...secondBtnObj}
           onClick={handleEditable}
         >
           项目概览配置
