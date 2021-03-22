@@ -9,6 +9,7 @@ import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import {
   get, map, forEach, forEachRight,
 } from 'lodash';
+import useTheme from '@/hooks/useTheme';
 import { useStarTargetPro } from './stores';
 import { useWorkBenchStore } from '../../stores';
 import emptyImg from '../../../../../../images/owner.png';
@@ -22,6 +23,8 @@ const StarTargetPro = observer(() => {
     prefixCls,
     starProjectsDs,
   } = useStarTargetPro();
+
+  const [theme] = useTheme();
 
   const {
     workBenchUseStore,
@@ -254,32 +257,39 @@ const StarTargetPro = observer(() => {
 
   const renderBtns = () => {
     let btnGroups;
+    const secondBtnObj = {
+      funcType: 'raised',
+    };
+    const primaryBtnObj = {
+      color: 'primary',
+      funcType: 'raised',
+    };
+    if (theme !== 'theme4') {
+      secondBtnObj.color = 'primary';
+      primaryBtnObj.funcType = 'flat';
+    }
     if (isEdit) {
       btnGroups = [
         <Button
-          color="primary"
-          className={`${prefixCls}-btnGroups-primary`}
+          {...primaryBtnObj}
           onClick={openAddComponents}
         >
           添加卡片
         </Button>,
         <Button
-          color="primary"
-          className={`${prefixCls}-btnGroups-primary`}
+          {...primaryBtnObj}
           onClick={hanldeSave}
         >
           保存
         </Button>,
         <Button
-          color="primary"
-          className={`${prefixCls}-btnGroups-default`}
+          {...secondBtnObj}
           onClick={handleResetModal}
         >
           重置
         </Button>,
         <Button
-          className={`${prefixCls}-btnGroups-default`}
-          color="primary"
+          {...secondBtnObj}
           onClick={handleCancel}
         >
           取消
@@ -288,8 +298,8 @@ const StarTargetPro = observer(() => {
     } else {
       btnGroups = [
         <Button
-          color="primary"
-          className={`${prefixCls}-btnGroups-default`}
+          {...secondBtnObj}
+          // className={`${prefixCls}-btnGroups-default`}
           onClick={handleEditable}
         >
           工作台配置
