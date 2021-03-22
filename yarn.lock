@@ -1225,10 +1225,10 @@
     object-assign "^4.1.1"
     rimraf "^3.0.2"
 
-"@choerodon/components@^0.0.1":
+"@choerodon/components@0.0.1":
   version "0.0.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@choerodon/components/-/components-0.0.1.tgz#720ea6fb799dc9f2efe212bce21ec231271f39cf"
-  integrity sha512-IoiHthP0vdy5VtyeKt1ps7HyjQpKDDMZoav+mh19jIALbKTfZ+bzMs9aewoHVXBqwFX7lHuxcOv+zlcbOo+McA==
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@choerodon/components/-/components-0.0.1.tgz#7f2fefca55db71c5fcf352fcfdb5f268a657395c"
+  integrity sha512-og84sjmqWN3UgeJfp+1ZGWWR21foBFMbGZ61E7RriyCtpuQWMWuR3iZORl1UrlqA49BRKSDtKDYfBbnl32bvuA==
   dependencies:
     "@choerodon/ckeditor" "^0.0.1"
     "@ckeditor/ckeditor5-react" "^3.0.2"
