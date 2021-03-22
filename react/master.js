@@ -18,7 +18,7 @@ import HeaderStore from './containers/stores/c7n/HeaderStore';
 import stores from './containers/stores';
 import Master from './containers/components/c7n/master';
 import './containers/components/style';
-import { defaultBlackList } from "@/containers/components/c7n/ui/menu";
+import { defaultBlackList } from '@/containers/components/c7n/ui/menu';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +40,9 @@ const IntlProviderAsync = asyncLocaleProvider(language,
   () => import(`./containers/locale/${language}`));
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 
+function syncBodyThemeAttribute() {
+  document.body.setAttribute('data-theme', localStorage.getItem('theme') ?? '');
+}
 @withRouter
 @observer
 export default class Index extends React.Component {
@@ -73,6 +76,10 @@ export default class Index extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('storage', this.handleStorageChange);
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    syncBodyThemeAttribute();
   }
 
   handleStorageChange = (e) => {
@@ -154,6 +161,7 @@ export default class Index extends React.Component {
   }
 
   render() {
+    const defaultTheme = localStorage.getItem('theme') ?? '';
     const { loading } = this.state;
     if (this.isInOutward(this.props.location.pathname)) {
       return (
@@ -163,7 +171,7 @@ export default class Index extends React.Component {
               <Provider {...stores}>
                 <Switch>
                   <Route path="/">
-                    <Container defaultTheme="">
+                    <Container defaultTheme={defaultTheme} onChange={syncBodyThemeAttribute}>
                       <Outward AutoRouter={this.props.AutoRouter} />
                     </Container>
                   </Route>
@@ -190,7 +198,7 @@ export default class Index extends React.Component {
                 <Route
                   path="/"
                 >
-                  <Container defaultTheme="">
+                  <Container defaultTheme={defaultTheme} onChange={syncBodyThemeAttribute}>
                     <Master AutoRouter={this.props.AutoRouter} />
                   </Container>
                 </Route>
