@@ -68,11 +68,11 @@ const componentsObj = {
     layout: {
       h: 4,
       w: 4,
-      minH: 3,
+      minH: 4,
       minW: 4,
       i: 'myStar',
       x: 5,
-      y: 6,
+      y: 12,
     },
     name: 'myStar',
     type: 'myStar',
@@ -84,11 +84,11 @@ const componentsObj = {
 
   backlogApprove: {
     layout: {
-      h: 4,
+      h: 5,
       i: 'backlogApprove',
-      minH: 4,
-      minW: 5,
-      w: 5,
+      minH: 5,
+      minW: 9,
+      w: 9,
       x: 0,
       y: 6,
     },
@@ -103,11 +103,11 @@ const componentsObj = {
   // 我的缺陷
   myDefect: {
     layout: {
-      x: 4,
-      y: 10,
-      h: 5,
+      x: 0,
+      y: 12,
+      h: 4,
       w: 5,
-      minH: 3,
+      minH: 4,
       minW: 4,
       i: 'myDefect',
     },
@@ -160,8 +160,8 @@ const componentsObj = {
   quickLink: {
     layout: {
       x: 0,
-      y: 10,
-      h: 5,
+      y: 22,
+      h: 4,
       w: 4,
       minH: 3,
       minW: 3,
@@ -178,9 +178,9 @@ const componentsObj = {
   // 文档
   doc: {
     layout: {
-      x: 0,
-      y: 16,
-      h: 5,
+      x: 4,
+      y: 22,
+      h: 4,
       w: 5,
       minH: 4,
       minW: 4,
@@ -236,10 +236,10 @@ const componentsObj = {
   myReport: {
     layout: {
       x: 0,
-      y: 12,
+      y: 17,
       h: 4,
       w: 5,
-      minH: 3,
+      minH: 4,
       minW: 4,
       i: 'myReport',
     },
@@ -254,10 +254,10 @@ const componentsObj = {
   myExecution: {
     layout: {
       x: 5,
-      y: 12,
+      y: 17,
       h: 4,
       w: 4,
-      minH: 3,
+      minH: 4,
       minW: 4,
       i: 'myExecution',
     },
