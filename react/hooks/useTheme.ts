@@ -11,7 +11,6 @@ export default function useTheme() {
         ...defaultConfig,
         schema: theme,
       },
-      active: theme,
       prev: {},
     });
   }, [changeTheme]);
