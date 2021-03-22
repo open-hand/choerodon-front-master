@@ -13,7 +13,7 @@ function getDefaultLanguage() {
 }
 
 class AppState {
-  @observable currentTheme = '';
+  @observable currentTheme = localStorage.getItem('theme') || '';
 
   @observable currentProject = null;
 
