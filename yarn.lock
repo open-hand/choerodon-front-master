@@ -1042,7 +1042,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@7.x", "@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
+"@babel/runtime@7.x", "@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
   version "7.13.10"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
   integrity sha1-R9QqV7YJX0Ro2kQDiP262L6/DX0=
@@ -1855,13 +1855,6 @@
   dependencies:
     parchment "^1.1.2"
 
-"@types/react-beautiful-dnd@^13.0.0":
-  version "13.0.0"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@types/react-beautiful-dnd/-/react-beautiful-dnd-13.0.0.tgz#e60d3d965312fcf1516894af92dc3e9249587db4"
-  integrity sha1-5g09llMS/PFRaJSvktw+kklYfbQ=
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-router-dom@^5.1.5":
   version "5.1.7"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@types/react-router-dom/-/react-router-dom-5.1.7.tgz#a126d9ea76079ffbbdb0d9225073eb5797ab7271"
@@ -2208,7 +2201,7 @@ acorn@^7.4.0:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha1-/q7SVZc9LndVW4PbwIhRpsY1IPo=
 
-add-dom-event-listener@1.x, add-dom-event-listener@^1.1.0:
+add-dom-event-listener@1.x:
   version "1.1.0"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/add-dom-event-listener/-/add-dom-event-listener-1.1.0.tgz#6a92db3a0dd0abc254e095c0f1dc14acbbaae310"
   integrity sha1-apLbOg3Qq8JU4JXA8dwUrLuq4xA=
@@ -3422,14 +3415,13 @@ choerodon-ui-font@0.2.x:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/choerodon-ui-font/-/choerodon-ui-font-0.2.6.tgz#8458194162db1db5fad3dff4a0d20ed8b8392f90"
   integrity sha1-hFgZQWLbHbX609/0oNIO2Lg5L5A=
 
-choerodon-ui@^0.8.62:
-  version "0.8.78"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/choerodon-ui/-/choerodon-ui-0.8.78.tgz#9a5d73db01ed7dab75bf2f69208a75ea53ba7bb5"
-  integrity sha1-ml1z2wHtfat1vy9pIIp16lO6e7U=
+choerodon-ui@1.2.0:
+  version "1.2.0"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/choerodon-ui/-/choerodon-ui-1.2.0.tgz#e44c8ba9787e72c54230a68ea285976d70d00d8d"
+  integrity sha1-5EyLqXh+csVCMKaOooWXbXDQDY0=
   dependencies:
     "@babel/runtime" "7.x"
     "@ctrl/tinycolor" "^3.2.0"
-    "@types/react-beautiful-dnd" "^13.0.0"
     add-dom-event-listener "1.x"
     array-tree-filter "^2.0.0"
     async-validator "1.x"
@@ -3462,13 +3454,11 @@ choerodon-ui@^0.8.62:
     querystringify "^2.1.0"
     quill-delta-to-html "^0.9.7"
     raf "^3.4.1"
-    rc-animate "^2.10.3"
     rc-editor-core "~0.8.3"
-    rc-virtual-list "^1.1.1"
-    react ">=16.6.0"
+    rc-motion "^2.4.1"
+    rc-virtual-list "^3.2.6"
     react-beautiful-dnd "^13.0.0"
     react-codemirror2 "5.1.0"
-    react-dom ">=16.6.0"
     react-easy-crop "^3.1.0"
     react-image-lightbox "^4.6.0"
     react-lazy-load "^3.0.13"
@@ -3479,9 +3469,7 @@ choerodon-ui@^0.8.62:
     scroll-into-view-if-needed "^2.2.25"
     smooth-scroll-into-view-if-needed "^1.1.28"
     string-template "^1.0.0"
-    tslib "^1.9.3"
     warning "~4.0.3"
-    xhr-mock "^2.5.1"
     xlsx "^0.16.7"
 
 "chokidar@>=2.0.0 <4.0.0", chokidar@^3.4.0, chokidar@^3.4.1:
@@ -3563,7 +3551,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@2.x, classnames@^2.2.5, classnames@^2.2.6, classnames@~2.2.6:
+classnames@2.x, classnames@^2.2.1, classnames@^2.2.5, classnames@^2.2.6, classnames@~2.2.6:
   version "2.2.6"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha1-Q5Nb/90pHzJtrQogUwmzjQD2UM4=
@@ -4098,7 +4086,7 @@ crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
-css-animation@^1.3.2, css-animation@^1.5.0:
+css-animation@^1.5.0:
   version "1.6.1"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/css-animation/-/css-animation-1.6.1.tgz#162064a3b0d51f958b7ff37b3d6d4de18e17039e"
   integrity sha1-FiBko7DVH5WLf/N7PW1N4Y4XA54=
@@ -9734,7 +9722,7 @@ raf-schd@^4.0.0, raf-schd@^4.0.2:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/raf-schd/-/raf-schd-4.0.2.tgz#bd44c708188f2e84c810bf55fcea9231bcaed8a0"
   integrity sha1-vUTHCBiPLoTIEL9V/OqSMbyu2KA=
 
-raf@^3.1.0, raf@^3.4.0, raf@^3.4.1:
+raf@^3.1.0, raf@^3.4.1:
   version "3.4.1"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
   integrity sha1-B0LpmkplUvRF1z4+4DKK8P8e3jk=
@@ -9780,19 +9768,6 @@ raw-body@2.4.0:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-rc-animate@^2.10.3:
-  version "2.11.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/rc-animate/-/rc-animate-2.11.1.tgz#2666eeb6f1f2a495a13b2af09e236712278fdb2c"
-  integrity sha1-JmbutvHypJWhOyrwniNnEieP2yw=
-  dependencies:
-    babel-runtime "6.x"
-    classnames "^2.2.6"
-    css-animation "^1.3.2"
-    prop-types "15.x"
-    raf "^3.4.0"
-    rc-util "^4.15.3"
-    react-lifecycles-compat "^3.0.4"
-
 rc-editor-core@~0.8.3:
   version "0.8.10"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/rc-editor-core/-/rc-editor-core-0.8.10.tgz#6f215bc5df9c33ffa9f6c5b30ca73a7dabe8ab7c"
@@ -9806,18 +9781,26 @@ rc-editor-core@~0.8.3:
     prop-types "^15.5.8"
     setimmediate "^1.0.5"
 
-rc-util@^4.15.3:
-  version "4.21.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/rc-util/-/rc-util-4.21.1.tgz#88602d0c3185020aa1053d9a1e70eac161becb05"
-  integrity sha1-iGAtDDGFAgqhBT2aHnDqwWG+ywU=
+rc-motion@^2.4.1:
+  version "2.4.1"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/rc-motion/-/rc-motion-2.4.1.tgz#323f47c8635e6b2bc0cba2dfad25fc415b58e1dc"
+  integrity sha1-Mj9HyGNeayvAy6LfrSX8QVtY4dw=
   dependencies:
-    add-dom-event-listener "^1.1.0"
-    prop-types "^15.5.10"
-    react-is "^16.12.0"
-    react-lifecycles-compat "^3.0.4"
-    shallowequal "^1.1.0"
+    "@babel/runtime" "^7.11.1"
+    classnames "^2.2.1"
+    rc-util "^5.2.1"
 
-rc-util@^5.0.0:
+rc-resize-observer@^1.0.0:
+  version "1.0.0"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/rc-resize-observer/-/rc-resize-observer-1.0.0.tgz#97fb89856f62fec32ab6e40933935cf58e2e102d"
+  integrity sha1-l/uJhW9i/sMqtuQJM5Nc9Y4uEC0=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "^2.2.1"
+    rc-util "^5.0.0"
+    resize-observer-polyfill "^1.5.1"
+
+rc-util@^5.0.0, rc-util@^5.0.7, rc-util@^5.2.1:
   version "5.9.4"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/rc-util/-/rc-util-5.9.4.tgz#f3a5240df47299fff7ef45864a4abeaf4c60ff98"
   integrity sha1-86UkDfRymf/370WGSkq+r0xg/5g=
@@ -9826,14 +9809,14 @@ rc-util@^5.0.0:
     react-is "^16.12.0"
     shallowequal "^1.1.0"
 
-rc-virtual-list@^1.1.1:
-  version "1.1.6"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/rc-virtual-list/-/rc-virtual-list-1.1.6.tgz#b255baf9aacde149a8893324e6307214094f4c0a"
-  integrity sha1-slW6+arN4UmoiTMk5jByFAlPTAo=
+rc-virtual-list@^3.2.6:
+  version "3.2.6"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/rc-virtual-list/-/rc-virtual-list-3.2.6.tgz#2c92a40f4425e19881b38134d6bd286a11137d2d"
+  integrity sha1-LJKkD0Ql4ZiBs4E01r0oahETfS0=
   dependencies:
     classnames "^2.2.6"
-    raf "^3.4.1"
-    rc-util "^5.0.0"
+    rc-resize-observer "^1.0.0"
+    rc-util "^5.0.7"
 
 react-beautiful-dnd@^13.0.0:
   version "13.1.0"
@@ -9885,7 +9868,7 @@ react-dom-factories@^1.0.0:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/react-dom-factories/-/react-dom-factories-1.0.2.tgz#eb7705c4db36fb501b3aa38ff759616aa0ff96e0"
   integrity sha1-63cFxNs2+1AbOqOP91lhaqD/luA=
 
-react-dom@16.14.0, react-dom@>=16.6.0, react-dom@^16.6.0:
+react-dom@16.14.0, react-dom@^16.6.0:
   version "16.14.0"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
   integrity sha1-etg47Cmnd/s8dcOhkPZhz5Kri4k=
@@ -10121,7 +10104,7 @@ react-slick@~0.25.2:
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
 
-react@16.14.0, react@>=16.6.0, react@^16.12.0, react@^16.6.0:
+react@16.14.0, react@^16.12.0, react@^16.6.0:
   version "16.14.0"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha1-lNd23dCqo32j7aj8W2sYpMmjEU0=
@@ -11980,7 +11963,7 @@ tslib@2.0.1:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
   integrity sha1-QQ6w0RPltjVkkO7HSWA3JbAhtD4=
 
-tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
+tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha1-zy04vcNKE0vK8QkcQfZhni9nLQA=
@@ -12850,14 +12833,6 @@ x-is-string@^0.1.0:
   version "0.1.0"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/x-is-string/-/x-is-string-0.1.0.tgz#474b50865af3a49a9c4657f05acd145458f77d82"
   integrity sha1-R0tQhlrzpJqcRlfwWs0UVFj3fYI=
-
-xhr-mock@^2.5.1:
-  version "2.5.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/xhr-mock/-/xhr-mock-2.5.1.tgz#c591498a8269cc1ce5fefac20d590357affd348b"
-  integrity sha1-xZFJioJpzBzl/vrCDVkDV6/9NIs=
-  dependencies:
-    global "^4.3.0"
-    url "^0.11.0"
 
 xlsx@^0.16.7:
   version "0.16.9"
