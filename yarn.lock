@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ahooksjs/use-request@^2.8.3":
-  version "2.8.3"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@ahooksjs/use-request/-/use-request-2.8.3.tgz#9b7eff972658497473f61ceb89a268d665e28aeb"
-  integrity sha1-m37/lyZYSXRz9hzriaJo1mXiius=
+"@ahooksjs/use-request@^2.8.4":
+  version "2.8.4"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@ahooksjs/use-request/-/use-request-2.8.4.tgz#c404dce2c984f1ce8573e6577582cc9656a71e37"
+  integrity sha1-xATc4smE8c6Fc+ZXdYLMllanHjc=
   dependencies:
     lodash.debounce "^4.0.8"
     lodash.throttle "^4.1.1"
@@ -1042,7 +1042,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@7.x", "@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
+"@babel/runtime@7.x", "@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
   version "7.13.10"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
   integrity sha1-R9QqV7YJX0Ro2kQDiP262L6/DX0=
@@ -1119,11 +1119,11 @@
 
 "@choerodon/boot@0.23.0-test":
   version "0.23.0-test"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@choerodon/boot/-/boot-0.23.0-test.tgz#34abfaef34dee7b3576554f33d82daa921e68c64"
-  integrity sha512-Xn/EnNXgNWUx4B2J9fpXApXkxNFcwnLPVcFcomMKPIEcgJQI2vV602Ts/pg4a0fA7xFaYQudgimdNFgKPbq51w==
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@choerodon/boot/-/boot-0.23.0-test.tgz#d8439f6fb64b9654890bcab74a36ebbf78907f4f"
+  integrity sha512-9FFdURBnA0qNGDC5cFM+Z2aDsbULw07hMRXec6K++T17T4HgCLgqAs5gyQNIq0aUegbD7YNMmfc64209Uanosw==
   dependencies:
     "@babel/cli" "^7.8.4"
-    "@hzero-front-ui/cfg" "^2.0.7-alpha-c7n.6"
+    "@hzero-front-ui/cfg" "2.0.7-alpha-c7n.24"
     "@pmmmwh/react-refresh-webpack-plugin" "^0.4.3"
     "@types/webpack" "^4.41.24"
     address "1.1.2"
@@ -1692,48 +1692,28 @@
     normalize-path "^2.0.1"
     through2 "^2.0.3"
 
-"@hzero-front-ui/c7n-ui@^2.0.7-alpha-c7n.23":
-  version "2.0.7-alpha-c7n.23"
-  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/c7n-ui/-/c7n-ui-2.0.7-alpha-c7n.23.tgz#edd645e3f2596cc5cbbfd598815e06a490f25c16"
-  integrity sha512-3uFfoc0T0TIHpkSbTasP9OdiXtd2RceunwVMr9TlRnm/EUh/rAgb3kcRTsRwf2OfJLlq/uIkRbmsK+bkfBEsfA==
+"@hzero-front-ui/c7n-ui@2.0.7-alpha-c7n.24":
+  version "2.0.7-alpha-c7n.24"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/c7n-ui/-/c7n-ui-2.0.7-alpha-c7n.24.tgz#718294ad4cd00dcf9a8b0eac96bfde0dd636b3ac"
+  integrity sha512-HvmU+Hkgmf8DM3p6j6s+z/IL/P1xkUGH6aTYW/z2NCqyG2J/pxyHm2VfMWBpP7PqkecoZfKlU8Fc1TFp/ePqJw==
 
-"@hzero-front-ui/c7n-ui@^2.0.9":
-  version "2.0.9"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@hzero-front-ui/c7n-ui/-/c7n-ui-2.0.9.tgz#eeb4e4b68c7032ccfe69f17022e0dc87b139c168"
-  integrity sha512-M1i4sRcTwIhrySSjQ1jH+WGudUcj9D/JzlXVdzK5JSzfVyfDWsS2qt4pNqhD0By8puXZEpFLJSS195j/O8YRdg==
-
-"@hzero-front-ui/cfg@^2.0.7-alpha-c7n.23":
-  version "2.0.7-alpha-c7n.23"
-  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/cfg/-/cfg-2.0.7-alpha-c7n.23.tgz#47f922d390b123335594196878eb2c3c069ca3c2"
-  integrity sha512-kW0t2GMM0I8cE5uc0vDdYY7RHBS6A8x3f/dWnCG3YJxAZ6h2z68km4D04Rc5xk0lFqdlJZocv21OTyqqaojxAw==
+"@hzero-front-ui/cfg@2.0.7-alpha-c7n.24":
+  version "2.0.7-alpha-c7n.24"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/cfg/-/cfg-2.0.7-alpha-c7n.24.tgz#68a3b24aeddcca1dea3a28f6a7094cde73ed423b"
+  integrity sha512-C1n0FhnoF/udBdlzYY8BFK6UvesuUTOsyG0A04qfSZJi7LDdROWXNRYE7GQ7JWbkhO5m2yFPyJMaO1BQafuwtA==
   dependencies:
-    "@hzero-front-ui/font" "^2.0.5-alpha-c7n.23"
+    "@hzero-front-ui/font" "^2.0.5-alpha-c7n.24"
     memoize-one "^5.1.1"
 
-"@hzero-front-ui/cfg@^2.0.7-alpha-c7n.6":
+"@hzero-front-ui/font@^2.0.5-alpha-c7n.24":
   version "2.0.9"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@hzero-front-ui/cfg/-/cfg-2.0.9.tgz#62e5c03ced10bebbb8f350deba4f39d2ed946ac2"
-  integrity sha512-yYOF1kSvvYW6+CpyYMJtn/dYxGUzWQ/F1j0JfqwJpDWz4szGSLGLr0/Yia3Q0jQOygVYEPXZI0n2+uGmmlj8IA==
-  dependencies:
-    "@hzero-front-ui/c7n-ui" "^2.0.9"
-    "@hzero-front-ui/font" "^2.0.9"
-    "@hzero-front-ui/hzero-ui" "^2.0.9"
-    memoize-one "^5.1.1"
-
-"@hzero-front-ui/font@^2.0.5-alpha-c7n.23", "@hzero-front-ui/font@^2.0.9":
-  version "2.0.9"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@hzero-front-ui/font/-/font-2.0.9.tgz#70de01a4a98ba94b7f8b513551a92339637b223c"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/font/-/font-2.0.9.tgz#70de01a4a98ba94b7f8b513551a92339637b223c"
   integrity sha512-YLsu+iZEXzKRr07m2txqftOWOa39pbM1uWmy3RkxgRwfe8cAIeZDpMoMZsz9yoRC9Ar/t9rDkzvi4H8SMfm7SQ==
 
-"@hzero-front-ui/hzero-ui@^2.0.7-alpha-c7n.23":
-  version "2.0.7-alpha-c7n.23"
-  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/hzero-ui/-/hzero-ui-2.0.7-alpha-c7n.23.tgz#a29c0fd5d664b72e3db1809c7a2a22804d7490ba"
-  integrity sha512-mMZF1QTbnWzLAbEwFUEMLVSwsfXGCfyNXVUjvcCE7IaijbyFW+6gFnimY5tGHE/TacNV9JCc3IVXCQ8X3AN42A==
-
-"@hzero-front-ui/hzero-ui@^2.0.9":
-  version "2.0.9"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@hzero-front-ui/hzero-ui/-/hzero-ui-2.0.9.tgz#95e8d7f32f9c6eae4fcbe546fdb73d8bf908e967"
-  integrity sha512-bk4JSqLFmchXZrFCB24yFBiFsNPQJaX23YmM0vBAZNe8ik26mgnTFbhykjWd6j4N3/yBt9O6e7HPN3PslAwu2g==
+"@hzero-front-ui/hzero-ui@2.0.7-alpha-c7n.24":
+  version "2.0.7-alpha-c7n.24"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/hzero-ui/-/hzero-ui-2.0.7-alpha-c7n.24.tgz#0cee065efdc59e9d5cd13a285ab8647479b59204"
+  integrity sha512-PWLgNiKXop/H3eRHP16EGRRpL5Pq0SvAcrTpG4H3P4vwRqj/87J4Tp+BfEkllpFjjIrJYZDdsCXyZzJHAmgV+Q==
 
 "@icons/material@^0.2.4":
   version "0.2.4"
@@ -2031,9 +2011,9 @@
     eslint-visitor-keys "^2.0.0"
 
 "@umijs/babel-plugin-auto-css-modules@^3.1.3":
-  version "3.3.11"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@umijs/babel-plugin-auto-css-modules/-/babel-plugin-auto-css-modules-3.3.11.tgz#b834b0712c29c21db86b028af7f78aa0312d61cb"
-  integrity sha1-uDSwcSwpwh24awKK9/eKoDEtYcs=
+  version "3.4.3"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@umijs/babel-plugin-auto-css-modules/-/babel-plugin-auto-css-modules-3.4.3.tgz#3e739beddfc701c58d698870980a9b1654e79e13"
+  integrity sha1-PnOb7d/HAcWNaYhwmAqbFlTnnhM=
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
@@ -2249,11 +2229,11 @@ adler-32@~1.2.0:
     printj "~1.1.0"
 
 ahooks@^2.9.6:
-  version "2.9.6"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/ahooks/-/ahooks-2.9.6.tgz#afde34cc7af722da1c724fddf75c9191672ac2f5"
-  integrity sha1-r940zHr3Itocck/d91yRkWcqwvU=
+  version "2.10.0"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/ahooks/-/ahooks-2.10.0.tgz#bec2c0b928115afd6d268e67770146988347675c"
+  integrity sha1-vsLAuSgRWv1tJo5ndwFGmINHZ1w=
   dependencies:
-    "@ahooksjs/use-request" "^2.8.3"
+    "@ahooksjs/use-request" "^2.8.4"
     "@types/js-cookie" "^2.2.6"
     dayjs "^1.9.1"
     intersection-observer "^0.7.0"
@@ -2285,9 +2265,9 @@ ajv@^6.0.1, ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.3, ajv@^6.12.4, ajv@
     uri-js "^4.2.2"
 
 ajv@^7.0.2:
-  version "7.2.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/ajv/-/ajv-7.2.1.tgz#a5ac226171912447683524fa2f1248fcf8bac83d"
-  integrity sha1-pawiYXGRJEdoNST6LxJI/Pi6yD0=
+  version "7.2.3"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/ajv/-/ajv-7.2.3.tgz#ca78d1cf458d7d36d1c3fa0794dd143406db5772"
+  integrity sha1-ynjRz0WNfTbRw/oHlN0UNAbbV3I=
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"
@@ -3334,9 +3314,9 @@ camelize@^1.0.0:
   integrity sha1-FkpUg+Yw+kMh5a8HAg5TGDGyYJs=
 
 caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
-  version "1.0.30001203"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/caniuse-db/-/caniuse-db-1.0.30001203.tgz#0f5ea5839ad51da3e79b12ffd66d1df1b56af91d"
-  integrity sha1-D16lg5rVHaPnmxL/1m0d8bVq+R0=
+  version "1.0.30001204"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/caniuse-db/-/caniuse-db-1.0.30001204.tgz#95959fa4ebf08c871eff3274518e382cd0f8a223"
+  integrity sha1-lZWfpOvwjIce/zJ0UY44LND4oiM=
 
 caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000805, caniuse-lite@^1.0.30001043, caniuse-lite@^1.0.30001181:
   version "1.0.30001203"
@@ -4677,9 +4657,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.30, electron-to-chromium@^1.3.413, electron-to-chromium@^1.3.649:
-  version "1.3.692"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/electron-to-chromium/-/electron-to-chromium-1.3.692.tgz#4d00479055a7282cdd1b19caec09ed7779529640"
-  integrity sha1-TQBHkFWnKCzdGxnK7Antd3lSlkA=
+  version "1.3.693"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/electron-to-chromium/-/electron-to-chromium-1.3.693.tgz#5089c506a925c31f93fcb173a003a22e341115dd"
+  integrity sha1-UInFBqklwx+T/LFzoAOiLjQRFd0=
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
@@ -9856,15 +9836,15 @@ rc-virtual-list@^1.1.1:
     rc-util "^5.0.0"
 
 react-beautiful-dnd@^13.0.0:
-  version "13.0.0"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/react-beautiful-dnd/-/react-beautiful-dnd-13.0.0.tgz#f70cc8ff82b84bc718f8af157c9f95757a6c3b40"
-  integrity sha1-9wzI/4K4S8cY+K8VfJ+VdXpsO0A=
+  version "13.1.0"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/react-beautiful-dnd/-/react-beautiful-dnd-13.1.0.tgz#ec97c81093593526454b0de69852ae433783844d"
+  integrity sha1-7JfIEJNZNSZFSw3mmFKuQzeDhE0=
   dependencies:
-    "@babel/runtime" "^7.8.4"
+    "@babel/runtime" "^7.9.2"
     css-box-model "^1.2.0"
     memoize-one "^5.1.1"
     raf-schd "^4.0.2"
-    react-redux "^7.1.1"
+    react-redux "^7.2.0"
     redux "^4.0.4"
     use-memo-one "^1.1.1"
 
@@ -10072,7 +10052,7 @@ react-redux@^5.0.7:
     react-is "^16.6.0"
     react-lifecycles-compat "^3.0.0"
 
-react-redux@^7.1.1:
+react-redux@^7.2.0:
   version "7.2.2"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/react-redux/-/react-redux-7.2.2.tgz#03862e803a30b6b9ef8582dadcc810947f74b736"
   integrity sha1-A4YugDowtrnvhYLa3MgQlH90tzY=
