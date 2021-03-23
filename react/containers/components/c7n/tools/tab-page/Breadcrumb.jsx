@@ -161,7 +161,7 @@ const Breadcrumb = ({
         'theme4-page-breadcrumb': isTheme4,
       })}
       style={{
-        marginBottom: isTab ? '33px' : 'auto',
+        marginBottom: isTab && !isTheme4 ? '33px' : 'auto',
       }}
     >
       <Bread separator={icon}>
