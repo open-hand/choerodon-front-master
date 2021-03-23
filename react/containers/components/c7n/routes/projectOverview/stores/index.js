@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
 import { forEach, get } from 'lodash';
+import moment from 'moment';
 import SprintCountDataSet from './SprintCountDataSet';
 import useStore from './useStore';
 import SprintWaterWaveDataSet from './SprintWaterWaveDataSet';
@@ -26,6 +27,7 @@ import AssigneeChartDsDataSet from './AssigneeChartDsDataSet';
 import PriorityChartDsDataSet from './PriorityChartDsDataSet';
 import IssueTypeChartDsDataSet from './IssueTypeChartDataSet';
 import IssueTableDataSet from './IssueTableDataSet';
+import ProjectDynamicDataSet from './ProjectDynamicDataSet';
 import { localPageCacheStore } from './LocalPageCacheStore';
 
 const Store = createContext();
@@ -89,6 +91,10 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
 
   // 冲刺详情 ds
   const issueTableDs = useMemo(() => new DataSet(IssueTableDataSet({ projectId, startedRecord, organizationId })), [organizationId, projectId, startedRecord]);
+
+  const projectDynamicDs = useMemo(() => new DataSet(ProjectDynamicDataSet({
+    projectId, startedRecord, organizationId,
+  })), [organizationId, projectId, startedRecord]);
 
   const loadBurnDownData = useCallback(async () => {
     try {
@@ -173,7 +179,11 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
         issueTableDs.query();
       }
     },
-  }), [appServiceDs, assigneeChartDs, commitDs, defectCountDs, defectTreatDs, deployDs, envDs, issueTableDs, issueTypeChartDs, loadBurnDownData, pipelineDs, priorityChartDs, sprintCountDataSet, sprintWaterWaveDataSet, startedRecord, userListDs]);
+    projectDynamic: () => {
+      projectDynamicDs.setQueryParameter('startDate', `${moment().format('YYYY-MM-DD')} 00:00:00`);
+      projectDynamicDs.query();
+    },
+  }), [appServiceDs, assigneeChartDs, commitDs, defectCountDs, defectTreatDs, deployDs, envDs, issueTableDs, issueTypeChartDs, loadBurnDownData, pipelineDs, priorityChartDs, projectDynamicDs, sprintCountDataSet, sprintWaterWaveDataSet, startedRecord, userListDs]);
 
   useEffect(() => {
     const existCps = projectOverviewStore.queryComponents.slice();
@@ -213,6 +223,7 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
     cpOptsObj,
     MenuStore,
     allCode: getAllCode(),
+    projectDynamicDs,
   };
 
   return (
