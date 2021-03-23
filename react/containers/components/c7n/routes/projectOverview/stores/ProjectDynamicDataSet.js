@@ -1,4 +1,4 @@
-import { projectDynamicApiConfig } from '../components/project-dynamic/api/ProjectDynamic';
+import { projectDynamicApiConfig } from '../components/project-dynamic/api';
 
 const ProjectDynamicDataSet = ({
   projectId, startedRecord, organizationId, projectDynamicSearchDs,
