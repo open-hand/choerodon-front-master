@@ -62,7 +62,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         </li>
       );
     }
-    return null;
+    return <span style={{ margin: '0 0 0 20px' }} />;
   };
 
   const {

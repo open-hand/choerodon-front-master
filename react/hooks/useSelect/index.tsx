@@ -1,6 +1,7 @@
 import React, {
   useState, useMemo, useEffect, useRef, useImperativeHandle, useCallback,
 } from 'react';
+// @ts-ignore
 import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 import { omit, debounce } from 'lodash';
 import { Button, DataSet, Tooltip } from 'choerodon-ui/pro';
