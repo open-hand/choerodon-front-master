@@ -1,4 +1,6 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, {
+  useCallback, useMemo, useRef, useImperativeHandle,
+} from 'react';
 import { observer } from 'mobx-react-lite';
 import { DataSet, DatePicker } from 'choerodon-ui/pro';
 import { debounce, includes } from 'lodash';
@@ -23,7 +25,6 @@ const DynamicSearch = () => {
     name, value,
   }) => {
     if (name === 'dateRange') {
-      console.log(name, value);
       if (value) {
         projectDynamicDs.setQueryParameter('startDate', (value[0] && value[0].startOf('day').format('YYYY-MM-DD HH:mm:ss')) || currentProject.creationDate);
         projectDynamicDs.setQueryParameter('endDate', value[1] && value[1].endOf('day').format('YYYY-MM-DD HH:mm:ss'));

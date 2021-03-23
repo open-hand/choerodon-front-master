@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
   Button, Icon, Spin,
 } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
-
+import EmptyPage from '../EmptyPage';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import issueFieldsMap from './IssueFieldsMap';
@@ -23,7 +23,6 @@ const ProjectDynamic = () => {
     projectDynamicDs.queryMore(projectDynamicDs.currentPage + 1);
   }, [projectDynamicDs]);
 
-  console.log(projectDynamicDs.totalPage, projectDynamicDs.currentPage);
   return (
     <OverviewWrap>
       <OverviewWrap.Header
@@ -36,16 +35,18 @@ const ProjectDynamic = () => {
       </OverviewWrap.Header>
       <OverviewWrap.Content className={`${clsPrefix}-wrap`}>
         <Spin spinning={projectDynamicDs.status === 'loading'}>
-          <div className={`${clsPrefix}-content`}>
-            <Logs
-              datalogs={projectDynamicDs.toData()}
-              fieldsMap={fieldsMap}
-            />
-            <div style={{
-              marginTop: 10,
-            }}
-            >
-              {
+          {
+            projectDynamicDs.toData().length > 0 ? (
+              <div className={`${clsPrefix}-content`}>
+                <Logs
+                  datalogs={projectDynamicDs.toData()}
+                  fieldsMap={fieldsMap}
+                />
+                <div style={{
+                  marginTop: 10,
+                }}
+                >
+                  {
                 projectDynamicDs.totalPage > projectDynamicDs.currentPage && (
                   <Button
                     onClick={handleLoadMore}
@@ -58,8 +59,12 @@ const ProjectDynamic = () => {
                   </Button>
                 )
               }
-            </div>
-          </div>
+                </div>
+              </div>
+            ) : (
+              <EmptyPage content="当前条件下暂无动态" />
+            )
+          }
         </Spin>
       </OverviewWrap.Content>
     </OverviewWrap>
