@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import classNames from 'classnames';
 import { Icon } from 'choerodon-ui';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { HEADER_TITLE_NAME } from '@/utils/constants';
+import { Context } from '../tab-page/PageWrap';
+import useTheme from "@/hooks/useTheme";
 
 const PageContent = ({
-  intl, AppState: { currentMenuType: { name = HEADER_TITLE_NAME }, getCurrentTheme, },
+  intl, AppState: { currentMenuType: { name = HEADER_TITLE_NAME } },
   values, className, code, children, style, title, description, link,
   ...props
 }) => {
+  const { isTab } = useContext(Context) || {};
+  const [theme] = useTheme();
   const classString = classNames('page-content', className, {
-    'theme4-page-content': getCurrentTheme === 'theme4',
+    'page-content-theme4': isTab && theme === 'theme4',
   });
   if (code) {
     const { messages } = intl;

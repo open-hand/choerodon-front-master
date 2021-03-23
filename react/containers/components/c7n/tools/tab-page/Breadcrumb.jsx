@@ -1,4 +1,4 @@
-import React, { Component, useContext, useEffect } from 'react';
+import React, {Component, useContext, useEffect, useMemo} from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { toJS } from 'mobx';
@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import { withRouter, Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { Breadcrumb as Bread, Icon } from 'choerodon-ui';
+import useTheme from '@/hooks/useTheme';
 import { Context } from './PageWrap';
 import './style/Bread.less';
 
@@ -15,6 +16,8 @@ const Breadcrumb = ({
   title, AppState, HeaderStore, MenuStore, history, custom, children, extraNode, ...props
 }) => {
   const { isTab } = useContext(Context);
+  const [theme] = useTheme();
+  const isTheme4 = useMemo(() => theme === 'theme4', [theme]);
 
   function getOrganization() {
     const { currentMenuType: { organizationId } } = AppState;
@@ -59,8 +62,8 @@ const Breadcrumb = ({
     if (isTypeUser) {
       return (
         <Item className={classNames({
-          'c7ncd-theme4-bread-menu': AppState.getCurrentTheme === 'theme4',
-          'c7n-breadcrumb-link': AppState.getCurrentTheme !== 'theme4',
+          'c7ncd-theme4-bread-menu': isTheme4,
+          'c7n-breadcrumb-link': !isTheme4,
         })}
         >
           {name}
@@ -70,8 +73,8 @@ const Breadcrumb = ({
     if (type === 'site' && history.location.pathname !== '/buzz/cooperate') {
       return (
         <Item className={classNames({
-          'c7ncd-theme4-bread-menu': AppState.getCurrentTheme === 'theme4',
-          'c7n-breadcrumb-link': AppState.getCurrentTheme !== 'theme4',
+          'c7ncd-theme4-bread-menu': isTheme4,
+          'c7n-breadcrumb-link': !isTheme4,
         })}
         >
           平台管理
@@ -81,8 +84,8 @@ const Breadcrumb = ({
     if (type === 'organization' || history.location.pathname === '/buzz/cooperate') {
       return (
         <Item className={classNames({
-          'c7ncd-theme4-bread-menu': AppState.getCurrentTheme === 'theme4',
-          'c7n-breadcrumb-link': AppState.getCurrentTheme !== 'theme4',
+          'c7ncd-theme4-bread-menu': isTheme4,
+          'c7n-breadcrumb-link': !isTheme4,
         })}
         >
           {getOrganization().name || ''}
@@ -92,8 +95,8 @@ const Breadcrumb = ({
     if (type === 'project') {
       return (
         <Item className={classNames({
-          'c7ncd-theme4-bread-menu': AppState.getCurrentTheme === 'theme4',
-          'c7n-breadcrumb-link': AppState.getCurrentTheme !== 'theme4',
+          'c7ncd-theme4-bread-menu': isTheme4,
+          'c7n-breadcrumb-link': !isTheme4,
         })}
         >
           {name}
@@ -121,8 +124,8 @@ const Breadcrumb = ({
     if (!currentMenu) return null;
     return (
       <Item className={classNames({
-        'c7ncd-theme4-bread-menu': AppState.getCurrentTheme === 'theme4',
-        'c7n-breadcrumb-link': AppState.getCurrentTheme !== 'theme4',
+        'c7ncd-theme4-bread-menu': isTheme4,
+        'c7n-breadcrumb-link': !isTheme4,
       })}
       >
         {
@@ -134,14 +137,14 @@ const Breadcrumb = ({
     );
   }
 
-  const icon = AppState.getCurrentMenu === 'theme4' ? <span style={{ width: 1, heigth: 12, background: 'rgba(15,19,88,0.65)' }} /> : <Icon type="keyboard_arrow_right" style={{ color: 'rgba(0, 0, 0, .54)', fontSize: '.2rem' }} />;
+  const icon = isTheme4 ? <span style={{ width: 1, heigth: 12, background: 'rgba(15,19,88,0.65)' }} /> : <Icon type="keyboard_arrow_right" style={{ color: 'rgba(0, 0, 0, .54)', fontSize: '.2rem' }} />;
 
   if (custom) {
     return (
       <section
         className="page-breadcrumb"
         style={{
-          marginBottom: isTab ? '33px' : 'auto',
+          marginBottom: isTab && !isTheme4 ? '33px' : 'auto',
         }}
       >
         <Bread separator={icon}>
@@ -155,7 +158,7 @@ const Breadcrumb = ({
   return (
     <section
       className={classNames('page-breadcrumb', {
-        'theme4-page-breadcrumb': AppState.getCurrentTheme === 'theme4',
+        'theme4-page-breadcrumb': isTheme4,
       })}
       style={{
         marginBottom: isTab ? '33px' : 'auto',
@@ -163,7 +166,7 @@ const Breadcrumb = ({
     >
       <Bread separator={icon}>
         {
-          AppState.getCurrentTheme === 'theme4' ? (
+          isTheme4 ? (
             <>
               {renderMenus()}
               {renderName()}
