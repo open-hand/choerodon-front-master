@@ -3,7 +3,7 @@ import { AxiosRequestConfig } from 'axios';
 import AppState from '@/containers/stores/c7n/AppState';
 import globalCache from './Cache';
 
-interface RequestConfig extends AxiosRequestConfig {
+export interface RequestConfig extends AxiosRequestConfig {
   cache?: boolean
   noPrompt?: boolean
 }
