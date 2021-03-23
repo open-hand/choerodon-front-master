@@ -1,0 +1,17 @@
+@import '~choerodon-ui/lib/style/themes/default';
+
+body[data-theme='theme4'] {
+  // 页面中只有一个表格的特殊样式
+  .page-content-table,
+  .page-content > .@{c7n-pro-prefix}-table-wrapper:first-child {
+    margin-top: -6px;
+
+    .@{c7n-pro-prefix}-table-filter-select {
+      border-top: none !important;
+    }
+
+    .@{c7n-prefix}-table-filter-select {
+      border-top: none !important;
+    }
+  }
+}
