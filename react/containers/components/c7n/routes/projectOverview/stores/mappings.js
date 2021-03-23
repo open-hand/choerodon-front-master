@@ -13,6 +13,7 @@ import assigneeChart from '../img/12.png';
 import priorityChart from '../img/13.png';
 import issueTypeChart from '../img/14.png';
 import issueTable from '../img/15.png';
+import projectDynamic from '../img/16.svg';
 
 const componentsObj = {
   // 冲刺未完成统计
@@ -295,6 +296,25 @@ const componentsObj = {
     describe:
       '此模块显示该项目下所有在线的团队成员。',
     img: onlineMember,
+  },
+  // 项目动态
+  projectDynamic: {
+    layout: {
+      h: 6,
+      i: 'projectDynamic',
+      minH: 5,
+      minW: 10,
+      w: 10,
+      x: 0,
+      y: 29,
+    },
+    name: 'projectDynamic',
+    type: 'projectDynamic',
+    groupId: 'agile',
+    title: '项目动态',
+    describe:
+      '此模块展示此项目下动态列表。',
+    img: projectDynamic,
   },
 };
 

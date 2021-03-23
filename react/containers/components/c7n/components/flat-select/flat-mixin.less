@@ -1,0 +1,113 @@
+.flat-mixin(@type) {
+
+  .flat-@{type} {
+    border-radius: 0.03rem;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .c7n-pro-@{type}-clear-button {
+      right: 15px;
+      top: 3px;
+    }
+
+    &-multiple-text {
+      padding-left: 5px;
+      white-space: nowrap;
+      line-height: 34px;
+      vertical-align: middle;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      display: inline-block;
+    }
+
+    .c7n-pro-@{type} > ul {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 27px;
+    }
+
+    .c7n-pro-@{type} {
+      border: none;
+      height: 34px;
+      cursor: pointer;
+      text-overflow: ellipsis;
+      max-width: calc(100% - 17px);
+      display: flex;
+      padding-right: 17px !important;
+
+      li {
+        list-style: none;
+      }
+    }
+
+    .c7n-pro-@{type}::placeholder {
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    .c7n-pro-@{type}-placeholder {
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    .c7n-pro-@{type}-multiple-block {
+      border-radius: 14px;
+    }
+
+    .c7n-pro-@{type}-multiple-value {
+      width: 0;
+    }
+
+    .c7n-pro-@{type}-suffix {
+      top: 4px;
+    }
+
+    
+
+    .c7n-pro-@{type}-trigger {
+      transform: none;
+    }
+
+    .@{type}-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      white-space: nowrap;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .renderer-value {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      max-width: 100%;
+    }
+  }
+  .flat-@{type}.c7n-pro-@{type}-expand {
+    .c7n-pro-@{type}-placeholder {
+      color: rgba(0, 0, 0, 0.3);
+    }
+  }
+  // 没有值间距小一点
+  .flat-@{type}.c7n-pro-@{type}-empty {
+    .c7n-pro-@{type} {
+      padding-right: 0 !important;
+    }
+  }
+
+  .flat-@{type}.c7n-pro-@{type}-multiple {
+    .c7n-pro-@{type} {
+      max-width: 100%;
+      padding-right: 32px !important;
+    }
+  }
+
+  .flat-@{type} {
+    .c7n-pro-@{type}-no-clearButton {
+      padding-right: 0 !important;
+    }
+  }
+}
