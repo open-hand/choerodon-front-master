@@ -22,7 +22,7 @@ const InitUiConfigMaster = ({ AutoRouter }) => {
         tableHighLightRow: false,
         tableRowHeight: 32,
         tableColumnResizable: false,
-        modalSectionBorder: false,
+        modalSectionBorder: true,
         modalOkFirst: false,
         modalKeyboard: false,
         drawerOkFirst: true,
