@@ -1,11 +1,12 @@
-import React, { createContext, useContext, useEffect } from 'react';
-import useStore from './useStore';
+import React, { createContext, useContext, useMemo } from 'react';
 import { inject } from 'mobx-react';
 
 import { observer } from 'mobx-react-lite';
 
-import moment from 'moment';
+import { DataSet } from 'choerodon-ui/pro';
+import useStore from './useStore';
 import { useProjectOverviewStore } from '../../../stores';
+import defectTreatmentDataSet from './DefectTreatmentDataSet';
 
 const Store = createContext();
 
@@ -21,9 +22,16 @@ export const StoreProvider = inject('AppState')(observer((props) => {
 
   const defectTreatmentStore = useStore(organizationId, projectId);
 
+  const {
+    startedRecord,
+  } = useProjectOverviewStore();
+
+  const defectTreatDs = useMemo(() => new DataSet(defectTreatmentDataSet({ startedRecord, projectId })), [projectId, startedRecord]);
+
   const value = {
     ...props,
     defectTreatmentStore,
+    defectTreatDs,
   };
   return (
     <Store.Provider value={value}>

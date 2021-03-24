@@ -6,16 +6,16 @@ import { DataSet, DatePicker } from 'choerodon-ui/pro';
 import { debounce, includes } from 'lodash';
 import moment from 'moment';
 import AppState from '@/containers/stores/c7n/AppState';
-import { useProjectOverviewStore } from '../../../../stores';
 import SelectUser from '../select/select-user';
 import SelectType, { IDynamicType } from '../select/select-type';
+import { useProjectDynamicChartStore } from '../../stores';
 
 const IssueTypeCodeArr = ['task', 'story', 'bug', 'sub_task', 'issue_epic', 'feature'];
 const DynamicSearch = () => {
   const clsPrefix = 'c7n-project-overview-projectDynamic-search';
   const {
     projectDynamicDs,
-  } = useProjectOverviewStore();
+  } = useProjectDynamicChartStore();
 
   const currentProject = AppState.getCurrentProject;
   const typeDataRef = useRef<IDynamicType[]>();

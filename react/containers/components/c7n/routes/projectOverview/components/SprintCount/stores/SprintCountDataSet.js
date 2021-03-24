@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 
 export default (({ projectId, sprint }) => ({
-  autoQuery: false,
+  autoQuery: true,
   selection: false,
   paging: false,
   dataKey: null,
@@ -12,10 +12,9 @@ export default (({ projectId, sprint }) => ({
     },
   },
   fields: [
-    // { name: 'total', label: '问题总数' },
     { name: 'completedCount', label: '已完成' },
     { name: 'uncompletedCount', label: '未完成' },
     { name: 'todoCount', label: '待处理' },
-    { name: 'unassignCount', label: '未分配' }
+    { name: 'unassignCount', label: '未分配' },
   ],
 }));

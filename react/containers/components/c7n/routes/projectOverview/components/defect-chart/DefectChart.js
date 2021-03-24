@@ -1,6 +1,4 @@
-import React, {
-  useState, memo, useMemo, useEffect,
-} from 'react';
+import React from 'react';
 import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
@@ -9,10 +7,14 @@ import OverviewWrap from '../OverviewWrap';
 import './index.less';
 import EmptyPage from '../EmptyPage';
 import { useProjectOverviewStore } from '../../stores';
+import { useDefectChartStore } from './stores';
 
 const DefectChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-defect-chart';
-  const { startedRecord, startSprintDs, defectCountDs } = useProjectOverviewStore();
+  const { startedRecord, startSprintDs } = useProjectOverviewStore();
+  const {
+    defectCountDs,
+  } = useDefectChartStore();
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>

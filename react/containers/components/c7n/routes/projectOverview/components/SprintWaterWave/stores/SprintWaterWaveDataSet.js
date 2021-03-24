@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 export default (({ projectId, sprint }) => ({
-  autoQuery: false,
+  autoQuery: true,
   selection: false,
   paging: false,
   dataKey: null,
