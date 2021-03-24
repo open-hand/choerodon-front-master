@@ -5,7 +5,7 @@ export default ({ projectId, startedRecord, organizationId }) => ({
   paging: false,
   autoQuery: true,
   transport: {
-    read: ({ data }) => ({
+    read: ({ data }) => (startedRecord ? {
       method: 'get',
       url: `/agile/v1/projects/${projectId}/iterative_worktable/priority`,
       params: {
@@ -13,6 +13,6 @@ export default ({ projectId, startedRecord, organizationId }) => ({
         sprintId: get(startedRecord, 'sprintId'),
       },
 
-    }),
+    } : {}),
   },
 });

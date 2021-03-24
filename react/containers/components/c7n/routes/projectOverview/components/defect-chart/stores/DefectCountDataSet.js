@@ -7,7 +7,7 @@ export default ({ projectId, startedRecord }) => ({
   paging: false,
   autoQuery: true,
   transport: {
-    read: ({ data }) => ({
+    read: ({ data }) => (startedRecord ? {
       method: 'get',
       url: `/agile/v1/projects/${projectId}/project_overview/${get(startedRecord, 'sprintId')}/issue_count`,
       transformResponse: (value) => {
@@ -43,6 +43,6 @@ export default ({ projectId, startedRecord }) => ({
           throw new Error(error);
         }
       },
-    }),
+    } : {}),
   },
 });
