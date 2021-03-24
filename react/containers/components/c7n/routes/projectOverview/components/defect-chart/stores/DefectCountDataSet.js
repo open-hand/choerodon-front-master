@@ -5,7 +5,7 @@ import moment from 'moment';
 /* eslint-disable import/no-anonymous-default-export */
 export default ({ projectId, startedRecord }) => ({
   paging: false,
-  autoQuery: false,
+  autoQuery: true,
   transport: {
     read: ({ data }) => ({
       method: 'get',

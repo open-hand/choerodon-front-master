@@ -18,11 +18,19 @@ import EmptyPage from '../EmptyPage';
 const { Option } = Select;
 const BurnDownChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-burn-down-chart';
-  const { burnDownChartStore } = useBurnDownChartStore();
+  const { 
+    burnDownChartStore,     
+    chartDs,
+    loadBurnDownData,
+  } = useBurnDownChartStore();
+
+  useEffect(()=>{
+    loadBurnDownData();
+  },[]);
+
   const {
     startedRecord,
     startSprintDs,
-    chartDs,
   } = useProjectOverviewStore();
 
   const {

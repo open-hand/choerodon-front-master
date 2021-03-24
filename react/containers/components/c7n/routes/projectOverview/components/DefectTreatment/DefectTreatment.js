@@ -9,24 +9,26 @@ import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
+import { useDefectTreatmentStore } from './stores';
 
 const DefectTreatment = observer(() => {
   const options = useMemo(() => [{ value: 'created', text: '提出' }, { value: 'completed', text: '解决' }], []);
   const clsPrefix = 'c7n-project-overview-defect-treatment';
   const [charOption, setCharOption] = useState('created'); // createdList completedList
-  const { startedRecord, startSprintDs, defectTreatDs } = useProjectOverviewStore();
+  const { startedRecord, startSprintDs } = useProjectOverviewStore();
+  const {
+    defectTreatDs,
+  } = useDefectTreatmentStore();
 
   function getOptions() {
     return {
       legend: {
-        // type: 'roundRect',
         zlevel: 5,
         icon: 'path://m 7.25,0.018229 h 5.5 c 3.878,0 7,2.1928333 7,4.9166665 0,2.7238333 -3.122,4.9166665 -7,4.9166665 h -5.5 c -3.878,0 -7,-2.1928332 -7,-4.9166665 0,-2.7238332 3.122,-4.9166665 7,-4.9166665 z',
         itemWidth: 20,
         itemHeight: 10,
         borderRadius: 20,
         top: 0,
-        // bottom: 0,
         right: 8,
       },
       grid: {
@@ -98,7 +100,6 @@ const DefectTreatment = observer(() => {
       series: [
         {
           type: 'bar',
-          // color: 'green',
           name: charOption === 'created' ? '提出' : '解决',
           color: charOption === 'created' ? 'rgba(249, 136, 148, 1)' : 'rgba(136, 223, 240, 1)',
           barWidth: 10,

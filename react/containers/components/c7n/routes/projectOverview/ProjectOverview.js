@@ -51,7 +51,6 @@ const ProjectOverview = () => {
     prefixCls,
     projectOverviewStore,
     componentsDs,
-    cpOptsObj,
     allCode,
   } = useProjectOverviewStore();
 
@@ -109,7 +108,6 @@ const ProjectOverview = () => {
   }
 
   function addComponent(types) {
-    const existCps = projectOverviewStore.queryComponents;
     forEach(types, (type) => {
       const {
         layout,
@@ -120,10 +118,6 @@ const ProjectOverview = () => {
         y: Infinity,
       };
       componentsDs.create(tempCp);
-      if (!existCps.includes(type)) {
-        cpOptsObj[type]();
-        projectOverviewStore.addQueryComponents(type);
-      }
     });
   }
 
@@ -161,10 +155,6 @@ const ProjectOverview = () => {
   function handleReset() {
     const defaultValues = map(mappings, (item) => item.layout);
     componentsDs.loadData(defaultValues);
-    const withoutData = without(keys(cpOptsObj), projectOverviewStore.queryComponents);
-    forEach(withoutData, (item) => {
-      cpOptsObj[item]();
-    });
   }
 
   function handleResetModal() {

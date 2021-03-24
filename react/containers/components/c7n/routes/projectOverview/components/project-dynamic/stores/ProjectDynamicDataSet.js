@@ -1,8 +1,6 @@
-import { projectDynamicApiConfig } from '../components/project-dynamic/api';
+import { projectDynamicApiConfig } from '../api';
 
-const ProjectDynamicDataSet = ({
-  projectId, startedRecord, organizationId, projectDynamicSearchDs,
-}) => ({
+const ProjectDynamicDataSet = () => ({
   paging: true,
   autoQuery: false,
   pageSize: 20,
