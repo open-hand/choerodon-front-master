@@ -11,6 +11,7 @@ const InitUiConfigMaster = ({ AutoRouter }) => {
       const uiConfigure = UI_CONFIGURE || {};
       configure({
         ...uiConfigure,
+        modalMaskClosable: 'dblclick',
         axios: uiAxios,
         dataKey: 'list',
         labelLayout: 'float',
