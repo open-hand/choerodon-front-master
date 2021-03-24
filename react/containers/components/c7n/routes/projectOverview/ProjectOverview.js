@@ -187,24 +187,29 @@ const ProjectOverview = () => {
         <Button
           {...primaryBtnObj}
           onClick={openAddComponents}
+          key="5"
         >
           添加卡片
         </Button>,
         <Button
           {...primaryBtnObj}
           onClick={hanldeSave}
+          key="4"
         >
           保存
         </Button>,
         <Button
           {...secondBtnObj}
           onClick={handleResetModal}
+          key="3"
         >
           重置
         </Button>,
         <Button
           {...secondBtnObj}
           onClick={handleCancel}
+          key="2"
+
         >
           取消
         </Button>,
@@ -214,6 +219,7 @@ const ProjectOverview = () => {
         <Button
           {...secondBtnObj}
           onClick={handleEditable}
+          key="1"
         >
           项目概览配置
         </Button>,
