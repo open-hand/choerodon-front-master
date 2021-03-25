@@ -25,17 +25,15 @@ const GridBg = ({
 
   const renderCol = useCallback(() => {
     if (cols && rows) {
-      const tempArr = new Array(cols * rows).fill(0);
-      return (
-        map(tempArr, (item, index) => (
-          <div
-            key={index}
-            style={{
-              height: `${rowHeight}px`,
-            }}
-          />
-        ))
-      );
+      const tempArr = Array.from(Array(cols * rows), (x, index) => (
+        <div
+          key={index}
+          style={{
+            height: `${rowHeight}px`,
+          }}
+        />
+      ));
+      return tempArr;
     }
     return '';
   }, [cols, rows]);

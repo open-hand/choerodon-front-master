@@ -1,10 +1,10 @@
 /* eslint-disable import/no-anonymous-default-export */
-import Jsonbig from 'json-bigint'
+import Jsonbig from 'json-bigint';
 
 export default ({
-  quickLinkUseStore, organizationId, selectedProjectId, linkType, cacheStore,
+  quickLinkUseStore, organizationId, selectedProjectId, linkType,
 }) => ({
-  autoQuery: false,
+  autoQuery: true,
   paging: true,
   pageSize: 10,
   transport: {
@@ -14,10 +14,6 @@ export default ({
       transformResponse(res) {
         try {
           const mainData = Jsonbig.parse(res);
-          const {
-            content,
-            ...rest
-          } = mainData;
           if (mainData && mainData.failed) {
             return mainData;
           }
@@ -32,14 +28,6 @@ export default ({
           quickLinkUseStore.setListHasMore(
             mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,
           );
-          // 这里通过ds，工作台层缓存数据，为了在编辑阶段不重新load数据，type是为了标识当前的tab
-          const cacheData = {
-            ...rest,
-            content: newData,
-            type: linkType,
-            selectedProjectId,
-          };
-          cacheStore.setCacheQuickLinkData(cacheData);
           return newData;
         } catch (error) {
           throw new Error(error);

@@ -27,9 +27,12 @@
 
   &-content {
     padding-right: 2px;
-    overflow: auto;
+    overflow: hidden;
     .infinite-scroll-component__outerdiv {
       width: 100%;
+      ::-webkit-scrollbar {
+        width: 2px;
+      }
     }
   }
 
