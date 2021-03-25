@@ -20,7 +20,7 @@ const clsPrefix = 'c7n-project-overview-sprint-count';
 const SprintCount = observer(() => {
   const { startSprintDs, startedRecord } = useProjectOverviewStore();
   const {
-    sprintCountDataSet, 
+    sprintCountDataSet,
   } = useSprintCountChartStore();
   const history = useHistory();
   const urlParams = useQueryString();

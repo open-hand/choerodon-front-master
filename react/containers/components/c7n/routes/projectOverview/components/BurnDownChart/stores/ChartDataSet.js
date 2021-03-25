@@ -24,7 +24,7 @@ export default ({ projectId, startedRecord }) => {
     transport: {
       read: ({ params, data }) => {
         const { selectType = (localPageCacheStore.getItem('project.overview.selectType') || 'remainingEstimatedTime'), checkedValue = true, datesData = [] } = data || {};
-        return {
+        return startedRecord ? {
           url: `/agile/v1/projects/${projectId}/reports/${get(startedRecord, 'sprintId')}/burn_down_report/coordinate`,
           method: 'post',
           data: {
@@ -123,7 +123,7 @@ export default ({ projectId, startedRecord }) => {
               throw new Error(error);
             }
           },
-        };
+        } : {};
       },
     },
   };
