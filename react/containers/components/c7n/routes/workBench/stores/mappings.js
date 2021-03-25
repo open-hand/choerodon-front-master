@@ -268,6 +268,23 @@ const componentsObj = {
     describe: '此模块展示当前进行的的测试计划中指派给我的用例。',
     img: myExecution,
   },
+  myhandler: {
+    layout: {
+      x: 0,
+      y: 27,
+      h: 4,
+      w: 5,
+      minH: 4,
+      minW: 4,
+      i: 'myhandler',
+    },
+    name: 'myhandler',
+    type: 'myhandler',
+    groupId: 'agile',
+    title: '我经手的',
+    describe: '展示当前迭代中我经手的问题项。',
+    img: todoQuestions,
+  },
 };
 
 export default componentsObj;

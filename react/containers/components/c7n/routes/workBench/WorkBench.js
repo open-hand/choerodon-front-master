@@ -29,6 +29,7 @@ import UserConfirmationTwo from '../../components/UserConfirm';
 import ExecutionQuestions from './components/question-execution';
 import './WorkBench.less';
 import SelfCode from './components/SelfCode';
+import MyHandler from './components/my-handler';
 
 let observerLayout;
 
@@ -46,6 +47,7 @@ const ComponetsObjs = {
   envList: <EnvList />,
   selfCode: <SelfCode />,
   myExecution: <ExecutionQuestions />,
+  myhandler: <MyHandler />,
 };
 export function injectWorkBench(key, component) {
   ComponetsObjs[key] = component;
