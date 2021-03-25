@@ -161,6 +161,7 @@ const BurnDownChart = observer(() => {
         name: renderChartTitle(),
         nameTextStyle: {
           color: '#000',
+          padding: [0, 0, 0, 20],
         },
         nameGap: 22,
         type: 'value',
@@ -254,7 +255,7 @@ const BurnDownChart = observer(() => {
             className="c7n-project-overview-SelectTheme"
             label="单位"
             clearButton={false}
-            defaultValue={selectValue}
+            value={selectValue}
             onChange={handleSelect}
           >
             <Option value="remainingEstimatedTime">剩余时间</Option>
