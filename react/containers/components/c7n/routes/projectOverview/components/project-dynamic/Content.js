@@ -29,8 +29,6 @@ const ProjectDynamic = () => {
     projectDynamicDs.queryMore(projectDynamicDs.currentPage + 1);
   }, [projectDynamicDs]);
 
-  console.log(projectDynamicDs.toData());
-
   return (
     <OverviewWrap>
       <OverviewWrap.Header
