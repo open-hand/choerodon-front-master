@@ -23,11 +23,13 @@ const ProjectDynamic = () => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [loadData]);
 
   const handleLoadMore = useCallback(() => {
     projectDynamicDs.queryMore(projectDynamicDs.currentPage + 1);
   }, [projectDynamicDs]);
+
+  console.log(projectDynamicDs.toData());
 
   return (
     <OverviewWrap>

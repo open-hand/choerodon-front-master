@@ -7,7 +7,7 @@ const modulesMapping = {
     'selfCode',
   ],
   agile: [
-    'todoQustions', 'myStar', 'myDefect', 'myReport', 'myExecution',
+    'todoQustions', 'myStar', 'myDefect', 'myReport', 'myExecution', 'myhandler',
   ],
   backlog: [
     'backlogApprove',

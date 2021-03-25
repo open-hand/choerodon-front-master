@@ -54,5 +54,10 @@ export default function useStore(history) {
       this.myExecutionQuestions = value;
     },
 
+    myHandlerIssues: {},
+    setMyHandlerIssues(value) {
+      this.myHandlerIssues = value;
+    },
+
   }));
 }
