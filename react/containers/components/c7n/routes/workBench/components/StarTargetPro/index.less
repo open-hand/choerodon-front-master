@@ -1,3 +1,14 @@
+@keyframes expandAnimate {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
 .c7n-starTargetPro {
   display: flex;
   flex-direction: column;
@@ -11,26 +22,17 @@
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     z-index: 10;
-    &-default {
-      background: rgba(83, 101, 234, 0.08);
-      border-radius: 6px;
-      color: #5365ea !important;
-      line-height: 20px;
-      &:hover,
-      &:focus {
-        background: rgba(83, 101, 234, 0.08) !important;
-      }
+    button {
+      animation: expandAnimate 0.5s both;
     }
-    &-primary {
-      color: #fff;
-      background: #5365ea;
-      border-radius: 6px;
-      color: #fff !important;
-      &:hover,
-      &:focus {
-        background: #5365ea !important;
+    .Loop(@index) when(@index < 5) {
+      button:nth-child(@{index}) {
+        animation-delay: 0.05s * @index;
       }
+      .Loop(@index+1);
     }
+
+    .Loop(0);
   }
   &-name {
     font-size: 16px;
