@@ -11,7 +11,7 @@ export default ({ projectId, organizationId, startedRecord }) => ({
   selection: false,
   paging: false,
   transport: {
-    read: ({ params, data }) => ({
+    read: ({ params, data }) => (startedRecord ? {
       url: `/agile/v1/projects/${projectId}/sprint/query_non_workdays/${get(startedRecord, 'sprintId')}/${organizationId}`,
       method: 'get',
       transformResponse: (value) => {
@@ -26,6 +26,6 @@ export default ({ projectId, organizationId, startedRecord }) => ({
           throw new Error(Error);
         }
       },
-    }),
+    } : {}),
   },
 });

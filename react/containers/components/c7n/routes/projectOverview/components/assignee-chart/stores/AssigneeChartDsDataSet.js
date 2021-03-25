@@ -12,6 +12,6 @@ export default ({ projectId, startedRecord }) => ({
         sprintId: get(startedRecord, 'sprintId'),
       },
 
-    } : startedRecord),
+    } : {}),
   },
 });

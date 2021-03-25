@@ -16,7 +16,7 @@ export default ({ projectId, startedRecord, organizationId }) => ({
     { name: 'remainingTime', type: 'string', label: '剩余预估时间' },
   ],
   transport: {
-    read: ({ data, params }) => ({
+    read: ({ data, params }) => (startedRecord ? {
       method: 'get',
       url: `/agile/v1/projects/${projectId}/sprint/${get(startedRecord, 'sprintId')}/issues`,
       params: {
@@ -26,6 +26,6 @@ export default ({ projectId, startedRecord, organizationId }) => ({
 
       },
 
-    }),
+    } : {}),
   },
 });
