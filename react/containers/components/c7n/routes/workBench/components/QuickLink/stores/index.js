@@ -24,12 +24,7 @@ export const StoreProvider = inject('AppState')(observer((props) => {
 
   const {
     selectedProjectId,
-    cacheStore,
   } = useWorkBenchStore();
-
-  const {
-    cacheQuickLinkData,
-  } = cacheStore;
 
   const quickLinkUseStore = useStore(organizationId, AppState);
 
@@ -42,25 +37,7 @@ export const StoreProvider = inject('AppState')(observer((props) => {
     organizationId,
     linkType: type,
     selectedProjectId,
-    cacheStore,
   })), [organizationId, quickLinkUseStore, selectedProjectId, type]);
-
-  useEffect(() => {
-    const mainData = cacheQuickLinkData;
-    const tempArr = get(mainData, 'content');
-    if (type !== get(mainData, 'type') || selectedProjectId !== get(mainData, 'selectedProjectId')) {
-      quickLinkDs.query();
-      return;
-    }
-    if (tempArr && get(tempArr, 'length')) {
-      quickLinkUseStore.setListHasMore(
-        mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,
-      );
-      quickLinkDs.loadData(tempArr);
-    } else {
-      quickLinkDs.query();
-    }
-  }, [quickLinkDs]);
 
   const value = {
     ...props,

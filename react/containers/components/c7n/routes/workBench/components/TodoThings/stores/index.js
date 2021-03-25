@@ -24,29 +24,9 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const {
     selectedProjectId,
-    cacheStore,
   } = useWorkBenchStore();
 
-  const {
-    todoThingsData,
-  } = cacheStore;
-
-  const auditDs = useMemo(() => new DataSet(AuditDataSet({ organizationId, selectedProjectId, cacheStore })), [organizationId, selectedProjectId]);
-
-  useEffect(() => {
-    const mainData = todoThingsData;
-    const tempArr = get(mainData, 'content');
-    const currentId = get(mainData, 'selectedProjectId');
-    if (selectedProjectId !== currentId) {
-      auditDs.query();
-      return;
-    }
-    if (tempArr) {
-      auditDs.loadData(tempArr);
-    } else {
-      auditDs.query();
-    }
-  }, [auditDs]);
+  const auditDs = useMemo(() => new DataSet(AuditDataSet({ organizationId, selectedProjectId })), [organizationId, selectedProjectId]);
 
   const value = {
     ...props,
