@@ -272,23 +272,27 @@ const StarTargetPro = observer(() => {
       btnGroups = [
         <Button
           {...primaryBtnObj}
+          key="1"
           onClick={openAddComponents}
         >
           添加卡片
         </Button>,
         <Button
           {...primaryBtnObj}
+          key="2"
           onClick={hanldeSave}
         >
           保存
         </Button>,
         <Button
           {...secondBtnObj}
+          key="3"
           onClick={handleResetModal}
         >
           重置
         </Button>,
         <Button
+          key="4"
           {...secondBtnObj}
           onClick={handleCancel}
         >
@@ -299,7 +303,7 @@ const StarTargetPro = observer(() => {
       btnGroups = [
         <Button
           {...secondBtnObj}
-          // className={`${prefixCls}-btnGroups-default`}
+          key="5"
           onClick={handleEditable}
         >
           工作台配置
