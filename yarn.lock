@@ -1225,7 +1225,7 @@
     object-assign "^4.1.1"
     rimraf "^3.0.2"
 
-"@choerodon/components@^0.0.1":
+"@choerodon/components@0.0.1":
   version "0.0.1"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@choerodon/components/-/components-0.0.1.tgz#7f2fefca55db71c5fcf352fcfdb5f268a657395c"
   integrity sha512-og84sjmqWN3UgeJfp+1ZGWWR21foBFMbGZ61E7RriyCtpuQWMWuR3iZORl1UrlqA49BRKSDtKDYfBbnl32bvuA==
@@ -1847,6 +1847,13 @@
   version "15.7.3"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha1-KrDV2i5YFflLC51LldHl8kOrLKc=
+
+"@types/query-string@^6.3.0":
+  version "6.3.0"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@types/query-string/-/query-string-6.3.0.tgz#b6fa172a01405abcaedac681118e78429d62ea39"
+  integrity sha1-tvoXKgFAWryu2saBEY54Qp1i6jk=
+  dependencies:
+    query-string "*"
 
 "@types/quill@1.3.10":
   version "1.3.10"
@@ -5507,6 +5514,11 @@ fill-range@^7.0.1:
   integrity sha1-GRmmp8df44ssfHflGYU12prN2kA=
   dependencies:
     to-regex-range "^5.0.1"
+
+filter-obj@^1.1.0:
+  version "1.1.0"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/filter-obj/-/filter-obj-1.1.0.tgz#9b311112bc6c6127a16e016c6c5d7f19e0805c5b"
+  integrity sha1-mzERErxsYSehbgFsbF1/GeCAXFs=
 
 finalhandler@~1.1.2:
   version "1.1.2"
@@ -9653,6 +9665,16 @@ qs@~6.5.2:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha1-yzroBuh0BERYTvFUzo7pjUA/PjY=
 
+query-string@*:
+  version "7.0.0"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/query-string/-/query-string-7.0.0.tgz#aaad2c8d5c6a6d0c6afada877fecbd56af79e609"
+  integrity sha1-qq0sjVxqbQxq+tqHf+y9Vq955gk=
+  dependencies:
+    decode-uri-component "^0.2.0"
+    filter-obj "^1.1.0"
+    split-on-first "^1.0.0"
+    strict-uri-encode "^2.0.0"
+
 query-string@^4.1.0, query-string@^4.3.2, query-string@^4.3.4:
   version "4.3.4"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/query-string/-/query-string-4.3.4.tgz#bbb693b9ca915c232515b228b1a02b609043dbeb"
@@ -11185,6 +11207,11 @@ specificity@^0.3.1:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/specificity/-/specificity-0.3.2.tgz#99e6511eceef0f8d9b57924937aac2cb13d13c42"
   integrity sha1-meZRHs7vD42bV5JJN6rCyxPRPEI=
 
+split-on-first@^1.0.0:
+  version "1.1.0"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/split-on-first/-/split-on-first-1.1.0.tgz#f610afeee3b12bce1d0c30425e76398b78249a5f"
+  integrity sha1-9hCv7uOxK84dDDBCXnY5i3gkml8=
+
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/split-string/-/split-string-3.1.0.tgz#7cb09dda3a86585705c64b39a6466038682e8fe2"
@@ -11307,6 +11334,11 @@ strict-uri-encode@^1.0.0:
   version "1.1.0"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
   integrity sha1-J5siXfHVgrH1TmWt3UNS4Y+qBxM=
+
+strict-uri-encode@^2.0.0:
+  version "2.0.0"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz#b9c7330c7042862f6b142dc274bbcc5866ce3546"
+  integrity sha1-ucczDHBChi9rFC3CdLvMWGbONUY=
 
 string-argv@^0.0.2:
   version "0.0.2"

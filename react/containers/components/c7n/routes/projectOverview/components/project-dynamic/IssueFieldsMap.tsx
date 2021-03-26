@@ -6,7 +6,7 @@ const fieldsMap = [
   ['Sprint', {
     name: '冲刺',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, summary, num, issueTypeVO,
         } = log;
@@ -14,7 +14,7 @@ const fieldsMap = [
           <span>
             更新
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【冲刺】</span>
             为
@@ -32,7 +32,7 @@ const fieldsMap = [
   ['Story Points', {
     name: '故事点',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, summary, num, issueTypeVO,
         } = log;
@@ -40,7 +40,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【故事点】</span>
             <span>由</span>
@@ -62,7 +62,7 @@ const fieldsMap = [
       },
     },
     delete: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           oldString, summary, num, issueTypeVO,
         } = log;
@@ -70,7 +70,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【故事点】</span>
             <span>由</span>
@@ -85,7 +85,7 @@ const fieldsMap = [
   ['timeestimate', {
     name: '剩余预估时间',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, summary, num, issueTypeVO,
         } = log;
@@ -93,7 +93,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【剩余预估时间】</span>
             <span>由</span>
@@ -115,7 +115,7 @@ const fieldsMap = [
       },
     },
     delete: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           oldString, summary, num, issueTypeVO,
         } = log;
@@ -123,7 +123,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【剩余预估时间】</span>
             <span>由</span>
@@ -197,7 +197,7 @@ const fieldsMap = [
   ['Epic Link', {
     name: '史诗',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, summary, num, issueTypeVO,
         } = log;
@@ -205,7 +205,7 @@ const fieldsMap = [
           <span>
             更新
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【史诗】</span>
             为
@@ -218,7 +218,7 @@ const fieldsMap = [
   ['assignee', {
     name: '经办人',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, ruleName, summary, num, issueTypeVO,
         } = log;
@@ -236,7 +236,7 @@ const fieldsMap = [
             <span>
               更新
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>的</span>
               <span className="c7n-Log-field">【经办人】</span>
               为
@@ -247,7 +247,7 @@ const fieldsMap = [
       },
     },
     update: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, oldString, ruleName, summary, num, issueTypeVO,
         } = log;
@@ -264,7 +264,7 @@ const fieldsMap = [
             }
             <span>将</span>
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【经办人】</span>
             <span>由</span>
@@ -279,7 +279,7 @@ const fieldsMap = [
   ['reporter', {
     name: '报告人',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, summary, num, issueTypeVO,
         } = log;
@@ -287,7 +287,7 @@ const fieldsMap = [
           <span>
             更新
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【报告人】</span>
             为
@@ -314,7 +314,7 @@ const fieldsMap = [
     'timespent', {
       name: '花费时间',
       create: {
-        render: (log: ILog) => {
+        render: (log: ILog, linkToIssue: () => void) => {
           const {
             summary, num, issueTypeVO,
           } = log;
@@ -322,7 +322,7 @@ const fieldsMap = [
             <span>
               更新
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>的</span>
               <span className="c7n-Log-field">【花费时间】</span>
             </span>
@@ -330,7 +330,7 @@ const fieldsMap = [
         },
       },
       update: {
-        render: (log: ILog) => {
+        render: (log: ILog, linkToIssue: () => void) => {
           const {
             summary, num, issueTypeVO,
           } = log;
@@ -338,7 +338,7 @@ const fieldsMap = [
             <span>
               更新
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>的</span>
               <span className="c7n-Log-field">【花费时间】</span>
             </span>
@@ -368,7 +368,7 @@ const fieldsMap = [
     'Rank', {
       name: '排序',
       create: {
-        render: (log: ILog) => {
+        render: (log: ILog, linkToIssue: () => void) => {
           const {
             summary, num, issueTypeVO,
           } = log;
@@ -376,7 +376,7 @@ const fieldsMap = [
             <span>
               更新
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>的</span>
               <span className="c7n-Log-field">【排序】</span>
             </span>
@@ -384,7 +384,7 @@ const fieldsMap = [
         },
       },
       update: {
-        render: (log: ILog) => {
+        render: (log: ILog, linkToIssue: () => void) => {
           const {
             summary, num, issueTypeVO,
           } = log;
@@ -392,7 +392,7 @@ const fieldsMap = [
             <span>
               更新
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>的</span>
               <span className="c7n-Log-field">【排序】</span>
             </span>
@@ -419,7 +419,7 @@ const fieldsMap = [
     'resolution', {
       name: '解决状态',
       create: {
-        render: (log: ILog) => {
+        render: (log: ILog, linkToIssue: () => void) => {
           const {
             summary, num, issueTypeVO,
           } = log;
@@ -427,7 +427,7 @@ const fieldsMap = [
             <span>
               更新
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>的</span>
               <span className="c7n-Log-field">【解决状态】</span>
             </span>
@@ -435,7 +435,7 @@ const fieldsMap = [
         },
       },
       update: {
-        render: (log: ILog) => {
+        render: (log: ILog, linkToIssue: () => void) => {
           const {
             summary, num, issueTypeVO,
           } = log;
@@ -443,7 +443,7 @@ const fieldsMap = [
             <span>
               更新
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>的</span>
               <span className="c7n-Log-field">【解决状态】</span>
             </span>
@@ -451,7 +451,7 @@ const fieldsMap = [
         },
       },
       delete: {
-        render: (log: ILog) => {
+        render: (log: ILog, linkToIssue: () => void) => {
           const {
             summary, num, issueTypeVO,
           } = log;
@@ -459,7 +459,7 @@ const fieldsMap = [
             <span>
               更新
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>的</span>
               <span className="c7n-Log-field">【解决状态】</span>
             </span>
@@ -501,7 +501,7 @@ const fieldsMap = [
     'Pi', {
       name: 'PI',
       create: {
-        render: (log: ILog) => {
+        render: (log: ILog, linkToIssue: () => void) => {
           const {
             newString, summary, num, issueTypeVO,
           } = log;
@@ -509,7 +509,7 @@ const fieldsMap = [
             <span>
               更新
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>的</span>
               <span className="c7n-Log-field">【PI】</span>
               为
@@ -563,7 +563,7 @@ const fieldsMap = [
       delete: {
         dontJudge: true,
       },
-      customRender: (log: ILog) => {
+      customRender: (log: ILog, linkToIssue: () => void) => {
         const {
           newStatus, trigger, removeResolution, resolutionChanged, summary, num, issueTypeVO,
         } = log;
@@ -574,7 +574,7 @@ const fieldsMap = [
               <span className="c7n-Log-value">{`【${trigger}】`}</span>
               ，使得
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               自动流转到
               <span className="c7n-Log-value">{`【${newStatus}】`}</span>
               {
@@ -602,7 +602,7 @@ const fieldsMap = [
   ['Estimated Start Time', {
     name: '预计开始时间',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, summary, num, issueTypeVO,
         } = log;
@@ -610,7 +610,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【预计开始时间】</span>
             <span>由</span>
@@ -622,7 +622,7 @@ const fieldsMap = [
       },
     },
     delete: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           oldString, summary, num, issueTypeVO,
         } = log;
@@ -630,7 +630,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【预计开始时间】</span>
             <span>由</span>
@@ -645,7 +645,7 @@ const fieldsMap = [
   ['Estimated End Time', {
     name: '预计结束时间',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, summary, num, issueTypeVO,
         } = log;
@@ -653,7 +653,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【预计结束时间】</span>
             <span>由</span>
@@ -665,7 +665,7 @@ const fieldsMap = [
       },
     },
     delete: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           oldString, summary, num, issueTypeVO,
         } = log;
@@ -673,7 +673,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【预计结束时间】</span>
             <span>由</span>
@@ -688,7 +688,7 @@ const fieldsMap = [
   ['Feature Sprint Link', {
     name: '冲刺',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, summary, num, issueTypeVO,
         } = log;
@@ -696,7 +696,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【冲刺】</span>
             <span>由</span>
@@ -708,7 +708,7 @@ const fieldsMap = [
       },
     },
     delete: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           oldString, summary, num, issueTypeVO,
         } = log;
@@ -716,7 +716,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【冲刺】</span>
             <span>由</span>
