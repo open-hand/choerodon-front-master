@@ -36,13 +36,15 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const questionDs = useMemo(() => new DataSet(QuestionDataSet({
     organizationId, questionStore, selectedProjectId, cacheStore,
-  })), [organizationId, selectedProjectId]);
+  })), [cacheStore, organizationId, questionStore, selectedProjectId]);
 
   useEffect(() => {
     const mainData = reportQuestions;
     const tempArr = get(mainData, 'content');
     const currentId = get(mainData, 'selectedProjectId');
     if (selectedProjectId !== currentId) {
+      questionStore.setPage(0);
+      questionStore.setTotalCount(0);
       questionDs.query();
       return;
     }
@@ -55,7 +57,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     } else {
       questionDs.query();
     }
-  }, [questionDs]);
+  }, [questionDs, questionStore, reportQuestions, selectedProjectId]);
 
   const value = {
     ...props,

@@ -58,12 +58,7 @@ const Logs: React.FC<Props> = ({ datalogs, fieldsMap }) => (
               <Log log={log} fieldsMap={fieldsMap} />
             </div>
             <div className="c7n-projectDynamic-log-lastUpdateDate">
-              <Tooltip placement="top" title={log.creationDate || ''}>
-                <TimeAgo
-                  datetime={log.creationDate || ''}
-                  locale="zh_CN"
-                />
-              </Tooltip>
+              {log.creationDate || ''}
             </div>
           </div>
         </div>
