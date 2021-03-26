@@ -61,7 +61,7 @@ const TodoQuestion = observer(() => {
         <div
           role="none"
           onClick={() => loadMoreData()}
-          className="c7n-todoQuestion-issueContent-more"
+          className={`${prefixCls}-more`}
         >
           加载更多
         </div>
@@ -82,7 +82,7 @@ const TodoQuestion = observer(() => {
 
   const renderTitle = () => (
     <>
-      <span>向我报告的</span>
+      <span>我报告的</span>
       <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
     </>
   );

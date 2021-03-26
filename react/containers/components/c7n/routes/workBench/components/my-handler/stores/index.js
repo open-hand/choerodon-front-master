@@ -38,7 +38,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
   const prefixCls = 'c7n-workbench-myHandler';
 
   const myHandlerDs = useMemo(() => new DataSet(MyHandlerDataSet({
-    organizationId, selectedProjectId, myHandlerStore, cacheStore,
+    organizationId, myHandlerStore, cacheStore, selectedProjectId,
   })), [cacheStore, myHandlerStore, organizationId, selectedProjectId]);
 
   useEffect(() => {
@@ -46,6 +46,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
     const tempArr = get(mainData, 'content');
     const currentId = get(mainData, 'selectedProjectId');
     if (selectedProjectId !== currentId) {
+      myHandlerStore.setPage(0);
+      myHandlerStore.setTotalCount(0);
       myHandlerDs.query();
       return;
     }
