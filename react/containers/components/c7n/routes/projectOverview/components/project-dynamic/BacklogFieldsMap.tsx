@@ -14,7 +14,7 @@ const fieldsMap = [
     'Backlog Project', {
       name: '需求',
       update: {
-        render: (log: ILog) => {
+        render: (log: ILog, linkToIssue: () => void) => {
           const {
             oldValue, newValue, summary, num, issueTypeVO,
           } = log;
@@ -22,7 +22,7 @@ const fieldsMap = [
             <span>
               <span>将</span>
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>由</span>
               <span className="c7n-Log-value">{`【${oldValue}】`}</span>
               转交到
@@ -39,7 +39,7 @@ const fieldsMap = [
   ['Backlog Assignees', {
     name: '处理人',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, ruleName, summary, num, issueTypeVO,
         } = log;
@@ -57,7 +57,7 @@ const fieldsMap = [
             <span>
               更新
               <span>{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>的</span>
               <span className="c7n-Log-field">【经办人】</span>
               为
@@ -68,7 +68,7 @@ const fieldsMap = [
       },
     },
     update: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, oldString, ruleName, summary, num, issueTypeVO,
         } = log;
@@ -85,7 +85,7 @@ const fieldsMap = [
           }
             <span>将</span>
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【经办人】</span>
             <span>由</span>
@@ -172,7 +172,7 @@ const fieldsMap = [
   ['Estimated Start Time', {
     name: '预计开始时间',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, summary, num, issueTypeVO,
         } = log;
@@ -180,7 +180,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【预计开始时间】</span>
             <span>由</span>
@@ -192,7 +192,7 @@ const fieldsMap = [
       },
     },
     delete: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           oldString, summary, num, issueTypeVO,
         } = log;
@@ -200,7 +200,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【预计开始时间】</span>
             <span>由</span>
@@ -215,7 +215,7 @@ const fieldsMap = [
   ['Estimated End Time', {
     name: '预计结束时间',
     create: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           newString, summary, num, issueTypeVO,
         } = log;
@@ -223,7 +223,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【预计结束时间】</span>
             <span>由</span>
@@ -235,7 +235,7 @@ const fieldsMap = [
       },
     },
     delete: {
-      render: (log: ILog) => {
+      render: (log: ILog, linkToIssue: () => void) => {
         const {
           oldString, summary, num, issueTypeVO,
         } = log;
@@ -243,7 +243,7 @@ const fieldsMap = [
           <span>
             将
             <span>{issueTypeVO?.name}</span>
-            <span className="c7n-Log-issue">{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
             <span className="c7n-Log-field">【预计结束时间】</span>
             <span>由</span>
