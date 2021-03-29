@@ -79,7 +79,7 @@ const DynamicSearch = () => {
       valueField: 'id',
     }],
     data: [{
-      dateRange: [new Date(), undefined],
+      dateRange: [new Date(), new Date()],
     }],
     events: {
       update: debounce((updateData: any) => {
@@ -95,6 +95,9 @@ const DynamicSearch = () => {
         name="dateRange"
         range
         placeholder={['开始时间', '结束时间']}
+        style={{
+          width: 260,
+        }}
       />
       <SelectType
         dataSet={projectDynamicSearchDs}
