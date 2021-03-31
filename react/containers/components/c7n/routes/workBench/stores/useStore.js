@@ -41,17 +41,19 @@ export default function useStore(history) {
         let route = '';
         let path;
         let domain;
-        if (menus.length) {
-          const { route: menuRoute, domain: menuDomain } = findFirstLeafMenu(menus[0]);
-          route = menuRoute;
-          domain = menuDomain;
-        }
-        path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
-        if (String(organizationId)) {
-          path += `&organizationId=${organizationId}`;
-        }
-        if (path) {
-          historyPushMenu(history, path, domain);
+        if (typeof menus === 'object') {
+          if (menus.length) {
+            const { route: menuRoute, domain: menuDomain } = findFirstLeafMenu(menus[0]);
+            route = menuRoute;
+            domain = menuDomain;
+          }
+          path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
+          if (String(organizationId)) {
+            path += `&organizationId=${organizationId}`;
+          }
+          if (path) {
+            historyPushMenu(history, path, domain);
+          }
         }
       });
     },
