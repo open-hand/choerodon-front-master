@@ -135,6 +135,7 @@ export default ({
         },
       },
       { name: 'creationDate', type: 'date', label: '创建时间' },
+      { name: 'useTemplate' },
     ],
   };
 };
