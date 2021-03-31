@@ -354,7 +354,7 @@ class MenuStore {
         AppState.setCanShowRoute(true);
         AppState.userInfo.currentRoleLevel = type;
         isLoadMenu = 0;
-        return resolve(data);
+        return resolve(data || []);
       }
       isLoadMenu = 0;
       AppState.setCanShowRoute(true);
