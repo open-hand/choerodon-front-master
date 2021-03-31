@@ -4,7 +4,7 @@ import { get } from 'lodash';
 export default ({ projectId, startedRecord, organizationId }) => ({
   primaryKey: 'issueId',
   paging: true,
-  autoQuery: false,
+  autoQuery: true,
   selection: false,
   fields: [
     { name: 'summary', type: 'string', label: '概要' },
