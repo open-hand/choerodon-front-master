@@ -223,7 +223,7 @@ const componentsObj = {
   },
   issueTable: {
     layout: {
-      h: 6,
+      h: 5,
       i: 'issueTable',
       minH: 5,
       minW: 10,
@@ -306,7 +306,7 @@ const componentsObj = {
       minW: 10,
       w: 10,
       x: 0,
-      y: 29,
+      y: 27,
     },
     name: 'projectDynamic',
     type: 'projectDynamic',
