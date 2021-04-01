@@ -7,11 +7,11 @@ import {
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import { get } from 'lodash';
+import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 import { useBurnDownChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
-import { localPageCacheStore } from '../../stores/LocalPageCacheStore';
 
 import EmptyPage from '../EmptyPage';
 
