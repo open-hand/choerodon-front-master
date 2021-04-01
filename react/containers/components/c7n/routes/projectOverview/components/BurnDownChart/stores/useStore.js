@@ -1,5 +1,5 @@
 import { useLocalStore } from 'mobx-react-lite';
-import { localPageCacheStore } from '../../../stores/LocalPageCacheStore';
+import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 
 export default function useStore() {
   return useLocalStore(() => ({

@@ -2,7 +2,7 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 import Jsonbig from 'json-bigint';
 import { get, map } from 'lodash';
-import { localPageCacheStore } from '../../../stores/LocalPageCacheStore';
+import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 
 const moment = extendMoment(Moment);
 

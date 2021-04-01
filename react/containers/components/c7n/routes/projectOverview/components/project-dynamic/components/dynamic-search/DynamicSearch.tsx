@@ -6,6 +6,7 @@ import { DataSet, DatePicker } from 'choerodon-ui/pro';
 import { debounce, includes } from 'lodash';
 import moment from 'moment';
 import AppState from '@/containers/stores/c7n/AppState';
+import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 import SelectUser from '../select/select-user';
 import SelectType, { IDynamicType } from '../select/select-type';
 import { useProjectDynamicChartStore } from '../../stores';
@@ -26,9 +27,15 @@ const DynamicSearch = () => {
   }) => {
     if (name === 'dateRange') {
       if (value) {
-        projectDynamicDs.setQueryParameter('startDate', (value[0] && value[0].startOf('day').format('YYYY-MM-DD HH:mm:ss')) || currentProject.creationDate);
-        projectDynamicDs.setQueryParameter('endDate', value[1] && value[1].endOf('day').format('YYYY-MM-DD HH:mm:ss'));
+        const formateStartDate = (value[0] && value[0].startOf('day').format('YYYY-MM-DD HH:mm:ss')) || currentProject.creationDate;
+        const formateEndDate = value[1] && value[1].endOf('day').format('YYYY-MM-DD HH:mm:ss');
+        localPageCacheStore.setItem('projectDynamic-startDate', formateStartDate);
+        localPageCacheStore.setItem('projectDynamic-endDate', formateEndDate);
+        projectDynamicDs.setQueryParameter('startDate', formateStartDate);
+        projectDynamicDs.setQueryParameter('endDate', formateEndDate);
       } else {
+        localPageCacheStore.setItem('projectDynamic-startDate', currentProject.creationDate);
+        localPageCacheStore.setItem('projectDynamic-endDate', undefined);
         projectDynamicDs.setQueryParameter('startDate', currentProject.creationDate);
         projectDynamicDs.setQueryParameter('endDate', undefined);
       }
@@ -45,14 +52,19 @@ const DynamicSearch = () => {
             otherTypes.push(typeId);
           }
         });
+        localPageCacheStore.setItem('projectDynamic-typeIds', typeIds);
+        localPageCacheStore.setItem('projectDynamic-otherTypes', otherTypes);
         projectDynamicDs.setQueryParameter('typeIds', typeIds);
         projectDynamicDs.setQueryParameter('otherTypes', otherTypes);
       } else {
+        localPageCacheStore.setItem('projectDynamic-typeIds', undefined);
+        localPageCacheStore.setItem('projectDynamic-otherTypes', undefined);
         projectDynamicDs.setQueryParameter('typeIds', undefined);
         projectDynamicDs.setQueryParameter('otherTypes', undefined);
       }
     }
     if (name === 'createdByIds') {
+      localPageCacheStore.setItem('projectDynamic-createdByIds', value);
       projectDynamicDs.setQueryParameter('createdByIds', value);
     }
     projectDynamicDs.query();
@@ -79,7 +91,9 @@ const DynamicSearch = () => {
       valueField: 'id',
     }],
     data: [{
-      dateRange: [new Date(), new Date()],
+      dateRange: [moment(localPageCacheStore.getItem('projectDynamic-startDate')) || new Date(), moment(localPageCacheStore.getItem('projectDynamic-endDate')) || new Date()],
+      types: [...(localPageCacheStore.getItem('projectDynamic-typeIds') || []), ...(localPageCacheStore.getItem('projectDynamic-otherTypes') || [])],
+      createdByIds: localPageCacheStore.getItem('projectDynamic-createdByIds'),
     }],
     events: {
       update: debounce((updateData: any) => {

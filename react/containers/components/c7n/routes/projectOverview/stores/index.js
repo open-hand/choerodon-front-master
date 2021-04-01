@@ -6,11 +6,11 @@ import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
 import { forEach, get } from 'lodash';
+import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 import useStore from './useStore';
 import modulesMapping from './modulesMapping';
 import ComponentsDataset from './ComponentsDataSet';
 import StartSprintDataSet from './StartSprintDataSet';
-import { localPageCacheStore } from './LocalPageCacheStore';
 
 const Store = createContext();
 

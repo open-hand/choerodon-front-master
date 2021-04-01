@@ -3,6 +3,8 @@ import { merge, omit } from 'lodash';
 
 const pages = new Map();
 class LocalPageCacheStore {
+  localData= pages
+
   projectId=''
 
   setProjectId(data) {
