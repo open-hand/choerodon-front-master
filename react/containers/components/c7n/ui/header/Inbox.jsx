@@ -7,10 +7,11 @@ import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import {
-  Badge, Button, Icon, Spin, Tabs, Avatar, Tooltip,
+  Badge, Button, Tabs, Avatar, Tooltip,
 } from 'choerodon-ui';
-import { Button as ButtonPro, CheckBox, Modal } from 'choerodon-ui/pro';
-import { getCookie } from '@/utils';
+import {
+  Button as ButtonPro, CheckBox, Modal, Icon, Spin,
+} from 'choerodon-ui/pro';
 import WSHandler from '../../tools/ws/WSHandler';
 import defaultAvatar from './style/icons/favicon.png';
 
