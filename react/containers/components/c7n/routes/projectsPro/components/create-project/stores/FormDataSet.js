@@ -72,7 +72,7 @@ export default ({
     paging: false,
     autoQueryAfterSubmit: false,
     feedback: {
-      submitSuccess() {},
+      submitSuccess() { },
     },
     transport: {
       read: {
@@ -135,7 +135,7 @@ export default ({
         },
       },
       { name: 'creationDate', type: 'date', label: '创建时间' },
-      { name: 'useTemplate' },
+      { name: 'useTemplate', defaultValue: true },
     ],
   };
 };
