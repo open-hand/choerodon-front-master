@@ -57,7 +57,7 @@
     grid-row-gap: 0;
     grid-column-gap: 20px;
     grid-template-columns: repeat(6, 1fr);
-    // overflow-x: scroll;
+    height: 100%;
     &::-webkit-scrollbar {
       height: 2px;
     }
@@ -76,11 +76,15 @@
       cursor: pointer;
       background: rgba(255, 255, 255, 1);
       border-radius: 10px;
-      height: fit-content;
+      height: 100%;
       padding: 14px;
       display: flex;
       flex-direction: column;
       animation: slideInto 0.6s both;
+      transition: 0.2s;
+      &:hover {
+        background: rgba(104, 135, 232, 0.1);
+      }
       > * {
         margin-top: auto !important;
       }
@@ -154,6 +158,15 @@
           justify-content: center;
           align-items: center;
           flex-shrink: 0;
+          z-index: 10;
+          transition: 0.2s;
+          &:hover,
+          &:focus {
+            background-color: rgba(117, 137, 242, 0.4) !important;            
+          }
+          &:active {
+            background-color: rgba(117, 137, 242, 0.2) !important;
+          }
         }
       }
       &-extra {

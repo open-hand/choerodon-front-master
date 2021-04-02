@@ -146,6 +146,9 @@ const WorkBench = () => {
           isEdit={isEdit}
           key={key}
           isStatic={key === 'starTarget'}
+          style={key === 'starTarget' && {
+            borderRadius: 'unset',
+          }}
         >
           {SwitchComponents(key, title, emptyDiscribe)}
         </DragCard>
