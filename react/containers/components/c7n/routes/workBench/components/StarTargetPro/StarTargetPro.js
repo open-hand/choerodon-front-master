@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Button, Tooltip, Modal } from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import { observer } from 'mobx-react-lite';
@@ -7,7 +7,7 @@ import moment from 'moment';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import {
-  get, map, forEach, forEachRight,
+  get, map, forEach, filter,
 } from 'lodash';
 import useTheme from '@/hooks/useTheme';
 import { useStarTargetPro } from './stores';
@@ -251,7 +251,7 @@ const StarTargetPro = observer(() => {
   }
 
   function handleReset() {
-    const defaultValues = map(mappings, (item) => item.layout);
+    const defaultValues = map(filter(mappings, (item) => item.type !== 'backlogApprove'), (item) => item.layout);
     componentsDs.loadData(defaultValues);
   }
 

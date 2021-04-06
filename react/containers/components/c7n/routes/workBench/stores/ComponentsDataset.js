@@ -1,4 +1,4 @@
-import { map, get } from 'lodash';
+import { map, get, filter } from 'lodash';
 import JsonBig from 'json-bigint';
 import mappings from './mappings';
 
@@ -19,7 +19,7 @@ export default ({
             const tempData = get(JsonBig.parse(value), 'data');
             res = tempData ? map(JsonBig.parse(tempData), (item) => item.layout) : [];
           } else {
-            const defaultValues = map(mappings, (item) => item.layout);
+            const defaultValues = map(filter(mappings, (item) => item.type !== 'backlogApprove'), (item) => item.layout);
             res = defaultValues;
           }
           workBenchUseStore.setInitData(res);
