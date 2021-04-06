@@ -9,7 +9,7 @@ import _ from 'lodash';
 import {
   authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
 } from '@/utils';
-import Container from '@hzero-front-ui/cfg/lib/components/Container';
+import { defaultBlackList } from '@/containers/components/c7n/ui/menu';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
@@ -18,7 +18,6 @@ import HeaderStore from './containers/stores/c7n/HeaderStore';
 import stores from './containers/stores';
 import Master from './containers/components/c7n/master';
 import './containers/components/style';
-import { defaultBlackList } from '@/containers/components/c7n/ui/menu';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -171,9 +170,7 @@ export default class Index extends React.Component {
               <Provider {...stores}>
                 <Switch>
                   <Route path="/">
-                    <Container defaultTheme={defaultTheme} onChange={syncBodyThemeAttribute}>
-                      <Outward AutoRouter={this.props.AutoRouter} />
-                    </Container>
+                    <Outward AutoRouter={this.props.AutoRouter} />
                   </Route>
                 </Switch>
               </Provider>
@@ -198,9 +195,7 @@ export default class Index extends React.Component {
                 <Route
                   path="/"
                 >
-                  <Container defaultTheme={defaultTheme} onChange={syncBodyThemeAttribute}>
-                    <Master AutoRouter={this.props.AutoRouter} />
-                  </Container>
+                  <Master AutoRouter={this.props.AutoRouter} />
                 </Route>
               </Switch>
             </Provider>

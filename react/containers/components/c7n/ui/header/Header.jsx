@@ -5,11 +5,10 @@ import { withRouter } from 'react-router';
 import { Tooltip, Icon, Button } from 'choerodon-ui';
 import { EXTERNAL_LINK } from '@/utils/constants';
 import classNames from 'classnames';
-import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
 import Logo from './Logo';
 import User from './User';
 import Inbox from './Inbox';
-import SkinPeeler from './SkinPeeler';
+// import SkinPeeler from './SkinPeeler';
 import HeaderSetting from './HeaderSetting';
 import './style';
 import OrgSelect from './OrgSelect';
@@ -17,7 +16,7 @@ import OrgSelect from './OrgSelect';
 const prefixCls = 'c7n-boot-header';
 
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
-  const { setTheme, schema } = useContext(ThemeContext);
+  const schema = '';
 
   useEffect(() => {
     const { AppState, HeaderStore, MenuStore } = props;
@@ -96,7 +95,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
       <ul className={`${prefixCls}-right`}>
         <OrgSelect />
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
-          <SkinPeeler />
+          {/* <SkinPeeler /> */}
           {/* <Button */}
           {/*  icon="toys" */}
           {/*  onClick={() => { */}

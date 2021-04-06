@@ -25,7 +25,7 @@
   "author": "qyellow",
   "license": "ISC",
   "devDependencies": {
-    "@choerodon/boot": "0.23.0-test",
+    "@choerodon/boot": "0.22.4",
     "@choerodon/compiler": "^0.0.2",
     "@choerodon/components": "0.0.1",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
@@ -46,9 +46,6 @@
   },
   "dependencies": {
     "@choerodon/components": "0.0.1",
-    "@hzero-front-ui/c7n-ui": "2.0.7-alpha-c7n.24",
-    "@hzero-front-ui/cfg": "2.0.7-alpha-c7n.24",
-    "@hzero-front-ui/hzero-ui": "2.0.7-alpha-c7n.24",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.168",
     "@types/query-string": "^6.3.0",
