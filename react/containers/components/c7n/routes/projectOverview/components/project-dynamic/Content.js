@@ -29,6 +29,10 @@ const ProjectDynamic = () => {
     projectDynamicDs.queryMore(projectDynamicDs.currentPage + 1);
   }, [projectDynamicDs]);
 
+  const handleLoadFirstPage = useCallback(() => {
+    projectDynamicDs.page(1);
+  }, [projectDynamicDs]);
+
   return (
     <OverviewWrap>
       <OverviewWrap.Header
@@ -53,18 +57,31 @@ const ProjectDynamic = () => {
                 }}
                 >
                   {
-                projectDynamicDs.totalPage > projectDynamicDs.currentPage && (
-                  <Button
-                    onClick={handleLoadMore}
-                    style={{
-                      color: '#3f51b5',
-                    }}
-                  >
-                    <span>查看更多</span>
-                    <Icon type="baseline-arrow_right icon" style={{ marginRight: 2 }} />
-                  </Button>
-                )
-              }
+                    projectDynamicDs.totalPage > projectDynamicDs.currentPage && (
+                      <Button
+                        onClick={handleLoadMore}
+                        style={{
+                          color: '#3f51b5',
+                        }}
+                      >
+                        <span>查看更多</span>
+                        <Icon type="baseline-arrow_right icon" style={{ marginRight: 2 }} />
+                      </Button>
+                    )
+                  }
+                  {
+                    projectDynamicDs.totalPage > 1 && projectDynamicDs.totalPage === projectDynamicDs.currentPage && (
+                      <Button
+                        onClick={handleLoadFirstPage}
+                        style={{
+                          color: '#3f51b5',
+                        }}
+                      >
+                        <span>收起</span>
+                        <Icon type="baseline-arrow_drop_up icon" style={{ marginRight: 2 }} />
+                      </Button>
+                    )
+                  }
                 </div>
               </div>
             ) : (
