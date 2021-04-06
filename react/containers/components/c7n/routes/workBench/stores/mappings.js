@@ -72,7 +72,7 @@ const componentsObj = {
       minW: 4,
       i: 'myStar',
       x: 5,
-      y: 12,
+      y: 6,
     },
     name: 'myStar',
     type: 'myStar',
@@ -90,7 +90,7 @@ const componentsObj = {
       minW: 9,
       w: 9,
       x: 0,
-      y: 6,
+      y: 18,
     },
     name: 'backlogApprove',
     type: 'backlogApprove',
@@ -104,7 +104,7 @@ const componentsObj = {
   myDefect: {
     layout: {
       x: 0,
-      y: 12,
+      y: 6,
       h: 4,
       w: 5,
       minH: 4,
@@ -160,7 +160,7 @@ const componentsObj = {
   quickLink: {
     layout: {
       x: 0,
-      y: 22,
+      y: 14,
       h: 4,
       w: 4,
       minH: 3,
@@ -179,7 +179,7 @@ const componentsObj = {
   doc: {
     layout: {
       x: 4,
-      y: 22,
+      y: 14,
       h: 4,
       w: 5,
       minH: 4,
@@ -236,7 +236,7 @@ const componentsObj = {
   myReport: {
     layout: {
       x: 0,
-      y: 17,
+      y: 10,
       h: 4,
       w: 5,
       minH: 4,
@@ -254,7 +254,7 @@ const componentsObj = {
   myExecution: {
     layout: {
       x: 5,
-      y: 17,
+      y: 10,
       h: 4,
       w: 4,
       minH: 4,
@@ -271,7 +271,7 @@ const componentsObj = {
   myhandler: {
     layout: {
       x: 0,
-      y: 27,
+      y: 23,
       h: 4,
       w: 5,
       minH: 4,
