@@ -28,7 +28,7 @@ export function setAccessToken(token, tokenType, expiresIn) {
 
   };
   if (isHttps) {
-    option.SameSite = 'None';
+    option.sameSite = 'none';
     option.secure = true;
   }
   if (expiresIn) {
