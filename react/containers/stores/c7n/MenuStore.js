@@ -276,6 +276,9 @@ class MenuStore {
       const type = getMenuType(menuType, isUser) || 'site';
       if (type !== 'user') {
         AppState.currentMenuType.type = type;
+        if (menuType?.id) {
+          AppState.currentMenuType.id = menuType?.id
+        }
       }
       const { id = 0, organizationId, orgId } = menuType;
       const menu = this.menuData(type, id);
