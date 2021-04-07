@@ -42,6 +42,7 @@ export default class UserPreferences extends Component {
 
   getGlobalMenuData = (organizationId) => {
     const { MenuStore, history } = this.props;
+    debugger;
     MenuStore.loadMenuData({ type: 'site' }, false).then((menus) => {
       if (menus.length) {
         const { route, domain } = findFirstLeafMenu(menus[0]);
