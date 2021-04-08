@@ -8,16 +8,15 @@ import {
   Form, TextField, Tooltip, DatePicker, Spin, Icon, Button, TextArea, CheckBox,
 } from 'choerodon-ui/pro';
 import { fileServer, prompt } from '@/utils';
-import map from 'lodash/map';
-import some from 'lodash/some';
-import get from 'lodash/get';
+import {
+  includes, map, some, get,
+} from 'lodash';
 import axios from '@/containers/components/c7n/tools/axios';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
 import { InjectedFunction } from './components/template-modal-inject';
 import './index.less';
-import { includes } from 'lodash';
 // import openTemplate from './components/template-modal';
 
 const CreateProject = observer(() => {
@@ -29,10 +28,12 @@ const CreateProject = observer(() => {
         organizationId,
       },
     },
+    projectId: currentProjectId,
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [templateTabsKey, setTemplateTabsKey] = useState([]);
+  const [hasConfiged, setHasConfiged] = useState(false);
 
   const record = useMemo(() => formDs.current, [formDs.current]);
   const isModify = useMemo(() => record && record.status !== 'add', [record]);
@@ -46,16 +47,27 @@ const CreateProject = observer(() => {
   }, [isLoading]);
 
   useEffect(() => {
-    axios.get(`/agile/v1/organizations/${organizationId}/organization_config/check_config_template`).then((res) => {
-      if (res.statusMachineTemplateConfig) {
-        if (res.boardTemplateConfig) {
-          setTemplateTabsKey(['statusMachineTemplate', 'boardTemplate']);
-        } else {
-          setTemplateTabsKey(['statusMachineTemplate']);
-        }
+    const loadTemplateConfig = async () => {
+      let notConfigured = true;
+      if (currentProjectId) {
+        notConfigured = await axios.get(`/agile/v1/organizations/${organizationId}/organization_config/check_configured?projectId=${currentProjectId}`);
+        setHasConfiged(!notConfigured);
       }
-    });
-  }, [organizationId]);
+      if (!currentProjectId || (currentProjectId && notConfigured)) {
+        axios.get(`/agile/v1/organizations/${organizationId}/organization_config/check_config_template`).then((res) => {
+          if (res.statusMachineTemplateConfig) {
+            if (res.boardTemplateConfig) {
+              setTemplateTabsKey(['statusMachineTemplate', 'boardTemplate']);
+            } else {
+              setTemplateTabsKey(['statusMachineTemplate']);
+            }
+          }
+        });
+      }
+    };
+
+    loadTemplateConfig();
+  }, [currentProjectId, organizationId]);
 
   modal.handleOk(async () => {
     try {
@@ -203,8 +215,8 @@ const CreateProject = observer(() => {
   }, []);
 
   const handleOpenTemplate = useCallback(() => {
-    InjectedFunction.openTemplate({ templateTabsKey });
-  }, [templateTabsKey]);
+    InjectedFunction.openTemplate({});
+  }, []);
 
   if (!record) {
     return <Spin spinning />;
@@ -252,9 +264,9 @@ const CreateProject = observer(() => {
       </div>
       <div className={`${prefixCls}-template`}>
         {
-          selectedCategoryCodes.find((item) => item === 'N_AGILE') && includes(templateTabsKey, 'statusMachineTemplate') && (
+          (!currentProjectId || (currentProjectId && !hasConfiged)) && selectedCategoryCodes.find((item) => item === 'N_AGILE') && includes(templateTabsKey, 'statusMachineTemplate') && (
             <>
-              <CheckBox dataSet={formDs} name="useTemplate" value className={`${prefixCls}-template-checkbox`}>{`使用组织预置的状态机${includes(templateTabsKey, 'boardTemplate') ? '及看板模板' : ''}`}</CheckBox>
+              <CheckBox dataSet={formDs} name="useTemplate" value className={`${prefixCls}-template-checkbox`}>使用组织预置的状态机及看板模板</CheckBox>
               <div
                 className={`${prefixCls}-template-btn`}
                 role="none"
