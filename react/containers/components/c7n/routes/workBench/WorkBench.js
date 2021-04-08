@@ -147,7 +147,7 @@ const WorkBench = () => {
           key={key}
           isStatic={key === 'starTarget'}
           style={key === 'starTarget' && {
-            borderRadius: 'unset',
+            borderRadius: '10px 0 10px 10px',
           }}
         >
           {SwitchComponents(key, title, emptyDiscribe)}
