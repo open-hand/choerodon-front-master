@@ -70,11 +70,9 @@ const DeployChart = () => {
     const priorityInfo = priorityChartDs.toData();
     return (
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
-        <div className="lists">
-          <h3 className="title">已完成/总计数</h3>
-          <div className="wrapper">
-            {priorityInfo.map((priority) => renderList(priority))}
-          </div>
+        <h3 className="title">已完成/总计数</h3>
+        <div className="wrapper">
+          {priorityInfo.map((priority) => renderList(priority))}
         </div>
       </OverviewWrap.Content>
     );

@@ -11,6 +11,11 @@
 
   &-content {
     padding-left: .1rem;
+    max-height: ~"calc(100% - 34px)";
+    // min-height: 2.3rem;
+    padding-right: 0.04rem;
+    padding-top: 0.08rem;
+    padding-bottom: 0.22rem;
 
     &-priority-tag {
       // margin-left: 8px;
@@ -40,13 +45,6 @@
       align-items: center;
     }
 
-    .lists {
-      min-height: 2.3rem;
-      padding-left: 0.04rem;
-      padding-right: 0.04rem;
-      padding-top: 0.08rem;
-      padding-bottom: 0.22rem;
-
       .title {
         font-size: 0.13rem;
         line-height: 0.18rem;
@@ -55,7 +53,7 @@
       }
 
       .wrapper {
-        height: 1.85rem;
+        height: 100%;
         overflow-y: scroll;
         padding-right: 0.05rem;
       }
@@ -97,6 +95,5 @@
           }
         }
       }
-    }
   }
 }
