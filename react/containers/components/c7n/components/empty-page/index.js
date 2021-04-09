@@ -16,6 +16,7 @@ const EmptyPage = withRouter(((props) => {
     btnText,
     onClick,
     img,
+    imgStyle = {},
   } = props;
 
   function handleClick() {
@@ -27,7 +28,7 @@ const EmptyPage = withRouter(((props) => {
 
   return (
     <div className="c7n-workBench-empty-page">
-      <img className="c7n-workBench-empty-page-image" alt="" src={img || defaultImg} />
+      <img className="c7n-workBench-empty-page-image" alt="" src={img || defaultImg} style={{ ...imgStyle }} />
       <div className="c7n-workBench-empty-page-text">
         <div className="c7n-workBench-empty-page-title">
           {title}
