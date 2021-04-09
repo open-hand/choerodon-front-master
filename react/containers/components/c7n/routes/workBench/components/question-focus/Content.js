@@ -90,7 +90,7 @@ const TodoQuestion = observer(() => {
         <Tree
           dataSet={questionDs}
           renderer={nodeRenderer}
-          onTreeNode={({ record }) => (record.get('parentId') ? {} : { className: 'c7ncd-question-issue-root-node' })}
+          onTreeNode={({ record }) => (record.get('parentId') || record.level ? {} : { className: 'c7ncd-question-issue-root-node' })}
         />
         {questionStore.getHasMore ? component
           : null}
