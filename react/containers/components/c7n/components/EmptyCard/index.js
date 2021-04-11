@@ -36,12 +36,11 @@ const EmptyCard = ({
 
   return (
     <div className={prefixCls} id={`emtyCard-${index}`}>
-      <header style={{
-        marginBottom: isOnlyShowText ? 0 : '20px',
-      }}
-      >
+      {!isOnlyShowText && (
+      <header>
         <span>{title}</span>
       </header>
+      )}
       <main className={isOnlyShowText ? `${prefixCls}-onlyText` : ''}>
         <EmptyPage title={emptyTitle} describe={emptyDiscribe} />
       </main>
