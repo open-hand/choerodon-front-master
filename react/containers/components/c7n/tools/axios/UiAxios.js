@@ -28,11 +28,13 @@ function handleResponseInttercept(response) {
   if (get(response, 'status') === 204) {
     return response;
   }
-  if (response.data.failed === true) {
-    throw response.data;
+  if (Object.prototype.hasOwnProperty.call(response, 'data')) {
+    if (response.data.failed === true) {
+      throw response.data;
+    }
+    return transformResponsePage(response.data);
   }
-  handleResponseCancelToken(response);
-  return transformResponsePage(get(response, 'data'));
+  return handleResponseCancelToken(response);
 }
 
 const instance = axios.create({

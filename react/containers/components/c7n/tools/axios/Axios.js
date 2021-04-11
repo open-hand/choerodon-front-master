@@ -74,31 +74,37 @@ function handleResponseInttercept(response) {
   if (get(response, 'status') === 204) {
     return response;
   }
-  if (response.data.failed === true) {
-    if (!response.config.noPrompt) {
-      prompt(response.data.message, 'error');
+  if (Object.prototype.hasOwnProperty.call(response, 'data')) {
+    if (response.data.failed === true) {
+      if (!response.config.noPrompt) {
+        prompt(response.data.message, 'error');
+      }
+      throw response.data;
     }
-    throw response.data;
+    return transformResponsePage(response.data);
   }
-  handleResponseCancelToken(response);
-  return transformResponsePage(get(response, 'data'));
+  return handleResponseCancelToken(response);
 }
 
-axios.defaults.timeout = 30000;
-axios.defaults.baseURL = API_HOST;
-axios.defaults.transformResponse = [
-  handleDefaultTransformResponse,
-];
-axios.defaults.routeChangeCancel = true;
+function ChoerodonAxios() {
+  axios.defaults.timeout = 30000;
+  axios.defaults.baseURL = API_HOST;
+  axios.defaults.transformResponse = [
+    handleDefaultTransformResponse,
+  ];
+  axios.defaults.routeChangeCancel = true;
 
-axios.defaults.paramsSerializer = handleDefaultTransformParamsSerializer;
+  axios.defaults.paramsSerializer = handleDefaultTransformParamsSerializer;
 
-axios.interceptors.request.use(handleRequestIntercept,
-  (err) => {
-    const error = err;
-    return Promise.reject(error);
-  });
+  axios.interceptors.request.use(handleRequestIntercept,
+    (err) => {
+      const error = err;
+      return Promise.reject(error);
+    });
 
-axios.interceptors.response.use(handleResponseInttercept, handelResponseError);
+  axios.interceptors.response.use(handleResponseInttercept, handelResponseError);
 
-export default axios;
+  return axios;
+}
+
+export default ChoerodonAxios();
