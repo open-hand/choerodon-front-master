@@ -5,7 +5,6 @@ import {
 import { observer } from 'mobx-react-lite';
 import { ModalContainer } from 'choerodon-ui/pro/lib';
 import { inject } from 'mobx-react';
-import PermissionRoute from '@/components/permission-route';
 import asyncRouter from '../util/asyncRouter';
 
 const Projects = asyncRouter(() => import('../routes/projects'));
@@ -22,16 +21,16 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
       ...AppState.getCurrentTheme === 'theme4' ? {
         style: {
           background: '#F5F6FA',
-        },
+        }
       } : {}
     }
   >
     <Switch>
-      <PermissionRoute exact path={`${match.url}projects`} component={ProjectsPro} />
-      <PermissionRoute exact path={`${match.url}applications`} component={Applications} />
-      <PermissionRoute exact path={`${match.url}charts`} component={Charts} />
+      <Route exact path={`${match.url}projects`} component={ProjectsPro} />
+      <Route exact path={`${match.url}applications`} component={Applications} />
+      <Route exact path={`${match.url}charts`} component={Charts} />
       <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
-      <PermissionRoute
+      <Route
         exact
         path={`${match.url}workbench`}
         component={() => {
@@ -41,12 +40,12 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
           return '';
         }}
       />
-      <Route exact path={`${match.url}test`} component={Skeleton} />
-      <PermissionRoute exact path={`${match.url}projectsPro`} component={ProjectsPro} />
-      <PermissionRoute exact path={`${match.url}agile/project-overview`} component={ProjectOverview} />
-      <PermissionRoute exact path="/">
+       <Route exact path={`${match.url}test`} component={Skeleton} />
+      <Route exact path={`${match.url}projectsPro`} component={ProjectsPro} />
+      <Route exact path={`${match.url}agile/project-overview`} component={ProjectOverview} />
+      <Route exact path="/">
         <Redirect to={`${match.url}workbench`} />
-      </PermissionRoute>
+      </Route>
       <Route path={match.url} component={AutoRouter} />
     </Switch>
     <ModalContainer />

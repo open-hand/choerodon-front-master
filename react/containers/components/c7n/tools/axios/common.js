@@ -36,8 +36,8 @@ function cursiveSetCorrectId(source, correctId, flag) {
   return tempCorrectedId;
 }
 
-function handleRequestCancelToken(tempConfig) {
-  // const tempConfig = config;
+function handleRequestCancelToken(config) {
+  const tempConfig = config;
   // 区别请求的唯一标识，这里用方法名+请求路径
   // 如果一个项目里有多个不同baseURL的请求 + 参数
   const queryParams = tempConfig.params || {};
@@ -74,7 +74,7 @@ function handleRequestCancelToken(tempConfig) {
     // type: ,
     name: requestMark,
     cancel: source.cancel,
-    routeChangeCancel: tempConfig.routeChangeCancel, // 可能会有优先级高于默认设置的routeChangeCancel项值
+    routeChangeCancel: config.routeChangeCancel, // 可能会有优先级高于默认设置的routeChangeCancel项值
   });
 
   return tempConfig;
@@ -82,7 +82,7 @@ function handleRequestCancelToken(tempConfig) {
 
 function handleResponseCancelToken(config) {
   const markIndex = pendingRequest.findIndex(
-    (item) => item.name === config.config.requestMark,
+    (item) => item.name === config.requestMark,
   );
   // 找到了就删除该标识
   markIndex > -1 && pendingRequest.splice(markIndex, 1);
@@ -120,7 +120,8 @@ function handelResponseError(error) {
   }
   // 如果是主动取消了请求，做个标识
   if (axios.isCancel(error)) {
-    return;
+    errorFormat.selfCancel = true;
+    errorFormat.message = null;
   }
   throw errorFormat;
 }
