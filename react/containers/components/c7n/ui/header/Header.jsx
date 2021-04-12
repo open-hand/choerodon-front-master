@@ -95,7 +95,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
       <ul className={`${prefixCls}-right`}>
         <OrgSelect />
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
-          {/* <SkinPeeler /> */}
+          <SkinPeeler />
           {/* <Button */}
           {/*  icon="toys" */}
           {/*  onClick={() => { */}
