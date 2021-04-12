@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Route, RouteProps } from 'react-router-dom';
+import { Route, RouteProps, useLocation } from 'react-router-dom';
 import { noaccess as NoAccess, Permission } from '@/index';
 import useQueryString from '@/hooks/useQueryString';
 import Skeleton from '@/containers/components/c7n/master/skeleton';
@@ -14,6 +14,7 @@ const isFunction = (something: unknown): something is Function => typeof somethi
 
 const PermissionRoute: React.FC<PermissionRouteProps> = ({ enabledRouteChangedAjaxBlock = true, service, ...rest }) => {
   const { type } = useQueryString();
+  const location = useLocation();
   const codes = useMemo(() => (isFunction(service) ? service(type) : (service || [])), [service, type]);
   const route = (
     <Route
@@ -30,7 +31,7 @@ const PermissionRoute: React.FC<PermissionRouteProps> = ({ enabledRouteChangedAj
       });
     }
   },
-  [enabledRouteChangedAjaxBlock]);
+  [location]);
 
   return (codes.length > 0)
     ? (
