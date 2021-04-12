@@ -20,6 +20,7 @@ const UI_CONFIG = {
   tableColumnResizable: false,
   modalOkFirst: false,
   modalKeyboard: false,
+  modalSectionBorder: false,
   drawerOkFirst: true,
   buttonFuncType: 'flat',
   lovQueryUrl: (code) => `/iam/choerodon/v1/lov/code?code=${code}`,

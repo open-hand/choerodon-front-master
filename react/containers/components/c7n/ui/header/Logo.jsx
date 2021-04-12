@@ -2,14 +2,13 @@ import React, { Component, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
-import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
 import classnames from 'classnames';
 
 const PREFIX_CLS = 'c7n';
 const prefixCls = `${PREFIX_CLS}-boot-header-logo`;
 
 export default withRouter(inject('AppState', 'MenuStore')(observer((props) => {
-  const { setTheme, schema } = useContext(ThemeContext);
+  const schema = '';
   const { AppState } = props;
   const { systemLogo, systemName } = AppState.getSiteInfo;
   return (

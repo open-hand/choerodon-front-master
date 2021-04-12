@@ -22,6 +22,7 @@ const prefixCls = `${PREFIX_CLS}-boot-header-inbox`;
 /* eslint-disable-next-line */
 const reg = /\n|&nbsp;|&lt|&gt|<[^a\/][^>]*>|<\/[^a][^>]*>/g;
 const imgreg = /(<img[\s\S]*?src\s*=\s*["|']|\[img\])(.*?)(["|'][\s\S]*?>|\[\/img\])/;
+const tablereg = /<table(.*?)>(.*?)<\/table>/g;
 const cleanModalKey = Modal.key();
 
 @inject('HeaderStore', 'AppState')
@@ -345,7 +346,7 @@ export default class Inbox extends Component {
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
                     <div style={{ maxHeight: 63, overflow: 'hidden' }}>
-                      {content && <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(reg, '')}` }} />}
+                      {content && <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(tablereg, '').replace(reg, '')}` }} />}
                       {document.getElementById(`#li-${id}`) && document.getElementById(`#li-${id}`).offsetHeight > 63 ? (
                         <a href="#" target="_blank" rel="noreferrer noopener">
                           <span>了解更多</span>

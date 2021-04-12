@@ -5,9 +5,7 @@ function autoRefresh() {
 }
 
 function register() {
-  console.log('register autoRefresh.');
   window.addEventListener('error', (e) => {
-    console.log('listen a error', e);
     if ((findJs(e) || findCss(e)) && timeLimit()) {
       localStorage.setItem('refresh.latest.time', moment().format('YYYY-MM-DD HH:mm:ss'));
       window.location.reload();

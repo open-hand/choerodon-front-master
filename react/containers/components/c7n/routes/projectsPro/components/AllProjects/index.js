@@ -56,7 +56,7 @@ export default observer(() => {
       />,
       okText: currentProjectId ? '保存' : '创建',
       style: {
-        width: currentProjectId ? '3.8rem' : '7.4rem',
+        width: '3.8rem',
       },
     });
   };

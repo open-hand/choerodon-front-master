@@ -92,6 +92,7 @@
       display: flex;
       align-items: center;
       margin-left: .1rem;
+
       .@{prefixCls}-main-user-left {
         margin-right: 0;
         height: 23px;
@@ -102,6 +103,7 @@
       .@{prefixCls}-main-user-right {
         margin-left: .04rem;
       }
+
       .@{prefixCls}-main-user:not(:last-child) {
         margin-right: 0;
       }
@@ -109,6 +111,7 @@
       .@{prefixCls}-main-user:not(:first-child) {
         margin-left: -.06rem;
       }
+
       &-tooltip {
         & >div:not(:last-child) {
           margin-bottom: .05rem;
@@ -158,6 +161,7 @@
           // color: #fff;
         }
       }
+
       &-hover {
         &:hover {
           transform: scale(1.2);
@@ -182,6 +186,7 @@
       .@{prefixCls}-main-project:not(:first-child) {
         margin-left: -.06rem;
       }
+
       &-tooltip {
         & >div:not(:last-child) {
           margin-bottom: .05rem;
@@ -232,4 +237,10 @@
       }
     }
   }
+  // 当节点即为根节点 又为叶子节点时，隐藏缩进
+  &-root-node {
+      .c7n-tree-switcher-noop {
+        display: none;
+      }
+    }
 }
