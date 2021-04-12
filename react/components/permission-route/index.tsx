@@ -1,21 +1,37 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Route, RouteProps } from 'react-router-dom';
 import { noaccess as NoAccess, Permission } from '@/index';
 import useQueryString from '@/hooks/useQueryString';
 import Skeleton from '@/containers/components/c7n/master/skeleton';
+// @ts-ignore
+import { pendingRequest } from '@/containers/components/c7n/tools/axios';
 
 interface PermissionRouteProps extends RouteProps {
-  service: string[] | ((type: 'project' | 'organization' | 'site') => string[])
+  service: string[] | ((type: 'project' | 'organization' | 'site') => string[]),
+  enabledRouteChangedAjaxBlock: boolean,
 }
 const isFunction = (something: unknown): something is Function => typeof something === 'function';
-const PermissionRoute: React.FC<PermissionRouteProps> = ({ service, ...rest }) => {
+
+const PermissionRoute: React.FC<PermissionRouteProps> = ({ enabledRouteChangedAjaxBlock = true, service, ...rest }) => {
   const { type } = useQueryString();
-  const codes = useMemo(() => (isFunction(service) ? service(type) : service), [service, type]);
+  const codes = useMemo(() => (isFunction(service) ? service(type) : (service || [])), [service, type]);
   const route = (
     <Route
       {...rest}
     />
   );
+
+  useEffect(() => function () {
+    // @ts-ignore
+    if (enabledRouteChangedAjaxBlock && pendingRequest) {
+    // @ts-ignore
+      pendingRequest.forEach((item:any) => {
+        item.cancel();
+      });
+    }
+  },
+  [enabledRouteChangedAjaxBlock]);
+
   return (codes.length > 0)
     ? (
       <Permission
