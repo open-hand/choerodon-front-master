@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import Logo from './Logo';
 import User from './User';
 import Inbox from './Inbox';
-// import SkinPeeler from './SkinPeeler';
+import SkinPeeler from './SkinPeeler';
 import HeaderSetting from './HeaderSetting';
 import './style';
 import OrgSelect from './OrgSelect';
