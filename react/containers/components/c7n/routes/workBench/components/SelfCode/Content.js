@@ -51,7 +51,7 @@ const SelfCode = () => {
           </span>
           <span>
             {appServiceName}
-            {appServiceCode && (appServiceCode)}
+            {appServiceCode ? `(${appServiceCode})` : ''}
           </span>
         </main>
         <footer>

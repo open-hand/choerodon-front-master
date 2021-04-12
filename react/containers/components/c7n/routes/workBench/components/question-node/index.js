@@ -275,7 +275,7 @@ const QuestionNode = observer(({
           <span className={`${prefixCls}-main-description`}>{summary}</span>
         </Tooltip>
         {isStar && starBeacon && <Icon className={`${prefixCls}-main-star`} type="stars" />}
-        {getStatus(statusVO)}
+        {getStatus()}
         {(switchCode === 'reportedBug' || (isStar && typeCode !== 'feature')) && getUsers(assignees || [{ id: assigneeId, imageUrl: assigneeImageUrl, realName: assigneeRealName }])}
         {typeCode === 'feature' && getProjects(featureTeams)}
         {typeCode !== 'feature' && (

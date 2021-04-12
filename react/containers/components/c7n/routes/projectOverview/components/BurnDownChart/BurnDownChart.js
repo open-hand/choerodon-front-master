@@ -103,7 +103,7 @@ const BurnDownChart = observer(() => {
               if (item.value && selectValue === 'issueCount') {
                 unit = ' 个';
               }
-              content = `${item.axisValue || '冲刺开启'}<br />${item.marker}${item.seriesName} : ${(item.value || item.value === 0) ? item.value : '-'}${unit && unit}`;
+              content = `${item.axisValue || '冲刺开启'}<br />${item.marker}${item.seriesName} : ${(item.value || item.value === 0) ? item.value : '-'}${unit}`;
             }
           });
           return content;
