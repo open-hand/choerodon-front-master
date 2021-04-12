@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "@choerodon/components": "0.0.1",
+    "@choerodon/inject": "^0.1.0",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.168",
     "@types/query-string": "^6.3.0",
