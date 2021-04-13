@@ -286,13 +286,23 @@ class MenuStore {
       if (menu.length || hasMenu) {
         if (type === 'site') {
           if (AppState.getUserInfo?.currentRoleLevel !== 'site') {
-            await axios.put('iam/v1/users/tenant-id?tenantId=0');
+            await axios({
+              url: 'iam/v1/users/tenant-id?tenantId=0',
+              method: 'put',
+              routeChangeCancel: false,
+              enabledCancelMark: false,
+            });
             await AppState.loadUserInfo();
           }
         } else if (type === 'organization') {
           const orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
           if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
-            await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId}`);
+            await axios({
+              url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
+              method: 'put',
+              routeChangeCancel: false,
+              enabledCancelMark: false,
+            });
             AppState.loadUserInfo();
           }
         }
@@ -315,7 +325,12 @@ class MenuStore {
         } else {
           url += '?labels=SITE_MENU';
         }
-        const data = await axios.get(url);
+        const data = await axios({
+          url,
+          method:'get',
+          routeChangeCancel: false,
+          enabledCancelMark: false,
+        });
         const child = filterEmptyMenus(data || []);
         if (type === 'project') {
           changeMenuLevel({ level: 'project', child });
@@ -328,8 +343,18 @@ class MenuStore {
       let flag = 0;
       if (type === 'site') {
         if (AppState.getUserInfo?.currentRoleLevel !== 'site') {
-          await axios.put('iam/v1/users/tenant-id?tenantId=0');
-          await axios.get('/iam/choerodon/v1/switch/site');
+          await axios({
+            url: 'iam/v1/users/tenant-id?tenantId=0',
+            method: 'put',
+            routeChangeCancel: false,
+            enabledCancelMark: false,
+          });
+          await axios({
+            url: '/iam/choerodon/v1/switch/site',
+            method: 'get',
+            routeChangeCancel: false,
+            enabledCancelMark: false,
+          });
         }
       } else if (id && (['project', 'organization'].includes(type))) {
         const orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);

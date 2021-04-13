@@ -130,8 +130,8 @@ class Masters extends Component {
         document.getElementsByTagName('title')[0].innerText = get(data, 'systemTitle');
       }
       AppState.setSiteInfo(data);
-      this.updateTheme(data.themeColor);
-      localStorage.setItem('C7N-THEME-COLOR', data.themeColor);
+      this.updateTheme(data?.themeColor);
+      localStorage.setItem('C7N-THEME-COLOR', data?.themeColor);
     });
   }
 

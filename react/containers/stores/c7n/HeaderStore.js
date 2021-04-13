@@ -306,7 +306,12 @@ class HeaderStore {
   }
 
   axiosGetNewSticky() {
-    return axios.get('/hmsg/choerodon/v1/system_notice/new_sticky').then(action((data) => {
+    return axios({
+      method: 'get',
+      url: '/hmsg/choerodon/v1/system_notice/new_sticky',
+      routeChangeCancel: false,
+      enabledCancelMark: false,
+    }).then(action((data) => {
       this.announcement = data;
       if (data && data.id && (!localStorage.lastClosedId || localStorage.lastClosedId !== `${data.id}`)) {
         this.announcementClosed = false;
@@ -315,7 +320,12 @@ class HeaderStore {
   }
 
   axiosShowSiteMenu() {
-    return axios.get('/iam/choerodon/v1/menus/site_menu_flag').then(action((data) => {
+    return axios({
+      url: '/iam/choerodon/v1/menus/site_menu_flag',
+      method: 'get',
+      routeChangeCancel: false,
+      enabledCancelMark: false,
+    }).then(action((data) => {
       this.setShowSiteMenu(data);
     })).catch(() => {
       this.setShowSiteMenu(false);
@@ -323,7 +333,12 @@ class HeaderStore {
   }
 
   axiosGetUnreadMessageCount() {
-    return axios.get('hmsg/v1/0/messages/user/count').then(action((data) => {
+    return axios({
+      url: 'hmsg/v1/0/messages/user/count',
+      method: 'get',
+      routeChangeCancel: false,
+      enabledCancelMark: false,
+    }).then(action((data) => {
       this.setUnreadMessageCount(data ? data.unreadMessageCount : 0);
     })).catch(() => {
       this.setUnreadMessageCount(0);
