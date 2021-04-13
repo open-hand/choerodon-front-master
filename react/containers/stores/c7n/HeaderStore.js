@@ -238,7 +238,7 @@ class HeaderStore {
       const [organizations] = data;
       organizations.forEach((value) => {
         value.id = value.tenantId;
-        value.name = value.tenantName;
+        value.name = value?.tenantName;
         value.organizationId = value.id;
         value.type = ORGANIZATION_TYPE;
       });
