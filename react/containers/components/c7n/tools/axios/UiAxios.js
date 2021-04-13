@@ -85,6 +85,8 @@ function handleRequestIntercept(config) {
 }
 instance.defaults.routeChangeCancel = true;
 
+instance.defaults.enabledCancelMark = true;
+
 instance.interceptors.request.use(
   handleRequestIntercept,
   (err) => {

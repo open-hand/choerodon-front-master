@@ -27,7 +27,7 @@ const PermissionRoute: React.FC<PermissionRouteProps> = ({ enabledRouteChangedAj
     if (enabledRouteChangedAjaxBlock && pendingRequest) {
     // @ts-ignore
       pendingRequest.forEach((item:any) => {
-        item.cancel();
+        item.routeChangeCancel && item.cancel();
       });
     }
   },
