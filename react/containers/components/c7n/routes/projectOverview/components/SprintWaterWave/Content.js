@@ -26,8 +26,8 @@ const SprintWaterWave = observer(() => {
   function render() {
     const { current } = sprintWaterWaveDataSet;
     if (current) {
-      const remainingDays = current ? current.get('remainingDays') : 0;
-      const totalDays = current ? current.get('totalDays') : 0;
+      const remainingDays = current.get('remainingDays') || 0;
+      const totalDays = current.get('totalDays') || 0;
       return (
         <>
           <div className={`${clsPrefix}-content-left`}>
@@ -72,7 +72,7 @@ const SprintWaterWave = observer(() => {
     if (startedRecord) {
       return <LoadingBar display />;
     }
-    if (!sprintWaterWaveDataSet.status !== 'loading' && startSprintDs.status !== 'loading') {
+    if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;
     }
     return '';
