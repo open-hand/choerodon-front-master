@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import { Tooltip, Icon, Button } from 'choerodon-ui';
 import { EXTERNAL_LINK } from '@/utils/constants';
 import classNames from 'classnames';
+import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
 import Logo from './Logo';
 import User from './User';
 import Inbox from './Inbox';
@@ -16,7 +17,7 @@ import OrgSelect from './OrgSelect';
 const prefixCls = 'c7n-boot-header';
 
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
-  const schema = '';
+  const { setTheme, schema } = useContext(ThemeContext);
 
   useEffect(() => {
     const { AppState, HeaderStore, MenuStore } = props;
@@ -97,18 +98,18 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
           <SkinPeeler />
           {/* <Button */}
-          {/*  icon="toys" */}
-          {/*  onClick={() => { */}
-          {/*    const { AppState } = this.props; */}
-          {/*    const theme = AppState.getTheme; */}
-          {/*    let newTheme; */}
-          {/*    if (theme === 'theme4') { */}
-          {/*      newTheme = ''; */}
-          {/*    } else { */}
-          {/*      newTheme = 'theme4'; */}
-          {/*    } */}
-          {/*    AppState.setTheme(newTheme); */}
-          {/*  }} */}
+          {/* icon="toys" */}
+          {/* onClick={() => { */}
+          {/*   const { AppState } = this.props; */}
+          {/*   const theme = AppState.getTheme; */}
+          {/*   let newTheme; */}
+          {/*   if (theme === 'theme4') { */}
+          {/*     newTheme = ''; */}
+          {/*   } else { */}
+          {/*     newTheme = 'theme4'; */}
+          {/*   } */}
+          {/*   AppState.setTheme(newTheme); */}
+          {/* }} */}
           {/* /> */}
         </li>
         {renderExternalLink()}
