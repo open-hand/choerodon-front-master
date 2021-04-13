@@ -221,25 +221,50 @@ class AppState {
     return this.deployServices.slice();
   }
 
-  loadUserInfo = () => axios.get('iam/choerodon/v1/users/self').then((res) => {
+  loadUserInfo = () => axios({
+    method: 'get',
+    url: 'iam/choerodon/v1/users/self',
+    routeChangeCancel: false,
+    enabledCancelMark: false,
+  }).then((res) => {
     res = {
       ...res,
-      organizationName: res.tenantName,
-      organizationCode: res.tenantNum,
+      organizationName: res?.tenantName,
+      organizationCode: res?.tenantNum,
     };
     this.setUserInfo(res);
     return res;
   });
 
-  loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`);
+  loadOrgDate = (email) => axios({
+    url: `/iam/choerodon/v1/organizations/daysRemaining?email=${email}`,
+    method: 'get',
+    routeChangeCancel: false,
+    enabledCancelMark: false,
+  });
 
-  loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting');
+  loadSiteInfo = () => axios({
+    url: '/iam/choerodon/v1/system/setting',
+    method: 'get',
+    routeChangeCancel: false,
+    enabledCancelMark: false,
+  });
 
-  checkEnterpriseInfo = () => axios.get('/iam/choerodon/v1/enterprises/default');
+  checkEnterpriseInfo = () => axios({
+    url: '/iam/choerodon/v1/enterprises/default',
+    method: 'get',
+    routeChangeCancel: false,
+    enabledCancelMark: false,
+  });
 
   loadModules = async () => {
     try {
-      const res = await axios.get('/hadm/choerodon/v1/services/model');
+      const res = await axios({
+        url: '/hadm/choerodon/v1/services/model',
+        method: 'get',
+        routeChangeCancel: false,
+        enabledCancelMark: false,
+      });
       if (res && !res.failed) {
         this.modules = res;
       }
@@ -250,7 +275,12 @@ class AppState {
 
   loadDeployServices = async () => {
     try {
-      const res = await axios.get('/hadm/choerodon/v1/services');
+      const res = await axios({
+        url: '/hadm/choerodon/v1/services',
+        method: 'get',
+        routeChangeCancel: false,
+        enabledCancelMark: false,
+      });
       if (res && !res.failed) {
         this.deployServices = res;
       }

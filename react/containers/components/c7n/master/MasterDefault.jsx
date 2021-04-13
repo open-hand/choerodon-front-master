@@ -3,19 +3,17 @@ import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
 import queryString from 'query-string';
-import filter from 'lodash/filter';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import { message } from 'choerodon-ui/pro';
-import HeaderStore from '@/containers/stores/c7n/HeaderStore';
+import get from 'lodash/get';
 import axios from '../tools/axios';
-import CommonMenu from '../ui/menu';
 import MasterHeader from '../ui/header';
 import AnnouncementBanner from '../ui/header/AnnouncementBanner';
 import RouteIndex from './RouteIndex';
 import themeColorClient from './themeColorClient';
 import './style';
 import Skeleton from './skeleton';
-import { defaultBlackList } from "../ui/menu";
+import CommonMenu, { defaultBlackList } from '../ui/menu';
 
 const spinStyle = {
   textAlign: 'center',
@@ -125,15 +123,15 @@ class Masters extends Component {
       }
       link.id = 'dynamic-favicon';
       link.rel = 'shortcut icon';
-      link.href = data.favicon || 'favicon.ico';
+      link.href = get(data, 'favicon') || 'favicon.ico';
       document.head.appendChild(link);
-      data.defaultTitle = document.getElementsByTagName('title')[0].innerText;
-      if (data.systemTitle) {
-        document.getElementsByTagName('title')[0].innerText = data.systemTitle;
+      if (data) {
+        data.defaultTitle = document.getElementsByTagName('title')[0].innerText;
+        document.getElementsByTagName('title')[0].innerText = get(data, 'systemTitle');
       }
       AppState.setSiteInfo(data);
-      this.updateTheme(data.themeColor);
-      localStorage.setItem('C7N-THEME-COLOR', data.themeColor);
+      this.updateTheme(data?.themeColor);
+      localStorage.setItem('C7N-THEME-COLOR', data?.themeColor);
     });
   }
 
@@ -180,7 +178,7 @@ class Masters extends Component {
           // 说明是停用项目 需要删除最近使用的数据
           if (data) {
             const recents = JSON.parse(localStorage.getItem('recentItem'));
-            const newRecents = recents.filter(r => r.code !== data.code);
+            const newRecents = recents.filter((r) => r.code !== data.code);
             localStorage.setItem('recentItem', JSON.stringify(newRecents));
             HeaderStore.recentItem = newRecents;
           }
@@ -244,7 +242,9 @@ class Masters extends Component {
   }
 
   render() {
-    const { AutoRouter, AppState, location, MenuStore } = this.props;
+    const {
+      AutoRouter, AppState, location, MenuStore,
+    } = this.props;
     const search = new URLSearchParams(location.search);
     const fullPage = search.get('fullPage');
     if (this.isInOutward(this.props.location.pathname)) {
@@ -268,7 +268,7 @@ class Masters extends Component {
               </div>
               <div id="autoRouter" className="content">
                 {
-                  AppState.getCanShowRoute || defaultBlackList.some(v => this.props.location.pathname.startsWith(v)) ? (
+                  AppState.getCanShowRoute || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
                     <RouteIndex AutoRouter={AutoRouter} />
                   ) : (
                     <div>

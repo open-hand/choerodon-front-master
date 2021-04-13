@@ -12,6 +12,7 @@ import {
   includes, map, some, get,
 } from 'lodash';
 import axios from '@/containers/components/c7n/tools/axios';
+import { get as getInject } from '@choerodon/inject';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
@@ -215,7 +216,7 @@ const CreateProject = observer(() => {
   }, []);
 
   const handleOpenTemplate = useCallback(() => {
-    InjectedFunction.openTemplate({});
+    getInject('agile:openTemplate')({});
   }, []);
 
   if (!record) {

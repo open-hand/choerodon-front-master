@@ -116,7 +116,12 @@ class HeaderStore {
   }
 
   axiosGetRoles() {
-    axios.get('iam/hzero/v1/member-roles/self-roles').then((res) => {
+    axios({
+      url: 'iam/hzero/v1/member-roles/self-roles',
+      method: 'get',
+      routeChangeCancel: false,
+      enabledCancelMark: false,
+    }).then((res) => {
       this.setRoles(res);
     });
   }
@@ -232,13 +237,18 @@ class HeaderStore {
 
   axiosGetOrgAndPro(userId) {
     return axios.all([
-      axios.get('/iam/choerodon/v1/users/self-tenants'),
+      axios({
+        method: 'get',
+        routeChangeCancel: false,
+        enabledCancelMark: false,
+        url: '/iam/choerodon/v1/users/self-tenants',
+      }),
       // axios.get(`/iam/choerodon/v1/users/${userId}/projects`),
     ]).then((data) => {
       const [organizations] = data;
       organizations.forEach((value) => {
         value.id = value.tenantId;
-        value.name = value.tenantName;
+        value.name = value?.tenantName;
         value.organizationId = value.id;
         value.type = ORGANIZATION_TYPE;
       });
@@ -296,7 +306,12 @@ class HeaderStore {
   }
 
   axiosGetNewSticky() {
-    return axios.get('/hmsg/choerodon/v1/system_notice/new_sticky').then(action((data) => {
+    return axios({
+      method: 'get',
+      url: '/hmsg/choerodon/v1/system_notice/new_sticky',
+      routeChangeCancel: false,
+      enabledCancelMark: false,
+    }).then(action((data) => {
       this.announcement = data;
       if (data && data.id && (!localStorage.lastClosedId || localStorage.lastClosedId !== `${data.id}`)) {
         this.announcementClosed = false;
@@ -305,7 +320,12 @@ class HeaderStore {
   }
 
   axiosShowSiteMenu() {
-    return axios.get('/iam/choerodon/v1/menus/site_menu_flag').then(action((data) => {
+    return axios({
+      url: '/iam/choerodon/v1/menus/site_menu_flag',
+      method: 'get',
+      routeChangeCancel: false,
+      enabledCancelMark: false,
+    }).then(action((data) => {
       this.setShowSiteMenu(data);
     })).catch(() => {
       this.setShowSiteMenu(false);
@@ -313,7 +333,12 @@ class HeaderStore {
   }
 
   axiosGetUnreadMessageCount() {
-    return axios.get('hmsg/v1/0/messages/user/count').then(action((data) => {
+    return axios({
+      url: 'hmsg/v1/0/messages/user/count',
+      method: 'get',
+      routeChangeCancel: false,
+      enabledCancelMark: false,
+    }).then(action((data) => {
       this.setUnreadMessageCount(data ? data.unreadMessageCount : 0);
     })).catch(() => {
       this.setUnreadMessageCount(0);

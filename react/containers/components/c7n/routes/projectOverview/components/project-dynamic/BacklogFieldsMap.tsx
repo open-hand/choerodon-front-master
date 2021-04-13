@@ -255,6 +255,39 @@ const fieldsMap = [
       },
     },
   }],
+  ['Feedback Frequency', {
+    name: '需求反馈频率',
+    create: {
+      render: (log: { newString: any }) => {
+        const { newString } = log;
+        return (
+          <span>
+            将
+            <span className="c7n-Log-field">【需求反馈频率】</span>
+            <span>由</span>
+            <span className="c7n-Log-value">【无】</span>
+            改变为
+            <span className="c7n-Log-value">{`【${newString}】`}</span>
+          </span>
+        );
+      },
+    },
+    delete: {
+      render: (log: { oldString: any }) => {
+        const { oldString } = log;
+        return (
+          <span>
+            将
+            <span className="c7n-Log-field">【需求反馈频率】</span>
+            <span>由</span>
+            <span className="c7n-Log-value">{`【${oldString}】`}</span>
+            改变为
+            <span className="c7n-Log-value">【无】</span>
+          </span>
+        );
+      },
+    },
+  }],
 ];
 
 export default fieldsMap;
