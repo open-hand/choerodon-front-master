@@ -36,6 +36,8 @@ class PermissionProvider extends Component {
         params: {
           projectId: projectData[0].projectId,
         },
+        enabledCancelMark: false,
+        routeChangeCancel: false,
       }));
     }
     if (otherData.length > 0) {
@@ -43,6 +45,8 @@ class PermissionProvider extends Component {
         method: 'post',
         url: '/iam/choerodon/v1/permissions/menus/check-permissions',
         data: otherData.map(item => item.code),
+        enabledCancelMark: false,
+        routeChangeCancel: false,
       }));
     }
 
