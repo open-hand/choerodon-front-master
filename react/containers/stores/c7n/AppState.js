@@ -224,8 +224,8 @@ class AppState {
   loadUserInfo = () => axios.get('iam/choerodon/v1/users/self').then((res) => {
     res = {
       ...res,
-      organizationName: res.tenantName,
-      organizationCode: res.tenantNum,
+      organizationName: res?.tenantName,
+      organizationCode: res?.tenantNum,
     };
     this.setUserInfo(res);
     return res;

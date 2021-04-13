@@ -74,9 +74,9 @@ function handleResponseInttercept(response) {
   if (get(response, 'status') === 204) {
     return response;
   }
-  if (response.data.failed === true) {
-    if (!response.config.noPrompt) {
-      prompt(response.data.message, 'error');
+  if (response?.data?.failed === true) {
+    if (!response?.config.noPrompt) {
+      prompt(response?.data.message, 'error');
     }
     throw response.data;
   }

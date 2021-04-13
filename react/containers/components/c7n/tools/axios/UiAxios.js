@@ -28,7 +28,7 @@ function handleResponseInttercept(response) {
   if (get(response, 'status') === 204) {
     return response;
   }
-  if (response.data.failed === true) {
+  if (response?.data?.failed === true) {
     throw response.data;
   }
   handleResponseCancelToken(response);

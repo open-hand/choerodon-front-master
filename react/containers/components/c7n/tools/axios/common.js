@@ -36,8 +36,8 @@ function cursiveSetCorrectId(source, correctId, flag) {
   return tempCorrectedId;
 }
 
-function handleRequestCancelToken(tempConfig) {
-  // const tempConfig = config;
+function handleRequestCancelToken(config) {
+  const tempConfig = config;
   // 区别请求的唯一标识，这里用方法名+请求路径
   // 如果一个项目里有多个不同baseURL的请求 + 参数
   const queryParams = tempConfig.params || {};
@@ -46,7 +46,7 @@ function handleRequestCancelToken(tempConfig) {
     (queryString, [key, value], index) => {
       const symbol = queryString.length === 0 ? '?' : '&';
       let current = queryString;
-      current += typeof value === 'string' ? `${symbol}${key}=${value}` : '';
+      current += typeof value === 'string' ? `${symbol}${key}=${value}` : `${symbol}${key}=${String(value)}`;
       return current;
     },
     '',
@@ -82,7 +82,7 @@ function handleRequestCancelToken(tempConfig) {
 
 function handleResponseCancelToken(config) {
   const markIndex = pendingRequest.findIndex(
-    (item) => item.name === config.config.requestMark,
+    (item) => item.name === config?.config?.requestMark,
   );
   // 找到了就删除该标识
   markIndex > -1 && pendingRequest.splice(markIndex, 1);
