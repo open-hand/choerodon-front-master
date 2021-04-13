@@ -89,9 +89,14 @@ axios.defaults.baseURL = API_HOST;
 axios.defaults.transformResponse = [
   handleDefaultTransformResponse,
 ];
-axios.defaults.routeChangeCancel = true;
 
 axios.defaults.paramsSerializer = handleDefaultTransformParamsSerializer;
+
+// 这里配置一个路由取消请求得标识
+axios.defaults.routeChangeCancel = true;
+
+// 这里配置一个路由取消重复请求得标识
+axios.defaults.enabledCancelMark = true;
 
 axios.interceptors.request.use(handleRequestIntercept,
   (err) => {
