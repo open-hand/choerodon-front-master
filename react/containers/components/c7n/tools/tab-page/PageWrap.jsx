@@ -53,9 +53,7 @@ const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
         className={classNames(
           'wrap-tabs',
           {
-            hasHeader: !noHeader.includes(
-              currentKey && currentKey,
-            ),
+            hasHeader: !noHeader.includes(currentKey),
           },
           className,
         )}
