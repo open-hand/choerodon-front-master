@@ -23,16 +23,16 @@ class PermissionProvider extends Component {
 
   fetch() {
     const handlers = Array.from(this.handlers);
-    const totalData = Array.from(this.queue).map(item => JSON.parse(item));
-    const projectData = totalData.filter(item => item.resourceType === 'project');
-    const otherData = totalData.filter(item => item.resourceType !== 'project');
+    const totalData = Array.from(this.queue).map((item) => JSON.parse(item));
+    const projectData = totalData.filter((item) => item.resourceType === 'project');
+    const otherData = totalData.filter((item) => item.resourceType !== 'project');
     const request = [];
     // 项目层和其他层分开请求
     if (projectData.length > 0) {
       request.push(axios({
         method: 'post',
         url: '/iam/choerodon/v1/permissions/menus/check-permissions',
-        data: projectData.map(item => item.code),
+        data: projectData.map((item) => item.code),
         params: {
           projectId: projectData[0].projectId,
         },
@@ -44,7 +44,7 @@ class PermissionProvider extends Component {
       request.push(axios({
         method: 'post',
         url: '/iam/choerodon/v1/permissions/menus/check-permissions',
-        data: otherData.map(item => item.code),
+        data: otherData.map((item) => item.code),
         enabledCancelMark: false,
         routeChangeCancel: false,
       }));
@@ -85,14 +85,15 @@ class PermissionProvider extends Component {
     } else {
       const queue = new Set();
       if (
-        this.judgeServices(props).every(item => {
+        this.judgeServices(props).every((item) => {
           if (item) {
             const key = JSON.stringify(item);
             const status = this.permissions.get(key);
             if (status === SUCCESS) {
               handler(status);
               return false;
-            } else if (status !== FAILURE) {
+            }
+            if (status !== FAILURE) {
               this.queue.add(key);
               queue.add(key);
             }
@@ -110,8 +111,10 @@ class PermissionProvider extends Component {
     }
   }
 
-  judgeServices({ service, type, organizationId, projectId }) {
-    return service.map(code => this.judgeService(code, type, organizationId, projectId));
+  judgeServices({
+    service, type, organizationId, projectId,
+  }) {
+    return service.map((code) => this.judgeService(code, type, organizationId, projectId));
   }
 
   judgeService(code, type, organizationId, projectId) {
