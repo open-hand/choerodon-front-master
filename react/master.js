@@ -58,6 +58,7 @@ export default class Index extends React.Component {
     if (!this.isInOutward(this.props.location.pathname)) {
       this.auth();
     }
+    this.getNotificationPermission();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -80,6 +81,14 @@ export default class Index extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     syncBodyThemeAttribute();
+  }
+
+  getNotificationPermission = () => {
+    if (!('Notification' in window)) {
+      console.log('This browser does not support desktop notification');
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission();
+    }
   }
 
   handleStorageChange = (e) => {
