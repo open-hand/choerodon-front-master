@@ -83,9 +83,9 @@ function handleRequestIntercept(config) {
 
   return handleRequestCancelToken(newConfig);
 }
-instance.defaults.routeChangeCancel = true;
+instance.defaults.routeChangeCancel = false;
 
-instance.defaults.enabledCancelMark = true;
+instance.defaults.enabledCancelMark = false;
 
 instance.interceptors.request.use(
   handleRequestIntercept,
