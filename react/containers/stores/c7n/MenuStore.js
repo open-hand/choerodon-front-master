@@ -85,6 +85,9 @@ class MenuStore {
     project: {},
   };
 
+  // 是否已经请求过平台层菜单
+  @observable requestedSiteMenu = false;
+
   @observable activeMenuRoot = {};
 
   @observable collapsed = false;
@@ -108,6 +111,29 @@ class MenuStore {
   @observable notFoundSign = false;
 
   @observable closedKeys = [];
+
+  // 是否具有site平台层权限 用于避免重复切平台层
+  @observable hasSitePermission = true;
+
+  @computed
+  get getHasSitePermission() {
+    return this.hasSitePermission;
+  }
+
+  @action
+  setHasSitePermission(data) {
+    this.hasSitePermission = data;
+  }
+
+  @computed
+  get getRequestedSiteMenu() {
+    return this.requestedSiteMenu;
+  }
+
+  @action
+  setRequestedSiteMenu(data) {
+    this.requestedSiteMenu = data;
+  }
 
   @computed
   get getClosedKeys() {
@@ -282,11 +308,26 @@ class MenuStore {
       }
       const { id = 0, organizationId, orgId } = menuType;
       const menu = this.menuData(type, id);
-      let hasMenu = type === 'organization' ? (orgId && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(orgId))) : (id && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(id)))
-      if (menu.length || hasMenu) {
+      let hasMenu = () => {
+        if (type === 'organization') {
+          return (orgId && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(orgId)))
+        } else if (type === 'site') {
+          if (this.getRequestedSiteMenu) {
+            return true;
+          }
+        } else {
+          return (id && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(id)))
+        }
+        return false;
+      }
+      if (menu.length || hasMenu()) {
         if (type === 'site') {
-          if (AppState.getUserInfo?.currentRoleLevel !== 'site') {
+          if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
             await axios.put('iam/v1/users/tenant-id?tenantId=0');
+            const result = await axios.get('/iam/choerodon/v1/switch/site');
+            if (!result) {
+              this.setHasSitePermission(false);
+            }
             await AppState.loadUserInfo();
           }
         } else if (type === 'organization') {
@@ -314,6 +355,7 @@ class MenuStore {
           url += '?labels=USER_MENU';
         } else {
           url += '?labels=SITE_MENU';
+          that.setRequestedSiteMenu(true);
         }
         const data = await axios.get(url);
         const child = filterEmptyMenus(data || []);
@@ -327,9 +369,12 @@ class MenuStore {
       }
       let flag = 0;
       if (type === 'site') {
-        if (AppState.getUserInfo?.currentRoleLevel !== 'site') {
+        if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
           await axios.put('iam/v1/users/tenant-id?tenantId=0');
-          await axios.get('/iam/choerodon/v1/switch/site');
+          const result = await axios.get('/iam/choerodon/v1/switch/site');
+          if (!result) {
+            this.setHasSitePermission(false);
+          }
         }
       } else if (id && (['project', 'organization'].includes(type))) {
         const orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
@@ -352,6 +397,7 @@ class MenuStore {
           data = await getMenu(this);
         }
         if (AppState.userInfo.currentRoleLevel !== type) {
+          AppState.userInfo.currentRoleLevel = type;
           AppState.loadUserInfo();
         }
         AppState.setCanShowRoute(true);
