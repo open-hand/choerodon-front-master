@@ -316,6 +316,25 @@ const componentsObj = {
       '此模块展示此项目下动态列表。',
     img: projectDynamic,
   },
+  // 每人每日工作量
+  workLoad: {
+    layout: {
+      h: 6,
+      i: 'workLoad',
+      minH: 5,
+      minW: 10,
+      w: 10,
+      x: 0,
+      y: 8,
+    },
+    name: 'workLoad',
+    type: 'workLoad',
+    groupId: 'agile',
+    title: '每人每日工作量',
+    describe:
+        '此模块展示此项目下每人每日工作量。',
+    img: projectDynamic,
+  },
 };
 
 export default componentsObj;

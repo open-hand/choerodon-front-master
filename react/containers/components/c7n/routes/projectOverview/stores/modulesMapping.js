@@ -10,7 +10,7 @@ const modulesMapping = {
   N_AGILE: [
     'sprintNotDone', 'sprintCount', 'burnDownChart', 'defectTreatment',
     'defectChart', 'assigneeChart', 'priorityChart', 'issueTypeChart',
-    'issueTable', 'projectDynamic',
+    'issueTable', 'projectDynamic', 'workLoad',
   ],
 };
 
