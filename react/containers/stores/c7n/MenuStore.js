@@ -299,6 +299,7 @@ class MenuStore {
     // });
 
     async function mainFunc(resolve) {
+      try {
       const type = getMenuType(menuType, isUser) || 'site';
       if (type !== 'user') {
         AppState.currentMenuType.type = type;
@@ -418,6 +419,9 @@ class MenuStore {
       //   isLoadMenu = 0;
       //   return resolve([]);
       // }
+      } catch (e) {
+        AppState.setCanShowRoute(true);
+      }
     }
   }
 
