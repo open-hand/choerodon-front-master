@@ -1,7 +1,4 @@
-import React, {
-  useState, memo, useMemo, useEffect,
-} from 'react';
-import { Button, Spin, Tooltip } from 'choerodon-ui/pro';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import OverviewWrap from '../OverviewWrap';
@@ -21,36 +18,34 @@ const DeployChart = () => {
 
   const {
     issueTypeChartDs,
-  } = useIssueTypeChartStore()
+  } = useIssueTypeChartStore();
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
       <span>迭代问题类型分布</span>
     </div>
   );
-  function getCategoryCount(code) {
+  const getCategoryAndCategoryCount = useCallback(() => {
     const issueTypeInfo = issueTypeChartDs.toData();
-    const datas = [];
-    const typeCodes = ['story', 'bug', 'task', 'sub_task'];
-    for (let i = 0; i < typeCodes.length; i += 1) {
-      const typeIndex = issueTypeInfo.findIndex((item) => item.typeCode === typeCodes[i]);
-      if (typeIndex === -1) {
-        datas[i] = 0;
-      } else {
-        const statusData = issueTypeInfo[typeIndex].issueStatus.filter((status) => (
-          status.categoryCode === code
-        ));
-        if (statusData.length === 0) {
-          datas[i] = 0;
-        } else {
-          datas[i] = statusData.reduce((sum, data) => sum + data.issueNum, 0);
-        }
-      }
-    }
-    return datas;
-  }
+    const data = [];
+    const xAxisData = [];
+    issueTypeInfo?.forEach((item) => {
+      const statusNum = { todo: 0, doing: 0, done: 0 };
+      item.issueStatus?.forEach((status) => {
+        statusNum[status.categoryCode] += status.issueNum;
+      });
+      xAxisData.push(item.name);
+      data.push(statusNum);
+    });
+    return { data, xAxisData };
+  }, [issueTypeChartDs]);
 
-  function getOption() {
+  const getOption = useCallback(() => {
+    const { xAxisData, data } = getCategoryAndCategoryCount();
+    const doingCountArr = data.map((i) => i.doing);
+    const todoCountArr = data.map((i) => i.todo);
+    const doneCountArr = data.map((i) => i.done);
+
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -67,9 +62,9 @@ const DeployChart = () => {
             content = `<div>
             <span>${params[0].axisValue}</span>
             <br />
-            <div style="font-size: 11px"><div style="display:inline-block; width: 10px; height: 10px; margin-right: 3px; border-radius: 50%; background:${params[0].color}"></div>处理中：${getCategoryCount('doing')[item.dataIndex]} ${getCategoryCount('doing')[item.dataIndex] ? ' 个' : ''}</div>
-            <div style="font-size: 11px"><div style="display:inline-block; width: 10px; height: 10px; margin-right: 3px; border-radius: 50%; background:${params[1].color}"></div>待处理：${getCategoryCount('todo')[item.dataIndex]} ${getCategoryCount('todo')[item.dataIndex] ? ' 个' : ''}</div>
-            <div style="font-size: 11px"><div style="display:inline-block; width: 10px; height: 10px; margin-right: 3px; border-radius: 50%; background:${params[2].color}"></div>已完成：${getCategoryCount('done')[item.dataIndex]} ${getCategoryCount('done')[item.dataIndex] ? ' 个' : ''}</div>
+            <div style="font-size: 11px"><div style="display:inline-block; width: 10px; height: 10px; margin-right: 3px; border-radius: 50%; background:${params[0].color}"></div>处理中：${doingCountArr[item.dataIndex]} ${doingCountArr[item.dataIndex] ? ' 个' : ''}</div>
+            <div style="font-size: 11px"><div style="display:inline-block; width: 10px; height: 10px; margin-right: 3px; border-radius: 50%; background:${params[1].color}"></div>待处理：${todoCountArr[item.dataIndex]} ${todoCountArr[item.dataIndex] ? ' 个' : ''}</div>
+            <div style="font-size: 11px"><div style="display:inline-block; width: 10px; height: 10px; margin-right: 3px; border-radius: 50%; background:${params[2].color}"></div>已完成：${doneCountArr[item.dataIndex]} ${doneCountArr[item.dataIndex] ? ' 个' : ''}</div>
           </div>`;
           });
           return content;
@@ -95,7 +90,7 @@ const DeployChart = () => {
       },
       xAxis: {
         type: 'category',
-        data: ['故事', '缺陷', '任务', '子任务'],
+        data: xAxisData,
         axisLabel: {
           margin: 15,
         },
@@ -138,7 +133,7 @@ const DeployChart = () => {
           type: 'bar',
           stack: '计数',
           barCategoryGap: '28px',
-          data: getCategoryCount('doing'),
+          data: doingCountArr,
           itemStyle: {
             color: '#45A3FC',
           },
@@ -148,7 +143,7 @@ const DeployChart = () => {
           name: '待处理',
           type: 'bar',
           stack: '计数',
-          data: getCategoryCount('todo'),
+          data: todoCountArr,
           itemStyle: {
             color: ' #FFB100',
           },
@@ -159,7 +154,7 @@ const DeployChart = () => {
           name: '已完成',
           type: 'bar',
           stack: '计数',
-          data: getCategoryCount('done'),
+          data: doneCountArr,
           itemStyle: {
             color: '#00BFA5',
           },
@@ -169,7 +164,7 @@ const DeployChart = () => {
       ],
     };
     return option;
-  }
+  }, [getCategoryAndCategoryCount]);
 
   function getContent() {
     if (startSprintDs.status === 'loading') {
