@@ -161,6 +161,7 @@ const Workload = observer(() => {
     } if (startSprintDs.status !== 'loading') {
       return <EmptyPage />; // content="暂无活跃的冲刺"
     }
+    return '';
   }
   return (
     <OverviewWrap>
