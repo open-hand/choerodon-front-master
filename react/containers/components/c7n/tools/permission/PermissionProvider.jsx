@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { flatten } from 'lodash';
+import { flatten, groupBy, forEach, isEmpty, map } from 'lodash';
 import axios from '../axios';
 import { FAILURE, SUCCESS } from './PermissionStatus';
 
@@ -23,27 +23,24 @@ class PermissionProvider extends Component {
 
   fetch() {
     const handlers = Array.from(this.handlers);
-    const totalData = Array.from(this.queue).map(item => JSON.parse(item));
-    const projectData = totalData.filter(item => item.resourceType === 'project');
-    const otherData = totalData.filter(item => item.resourceType !== 'project');
+    const totalData = Array.from(this.queue).map((item) => JSON.parse(item));
+    const dataByType = groupBy(totalData, 'resourceType');
     const request = [];
-    // 项目层和其他层分开请求
-    if (projectData.length > 0) {
-      request.push(axios({
-        method: 'post',
-        url: '/iam/choerodon/v1/permissions/menus/check-permissions',
-        data: projectData.map(item => item.code),
-        params: {
-          projectId: projectData[0].projectId,
-        },
-      }));
-    }
-    if (otherData.length > 0) {
-      request.push(axios({
-        method: 'post',
-        url: '/iam/choerodon/v1/permissions/menus/check-permissions',
-        data: otherData.map(item => item.code),
-      }));
+    if (dataByType) {
+      forEach(dataByType, (value, key) => {
+        if (!isEmpty(value)) {
+          const params = { tenantId: key === 'site' ? 0 : value[0]?.organizationId };
+          if (key === 'project') {
+            params.projectId = value[0]?.projectId;
+          }
+          request.push(axios({
+            method: 'post',
+            url: '/iam/choerodon/v1/permissions/menus/check-permissions',
+            data: map(value, 'code'),
+            params,
+          }));
+        }
+      });
     }
 
     Promise.all(request).then((res) => {
@@ -81,14 +78,14 @@ class PermissionProvider extends Component {
     } else {
       const queue = new Set();
       if (
-        this.judgeServices(props).every(item => {
+        this.judgeServices(props).every((item) => {
           if (item) {
             const key = JSON.stringify(item);
             const status = this.permissions.get(key);
             if (status === SUCCESS) {
               handler(status);
               return false;
-            } else if (status !== FAILURE) {
+            } if (status !== FAILURE) {
               this.queue.add(key);
               queue.add(key);
             }
@@ -106,8 +103,10 @@ class PermissionProvider extends Component {
     }
   }
 
-  judgeServices({ service, type, organizationId, projectId }) {
-    return service.map(code => this.judgeService(code, type, organizationId, projectId));
+  judgeServices({
+    service, type, organizationId, projectId,
+  }) {
+    return service.map((code) => this.judgeService(code, type, organizationId, projectId));
   }
 
   judgeService(code, type, organizationId, projectId) {
