@@ -71,6 +71,7 @@ function handleRequestIntercept(config) {
 }
 
 function handleResponseInttercept(response) {
+  handleResponseCancelToken(response);
   if (get(response, 'status') === 204) {
     return response;
   }
@@ -80,7 +81,6 @@ function handleResponseInttercept(response) {
     }
     throw response.data;
   }
-  handleResponseCancelToken(response);
   return transformResponsePage(get(response, 'data'));
 }
 
@@ -93,10 +93,10 @@ axios.defaults.transformResponse = [
 axios.defaults.paramsSerializer = handleDefaultTransformParamsSerializer;
 
 // 这里配置一个路由取消请求得标识
-axios.defaults.routeChangeCancel = false;
+axios.defaults.routeChangeCancel = true;
 
 // 这里配置一个路由取消重复请求得标识
-axios.defaults.enabledCancelMark = false;
+axios.defaults.enabledCancelMark = true;
 
 axios.interceptors.request.use(handleRequestIntercept,
   (err) => {

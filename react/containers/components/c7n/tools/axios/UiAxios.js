@@ -25,13 +25,13 @@ function handleDefaultTransformResponse(data) {
 }
 
 function handleResponseInttercept(response) {
+  handleResponseCancelToken(response);
   if (get(response, 'status') === 204) {
     return response;
   }
   if (response?.data?.failed === true) {
     throw response.data;
   }
-  handleResponseCancelToken(response);
   return transformResponsePage(get(response, 'data'));
 }
 
@@ -83,9 +83,9 @@ function handleRequestIntercept(config) {
 
   return handleRequestCancelToken(newConfig);
 }
-instance.defaults.routeChangeCancel = false;
+instance.defaults.routeChangeCancel = true;
 
-instance.defaults.enabledCancelMark = false;
+instance.defaults.enabledCancelMark = true;
 
 instance.interceptors.request.use(
   handleRequestIntercept,
