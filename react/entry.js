@@ -40,9 +40,6 @@ const App = () => (
     </Switch>
   </Router>
 );
-if (module.hot) {
-  module.hot.accept();
-}
 
 autoRefresh();
 // // 注入监控平台
