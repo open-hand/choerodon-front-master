@@ -347,7 +347,7 @@ export default class AvatarUploader extends Component {
       beforeUpload: (file) => {
         const { size } = file;
         if (size > limitSize * 1024) {
-          prompt(intl.formatMessage({ id: `${intlPrefix}.file.size.limit` }, { size: `${limitSize / 1024}M` }));
+          prompt(`图片大小不可超过${limitSize / 1024}M`);
           return false;
         }
         this.setState({ file });
