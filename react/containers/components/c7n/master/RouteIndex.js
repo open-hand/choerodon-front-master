@@ -56,7 +56,7 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
       />
       <Route exact path="/">
         <Redirect to={`${match.url}workbench`} />
-      </PermissionRoute>
+      </Route>
       <Route path={match.url} component={AutoRouter} />
     </Switch>
     <ModalContainer />
