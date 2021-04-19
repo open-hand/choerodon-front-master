@@ -27,9 +27,14 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
     }
   >
     <Switch>
-      <PermissionRoute exact path={`${match.url}projects`} component={ProjectsPro} />
-      <PermissionRoute exact path={`${match.url}applications`} component={Applications} />
-      <PermissionRoute exact path={`${match.url}charts`} component={Charts} />
+      <Route exact path={`${match.url}projects`} component={ProjectsPro} />
+      <Route exact path={`${match.url}applications`} component={Applications} />
+      <PermissionRoute
+        service={['choerodon.code.project.operation.chart.ps.default']}
+        exact
+        path={`${match.url}charts`}
+        component={Charts}
+      />
       <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
       <PermissionRoute
         exact
@@ -42,9 +47,14 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
         }}
       />
       <Route exact path={`${match.url}test`} component={Skeleton} />
-      <PermissionRoute exact path={`${match.url}projectsPro`} component={ProjectsPro} />
-      <PermissionRoute exact path={`${match.url}agile/project-overview`} component={ProjectOverview} />
-      <PermissionRoute exact path="/">
+      <Route exact path={`${match.url}projectsPro`} component={ProjectsPro} />
+      <PermissionRoute
+        service={['choerodon.code.project.project.overview.ps.default']}
+        exact
+        path={`${match.url}agile/project-overview`}
+        component={ProjectOverview}
+      />
+      <Route exact path="/">
         <Redirect to={`${match.url}workbench`} />
       </PermissionRoute>
       <Route path={match.url} component={AutoRouter} />

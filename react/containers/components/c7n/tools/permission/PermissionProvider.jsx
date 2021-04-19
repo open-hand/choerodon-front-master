@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { flatten } from 'lodash';
+import { flatten, groupBy, forEach, isEmpty, map } from 'lodash';
 import axios from '../axios';
 import { FAILURE, SUCCESS } from './PermissionStatus';
 
@@ -24,30 +24,23 @@ class PermissionProvider extends Component {
   fetch() {
     const handlers = Array.from(this.handlers);
     const totalData = Array.from(this.queue).map((item) => JSON.parse(item));
-    const projectData = totalData.filter((item) => item.resourceType === 'project');
-    const otherData = totalData.filter((item) => item.resourceType !== 'project');
+    const dataByType = groupBy(totalData, 'resourceType');
     const request = [];
-    // 项目层和其他层分开请求
-    if (projectData.length > 0) {
-      request.push(axios({
-        method: 'post',
-        url: '/iam/choerodon/v1/permissions/menus/check-permissions',
-        data: projectData.map((item) => item.code),
-        params: {
-          projectId: projectData[0].projectId,
-        },
-        enabledCancelMark: false,
-        routeChangeCancel: false,
-      }));
-    }
-    if (otherData.length > 0) {
-      request.push(axios({
-        method: 'post',
-        url: '/iam/choerodon/v1/permissions/menus/check-permissions',
-        data: otherData.map((item) => item.code),
-        enabledCancelMark: false,
-        routeChangeCancel: false,
-      }));
+    if (dataByType) {
+      forEach(dataByType, (value, key) => {
+        if (!isEmpty(value)) {
+          const params = { tenantId: key === 'site' ? 0 : value[0]?.organizationId };
+          if (key === 'project') {
+            params.projectId = value[0]?.projectId;
+          }
+          request.push(axios({
+            method: 'post',
+            url: '/iam/choerodon/v1/permissions/menus/check-permissions',
+            data: map(value, 'code'),
+            params,
+          }));
+        }
+      });
     }
 
     Promise.all(request).then((res) => {
@@ -92,8 +85,7 @@ class PermissionProvider extends Component {
             if (status === SUCCESS) {
               handler(status);
               return false;
-            }
-            if (status !== FAILURE) {
+            } if (status !== FAILURE) {
               this.queue.add(key);
               queue.add(key);
             }
