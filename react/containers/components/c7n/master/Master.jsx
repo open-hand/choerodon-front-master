@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { initUiConfigure } from '@/common/initUiConfig';
+import { withRouter } from 'react-router';
 import MasterDefault from './MasterDefault';
 
-const InitUiConfigMaster = ({ AutoRouter }) => {
+const InitUiConfigMaster = ({ AutoRouter, location }) => {
   useEffect(() => {
     initUiConfigure();
   }, []);
@@ -14,4 +15,4 @@ const InitUiConfigMaster = ({ AutoRouter }) => {
   );
 };
 
-export default InitUiConfigMaster;
+export default withRouter(InitUiConfigMaster);

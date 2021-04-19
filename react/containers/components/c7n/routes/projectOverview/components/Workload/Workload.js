@@ -110,7 +110,7 @@ const Workload = observer(() => {
   };
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>工作量统计</span>
+      <span>每人每日工作量</span>
       <Tooltip placement="topLeft" arrowPointAtCenter title="统计当前迭代内团队成员每天完成的任务数，完成的故事数量及其对应故事点数量，提出的缺陷数量，解决的缺陷数量，当天工作记录的总工时。">
         <Icon type="help" className={`${clsPrefix}-icon`} />
       </Tooltip>
@@ -120,7 +120,7 @@ const Workload = observer(() => {
             multiple
             // searchable
             getPopupContainer={(triggerNode) => triggerNode.parentNode}
-            style={{ marginLeft: 24 }}
+            style={{ marginLeft: 24, width: '1.06rem' }}
             className="c7n-project-overview-SelectTheme"
             label="选择经办人"
             placeholder="选择经办人"
@@ -161,6 +161,7 @@ const Workload = observer(() => {
     } if (startSprintDs.status !== 'loading') {
       return <EmptyPage />; // content="暂无活跃的冲刺"
     }
+    return '';
   }
   return (
     <OverviewWrap>

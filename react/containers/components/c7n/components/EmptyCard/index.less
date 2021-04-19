@@ -5,15 +5,9 @@
   height: 100%;
   > header {
     margin-bottom: 0.2rem;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
     align-items: center;
-    padding: 0 0.34rem;
+    padding: 0 0.2rem;
     > span {
       font-size: 0.16rem;
       font-weight: 500;
@@ -21,8 +15,8 @@
     }
   }
   > main {
-    height: calc(100% - 0.24rem);
-    overflow-y: scroll;
+    height: 100%;
+    overflow-y: hidden;
     padding: 0 0.24rem;
   }
   .c7n-workBench-empty-page {
@@ -43,15 +37,11 @@
     margin: 0;
   }
   &-onlyText {
-    height: calc(100% - 0.04rem);
     > header {
       margin: 0;
     }
     .c7n-workBench-empty-page-title {
       color: rgba(58, 52, 95, 0.65);
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
     }
     .c7n-workBench-empty-page-image {
       display: none;

@@ -7,6 +7,7 @@ import moment from 'moment';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
+import get from 'lodash/get';
 
 export default function useStore(AppState, history) {
   return useLocalStore(() => ({
@@ -61,16 +62,18 @@ export default function useStore(AppState, history) {
     axiosGetProjects() {
       const { page, size } = this.getPagination;
       this.projectLoading = true;
-      axios.get(queryString.parse(history.location.search).organizationId ? `/iam/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
-        this.setAllProjects(res.content.map((r) => {
+      const hasOrgId = queryString.parse(history.location.search).organizationId;
+      axios.get(hasOrgId ? `/iam/choerodon/v1/organizations/${hasOrgId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
+        const tempContent = get(res, 'content') ? res.content.map((r) => {
           const unix = String(moment(r.creationDate).unix());
           r.background = getRandomBackground(unix.substring(unix.length - 3));
           return r;
-        }));
+        }) : [];
+        this.setAllProjects(tempContent);
         this.setPagination({
-          page: res.pageNum,
-          size: res.size,
-          total: res.totalElements,
+          page: res?.pageNum,
+          size: res?.size,
+          total: res?.totalElements,
         });
         this.projectLoading = false;
       });
@@ -177,10 +180,10 @@ export default function useStore(AppState, history) {
       const orgId = AppState.currentMenuType.organizationId;
       if (orgId) {
         axios.get(`/iam/choerodon/v1/organizations/${orgId}/star_projects`).then((res) => {
-          this.setStarProjectsList(res.map((r) => {
+          this.setStarProjectsList(get(res, 'length') ? res.map((r) => {
             r.background = getRandomBackground();
             return r;
-          }));
+          }) : []);
         });
       }
     },

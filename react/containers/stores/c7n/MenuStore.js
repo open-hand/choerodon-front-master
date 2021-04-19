@@ -334,7 +334,12 @@ class MenuStore {
         } else if (type === 'organization') {
           const orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
           if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
-            await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId}`);
+            await axios({
+              url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
+              method: 'put',
+              routeChangeCancel: false,
+              enabledCancelMark: false,
+            });
             AppState.loadUserInfo();
           }
         }
@@ -358,7 +363,12 @@ class MenuStore {
           url += '?labels=SITE_MENU';
           that.setRequestedSiteMenu(true);
         }
-        const data = await axios.get(url);
+        const data = await axios({
+          url,
+          method:'get',
+          routeChangeCancel: false,
+          enabledCancelMark: false,
+        });
         const child = filterEmptyMenus(data || []);
         if (type === 'project') {
           changeMenuLevel({ level: 'project', child });

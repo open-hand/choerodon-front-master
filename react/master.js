@@ -9,6 +9,7 @@ import _ from 'lodash';
 import {
   authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
 } from '@/utils';
+import Container from '@hzero-front-ui/cfg/lib/components/Container';
 import { defaultBlackList } from '@/containers/components/c7n/ui/menu';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
@@ -57,6 +58,7 @@ export default class Index extends React.Component {
     if (!this.isInOutward(this.props.location.pathname)) {
       this.auth();
     }
+    this.getNotificationPermission();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -79,6 +81,14 @@ export default class Index extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     syncBodyThemeAttribute();
+  }
+
+  getNotificationPermission = () => {
+    if (!('Notification' in window)) {
+      console.log('This browser does not support desktop notification');
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission();
+    }
   }
 
   handleStorageChange = (e) => {
@@ -170,7 +180,9 @@ export default class Index extends React.Component {
               <Provider {...stores}>
                 <Switch>
                   <Route path="/">
-                    <Outward AutoRouter={this.props.AutoRouter} />
+                    <Container defaultTheme={defaultTheme} onChange={syncBodyThemeAttribute}>
+                      <Outward AutoRouter={this.props.AutoRouter} />
+                    </Container>
                   </Route>
                 </Switch>
               </Provider>
@@ -195,7 +207,9 @@ export default class Index extends React.Component {
                 <Route
                   path="/"
                 >
-                  <Master AutoRouter={this.props.AutoRouter} />
+                  <Container defaultTheme={defaultTheme} onChange={syncBodyThemeAttribute}>
+                    <Master AutoRouter={this.props.AutoRouter} />
+                  </Container>
                 </Route>
               </Switch>
             </Provider>

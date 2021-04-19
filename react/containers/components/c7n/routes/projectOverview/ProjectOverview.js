@@ -38,6 +38,7 @@ import PriorityChart from './components/priority-chart';
 import IssueTypeChart from './components/issue-type-chart';
 import IssueTable from './components/issue-table';
 import ProjectDynamic from './components/project-dynamic';
+import Workload from './components/Workload';
 
 let observerLayout;
 
@@ -94,6 +95,8 @@ const ProjectOverview = () => {
     issueTypeChart: <IssueTypeChart />,
     issueTable: <IssueTable />,
     projectDynamic: <ProjectDynamic />,
+    workLoad: <Workload />,
+
   }), []);
 
   const renderBg = useCallback(() => <GridBg rowHeight={(layOutWidth - 11 * 18) / 10} selector={`.${prefixCls}-container`} cols={10} style={{ padding: '0' }} />, [layOutWidth]);
