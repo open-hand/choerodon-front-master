@@ -401,7 +401,7 @@ export default class AvatarUploader extends Component {
     ];
     return (
       <Modal
-        title="上传项目图标"
+        title={this.props.title || '上传项目图标'}
         className="avatar-modal"
         visible={visible}
         width={980}
