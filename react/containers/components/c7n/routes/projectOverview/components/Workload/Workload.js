@@ -157,19 +157,17 @@ const Workload = observer(() => {
   );
 
   useEffect(() => {
-    const handleResetRowSize = debounce((lastHeight) => {
-      if (containerSize.height !== lastHeight) {
-        let newRowSize = 3;
-        const dateTableHeaderHeight = 58;
-        const containerHeaderHeight = 38;
-        const containerPaddingHeight = 40;
-        let dateTableContentMaxHeight = containerSize.height - containerPaddingHeight - containerHeaderHeight - dateTableHeaderHeight;
-        dateTableContentMaxHeight -= 135;// 减去总和这一行高度
-        newRowSize = Math.floor(dateTableContentMaxHeight / 136) || 1;
-        setRowSize(newRowSize);
-      }
-    }, 650);
-    handleResetRowSize(containerSize.height);
+    const handleResetRowSize = debounce(() => {
+      let newRowSize = 3;
+      const dateTableHeaderHeight = 58;
+      const containerHeaderHeight = 38;
+      const containerPaddingHeight = 40;
+      let dateTableContentMaxHeight = containerSize.height - containerPaddingHeight - containerHeaderHeight - dateTableHeaderHeight;
+      dateTableContentMaxHeight -= 135;// 减去总和这一行高度
+      newRowSize = Math.floor(dateTableContentMaxHeight / 136) || 1;
+      setRowSize(newRowSize);
+    }, 1000);
+    handleResetRowSize();
   }, [containerSize]);
   function render() {
     if (startedRecord) {
