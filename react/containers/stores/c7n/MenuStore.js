@@ -352,15 +352,16 @@ class MenuStore {
         AppState.setCanShowRoute(true);
       }
       async function getMenu(that) {
+        const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
         let url = '/iam/choerodon/v1/menu';
         if (type === 'project') {
-          url += `?projectId=${id}`;
+          url += `?projectId=${id}&tenantId=${currentOrgId}`;
         } else if (type === 'organization') {
-          url += '?labels=TENANT_MENU';
+          url += `?labels=TENANT_MENU&tenantId=${currentOrgId}`;
         } else if (type === 'user') {
           url += '?labels=USER_MENU';
         } else {
-          url += '?labels=SITE_MENU';
+          url += '?labels=SITE_MENU&tenantId=0';
           that.setRequestedSiteMenu(true);
         }
         const data = await axios({
