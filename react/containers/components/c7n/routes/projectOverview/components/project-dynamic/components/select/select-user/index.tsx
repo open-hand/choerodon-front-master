@@ -203,7 +203,6 @@ const SelectUser: React.FC<SelectUserProps> = forwardRef(({
           }
         });
       }
-
       newData = [...(extraOptions || []), ...data].map((item: User) => ({ ...item, id: String(item.id) }));
       newData = unionBy<User>(temp, newData, 'id');// 去重
       if (dataRef) {

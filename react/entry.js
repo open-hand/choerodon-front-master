@@ -8,6 +8,7 @@ import { Modal } from 'choerodon-ui';
 
 import asyncRouter from './containers/components/util/asyncRouter';
 import autoRefresh from './utils/autoRefresh';
+// import registerMonitor from './utils/monitor';
 
 const history = createBrowserHistory();
 const { confirm } = Modal;
@@ -39,11 +40,10 @@ const App = () => (
     </Switch>
   </Router>
 );
-if (module.hot) {
-  module.hot.accept();
-}
 
 autoRefresh();
+// // 注入监控平台
+// registerMonitor();
 render(
   <App />,
   document.getElementById('app'),
