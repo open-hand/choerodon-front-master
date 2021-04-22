@@ -10,6 +10,7 @@ import { useUserListChartStore } from './stores';
 const UserList = () => {
   const {
     userListDs,
+    useStore,
   } = useUserListChartStore();
 
   const clsPrefix = 'c7n-project-overview-user-list';
@@ -52,10 +53,12 @@ const UserList = () => {
               );
             })}
           </div>
+          {useStore.totalUser > 8 && (
           <Pagination
             dataSet={userListDs}
             className={`${clsPrefix}-pagination`}
           />
+          )}
         </>
       ) : <EmptyPage content="当前暂无数据" />}
     </OverviewWrap>
