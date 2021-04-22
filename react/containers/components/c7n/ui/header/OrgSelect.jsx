@@ -66,7 +66,7 @@ export default class OrgSelect extends Component {
         id,
         name,
         type,
-        organizationId: id || organizationId,
+        organizationId: organizationId || id,
         category,
       };
       path = `${history.location.pathname === '/' ? homePage : history.location.pathname}?${queryString.stringify(parsed)}`;

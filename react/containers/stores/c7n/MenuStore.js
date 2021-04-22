@@ -301,9 +301,9 @@ class MenuStore {
     async function mainFunc(resolve) {
       try {
       const type = getMenuType(menuType, isUser) || 'site';
-      if (type !== 'user') {
+        if (type !== 'user') {
         AppState.currentMenuType.type = type;
-        if (menuType?.id) {
+          if (menuType?.id) {
           AppState.currentMenuType.id = menuType?.id
         }
       }
