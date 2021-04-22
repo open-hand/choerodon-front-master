@@ -18,7 +18,7 @@ const UserList = () => {
   return (
     <OverviewWrap>
       <OverviewWrap.Header
-        title={`在线成员(${userListDs.length})`}
+        title={`在线成员(${mainStore.totalUser})`}
         style={{
           margin: '0 0 10px 4px',
         }}
