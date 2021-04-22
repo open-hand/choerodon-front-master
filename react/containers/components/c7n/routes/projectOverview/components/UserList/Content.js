@@ -52,11 +52,14 @@ const UserList = () => {
               );
             })}
           </div>
-          <Pagination
-            dataSet={userListDs}
-            className={`${clsPrefix}-pagination`}
-            hideOnSinglePage
-          />
+          {
+            userListDs.length > 9 && (
+            <Pagination
+              dataSet={userListDs}
+              className={`${clsPrefix}-pagination`}
+            />
+            )
+          }
         </>
       ) : <EmptyPage content="当前暂无数据" />}
     </OverviewWrap>
