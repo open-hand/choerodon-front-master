@@ -10,7 +10,7 @@ import { useUserListChartStore } from './stores';
 const UserList = () => {
   const {
     userListDs,
-    useStore,
+    mainStore,
   } = useUserListChartStore();
 
   const clsPrefix = 'c7n-project-overview-user-list';
@@ -53,7 +53,7 @@ const UserList = () => {
               );
             })}
           </div>
-          {useStore.totalUser > 8 && (
+          {mainStore.totalUser > 8 && (
           <Pagination
             dataSet={userListDs}
             className={`${clsPrefix}-pagination`}
