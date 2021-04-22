@@ -55,7 +55,7 @@ const Workload = observer(() => {
   const [selectOption, setSelectOption] = useState([]);
   const { workloadStore } = useWorkloadStore();
   const containerRef = useRef();
-  const [rowSize, setRowSize] = useState(3);
+  const [rowSize, setRowSize] = useState({ length: 3, height: 135 });
   const containerSize = useSize(containerRef);
   const { startedRecord, startSprintDs } = useProjectOverviewStore();
   const TimeIcon = () => (
@@ -136,6 +136,7 @@ const Workload = observer(() => {
                   label="选择经办人"
                   placeholder="选择经办人"
                   clearButton
+                  labelLayout="float"
                   maxTagCount={5}
                   popupCls="c7n-project-overview-assignee"
                   popupStyle={{ minWidth: '2rem' }}
@@ -158,14 +159,16 @@ const Workload = observer(() => {
 
   useEffect(() => {
     const handleResetRowSize = debounce(() => {
-      let newRowSize = 3;
+      let newRowSizeHeight = 135;
+      let newRowSizeLength = 3;
       const dateTableHeaderHeight = 58;
       const containerHeaderHeight = 38;
       const containerPaddingHeight = 40;
       let dateTableContentMaxHeight = containerSize.height - containerPaddingHeight - containerHeaderHeight - dateTableHeaderHeight;
       dateTableContentMaxHeight -= 135;// 减去总和这一行高度
-      newRowSize = Math.floor(dateTableContentMaxHeight / 136) || 1;
-      setRowSize(newRowSize);
+      newRowSizeLength = Math.floor(dateTableContentMaxHeight / 136) || 1;
+      newRowSizeHeight += (dateTableContentMaxHeight % 136 || 0) / newRowSizeLength;
+      setRowSize({ height: newRowSizeHeight, length: newRowSizeLength });
     }, 1000);
     handleResetRowSize();
   }, [containerSize]);
@@ -176,7 +179,7 @@ const Workload = observer(() => {
           workloadStore.getData.size > 0
             ? (
               <DateTable
-                cellHeight={135}
+                cellHeight={rowSize.height}
                 current={workloadStore.getData.size > 7 ? workloadStore.getData.size - 7 : 0}
                 quickMapData={workloadStore.getData}
                 rowIndex={workloadStore.getAssignee}
@@ -184,7 +187,7 @@ const Workload = observer(() => {
                 columns={workloadStore.getDate}
                 sumArr={workloadStore.getTotal}
                 render={renderCell}
-                rowLength={rowSize}
+                rowLength={rowSize.length}
               />
             ) : <EmptyPage content="暂无数据" />
         );
