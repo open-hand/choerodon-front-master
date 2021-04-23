@@ -6,13 +6,15 @@ import { Tooltip, Icon, Button } from 'choerodon-ui';
 import { EXTERNAL_LINK } from '@/utils/constants';
 import classNames from 'classnames';
 import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
+import { mount } from '@choerodon/inject';
 import Logo from './Logo';
 import User from './User';
 import Inbox from './Inbox';
 import SkinPeeler from './SkinPeeler';
 import HeaderSetting from './HeaderSetting';
-import './style';
 import OrgSelect from './OrgSelect';
+
+import './style';
 
 const prefixCls = 'c7n-boot-header';
 
@@ -69,7 +71,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     AppState: { getUserInfo: { image_url: imgUrl } }, MenuStore: { getSiteMenuData }, history, location: { pathname },
   } = props;
 
-  const shouldHiddenHead = (pathname) => {
+  const shouldHiddenHead = () => {
     const defaultBlackList = ['/iam/enterprise'];
     if (defaultBlackList.some((pname) => pathname.startsWith(pname))) {
       return true;
@@ -77,7 +79,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     return false;
   };
 
-  if (shouldHiddenHead(pathname)) {
+  if (shouldHiddenHead()) {
     return null;
   }
   return (
@@ -91,7 +93,10 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         <Logo history={history} />
       </div>
       <ul className={`${prefixCls}-center`}>
-        <li style={{ display: 'flex' }}><HeaderSetting /></li>
+        <li style={{ display: 'flex' }}>
+          <HeaderSetting />
+          {mount('base-pro: saasUpgrade')}
+        </li>
       </ul>
       <ul className={`${prefixCls}-right`}>
         <OrgSelect />
