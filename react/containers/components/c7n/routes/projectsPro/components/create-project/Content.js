@@ -16,9 +16,8 @@ import { get as getInject } from '@choerodon/inject';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
-import { InjectedFunction } from './components/template-modal-inject';
+
 import './index.less';
-// import openTemplate from './components/template-modal';
 
 const CreateProject = observer(() => {
   const {
@@ -30,6 +29,8 @@ const CreateProject = observer(() => {
       },
     },
     projectId: currentProjectId,
+    createProjectStore,
+    standardDisable,
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -193,6 +194,9 @@ const CreateProject = observer(() => {
     if (!categoryRecord.getState('disabled')) {
       return '';
     }
+    if (!createProjectStore.getIsSenior && standardDisable.includes(code)) {
+      return '仅SaaS高级版可选此项目类型';
+    }
     if (code === categoryCodes.require) {
       return '请先选择【敏捷管理】或【敏捷项目群】项目类型';
     }
@@ -213,7 +217,7 @@ const CreateProject = observer(() => {
       return '不可同时选择【敏捷管理】与【规模化敏捷项目群】项目类型';
     }
     return '';
-  }, []);
+  }, [createProjectStore.getIsSenior]);
 
   const handleOpenTemplate = useCallback(() => {
     getInject('agile:openTemplate')({});
