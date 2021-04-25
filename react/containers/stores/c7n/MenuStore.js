@@ -301,9 +301,9 @@ class MenuStore {
     async function mainFunc(resolve) {
       try {
       const type = getMenuType(menuType, isUser) || 'site';
-      if (type !== 'user') {
+        if (type !== 'user') {
         AppState.currentMenuType.type = type;
-        if (menuType?.id) {
+          if (menuType?.id) {
           AppState.currentMenuType.id = menuType?.id
         }
       }
@@ -334,7 +334,12 @@ class MenuStore {
         } else if (type === 'organization') {
           const orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
           if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
-            await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId}`);
+            await axios({
+              url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
+              method: 'put',
+              routeChangeCancel: false,
+              enabledCancelMark: false,
+            });
             AppState.loadUserInfo();
           }
         }
@@ -347,18 +352,24 @@ class MenuStore {
         AppState.setCanShowRoute(true);
       }
       async function getMenu(that) {
+        const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
         let url = '/iam/choerodon/v1/menu';
         if (type === 'project') {
-          url += `?projectId=${id}`;
+          url += `?projectId=${id}&tenantId=${currentOrgId}`;
         } else if (type === 'organization') {
-          url += '?labels=TENANT_MENU';
+          url += `?labels=TENANT_MENU&tenantId=${currentOrgId}`;
         } else if (type === 'user') {
           url += '?labels=USER_MENU';
         } else {
-          url += '?labels=SITE_MENU';
+          url += '?labels=SITE_MENU&tenantId=0';
           that.setRequestedSiteMenu(true);
         }
-        const data = await axios.get(url);
+        const data = await axios({
+          url,
+          method:'get',
+          routeChangeCancel: false,
+          enabledCancelMark: false,
+        });
         const child = filterEmptyMenus(data || []);
         if (type === 'project') {
           changeMenuLevel({ level: 'project', child });
