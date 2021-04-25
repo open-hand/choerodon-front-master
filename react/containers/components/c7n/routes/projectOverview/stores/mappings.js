@@ -301,7 +301,7 @@ const componentsObj = {
   // 项目动态
   projectDynamic: {
     layout: {
-      h: 6,
+      h: 5,
       i: 'projectDynamic',
       minH: 5,
       minW: 10,
