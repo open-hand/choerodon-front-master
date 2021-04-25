@@ -4,7 +4,7 @@ import React, {
 import {
   Button, Tooltip, Select, Icon,
 } from 'choerodon-ui/pro';
-import { debounce } from 'lodash';
+import { debounce, toLength } from 'lodash';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import { observer } from 'mobx-react-lite';
 import OverviewWrap from '../OverviewWrap';
@@ -162,14 +162,15 @@ const Workload = observer(() => {
       let newRowSizeHeight = 135;
       let newRowSizeLength = 3;
       const dateTableHeaderHeight = 58;
-      const containerHeaderHeight = 38;
+      const containerHeaderHeight = 46;
       const containerPaddingHeight = 40;
       let dateTableContentMaxHeight = containerSize.height - containerPaddingHeight - containerHeaderHeight - dateTableHeaderHeight;
-      dateTableContentMaxHeight -= 135;// 减去总和这一行高度
-      newRowSizeLength = Math.floor(dateTableContentMaxHeight / 136) || 1;
-      newRowSizeHeight += (dateTableContentMaxHeight % 136 || 0) / newRowSizeLength;
+      dateTableContentMaxHeight -= newRowSizeHeight;// 减去总和这一行高度
+      newRowSizeLength = Math.floor(dateTableContentMaxHeight / newRowSizeHeight) || 1;
+      dateTableContentMaxHeight -= (newRowSizeLength + 1) * 1; // 减去行的border高度
+      newRowSizeHeight += dateTableContentMaxHeight > newRowSizeHeight ? Math.floor((dateTableContentMaxHeight % newRowSizeHeight || 0) / (newRowSizeLength + 1)) : 0;// 加上总和这一行
       setRowSize({ height: newRowSizeHeight, length: newRowSizeLength });
-    }, 1000);
+    }, 560);
     handleResetRowSize();
   }, [containerSize]);
   function render() {
