@@ -95,7 +95,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
       <ul className={`${prefixCls}-center`}>
         <li style={{ display: 'flex' }}>
           <HeaderSetting />
-          {mount('base-pro: saasUpgrade')}
+          {mount('base-pro:saasUpgrade')}
         </li>
       </ul>
       <ul className={`${prefixCls}-right`}>
