@@ -27,7 +27,6 @@
   "devDependencies": {
     "@choerodon/boot": "0.23.1",
     "@choerodon/compiler": "^0.0.2",
-    "@choerodon/components": "0.0.1",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "babel-eslint": "8.2.6",
