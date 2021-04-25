@@ -1,10 +1,10 @@
 /* eslint-disable import/no-anonymous-default-export */
-export default ({ projectId }) => ({
+export default ({ projectId, mainStore }) => ({
   autoQuery: true,
   selection: false,
   pageSize: 8,
   transport: {
-    read: {
+    read: ({ dataSet }) => ({
       url: `/iam/choerodon/v1/projects/${projectId}/user_count`,
       method: 'get',
       transformResponse: (response) => {
@@ -13,12 +13,15 @@ export default ({ projectId }) => ({
           if (res && res.failed) {
             return res;
           }
+          if (res?.totalOnlineUser) {
+            mainStore.setTotalUser(res.totalOnlineUser);
+          }
           return res.onlineUserList;
         } catch (e) {
           return response;
         }
       },
-    },
+    }),
   },
   fields: [
     { name: 'realName', type: 'string' },

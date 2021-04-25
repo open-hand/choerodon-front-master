@@ -7,7 +7,7 @@ import {
 import { observer } from 'mobx-react-lite';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import queryString from 'query-string';
-import { merge } from 'lodash';
+import { merge, get } from 'lodash';
 
 import './index.less';
 
@@ -221,9 +221,11 @@ const QuestionNode = observer(({
     );
   }
   function getProject(project = {}, hiddenName = false, tooltipText, tooltipTheme = 'dark') {
-    const {
-      id: currentProjectId, name, imageUrl, realId, realName,
-    } = project;
+    const currentProjectId = get(project, 'id');
+    const name = get(project, 'name');
+    const imageUrl = get(project, 'imageUrl');
+    const realId = get(project, 'realId');
+    const realName = get(project, 'realName');
     return (currentProjectId || realId) && (
       <Tooltip theme={tooltipTheme} title={<div className={`${prefixCls}-main-project-tooltip`}>{tooltipText || name}</div>} placement="top">
         <span className={`${prefixCls}-main-project ${hiddenName ? `${prefixCls}-main-project-hover` : ''}`}>
