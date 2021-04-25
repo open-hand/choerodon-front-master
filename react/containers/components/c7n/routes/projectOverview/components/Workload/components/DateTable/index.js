@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 import React, {
-  useState, memo, useRef, useLayoutEffect, useMemo, useEffect,
+  useState, memo, useRef, useLayoutEffect, useMemo, useEffect, useCallback,
 } from 'react';
 import { Button } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
@@ -62,7 +62,7 @@ const DateTable = observer(({
   };
   // 单元格
   const Cell = memo(({ children, className }) => (
-    <div className={`${clsPrefix}-cell ${className || ''}`} style={{ minHeight: cellHeight }}>
+    <div className={`${clsPrefix}-cell ${className || ''}`} style={{ height: cellHeight }}>
       {children}
     </div>
   ));
@@ -96,33 +96,33 @@ const DateTable = observer(({
    * 根据传入的 rowLength 行数进行显示的高度调整
    * @param {*} isAuto
    */
-  function resetScrollHeight(isAuto = false) {
+  const resetScrollHeight = useCallback((isAuto = false) => {
     let scrollHeight = 'auto';
-    const element = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
+    // const element = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
     if (!isAuto) {
       let height = 0;
       scrollHeight = '';
-      const elements = rowRef.current.getElementsByClassName('c7n-project-overview-date-table-row');
-      for (let i = 0; elements && i < rowLength && i < elements.length; i++) {
-        height += elements[i].offsetHeight;
+      // const elements = rowRef.current.getElementsByClassName('c7n-project-overview-date-table-row');
+      for (let i = 0; i < rowLength; i++) {
+        height += cellHeight + 1;
       }
       scrollHeight = `${height}px`;
     }
     // 如果相等就放弃更改高度
-    if (element.style.height === scrollHeight) {
+    if (rowRef.current.style.height === scrollHeight) {
       return;
     }
     rowRef.current.style.height = scrollHeight;
-  }
-  //  行初始化完成后，进行高度调整
-  useEffect(() => {
-    // const doc = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
-    if (rowRef.current && rowLength < rowIndex.length) {
-      resetScrollHeight();
-    }
-  }, [rowIndex]);
+  }, [cellHeight, rowLength]);
+  // //  行初始化完成后，进行高度调整
+  // useEffect(() => {
+  //   // const doc = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
+  //   if (rowRef.current && rowLength < rowIndex.length) {
+  //     resetScrollHeight();
+  //   }
+  // }, []);
   //  根据选择成员自动调整高度 进行滚动
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (rowRef.current) {
       if (rowLength >= rowIndex.length || (filterRowIndex.length > 0 && filterRowIndex.length <= rowLength)) {
         resetScrollHeight(true);
@@ -130,7 +130,7 @@ const DateTable = observer(({
         resetScrollHeight();
       }
     }
-  }, [filterRowIndex, rowIndex.length, rowLength]);
+  }, [filterRowIndex, resetScrollHeight, rowIndex.length, rowLength]);
 
   /**
    * 渲染底部 （即最后一行)
