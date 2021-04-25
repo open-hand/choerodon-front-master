@@ -159,17 +159,18 @@ const Workload = observer(() => {
 
   useEffect(() => {
     const handleResetRowSize = debounce(() => {
-      let newRowSizeHeight = 135;
+      let newCellSizeHeight = 135;
       let newRowSizeLength = 3;
-      const dateTableHeaderHeight = 58;
-      const containerHeaderHeight = 46;
-      const containerPaddingHeight = 40;
+      const initRowSizeHeight = 136; // 初始时实际一行高度
+      const dateTableHeaderHeight = 58; // 表格头部
+      const containerHeaderHeight = 46; // 容器头部（标题）
+      const containerPaddingHeight = 40; // 上下padding
       let dateTableContentMaxHeight = containerSize.height - containerPaddingHeight - containerHeaderHeight - dateTableHeaderHeight;
-      dateTableContentMaxHeight -= newRowSizeHeight;// 减去总和这一行高度
-      newRowSizeLength = Math.floor(dateTableContentMaxHeight / newRowSizeHeight) || 1;
-      dateTableContentMaxHeight -= (newRowSizeLength + 1) * 1; // 减去行的border高度
-      newRowSizeHeight += dateTableContentMaxHeight > newRowSizeHeight ? Math.floor((dateTableContentMaxHeight % newRowSizeHeight || 0) / (newRowSizeLength + 1)) : 0;// 加上总和这一行
-      setRowSize({ height: newRowSizeHeight, length: newRowSizeLength });
+      dateTableContentMaxHeight -= initRowSizeHeight;// 预留一行总和， 减去总和这一行高度
+      newRowSizeLength = Math.floor(dateTableContentMaxHeight / initRowSizeHeight) || 1;
+      dateTableContentMaxHeight -= initRowSizeHeight * newRowSizeLength; // 减去所有展示行的高度
+      newCellSizeHeight += Math.floor((dateTableContentMaxHeight || 0) / (newRowSizeLength + 1));
+      setRowSize({ height: newCellSizeHeight, length: newRowSizeLength });
     }, 560);
     handleResetRowSize();
   }, [containerSize]);
