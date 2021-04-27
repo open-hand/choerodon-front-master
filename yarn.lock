@@ -3,11 +3,11 @@
   resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/c7n-ui/-/c7n-ui-3.0.0-alpha.7.tgz#27a7b3c9f5a961943412a577b2c6a1d5d20d4422"
   integrity sha512-9RID/nASTjjKwCJFhrB+65eyJKYrbtthmnma5YSQwtv1QOwyZYBzs3HOp5pkIEjnz/JmpDwM7jNjg2y7psMrFg==
 
-  "@hzero-front-ui/themes@3.0.0-alpha.2":
-  version "3.0.0-alpha.2"
-  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/themes/-/themes-3.0.0-alpha.2.tgz#85ad363cf4d611e38715cd5ada905cef37e880c4"
-  integrity sha512-sJW+++Yzx9P4j91dtTz6sxrvKoN56T34hsEu8KSOPhbgtLca0yPlJG2SpaX4v9PaDbZ+6ztqB982K9NOdym6Wg==
-  dependencies:
+"@hzero-front-ui/themes@3.0.0-alpha.2":
+    version "3.0.0-alpha.2"
+    resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/themes/-/themes-3.0.0-alpha.2.tgz#85ad363cf4d611e38715cd5ada905cef37e880c4"
+    integrity sha512-sJW+++Yzx9P4j91dtTz6sxrvKoN56T34hsEu8KSOPhbgtLca0yPlJG2SpaX4v9PaDbZ+6ztqB982K9NOdym6Wg==
+    dependencies:
     "@hzero-front-ui/font" "^3.0.0-alpha.0"
 
 babel-plugin-hzero-ued-import@0.0.2:
