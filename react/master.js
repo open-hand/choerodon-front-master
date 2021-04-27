@@ -81,9 +81,7 @@ export default class Index extends React.Component {
   initTheme() {
     initTheme({
       defaultTheme: 'theme4',
-      scope: [
-        '#app',
-      ],
+      scope: [],
       themes: [
         {
           name: 'theme4',
