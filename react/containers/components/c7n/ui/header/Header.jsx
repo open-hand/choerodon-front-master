@@ -5,7 +5,8 @@ import { withRouter } from 'react-router';
 import { Tooltip, Icon, Button } from 'choerodon-ui';
 import { EXTERNAL_LINK } from '@/utils/constants';
 import classNames from 'classnames';
-import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
+import useTheme from '@/hooks/useTheme';
+// import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
 import { mount } from '@choerodon/inject';
 import Logo from './Logo';
 import User from './User';
@@ -19,7 +20,8 @@ import './style';
 const prefixCls = 'c7n-boot-header';
 
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
-  const { setTheme, schema } = useContext(ThemeContext);
+  // const { setTheme, schema } = useContext(ThemeContext);
+  const [schema, setTheme] = useTheme();
 
   useEffect(() => {
     const { AppState, HeaderStore, MenuStore } = props;

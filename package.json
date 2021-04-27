@@ -11,6 +11,7 @@
     "start": "choerodon-front-boot start --config ./react/config.js",
     "compile": "compiler compile",
     "watch": "compiler compile --watch",
+    "postinstall": "node ./postInstall.js",
     "clean-install": "rm -rf node_modules && rm package-lock.json && npm i --registry https://nexus.choerodon.com.cn/repository/choerodon-npm && chmod -R u+x node_modules"
   },
   "keywords": [
@@ -30,7 +31,7 @@
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "babel-eslint": "8.2.6",
-    "babel-preset-c7n": "^0.0.1",
+    "babel-preset-c7n": "^0.0.2",
     "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-c7n-app": "^0.0.2",
@@ -45,11 +46,11 @@
   },
   "dependencies": {
     "@choerodon/components": "0.0.2",
-    "@hzero-front-ui/c7n-ui": "2.0.7-alpha-c7n.27",
-    "@hzero-front-ui/cfg": "2.0.7-alpha-c7n.27",
-    "@hzero-front-ui/hzero-ui": "2.0.7-alpha-c7n.27",
-    "resize-observer-polyfill": "^1.5.1",
     "@choerodon/inject": "^0.1.0",
+    "@hzero-front-ui/c7n-ui": "3.0.0-alpha.7",
+    "@hzero-front-ui/core": "3.0.0-alpha.7",
+    "@hzero-front-ui/themes": "3.0.0-alpha.2",
+    "resize-observer-polyfill": "^1.5.1",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.168",
     "@types/query-string": "^6.3.0",

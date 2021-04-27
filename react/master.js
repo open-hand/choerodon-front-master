@@ -9,7 +9,9 @@ import _ from 'lodash';
 import {
   authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
 } from '@/utils';
-import Container from '@hzero-front-ui/cfg/lib/components/Container';
+import { initTheme, Container } from '@hzero-front-ui/core';
+import C7nTemplate from '@hzero-front-ui/c7n-ui';
+import { theme4 } from '@hzero-front-ui/themes';
 import { defaultBlackList } from '@/containers/components/c7n/ui/menu';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
@@ -59,6 +61,7 @@ export default class Index extends React.Component {
       this.auth();
     }
     this.getNotificationPermission();
+    this.initTheme();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -74,6 +77,28 @@ export default class Index extends React.Component {
       }
     }
   }
+
+  initTheme() {
+    initTheme({
+      defaultTheme: 'theme4',
+      scope: [
+        '#app',
+      ],
+      themes: [
+        {
+          name: 'theme4',
+          data: theme4,
+        },
+      ],
+      templates: [
+        {
+          id: 'c7n',
+          component: C7nTemplate,
+        },
+      ],
+    });
+  }
+
 
   componentWillUnmount() {
     window.removeEventListener('storage', this.handleStorageChange);
@@ -180,7 +205,7 @@ export default class Index extends React.Component {
               <Provider {...stores}>
                 <Switch>
                   <Route path="/">
-                    <Container defaultTheme={defaultTheme} onChange={syncBodyThemeAttribute}>
+                    <Container>
                       <Outward AutoRouter={this.props.AutoRouter} />
                     </Container>
                   </Route>
@@ -207,7 +232,7 @@ export default class Index extends React.Component {
                 <Route
                   path="/"
                 >
-                  <Container defaultTheme={defaultTheme} onChange={syncBodyThemeAttribute}>
+                  <Container>
                     <Master AutoRouter={this.props.AutoRouter} />
                   </Container>
                 </Route>
