@@ -4,6 +4,7 @@ import React, {
 import { Button, Modal } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import ResponsiveReactGridLayout from 'react-grid-layout';
+import ResizeObserver from 'resize-observer-polyfill';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';

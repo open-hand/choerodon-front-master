@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { get } from 'lodash';
+import ResizeObserver from 'resize-observer-polyfill';
 import EmptyPage from '../empty-page';
 
 import './index.less';
