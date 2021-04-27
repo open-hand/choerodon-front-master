@@ -13,18 +13,23 @@ export default function useTheme() {
   const { setTheme: changeTheme, config, schema } = useContext(ThemeContext);
 
   useEffect(() => {
-    // eslint-disable-next-line no-shadow
-    const { schema, config: schemaConfig } = getLocalConfig();
     if (schema) {
-      changeTheme(schema, schemaConfig);
+      setTheme(schema);
     }
-    syncBodyThemeAttribute(schema || '');
+    // eslint-disable-next-line no-shadow
+    // const { schema: localSchema, config: schemaConfig } = getLocalConfig();
+    // if (localSchema) {
+    //   changeTheme(localSchema, schemaConfig);
+    // }
+    // if (schema) {
+    //   setLocalConfig(schema, config); // 保存到本地
+    // }
   }, []);
 
-  const setTheme = (theme: 'default' | 'theme4') => {
-    changeTheme(theme === 'default' ? '' : theme, config);
-    setLocalConfig(theme === 'default' ? '' : theme, config); // 保存到本地
-    syncBodyThemeAttribute(theme === 'default' ? '' : theme);
+  const setTheme = (theme: any) => {
+    changeTheme(theme === '' ? 'THEME_EMPTY' : theme, config);
+    setLocalConfig(theme === '' ? 'THEME_EMPTY' : theme, config); // 保存到本地
+    syncBodyThemeAttribute(theme === '' ? '' : theme);
   };
 
   return [schema, setTheme];
