@@ -277,7 +277,7 @@ const StarTargetPro = observer(() => {
           key="1"
           onClick={openAddComponents}
         >
-          添加卡片
+          卡片配置
         </Button>,
         <Button
           {...primaryBtnObj}

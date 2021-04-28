@@ -195,7 +195,7 @@ const ProjectOverview = () => {
           onClick={openAddComponents}
           key="5"
         >
-          添加卡片
+          卡片配置
         </Button>,
         <Button
           {...primaryBtnObj}
