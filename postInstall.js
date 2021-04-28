@@ -103,7 +103,7 @@ async function processProComponent(compName, target) {
     `node_modules/choerodon-ui/pro/es/${target}/**/*.js`,
   ], globbyOptions);
 
-  libFiles.forEach(file => {
+  libFiles.forEach((file) => {
     const filePath = path.resolve(cwd, file);
     const content = readFileSync(filePath, 'utf-8');
     const reg = new RegExp(`.*\\s+_${compName}\\s+.*\\((require\\(.*\\))\\)`, 'g');
@@ -114,7 +114,7 @@ async function processProComponent(compName, target) {
     writeFileSync(filePath, result, 'utf8');
   });
 
-  esFiles.forEach(file => {
+  esFiles.forEach((file) => {
     const filePath = path.resolve(cwd, file);
     const content = readFileSync(filePath, 'utf-8');
     const reg = new RegExp(`import\\s+${compName}\\s+from.*`, 'g');
@@ -137,9 +137,7 @@ function toCamelCase(name) {
   const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
   const MOZ_HACK_REGEXP = /^moz([A-Z])/;
   const ret = name
-    .replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
-      return offset ? letter.toUpperCase() : letter;
-    })
-    .replace(MOZ_HACK_REGEXP, "Moz$1");
+    .replace(SPECIAL_CHARS_REGEXP, (_, separator, letter, offset) => (offset ? letter.toUpperCase() : letter))
+    .replace(MOZ_HACK_REGEXP, 'Moz$1');
   return ret.slice(0, 1).toUpperCase() + ret.slice(1);
 }
