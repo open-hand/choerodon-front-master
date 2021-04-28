@@ -59,7 +59,7 @@ const fieldsMap = [
               <span>{issueTypeVO?.name}</span>
               <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
               <span>的</span>
-              <span className="c7n-Log-field">【经办人】</span>
+              <span className="c7n-Log-field">【处理人】</span>
               为
               <span className="c7n-Log-value">{`【${newString}】`}</span>
             </span>
@@ -87,7 +87,7 @@ const fieldsMap = [
             <span>{issueTypeVO?.name}</span>
             <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
             <span>的</span>
-            <span className="c7n-Log-field">【经办人】</span>
+            <span className="c7n-Log-field">【处理人】</span>
             <span>由</span>
             <span className="c7n-Log-value">{`【${oldString}】`}</span>
             <span>改变为</span>
