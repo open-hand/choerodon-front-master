@@ -46,7 +46,7 @@
     "react-dom": "16.14.0"
   },
   "dependencies": {
-    "@choerodon/components": "0.0.2",
+    "@choerodon/components": "0.2.0",
     "@choerodon/inject": "^0.1.0",
     "@hzero-front-ui/c7n-ui": "3.0.0-alpha.7",
     "@hzero-front-ui/core": "3.0.0-alpha.7",
