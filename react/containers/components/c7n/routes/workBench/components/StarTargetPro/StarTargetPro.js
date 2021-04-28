@@ -193,8 +193,9 @@ const StarTargetPro = observer(() => {
     setEdit(false);
   }
 
-  function addComponent(types) {
-    forEach(types, (type) => {
+  function addComponent(newTypeArr, deleteArr) {
+    const existData = map(componentsDs.filter((record) => !deleteArr.includes(record.get('i'))), (record) => record.toData());
+    forEach(newTypeArr, (type) => {
       const {
         layout,
       } = mappings[type];
@@ -203,8 +204,9 @@ const StarTargetPro = observer(() => {
         x: 0,
         y: Infinity,
       };
-      componentsDs.create(tempCp);
+      existData.push(tempCp);
     });
+    componentsDs.loadData(existData);
   }
 
   function openAddComponents() {
