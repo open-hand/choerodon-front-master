@@ -22,7 +22,7 @@ const UI_CONFIG = {
   modalKeyboard: false,
   modalSectionBorder: false,
   drawerOkFirst: true,
-  buttonFuncType: 'raised',
+  buttonFuncType: 'flat',
   lovQueryUrl: (code) => `/iam/choerodon/v1/lov/code?code=${code}`,
   generatePageQuery: ({
     page, pageSize, sortName, sortOrder,

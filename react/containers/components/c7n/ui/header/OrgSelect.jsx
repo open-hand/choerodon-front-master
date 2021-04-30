@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
 import {
-  Icon, Dropdown, Menu,
+  Button, Icon, Dropdown, Menu,
 } from 'choerodon-ui';
 import {
-  Button
+  Button as ProButton
 } from 'choerodon-ui/pro';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
@@ -130,6 +130,7 @@ export default class OrgSelect extends Component {
         }, getUserInfo, getCurrentTheme,
       }, history,
     } = this.props;
+    const SelfButton = getCurrentTheme === 'theme4' ? ProButton : Button;
     const currentData = this.getCurrentData() || [];
     const orgObj = currentData.find((v) => String(v.id) === (organizationId || id) || v.id === (organizationId || id));
     if (!orgObj && currentData.length && type !== 'project') {
@@ -164,14 +165,17 @@ export default class OrgSelect extends Component {
     const buttonClass = classnames(`${prefixCls}-button`, 'block', 'org-button', { 'theme4-orgSelect': getCurrentTheme === 'theme4' });
     const menu = this.renderModalContent();
     const orgButton = (
-      <Button
+      <SelfButton
         className={buttonClass}
         funcType="flat"
         style={{
           margin: 0,
           padding: '0 20px',
           width: 200,
-          border: `1px solid ${getCurrentTheme === 'theme4' ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
+          borderLeft: `1px solid ${getCurrentTheme === 'theme4' ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
+          borderRight: `1px solid ${getCurrentTheme === 'theme4' ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
+          borderTop: getCurrentTheme === 'theme4' ? '1px solid #D9E6F2' : 'unset',
+          borderBottom: getCurrentTheme === 'theme4' ? '1px solid #D9E6F2' : 'unset',
           textAlign: 'left',
         }}
       >
@@ -216,7 +220,7 @@ export default class OrgSelect extends Component {
           />
         ) : null
       }
-      </Button>
+      </SelfButton>
     );
     return (
       <>

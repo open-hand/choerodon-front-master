@@ -24,6 +24,8 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   // const { setTheme, schema } = useContext(ThemeContext);
   const [schema, setTheme] = useTheme();
 
+  console.log(schema);
+
   useEffect(() => {
     const { AppState, HeaderStore, MenuStore } = props;
     // MenuStore.loadMenuData({ type: 'site' }, false);
@@ -43,12 +45,13 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   }
 
   const renderExternalLink = () => {
+    const SelfButton = schema === 'theme4' ? ProButton : Button;
     if (EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') {
       const [url, text, icon] = EXTERNAL_LINK.split(',');
       return (
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
           <Tooltip title={text}>
-            <ProButton
+            <SelfButton
               funcType="flat"
               className={classNames({
                 'theme4-external': props.AppState.getCurrentTheme === 'theme4',
