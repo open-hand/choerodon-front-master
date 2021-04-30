@@ -112,7 +112,7 @@ const WorkBench = () => {
     return false;
   }
 
-  function onLayoutChange(layouts, tempLayouts) {
+  function onLayoutChange(layouts) {
     componentsDs.loadData(layouts);
   }
 

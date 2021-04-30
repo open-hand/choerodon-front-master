@@ -260,7 +260,7 @@ const StarTargetPro = observer(() => {
   const renderBtns = () => {
     let btnGroups;
     const secondBtnObj = {
-      funcType: 'raised',
+      funcType: theme === 'theme4' ? 'flat' : 'raised',
     };
     const primaryBtnObj = {
       color: 'primary',
