@@ -3,6 +3,7 @@ import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router';
 import { Tooltip, Icon, Button } from 'choerodon-ui';
+import { Button as ProButton } from 'choerodon-ui/pro'
 import { EXTERNAL_LINK } from '@/utils/constants';
 import classNames from 'classnames';
 import useTheme from '@/hooks/useTheme';
@@ -47,7 +48,8 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
       return (
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
           <Tooltip title={text}>
-            <Button
+            <ProButton
+              funcType="flat"
               className={classNames({
                 'theme4-external': props.AppState.getCurrentTheme === 'theme4',
               })}

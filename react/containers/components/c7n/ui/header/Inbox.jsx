@@ -408,11 +408,11 @@ export default class Inbox extends Component {
                 }
                 count={getUnreadMessageCount}
               >
-                <Button
+                <ButtonPro
                   className={classNames({
                     'theme4-inbox': AppState.getCurrentTheme === 'theme4',
                   })}
-                  functype="flat"
+                  funcType="flat"
                   {
                   ...AppState.getCurrentTheme === '' ? {
                     shape: 'circle',
@@ -421,7 +421,7 @@ export default class Inbox extends Component {
                   }
                 >
                   <Icon type={AppState.getCurrentTheme === 'theme4' ? 'notifications_none' : 'notifications'} />
-                </Button>
+                </ButtonPro>
               </Badge>
             )
           }

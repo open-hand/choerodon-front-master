@@ -3,7 +3,7 @@ import queryString from 'query-string';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-import { Button, Icon } from 'choerodon-ui';
+import { Button, Icon } from 'choerodon-ui/pro';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 
 @withRouter
@@ -27,6 +27,7 @@ export default class Setting extends Component {
     const classString = classNames({ block: true });
     return (
       <Button
+        funcType="flat"
         className={classNames({
           [classString]: true,
           'theme4-setting': this.props.AppState.getCurrentTheme === 'theme4',

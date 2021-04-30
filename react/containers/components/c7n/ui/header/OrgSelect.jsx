@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
 import {
-  Button, Icon, Dropdown, Menu,
+  Icon, Dropdown, Menu,
 } from 'choerodon-ui';
+import {
+  Button
+} from 'choerodon-ui/pro';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
@@ -168,8 +171,7 @@ export default class OrgSelect extends Component {
           margin: 0,
           padding: '0 20px',
           width: 200,
-          borderLeft: `1px solid ${getCurrentTheme === 'theme4' ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
-          borderRight: `1px solid ${getCurrentTheme === 'theme4' ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
+          border: `1px solid ${getCurrentTheme === 'theme4' ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
           textAlign: 'left',
         }}
       >
