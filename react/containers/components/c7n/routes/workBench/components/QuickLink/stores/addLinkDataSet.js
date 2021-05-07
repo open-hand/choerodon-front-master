@@ -1,6 +1,18 @@
 /* eslint-disable import/no-anonymous-default-export */
 import JSONbig from 'json-bigint';
 
+const linkValidate = (value) => {
+  if (!value) {
+    return '链接必输。';
+  }
+  // eslint-disable-next-line no-useless-escape
+  const reg = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)$/;
+  if (!reg.test(value)) {
+    return '链接地址必须以http或者https开头。';
+  }
+  return true;
+};
+
 export default (AppState) => ({
   autoCreate: true,
   fields: [{
@@ -63,5 +75,6 @@ export default (AppState) => ({
     type: 'string',
     label: '链接地址',
     required: true,
+    validator: linkValidate,
   }],
 });
