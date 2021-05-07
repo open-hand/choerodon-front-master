@@ -10,6 +10,8 @@ import classNames from 'classnames';
 import forEach from 'lodash/forEach';
 import getSearchString from '../../util/gotoSome';
 
+import './headerSettingTheme4.less';
+
 const iconStyle = { marginLeft: 0, marginRight: 0 };
 const SERVICE_CODE = {
   knowledge: 'knowledgebase-service',

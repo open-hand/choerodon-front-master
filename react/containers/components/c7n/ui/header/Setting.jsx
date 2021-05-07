@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { Button, Icon } from 'choerodon-ui';
+import { Button as ProButton } from 'choerodon-ui/pro';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 
 @withRouter
@@ -25,8 +26,10 @@ export default class Setting extends Component {
 
   render() {
     const classString = classNames({ block: true });
+    const { AppState } = this.props;
+    const SelfButton = AppState.getCurrentTheme === 'theme4' ? ProButton : Button;
     return (
-      <Button
+      <SelfButton
         className={classNames({
           [classString]: true,
           'theme4-setting': this.props.AppState.getCurrentTheme === 'theme4',
@@ -41,7 +44,7 @@ export default class Setting extends Component {
           style={{ marginLeft: '5px' }}
         />
         { this.props.AppState.getCurrentTheme === '' && '管理中心' }
-      </Button>
+      </SelfButton>
     );
   }
 }

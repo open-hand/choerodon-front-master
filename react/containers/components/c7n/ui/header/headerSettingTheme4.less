@@ -1,0 +1,30 @@
+body[data-theme=theme4] {
+  .page-header {
+    .c7n-boot-header-wrap > ul .c7n-btn.header-setting-active {
+      position: relative;
+      color: #5365EA;
+    }
+    .c7n-boot-header-wrap > ul .c7n-btn {
+      color: rgba(15, 19, 88, 0.65);
+      i {
+        color: #5365EA;
+      }
+    }
+    .c7n-boot-header-wrap > ul .c7n-btn.header-setting-active::after {
+      width: 100%;
+      height: 2px;
+      background: #5365EA;
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+    }
+    .c7n-boot-header-right li:not(:first-child) {
+      button {
+        i {
+          color: #5365EA;
+        }
+      }
+    }
+  }
+}

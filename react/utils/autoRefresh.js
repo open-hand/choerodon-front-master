@@ -7,6 +7,9 @@ function autoRefresh() {
 function register() {
   window.addEventListener('error', (e) => {
     if ((findJs(e) || findCss(e)) && timeLimit()) {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        const notification = new Notification('监测到网站已更新，已自动刷新');
+      }
       localStorage.setItem('refresh.latest.time', moment().format('YYYY-MM-DD HH:mm:ss'));
       window.location.reload();
     }

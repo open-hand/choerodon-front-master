@@ -4,6 +4,7 @@ import { Button, Icon } from 'choerodon-ui';
 import { Modal } from 'choerodon-ui/pro';
 import { inject, observer } from 'mobx-react';
 import './style';
+import { get } from 'lodash';
 
 const PREFIX_CLS = 'c7n';
 const prefixCls = `${PREFIX_CLS}-boot-header-banner`;
@@ -32,7 +33,9 @@ export default class AnnouncementBanner extends Component {
   }
 
   handleInfo = () => {
-    const { HeaderStore: { announcement: { content, title } } } = this.props;
+    const { HeaderStore: { announcement } } = this.props;
+    const content = get(announcement, 'content');
+    const title = get(announcement, 'title');
     this.modal = Modal.open({
       key: modalKey,
       title,
@@ -52,7 +55,9 @@ export default class AnnouncementBanner extends Component {
   };
 
   render() {
-    const { src, children, className, HeaderStore: { announcementClosed, announcement: { content, title } } } = this.props;
+    const { src, children, className, HeaderStore: { announcementClosed, announcement } } = this.props;
+    const content = get(announcement, 'content');
+    const title = get(announcement, 'title');
     return (
       announcementClosed ? null : (
         <div

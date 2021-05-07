@@ -36,7 +36,7 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
         component={Charts}
       />
       <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
-      <Route
+      <PermissionRoute
         exact
         path={`${match.url}workbench`}
         component={() => {

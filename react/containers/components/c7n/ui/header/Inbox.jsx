@@ -385,6 +385,7 @@ export default class Inbox extends Component {
         inboxData, inboxLoading, getUnreadMessageCount, getCurrentTheme,
       },
     } = this.props;
+    const SelfButton = AppState.getCurrentTheme === 'theme4' ? ButtonPro : Button;
     const popOverContent = { inboxData, inboxLoading };
     return (
       <div className={classNames({
@@ -408,11 +409,11 @@ export default class Inbox extends Component {
                 }
                 count={getUnreadMessageCount}
               >
-                <Button
+                <SelfButton
                   className={classNames({
                     'theme4-inbox': AppState.getCurrentTheme === 'theme4',
                   })}
-                  functype="flat"
+                  funcType="flat"
                   {
                   ...AppState.getCurrentTheme === '' ? {
                     shape: 'circle',
@@ -421,7 +422,7 @@ export default class Inbox extends Component {
                   }
                 >
                   <Icon type={AppState.getCurrentTheme === 'theme4' ? 'notifications_none' : 'notifications'} />
-                </Button>
+                </SelfButton>
               </Badge>
             )
           }

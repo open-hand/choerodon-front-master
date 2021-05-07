@@ -5,6 +5,7 @@ import ResponsiveReactGridLayout from 'react-grid-layout';
 import {
   map, get, filter,
 } from 'lodash';
+import ResizeObserver from 'resize-observer-polyfill';
 import { observer } from 'mobx-react-lite';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
@@ -111,7 +112,7 @@ const WorkBench = () => {
     return false;
   }
 
-  function onLayoutChange(layouts, tempLayouts) {
+  function onLayoutChange(layouts) {
     componentsDs.loadData(layouts);
   }
 

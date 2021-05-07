@@ -22,6 +22,14 @@ body {
 @btn-height-base: 0.32rem;
 @btn-padding-base: 0 .12rem;
 
+body:not([data-theme="theme4"]) {
+  .@{c7n-pro-prefix} &-btn {
+    i {
+      font-size: 0.18rem !important;
+    }
+  }
+}
+
 .@{c7n-pro-prefix} {
   &-input-group-help {
     background: #fff;
@@ -35,10 +43,6 @@ body {
   &-btn {
     font-weight: 500;
     height: 0.32rem;
-
-    i {
-      font-size: 0.18rem !important;
-    }
   }
 
   &-modal {

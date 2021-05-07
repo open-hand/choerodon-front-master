@@ -140,9 +140,12 @@ const UI_CONFIG = {
     };
   },
 };
-
-function initUiConfigure() {
-  configure(UI_CONFIG);
+const UI_CONFIG_THEME4 = {
+  ...UI_CONFIG,
+  tableRowHeight: 50,
+};
+function initUiConfigure(theme) {
+  configure(theme === 'theme4' ? UI_CONFIG_THEME4 : UI_CONFIG);
 }
 
 export {

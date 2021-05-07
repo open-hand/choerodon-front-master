@@ -3,20 +3,28 @@ import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router';
 import { Tooltip, Icon, Button } from 'choerodon-ui';
+import { Button as ProButton } from 'choerodon-ui/pro'
 import { EXTERNAL_LINK } from '@/utils/constants';
 import classNames from 'classnames';
+import useTheme from '@/hooks/useTheme';
+// import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
+import { mount } from '@choerodon/inject';
 import Logo from './Logo';
 import User from './User';
 import Inbox from './Inbox';
-// import SkinPeeler from './SkinPeeler';
+import SkinPeeler from './SkinPeeler';
 import HeaderSetting from './HeaderSetting';
-import './style';
 import OrgSelect from './OrgSelect';
+
+import './style';
 
 const prefixCls = 'c7n-boot-header';
 
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
-  const schema = '';
+  // const { setTheme, schema } = useContext(ThemeContext);
+  const [schema, setTheme] = useTheme();
+
+  console.log(schema);
 
   useEffect(() => {
     const { AppState, HeaderStore, MenuStore } = props;
@@ -37,12 +45,14 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   }
 
   const renderExternalLink = () => {
+    const SelfButton = schema === 'theme4' ? ProButton : Button;
     if (EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') {
       const [url, text, icon] = EXTERNAL_LINK.split(',');
       return (
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
           <Tooltip title={text}>
-            <Button
+            <SelfButton
+              funcType="flat"
               className={classNames({
                 'theme4-external': props.AppState.getCurrentTheme === 'theme4',
               })}
@@ -68,7 +78,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     AppState: { getUserInfo: { image_url: imgUrl } }, MenuStore: { getSiteMenuData }, history, location: { pathname },
   } = props;
 
-  const shouldHiddenHead = (pathname) => {
+  const shouldHiddenHead = () => {
     const defaultBlackList = ['/iam/enterprise'];
     if (defaultBlackList.some((pname) => pathname.startsWith(pname))) {
       return true;
@@ -76,7 +86,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     return false;
   };
 
-  if (shouldHiddenHead(pathname)) {
+  if (shouldHiddenHead()) {
     return null;
   }
   return (
@@ -90,25 +100,28 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         <Logo history={history} />
       </div>
       <ul className={`${prefixCls}-center`}>
-        <li style={{ display: 'flex' }}><HeaderSetting /></li>
+        <li style={{ display: 'flex' }}>
+          <HeaderSetting />
+          {mount('base-pro:saasUpgrade')}
+        </li>
       </ul>
       <ul className={`${prefixCls}-right`}>
         <OrgSelect />
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
-          {/* <SkinPeeler /> */}
+          <SkinPeeler />
           {/* <Button */}
-          {/*  icon="toys" */}
-          {/*  onClick={() => { */}
-          {/*    const { AppState } = this.props; */}
-          {/*    const theme = AppState.getTheme; */}
-          {/*    let newTheme; */}
-          {/*    if (theme === 'theme4') { */}
-          {/*      newTheme = ''; */}
-          {/*    } else { */}
-          {/*      newTheme = 'theme4'; */}
-          {/*    } */}
-          {/*    AppState.setTheme(newTheme); */}
-          {/*  }} */}
+          {/* icon="toys" */}
+          {/* onClick={() => { */}
+          {/*   const { AppState } = this.props; */}
+          {/*   const theme = AppState.getTheme; */}
+          {/*   let newTheme; */}
+          {/*   if (theme === 'theme4') { */}
+          {/*     newTheme = ''; */}
+          {/*   } else { */}
+          {/*     newTheme = 'theme4'; */}
+          {/*   } */}
+          {/*   AppState.setTheme(newTheme); */}
+          {/* }} */}
           {/* /> */}
         </li>
         {renderExternalLink()}

@@ -143,7 +143,7 @@ const QuestionNode = observer(({
         icon = 'agile_task';
         color = '#4d90fe';
     }
-    if (issueTypeVO) {
+    if (issueTypeVO && newTypeCode !== 'feature') {
       mes = issueTypeVO.name || mes;
       icon = issueTypeVO.icon || icon;
       color = issueTypeVO.colour || color;
@@ -156,7 +156,7 @@ const QuestionNode = observer(({
 
     return (
       <Tooltip title={mes} placement="top">
-        {typeCode === 'backlog' || featureType === 'business' ? (
+        {typeCode === 'backlog' ? (
           <div style={{
             backgroundColor: color, width: '.16rem', height: '.16rem', flexShrink: 0, borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}
