@@ -1239,11 +1239,6 @@
     universal-cookie "^4.0.4"
     webuploader "^0.1.8"
 
-"@choerodon/inject@^0.1.0":
-  version "0.1.0"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@choerodon/inject/-/inject-0.1.0.tgz#609ff1ddba71bb1dcdbd4394f6ef9fad56a23e6b"
-  integrity sha512-bnpCpBsVuLqBOUZ/HJlhVqdbkTwqs8V5Di61qmvvDc8SDti/VDP2TkD2HTnU6egyHInENUmQKjODNa5F/g3XEg==
-
 "@ckeditor/ckeditor-cloud-services-core@^25.0.0":
   version "25.0.0"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@ckeditor/ckeditor-cloud-services-core/-/ckeditor-cloud-services-core-25.0.0.tgz#4098afc9b6dff78ca2932a632a6c449dfa58d4d3"
