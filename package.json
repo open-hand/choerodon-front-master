@@ -6,8 +6,7 @@
   "main": "./lib/index.js",
   "files": [
     "lib",
-    "postInstall.js",
-    "yarn.lock"
+    "postInstall.js"
   ],
   "scripts": {
     "start": "choerodon-front-boot start --config ./react/config.js",
