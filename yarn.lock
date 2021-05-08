@@ -1715,10 +1715,10 @@
     normalize-path "^2.0.1"
     through2 "^2.0.3"
 
-"@hzero-front-ui/c7n-ui@3.0.0-alpha.9":
-  version "3.0.0-alpha.9"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@hzero-front-ui/c7n-ui/-/c7n-ui-3.0.0-alpha.9.tgz#1ea97e233b0107c4f14f461bbac1fc184953014b"
-  integrity sha512-3yHf/SOkZ75kp3cjaRaa5xSsA/4LGCiRTkpbSD9bm0ydlMDupMrnM03HleUkYE+YdTOGwj8E2RxuIfI5R77igw==
+"@hzero-front-ui/c7n-ui@3.0.0-alpha.10":
+  version "3.0.0-alpha.10"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/c7n-ui/-/c7n-ui-3.0.0-alpha.10.tgz#63ba5b5d1514484eed8c10a6b053db6236dd26ba"
+  integrity sha512-SYcQqFUWsk6GeItWoHYfN0kKtNuKzg3pAF0jwjY7+Qf+S5LZA05fSM6v2LxLfhggr/ivfdvw+F8Ezax9F8PoUQ==
 
 "@hzero-front-ui/core@3.0.0-alpha.8":
   version "3.0.0-alpha.8"
@@ -1733,10 +1733,10 @@
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@hzero-front-ui/font/-/font-3.0.0-alpha.0.tgz#2f5b9add3afda42ac4777d5c390fb7014bfc0953"
   integrity sha512-Ua26bzALyV63RyirbSeYtDOuGOP+G/cX2yfd4VvEhX+v8BeR85RRxpp4QYU7Q/Y+fiZch+uJLOrFOc8AZHiO2A==
 
-"@hzero-front-ui/themes@3.0.0-alpha.5":
-  version "3.0.0-alpha.5"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@hzero-front-ui/themes/-/themes-3.0.0-alpha.5.tgz#50b2891266eee49e438790378aa76fed2c0ed69a"
-  integrity sha512-KQRhDEYEK1E0jOHE7lEZsxqt7liee2GCrAC7ZHxvmtft3hpATZvgWzWVDcpzc5O8r4nWM/Mpkv/+I1IOW/+hUA==
+"@hzero-front-ui/themes@3.0.0-alpha.6":
+  version "3.0.0-alpha.6"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/themes/-/themes-3.0.0-alpha.6.tgz#985208e8a944a0e5bb24bb53da1cd659bd86696b"
+  integrity sha512-s8Qls4lcEqV+fQxhH7vBze9AME0CFcJgEOPTH2no+k4DZqSM26uoqh/HFKrv7ev78CWn1NXzDIplGZwFVkMR6w==
   dependencies:
     "@hzero-front-ui/font" "^3.0.0-alpha.0"
 
@@ -3470,10 +3470,10 @@ choerodon-ui-font@0.2.x:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/choerodon-ui-font/-/choerodon-ui-font-0.2.6.tgz#8458194162db1db5fad3dff4a0d20ed8b8392f90"
   integrity sha1-hFgZQWLbHbX609/0oNIO2Lg5L5A=
 
-choerodon-ui@1.3.1:
-  version "1.3.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/choerodon-ui/-/choerodon-ui-1.3.1.tgz#c8b31276d1f1df404cf5a37ea386147a8f6510c5"
-  integrity sha1-yLMSdtHx30BM9aN+o4YUeo9lEMU=
+choerodon-ui@1.3.1-beta.4:
+  version "1.3.1-beta.4"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/choerodon-ui/-/choerodon-ui-1.3.1-beta.4.tgz#1b1ac773e7056a70f821f9242cf580b16059ccb2"
+  integrity sha512-1z6vMfWggG8syG/3wkW4xAYqwIvjpImw+Lknce5y8YCNc2qvEfuV5Rit3MGkV4WSVlDa9oPqYdTCb6kWG3ZXWg==
   dependencies:
     "@babel/runtime" "7.x"
     "@ctrl/tinycolor" "^3.2.0"
@@ -3487,6 +3487,7 @@ choerodon-ui@1.3.1:
     core-js "^2.5.1"
     create-react-class "^15.6.0"
     css-animation "^1.5.0"
+    css-unit-converter "^1.1.1"
     dom-align "1.x"
     dom-closest "^0.2.0"
     dom-lib "^1.3.1"
@@ -3497,6 +3498,7 @@ choerodon-ui@1.3.1:
     htmlhint "0.10.x"
     insert-css "^2.0.0"
     is-negative-zero "^2.0.0"
+    is-promise "^2.2.2"
     js-yaml "^3.12.2"
     jshint "^2.10.1"
     jsonlint "^1.6.3"
@@ -3504,7 +3506,6 @@ choerodon-ui@1.3.1:
     mini-store "^2.0.0"
     moment "^2.24.0"
     mutationobserver-shim "^0.3.3"
-    p-is-promise "2.1.0"
     prettier "~1.18.2"
     prop-types "^15.7.2"
     querystringify "^2.1.0"
@@ -3527,6 +3528,7 @@ choerodon-ui@1.3.1:
     scroll-into-view-if-needed "^2.2.25"
     smooth-scroll-into-view-if-needed "^1.1.28"
     string-template "^1.0.0"
+    tslib "^1.9.3"
     warning "~4.0.3"
     xlsx "^0.16.7"
 
@@ -4204,6 +4206,11 @@ css-to-react-native@^3.0.0:
     camelize "^1.0.0"
     css-color-keywords "^1.0.0"
     postcss-value-parser "^4.0.2"
+
+css-unit-converter@^1.1.1:
+  version "1.1.2"
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/css-unit-converter/-/css-unit-converter-1.1.2.tgz#4c77f5a1954e6dbff60695ecb214e3270436ab21"
+  integrity sha1-THf1oZVObb/2BpXsshTjJwQ2qyE=
 
 css-what@^3.2.1:
   version "3.4.2"
@@ -8904,11 +8911,6 @@ p-finally@^1.0.0:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/p-finally/-/p-finally-1.0.0.tgz#3fbcfb15b899a44123b34b6dcc18b724336a2cae"
   integrity sha1-P7z7FbiZpEEjs0ttzBi3JDNqLK4=
 
-p-is-promise@2.1.0:
-  version "2.1.0"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/p-is-promise/-/p-is-promise-2.1.0.tgz#918cebaea248a62cf7ffab8e3bca8c5f882fc42e"
-  integrity sha1-kYzrrqJIpiz3/6uOO8qMX4gvxC4=
-
 p-limit@^1.1.0:
   version "1.3.0"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/p-limit/-/p-limit-1.3.0.tgz#b86bd5f0c25690911c7590fcbfc2010d54b3ccb8"
@@ -12084,7 +12086,7 @@ tslib@2.0.1:
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
   integrity sha1-QQ6w0RPltjVkkO7HSWA3JbAhtD4=
 
-tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.14.1"
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha1-zy04vcNKE0vK8QkcQfZhni9nLQA=
