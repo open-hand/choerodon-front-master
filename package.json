@@ -44,7 +44,7 @@
     "react-dom": "16.14.0"
   },
   "dependencies": {
-    "@choerodon/components": "0.0.2",
+    "@choerodon/components": "0.0.3",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.168",
     "@types/query-string": "^6.3.0",
