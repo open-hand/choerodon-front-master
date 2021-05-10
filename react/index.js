@@ -53,3 +53,5 @@ export { default as Choerodon } from './utils/choerodon';
 export { default as PermissionRoute } from './components/permission-route';
 
 export { default as useTheme } from './hooks/useTheme';
+
+export { default as HeaderBtns } from './containers/components/c7n/tools/header-btns';
