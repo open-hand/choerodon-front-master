@@ -7,6 +7,7 @@ import Permission from '@/containers/components/c7n/tools/permission';
 import { Button, Tooltip, Divider } from 'choerodon-ui';
 
 import './index.less';
+import classNames from 'classnames';
 
 export interface itemsProps {
   display: boolean,
@@ -25,6 +26,10 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
   showClassName?: boolean
 }) => {
   const displayBtn = useMemo(() => items.filter(({ display }) => display), [items]);
+
+  const cls = classNames('c7ncd-header-btn-flex', {
+    'c7ncd-header-btns': showClassName,
+  });
 
   const btnNodes = useMemo(() => {
     const btnGroups = map(groupBy(displayBtn, 'group'), (value) => {
@@ -68,10 +73,7 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
 
   return displayBtn.length ? (
     <div
-      style={{
-        direction: 'rtl',
-      }}
-      className={showClassName ? 'c7ncd-header-btns' : ''}
+      className={cls}
     >
       {btnNodes}
       {children}
