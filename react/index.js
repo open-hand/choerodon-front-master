@@ -54,4 +54,4 @@ export { default as PermissionRoute } from './components/permission-route';
 
 export { default as useTheme } from './hooks/useTheme';
 
-export { default as HeaderBtns } from './containers/components/c7n/tools/header-btns';
+export { default as HeaderButtons } from './containers/components/c7n/tools/header-btns';
