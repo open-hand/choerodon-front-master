@@ -1,0 +1,92 @@
+@keyframes slideToTop {
+  0% {
+    bottom: -50%;
+    opacity: 0.4;
+  }
+  100% {
+    bottom: 0;
+    opacity: 1;
+  }
+}
+
+.c7ncd-saas-feedback-modal {
+  position: fixed;
+  right: 40px;
+  bottom: 38px;
+  height: 368px;
+  background: #fff;
+  box-shadow: 0px 0px 12px 0px rgba(15, 19, 88, 0.24);
+  border-radius: 4px;
+  &-show {
+    display: block;
+    animation: slideToTop 0.2s linear;
+  }
+  &-hide {
+    display: none;
+  }
+  &-top {
+    height: 100px;
+    background-color: rgba(217, 230, 242, 1);
+    > img {
+      float: right;
+      height: 120px;
+      margin-top: -18px;
+      margin-right: -15px;
+    }
+    > i {
+      cursor: pointer;
+      padding: 4px;
+      font-size: 23px !important;
+      display: block;
+      position: absolute;
+      top: 10px;
+      left: 16px;
+      color: rgba(83, 101, 234, 1);
+      font-weight: 500;
+    }
+  }
+  &-list {
+    padding: 20px 16px;
+    &-item {
+      cursor: pointer;
+      height: 68px;
+      background: #ffffff;
+      box-shadow: 0px 1px 4px 0px rgba(15, 19, 88, 0.08);
+      border-radius: 4px;
+      border: 1px solid #d9e6f2;
+      padding: 12px;
+      display: flex;
+      transition: 0.2s;
+      &:hover {
+        border: 1px solid rgba(83, 101, 234, 0.65);
+        background-color: rgba(98, 117, 255, 0.08);
+      }
+      i {
+        color: rgba(15, 19, 88, 0.65);
+        line-height: 24px !important;
+      }
+    }
+    &-text {
+      display: flex;
+      flex-direction: column;
+      margin-left: 6px;
+
+      span {
+        font-size: 13px;
+        font-weight: 400;
+        &:first-of-type {
+          color: #0f1358;
+        }
+        &:nth-of-type(2) {
+          color: rgba(15, 19, 88, 0.65);
+        }
+      }
+      span + span {
+        margin-top: 4px;
+      }
+    }
+    &-item + &-item {
+      margin-top: 12px;
+    }
+  }
+}
