@@ -4,10 +4,12 @@ import initial from 'lodash/initial';
 import flatten from 'lodash/flatten';
 import map from 'lodash/map';
 import Permission from '@/containers/components/c7n/tools/permission';
-import { Button, Tooltip, Divider } from 'choerodon-ui';
+import { Divider } from 'choerodon-ui';
+import { Button, Tooltip } from 'choerodon-ui/pro';
 
 import './index.less';
 import classNames from 'classnames';
+import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
 
 export interface itemsProps {
   display: boolean,
@@ -18,6 +20,7 @@ export interface itemsProps {
   disabledMessage?: string,
   icon: string,
   group?: number,
+  color?: ButtonColor,
 }
 
 const HeaderButtons = ({ items, children, showClassName = true }: {
@@ -36,26 +39,38 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
       const Split = <Divider key={Math.random()} type="vertical" className="c7ncd-header-split" />;
 
       const btns = map(value, ({
-        name, handler, permissions, display, disabled, disabledMessage, ...props
-      }) => {
-        const btn = (
-          <Button
-            {...props}
-            disabled={disabled}
-            className="c7ncd-header-btn"
-            funcType="flat"
-            onClick={handler}
-            type="primary"
-          >
-            {name}
-          </Button>
-        );
+        name, handler, permissions, display, icon, disabled, disabledMessage, color = 'default' as ButtonColor, ...props
+      }, index:number) => {
+        let btn:React.ReactNode;
+        const transColor = index === 0 ? 'primary' as ButtonColor : color;
+        if (icon === 'refresh') {
+          btn = (
+            <Button
+              {...props}
+              disabled={disabled}
+              className="c7ncd-header-btn"
+              onClick={handler}
+            />
+          );
+        } else {
+          btn = (
+            <Button
+              {...props}
+              disabled={disabled}
+              className="c7ncd-header-btn"
+              onClick={handler}
+              color={transColor}
+            >
+              {name}
+            </Button>
+          );
+        }
         return (
           <Fragment key={name}>
             {permissions && permissions.length ? (
               <Permission service={permissions}>
                 {disabled && disabledMessage ? (
-                  <Tooltip title={disabledMessage || ''} placement="bottom">
+                  <Tooltip title={disabledMessage} placement="bottom">
                     {btn}
                   </Tooltip>
                 ) : btn}
