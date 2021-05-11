@@ -4,6 +4,7 @@ import initial from 'lodash/initial';
 import flatten from 'lodash/flatten';
 import map from 'lodash/map';
 import Permission from '@/containers/components/c7n/tools/permission';
+import Action from '@/containers/components/c7n/tools/action';
 import { Divider } from 'choerodon-ui';
 import { Button, Tooltip } from 'choerodon-ui/pro';
 
@@ -21,6 +22,8 @@ export interface itemsProps {
   icon: string,
   group?: number,
   color?: ButtonColor,
+  iconOnly?: boolean;
+  actions: any,
 }
 
 const HeaderButtons = ({ items, children, showClassName = true }: {
@@ -28,22 +31,56 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
   children?: ReactElement,
   showClassName?: boolean
 }) => {
-  const displayBtn = useMemo(() => items.filter(({ display }) => display), [items]);
+  const displayBtn = useMemo(() => {
+    const filterItems = items.filter(({ display }) => display);
+    const groupItems = map(filterItems, (value) => {
+      const tempGroupItem = value;
+      if (!tempGroupItem?.group) {
+        tempGroupItem.group = 0;
+      } else if (typeof tempGroupItem?.group !== 'string') {
+        tempGroupItem.group = Number(tempGroupItem.group);
+      }
+      return tempGroupItem;
+    });
+    return groupItems;
+  }, [items]);
 
   const cls = classNames('c7ncd-header-btn-flex', {
     'c7ncd-header-btns': showClassName,
   });
 
   const btnNodes = useMemo(() => {
-    const btnGroups = map(groupBy(displayBtn, 'group'), (value) => {
+    const btnGroups = map(groupBy(displayBtn, 'group'), (value, key) => {
       const Split = <Divider key={Math.random()} type="vertical" className="c7ncd-header-split" />;
-
       const btns = map(value, ({
-        name, handler, permissions, display, icon, disabled, disabledMessage, color = 'default' as ButtonColor, ...props
+        name,
+        handler,
+        iconOnly = false,
+        permissions,
+        display,
+        icon,
+        disabled,
+        disabledMessage,
+        color = 'default' as ButtonColor,
+        actions,
+        ...props
       }, index:number) => {
         let btn:React.ReactNode;
-        const transColor = index === 0 ? 'primary' as ButtonColor : color;
-        if (icon === 'refresh') {
+        const transColor = index === 0 && Number(key) === 0 ? 'primary' as ButtonColor : color;
+        if (actions) {
+          const { data, ...restActionsProps } = actions;
+          btn = (
+            <Action
+              {...restActionsProps}
+              data={data}
+              className="c7ncd-header-action"
+              style={{
+                color: '#3f51b5',
+                padding: 0,
+              }}
+            />
+          );
+        } else if (iconOnly) {
           btn = (
             <Button
               {...props}
@@ -67,6 +104,7 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
             </Button>
           );
         }
+
         return (
           <Fragment key={name}>
             {permissions && permissions.length ? (
