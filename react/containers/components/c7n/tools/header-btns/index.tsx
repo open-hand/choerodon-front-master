@@ -50,6 +50,7 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
               disabled={disabled}
               className="c7ncd-header-btn"
               onClick={handler}
+              icon={icon}
             />
           );
         } else {
@@ -60,6 +61,7 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
               className="c7ncd-header-btn"
               onClick={handler}
               color={transColor}
+              icon={icon}
             >
               {name}
             </Button>
