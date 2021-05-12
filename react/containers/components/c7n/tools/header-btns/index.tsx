@@ -1,4 +1,6 @@
-import React, { useMemo, Fragment, ReactElement } from 'react';
+import React, {
+  useMemo, Fragment, ReactElement,
+} from 'react';
 import groupBy from 'lodash/groupBy';
 import initial from 'lodash/initial';
 import flatten from 'lodash/flatten';
@@ -11,19 +13,22 @@ import { Button, Tooltip } from 'choerodon-ui/pro';
 import './index.less';
 import classNames from 'classnames';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
+import { TooltipProps } from 'choerodon-ui/lib/tooltip';
+import { ButtonProps } from 'choerodon-ui/pro/lib/button/Button';
+import { toolTipsConfigType } from './interface';
 
-export interface itemsProps {
+export interface itemsProps extends ButtonProps {
   display: boolean,
   name: string,
   handler?(): void,
   permissions?: Array<string>,
   disabled?: boolean,
-  disabledMessage?: string,
-  icon: string,
+  icon?: string,
   group?: number,
   color?: ButtonColor,
   iconOnly?: boolean;
-  actions: any,
+  actions?: any,
+  tooltipsConfig?: Pick<TooltipProps, toolTipsConfigType>
 }
 
 const HeaderButtons = ({ items, children, showClassName = true }: {
@@ -60,9 +65,9 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
         display,
         icon,
         disabled,
-        disabledMessage,
         color = 'default' as ButtonColor,
         actions,
+        tooltipsConfig,
         ...props
       }, index:number) => {
         let btn:React.ReactNode;
@@ -105,17 +110,17 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
           );
         }
 
+        const toolBtn = (
+          <Tooltip {...tooltipsConfig}>{btn}</Tooltip>
+        );
+
         return (
           <Fragment key={name}>
             {permissions && permissions.length ? (
               <Permission service={permissions}>
-                {disabled && disabledMessage ? (
-                  <Tooltip title={disabledMessage} placement="bottom">
-                    {btn}
-                  </Tooltip>
-                ) : btn}
+                {toolBtn}
               </Permission>
-            ) : btn}
+            ) : toolBtn}
           </Fragment>
         );
       });
