@@ -29,8 +29,9 @@ const FeedbackModal = () => {
       children: <SaaSFeedbackForm />,
       drawer: true,
       style: {
-        width: 'calc(100% - 3.5rem)',
+        width: '740px',
       },
+      // calc(100% - 3.5rem)
       okText: '关闭',
       okCancel: false,
     });
