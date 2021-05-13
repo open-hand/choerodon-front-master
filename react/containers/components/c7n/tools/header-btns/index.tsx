@@ -28,7 +28,8 @@ export interface itemsProps extends ButtonProps {
   iconOnly?: boolean;
   actions?: any,
   tooltipsConfig?: Pick<TooltipProps, toolTipsConfigType>
-  element?: React.ReactElement
+  element?: React.ReactElement,
+  preElement?: React.ReactElement,
 }
 
 const HeaderButtons = ({ items, children, showClassName = true }: {
@@ -69,6 +70,7 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
         actions,
         tooltipsConfig,
         element,
+        preElement,
         ...props
       }, index:number) => {
         let btn:React.ReactNode;
@@ -88,34 +90,46 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
           );
         } else if (iconOnly) {
           btn = (
-            <Button
-              {...props}
-              disabled={disabled}
-              className="c7ncd-header-btn"
-              onClick={handler}
-              icon={icon}
-            />
+            <>
+              {preElement && React.cloneElement(preElement, {})}
+              <Button
+                {...props}
+                disabled={disabled}
+                className="c7ncd-header-btn"
+                onClick={handler}
+                icon={icon}
+              />
+            </>
+
           );
         } else if (element) {
-          btn = React.cloneElement(element, {
-            disabled,
-            className: 'c7ncd-header-btn',
-            onClick: handler,
-            color: transColor,
-            icon,
-          });
+          btn = (
+            <>
+              {preElement && React.cloneElement(preElement, {})}
+              {React.cloneElement(element, {
+                disabled,
+                className: 'c7ncd-header-btn',
+                onClick: handler,
+                color: transColor,
+                icon,
+              })}
+            </>
+          );
         } else {
           btn = (
-            <Button
-              {...props}
-              disabled={disabled}
-              className="c7ncd-header-btn"
-              onClick={handler}
-              color={transColor}
-              icon={icon}
-            >
-              {name}
-            </Button>
+            <>
+              {preElement && React.cloneElement(preElement, {})}
+              <Button
+                {...props}
+                disabled={disabled}
+                className="c7ncd-header-btn"
+                onClick={handler}
+                color={transColor}
+                icon={icon}
+              >
+                {name}
+              </Button>
+            </>
           );
         }
 
