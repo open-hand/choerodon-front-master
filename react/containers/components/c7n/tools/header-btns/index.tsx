@@ -31,7 +31,7 @@ export interface itemsProps extends ButtonProps {
   tooltipsConfig?: Pick<TooltipProps, toolTipsConfigType>
 }
 
-const HeaderButtons = ({ items, children, showClassName = true }: {
+const HeaderButtons = ({ items, children, showClassName = false }: {
   items: Array<itemsProps>,
   children?: ReactElement,
   showClassName?: boolean
@@ -143,7 +143,7 @@ const HeaderButtons = ({ items, children, showClassName = true }: {
 
 HeaderButtons.defaultProps = {
   children: undefined,
-  showClassName: true,
+  showClassName: false,
 };
 
 export default HeaderButtons;
