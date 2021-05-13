@@ -29,7 +29,7 @@ const PageContent = ({
 
   return (
     <div className={classString} style={style}>
-      <div style={{ background: '#fff' }}>
+      <div style={{ background: '#fff', height: '100%' }}>
         {
           (code || title || description) && (
             <div className="page-content-header">
