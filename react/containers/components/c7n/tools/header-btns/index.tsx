@@ -91,7 +91,6 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         } else if (iconOnly) {
           btn = (
             <>
-              {preElement && React.cloneElement(preElement, {})}
               <Button
                 {...props}
                 disabled={disabled}
@@ -99,13 +98,13 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
                 onClick={handler}
                 icon={icon}
               />
+              {preElement && React.cloneElement(preElement, {})}
             </>
 
           );
         } else if (element) {
           btn = (
             <>
-              {preElement && React.cloneElement(preElement, {})}
               {React.cloneElement(element, {
                 disabled,
                 className: 'c7ncd-header-btn',
@@ -113,12 +112,12 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
                 color: transColor,
                 icon,
               })}
+              {preElement && React.cloneElement(preElement, {})}
             </>
           );
         } else {
           btn = (
             <>
-              {preElement && React.cloneElement(preElement, {})}
               <Button
                 {...props}
                 disabled={disabled}
@@ -129,6 +128,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
               >
                 {name}
               </Button>
+              {preElement && React.cloneElement(preElement, {})}
             </>
           );
         }
