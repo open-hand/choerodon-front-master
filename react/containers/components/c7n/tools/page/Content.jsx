@@ -29,7 +29,6 @@ const PageContent = ({
 
   return (
     <div className={classString} style={style}>
-      <div style={{ background: '#fff', minHeight: '100%', padding: '16px 16px 0' }}>
         {
           (code || title || description) && (
             <div className="page-content-header">
@@ -51,7 +50,6 @@ const PageContent = ({
           )
         }
         {children}
-      </div>
     </div>
   );
 };
