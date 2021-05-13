@@ -9,7 +9,6 @@ import Permission from '@/containers/components/c7n/tools/permission';
 import Action from '@/containers/components/c7n/tools/action';
 import { Divider } from 'choerodon-ui';
 import { Button, Tooltip } from 'choerodon-ui/pro';
-
 import './index.less';
 import classNames from 'classnames';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
@@ -29,9 +28,10 @@ export interface itemsProps extends ButtonProps {
   iconOnly?: boolean;
   actions?: any,
   tooltipsConfig?: Pick<TooltipProps, toolTipsConfigType>
+  element?: React.ReactElement
 }
 
-const HeaderButtons = ({ items, children, showClassName = false }: {
+const HeaderButtons = ({ items, children, showClassName = true }: {
   items: Array<itemsProps>,
   children?: ReactElement,
   showClassName?: boolean
@@ -68,6 +68,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         color = 'default' as ButtonColor,
         actions,
         tooltipsConfig,
+        element,
         ...props
       }, index:number) => {
         let btn:React.ReactNode;
@@ -95,6 +96,14 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
               icon={icon}
             />
           );
+        } else if (element) {
+          btn = React.cloneElement(element, {
+            disabled,
+            className: 'c7ncd-header-btn',
+            onClick: handler,
+            color: transColor,
+            icon,
+          });
         } else {
           btn = (
             <Button
@@ -143,7 +152,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
 
 HeaderButtons.defaultProps = {
   children: undefined,
-  showClassName: false,
+  showClassName: true,
 };
 
 export default HeaderButtons;
