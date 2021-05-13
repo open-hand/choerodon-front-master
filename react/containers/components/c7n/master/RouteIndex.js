@@ -21,7 +21,7 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
     {
       ...AppState.getCurrentTheme === 'theme4' ? {
         style: {
-          background: '#F5F6FA',
+          background: 'white',
         },
       } : {}
     }
