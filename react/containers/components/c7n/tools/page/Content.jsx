@@ -29,27 +29,29 @@ const PageContent = ({
 
   return (
     <div className={classString} style={style}>
-      {
-        (code || title || description) && (
-          <div className="page-content-header">
-            <div className="title">
-              {title}
+      <div style={{ background: '#fff' }}>
+        {
+          (code || title || description) && (
+            <div className="page-content-header">
+              <div className="title">
+                {title}
+              </div>
+              <div className="description">
+                {description}
+                {
+                  link && (
+                    <a href={link} target="_blank" rel="noreferrer noopener">
+                      <FormattedMessage id="learnmore" defaultMessage="了解更多" />
+                      <Icon type="open_in_new" />
+                    </a>
+                  )
+                }
+              </div>
             </div>
-            <div className="description">
-              {description}
-              {
-                link && (
-                  <a href={link} target="_blank" rel="noreferrer noopener">
-                    <FormattedMessage id="learnmore" defaultMessage="了解更多" />
-                    <Icon type="open_in_new" />
-                  </a>
-                )
-              }
-            </div>
-          </div>
-        )
-      }
-      {children}
+          )
+        }
+        {children}
+      </div>
     </div>
   );
 };
