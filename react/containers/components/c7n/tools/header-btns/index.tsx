@@ -56,6 +56,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
   });
 
   const btnNodes = useMemo(() => {
+    const minGroupKey = Math.min.apply(null, displayBtn.map((value) => value.group));
     const btnGroups = map(groupBy(displayBtn, 'group'), (value, key) => {
       const Split = <Divider key={Math.random()} type="vertical" className="c7ncd-header-split" />;
       const btns = map(value, ({
@@ -74,7 +75,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         ...props
       }, index:number) => {
         let btn:React.ReactNode;
-        const transColor = index === 0 && Number(key) === 0 ? 'primary' as ButtonColor : color;
+        const transColor = index === 0 && Number(key) === minGroupKey ? 'primary' as ButtonColor : color;
         if (actions) {
           const { data, ...restActionsProps } = actions;
           btn = (
