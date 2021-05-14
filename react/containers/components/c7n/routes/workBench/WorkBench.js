@@ -188,8 +188,88 @@ const WorkBench = () => {
     );
   };
 
+  const getItemsButton = () => ([
+    {
+      name: '创建API测试用例',
+      icon: 'playlist_add',
+      permissions: [],
+      display: true,
+      group: 1,
+    },
+    {
+      name: 'hellowrold',
+      icon: 'refresh',
+      permissions: [],
+      display: true,
+      group: 1,
+    },
+    {
+      name: 'fuck',
+      icon: 'archive',
+      permissions: [],
+      display: true,
+      group: 1,
+    },
+    {
+      name: 'fuck me',
+      icon: 'archive',
+      permissions: [],
+      display: true,
+      group: 1,
+    },
+    {
+      display: true,
+      group: 1,
+      actions: {
+        data: [
+          {
+            text: 'hellowrold',
+            service: [],
+            action: () => {},
+          },
+        ],
+      },
+      permissions: [],
+    },
+    {
+      name: 'fuck me',
+      icon: 'archive',
+      permissions: [],
+      display: true,
+      iconOnly: true,
+      group: 1,
+    },
+    {
+      name: 'fuck me',
+      icon: 'archive',
+      permissions: [],
+      display: true,
+      group: 1,
+    },
+    {
+      name: '刷新',
+      icon: 'playlist_add',
+      iconOnly: true,
+      display: true,
+      group: 3,
+    },
+    {
+      name: '刷2',
+      icon: 'playlist_add',
+      iconOnly: true,
+      display: true,
+      group: 3,
+    },
+  ]);
+
   return (
     <Page className={`${prefixCls}`}>
+      <Header>
+        <HeaderButtons
+          items={getItemsButton()}
+          showClassName={false}
+        />
+      </Header>
       <div
         className={`${prefixCls}-container`}
       >
