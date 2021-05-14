@@ -3,6 +3,8 @@ import { injectIntl } from 'react-intl';
 import { inject } from 'mobx-react';
 import { DataSet } from 'choerodon-ui/pro';
 import feedbackFormDataSet from './feedbackFormDataSet';
+import useStore, { MainStoreProps } from './useStore';
+import emergencyDataSet from './emergencyDataSet';
 // import useStore, { MainStoreProps } from './useStore';
 
 interface ContextProps {
@@ -14,6 +16,9 @@ interface ContextProps {
     name:string
   }[],
   feedbackFormDs:DataSet
+  formStore: MainStoreProps,
+  organizationId:string,
+  emergencyDs:DataSet,
 }
 
 const Store = createContext({} as ContextProps);
@@ -26,31 +31,31 @@ export const StoreProvider = injectIntl(inject('AppState')((props: any) => {
   const {
     children,
     intl: { formatMessage },
+    AppState: { currentMenuType: { id, organizationId } },
   } = props;
 
   const issueType = useMemo(() => ([
-    {
-      value: 'talk',
-      name: '问题咨询',
-    },
-    {
-      value: 'dis',
-      name: '缺陷提报',
-    },
-    {
-      value: 'demand',
-      name: '需求提报',
-    },
+    'advisory',
+    'defect',
+    'demand',
   ]), []);
 
+  // const emergencyDs = useMemo(()=> new DataSet(emergencyDataSet()), []);
+
   const feedbackFormDs = useMemo(() => new DataSet(feedbackFormDataSet()), []);
+
+  const formStore = useStore();
 
   const value = {
     ...props,
     prefixCls: 'c7ncd-saas-feedbackForm',
     issueType,
     feedbackFormDs,
+    formStore,
+    organizationId,
+    // emergencyDs,
   };
+
   return (
     <Store.Provider value={value}>
       {children}

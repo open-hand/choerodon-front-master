@@ -64,7 +64,7 @@ function handleRequestIntercept(config) {
 
   const accessToken = getAccessToken();
   if (accessToken) {
-    newConfig.headers.Authorization = accessToken;
+    newConfig.headers.Authorization = newConfig?.headers.Authorization || accessToken;
   }
 
   return handleRequestCancelToken(newConfig);
