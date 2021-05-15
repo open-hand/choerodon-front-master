@@ -114,7 +114,7 @@ export default class OrgSelect extends Component {
     const currentData = this.getCurrentData();
     return (
       <div style={{
-        maxHeight: 400, marginTop: 44, overflow: 'auto', boxShadow: '0 0.02rem 0.08rem rgba(0, 0, 0, 0.12)', width: 200,
+        maxHeight: 400, overflow: 'auto', boxShadow: '0 0.02rem 0.08rem rgba(0, 0, 0, 0.12)', width: 200,
       }}
       >
         {this.renderTable(currentData)}
@@ -130,7 +130,7 @@ export default class OrgSelect extends Component {
         }, getUserInfo, getCurrentTheme,
       }, history,
     } = this.props;
-    const SelfButton = getCurrentTheme === 'theme4' ? ProButton : Button;
+    const SelfButton = true ? ProButton : Button;
     const currentData = this.getCurrentData() || [];
     const orgObj = currentData.find((v) => String(v.id) === (organizationId || id) || v.id === (organizationId || id));
     if (!orgObj && currentData.length && type !== 'project') {
@@ -162,7 +162,7 @@ export default class OrgSelect extends Component {
       }, 100);
       return null;
     }
-    const buttonClass = classnames(`${prefixCls}-button`, 'block', 'org-button', { 'theme4-orgSelect': getCurrentTheme === 'theme4' });
+    const buttonClass = classnames(`${prefixCls}-button`, 'block', 'org-button', { 'theme4-orgSelect': true });
     const menu = this.renderModalContent();
     const orgButton = (
       <SelfButton
@@ -172,10 +172,10 @@ export default class OrgSelect extends Component {
           margin: 0,
           padding: '0 20px',
           width: 200,
-          borderLeft: `1px solid ${getCurrentTheme === 'theme4' ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
-          borderRight: `1px solid ${getCurrentTheme === 'theme4' ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
-          borderTop: getCurrentTheme === 'theme4' ? '1px solid #D9E6F2' : 'unset',
-          borderBottom: getCurrentTheme === 'theme4' ? '1px solid #D9E6F2' : 'unset',
+          borderLeft: `1px solid ${true ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
+          borderRight: `1px solid ${true ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
+          borderTop: true ? '1px solid #D9E6F2' : 'unset',
+          borderBottom: true ? '1px solid #D9E6F2' : 'unset',
           textAlign: 'left',
         }}
       >
@@ -183,7 +183,7 @@ export default class OrgSelect extends Component {
         (orgObj && orgObj.name) ? (
           <div>
             {
-              getCurrentTheme === '' ? (
+              false ? (
                 <div style={{ fontSize: '12px', lineHeight: '20px', color: 'rgba(255, 255, 255, 0.6)' }}>组织</div>
               ) : (
                 <Icon type="domain" />
@@ -192,7 +192,7 @@ export default class OrgSelect extends Component {
             <div
               style={{
                 fontSize: '12px', lineHeight: '20px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'none',
-                ...getCurrentTheme === 'theme4' ? {
+                ...true ? {
                   paddingLeft: 9,
                 } : {}
               }}

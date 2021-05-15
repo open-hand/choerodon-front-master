@@ -18,13 +18,9 @@ const ProjectOverview = asyncRouter(() => import('../routes/projectOverview'));
 const Skeleton = asyncRouter(() => import('./skeleton/index.js'));
 const InnerIndex = ({ match, AutoRouter, AppState }) => (
   <div
-    {
-      ...AppState.getCurrentTheme === 'theme4' ? {
-        style: {
-          background: 'white',
-        },
-      } : {}
-    }
+    style={{
+    background: 'white',
+  }}
   >
     <Switch>
       <Route exact path={`${match.url}projects`} component={ProjectsPro} />

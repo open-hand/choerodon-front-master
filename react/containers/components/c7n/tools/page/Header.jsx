@@ -51,13 +51,11 @@ const PageHeader = ({
     }
     return backBtn;
   }
-  
+
   return (
-    <div 
+    <div
       className={
-        classNames('page-head', className, {
-          'theme4-page-head': AppState.getCurrentTheme === 'theme4',
-        })
+        classNames('page-head', className, 'theme4-page-head')
       }
     >
       {renderBackBtn()}

@@ -53,19 +53,12 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
           <Tooltip title={text}>
             <SelfButton
               funcType="flat"
-              className={classNames({
-                'theme4-external': props.AppState.getCurrentTheme === 'theme4',
-              })}
+              className={classNames('theme4-external')}
               icon={icon}
-              {
-                ...props.AppState.getCurrentTheme === '' ? {
-                  shape: 'circle',
-                } : {}
-              }
               onClick={() => {
                 window.open(url);
               }}
-              style={{ margin: `0 ${props.AppState.getCurrentTheme === 'theme4' ? '20px' : '15px'}` }}
+              style={{ margin: `0 ${true ? '20px' : '15px'}` }}
             />
           </Tooltip>
         </li>

@@ -385,11 +385,11 @@ export default class Inbox extends Component {
         inboxData, inboxLoading, getUnreadMessageCount, getCurrentTheme,
       },
     } = this.props;
-    const SelfButton = AppState.getCurrentTheme === 'theme4' ? ButtonPro : Button;
+    const SelfButton = true ? ButtonPro : Button;
     const popOverContent = { inboxData, inboxLoading };
     return (
       <div className={classNames({
-        'theme4-badge': AppState.getCurrentTheme === 'theme4',
+        'theme4-badge': true,
       })}
       >
         <WSHandler
@@ -404,24 +404,18 @@ export default class Inbox extends Component {
                   classNames(
                     [prefixCls],
                     'ignore-react-onclickoutside',
-                    { 'theme4-inbox-badge': AppState.getCurrentTheme === 'theme4' },
+                    { 'theme4-inbox-badge': true },
                   )
                 }
                 count={getUnreadMessageCount}
               >
                 <SelfButton
                   className={classNames({
-                    'theme4-inbox': AppState.getCurrentTheme === 'theme4',
+                    'theme4-inbox': true,
                   })}
                   funcType="flat"
-                  {
-                  ...AppState.getCurrentTheme === '' ? {
-                    shape: 'circle',
-                    style: { color: '#fff' },
-                  } : {}
-                  }
                 >
-                  <Icon type={AppState.getCurrentTheme === 'theme4' ? 'notifications_none' : 'notifications'} />
+                  <Icon type={true ? 'notifications_none' : 'notifications'} />
                 </SelfButton>
               </Badge>
             )

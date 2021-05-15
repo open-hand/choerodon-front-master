@@ -21,7 +21,7 @@ const SERVICE_CODE = {
 const Setting = ({
   AppState, HeaderStore, MenuStore, history, ...props
 }) => {
-  const theme = AppState.getCurrentTheme;
+  const theme = 'theme4';
   const { currentServices } = AppState;
 
   const LI_MAPPING = useMemo(() => {
@@ -88,9 +88,9 @@ const Setting = ({
               key={list.activePath}
               className={classNames({
                 [`block ${extraCls(list)}`]: true,
-                'theme4-headerButton': AppState.getCurrentTheme === 'theme4',
+                'theme4-headerButton': true,
               })}
-              {...AppState.getCurrentTheme === 'theme4' && index === 0 ? {
+              {...index === 0 ? {
                 style: {
                   marginLeft: '-8px',
                 },
@@ -101,7 +101,7 @@ const Setting = ({
             >
               <Icon type={list.icon} style={iconStyle} />
               <span
-                {...AppState.getCurrentTheme === 'theme4' && list.style ? {
+                {...true && list.style ? {
                   style: list.style,
                 } : {}}
               >
