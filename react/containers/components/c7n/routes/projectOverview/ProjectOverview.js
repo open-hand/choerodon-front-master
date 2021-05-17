@@ -177,42 +177,31 @@ const ProjectOverview = () => {
 
   const renderBtns = () => {
     let btnGroups;
-    const secondBtnObj = {
-      funcType: 'raised',
-    };
-    const primaryBtnObj = {
-      color: 'primary',
-      funcType: 'raised',
-    };
-    if (theme !== 'theme4') {
-      secondBtnObj.color = 'primary';
-      primaryBtnObj.funcType = 'flat';
-    }
     if (isEdit) {
       btnGroups = [
         <Button
-          {...primaryBtnObj}
+          color="primary"
           onClick={openAddComponents}
           key="5"
         >
           卡片配置
         </Button>,
         <Button
-          {...primaryBtnObj}
+          color="primary"
           onClick={hanldeSave}
           key="4"
         >
           保存
         </Button>,
         <Button
-          {...secondBtnObj}
+          funcType="flat"
           onClick={handleResetModal}
           key="3"
         >
           重置
         </Button>,
         <Button
-          {...secondBtnObj}
+          funcType="flat"
           onClick={handleCancel}
           key="2"
 
@@ -223,7 +212,6 @@ const ProjectOverview = () => {
     } else {
       btnGroups = [
         <Button
-          {...secondBtnObj}
           onClick={handleEditable}
           key="1"
         >

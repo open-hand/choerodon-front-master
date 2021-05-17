@@ -259,44 +259,33 @@ const StarTargetPro = observer(() => {
 
   const renderBtns = () => {
     let btnGroups;
-    const secondBtnObj = {
-      funcType: theme === 'theme4' ? 'flat' : 'raised',
-    };
-    const primaryBtnObj = {
-      color: 'primary',
-      funcType: 'raised',
-    };
-    if (theme !== 'theme4') {
-      secondBtnObj.color = 'primary';
-      primaryBtnObj.funcType = 'flat';
-    }
     if (isEdit) {
       btnGroups = [
         <Button
-          {...primaryBtnObj}
           key="1"
           onClick={openAddComponents}
+          color="primary"
         >
           卡片配置
         </Button>,
         <Button
-          {...primaryBtnObj}
           key="2"
           onClick={hanldeSave}
+          color="primary"
         >
           保存
         </Button>,
         <Button
-          {...secondBtnObj}
           key="3"
           onClick={handleResetModal}
+          funcType="flat"
         >
           重置
         </Button>,
         <Button
           key="4"
-          {...secondBtnObj}
           onClick={handleCancel}
+          funcType="flat"
         >
           取消
         </Button>,
@@ -304,7 +293,6 @@ const StarTargetPro = observer(() => {
     } else {
       btnGroups = [
         <Button
-          {...secondBtnObj}
           key="5"
           onClick={handleEditable}
         >
