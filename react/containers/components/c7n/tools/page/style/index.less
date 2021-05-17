@@ -17,8 +17,6 @@
   background-color: #fff;
   align-items: center;
   padding-left: 24px;
-  // margin-left: -24px;
-  // margin-right: -24px;
 
   .back-btn {
     color: @primary-color;
@@ -48,20 +46,13 @@
     &[disabled] {
       color: rgba(0, 0, 0, .26);
     }
-    & + .c7n-btn,
-    & + .c7n-pro-btn {
-      margin-left: 20px;
-    }
     .icon {
-      //margin-right: 2px;
-      //font-size: 18px;
       + span {
         margin-left: 0;
       }
     }
   }
   .c7n-pro-btn:not(.back-btn) {
-    margin-left: 20px;
     direction: ltr;
     font-weight: 500 !important;
     padding: 0 10px;
@@ -76,8 +67,6 @@
     }
     & + .c7n-btn,
     .icon {
-      //margin-right: 2px;
-      //font-size: 18px;
       + span {
         margin-left: 0;
       }
