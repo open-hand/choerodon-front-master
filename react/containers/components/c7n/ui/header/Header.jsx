@@ -2,13 +2,14 @@ import React, { useEffect, useContext } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router';
-import { Tooltip, Icon, Button } from 'choerodon-ui';
-import { Button as ProButton } from 'choerodon-ui/pro'
-import { EXTERNAL_LINK } from '@/utils/constants';
+import {
+  Menu, Dropdown, Icon, Tooltip, Button as ProButton,
+} from 'choerodon-ui/pro';
+
+import { EXTERNAL_LINK, SAAS_FEEDBACK } from '@/utils/constants';
 import classNames from 'classnames';
-import useTheme from '@/hooks/useTheme';
-// import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
 import { mount } from '@choerodon/inject';
+// import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
 import Logo from './Logo';
 import User from './User';
 import Inbox from './Inbox';
@@ -21,11 +22,6 @@ import './style';
 const prefixCls = 'c7n-boot-header';
 
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
-  // const { setTheme, schema } = useContext(ThemeContext);
-  const [schema, setTheme] = useTheme();
-
-  console.log(schema);
-
   useEffect(() => {
     const { AppState, HeaderStore, MenuStore } = props;
     // MenuStore.loadMenuData({ type: 'site' }, false);
@@ -44,23 +40,60 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     AppState.setGuideExpanded(!AppState.getGuideExpanded);
   }
 
+  const menuItems = () => {
+    const [url, text, icon] = EXTERNAL_LINK.split(',');
+    const itemsGroup = [];
+    const docItem = (
+      <Menu.Item>
+        <div
+          role="none"
+          onClick={() => {
+            window.open(url);
+          }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Icon type="collections_bookmark-o" />
+          <span>
+            {text}
+          </span>
+        </div>
+      </Menu.Item>
+    );
+    itemsGroup.push(docItem);
+    const saasFeedbackBtn = mount('base-pro:saasFeebackBtn');
+    if (saasFeedbackBtn) {
+      const saasFeedbackItem = (
+        <Menu.Item>
+          {saasFeedbackBtn}
+        </Menu.Item>
+      );
+      itemsGroup.push(saasFeedbackItem);
+    }
+    return (
+      <Menu>
+        {
+          itemsGroup
+        }
+      </Menu>
+    );
+  };
+
   const renderExternalLink = () => {
-    const SelfButton = schema === 'theme4' ? ProButton : Button;
-    if (EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') {
-      const [url, text, icon] = EXTERNAL_LINK.split(',');
+    if ((EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') || (SAAS_FEEDBACK && typeof SAAS_FEEDBACK === 'string')) {
       return (
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
-          <Tooltip title={text}>
-            <SelfButton
+          <Dropdown overlay={menuItems()} trigger={['click']} placement="bottomCenter">
+            <ProButton
               funcType="flat"
-              className={classNames('theme4-external')}
-              icon={icon}
-              onClick={() => {
-                window.open(url);
-              }}
-              style={{ margin: `0 ${true ? '20px' : '15px'}` }}
+              className="theme4-external"
+              icon="help"
+              shape="circle"
+              style={{ margin: '0 20px' }}
             />
-          </Tooltip>
+          </Dropdown>
         </li>
       );
     }
@@ -86,7 +119,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     <div
       className={classNames({
         [`${prefixCls}-wrap`]: true,
-        [`${prefixCls}-wrap-theme4`]: schema === 'theme4',
+        [`${prefixCls}-wrap-theme4`]: true,
       })}
     >
       <div className={`${prefixCls}-left`}>
@@ -102,20 +135,6 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         <OrgSelect />
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
           <SkinPeeler />
-          {/* <Button */}
-          {/* icon="toys" */}
-          {/* onClick={() => { */}
-          {/*   const { AppState } = this.props; */}
-          {/*   const theme = AppState.getTheme; */}
-          {/*   let newTheme; */}
-          {/*   if (theme === 'theme4') { */}
-          {/*     newTheme = ''; */}
-          {/*   } else { */}
-          {/*     newTheme = 'theme4'; */}
-          {/*   } */}
-          {/*   AppState.setTheme(newTheme); */}
-          {/* }} */}
-          {/* /> */}
         </li>
         {renderExternalLink()}
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
