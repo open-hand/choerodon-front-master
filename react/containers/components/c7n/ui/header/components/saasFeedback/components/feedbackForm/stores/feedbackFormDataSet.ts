@@ -1,8 +1,6 @@
-import { DataSet } from "choerodon-ui/pro/lib";
-import demandTypes from "./demandTypes";
-import emergency from "./emergencyTypes";
-import Choerodon from '@/utils/choerodon';
-import emergencyTypes from "./emergencyTypes";
+import { DataSet } from 'choerodon-ui/pro/lib';
+import demandTypes from './demandTypes';
+import emergencyTypes from './emergencyTypes';
 
 /* eslint-disable import/no-anonymous-default-export */
 export default (():any => ({
@@ -21,8 +19,8 @@ export default (():any => ({
       valueField: 'value',
       textField: 'name',
       options: new DataSet({
-        data:emergencyTypes
-      })
+        data: emergencyTypes,
+      }),
     },
     {
       label: '问题标题',
@@ -32,14 +30,14 @@ export default (():any => ({
     {
       label: '需求类型',
       name: 'demandType',
-      dynamicProps:{
+      dynamicProps: {
         required: ({ record }:any) => record.get('issueType') === 'demand',
       },
-      valueField:'value',
+      valueField: 'value',
       textField: 'name',
       options: new DataSet({
-        data: demandTypes
-      })
-    }
+        data: demandTypes,
+      }),
+    },
   ],
 }));

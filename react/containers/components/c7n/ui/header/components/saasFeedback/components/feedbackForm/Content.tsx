@@ -2,15 +2,13 @@ import {
   Form, SelectBox, TextField, Select,
 } from 'choerodon-ui/pro';
 import map from 'lodash/map';
-import React from 'react';
+import React, { useState } from 'react';
 import { CKEditor } from '@choerodon/components';
+import { observer } from 'mobx-react-lite';
 import issueMap from './stores/issueMapings';
 import { useSaaSFeedbackFormStore } from './stores';
-import { observer } from 'mobx-react-lite';
-import { FuncType } from 'choerodon-ui/pro/lib/button/enum';
-import { useState } from 'react';
+
 import FeedbackUpload from '../feedbackUpload';
-import emergencyTypes from './stores/emergencyTypes'
 
 const { Option } = SelectBox;
 
@@ -19,15 +17,12 @@ const SaaSForm = () => {
     prefixCls,
     issueType,
     feedbackFormDs,
-    formStore,
-    organizationId,
-    emergencyDs
   } = useSaaSFeedbackFormStore();
 
-  const getDefaultMDText = ()=>{
+  const getDefaultMDText = () => {
     const currentIssueType = feedbackFormDs.current?.get('issueType');
     return issueMap.get(currentIssueType)?.mdTextDefault;
-  }
+  };
 
   return (
     <div className={prefixCls}>
@@ -49,9 +44,9 @@ const SaaSForm = () => {
       <p className={`${prefixCls}-tip`}>
         注：问题描述编辑框内可以直接粘贴图片喔 ~
       </p>
-      <FeedbackUpload />  
+      <FeedbackUpload />
     </div>
   );
 };
 
-export default observer(SaaSForm)
+export default observer(SaaSForm);

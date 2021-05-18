@@ -4,8 +4,6 @@ import { inject } from 'mobx-react';
 import { DataSet } from 'choerodon-ui/pro';
 import feedbackFormDataSet from './feedbackFormDataSet';
 import useStore, { MainStoreProps } from './useStore';
-import emergencyDataSet from './emergencyDataSet';
-// import useStore, { MainStoreProps } from './useStore';
 
 interface ContextProps {
   intlPrefix: string,
@@ -39,8 +37,6 @@ export const StoreProvider = injectIntl(inject('AppState')((props: any) => {
     'defect',
     'demand',
   ]), []);
-
-  // const emergencyDs = useMemo(()=> new DataSet(emergencyDataSet()), []);
 
   const feedbackFormDs = useMemo(() => new DataSet(feedbackFormDataSet()), []);
 

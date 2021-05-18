@@ -8,7 +8,6 @@ import TopBg from '../../assets/top.svg';
 
 import './index.less';
 import SaaSFeedbackForm from '../feedbackForm';
-import IframeForm from '../feedbackIframe';
 
 const saasFeedbackKey = Modal.key();
 
@@ -28,14 +27,12 @@ const FeedbackModal = () => {
       key: saasFeedbackKey,
       title: '提交工单',
       children: <SaaSFeedbackForm />,
-      // children: <IframeForm />,
       drawer: true,
       style: {
         width: '740px',
       },
       // calc(100% - 3.5rem)
-      okText: '关闭',
-      okCancel: false,
+      okText: '提交',
     });
   };
 

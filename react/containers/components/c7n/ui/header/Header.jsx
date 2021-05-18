@@ -2,14 +2,12 @@ import React, { useEffect, useContext } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router';
-import { Button } from 'choerodon-ui';
 import {
   Menu, Dropdown, Icon, Tooltip, Button as ProButton,
 } from 'choerodon-ui/pro';
 
 import { EXTERNAL_LINK, SAAS_FEEDBACK } from '@/utils/constants';
 import classNames from 'classnames';
-import useTheme from '@/hooks/useTheme';
 import { mount } from '@choerodon/inject';
 import SaasFeedbackItem from './components/saasFeedback';
 // import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
@@ -25,11 +23,6 @@ import './style';
 const prefixCls = 'c7n-boot-header';
 
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
-  // const { setTheme, schema } = useContext(ThemeContext);
-  const [schema, setTheme] = useTheme();
-
-  console.log(schema);
-
   useEffect(() => {
     const { AppState, HeaderStore, MenuStore } = props;
     // MenuStore.loadMenuData({ type: 'site' }, false);
@@ -80,26 +73,23 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     return (
       <Menu>
         {
-        itemsGroup
-      }
+          itemsGroup
+        }
       </Menu>
     );
   };
 
   const renderExternalLink = () => {
-    const SelfButton = schema === 'theme4' ? ProButton : Button;
     if ((EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') || (SAAS_FEEDBACK && typeof SAAS_FEEDBACK === 'string')) {
       return (
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
           <Dropdown overlay={menuItems()} trigger={['click']} placement="bottomCenter">
-            <SelfButton
+            <ProButton
               funcType="flat"
-              className={classNames('theme4-external')}
-              icon={icon}
-              onClick={() => {
-                window.open(url);
-              }}
-              style={{ margin: `0 ${true ? '20px' : '15px'}` }}
+              className="theme4-external"
+              icon="help"
+              shape="circle"
+              style={{ margin: '0 20px' }}
             />
           </Dropdown>
         </li>
@@ -127,7 +117,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     <div
       className={classNames({
         [`${prefixCls}-wrap`]: true,
-        [`${prefixCls}-wrap-theme4`]: schema === 'theme4',
+        [`${prefixCls}-wrap-theme4`]: true,
       })}
     >
       <div className={`${prefixCls}-left`}>
