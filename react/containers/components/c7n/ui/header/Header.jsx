@@ -9,7 +9,6 @@ import {
 import { EXTERNAL_LINK, SAAS_FEEDBACK } from '@/utils/constants';
 import classNames from 'classnames';
 import { mount } from '@choerodon/inject';
-import SaasFeedbackItem from './components/saasFeedback';
 // import ThemeContext from '@hzero-front-ui/cfg/lib/utils/ThemeContext';
 import Logo from './Logo';
 import User from './User';
@@ -63,13 +62,16 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         </div>
       </Menu.Item>
     );
-    const saasFeedbackItem = (
-      <Menu.Item>
-        <SaasFeedbackItem />
-      </Menu.Item>
-    );
     itemsGroup.push(docItem);
-    itemsGroup.push(saasFeedbackItem);
+    const saasFeedbackBtn = mount('base-pro:saasFeebackBtn');
+    if (saasFeedbackBtn) {
+      const saasFeedbackItem = (
+        <Menu.Item>
+          {saasFeedbackBtn}
+        </Menu.Item>
+      );
+      itemsGroup.push(saasFeedbackItem);
+    }
     return (
       <Menu>
         {
