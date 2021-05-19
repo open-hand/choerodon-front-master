@@ -295,6 +295,7 @@ const StarTargetPro = observer(() => {
         <Button
           key="5"
           onClick={handleEditable}
+          icon="settings-o"
         >
           工作台配置
         </Button>,
