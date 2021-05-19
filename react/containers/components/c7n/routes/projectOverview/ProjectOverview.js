@@ -215,6 +215,7 @@ const ProjectOverview = () => {
         <Button
           onClick={handleEditable}
           key="1"
+          icon="settings-o"
         >
           项目概览配置
         </Button>,
