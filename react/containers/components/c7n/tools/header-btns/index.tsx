@@ -12,9 +12,8 @@ import { Button, Tooltip } from 'choerodon-ui/pro';
 import './index.less';
 import classNames from 'classnames';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
-import { TooltipProps } from 'choerodon-ui/lib/tooltip';
 import { ButtonProps } from 'choerodon-ui/pro/lib/button/Button';
-import { toolTipsConfigType } from './interface';
+import { ToolTipsConfigType } from './interface';
 
 export interface itemsProps extends ButtonProps {
   display: boolean,
@@ -27,7 +26,7 @@ export interface itemsProps extends ButtonProps {
   color?: ButtonColor,
   iconOnly?: boolean;
   actions?: any,
-  tooltipsConfig?: Pick<TooltipProps, toolTipsConfigType>
+  tooltipsConfig?: ToolTipsConfigType,
   element?: React.ReactElement,
   preElement?: React.ReactElement,
 }
@@ -79,29 +78,32 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         if (actions) {
           const { data, ...restActionsProps } = actions;
           btn = (
-            <Action
-              {...restActionsProps}
-              data={data}
-              className="c7ncd-header-action"
-              style={{
-                color: '#3f51b5',
-                padding: 0,
-              }}
-            />
+            <Tooltip {...tooltipsConfig}>
+              <Action
+                {...restActionsProps}
+                data={data}
+                className="c7ncd-header-action"
+                style={{
+                  color: '#3f51b5',
+                  padding: 0,
+                }}
+              />
+            </Tooltip>
           );
         } else if (iconOnly) {
           btn = (
             <>
-              <Button
-                {...props}
-                disabled={disabled}
-                className="c7ncd-header-btn"
-                onClick={handler}
-                icon={icon}
-              />
+              <Tooltip {...tooltipsConfig}>
+                <Button
+                  {...props}
+                  disabled={disabled}
+                  className="c7ncd-header-btn"
+                  onClick={handler}
+                  icon={icon}
+                />
+              </Tooltip>
               {preElement && React.cloneElement(preElement, {})}
             </>
-
           );
         } else if (element) {
           btn = (
@@ -119,32 +121,30 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         } else {
           btn = (
             <>
-              <Button
-                {...props}
-                disabled={disabled}
-                className="c7ncd-header-btn"
-                onClick={handler}
-                color={transColor}
-                icon={icon}
-              >
-                {name}
-              </Button>
+              <Tooltip {...tooltipsConfig}>
+                <Button
+                  {...props}
+                  disabled={disabled}
+                  className="c7ncd-header-btn"
+                  onClick={handler}
+                  color={transColor}
+                  icon={icon}
+                >
+                  {name}
+                </Button>
+              </Tooltip>
               {preElement && React.cloneElement(preElement, {})}
             </>
           );
         }
 
-        const toolBtn = (
-          <Tooltip {...tooltipsConfig}>{btn}</Tooltip>
-        );
-
         return (
           <Fragment key={name}>
             {permissions && permissions.length ? (
               <Permission service={permissions}>
-                {toolBtn}
+                {btn}
               </Permission>
-            ) : toolBtn}
+            ) : btn}
           </Fragment>
         );
       });
