@@ -41,7 +41,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   }
 
   const menuItems = () => {
-    const [url, text, icon] = EXTERNAL_LINK.split(',');
+    const [url, text, icon] = EXTERNAL_LINK?.split(',') || [];
     const itemsGroup = [];
     const docItem = (
       <Menu.Item>
@@ -62,12 +62,14 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         </div>
       </Menu.Item>
     );
-    itemsGroup.push(docItem);
+    if (EXTERNAL_LINK) {
+      itemsGroup.push(docItem);
+    }
     const saasFeedbackBtn = mount('base-pro:saasFeebackBtn');
-    if (saasFeedbackBtn) {
+    if (SAAS_FEEDBACK && saasFeedbackBtn) {
       const saasFeedbackItem = (
         <Menu.Item>
-          {saasFeedbackBtn}
+          {mount('base-pro:saasFeebackBtn')}
         </Menu.Item>
       );
       itemsGroup.push(saasFeedbackItem);
@@ -82,7 +84,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   };
 
   const renderExternalLink = () => {
-    if ((EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') || (SAAS_FEEDBACK && typeof SAAS_FEEDBACK === 'string')) {
+    if ((EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') || (SAAS_FEEDBACK)) {
       return (
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
           <Dropdown overlay={menuItems()} trigger={['click']} placement="bottomCenter">
