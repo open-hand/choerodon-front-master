@@ -181,31 +181,28 @@ const ProjectOverview = () => {
     if (isEdit) {
       btnGroups = [
         <Button
-          color="primary"
           onClick={openAddComponents}
           key="5"
+          icon="settings-o"
         >
           卡片配置
         </Button>,
         <Button
-          color="primary"
           onClick={hanldeSave}
           key="4"
         >
           保存
         </Button>,
         <Button
-          funcType="flat"
           onClick={handleResetModal}
           key="3"
         >
           重置
         </Button>,
         <Button
-          funcType="flat"
           onClick={handleCancel}
           key="2"
-
+          color="primary"
         >
           取消
         </Button>,
@@ -216,6 +213,7 @@ const ProjectOverview = () => {
           onClick={handleEditable}
           key="1"
           icon="settings-o"
+          color="primary"
         >
           项目概览配置
         </Button>,
@@ -313,7 +311,6 @@ const ProjectOverview = () => {
       <Breadcrumb />
       <Permission service={['choerodon.code.project.project.overview.edit']}>
         {renderBtns()}
-
       </Permission>
       <Content className={`${prefixCls}-content`}>
         <div className={`${prefixCls}-container`}>
