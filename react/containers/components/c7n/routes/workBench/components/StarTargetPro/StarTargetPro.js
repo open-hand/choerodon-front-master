@@ -264,28 +264,26 @@ const StarTargetPro = observer(() => {
         <Button
           key="1"
           onClick={openAddComponents}
-          color="primary"
+          icon="settings-o"
         >
           卡片配置
         </Button>,
         <Button
           key="2"
           onClick={hanldeSave}
-          color="primary"
         >
           保存
         </Button>,
         <Button
           key="3"
           onClick={handleResetModal}
-          funcType="flat"
         >
           重置
         </Button>,
         <Button
           key="4"
           onClick={handleCancel}
-          funcType="flat"
+          color="primary"
         >
           取消
         </Button>,
@@ -296,6 +294,7 @@ const StarTargetPro = observer(() => {
           key="5"
           onClick={handleEditable}
           icon="settings-o"
+          color="primary"
         >
           工作台配置
         </Button>,
