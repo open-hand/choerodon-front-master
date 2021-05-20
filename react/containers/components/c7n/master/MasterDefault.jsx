@@ -251,7 +251,7 @@ class Masters extends Component {
     return (
       <div className="c7ncd-guide-popover">
         <div className="c7ncd-guide-popover-head">
-          平台指引
+          {this.state.guideContent && this.state.guideContent.title ? this.state.guideContent.title : '平台指引'}
           <img src={popoverHead} alt=""/>
         </div>
         <div className="c7ncd-guide-popover-content">
