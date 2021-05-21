@@ -4,6 +4,7 @@ import React, {
 import { Button, Modal } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import ResponsiveReactGridLayout from 'react-grid-layout';
+import ResizeObserver from 'resize-observer-polyfill';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
@@ -38,6 +39,8 @@ import PriorityChart from './components/priority-chart';
 import IssueTypeChart from './components/issue-type-chart';
 import IssueTable from './components/issue-table';
 import ProjectDynamic from './components/project-dynamic';
+import PersonalWorkload from './components/personal-workload';
+import Workload from './components/Workload';
 
 let observerLayout;
 
@@ -94,6 +97,8 @@ const ProjectOverview = () => {
     issueTypeChart: <IssueTypeChart />,
     issueTable: <IssueTable />,
     projectDynamic: <ProjectDynamic />,
+    workLoad: <Workload />,
+    personalWorkload: <PersonalWorkload />,
   }), []);
 
   const renderBg = useCallback(() => <GridBg rowHeight={(layOutWidth - 11 * 18) / 10} selector={`.${prefixCls}-container`} cols={10} style={{ padding: '0' }} />, [layOutWidth]);
@@ -107,8 +112,9 @@ const ProjectOverview = () => {
     setEdit(false);
   }
 
-  function addComponent(types) {
-    forEach(types, (type) => {
+  function addComponent(newTypeArr, deleteArr) {
+    const existData = map(componentsDs.filter((record) => !deleteArr.includes(record.get('i'))), (record) => record.toData());
+    forEach(newTypeArr, (type) => {
       const {
         layout,
       } = mappings[type];
@@ -117,8 +123,9 @@ const ProjectOverview = () => {
         x: 0,
         y: Infinity,
       };
-      componentsDs.create(tempCp);
+      existData.push(tempCp);
     });
+    componentsDs.loadData(existData);
   }
 
   function openAddComponents() {
@@ -171,45 +178,31 @@ const ProjectOverview = () => {
 
   const renderBtns = () => {
     let btnGroups;
-    const secondBtnObj = {
-      funcType: 'raised',
-    };
-    const primaryBtnObj = {
-      color: 'primary',
-      funcType: 'raised',
-    };
-    if (theme !== 'theme4') {
-      secondBtnObj.color = 'primary';
-      primaryBtnObj.funcType = 'flat';
-    }
     if (isEdit) {
       btnGroups = [
         <Button
-          {...primaryBtnObj}
           onClick={openAddComponents}
           key="5"
+          icon="settings-o"
         >
-          添加卡片
+          卡片配置
         </Button>,
         <Button
-          {...primaryBtnObj}
           onClick={hanldeSave}
           key="4"
         >
           保存
         </Button>,
         <Button
-          {...secondBtnObj}
           onClick={handleResetModal}
           key="3"
         >
           重置
         </Button>,
         <Button
-          {...secondBtnObj}
           onClick={handleCancel}
           key="2"
-
+          color="primary"
         >
           取消
         </Button>,
@@ -217,9 +210,10 @@ const ProjectOverview = () => {
     } else {
       btnGroups = [
         <Button
-          {...secondBtnObj}
           onClick={handleEditable}
           key="1"
+          icon="settings-o"
+          color="primary"
         >
           项目概览配置
         </Button>,
@@ -317,7 +311,6 @@ const ProjectOverview = () => {
       <Breadcrumb />
       <Permission service={['choerodon.code.project.project.overview.edit']}>
         {renderBtns()}
-
       </Permission>
       <Content className={`${prefixCls}-content`}>
         <div className={`${prefixCls}-container`}>

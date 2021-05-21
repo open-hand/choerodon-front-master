@@ -7,6 +7,13 @@ const uiConfigure = UI_CONFIGURE || {};
 
 const UI_CONFIG = {
   ...uiConfigure,
+  pagination: {
+    showSizeChangerLabel: false,
+    showTotal: false,
+    showPager: false,
+    showQuickJumper: true,
+    sizeChangerPosition: 'right',
+  },
   modalMaskClosable: 'dblclick',
   axios: uiAxios,
   dataKey: 'list',
@@ -22,7 +29,7 @@ const UI_CONFIG = {
   modalKeyboard: false,
   modalSectionBorder: false,
   drawerOkFirst: true,
-  buttonFuncType: 'flat',
+  buttonFuncType: 'raised',
   lovQueryUrl: (code) => `/iam/choerodon/v1/lov/code?code=${code}`,
   generatePageQuery: ({
     page, pageSize, sortName, sortOrder,
@@ -140,9 +147,12 @@ const UI_CONFIG = {
     };
   },
 };
-
-function initUiConfigure() {
-  configure(UI_CONFIG);
+const UI_CONFIG_THEME4 = {
+  ...UI_CONFIG,
+  tableRowHeight: 50,
+};
+function initUiConfigure(theme) {
+  configure(theme === 'theme4' ? UI_CONFIG_THEME4 : UI_CONFIG);
 }
 
 export {

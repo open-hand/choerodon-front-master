@@ -20,9 +20,19 @@ const defaultChildren = (
 //   <div style={{ marginTop: 150 }}>没有权限</div>
 // );
 
-const TabPage = ({ className, service, onAccess, ...props }) => {
+const TabPage = ({
+  className, service, onAccess, ...props
+}) => {
   const classString = classNames(className);
-  const page = <div {...props} className={classString} style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column' }} />;
+  const page = (
+    <div
+      {...props}
+      className={classString}
+      style={{
+        position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', background: '#F5F6FA',
+      }}
+    />
+  );
   if (service && service.length) {
     return (
       <Permission
@@ -34,9 +44,8 @@ const TabPage = ({ className, service, onAccess, ...props }) => {
         {page}
       </Permission>
     );
-  } else {
-    return page;
   }
+  return page;
 };
 
 export default TabPage;

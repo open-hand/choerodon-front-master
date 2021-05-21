@@ -3,12 +3,13 @@ import { withRouter } from 'react-router-dom';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
+import useTheme from '@/hooks/useTheme';
 
 const PREFIX_CLS = 'c7n';
 const prefixCls = `${PREFIX_CLS}-boot-header-logo`;
 
 export default withRouter(inject('AppState', 'MenuStore')(observer((props) => {
-  const schema = '';
+  const [schema] = useTheme();
   const { AppState } = props;
   const { systemLogo, systemName } = AppState.getSiteInfo;
   return (

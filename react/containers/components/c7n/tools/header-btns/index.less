@@ -1,0 +1,53 @@
+@import '~choerodon-ui/lib/style/themes/default';
+
+.c7ncd-header {
+  &-btns {
+    z-index: 1;
+    position: absolute;
+    top: -1.05rem;
+    left: -15px;
+    padding-left: .24rem;
+    width: 100%;
+    height: .39rem;
+    line-height: .39rem;
+    overflow: hidden;
+
+    .@{c7n-pro-prefix}-btn {
+      padding: 0.03rem 0.1rem 0.04rem 0.1rem !important;
+    }
+  }
+
+  &-btn {
+    //height: .28rem !important;
+    //line-height: .21rem !important;
+    //white-space: nowrap;
+    //font-weight: 500 !important;
+    &-flex {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      button {
+        margin-left: .16rem !important;
+      }
+      .c7n-pro-btn.c7n-pro-btn.c7n-pro-btn-raised.c7n-pro-btn-primary {
+        background-color: #5365EA !important;
+        color: #fff !important;
+        border-color: #5365EA !important;
+      }
+      .c7n-pro-btn.c7n-pro-btn.c7n-pro-btn-raised.c7n-pro-btn-primary.c7n-pro-btn-focused,
+      .c7n-pro-btn.c7n-pro-btn.c7n-pro-btn-raised.c7n-pro-btn-primary:hover,
+      .c7n-pro-btn.c7n-pro-btn.c7n-pro-btn-raised.c7n-pro-btn-primary:active,
+      .c7n-pro-btn.c7n-pro-btn.c7n-pro-btn-raised.c7n-pro-btn-primary:focus {
+        color: #fff !important;
+        background-color: #7B8CFF !important;
+        border-color: #7B8CFF !important;
+      }
+    }
+  }
+
+  &-split {
+    margin: 0 0 0 .2rem !important;
+    height: .2rem !important;
+    background: rgba(0, 0, 0, .2) !important;
+  }
+}

@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
-import { Spin } from 'choerodon-ui';
+import {inject, observer, Provider} from 'mobx-react';
+import {Icon, Popover, Spin} from 'choerodon-ui';
 import queryString from 'query-string';
-import filter from 'lodash/filter';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
-import { message } from 'choerodon-ui/pro';
-import HeaderStore from '@/containers/stores/c7n/HeaderStore';
+import { message, Button } from 'choerodon-ui/pro';
+import get from 'lodash/get';
+import MasterServices from "@/containers/components/c7n/master/services";
 import axios from '../tools/axios';
-import CommonMenu from '../ui/menu';
 import MasterHeader from '../ui/header';
 import AnnouncementBanner from '../ui/header/AnnouncementBanner';
 import RouteIndex from './RouteIndex';
 import themeColorClient from './themeColorClient';
 import './style';
 import Skeleton from './skeleton';
-import { defaultBlackList } from "../ui/menu";
+import CommonMenu, { defaultBlackList } from '../ui/menu';
+import popoverHead from "@/containers/images/popoverHead.svg";
 
 const spinStyle = {
   textAlign: 'center',
@@ -65,6 +65,10 @@ class Masters extends Component {
     this.initMenuType(this.props);
     const themeColor = localStorage.getItem('C7N-THEME-COLOR');
     this.updateTheme(themeColor);
+    this.state = {
+      guideOpen: false,
+      guideContent: undefined,
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -125,15 +129,15 @@ class Masters extends Component {
       }
       link.id = 'dynamic-favicon';
       link.rel = 'shortcut icon';
-      link.href = data.favicon || 'favicon.ico';
+      link.href = get(data, 'favicon') || 'favicon.ico';
       document.head.appendChild(link);
-      data.defaultTitle = document.getElementsByTagName('title')[0].innerText;
-      if (data.systemTitle) {
-        document.getElementsByTagName('title')[0].innerText = data.systemTitle;
+      if (data) {
+        data.defaultTitle = document.getElementsByTagName('title')[0].innerText;
+        document.getElementsByTagName('title')[0].innerText = get(data, 'systemTitle');
       }
       AppState.setSiteInfo(data);
-      this.updateTheme(data.themeColor);
-      localStorage.setItem('C7N-THEME-COLOR', data.themeColor);
+      this.updateTheme(data?.themeColor);
+      localStorage.setItem('C7N-THEME-COLOR', data?.themeColor);
     });
   }
 
@@ -180,7 +184,7 @@ class Masters extends Component {
           // 说明是停用项目 需要删除最近使用的数据
           if (data) {
             const recents = JSON.parse(localStorage.getItem('recentItem'));
-            const newRecents = recents.filter(r => r.code !== data.code);
+            const newRecents = recents.filter((r) => r.code !== data.code);
             localStorage.setItem('recentItem', JSON.stringify(newRecents));
             HeaderStore.recentItem = newRecents;
           }
@@ -243,8 +247,119 @@ class Masters extends Component {
     // }
   }
 
+  guidePopover() {
+    return (
+      <div className="c7ncd-guide-popover">
+        <div className="c7ncd-guide-popover-head">
+          {this.state.guideContent && this.state.guideContent.title ? this.state.guideContent.title : '平台指引'}
+          <img src={popoverHead} alt=""/>
+        </div>
+        <div className="c7ncd-guide-popover-content">
+          {
+            this.state.guideContent
+            && this.state.guideContent.userGuideStepVOList
+            && this.state.guideContent.userGuideStepVOList.map(item => (
+              <div className="c7ncd-guide-popover-content-item">
+                <div className="c7ncd-guide-popover-content-item-left">
+                  <p className="c7ncd-guide-popover-content-item-left-stepName">{item.stepName}</p>
+                  <p className="c7ncd-guide-popover-content-item-left-description">
+                    {item.description}
+                    <span>指引文档</span>
+                  </p>
+                </div>
+                <Button>
+                  去设置
+                </Button>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    )
+  }
+
+  handleClickGuide() {
+    this.setState({
+      guideOpen: !this.state.guideOpen
+    }, () => {
+      if (this.state.guideOpen) {
+        const activeMenu = this.props.MenuStore.activeMenu;
+        // 如果activeMenu是当前路由
+        if (activeMenu && window.location.hash.includes(activeMenu.route)) {
+          const { projectId, organizationId } = this.props.AppState.menuType;
+          const menuId = activeMenu.id;
+          const search = this.props.location.search
+          const searchParams = new URLSearchParams(search);
+          let data = {};
+          switch (searchParams.get('type')) {
+            case 'project': {
+              data = {
+                menuId: activeMenu.id,
+                orgId: organizationId,
+                proId: projectId,
+              }
+              break;
+            }
+            case 'organization': {
+              data = {
+                menuId: activeMenu.id,
+                orgId: organizationId,
+              }
+              break;
+            }
+            case null: {
+              // 平台层
+              data = {
+                menuId: activeMenu.id,
+                orgId: 0,
+              }
+              break;
+            }
+          }
+          MasterServices.axiosGetGuide(data).then((res) => {
+            this.setState({
+              guideContent: res,
+            });
+          })
+        }
+        this.setState({
+          guideContent: undefined,
+        })
+      }
+      this.setState({
+        guideContent: undefined,
+      })
+    })
+  }
+
+  /**
+   * 指引dom
+   */
+  renderGuide() {
+    return (
+      <Popover
+        visible={this.state.guideOpen}
+        content={this.guidePopover()}
+        trigger="click"
+        placement="topRight"
+        overlayClassName="c7ncd-guide-origin"
+      >
+        <div
+          className="c7ncd-guide"
+          onClick={this.handleClickGuide.bind(this)}
+        >
+          <Icon
+            type={this.state.guideOpen ? 'close' : "touch_app-o"}
+          />
+        </div>
+      </Popover>
+    )
+  }
+
   render() {
-    const { AutoRouter, AppState, location, MenuStore } = this.props;
+    const {
+      AutoRouter, AppState, location, MenuStore,
+    } = this.props;
     const search = new URLSearchParams(location.search);
     const fullPage = search.get('fullPage');
     if (this.isInOutward(this.props.location.pathname)) {
@@ -266,9 +381,10 @@ class Masters extends Component {
               <div id="menu" style={fullPage ? { display: 'none' } : {}}>
                 <CommonMenu />
               </div>
+              {this.renderGuide()}
               <div id="autoRouter" className="content">
                 {
-                  AppState.getCanShowRoute || defaultBlackList.some(v => this.props.location.pathname.startsWith(v)) ? (
+                  AppState.getCanShowRoute || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
                     <RouteIndex AutoRouter={AutoRouter} />
                   ) : (
                     <div>

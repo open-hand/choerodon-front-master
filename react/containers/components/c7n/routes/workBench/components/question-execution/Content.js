@@ -60,7 +60,7 @@ const TodoQuestion = observer(() => {
         <div
           role="none"
           onClick={() => loadMoreData()}
-          className="c7n-todoQuestion-issueContent-more"
+          className="c7ncd-workbench-question-todo-issueContent-more"
         >
           加载更多
         </div>
@@ -71,7 +71,7 @@ const TodoQuestion = observer(() => {
         <Tree
           dataSet={questionDs}
           renderer={nodeRenderer}
-          className="c7n-todoQuestion-issueContent"
+          className="c7ncd-workbench-question-todo-issueContent"
           onTreeNode={({ record }) => (record.get('parentId') || record.level ? {} : { className: 'c7ncd-question-issue-root-node' })}
         />
         {questionStore.getHasMore ? component

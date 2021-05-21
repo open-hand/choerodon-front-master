@@ -18,13 +18,9 @@ const ProjectOverview = asyncRouter(() => import('../routes/projectOverview'));
 const Skeleton = asyncRouter(() => import('./skeleton/index.js'));
 const InnerIndex = ({ match, AutoRouter, AppState }) => (
   <div
-    {
-      ...AppState.getCurrentTheme === 'theme4' ? {
-        style: {
-          background: '#F5F6FA',
-        },
-      } : {}
-    }
+    style={{
+    background: 'white',
+  }}
   >
     <Switch>
       <Route exact path={`${match.url}projects`} component={ProjectsPro} />
@@ -36,7 +32,7 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
         component={Charts}
       />
       <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
-      <Route
+      <PermissionRoute
         exact
         path={`${match.url}workbench`}
         component={() => {

@@ -23,8 +23,8 @@ class Outward extends Component {
     // eslint-disable-next-line no-underscore-dangle
     const injectOutward = window._env_.outward;
     if (injectOutward) {
-      const arr = injectOutward.split(',').concat(['/unauthorized']).map(r => r.replace(/['"']/g, ''));
-      return arr.some(v => pathname.startsWith(v));
+      const arr = injectOutward.split(',').concat(['/unauthorized']).map((r) => r.replace(/['"']/g, ''));
+      return arr.some((v) => pathname.startsWith(v));
     }
     return false;
   }
@@ -60,9 +60,9 @@ class Outward extends Component {
           </Switch>
         </div>
       );
-    } else {
-      history.push('/unauthorized');
     }
+    history.push('/unauthorized');
+    return null;
   }
 }
 

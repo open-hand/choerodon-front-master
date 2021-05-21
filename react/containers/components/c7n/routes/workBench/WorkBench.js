@@ -5,12 +5,16 @@ import ResponsiveReactGridLayout from 'react-grid-layout';
 import {
   map, get, filter,
 } from 'lodash';
+import ResizeObserver from 'resize-observer-polyfill';
 import { observer } from 'mobx-react-lite';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 
 import { Modal } from 'choerodon-ui/pro';
-import { Page } from '../../../../../index';
+
+import HeaderButtons from '@/containers/components/c7n/tools/header-btns';
+import { Page, Header } from '../../../../../index';
+
 import StarTargetPro from './components/StarTargetPro';
 import SelfIntro from './components/SelfIntro';
 import ServiceList from './components/ServiceList';
@@ -111,7 +115,7 @@ const WorkBench = () => {
     return false;
   }
 
-  function onLayoutChange(layouts, tempLayouts) {
+  function onLayoutChange(layouts) {
     componentsDs.loadData(layouts);
   }
 

@@ -36,7 +36,7 @@ export default (({
           }
           const tempObj = {
             ...res,
-            content: tempArr,
+            content: tempArr || [],
             selectedProjectId,
           };
           cacheStore.setReportQuestions(tempObj);

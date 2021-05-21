@@ -1,5 +1,7 @@
 /* eslint-disable no-plusplus */
-import React, { useState, memo, useRef, useLayoutEffect, useMemo, useEffect } from 'react';
+import React, {
+  useState, memo, useRef, useLayoutEffect, useMemo, useEffect, useCallback,
+} from 'react';
 import { Button } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import './index.less';
@@ -19,7 +21,7 @@ import './index.less';
  * @param {boolean}  isSum 是否有最后一行
  * @param {boolean}  headerSplit 头部列是否有分割线
  * @author DingZc
- * 
+ *
  */
 const DateTable = observer(({
   headerTexts = ['成员', '日期'],
@@ -50,7 +52,7 @@ const DateTable = observer(({
 
   /**
    * 渲染除列名单元格外的单元格
-   * @param {*} data 
+   * @param {*} data
    */
   const renderCell = (data) => {
     if (render) {
@@ -60,12 +62,14 @@ const DateTable = observer(({
   };
   // 单元格
   const Cell = memo(({ children, className }) => (
-    <div className={`${clsPrefix}-cell ${className || ''}`} style={{ minHeight: cellHeight }}>
+    <div className={`${clsPrefix}-cell ${className || ''}`} style={{ height: cellHeight }}>
       {children}
     </div>
   ));
   // 行
-  const Row = memo(({ sum, rowName, size = columnSize, data = new Map(), children, className }) => {
+  const Row = memo(({
+    sum, rowName, size = columnSize, data = new Map(), children, className,
+  }) => {
     const cells = [];
     // 增加y轴
     cells.push(<Cell key={`cell-${rowName}`} className={`${clsPrefix}-row-cell-first border-right`}><span>{rowName}</span></Cell>);
@@ -89,36 +93,36 @@ const DateTable = observer(({
   });
 
   /**
-   * 根据传入的 rowLength 行数进行显示的高度调整 
-   * @param {*} isAuto 
+   * 根据传入的 rowLength 行数进行显示的高度调整
+   * @param {*} isAuto
    */
-  function resetScrollHeight(isAuto = false) {
+  const resetScrollHeight = useCallback((isAuto = false) => {
     let scrollHeight = 'auto';
-    const element = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
+    // const element = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
     if (!isAuto) {
       let height = 0;
       scrollHeight = '';
-      const elements = rowRef.current.getElementsByClassName('c7n-project-overview-date-table-row');
-      for (let i = 0; elements && i < rowLength && i < elements.length; i++) {
-        height += elements[i].offsetHeight;
+      // const elements = rowRef.current.getElementsByClassName('c7n-project-overview-date-table-row');
+      for (let i = 0; i < rowLength; i++) {
+        height += cellHeight + 1;
       }
       scrollHeight = `${height}px`;
     }
     // 如果相等就放弃更改高度
-    if (element.style.height === scrollHeight) {
+    if (rowRef.current.style.height === scrollHeight) {
       return;
     }
     rowRef.current.style.height = scrollHeight;
-  }
-  //  行初始化完成后，进行高度调整
-  useEffect(() => {
-    // const doc = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
-    if (rowRef.current && rowLength < rowIndex.length) {
-      resetScrollHeight();
-    }
-  }, [rowIndex]);
+  }, [cellHeight, rowLength]);
+  // //  行初始化完成后，进行高度调整
+  // useEffect(() => {
+  //   // const doc = document.getElementsByClassName('c7n-project-overview-date-table-content')[0];
+  //   if (rowRef.current && rowLength < rowIndex.length) {
+  //     resetScrollHeight();
+  //   }
+  // }, []);
   //  根据选择成员自动调整高度 进行滚动
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (rowRef.current) {
       if (rowLength >= rowIndex.length || (filterRowIndex.length > 0 && filterRowIndex.length <= rowLength)) {
         resetScrollHeight(true);
@@ -126,7 +130,7 @@ const DateTable = observer(({
         resetScrollHeight();
       }
     }
-  }, [filterRowIndex]);
+  }, [filterRowIndex, resetScrollHeight, rowIndex.length, rowLength]);
 
   /**
    * 渲染底部 （即最后一行)
@@ -141,11 +145,11 @@ const DateTable = observer(({
         for (let index = currentPosition; index < currentPosition + columnSize && index < dateList.length; index++) {
           const quickItem = quickMapData.get(columns[index]); // 获取当前日期天全部数据
           const newObj = {};
-          // 当前日期下，筛选到的成员在当前日期的数据 
-          filterRowIndex.forEach(i => {
+          // 当前日期下，筛选到的成员在当前日期的数据
+          filterRowIndex.forEach((i) => {
             const dateData = quickItem.get(rowIndex[i]);
             if (dateData) {
-              Object.keys(dateData).forEach(key => {
+              Object.keys(dateData).forEach((key) => {
                 if (typeof (dateData[key]) === 'number') {
                   if (Object.prototype.hasOwnProperty.call(newObj, key)) {
                     newObj[key] += dateData[key];
@@ -175,7 +179,7 @@ const DateTable = observer(({
         </Row>
       );
     }
-    const rowArr = rowIndex.filter((row, index) => filterRowIndex.length === 0 || filterRowIndex.some(f => f === index)).map((row, index) => <Row key={`row-${index}`} rowName={row} data={quickMapData} />);
+    const rowArr = rowIndex.filter((row, index) => filterRowIndex.length === 0 || filterRowIndex.some((f) => f === index)).map((row, index) => <Row key={`row-${index}`} rowName={row} data={quickMapData} />);
     return rowArr;
   };
   /**
@@ -198,26 +202,29 @@ const DateTable = observer(({
   const renderPreOrNext = (isNext = false) => {
     if (isNext) {
       return (
-        <span className={`${clsPrefix}-header-btn`}><Button
-          className={`${clsPrefix}-header-btn-right`}
-          funcType="flat"
-          icon="baseline-arrow_right"
-          color="primary"
-          disabled={columnSize >= dateList.length || currentPosition === dateList.length - columnSize}
-          onClick={handlePreOrNext.bind(this, isNext)}
-        />
+        <span className={`${clsPrefix}-header-btn`}>
+          <Button
+            className={`${clsPrefix}-header-btn-right`}
+            funcType="flat"
+            icon="baseline-arrow_right"
+            color="primary"
+            disabled={columnSize >= dateList.length || currentPosition === dateList.length - columnSize}
+            onClick={handlePreOrNext.bind(this, isNext)}
+          />
         </span>
       );
     }
     return (
-      <span className={`${clsPrefix}-header-btn`}> <Button
-        className={`${clsPrefix}-header-btn-left`}
-        funcType="flat"
-        icon="baseline-arrow_left"
-        color="primary"
-        disabled={currentPosition === 0}
-        onClick={handlePreOrNext.bind(this, isNext)}
-      />
+      <span className={`${clsPrefix}-header-btn`}>
+        {' '}
+        <Button
+          className={`${clsPrefix}-header-btn-left`}
+          funcType="flat"
+          icon="baseline-arrow_left"
+          color="primary"
+          disabled={currentPosition === 0}
+          onClick={handlePreOrNext.bind(this, isNext)}
+        />
       </span>
     );
   };
