@@ -1,6 +1,45 @@
 @import '~choerodon-ui/dist/choerodon-ui.less';
 @import '~choerodon-ui/lib/style/themes/default';
+:root {
+  // 主色
+  --primary-color: #5365EA;
+  // 淡一点的主色
+  --primary-color2: rgba(83, 101, 234, 0.08);
+  // 分割线颜色
+  --divider: #d9e6f2;
+  // 表格可点击颜色
+  --table-click-color: #415BC9;
+  // 字体颜色
+  --text-color: #0f1358;
+  // 字体颜色2，代替之前的0.87
+  --text-color2: #0f1358;
+  // 字体颜色3，代替之前的0.65
+  --text-color3: rgba(15, 19, 88, 0.65);
+  // 选中背景色
+  --selection-background: rgba(83, 101, 234, 0.06);
+  // 宽度拖拽线颜色
+  --drag-resize-color: #5365ea;
+}
 
+// ckeditor专属
+:root {
+  // 下拉背景
+  --ck-color-list-button-on-background: rgba(104, 135, 232, 0.08);
+  // 下拉背景active
+  --ck-color-list-button-on-background-focus: rgba(104, 135, 232, 0.08);
+  // 下拉hover
+  --ck-color-button-default-hover-background: rgba(15, 19, 88, 0.03);
+  // 下拉字默认
+  --ck-color-text: var(--text-color);
+  // 下拉字active
+  --ck-color-list-button-on-text: var(--primary-color);
+  // focus边框
+  --ck-focus-ring: 1px solid transparent;
+  // 边框
+  --ck-color-toolbar-border: var(--divider);
+  // 表格调整聚焦背景
+  --ck-color-focus-border: var(--primary-color);
+}
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
