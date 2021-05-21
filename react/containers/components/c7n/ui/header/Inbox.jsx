@@ -7,7 +7,7 @@ import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import {
-  Badge, Button, Tabs, Avatar, Tooltip,
+  Badge, Button, Tabs, Avatar, Tooltip, notification,
 } from 'choerodon-ui';
 import {
   Button as ButtonPro, CheckBox, Modal, Icon, Spin,
@@ -23,6 +23,7 @@ const prefixCls = `${PREFIX_CLS}-boot-header-inbox`;
 const reg = /\n|&nbsp;|&lt|&gt|<[^a\/][^>]*>|<\/[^a][^>]*>/g;
 const imgreg = /(<img[\s\S]*?src\s*=\s*["|']|\[img\])(.*?)(["|'][\s\S]*?>|\[\/img\])/;
 const tablereg = /<table(.*?)>(.*?)<\/table>/g;
+const detailLinkReg = /<a(.*?)>查看详情<\/a>/g;
 const cleanModalKey = Modal.key();
 
 @inject('HeaderStore', 'AppState')
@@ -64,7 +65,6 @@ class RenderPopoverContentClass extends Component {
               <span className="msgTitle">消息通知</span>
               <Button
                 funcType="flat"
-                type="primary"
                 icon="close"
                 shape="circle"
                 onClick={() => handleVisibleChange(!inboxVisible)}
@@ -275,6 +275,24 @@ export default class Inbox extends Component {
     this.props.HeaderStore.setInboxLoaded(false);
   };
 
+  handleMessagePopClick = () => {
+    this.handleButtonClick();
+  };
+
+  handleMessagePop = (data) => {
+    const newData = JSON.parse(data);
+    const content = newData && newData.content && <p dangerouslySetInnerHTML={{ __html: `${newData.content.replace(imgreg, '[图片]').replace(tablereg, '').replace(reg, '').replace(detailLinkReg, '')}` }} />;
+    notification.info({
+      message: (
+        <span role="none" onClick={this.handleMessagePopClick}>
+          {newData && newData.title}
+        </span>
+      ),
+      description: content,
+      duration: 5,
+    });
+  };
+
   handleMessageClick = (e) => {
     this.handleVisibleChange(false);
   };
@@ -317,7 +335,7 @@ export default class Inbox extends Component {
                   <div className={`${prefixCls}-sider-content-list-title`}>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {iconWithBadge}
-                      <a onClick={(e) => this.handleMessageTitleClick(e, data)} style={{ marginLeft: 10 }}>{title}</a>
+                      <a role="none" onClick={(e) => this.handleMessageTitleClick(e, data)} style={{ marginLeft: 10 }}>{title}</a>
                     </span>
                     <div style={{
                       display: 'flex', alignItems: 'center', flexShrink: 0, color: 'rgba(0, 0, 0, 0.54)',
@@ -420,6 +438,12 @@ export default class Inbox extends Component {
               </Badge>
             )
           }
+        </WSHandler>
+        <WSHandler
+          messageKey="choerodon-pop-ups"
+          onMessage={this.handleMessagePop}
+        >
+          {() => <></>}
         </WSHandler>
         <RenderPopoverContentClass
           {...popOverContent}
