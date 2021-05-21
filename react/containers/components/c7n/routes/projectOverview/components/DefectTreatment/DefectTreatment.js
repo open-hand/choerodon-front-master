@@ -67,6 +67,12 @@ const DefectTreatment = observer(() => {
             fontSize: 12,
             fontStyle: 'normal',
           },
+          formatter(value, index) {
+            if (!value) {
+              return value;
+            }
+            return value.split('（')[0];
+          },
         },
       },
       yAxis: {
