@@ -99,6 +99,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
                   disabled={disabled}
                   className="c7ncd-header-btn"
                   onClick={handler}
+                  color={transColor}
                   icon={icon}
                 />
               </Tooltip>
