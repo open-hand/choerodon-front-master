@@ -117,7 +117,11 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
       if (flag) {
         // 最近使用
         setDropDownPro(`项目: ${flag.name}`);
+      } else {
+        setDropDownPro(undefined);
       }
+    } else {
+      setDropDownPro(undefined);
     }
   }
   //
