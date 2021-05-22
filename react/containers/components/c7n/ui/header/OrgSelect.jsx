@@ -191,7 +191,10 @@ export default class OrgSelect extends Component {
             }
             <div
               style={{
-                fontSize: '12px', lineHeight: '20px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'none',
+                fontFamily: 'PingFangSC-Medium, PingFang SC',
+                fontWeight: 500,
+                color: 'rgba(15, 19, 88, 0.65)',
+                fontSize: '14px', lineHeight: '20px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'none',
                 ...true ? {
                   paddingLeft: 9,
                 } : {}

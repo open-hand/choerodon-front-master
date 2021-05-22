@@ -99,7 +99,7 @@ const Setting = ({
               type="primary"
               funcType="flat"
             >
-              <Icon type={list.icon} style={iconStyle} />
+              {/*<Icon type={list.icon} style={iconStyle} />*/}
               <span
                 {...true && list.style ? {
                   style: list.style,
