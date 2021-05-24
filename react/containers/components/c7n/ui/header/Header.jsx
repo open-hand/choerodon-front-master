@@ -83,7 +83,6 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     let p2Data;
     const p1 = new Promise((resolve) => {
       axios.get(`/iam/choerodon/v1/organizations/${app.currentMenuType.organizationId}/projects/latest_visit`).then((res) => {
-        debugger;
         const data = res.splice(0, 3).map(i => ({
           ...i,
           ...i.projectDTO,
