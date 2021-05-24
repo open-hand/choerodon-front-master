@@ -10,7 +10,6 @@ import asyncRouter from './containers/components/util/asyncRouter';
 import autoRefresh from './utils/autoRefresh';
 
 const history = createBrowserHistory();
-const { confirm } = Modal;
 const MASTERS = asyncRouter(
   () => import('./master'),
   {
@@ -19,7 +18,7 @@ const MASTERS = asyncRouter(
 );
 
 const getConfirmation = (message, callback) => {
-  confirm({
+  Modal.open({
     className: 'c7n-iam-confirm-modal',
     title: message.split('__@.@__')[0],
     children: message.split('__@.@__')[1],
