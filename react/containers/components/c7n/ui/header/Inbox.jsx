@@ -12,6 +12,7 @@ import {
 import {
   Button as ButtonPro, CheckBox, Modal, Icon, Spin,
 } from 'choerodon-ui/pro';
+import JSONBig from 'json-bigint';
 import WSHandler from '../../tools/ws/WSHandler';
 import defaultAvatar from './style/icons/favicon.png';
 
@@ -180,7 +181,7 @@ class RenderPopoverContentDetailClass extends Component {
                   <span>{realSendTime}</span>
                 ) : (
                   <TimeAgo
-                    datetime={realSendTime.slice(0, realSendTime.length - 3)}
+                    datetime={realSendTime?.slice(0, realSendTime.length - 3)}
                     locale="zh_CN"
                   />
                 )
@@ -213,7 +214,7 @@ export default class Inbox extends Component {
   }
 
   cleanMsg = (e, data) => {
-    e.stopPropagation();
+    e && e.stopPropagation();
     const { AppState, HeaderStore } = this.props;
     HeaderStore.readMsg(AppState.userInfo.id, data, 0);
   };
@@ -269,22 +270,38 @@ export default class Inbox extends Component {
 
   handleMessage = (data) => {
     const { HeaderStore } = this.props;
-    const newData = JSON.parse(data);
+    const newData = JSONBig.parse(data);
     const count = HeaderStore.getUnreadMessageCount + (newData ? newData.number : 0) || 0;
     HeaderStore.setUnreadMessageCount(count < 0 ? 0 : count);
     this.props.HeaderStore.setInboxLoaded(false);
   };
 
-  handleMessagePopClick = () => {
+  handleMessagePopClick = async (messageId) => {
+    notification.close(`msg-${messageId}`);
     this.handleButtonClick();
+    if (!messageId) {
+      return;
+    }
+    try {
+      const { HeaderStore } = this.props;
+      const res = await HeaderStore.loadMsgDetail(messageId);
+      if (res) {
+        setTimeout(() => {
+          this.handleMessageTitleClick(null, res);
+        }, 700);
+      }
+    } catch (error) {
+      // return false
+    }
   };
 
   handleMessagePop = (data) => {
-    const newData = JSON.parse(data);
+    const newData = JSONBig.parse(data);
     const content = newData && newData.content && <p dangerouslySetInnerHTML={{ __html: `${newData.content.replace(imgreg, '[图片]').replace(tablereg, '').replace(reg, '').replace(detailLinkReg, '')}` }} />;
     notification.info({
+      key: `msg-${newData?.messageId}`,
       message: (
-        <span role="none" onClick={this.handleMessagePopClick}>
+        <span role="none" onClick={() => this.handleMessagePopClick(newData?.messageId)}>
           {newData && newData.title}
         </span>
       ),
@@ -346,7 +363,7 @@ export default class Inbox extends Component {
                           <span>{realSendTime}</span>
                         ) : (
                           <TimeAgo
-                            datetime={realSendTime.slice(0, realSendTime.length - 3)}
+                            datetime={realSendTime?.slice(0, realSendTime.length - 3)}
                             locale="zh_CN"
                           />
                         )

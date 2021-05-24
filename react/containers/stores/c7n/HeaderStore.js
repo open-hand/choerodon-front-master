@@ -1,6 +1,8 @@
 import { action, computed, observable } from 'mobx';
 import omit from 'object.omit';
 import sortBy from 'lodash/sortBy';
+import findIndex from 'lodash/findIndex';
+import pick from 'lodash/pick';
 import queryString from 'query-string';
 import { handleResponseError } from '@/utils';
 import store from '../../components/c7n/tools/store';
@@ -448,7 +450,8 @@ class HeaderStore {
   @action
   lookMsg(data) {
     if (data) {
-      const index = this.inboxData.indexOf(data);
+      const findData = pick(data, ['id']);
+      const index = findIndex(this.inboxData, findData);
       if (index !== -1) {
         this.inboxData[index].read = true;
       }
@@ -470,6 +473,24 @@ class HeaderStore {
       }
     } else {
       this.inboxData = [];
+    }
+  }
+
+  @action
+  async loadMsgDetail(messageId) {
+    try {
+      const res = await axios.get(`/hmsg/choerodon/v1/messages/${messageId}`);
+      if (res && !res.failed) {
+        return ({
+          ...res,
+          id: res.messageId,
+          title: res.subject,
+          sendTime: res.creationDate,
+        });
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
   }
 
