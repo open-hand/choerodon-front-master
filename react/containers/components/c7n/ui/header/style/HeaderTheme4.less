@@ -4,6 +4,11 @@
     &-theme4 {
       background-color: #fff !important;
       border: 1px solid #D9E6F2;
+      box-shadow: 0 2px 4px 0 rgba(15, 19, 88, 0.12);
+      z-index: 1;
+      .c7n-btn.c7n-btn.c7n-btn-flat.c7n-btn-flat:not(.c7n-btn-circle,.c7n-btn-dashed):enabled:focus, .c7n-btn.c7n-btn.c7n-btn-flat.c7n-btn-flat:not(.c7n-btn-circle,.c7n-btn-dashed):enabled:active {
+        background-color: rgba(104, 111, 255, 0.05);
+      }
     }
   }
   &-logo {
@@ -39,7 +44,8 @@
   margin-right: 16px;
   width: 240px;
   background: #F5F6FA;
-  border-radius: 4px;
+  border-radius: 4px !important;
+  border: none !important;
   &-renderer {
     font-size: 14px;
     font-family: PingFangSC-Medium, PingFang SC;
@@ -100,6 +106,8 @@
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
         color: #5365EA;
+        position: relative;
+        top: 1px;
       }
     }
   }
@@ -160,9 +168,9 @@
 }
 .theme4-inbox-badge {
   .c7n-badge-count {
-    background-color: #5365EA !important;
+    background-color: #F76776 !important;
     color: white !important;
-    border-color: #5365EA !important;
+    border-color: #F76776 !important;
   }
   button {
     padding: 0px;
@@ -206,15 +214,14 @@
     border-radius: 4px;
     width: 26px;
     height: 26px;
-    background: rgba(15, 19, 88, 0.08);
     position: relative;
     top: 6px;
     margin-right: 16px;
     i {
       position: absolute;
       left: 4px;
-      top: -7px;
-      font-size: 18px !important;
+      top: -6px;
+      font-size: 20px !important;
       color: #0f1358 !important;
     }
     &-text {
@@ -247,10 +254,12 @@
     background: rgba(83, 101, 234, 0.08) !important;
     height: 44px !important;
     .theme4-iconwrap {
-      background: #5365EA !important;
       i {
-        color: white !important;
+        color: #5365EA !important;
       }
+    }
+    .theme4-iconwrap-text {
+      color: #5365EA;
     }
   }
   li[aria-selected=true]:before {
@@ -320,10 +329,9 @@
 .theme4-page-breadcrumb {
   height: 56px !important;
   min-height: 56px !important;
-  border-bottom: 1px solid #ECF2F8;
+  border-bottom: 1px solid #D9E6F2;
   background: white;
   justify-content: unset !important;
-  box-shadow: 0 0 8px 0 #DFE8F1;
   .c7n-breadcrumb-link {
     font-size: 18px !important;
     font-weight: 400;

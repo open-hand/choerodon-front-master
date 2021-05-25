@@ -13,6 +13,10 @@ function getDefaultLanguage() {
 }
 
 class AppState {
+  @observable starProject = [];
+
+  @observable recentUse = [];
+
   @observable currentTheme = localStorage.getItem('theme') || '';
 
   @observable currentProject = null;
@@ -38,6 +42,24 @@ class AppState {
   @observable projectCategorys = {};
 
   @observable canShowRoute = false;
+
+  @computed
+  get getStarProject() {
+    return this.starProject;
+  }
+
+  @computed
+  get getRecentUse() {
+    return this.recentUse;
+  }
+
+  @action setStarProject(data) {
+    this.starProject = data;
+  }
+
+  @action setRecentUse(data) {
+    this.recentUse = data;
+  }
 
   @computed
   get getCanShowRoute() {

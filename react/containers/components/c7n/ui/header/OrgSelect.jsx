@@ -174,7 +174,7 @@ export default class OrgSelect extends Component {
           width: 200,
           borderLeft: `1px solid ${true ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
           borderRight: `1px solid ${true ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
-          borderTop: true ? '1px solid #D9E6F2' : 'unset',
+          borderTop: false ? '1px solid #D9E6F2' : 'unset',
           borderBottom: true ? '1px solid #D9E6F2' : 'unset',
           textAlign: 'left',
         }}
@@ -228,7 +228,7 @@ export default class OrgSelect extends Component {
     return (
       <>
         <li style={{ width: 'auto' }}>
-          {HAS_BASE_PRO ? (
+          {true ? (
             <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
               {orgButton}
             </Dropdown>

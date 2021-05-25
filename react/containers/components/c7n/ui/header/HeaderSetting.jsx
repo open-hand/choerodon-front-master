@@ -27,9 +27,9 @@ const Setting = ({
   const LI_MAPPING = useMemo(() => {
     const mapping = [
       { title: '工作台', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/workbench' },
-      {
-        title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects', style: { marginLeft: 3 },
-      },
+      // {
+      //   title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects', style: { marginLeft: 3 },
+      // },
     ];
     forEach(currentServices, ({ serviceCode }) => {
       switch (serviceCode) {

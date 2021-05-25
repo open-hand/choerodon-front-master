@@ -33,8 +33,8 @@ const prefixCls = 'c7n-boot-header';
 const { Option, OptGroup } = Select;
 
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
-  const [starProject, setStarProject] = useState([]);
-  const [recentUse, setRecentUse] = useState([]);
+  // const [starProject, setStarProject] = useState([]);
+  // const [recentUse, setRecentUse] = useState([]);
   const [dropDownPro, setDropDownPro] = useState(undefined);
 
   const Ref = useRef();
@@ -75,7 +75,12 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   }, []);
 
   useEffect(() => {
-    setCurrentProject(starProject, recentUse);
+    const { AppState } = props;
+    if (props.location.pathname === '/projects') {
+      getProjects(AppState);
+    } else {
+      setCurrentProject(AppState.getStarProject, AppState.getRecentUse);
+    }
   }, [props.location]);
 
   const getProjects = (app) => {
@@ -87,7 +92,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
           ...i,
           ...i.projectDTO,
         }));
-        setRecentUse(data);
+        app.setRecentUse(data);
         p1Data = data;
         resolve('1');
       })
@@ -95,7 +100,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     const p2 = new Promise((resolve) => {
       axios.get(`/iam/choerodon/v1/organizations/${app.menuType.organizationId}/star_projects`).then((res) => {
         const data = res.splice(0, 6);
-        setStarProject(data);
+        app.setStarProject(data);
         p2Data = data;
         resolve('2');
       });
@@ -187,7 +192,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
             <ProButton
               funcType="flat"
               className="theme4-external"
-              icon="help"
+              icon="help_outline"
               shape="circle"
               style={{ margin: '0 20px' }}
             />
@@ -203,13 +208,14 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   } = props;
 
   const handleClickPopContent = (value) => {
+    const { AppState } = props;
     if (value.includes('star')) {
-      const item = starProject.find(i => i.id === value.split('_')[1]);
+      const item = AppState.getStarProject.find(i => i.id === value.split('_')[1]);
       setDropDownPro(`项目: ${item.name}`);
       handleClickProject(item);
       Ref.current.setPopup(false);
     } else {
-      const item = recentUse.find(i => i.id === value.split('_')[1]);
+      const item = AppState.getRecentUse.find(i => i.id === value.split('_')[1]);
       setDropDownPro(`项目: ${item.name}`);
       handleClickProject(item);
       Ref.current.setPopup(false);
@@ -231,12 +237,16 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   }
 
   const renderProjectSelect = () => {
+    const { AppState } = props;
+    const starProject = AppState.getStarProject;
+    const recentUse = AppState.getRecentUse;
     return (
       <Select
         allowClear={false}
         ref={Ref}
         value={dropDownPro}
         onChange={() => {}}
+        placeholder="请选择项目"
         popupContent={(props) => {
           return (
             <div className="c7ncd-dropDownPro-popContent">
