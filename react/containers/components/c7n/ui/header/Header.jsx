@@ -35,7 +35,7 @@ const { Option, OptGroup } = Select;
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
   // const [starProject, setStarProject] = useState([]);
   // const [recentUse, setRecentUse] = useState([]);
-  const [dropDownPro, setDropDownPro] = useState(undefined);
+  // const [dropDownPro, setDropDownPro] = useState(undefined);
 
   const Ref = useRef();
 
@@ -71,64 +71,14 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     const { AppState, HeaderStore, MenuStore } = props;
     // MenuStore.loadMenuData({ type: 'site' }, false);
     HeaderStore.axiosGetOrgAndPro(AppState.getUserId);
-    getProjects(AppState);
+    AppState.getProjects();
   }, []);
 
   useEffect(() => {
     const { AppState } = props;
-    if (props.location.pathname === '/projects') {
-      getProjects(AppState);
-    } else {
-      setCurrentProject(AppState.getStarProject, AppState.getRecentUse);
-    }
+    AppState.setCurrentProject(AppState.getStarProject, AppState.getRecentUse);
   }, [props.location]);
 
-  const getProjects = (app) => {
-    let p1Data;
-    let p2Data;
-    const p1 = new Promise((resolve) => {
-      axios.get(`/iam/choerodon/v1/organizations/${app.currentMenuType.organizationId}/projects/latest_visit`).then((res) => {
-        const data = res.splice(0, 3).map(i => ({
-          ...i,
-          ...i.projectDTO,
-        }));
-        app.setRecentUse(data);
-        p1Data = data;
-        resolve('1');
-      })
-    });
-    const p2 = new Promise((resolve) => {
-      axios.get(`/iam/choerodon/v1/organizations/${app.menuType.organizationId}/star_projects`).then((res) => {
-        const data = res.splice(0, 6);
-        app.setStarProject(data);
-        p2Data = data;
-        resolve('2');
-      });
-    })
-    Promise.all([p1, p2]).then((result) => {
-      setCurrentProject(p1Data, p2Data);
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
-
-  const setCurrentProject = (data1, data2) => {
-    const params = new URLSearchParams(props.location.search);
-    const type = params.get('type');
-    const id = params.get('id');
-    if (type && type === 'project') {
-      const flag = data1.find(i => i.id === id) || data2.find(i => i.id === id);
-      if (flag) {
-        // 最近使用
-        setDropDownPro(`项目: ${flag.name}`);
-      } else {
-        setDropDownPro(undefined);
-      }
-    } else {
-      setDropDownPro(undefined);
-    }
-  }
-  //
   useEffect(() => {
     const { getUserId } = props.AppState;
     if (!props.location.pathname.includes('unauthorized')) {
@@ -211,12 +161,12 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     const { AppState } = props;
     if (value.includes('star')) {
       const item = AppState.getStarProject.find(i => i.id === value.split('_')[1]);
-      setDropDownPro(`项目: ${item.name}`);
+      AppState.setDropDownPro(`项目: ${item.name}`);
       handleClickProject(item);
       Ref.current.setPopup(false);
     } else {
       const item = AppState.getRecentUse.find(i => i.id === value.split('_')[1]);
-      setDropDownPro(`项目: ${item.name}`);
+      AppState.setDropDownPro(`项目: ${item.name}`);
       handleClickProject(item);
       Ref.current.setPopup(false);
     }
@@ -244,7 +194,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
       <Select
         allowClear={false}
         ref={Ref}
-        value={dropDownPro}
+        value={AppState.getDropDownPro}
         onChange={() => {}}
         placeholder="请选择项目"
         popupContent={(props) => {

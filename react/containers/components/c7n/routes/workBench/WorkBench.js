@@ -69,6 +69,7 @@ const WorkBench = () => {
     componentsDs,
     history,
     allowedModules,
+    AppState,
   } = useWorkBenchStore();
 
   const {
@@ -78,6 +79,7 @@ const WorkBench = () => {
   const [layOutWidth, setWidth] = useState(0);
 
   useEffect(() => {
+    AppState.getProjects();
     if (!observerLayout) {
       const domTem = document.querySelector(`.${prefixCls}-container`);
       if (domTem) {
