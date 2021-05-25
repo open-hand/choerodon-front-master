@@ -15,7 +15,7 @@ import themeColorClient from './themeColorClient';
 import './style';
 import Skeleton from './skeleton';
 import CommonMenu, { defaultBlackList } from '../ui/menu';
-import popoverHead from "@/containers/images/popoverHead.svg";
+import popoverHead from "@/containers/images/popoverHead.png";
 
 const spinStyle = {
   textAlign: 'center',
