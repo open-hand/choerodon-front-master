@@ -68,7 +68,6 @@ class AppState {
       });
     })
     Promise.all([p1, p2]).then((result) => {
-      debugger;
       this.setCurrentProject(p1Data, p2Data);
     }).catch((error) => {
       console.log(error)

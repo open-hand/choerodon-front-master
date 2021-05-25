@@ -26,6 +26,7 @@ const imgreg = /(<img[\s\S]*?src\s*=\s*["|']|\[img\])(.*?)(["|'][\s\S]*?>|\[\/im
 const tablereg = /<table(.*?)>(.*?)<\/table>/g;
 const detailLinkReg = /<a(.*?)>查看详情<\/a>/g;
 const cleanModalKey = Modal.key();
+const orgReg = /\${orgString}/;
 
 @inject('HeaderStore', 'AppState')
 @onClickOutside
@@ -332,8 +333,9 @@ export default class Inbox extends Component {
   };
 
   renderMessages = (inboxData) => {
-    const { AppState } = this.props;
+    const { AppState, HeaderStore } = this.props;
     if (inboxData.length > 0) {
+      const org = HeaderStore?.getOrgData?.[0];
       return (
         <ul>
           {
@@ -381,7 +383,7 @@ export default class Inbox extends Component {
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
                     <div style={{ maxHeight: 63, overflow: 'hidden' }}>
-                      {content && <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(tablereg, '').replace(reg, '')}` }} />}
+                      {content && <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(tablereg, '').replace(reg, '').replace(orgReg, `organizationId=${org?.id}`)}` }} />}
                       {document.getElementById(`#li-${id}`) && document.getElementById(`#li-${id}`).offsetHeight > 63 ? (
                         <a href="#" target="_blank" rel="noreferrer noopener">
                           <span>了解更多</span>
