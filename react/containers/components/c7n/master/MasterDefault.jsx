@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import {inject, observer, Provider} from 'mobx-react';
-import {Icon, Popover, Spin} from 'choerodon-ui';
+import {Icon, Popover, Spin, Message} from 'choerodon-ui';
+import { observer as liteObserver } from 'mobx-react-lite';
 import queryString from 'query-string';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
-import { message, Button } from 'choerodon-ui/pro';
+import { message, Button, Modal, DataSet, Table } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import MasterServices from "@/containers/components/c7n/master/services";
 import axios from '../tools/axios';
@@ -16,11 +17,16 @@ import './style';
 import Skeleton from './skeleton';
 import CommonMenu, { defaultBlackList } from '../ui/menu';
 import popoverHead from "@/containers/images/popoverHead.png";
+import MasterApis from "@/containers/components/c7n/master/apis";
 
 const spinStyle = {
   textAlign: 'center',
   paddingTop: 300,
 };
+
+const { Column } = Table;
+
+let maxLength = 0;
 
 function parseQueryToMenuType(search) {
   const menuType = {};
@@ -57,6 +63,54 @@ function parseQueryToMenuType(search) {
   return menuType;
 }
 
+const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
+
+
+
+let ExceedCountUserDataSet
+
+const OwnerTitle = liteObserver((props) => {
+  const { ds } = props;
+
+  const [num, setNum] = useState(0);
+
+  useEffect(() => {
+    setNum(ds.selected.length);
+  }, [ds.selected])
+
+  return (
+    <p className="c7ncd-master-header">
+      <span>选择组织用户</span>
+      <span>
+        (已选择<span>{num || 0}</span>人)
+      </span>
+    </p>
+  )
+})
+
+const OwnerModal = liteObserver((props) => {
+  const {
+    num,
+    ds,
+  } = props;
+
+  return (
+    <div className="c7ncd-master-owner">
+      <p>
+        <Icon type="info" />
+        {`因您购买的高级版套餐最多允许组织内${num}人同时使用，请在组织下已有用户中选择${num}人。未选中的用户后续将不能进入该组织。`}
+      </p>
+      <Table
+        dataSet={ds}
+      >
+        <Column name="realName" />
+        <Column name="email" />
+        <Column name="roleNames" />
+      </Table>
+    </div>
+  )
+})
+
 @withRouter
 @inject('AppState', 'MenuStore', 'HeaderStore')
 @observer
@@ -76,12 +130,130 @@ class Masters extends Component {
   }
 
   componentDidMount() {
-    const { pathname } = this.props.location;
-    const { getUserId } = this.props.AppState;
     this.initFavicon();
+
+    this.getUserCountCheck();
+
+    ExceedCountUserDataSet = new DataSet({
+      autoQuery: false,
+      transport: {
+        read: ({ data }) => {
+          const { orgId } = data;
+          return ({
+            url: MasterApis.getPageMemberUrl(orgId),
+            method: 'get',
+            transformResponse: (res) => {
+              let newRes = res;
+              try {
+                newRes = JSON.parse(res);
+                newRes.content = newRes.content.map((i) => {
+                  i.roleNames = i.roleNames.join(',');
+                  return i;
+                });
+                return newRes;
+              } catch (e) {
+                return newRes
+              }
+            }
+          })
+        },
+      },
+      fields: [{
+        name: 'realName',
+        type: 'string',
+        label: '用户名',
+      }, {
+        name: 'email',
+        type: 'string',
+        label: '邮箱',
+      }, {
+        name: 'roleNames',
+        type: 'string',
+        label: '组织角色',
+      }],
+      events: {
+        select: ({ dataSet, record }) => {
+          this.setRecordByMaxLength(dataSet, record, maxLength, true);
+        },
+        unSelect: ({ dataSet, record }) => {
+          this.setRecordByMaxLength(dataSet, record, maxLength, false);
+        },
+      }
+    })
     // if (pathname.includes('access_token') && pathname.includes('token_type') && localStorage.getItem(`historyPath-${getUserId}`)) {
     //   window.location = `/#${localStorage.getItem(`historyPath-${getUserId}`)}`;
     // }
+  }
+
+  setRecordByMaxLength = (ds, re, length, selectIf) => {
+    const selectedLength = ds.selected.length;
+    const selectedIds = ds.selected.map(i => i.id);
+    if (selectIf) {
+      if (selectedLength === length) {
+        ds.records.forEach(i => {
+          if (!selectedIds.includes(i.id)) {
+            i.selectable = false;
+          }
+        })
+      }
+    } else {
+      ds.records.forEach(i => {
+        i.selectable = true;
+      })
+    }
+  }
+
+  getUserCountCheck = async () => {
+    const organizationId = this.props.AppState.currentMenuType.organizationId;
+    if (organizationId) {
+      let res = await MasterServices.axiosGetCheckUserCount(organizationId);
+      debugger;
+      if (res && !res.data && res.data !== '') {
+        // 用户超过套餐任务
+        maxLength = res;
+        const user = await MasterServices.axiosGetCheckOwner(organizationId);
+        if (user && user.data === '') {
+          // 当前用户就是注册者
+          ExceedCountUserDataSet.setQueryParameter('orgId', organizationId);
+          await ExceedCountUserDataSet.query();
+          Modal.open({
+            maskClosable: false,
+            style: {
+              width: 820,
+            },
+            okCancel: false,
+            key: Modal.key(),
+            title: <OwnerTitle ds={ExceedCountUserDataSet} />,
+            children: <OwnerModal num={res} ds={ExceedCountUserDataSet}  />,
+            onOk: async () => {
+              const selectedLength = ExceedCountUserDataSet.selected.length;
+              if (selectedLength !== maxLength) {
+                message.error(`请选择${maxLength}个用户`);
+                return false;
+              } else {
+                try {
+                  await MasterServices.axiosDeleteCleanMember(organizationId, ExceedCountUserDataSet.selected.map(i => i.get('id')));
+                  this.getUserCountCheck();
+                } catch (e) {
+                  return false;
+                }
+              }
+            }
+          })
+        } else {
+          // 此user是注册者
+          const { email, realName } = user;
+          Modal.open({
+            maskClosable: false,
+            key: Modal.key(),
+            title: 'Saas组织升级中',
+            children: `您所在组织的组织所有者${realName}(${email})升级组织后尚未确认组织用户，请联系组织所有者确认。`,
+            footer: null,
+          })
+        }
+      }
+      return true;
+    }
   }
 
   updateTheme = (newPrimaryColor) => {
@@ -336,24 +508,27 @@ class Masters extends Component {
    * 指引dom
    */
   renderGuide() {
-    return (
-      <Popover
-        visible={this.state.guideOpen}
-        content={this.guidePopover()}
-        trigger="click"
-        placement="topRight"
-        overlayClassName="c7ncd-guide-origin"
-      >
-        <div
-          className="c7ncd-guide"
-          onClick={this.handleClickGuide.bind(this)}
+    if (HAS_BASE_PRO) {
+      return (
+        <Popover
+          visible={this.state.guideOpen}
+          content={this.guidePopover()}
+          trigger="click"
+          placement="topRight"
+          overlayClassName="c7ncd-guide-origin"
         >
-          <Icon
-            type={this.state.guideOpen ? 'close' : "touch_app-o"}
-          />
-        </div>
-      </Popover>
-    )
+          <div
+            className="c7ncd-guide"
+            onClick={this.handleClickGuide.bind(this)}
+          >
+            <Icon
+              type={this.state.guideOpen ? 'close' : "touch_app-o"}
+            />
+          </div>
+        </Popover>
+      )
+    }
+    return '';
   }
 
   render() {
