@@ -68,13 +68,13 @@ class AppState {
       });
     })
     Promise.all([p1, p2]).then((result) => {
-      this.setCurrentProject(p1Data, p2Data);
+      this.setCurrentDropDown(p1Data, p2Data);
     }).catch((error) => {
       console.log(error)
     })
   }
 
-  setCurrentProject = (data1, data2) => {
+  setCurrentDropDown = (data1, data2) => {
     const params = new URLSearchParams(window.location.hash.split('?')[1]);
     const type = params.get('type');
     const id = params.get('id');

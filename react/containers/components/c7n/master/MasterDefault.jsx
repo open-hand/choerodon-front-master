@@ -207,7 +207,6 @@ class Masters extends Component {
     const organizationId = this.props.AppState.currentMenuType.organizationId;
     if (organizationId) {
       let res = await MasterServices.axiosGetCheckUserCount(organizationId);
-      debugger;
       if (res && !res.data && res.data !== '') {
         // 用户超过套餐任务
         maxLength = res;

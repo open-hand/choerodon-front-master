@@ -76,7 +76,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
 
   useEffect(() => {
     const { AppState } = props;
-    AppState.setCurrentProject(AppState.getStarProject, AppState.getRecentUse);
+    AppState.setCurrentDropDown(AppState.getStarProject, AppState.getRecentUse);
   }, [props.location]);
 
   useEffect(() => {
