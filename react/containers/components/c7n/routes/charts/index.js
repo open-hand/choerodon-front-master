@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import sortBy from 'lodash/sortBy';
 import { inject } from 'mobx-react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Page from '../../tools/page';
 import Content from '../../tools/page/Content';
@@ -13,8 +13,11 @@ import './style/index.less';
 const Home = (props) => {
   const [list, setList] = useState([]);
   const {
-    history, location: { search }, AppState, reportType,
+    AppState, reportType,
   } = props;
+
+  const { search } = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     async function loadLists() {
@@ -59,8 +62,8 @@ const Home = (props) => {
   );
 };
 
-Home.prototype = {
+Home.propTypes = {
   reportType: PropTypes.oneOf(['agile', 'develop', 'deploy']).isRequired,
 };
 
-export default inject('AppState')(withRouter(Home));
+export default inject('AppState')(Home);
