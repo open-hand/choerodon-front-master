@@ -13,6 +13,7 @@ const UI_CONFIG = {
   labelLayout: 'float',
   queryBar: 'bar',
   tableBorder: false,
+  showLengthInfo: true,
   lookupAxiosMethod: 'get',
   lookupUrl: (code) => `/hpfm/v1/lovs/value?lovCode=${code}`,
   tableHighLightRow: false,
