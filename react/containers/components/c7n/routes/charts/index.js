@@ -2,15 +2,18 @@ import React, { useState, useEffect, useCallback } from 'react';
 import sortBy from 'lodash/sortBy';
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
-import {
-  Page, Content, Breadcrumb, axios,
-} from '../../../../../index';
+import PropTypes from 'prop-types';
+import Page from '../../tools/page';
+import Content from '../../tools/page/Content';
+import Breadcrumb from '../../tools/tab-page/Breadcrumb';
+import axios from '../../tools/axios';
+
 import './style/index.less';
 
 const Home = (props) => {
   const [list, setList] = useState([]);
   const {
-    history, location: { search }, AppState, reportType = 'develop',
+    history, location: { search }, AppState, reportType,
   } = props;
 
   useEffect(() => {
@@ -54,6 +57,10 @@ const Home = (props) => {
       </Content>
     </Page>
   );
+};
+
+Home.prototype = {
+  reportType: PropTypes.oneOf(['agile', 'develop', 'deploy']).isRequired,
 };
 
 export default inject('AppState')(withRouter(Home));
