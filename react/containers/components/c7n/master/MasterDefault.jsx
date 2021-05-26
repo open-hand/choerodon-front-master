@@ -178,6 +178,14 @@ class Masters extends Component {
         unSelect: ({ dataSet, record }) => {
           this.setRecordByMaxLength(dataSet, record, maxLength, false);
         },
+        load: ({ dataSet }) => {
+          dataSet.records.forEach(i => {
+            if (i.get('owner')) {
+              i.selectable = false;
+              i.isSelected = true;
+            }
+          })
+        }
       }
     })
     // if (pathname.includes('access_token') && pathname.includes('token_type') && localStorage.getItem(`historyPath-${getUserId}`)) {
@@ -189,7 +197,7 @@ class Masters extends Component {
     const selectedLength = ds.selected.length;
     const selectedIds = ds.selected.map(i => i.id);
     if (selectIf) {
-      if (selectedLength === length) {
+      if (selectedLength >= length) {
         ds.records.forEach(i => {
           if (!selectedIds.includes(i.id)) {
             i.selectable = false;
@@ -198,7 +206,9 @@ class Masters extends Component {
       }
     } else {
       ds.records.forEach(i => {
-        i.selectable = true;
+        if (!i.get('owner')) {
+          i.selectable = true;
+        }
       })
     }
   }
