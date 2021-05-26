@@ -7,6 +7,12 @@ const uiConfigure = UI_CONFIGURE || {};
 
 const UI_CONFIG = {
   ...uiConfigure,
+  pagination: {
+    showSizeChangerLabel: false,
+    showTotal: false,
+    showPager: true,
+    showQuickJumper: true,
+  },
   modalMaskClosable: 'dblclick',
   axios: uiAxios,
   dataKey: 'list',
