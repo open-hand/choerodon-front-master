@@ -25,7 +25,7 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
         service={['choerodon.code.project.operation.chart.ps.default']}
         exact
         path={`${match.url}charts`}
-        component={() => <Charts reportType="develop" />}
+        component={() => <Charts reportType="agile" />}
       />
       <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
       <PermissionRoute
