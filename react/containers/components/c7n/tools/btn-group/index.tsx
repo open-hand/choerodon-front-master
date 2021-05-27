@@ -46,7 +46,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
       const Item = (
         <Menu.Item
           disabled={disabled}
-          key={`${name}-${index}-${group}`}
+          key={`${name}-${itemName}-${index}-${group}`}
           onClick={handler}
         >
           <Tooltip {...tooltipsConfig}>
@@ -63,7 +63,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
       }
       return Item;
     });
-  }, [btnItems]);
+  }, [btnItems, name]);
 
   const menu = useMemo(() => (
     <Menu onClick={() => setVisible(false)}>
