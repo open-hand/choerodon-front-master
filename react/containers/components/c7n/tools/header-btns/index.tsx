@@ -42,7 +42,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
     const filterItems = items.filter(({ display = true }) => display);
     const groupItems = map(filterItems, (value) => {
       const tempGroupItem = value;
-      if (!tempGroupItem?.group) {
+      if (!('group' in tempGroupItem)) {
         tempGroupItem.group = 0;
       } else if (typeof tempGroupItem?.group !== 'string') {
         tempGroupItem.group = Number(tempGroupItem.group);

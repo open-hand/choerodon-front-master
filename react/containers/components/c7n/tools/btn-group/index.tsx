@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { Menu, Popover, Icon } from 'choerodon-ui';
 import { Button, Tooltip } from 'choerodon-ui/pro';
@@ -30,7 +30,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
 
   const [popverVisible, setVisible] = useState<boolean>(false);
 
-  const renderMenu = () => {
+  const renderMenu = useCallback(() => {
     if (!btnItems?.length) {
       return null;
     }
@@ -63,13 +63,13 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
       }
       return Item;
     });
-  };
+  }, [btnItems]);
 
-  const menu = (
+  const menu = useMemo(() => (
     <Menu onClick={() => setVisible(false)}>
       {renderMenu()}
     </Menu>
-  );
+  ), [renderMenu]);
 
   const dropdownBtnCls = classNames(prefixCls);
 
