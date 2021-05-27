@@ -160,14 +160,14 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   const handleClickPopContent = (value) => {
     const { AppState } = props;
     if (value.includes('star')) {
-      const item = AppState.getStarProject.find(i => i.id === value.split('_')[1]);
-      AppState.setDropDownPro(`项目: ${item.name}`);
-      handleClickProject(item);
+      const starItem = AppState.getStarProject.find(i => String(i.id) === String(value.split('_')[1]));
+      AppState.setDropDownPro(`项目: ${starItem.name}`);
+      handleClickProject(starItem);
       Ref.current.setPopup(false);
     } else {
-      const item = AppState.getRecentUse.find(i => i.id === value.split('_')[1]);
-      AppState.setDropDownPro(`项目: ${item.name}`);
-      handleClickProject(item);
+      const recentItem = AppState.getRecentUse.find(i => String(i.id) === String(value.split('_')[1]));
+      AppState.setDropDownPro(`项目: ${recentItem.name}`);
+      handleClickProject(recentItem);
       Ref.current.setPopup(false);
     }
   }

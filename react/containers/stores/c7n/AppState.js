@@ -79,7 +79,7 @@ class AppState {
     const type = params.get('type');
     const id = params.get('id');
     if (type && type === 'project' && ((data1 && data1.length > 0) || (data2 && data2.length > 0))) {
-      const flag = data1.find(i => i.id === id) || data2.find(i => i.id === id);
+      const flag = data1.find(i => String(i.id) === String(id)) || data2.find(i => String(i.id) === String(id));
       if (flag) {
         // 最近使用
         this.setDropDownPro(`项目: ${flag.name}`);
