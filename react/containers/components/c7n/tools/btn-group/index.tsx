@@ -47,10 +47,11 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
         <Menu.Item
           disabled={disabled}
           key={`${name}-${itemName}-${index}-${group}`}
-          onClick={handler}
         >
           <Tooltip {...tooltipsConfig}>
-            {itemName}
+            <span role="none" onClick={handler}>
+              {itemName}
+            </span>
           </Tooltip>
         </Menu.Item>
       );
