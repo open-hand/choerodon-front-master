@@ -55,6 +55,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     try {
       const [, projectData] = await axios.all([categoryDs.query(), formDs.query()]);
       if (projectData && projectData.categories && projectData.categories.length) {
+        const isBeforeProgram = (projectData.beforeCategory || '').includes(categoryCodes.program);
+        const isBeforeAgile = (projectData.beforeCategory || '').includes(categoryCodes.agile);
         let isProgram = false;
         let isProgramProject = false;
         let isRequire = false;
@@ -84,24 +86,22 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           }
           switch (currentCode) {
             case categoryCodes.program:
-              if ((projectData.beforeCategory || '').includes(categoryCodes.program)) {
-                categoryRecord.setState('isProgram', true);
-              }
-              if (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId)) {
+              categoryRecord.setState('isProgram', isBeforeProgram);
+              if (isBeforeAgile || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))) {
                 categoryRecord.setState('disabled', true);
               }
               break;
             case categoryCodes.agile:
-              if ((projectData.beforeCategory || '').includes(categoryCodes.agile)) {
-                categoryRecord.setState('isAgile', true);
-              }
-              if (isProgramProject) {
-                categoryRecord.setState('disabled', true);
-              }
+              categoryRecord.setState({
+                isAgile: isBeforeAgile,
+                disabled: isBeforeProgram || isProgramProject,
+              });
               break;
             case categoryCodes.require:
-              categoryRecord.setState('isRequire', isRequire);
-              categoryRecord.setState('disabled', !isProgram && !isAgile);
+              categoryRecord.setState({
+                isRequire,
+                disabled: !isProgram && !isAgile,
+              });
               break;
             default:
               break;
