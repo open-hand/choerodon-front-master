@@ -193,7 +193,7 @@ const WorkBench = () => {
 
   return (
     <Page className={`${prefixCls}`}>
-      {/* <Header>
+      <Header>
         <HeaderButtons items={[
           {
             icon: 'info',
@@ -201,7 +201,26 @@ const WorkBench = () => {
             groupBtnItems: [
               {
                 name: 'test',
-                handler: () => alert('dsada'),
+                handler: () => {
+                  Modal.open({
+                    key: Modal.key(),
+                    title: 'dsadas',
+                    children: ' sadasdas',
+                  });
+                },
+                tooltipsConfig: {
+                  title: 'hell',
+                },
+              },
+              {
+                name: 'test2',
+                handler: () => {
+                  Modal.open({
+                    key: Modal.key(),
+                    title: 'dsadas',
+                    children: ' sadasdas',
+                  });
+                },
                 tooltipsConfig: {
                   title: 'hell',
                 },
@@ -223,7 +242,7 @@ const WorkBench = () => {
           },
         ]}
         />
-      </Header> */}
+      </Header>
       <div
         className={`${prefixCls}-container`}
       >
