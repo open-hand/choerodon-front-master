@@ -34,6 +34,7 @@ import ExecutionQuestions from './components/question-execution';
 import './WorkBench.less';
 import SelfCode from './components/SelfCode';
 import MyHandler from './components/my-handler';
+import BtnGroup from '../../tools/btn-group';
 
 let observerLayout;
 
@@ -192,6 +193,37 @@ const WorkBench = () => {
 
   return (
     <Page className={`${prefixCls}`}>
+      {/* <Header>
+        <BtnGroup btnItems={[
+          {
+            name: 'test',
+            disabled: false,
+            handler: () => { alert('weng'); },
+            tooltipsConfig: {
+              title: 'hallowrod',
+            },
+          },
+          {
+            name: 'sadsadasdsa2121',
+            disabled: true,
+            handler: () => { alert('weng'); },
+            tooltipsConfig: {
+              title: 'hallowrod',
+            },
+          },
+          {
+            name: '123e1212',
+            disabled: false,
+            handler: () => { alert('weng'); },
+            tooltipsConfig: {
+              title: 'hallowrod',
+            },
+          },
+        ]}
+        />
+        <BtnGroup color="primary" />
+        <div style={{ width: '400px' }} />
+      </Header> */}
       <div
         className={`${prefixCls}-container`}
       >

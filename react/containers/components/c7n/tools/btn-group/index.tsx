@@ -1,0 +1,91 @@
+import React, { useState } from 'react';
+
+import { Menu, Popover, Icon } from 'choerodon-ui';
+import { Button, Tooltip } from 'choerodon-ui/pro';
+import { map } from 'lodash';
+import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
+import classNames from 'classnames';
+import Permission from '@/containers/components/c7n/tools/permission';
+import { CustomBtnGroupProps, itemsProps } from './interface';
+import './index.less';
+
+const prefixCls = 'c7ncd-btnGroup';
+
+const BtnGroup = (props:CustomBtnGroupProps) => {
+  const {
+    color = 'default',
+    icon,
+    btnItems,
+    placement = 'bottomLeft',
+    trigger = 'click',
+  } = props;
+
+  const [popverVisible, setVisible] = useState<boolean>(false);
+
+  const renderMenu = () => {
+    if (!btnItems?.length) {
+      return null;
+    }
+    return map(btnItems, (itemProps:itemsProps) => {
+      const {
+        name,
+        handler,
+        permissions,
+        disabled,
+        group,
+        tooltipsConfig,
+      } = itemProps;
+      const Item = (
+        <Menu.Item
+          disabled={disabled}
+          key={JSON.stringify(itemProps)}
+          onClick={handler}
+        >
+          <Tooltip {...tooltipsConfig}>
+            {name}
+          </Tooltip>
+        </Menu.Item>
+      );
+      if (permissions?.length) {
+        return (
+          <Permission service={permissions}>
+            {Item}
+          </Permission>
+        );
+      }
+      return Item;
+    });
+  };
+
+  const menu = (
+    <Menu onClick={() => setVisible(false)}>
+      {renderMenu()}
+    </Menu>
+  );
+
+  const dropdownBtnCls = classNames(prefixCls);
+
+  const dropDownIconCls = classNames(`${prefixCls}-dropdownIcon`, `${prefixCls}-dropdownIcon-${color}`);
+
+  return (
+    <Popover
+      visible={popverVisible}
+      content={menu}
+      trigger={trigger}
+      placement={placement}
+      overlayClassName={`${prefixCls}-popver`}
+      onVisibleChange={(visible:boolean) => setVisible(visible)}
+    >
+      <Button
+        className={dropdownBtnCls}
+        color={color as ButtonColor}
+        icon={icon}
+      >
+        <span>hellorold</span>
+        <Icon className={dropDownIconCls} type="expand_more" />
+      </Button>
+    </Popover>
+  );
+};
+
+export default BtnGroup;
