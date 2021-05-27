@@ -34,7 +34,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     if (!btnItems?.length) {
       return null;
     }
-    return map(btnItems, (itemProps:itemsProps) => {
+    return map(btnItems, (itemProps:itemsProps, index:number) => {
       const {
         name: itemName,
         handler,
@@ -46,7 +46,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
       const Item = (
         <Menu.Item
           disabled={disabled}
-          key={JSON.stringify(itemProps)}
+          key={`${name}-${index}-${group}`}
           onClick={handler}
         >
           <Tooltip {...tooltipsConfig}>

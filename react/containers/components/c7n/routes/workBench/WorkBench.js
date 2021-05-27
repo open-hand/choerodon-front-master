@@ -201,7 +201,26 @@ const WorkBench = () => {
             groupBtnItems: [
               {
                 name: 'test',
-                handler: () => alert('dsada'),
+                handler: () => {
+                  Modal.open({
+                    key: Modal.key(),
+                    title: 'dsadas',
+                    children: ' sadasdas',
+                  });
+                },
+                tooltipsConfig: {
+                  title: 'hell',
+                },
+              },
+              {
+                name: 'test2',
+                handler: () => {
+                  Modal.open({
+                    key: Modal.key(),
+                    title: 'dsadas',
+                    children: ' sadasdas',
+                  });
+                },
                 tooltipsConfig: {
                   title: 'hell',
                 },
