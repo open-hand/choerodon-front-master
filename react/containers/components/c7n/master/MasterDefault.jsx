@@ -126,7 +126,16 @@ class Masters extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.judgeIfGetUserCountCheck(nextProps, this.props);
     this.initMenuType(nextProps);
+  }
+
+  judgeIfGetUserCountCheck = (newProps, oldProps) => {
+    const newParams = new URLSearchParams(newProps.location.search);
+    const oldParams = new URLSearchParams(oldProps.location.search);
+    if (newParams.get('organizationId') !== oldParams.get('organizationId')) {
+      this.getUserCountCheck(newParams.get('organizationId'));
+    }
   }
 
   componentDidMount() {
@@ -213,8 +222,8 @@ class Masters extends Component {
     }
   }
 
-  getUserCountCheck = async () => {
-    const organizationId = this.props.AppState.currentMenuType.organizationId;
+  getUserCountCheck = async (orgId) => {
+    const organizationId = orgId || this.props.AppState.currentMenuType.organizationId;
     if (organizationId) {
       let res = await MasterServices.axiosGetCheckUserCount(organizationId);
       if (res && !res.data && res.data !== '') {
