@@ -7,7 +7,13 @@ import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
 import classNames from 'classnames';
 import Permission from '@/containers/components/c7n/tools/permission';
 import { CustomBtnGroupProps, itemsProps } from './interface';
+
 import './index.less';
+
+export {
+  itemsProps as GroupBtnItemProps,
+  CustomBtnGroupProps,
+};
 
 const prefixCls = 'c7ncd-btnGroup';
 
@@ -18,6 +24,8 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     btnItems,
     placement = 'bottomLeft',
     trigger = 'click',
+    display = true,
+    name,
   } = props;
 
   const [popverVisible, setVisible] = useState<boolean>(false);
@@ -28,7 +36,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     }
     return map(btnItems, (itemProps:itemsProps) => {
       const {
-        name,
+        name: itemName,
         handler,
         permissions,
         disabled,
@@ -42,7 +50,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
           onClick={handler}
         >
           <Tooltip {...tooltipsConfig}>
-            {name}
+            {itemName}
           </Tooltip>
         </Menu.Item>
       );
@@ -67,6 +75,10 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
 
   const dropDownIconCls = classNames(`${prefixCls}-dropdownIcon`, `${prefixCls}-dropdownIcon-${color}`);
 
+  if (!display) {
+    return null;
+  }
+
   return (
     <Popover
       visible={popverVisible}
@@ -81,7 +93,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
         color={color as ButtonColor}
         icon={icon}
       >
-        <span>hellorold</span>
+        <span>{name}</span>
         <Icon className={dropDownIconCls} type="expand_more" />
       </Button>
     </Popover>

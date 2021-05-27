@@ -194,35 +194,35 @@ const WorkBench = () => {
   return (
     <Page className={`${prefixCls}`}>
       {/* <Header>
-        <BtnGroup btnItems={[
+        <HeaderButtons items={[
           {
+            icon: 'info',
             name: 'test',
-            disabled: false,
-            handler: () => { alert('weng'); },
-            tooltipsConfig: {
-              title: 'hallowrod',
-            },
+            groupBtnItems: [
+              {
+                name: 'test',
+                handler: () => alert('dsada'),
+                tooltipsConfig: {
+                  title: 'hell',
+                },
+              },
+            ],
           },
           {
-            name: 'sadsadasdsa2121',
-            disabled: true,
-            handler: () => { alert('weng'); },
-            tooltipsConfig: {
-              title: 'hallowrod',
-            },
-          },
-          {
-            name: '123e1212',
-            disabled: false,
-            handler: () => { alert('weng'); },
-            tooltipsConfig: {
-              title: 'hallowrod',
-            },
+            icon: 'info',
+            name: 'asdas',
+            groupBtnItems: [
+              {
+                name: 'test',
+                handler: () => alert('dsada'),
+                tooltipsConfig: {
+                  title: 'hell',
+                },
+              },
+            ],
           },
         ]}
         />
-        <BtnGroup color="primary" />
-        <div style={{ width: '400px' }} />
       </Header> */}
       <div
         className={`${prefixCls}-container`}
