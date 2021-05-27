@@ -5,6 +5,8 @@ import { ToolTipsConfigType } from '../header-btns/interface';
 
 export interface CustomBtnGroupProps {
   color?: ButtonColor
+  name: string,
+  display?:boolean,
   icon?: string,
   btnItems?: itemsProps[],
   placement?: TooltipPlacement,

@@ -13,6 +13,7 @@ import './index.less';
 import classNames from 'classnames';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
 import { ButtonProps } from 'choerodon-ui/pro/lib/button/Button';
+import ButtonGroup, { GroupBtnItemProps } from '@/containers/components/c7n/tools/btn-group';
 import { ToolTipsConfigType } from './interface';
 
 export interface itemsProps extends ButtonProps {
@@ -29,6 +30,7 @@ export interface itemsProps extends ButtonProps {
   tooltipsConfig?: ToolTipsConfigType,
   element?: React.ReactElement,
   preElement?: React.ReactElement,
+  groupBtnItems?: GroupBtnItemProps[]
 }
 
 const HeaderButtons = ({ items, children, showClassName = false }: {
@@ -37,7 +39,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
   showClassName?: boolean
 }) => {
   const displayBtn = useMemo(() => {
-    const filterItems = items.filter(({ display }) => display);
+    const filterItems = items.filter(({ display = true }) => display);
     const groupItems = map(filterItems, (value) => {
       const tempGroupItem = value;
       if (!tempGroupItem?.group) {
@@ -63,7 +65,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         handler,
         iconOnly = false,
         permissions,
-        display,
+        display = true,
         icon,
         disabled,
         color = 'default' as ButtonColor,
@@ -71,6 +73,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         tooltipsConfig,
         element,
         preElement,
+        groupBtnItems,
         ...props
       }, index:number) => {
         let btn:React.ReactNode;
@@ -89,6 +92,16 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
                 }}
               />
             </Tooltip>
+          );
+        } else if (groupBtnItems?.length) {
+          btn = (
+            <ButtonGroup
+              btnItems={groupBtnItems}
+              display={display}
+              color={transColor}
+              icon={icon}
+              name={name}
+            />
           );
         } else if (iconOnly) {
           btn = (
