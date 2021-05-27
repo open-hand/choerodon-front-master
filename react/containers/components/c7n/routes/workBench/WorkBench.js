@@ -193,7 +193,7 @@ const WorkBench = () => {
 
   return (
     <Page className={`${prefixCls}`}>
-      <Header>
+      {/* <Header>
         <BtnGroup btnItems={[
           {
             name: 'test',
@@ -223,7 +223,7 @@ const WorkBench = () => {
         />
         <BtnGroup color="primary" />
         <div style={{ width: '400px' }} />
-      </Header>
+      </Header> */}
       <div
         className={`${prefixCls}-container`}
       >
