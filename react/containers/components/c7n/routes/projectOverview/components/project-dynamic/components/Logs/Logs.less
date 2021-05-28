@@ -12,22 +12,25 @@
           display: flex;
           flex-direction: column;
           padding-bottom: 8.5px;
-          border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+          border-bottom: 1px solid var(--divider);
       }
       &-userName {
-          color: #303F9F;
+        color: var(--primary-color);
           margin-right: 5px;
       }
       .c7n-Log-field, .c7n-Log-value, .c7n-Log-issue {
           word-break: break-all;
-          color: #303F9F;
+          color: var(--primary-color);
+      }
+      .c7n-Log-operation {
+        color: var(--text-color);
       }
       .c7n-Log-issue {
         cursor: pointer;
       }
       &-lastUpdateDate {
           margin-top: 5px;
-          color: rgba(0, 0, 0, 0.65);
+          color: var(--text-color);
       }
   }
 }
