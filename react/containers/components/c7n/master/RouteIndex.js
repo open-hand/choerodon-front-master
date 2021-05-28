@@ -8,7 +8,6 @@ import { inject } from 'mobx-react';
 import PermissionRoute from '@/components/permission-route';
 import asyncRouter from '../util/asyncRouter';
 
-const Charts = asyncRouter(() => import('../routes/charts'));
 const Unauthorized = asyncRouter(() => import('../routes/unauthorized'));
 const WorkBench = asyncRouter(() => import('../routes/workBench'));
 const ProjectsPro = asyncRouter(() => import('../routes/projectsPro'));
@@ -21,12 +20,6 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
   >
     <Switch>
       <Route exact path={`${match.url}projects`} component={ProjectsPro} />
-      <PermissionRoute
-        service={['choerodon.code.project.operation.chart.ps.default']}
-        exact
-        path={`${match.url}charts`}
-        component={() => <Charts reportType="agile" />}
-      />
       <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
       <PermissionRoute
         exact
