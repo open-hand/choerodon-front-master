@@ -47,21 +47,21 @@ const SprintWaterWave = observer(() => {
             <li>
               <label>问题数</label>
               <span>
-                {current.get('remainingIssueCount')}
+                {`${current.get('remainingIssueCount')}/${current.get('totalIssueCount')}`}
                 (个)
               </span>
             </li>
             <li>
               <label>故事点</label>
               <span>
-                {current.get('remainingStoryPoints')}
+                {`${current.get('remainingStoryPoints')}/${current.get('totalStoryPoints')}`}
                 (个)
               </span>
             </li>
             <li>
               <label>剩余工时</label>
               <span>
-                {current.get('remainingEstimatedTime')}
+                {`${current.get('remainingEstimatedTime')}/${current.get('totalEstimatedTime')}`}
                 (小时)
               </span>
             </li>
