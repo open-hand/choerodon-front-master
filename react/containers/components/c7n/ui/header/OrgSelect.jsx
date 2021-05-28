@@ -175,7 +175,7 @@ export default class OrgSelect extends Component {
           borderLeft: `1px solid ${true ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
           borderRight: `1px solid ${true ? '#D9E6F2' : 'rgba(255, 255, 255, 0.3)'}`,
           borderTop: false ? '1px solid #D9E6F2' : 'unset',
-          borderBottom: true ? '1px solid #D9E6F2' : 'unset',
+          borderBottom: false ? '1px solid #D9E6F2' : 'unset',
           textAlign: 'left',
         }}
       >
