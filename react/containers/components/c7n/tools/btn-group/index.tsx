@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import { Menu, Popover, Icon } from 'choerodon-ui';
 import { Button, Tooltip } from 'choerodon-ui/pro';
-import { map } from 'lodash';
+import { flatten, map } from 'lodash';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
 import classNames from 'classnames';
 import Permission from '@/containers/components/c7n/tools/permission';
@@ -57,7 +57,10 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
       );
       if (permissions?.length) {
         return (
-          <Permission service={permissions}>
+          <Permission
+            defaultChildren={React.cloneElement(Item, { style: { display: 'none' } })}
+            service={permissions}
+          >
             {Item}
           </Permission>
         );
@@ -81,23 +84,25 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
   }
 
   return (
-    <Popover
-      visible={popverVisible}
-      content={menu}
-      trigger={trigger}
-      placement={placement}
-      overlayClassName={`${prefixCls}-popver`}
-      onVisibleChange={(visible:boolean) => setVisible(visible)}
-    >
-      <Button
-        className={dropdownBtnCls}
-        color={color as ButtonColor}
-        icon={icon}
+    <Permission service={flatten(btnItems?.map((item) => item?.permissions || []))}>
+      <Popover
+        visible={popverVisible}
+        content={menu}
+        trigger={trigger}
+        placement={placement}
+        overlayClassName={`${prefixCls}-popver`}
+        onVisibleChange={(visible:boolean) => setVisible(visible)}
       >
-        <span>{name}</span>
-        <Icon className={dropDownIconCls} type="expand_more" />
-      </Button>
-    </Popover>
+        <Button
+          className={dropdownBtnCls}
+          color={color as ButtonColor}
+          icon={icon}
+        >
+          <span>{name}</span>
+          <Icon className={dropDownIconCls} type="expand_more" />
+        </Button>
+      </Popover>
+    </Permission>
   );
 };
 
