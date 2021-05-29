@@ -1,0 +1,24 @@
+"@hzero-front-ui/c7n-ui@3.0.0-alpha.20":
+  version "3.0.0-alpha.20"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/c7n-ui/-/c7n-ui-3.0.0-alpha.20.tgz#98a1eaf5ed69311437f3c73cafa895174ef973bb"
+  integrity sha512-pHVXkun2IzctqJ7NeQXXtBqNl5pi5dA3zh9z6TctqX9FDMfEoo5bVXpPlQGV+tfiNQIYiVoj6aVMslbpZve1UQ==
+
+"@hzero-front-ui/core@3.0.0-alpha.13":
+  version "3.0.0-alpha.13"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/core/-/core-3.0.0-alpha.13.tgz#2190a0d42156a81f4e2c50e2f5e16e9e826c36ca"
+  integrity sha512-Kc+3gFl3m69zTjs+1sPsZzA/se4kSg5ltWd4Wie0yiU+RNeuO6IQWzIpvACFrCcXsAI6ptbtMctgECnYnU2Kjw==
+  dependencies:
+    styled-components "^5.2.0"
+    tinycolor2 "^1.4.2"
+
+"@hzero-front-ui/font@^3.0.0-alpha.2":
+  version "3.0.0-alpha.2"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/font/-/font-3.0.0-alpha.2.tgz#90c4490f26b8e3d1f4b4bffe564953e97d334497"
+  integrity sha512-CXR59y2YHY0aKQxsm3H5rsqD45s1ojOdSQM3RC5OfT29taU0XAdnwilD9Y2hvfi/nSHzgAOaAm12kSv1Pnqy1g==
+
+"@hzero-front-ui/themes@3.0.0-alpha.15":
+  version "3.0.0-alpha.15"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/themes/-/themes-3.0.0-alpha.15.tgz#d4ce13f38237e0346337b755621eff859a656269"
+  integrity sha512-aaEkx/KsdozA7uPOiVRORVaz0ex3BY+pPb407BE1W+DZP7tC3eTesHm34O05A4N0lzk4HYA1mJwkqmWxtYxj/Q==
+  dependencies:
+    "@hzero-front-ui/font" "^3.0.0-alpha.2"
