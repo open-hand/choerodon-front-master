@@ -11,7 +11,7 @@ const UI_CONFIG = {
     showSizeChangerLabel: false,
     showTotal: false,
     showPager: true,
-    showQuickJumper: true,
+    showQuickJumper: false,
   },
   modalMaskClosable: 'dblclick',
   axios: uiAxios,
