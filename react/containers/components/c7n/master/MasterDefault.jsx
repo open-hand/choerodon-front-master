@@ -446,7 +446,9 @@ class Masters extends Component {
     return (
       <div className="c7ncd-guide-popover">
         <div className="c7ncd-guide-popover-head">
-          {this.state.guideContent && this.state.guideContent.title ? this.state.guideContent.title : '平台指引'}
+          <span style={{ width: '43%', display: 'inline-block' }}>
+            {this.state.guideContent && this.state.guideContent.title ? this.state.guideContent.title : '平台指引'}
+          </span>
           <img src={popoverHead} alt=""/>
         </div>
         <div className="c7ncd-guide-popover-content">
@@ -459,10 +461,20 @@ class Masters extends Component {
                   <p className="c7ncd-guide-popover-content-item-left-stepName">{item.stepName}</p>
                   <p className="c7ncd-guide-popover-content-item-left-description">
                     {item.description}
-                    <span>指引文档</span>
+                    <span
+                      onClick={() => {
+                        window.open(item.docUrl);
+                      }}
+                    >指引文档</span>
                   </p>
                 </div>
-                <Button>
+                <Button
+                  onClick={() => {
+                    if (item.pageUrl) {
+                      this.props.history.push(item.pageUrl);
+                    }
+                  }}
+                >
                   去设置
                 </Button>
               </div>
