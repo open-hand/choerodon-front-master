@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable react/no-danger */
 import React, { Component } from 'react';
+import { createPortal } from 'react-dom';
 import TimeAgo from 'timeago-react';
 import { withRouter } from 'react-router-dom';
 import onClickOutside from 'react-onclickoutside';
@@ -60,7 +61,7 @@ class RenderPopoverContentClass extends Component {
       </>
     );
     return (
-      <div className={siderClasses}>
+      createPortal(<div className={siderClasses}>
         <div className={`${prefixCls}-sider-header-wrap no-mr ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
           <div className={`${prefixCls}-sider-header`}>
             <div className={`${prefixCls}-sider-header-title`}>
@@ -92,7 +93,8 @@ class RenderPopoverContentClass extends Component {
         <RenderPopoverContentDetailClass
           handleVisibleChange={this.handleVisibleChange}
         />
-      </div>
+      </div>,
+      document.body)
     );
   }
 }
