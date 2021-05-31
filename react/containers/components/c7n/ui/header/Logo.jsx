@@ -4,7 +4,7 @@ import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
 import useTheme from '@/hooks/useTheme';
-import favicon from '../../../../images/favicon.png';
+import favicon from '../../../../images/favicon.svg';
 
 const PREFIX_CLS = 'c7n';
 const prefixCls = `${PREFIX_CLS}-boot-header-logo`;
