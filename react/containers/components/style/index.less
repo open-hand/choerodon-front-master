@@ -147,7 +147,9 @@ body:not([data-theme="theme4"]) {
 
 // 覆盖table header中问号提示icon和颜色
 .@{c7n-pro-prefix}-table .@{c7n-pro-prefix}-table-thead > tr > th .c7n-pro-table-cell-inner .c7n-pro-table-help-icon {
-  color: var(--help-icon-color);
+  color: var(--help-icon-color) !important;
+  font-size: .14rem;
+  font-weight: normal;
 
   &:before {
     content: "\e887";
