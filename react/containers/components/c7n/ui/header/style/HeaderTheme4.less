@@ -3,11 +3,16 @@
   &-wrap {
     &-theme4 {
       background-color: #fff !important;
-      border: 1px solid #D9E6F2;
       box-shadow: 0 2px 4px 0 rgba(15, 19, 88, 0.12);
       z-index: 2;
       .c7n-btn.c7n-btn.c7n-btn-flat.c7n-btn-flat:not(.c7n-btn-circle,.c7n-btn-dashed):enabled:focus, .c7n-btn.c7n-btn.c7n-btn-flat.c7n-btn-flat:not(.c7n-btn-circle,.c7n-btn-dashed):enabled:active {
         background-color: rgba(104, 111, 255, 0.05);
+      }
+      .theme4-headerButton:hover:not(:active)  {
+        span {
+          color: var(--primary-color) !important;
+        }
+        box-shadow: unset !important;
       }
     }
   }
