@@ -9,12 +9,21 @@
         background-color: rgba(104, 111, 255, 0.05);
         border-radius: unset;
       }
-      .theme4-headerButton:hover:not(:active)  {
+      .theme4-headerButton:hover  {
         border-radius: unset !important;
         span {
           color: var(--primary-color) !important;
         }
         box-shadow: unset !important;
+        &:after {
+          width: 100%;
+          height: 3px;
+          background: #6887E8;
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
       }
     }
   }
