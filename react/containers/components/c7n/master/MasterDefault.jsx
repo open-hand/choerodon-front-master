@@ -5,7 +5,7 @@ import {Icon, Popover, Spin, Message} from 'choerodon-ui';
 import { observer as liteObserver } from 'mobx-react-lite';
 import queryString from 'query-string';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
-import { message, Button, Modal, DataSet, Table } from 'choerodon-ui/pro';
+import { message, Button, Modal, DataSet, Table, Tooltip } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import MasterServices from "@/containers/components/c7n/master/services";
 import axios from '../tools/axios';
@@ -264,7 +264,7 @@ class Masters extends Component {
           Modal.open({
             maskClosable: false,
             key: Modal.key(),
-            title: 'Saas组织升级中',
+            title: 'SaaS组织升级中',
             children: `您所在组织的组织所有者${realName}(${email})升级组织后尚未确认组织用户，请联系组织所有者确认。`,
             footer: null,
           })
@@ -468,15 +468,18 @@ class Masters extends Component {
                     >指引文档</span>
                   </p>
                 </div>
-                <Button
-                  onClick={() => {
-                    if (item.pageUrl) {
-                      this.props.history.push(item.pageUrl);
-                    }
-                  }}
-                >
-                  去设置
-                </Button>
+                <Tooltip title={!item.permitted && '暂无目标页面权限'}>
+                  <Button
+                    disabled={!item.permitted}
+                    onClick={() => {
+                      if (item.pageUrl) {
+                        this.props.history.push(item.pageUrl);
+                      }
+                    }}
+                  >
+                    去设置
+                  </Button>
+                </Tooltip>
               </div>
             ))
           }
