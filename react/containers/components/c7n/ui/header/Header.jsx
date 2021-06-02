@@ -207,15 +207,19 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
               />
               <p className="c7ncd-dropDownPro-popContent-label">星标项目</p>
               {
-                starProject && starProject.map(i => (
+                starProject && starProject.length > 0 ? starProject.map(i => (
                   <p onClick={() => handleClickPopContent(`star_${i.id}`, Ref)} className="c7ncd-dropDownPro-popContent-option">{i.name}</p>
-                ))
+                )) : (
+                  <p className="c7ncd-dropDownPro-popContent-noOption">暂无星标项目</p>
+                )
               }
               <p  className="c7ncd-dropDownPro-popContent-label">最近使用</p>
               {
-                recentUse && recentUse.map(i => (
+                recentUse && recentUse.length > 0 ? recentUse.map(i => (
                   <p onClick={() => handleClickPopContent(`recent_${i.id}`, Ref)} className="c7ncd-dropDownPro-popContent-option">{i.name}</p>
-                ))
+                )) : (
+                  <p className="c7ncd-dropDownPro-popContent-noOption">暂无最近使用项目</p>
+                )
               }
               <p onClick={() => handleGoAllProject(Ref)} className="c7ncd-dropDownPro-popContent-allPro">
                 <div>
