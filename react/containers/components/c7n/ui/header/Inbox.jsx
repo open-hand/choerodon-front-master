@@ -135,7 +135,7 @@ class RenderPopoverContentDetailClass extends Component {
       return null;
     }
     return (
-      <div className={siderClasses} style={{ zIndex: '20' }}>
+      <div className={siderClasses}>
         <div className={`${prefixCls}-sider-header-wrap`}>
           <div className="header">
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -359,7 +359,7 @@ export default class Inbox extends Component {
                       <a role="none" onClick={(e) => this.handleMessageTitleClick(e, data)} style={{ marginLeft: 10 }}>{title}</a>
                     </span>
                     <div style={{
-                      display: 'flex', alignItems: 'center', flexShrink: 0, color: 'rgba(0, 0, 0, 0.54)',
+                      display: 'flex', alignItems: 'center', flexShrink: 0, color: 'var(--text-color4)',
                     }}
                     >
                       {

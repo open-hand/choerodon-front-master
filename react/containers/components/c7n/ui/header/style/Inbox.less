@@ -40,7 +40,7 @@
       .c7n-tabs-nav .c7n-tabs-tab {
         font-weight: 500;
         height: 48.5px;
-        color: rgba(0, 0, 0, 0.65);
+        color: var(--text-color3);
         font-size: 15px;
         &-active {
           color: @primary-color;
@@ -52,7 +52,7 @@
       .c7n-tabs-extra-content {
         margin-right: 16px;
         > .c7n-btn-circle {
-          color: rgba(0, 0, 0, 0.65);
+          color: var(--text-color3);
           margin-top: 9px;
           > i {
             font-size: 20px;
@@ -66,7 +66,7 @@
         margin-bottom: 2px !important;
         > a {
           font-size: 13px;
-          color: #000;
+          color: var(--text-color);
           text-decoration: none;
           font-weight: 500;
         }
@@ -75,7 +75,7 @@
         width: 190px;
         text-overflow: ellipsis;
         white-space: nowrap;
-        color: #000;
+        color: var(--text-color);
         > p:nth-child(1) {
           overflow: hidden;
           width: 216px;
@@ -98,7 +98,7 @@
         padding: 12px 0;
       }
       span {
-        color: rgba(0, 0, 0, 0.54);
+        color: var(--text-color4);
         font-size: 16px;
       }
 
@@ -225,7 +225,7 @@
     .header {
       // height: 60px;
       margin-bottom: 20px;
-      color: rgba(0, 0, 0, .87);
+      color: var(--text-color2);
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -250,7 +250,7 @@
       }
 
       .info {
-        color: rgba(0, 0, 0, .65);
+        color: var(--text-color3);
         font-size: 13px;
         line-height: 20px;
         margin-bottom: 16px;
@@ -259,7 +259,7 @@
       }
 
       .content {
-        color: rgba(0, 0, 0, .87);
+        color: var(--text-color2);
         font-size: 14px;
         line-height: 20px;
         background: #f8f8f8;
@@ -320,7 +320,7 @@
         padding-bottom: 9.5px;
         border-bottom: 1px solid rgba(0,0,0,.2);
         .backlog-checkbox {
-          color: #000;
+          color: var(--text-color);
           font-size: 0.13rem;
           float: right;
           margin-right: 0.16rem;
@@ -342,7 +342,7 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
-          color: #000;
+          color: var(--text-color);
           margin-bottom: 20px;
           margin-right: .24rem;
           .msgTitle {
@@ -365,6 +365,10 @@
             font-size: 13px;
             line-height: 20px;
           }
+        }
+
+        &-loading .c7n-spin-dot {
+          margin: -0.25rem !important;
         }
       }
     }
@@ -423,7 +427,7 @@
           line-height: 21px;
           p {
             margin: 0;
-            color: rgba(0, 0, 0, 0.87);
+            color: var(--text-color2);
             font-size: 13px;
           }
         }
@@ -432,7 +436,7 @@
           display: flex;
           justify-content: flex-end;
           margin-top: 10px;
-          color: rgba(0, 0, 0, 0.54);
+          color: var(--text-color4);
           font-size: 12px;
           line-height: 21px;
         }
@@ -559,7 +563,7 @@
       display: inline-block;
       width: 112px;
       font-size: 14px;
-      color: #000;
+      color: var(--text-color);
       line-height: 20px;
     }
   }
