@@ -5,3 +5,15 @@
   dependencies:
     styled-components "^5.2.0"
     tinycolor2 "^1.4.2"
+    
+"@hzero-front-ui/themes@3.0.0-alpha.18":
+  version "3.0.0-alpha.18"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/themes/-/themes-3.0.0-alpha.18.tgz#7d7193f665d79f164078f569a185591462d1929c"
+  integrity sha512-VuH7Y4sgVrxW/ZZh2ql7RUpA/Lv2S1jIiq48Bg0AmtzdJECeWozJg5tpHCpA03wa0Tyurh+4ilYrw/9SlDZpig==
+  dependencies:
+    "@hzero-front-ui/font" "^3.0.0-alpha.3"
+
+"@hzero-front-ui/c7n-ui@3.0.0-alpha.23":
+  version "3.0.0-alpha.23"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/c7n-ui/-/c7n-ui-3.0.0-alpha.23.tgz#02d0fea59eed9f2e1e57c0c189988f1d26f433fc"
+  integrity sha512-CP7cd7+RCB5TcV368lvhUZ9DCnhGkRzfSw+uUW7vpHOqJA1L495RQ09ZBP1k6O2Vj3exDZ9iLum81uvJ3pNkfA==
