@@ -4,7 +4,7 @@ import queryString from 'query-string';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { observer, Provider } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
-import { Modal } from 'choerodon-ui/pro';
+import { Modal, ModalProvider } from 'choerodon-ui/pro';
 import _ from 'lodash';
 import {
   authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
@@ -225,17 +225,19 @@ export default class Index extends React.Component {
       <QueryClientProvider client={queryClient}>
         <UILocaleProviderAsync>
           <IntlProviderAsync>
-            <Provider {...stores}>
-              <Switch>
-                <Route
-                  path="/"
-                >
-                  <Container>
-                    <Master AutoRouter={this.props.AutoRouter} />
-                  </Container>
-                </Route>
-              </Switch>
-            </Provider>
+            <ModalProvider location={window.location}>
+              <Provider {...stores}>
+                <Switch>
+                  <Route
+                    path="/"
+                  >
+                    <Container>
+                      <Master AutoRouter={this.props.AutoRouter} />
+                    </Container>
+                  </Route>
+                </Switch>
+              </Provider>
+            </ModalProvider>
           </IntlProviderAsync>
         </UILocaleProviderAsync>
       </QueryClientProvider>
