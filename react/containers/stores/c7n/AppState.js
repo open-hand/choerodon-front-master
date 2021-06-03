@@ -48,30 +48,32 @@ class AppState {
   getProjects = () => {
     let p1Data;
     let p2Data;
-    const p1 = new Promise((resolve) => {
-      axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`).then((res) => {
-        const data = res.splice(0, 3).map(i => ({
-          ...i,
-          ...i.projectDTO,
-        }));
-        this.setRecentUse(data);
-        p1Data = data;
-        resolve('1');
-      })
-    });
-    const p2 = new Promise((resolve) => {
-      axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`).then((res) => {
-        const data = res.splice(0, 6);
-        this.setStarProject(data);
-        p2Data = data;
-        resolve('2');
+    if (this.currentMenuType.organizationId) {
+      const p1 = new Promise((resolve) => {
+        axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`).then((res) => {
+          const data = res.splice(0, 3).map(i => ({
+            ...i,
+            ...i.projectDTO,
+          }));
+          this.setRecentUse(data);
+          p1Data = data;
+          resolve('1');
+        })
       });
-    })
-    Promise.all([p1, p2]).then((result) => {
-      this.setCurrentDropDown(p1Data, p2Data);
-    }).catch((error) => {
-      console.log(error)
-    })
+      const p2 = new Promise((resolve) => {
+        axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`).then((res) => {
+          const data = res.splice(0, 6);
+          this.setStarProject(data);
+          p2Data = data;
+          resolve('2');
+        });
+      })
+      Promise.all([p1, p2]).then((result) => {
+        this.setCurrentDropDown(p1Data, p2Data);
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
   }
 
   setCurrentDropDown = (data1, data2) => {
