@@ -78,12 +78,12 @@ class RenderPopoverContentClass extends Component {
                 tab={<span><Badge count={getUnreadMsg.filter((v) => !v.read).length} style={{ transform: 'scale(.75)' }}>消息</Badge></span>}
                 key="1"
               >
-                <Spin spinning={inboxLoading}>
+                <Spin spinning={inboxLoading} className={`${prefixCls}-sider-header-loading`}>
                   {renderMessages(getUnreadMsg)}
                 </Spin>
               </TabPane>
               <TabPane tab="公告" key="3">
-                <Spin spinning={inboxLoading}>
+                <Spin spinning={inboxLoading} className={`${prefixCls}-sider-header-loading`}>
                   {renderMessages(getUnreadOther)}
                 </Spin>
               </TabPane>
