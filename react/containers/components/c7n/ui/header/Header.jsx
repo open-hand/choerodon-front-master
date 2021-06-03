@@ -27,6 +27,7 @@ import findFirstLeafMenu from "@/containers/components/util/findFirstLeafMenu";
 import {historyPushMenu} from "@/utils";
 import queryString from "query-string";
 import getSearchString from "@/containers/components/c7n/util/gotoSome";
+import { useDebounce } from 'ahooks';
 
 const prefixCls = 'c7n-boot-header';
 
@@ -38,6 +39,9 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   // const [dropDownPro, setDropDownPro] = useState(undefined);
 
   const Ref = useRef();
+
+  const [projectFilter, setProjectFilter] = useState('');
+  const debouncedFilter = useDebounce(projectFilter, { wait: 500 });
 
   function handleClickProject(data) {
     const {
@@ -158,6 +162,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   } = props;
 
   const handleClickPopContent = (value) => {
+    setProjectFilter('');
     const { AppState } = props;
     if (value.includes('star')) {
       const starItem = AppState.getStarProject.find(i => String(i.id) === String(value.split('_')[1]));
@@ -192,22 +197,30 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     const recentUse = AppState.getRecentUse;
     return (
       <Select
-        allowClear={false}
+        clearButton={false}
         ref={Ref}
+        searchable
         value={AppState.getDropDownPro}
-        onChange={() => {}}
+        onInput={(e) => {
+          setProjectFilter(e.target.value);
+        }}
+        onBlur={() => {
+          setProjectFilter('');
+        }}
         placeholder="请选择项目"
         popupContent={(props) => {
+          const filterStarProject = starProject.filter(i => i.name.includes(debouncedFilter))
+          const filterRecentUser = recentUse.filter(i => i.name.includes(debouncedFilter))
           return (
             <div className="c7ncd-dropDownPro-popContent">
-              <TextField
-                placeholder="请搜索"
-                suffix={<Icon type="search" />}
-                className="c7ncd-dropDownPro-popContent-search"
-              />
+              {/*<TextField*/}
+              {/*  placeholder="请搜索"*/}
+              {/*  suffix={<Icon type="search" />}*/}
+              {/*  className="c7ncd-dropDownPro-popContent-search"*/}
+              {/*/>*/}
               <p className="c7ncd-dropDownPro-popContent-label">星标项目</p>
               {
-                starProject && starProject.length > 0 ? starProject.map(i => (
+                filterStarProject && filterStarProject.length > 0 ? filterStarProject.map(i => (
                   <p onClick={() => handleClickPopContent(`star_${i.id}`, Ref)} className="c7ncd-dropDownPro-popContent-option">{i.name}</p>
                 )) : (
                   <p className="c7ncd-dropDownPro-popContent-noOption">暂无星标项目</p>
@@ -215,7 +228,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
               }
               <p  className="c7ncd-dropDownPro-popContent-label">最近使用</p>
               {
-                recentUse && recentUse.length > 0 ? recentUse.map(i => (
+                filterRecentUser && filterRecentUser.length > 0 ? filterRecentUser.map(i => (
                   <p onClick={() => handleClickPopContent(`recent_${i.id}`, Ref)} className="c7ncd-dropDownPro-popContent-option">{i.name}</p>
                 )) : (
                   <p className="c7ncd-dropDownPro-popContent-noOption">暂无最近使用项目</p>
