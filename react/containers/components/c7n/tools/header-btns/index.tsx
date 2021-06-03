@@ -77,7 +77,8 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         ...props
       }, index:number) => {
         let btn:React.ReactNode;
-        const transColor = index === 0 && Number(key) === minGroupKey ? 'primary' as ButtonColor : color;
+        const isRefreshIcon = icon === 'refresh' && !name;
+        const transColor = index === 0 && Number(key) === minGroupKey && !isRefreshIcon ? 'primary' as ButtonColor : color;
         if (actions) {
           const { data, ...restActionsProps } = actions;
           btn = (
