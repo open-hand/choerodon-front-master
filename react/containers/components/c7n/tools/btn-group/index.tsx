@@ -26,6 +26,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     trigger = 'click',
     display = true,
     name,
+    disabled: triggerBtnDisabled = false,
   } = props;
 
   const [popverVisible, setVisible] = useState<boolean>(false);
@@ -97,6 +98,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
           className={dropdownBtnCls}
           color={color as ButtonColor}
           icon={icon}
+          disabled={triggerBtnDisabled}
         >
           <span>{name}</span>
           <Icon className={dropDownIconCls} type="expand_more" />
