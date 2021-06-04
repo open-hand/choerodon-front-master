@@ -11,6 +11,7 @@ export interface CustomBtnGroupProps {
   btnItems?: itemsProps[],
   placement?: TooltipPlacement,
   trigger?: 'click' | 'hover' | 'focus' | 'contextMenu'
+  disabled?: boolean
 }
 
 export interface itemsProps extends ButtonProps {

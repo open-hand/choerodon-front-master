@@ -102,6 +102,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
               color={transColor}
               icon={icon}
               name={name}
+              disabled={disabled}
             />
           );
         } else if (iconOnly) {
