@@ -74,6 +74,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       ]);
       const isSenior = createProjectStore.getIsSenior;
       if (projectData && projectData.categories && projectData.categories.length) {
+        const isBeforeProgram = (projectData.beforeCategory || '').includes(categoryCodes.program);
+        const isBeforeAgile = (projectData.beforeCategory || '').includes(categoryCodes.agile);
         let isProgram = false;
         let isProgramProject = false;
         let isRequire = false;
@@ -103,24 +105,22 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           }
           switch (currentCode) {
             case categoryCodes.program:
-              if ((projectData.beforeCategory || '').includes(categoryCodes.program)) {
-                categoryRecord.setState('isProgram', true);
-              }
-              if (!isSenior || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))) {
+              categoryRecord.setState('isProgram', isBeforeProgram);
+              if (!isSenior || isBeforeAgile || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))) {
                 categoryRecord.setState('disabled', true);
               }
               break;
             case categoryCodes.agile:
-              if ((projectData.beforeCategory || '').includes(categoryCodes.agile)) {
-                categoryRecord.setState('isAgile', true);
-              }
-              if (isProgramProject) {
-                categoryRecord.setState('disabled', true);
-              }
+              categoryRecord.setState({
+                isAgile: isBeforeAgile,
+                disabled: isBeforeProgram || isProgramProject,
+              });
               break;
             case categoryCodes.require:
-              categoryRecord.setState('isRequire', isRequire);
-              categoryRecord.setState('disabled', !isSenior || (!isProgram && !isAgile));
+              categoryRecord.setState({
+                isRequire,
+                disabled: !isSenior || (!isProgram && !isAgile),
+              });
               break;
             case categoryCodes.operations:
               categoryRecord.setState('disabled', !isSenior);
