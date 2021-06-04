@@ -169,11 +169,13 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
       AppState.setDropDownPro(`项目: ${starItem.name}`);
       handleClickProject(starItem);
       Ref.current.setPopup(false);
+      Ref.current.text = `项目: ${starItem.name}`;
     } else {
       const recentItem = AppState.getRecentUse.find(i => String(i.id) === String(value.split('_')[1]));
       AppState.setDropDownPro(`项目: ${recentItem.name}`);
       handleClickProject(recentItem);
       Ref.current.setPopup(false);
+      Ref.current.text = `项目: ${recentItem.name}`;
     }
   }
 
@@ -197,6 +199,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     const recentUse = AppState.getRecentUse;
     return (
       <Select
+        valueChangeAction="input"
         clearButton={false}
         ref={Ref}
         searchable
