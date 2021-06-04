@@ -40,7 +40,7 @@ const MyHandlerDataSet = ({
           }
           const tempObj = {
             ...res,
-            content: tempArr,
+            content: tempArr || [],
             selectedProjectId,
           };
           cacheStore.setMyHandlerIssues(tempObj);

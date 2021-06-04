@@ -5,12 +5,16 @@ import ResponsiveReactGridLayout from 'react-grid-layout';
 import {
   map, get, filter,
 } from 'lodash';
+import ResizeObserver from 'resize-observer-polyfill';
 import { observer } from 'mobx-react-lite';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 
 import { Modal } from 'choerodon-ui/pro';
-import { Page } from '../../../../../index';
+
+import HeaderButtons from '@/containers/components/c7n/tools/header-btns';
+import { Page, Header } from '../../../../../index';
+
 import StarTargetPro from './components/StarTargetPro';
 import SelfIntro from './components/SelfIntro';
 import ServiceList from './components/ServiceList';
@@ -30,6 +34,7 @@ import ExecutionQuestions from './components/question-execution';
 import './WorkBench.less';
 import SelfCode from './components/SelfCode';
 import MyHandler from './components/my-handler';
+import BtnGroup from '../../tools/btn-group';
 
 let observerLayout;
 
@@ -65,6 +70,7 @@ const WorkBench = () => {
     componentsDs,
     history,
     allowedModules,
+    AppState,
   } = useWorkBenchStore();
 
   const {
@@ -74,6 +80,7 @@ const WorkBench = () => {
   const [layOutWidth, setWidth] = useState(0);
 
   useEffect(() => {
+    AppState.getProjects();
     if (!observerLayout) {
       const domTem = document.querySelector(`.${prefixCls}-container`);
       if (domTem) {
@@ -111,7 +118,7 @@ const WorkBench = () => {
     return false;
   }
 
-  function onLayoutChange(layouts, tempLayouts) {
+  function onLayoutChange(layouts) {
     componentsDs.loadData(layouts);
   }
 
@@ -186,6 +193,68 @@ const WorkBench = () => {
 
   return (
     <Page className={`${prefixCls}`}>
+      {/* <Header>
+        <HeaderButtons items={[
+          {
+            icon: 'info',
+            name: 'test',
+            groupBtnItems: [
+              {
+                name: 'test',
+                handler: () => {
+                  Modal.open({
+                    key: Modal.key(),
+                    title: 'dsadas',
+                    children: ' sadasdas',
+                  });
+                },
+                tooltipsConfig: {
+                  title: 'hell',
+                },
+              },
+              {
+                name: 'test2',
+                handler: () => {
+                  Modal.open({
+                    key: Modal.key(),
+                    title: 'dsadas',
+                    children: ' sadasdas',
+                  });
+                },
+                tooltipsConfig: {
+                  title: 'hell',
+                },
+              },
+            ],
+          },
+          {
+            icon: 'info',
+            name: 'asdas',
+            groupBtnItems: [
+              {
+                name: 'test',
+                handler: () => alert('dsada'),
+                tooltipsConfig: {
+                  title: 'hell',
+                },
+              },
+            ],
+          },
+          {
+            name: 'asdas',
+            groupBtnItems: [
+              {
+                name: 'test',
+                handler: () => alert('dsada'),
+                tooltipsConfig: {
+                  title: 'hell',
+                },
+              },
+            ],
+          },
+        ]}
+        />
+      </Header> */}
       <div
         className={`${prefixCls}-container`}
       >

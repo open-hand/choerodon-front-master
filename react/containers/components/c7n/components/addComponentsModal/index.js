@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './index.less';
 
 import {
-  get, includes, map,
+  get, xor, map, without, difference,
 } from 'lodash';
 import { Icon } from 'choerodon-ui';
 import classnames from 'classnames';
@@ -16,18 +16,21 @@ const AddModal = (props) => {
     existTypes,
     mappings,
     isProjects,
-    // modules,
   } = props;
 
   const subPrefix = 'c7ncd-workbench-addModal';
 
   const [activeItem, setActiveItem] = useState(groupMappings(mappings)[0]);
   const [dis, setDis] = useState(0);
-  const [seletedComponents, setSelectedComponents] = useState([]);
+  const [seletedComponents, setSelectedComponents] = useState(existTypes);
 
   useEffect(() => {
-
-  }, []);
+    // console.log(mappings, existTypes);
+    console.log(without(seletedComponents, ...existTypes));
+    const newTypeArr = without(seletedComponents, ...existTypes);
+    const deleteArr = difference(existTypes, seletedComponents);
+    console.log(newTypeArr, deleteArr);
+  }, [seletedComponents]);
 
   function handleClick(key, index) {
     setActiveItem(key);
@@ -67,19 +70,17 @@ const AddModal = (props) => {
       }
       const type = get(item, 'type');
       const hasItem = seletedComponents.includes(type);
-      const isExist = includes(existTypes, type);
       const itemsClassname = classnames({
         [`${subPrefix}-right-item`]: true,
-        [`${subPrefix}-right-item-selected`]: !isExist && hasItem,
+        [`${subPrefix}-right-item-selected`]: hasItem,
       });
       return (
         <div
           className={itemsClassname}
           key={type}
           role="none"
-          onClick={() => !isExist && handleSelect(type)}
+          onClick={() => handleSelect(type)}
         >
-          {isExist && <div className={`${subPrefix}-right-item-disabled`} />}
           <div className={`${subPrefix}-right-item-img`}>
             <img src={item.img} alt="" />
             <div
@@ -114,7 +115,9 @@ const AddModal = (props) => {
   };
 
   modal.handleOk(() => {
-    addComponent(seletedComponents);
+    const newTypeArr = without(seletedComponents, ...existTypes);
+    const deleteArr = difference(existTypes, seletedComponents);
+    addComponent(newTypeArr, deleteArr);
     return true;
   });
 

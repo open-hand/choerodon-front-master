@@ -13,6 +13,12 @@ function getDefaultLanguage() {
 }
 
 class AppState {
+  @observable starProject = [];
+
+  @observable recentUse = [];
+
+  @observable dropDownPro = undefined;
+
   @observable currentTheme = localStorage.getItem('theme') || '';
 
   @observable currentProject = null;
@@ -38,6 +44,81 @@ class AppState {
   @observable projectCategorys = {};
 
   @observable canShowRoute = false;
+
+  getProjects = () => {
+    let p1Data;
+    let p2Data;
+    if (this.currentMenuType.organizationId) {
+      const p1 = new Promise((resolve) => {
+        axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`).then((res) => {
+          const data = res.splice(0, 3).map(i => ({
+            ...i,
+            ...i.projectDTO,
+          }));
+          this.setRecentUse(data);
+          p1Data = data;
+          resolve('1');
+        })
+      });
+      const p2 = new Promise((resolve) => {
+        axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`).then((res) => {
+          const data = res.splice(0, 6);
+          this.setStarProject(data);
+          p2Data = data;
+          resolve('2');
+        });
+      })
+      Promise.all([p1, p2]).then((result) => {
+        this.setCurrentDropDown(p1Data, p2Data);
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+  }
+
+  setCurrentDropDown = (data1, data2) => {
+    const params = new URLSearchParams(window.location.hash.split('?')[1]);
+    const type = params.get('type');
+    const id = params.get('id');
+    if (type && type === 'project' && ((data1 && data1.length > 0) || (data2 && data2.length > 0))) {
+      const flag = data1.find(i => String(i.id) === String(id)) || data2.find(i => String(i.id) === String(id));
+      if (flag) {
+        // 最近使用
+        this.setDropDownPro(`项目: ${flag.name}`);
+      } else {
+        this.setDropDownPro(undefined);
+      }
+    } else {
+      this.setDropDownPro(undefined);
+    }
+  }
+
+  @computed
+  get getDropDownPro() {
+    return this.dropDownPro;
+  }
+
+  @action setDropDownPro(data) {
+    this.dropDownPro = data;
+  }
+
+  @computed
+  get getStarProject() {
+    return this.starProject;
+  }
+
+  @computed
+  get getRecentUse() {
+    return this.recentUse;
+  }
+
+  @action setStarProject(data) {
+    this.starProject = data;
+  }
+
+  @action setRecentUse(data) {
+    this.recentUse = data;
+  }
 
   @computed
   get getCanShowRoute() {
@@ -221,25 +302,50 @@ class AppState {
     return this.deployServices.slice();
   }
 
-  loadUserInfo = () => axios.get('iam/choerodon/v1/users/self').then((res) => {
+  loadUserInfo = () => axios({
+    method: 'get',
+    url: 'iam/choerodon/v1/users/self',
+    routeChangeCancel: false,
+    enabledCancelMark: false,
+  }).then((res) => {
     res = {
       ...res,
-      organizationName: res.tenantName,
-      organizationCode: res.tenantNum,
+      organizationName: res?.tenantName,
+      organizationCode: res?.tenantNum,
     };
     this.setUserInfo(res);
     return res;
   });
 
-  loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`);
+  loadOrgDate = (email) => axios({
+    url: `/iam/choerodon/v1/organizations/daysRemaining?email=${email}`,
+    method: 'get',
+    routeChangeCancel: false,
+    enabledCancelMark: false,
+  });
 
-  loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting');
+  loadSiteInfo = () => axios({
+    url: '/iam/choerodon/v1/system/setting',
+    method: 'get',
+    routeChangeCancel: false,
+    enabledCancelMark: false,
+  });
 
-  checkEnterpriseInfo = () => axios.get('/iam/choerodon/v1/enterprises/default');
+  checkEnterpriseInfo = () => axios({
+    url: '/iam/choerodon/v1/enterprises/default',
+    method: 'get',
+    routeChangeCancel: false,
+    enabledCancelMark: false,
+  });
 
   loadModules = async () => {
     try {
-      const res = await axios.get('/hadm/choerodon/v1/services/model');
+      const res = await axios({
+        url: '/hadm/choerodon/v1/services/model',
+        method: 'get',
+        routeChangeCancel: false,
+        enabledCancelMark: false,
+      });
       if (res && !res.failed) {
         this.modules = res;
       }
@@ -250,7 +356,12 @@ class AppState {
 
   loadDeployServices = async () => {
     try {
-      const res = await axios.get('/hadm/choerodon/v1/services');
+      const res = await axios({
+        url: '/hadm/choerodon/v1/services',
+        method: 'get',
+        routeChangeCancel: false,
+        enabledCancelMark: false,
+      });
       if (res && !res.failed) {
         this.deployServices = res;
       }

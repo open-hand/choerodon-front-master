@@ -10,6 +10,8 @@ import classNames from 'classnames';
 import forEach from 'lodash/forEach';
 import getSearchString from '../../util/gotoSome';
 
+import './headerSettingTheme4.less';
+
 const iconStyle = { marginLeft: 0, marginRight: 0 };
 const SERVICE_CODE = {
   knowledge: 'knowledgebase-service',
@@ -19,15 +21,15 @@ const SERVICE_CODE = {
 const Setting = ({
   AppState, HeaderStore, MenuStore, history, ...props
 }) => {
-  const theme = AppState.getCurrentTheme;
+  const theme = 'theme4';
   const { currentServices } = AppState;
 
   const LI_MAPPING = useMemo(() => {
     const mapping = [
       { title: '工作台', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/workbench' },
-      {
-        title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects', style: { marginLeft: 3 },
-      },
+      // {
+      //   title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects', style: { marginLeft: 3 },
+      // },
     ];
     forEach(currentServices, ({ serviceCode }) => {
       switch (serviceCode) {
@@ -86,9 +88,9 @@ const Setting = ({
               key={list.activePath}
               className={classNames({
                 [`block ${extraCls(list)}`]: true,
-                'theme4-headerButton': AppState.getCurrentTheme === 'theme4',
+                'theme4-headerButton': true,
               })}
-              {...AppState.getCurrentTheme === 'theme4' && index === 0 ? {
+              {...index === 0 ? {
                 style: {
                   marginLeft: '-8px',
                 },
@@ -97,9 +99,9 @@ const Setting = ({
               type="primary"
               funcType="flat"
             >
-              <Icon type={list.icon} style={iconStyle} />
+              {/*<Icon type={list.icon} style={iconStyle} />*/}
               <span
-                {...AppState.getCurrentTheme === 'theme4' && list.style ? {
+                {...true && list.style ? {
                   style: list.style,
                 } : {}}
               >

@@ -1,6 +1,6 @@
 import React, { useCallback, Fragment } from 'react';
 import {
-  TextField, Button, Pagination, Tooltip, Modal, Icon, Spin,
+  TextField, Button, Pagination, Tooltip, Modal, Icon, Spin
 } from 'choerodon-ui/pro';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
@@ -410,8 +410,10 @@ export default observer(() => {
         {renderProjects()}
         {ProjectsProUseStore.getAllProjects.length > 0 && (
           <Pagination
-            showSizeChanger
-            showTotal
+            showSizeChangerLabel={false}
+            showTotal={false}
+            showPager={true}
+            showQuickJumper={true}
             onChange={handleChangePagination}
             page={ProjectsProUseStore.getPagination.page}
             total={ProjectsProUseStore.getPagination.total}

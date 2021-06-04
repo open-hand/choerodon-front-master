@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128px" height="79px" viewBox="0 0 128 79" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>个人工作量统计</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="120" height="70.4134969" rx="4"></rect>
+        <filter x="-5.4%" y="-7.8%" width="110.8%" height="118.5%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.0549019608   0 0 0 0 0.11372549   0 0 0 0 0.501960784  0 0 0 0.16 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="项目概览-添加卡片" transform="translate(-874.000000, -1863.000000)">
+            <g id="编组-37" transform="translate(698.000000, 0.000000)">
+                <g id="编组-33" transform="translate(170.000000, 107.000000)">
+                    <g id="编组-35备份-4" transform="translate(0.000000, 1758.315951)">
+                        <g id="个人工作量统计" transform="translate(10.000000, 0.684049)">
+                            <g id="矩形">
+                                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                            </g>
+                            <g id="编组-10" transform="translate(18.000000, 11.735583)">
+                                <polygon id="矩形" fill-opacity="0.5" fill="#00D2C1" points="0 27.7355828 8 27.7355828 8 48.0092025 0 48.0092025"></polygon>
+                                <rect id="矩形" fill-opacity="0.5" fill="#C0CBD4" x="0" y="11.7355828" width="8" height="16"></rect>
+                                <rect id="矩形备份-11" fill-opacity="0.5" fill="#C0CBD4" x="19" y="7.73558282" width="8" height="20"></rect>
+                                <polygon id="矩形" fill-opacity="0.5" fill="#00D2C1" points="19 27.7355828 27 27.7355828 27 48.1337423 19 48.1337423"></polygon>
+                                <rect id="矩形" fill="#7FE8E0" x="38" y="42.0092025" width="8" height="6"></rect>
+                                <polygon id="矩形" fill="#DFE5E9" points="38 34.1398773 46 34.1398773 46 42.0092025 38 42.0092025"></polygon>
+                                <rect id="矩形" fill="#7FE8E0" x="57" y="36.0092025" width="8" height="12"></rect>
+                                <rect id="矩形" fill="#DFE5E9" x="57" y="20.2705521" width="8" height="16"></rect>
+                                <rect id="矩形" fill="#7FE8E0" x="76" y="22.0092025" width="8" height="26"></rect>
+                                <rect id="矩形" fill="#DFE5E9" x="76" y="0" width="8" height="22"></rect>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

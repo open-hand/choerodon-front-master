@@ -73,3 +73,4 @@ export const RESOURCES_LEVEL = `${process.env.RESOURCES_LEVEL || ''}`;
 export const UI_CONFIGURE = `${process.env.UI_CONFIGURE}`;
 export const OUTWARD = `${process.env.OUTWARD || 'undefined'}`;
 export const EXTERNAL_LINK = get('EXTERNAL_LINK', process.env.EXTERNAL_LINK);
+export const SAAS_FEEDBACK = get('SAAS_FEEDBACK', process.env.SAAS_FEEDBACK);

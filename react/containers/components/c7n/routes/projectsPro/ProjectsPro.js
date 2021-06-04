@@ -17,6 +17,7 @@ export default () => {
   } = useProjectsProStore();
 
   useEffect(() => {
+    AppState.getProjects();
     ProjectsProUseStore.axiosGetProjects();
     ProjectsProUseStore.checkCreate(organizationId);
     ProjectsProUseStore.axiosGetStarProjects();

@@ -56,17 +56,26 @@
       }
     }
 
+    &-progress {
+      position: relative;
+      height: 4px;
+      width: 100%;
+      border-radius: 1rem;
+      &-inner {
+        position: absolute;
+        display: inline-block;
+        border-radius: 1rem;
+        height: 100%;
+      }
+    }
+
     each(@set, {
         &-@{key} {
-          bottom: .1rem;
+          background-color: fade(@value, 50%);
 
-          .c7n-progress-inner {
-            background-color: fade(@value, 50%);
-          }
-
-          .c7n-progress-bg,
-          .c7n-progress-success-bg {
+          .c7n-project-overview-sprint-count-issue-progress-inner {
             background-color: fade(@value, 100%);
+
           }
         }
       }

@@ -14,6 +14,9 @@ import useStore from './useStore';
 
 const Store = createContext();
 
+// eslint-disable-next-line no-undef
+const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
+
 export function useCreateProjectProStore() {
   return useContext(Store);
 }
@@ -30,8 +33,10 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     categoryCodes,
   } = props;
 
+  const standardDisable = useMemo(() => [categoryCodes.require, categoryCodes.program, categoryCodes.operations], []);
+
   const createProjectStore = useStore();
-  const categoryDs = useMemo(() => new DataSet(CategoryDataSet({ organizationId, categoryCodes })), [organizationId]);
+  const categoryDs = useMemo(() => new DataSet(CategoryDataSet({ organizationId, categoryCodes, createProjectStore })), [organizationId]);
   const formDs = useMemo(() => new DataSet(FormDataSet({
     organizationId, categoryDs, projectId, categoryCodes,
   })), [organizationId, projectId]);
@@ -46,14 +51,28 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   }, [projectId, organizationId]);
 
   const loadCategory = async () => {
-    await categoryDs.query();
-    const findRecord = categoryDs.find((eachRecord) => eachRecord.get('code') === categoryCodes.require);
-    findRecord && findRecord.setState('disabled', true);
+    await axios.all([
+      categoryDs.query(),
+      HAS_BASE_PRO ? createProjectStore.checkSenior(organizationId) : null,
+    ]);
+    const isSenior = createProjectStore.getIsSenior;
+    categoryDs.forEach((eachRecord) => {
+      const categoryRecord = eachRecord.get('code');
+      if (categoryRecord === categoryCodes.require
+        || (!isSenior && standardDisable.includes(categoryRecord))) {
+        eachRecord.setState('disabled', true);
+      }
+    });
   };
 
   const loadData = async () => {
     try {
-      const [, projectData] = await axios.all([categoryDs.query(), formDs.query()]);
+      const [, projectData] = await axios.all([
+        categoryDs.query(),
+        formDs.query(),
+        HAS_BASE_PRO ? createProjectStore.checkSenior(organizationId) : null,
+      ]);
+      const isSenior = createProjectStore.getIsSenior;
       if (projectData && projectData.categories && projectData.categories.length) {
         const isBeforeProgram = (projectData.beforeCategory || '').includes(categoryCodes.program);
         const isBeforeAgile = (projectData.beforeCategory || '').includes(categoryCodes.agile);
@@ -87,7 +106,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           switch (currentCode) {
             case categoryCodes.program:
               categoryRecord.setState('isProgram', isBeforeProgram);
-              if (isBeforeAgile || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))) {
+              if (!isSenior || isBeforeAgile || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))) {
                 categoryRecord.setState('disabled', true);
               }
               break;
@@ -100,9 +119,11 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
             case categoryCodes.require:
               categoryRecord.setState({
                 isRequire,
-                disabled: !isProgram && !isAgile,
+                disabled: !isSenior || (!isProgram && !isAgile),
               });
               break;
+            case categoryCodes.operations:
+              categoryRecord.setState('disabled', !isSenior);
             default:
               break;
           }
@@ -117,9 +138,11 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     ...props,
     prefixCls: 'c7ncd-project-create',
     intlPrefix: 'c7ncd.project',
+    standardDisable,
     organizationId,
     formDs,
     categoryDs,
+    createProjectStore,
   };
 
   return (

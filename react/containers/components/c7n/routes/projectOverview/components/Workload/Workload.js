@@ -1,7 +1,10 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, {
+  useState, memo, useEffect, useRef,
+} from 'react';
 import {
   Button, Tooltip, Select, Icon,
 } from 'choerodon-ui/pro';
+import { debounce, toLength } from 'lodash';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import { observer } from 'mobx-react-lite';
 import OverviewWrap from '../OverviewWrap';
@@ -10,6 +13,7 @@ import { useWorkloadStore } from './stores';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
 import './index.less';
+import useSize from './useSize';
 
 const { Option } = Select;
 const showIcons = [
@@ -50,6 +54,9 @@ const Workload = observer(() => {
   const clsPrefix = 'c7n-project-overview-workload';
   const [selectOption, setSelectOption] = useState([]);
   const { workloadStore } = useWorkloadStore();
+  const containerRef = useRef();
+  const [rowSize, setRowSize] = useState({ length: 3, height: 135 });
+  const containerSize = useSize(containerRef);
   const { startedRecord, startSprintDs } = useProjectOverviewStore();
   const TimeIcon = () => (
     <div className={`${clsPrefix}-icon-workTime`}>
@@ -110,34 +117,63 @@ const Workload = observer(() => {
   };
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>工作量统计</span>
+      <span>每人每日工作量</span>
       <Tooltip placement="topLeft" arrowPointAtCenter title="统计当前迭代内团队成员每天完成的任务数，完成的故事数量及其对应故事点数量，提出的缺陷数量，解决的缺陷数量，当天工作记录的总工时。">
         <Icon type="help" className={`${clsPrefix}-icon`} />
       </Tooltip>
       {// 若冲刺数据已加载完成 但工作量无数据则不显示
         startSprintDs.status !== 'loading' && workloadStore.getData ? (
-          <Select
-            multiple
-            // searchable
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-            style={{ marginLeft: 24 }}
-            className="c7n-project-overview-SelectTheme"
-            label="选择经办人"
-            placeholder="选择经办人"
-            clearButton
-            maxTagCount={5}
-            popupCls="c7n-project-overview-assignee"
-            popupStyle={{ minWidth: '2rem' }}
-            // defaultValue={selectValue}
-            onChange={handleChangeSelect}
-          >
-            {workloadStore.getAssignee ? workloadStore.getAssignee.map((item, index) => <Option value={index}>{item}</Option>) : ''}
-          </Select>
+
+          <span>
+            <Tooltip title={selectOption.map((option) => workloadStore.getAssignee[option]).join('，')} placement="top">
+              <span>
+                <Select
+                  multiple
+                  // searchable
+                  // getPopupContainer={(triggerNode) => triggerNode.parentNode}
+                  style={{ marginLeft: 24, minWidth: '1.06rem' }}
+                  className="c7n-project-overview-SelectTheme"
+                  label="选择经办人"
+                  placeholder="选择经办人"
+                  clearButton
+                  labelLayout="float"
+                  maxTagCount={5}
+                  popupCls="c7n-project-overview-assignee"
+                  popupStyle={{ minWidth: '2rem' }}
+                  // defaultValue={selectValue}
+                  onChange={handleChangeSelect}
+                >
+                  {workloadStore.getAssignee ? workloadStore.getAssignee.map((item, index) => <Option value={index}>{item}</Option>) : ''}
+                </Select>
+
+              </span>
+            </Tooltip>
+
+          </span>
+
         ) : ''
       }
 
     </div>
   );
+
+  useEffect(() => {
+    const handleResetRowSize = debounce(() => {
+      let newCellSizeHeight = 135;
+      let newRowSizeLength = 3;
+      const initRowSizeHeight = 136; // 初始时实际一行高度
+      const dateTableHeaderHeight = 58; // 表格头部
+      const containerHeaderHeight = 46; // 容器头部（标题）
+      const containerPaddingHeight = 40; // 上下padding
+      let dateTableContentMaxHeight = containerSize.height - containerPaddingHeight - containerHeaderHeight - dateTableHeaderHeight;
+      dateTableContentMaxHeight -= initRowSizeHeight;// 预留一行总和， 减去总和这一行高度
+      newRowSizeLength = Math.floor(dateTableContentMaxHeight / initRowSizeHeight) || 1;
+      dateTableContentMaxHeight -= initRowSizeHeight * newRowSizeLength; // 减去所有展示行的高度
+      newCellSizeHeight += Math.floor((dateTableContentMaxHeight || 0) / (newRowSizeLength + 1));
+      setRowSize({ height: newCellSizeHeight, length: newRowSizeLength });
+    }, 560);
+    handleResetRowSize();
+  }, [containerSize]);
   function render() {
     if (startedRecord) {
       if (workloadStore.getData) {
@@ -145,7 +181,7 @@ const Workload = observer(() => {
           workloadStore.getData.size > 0
             ? (
               <DateTable
-                cellHeight={135}
+                cellHeight={rowSize.height}
                 current={workloadStore.getData.size > 7 ? workloadStore.getData.size - 7 : 0}
                 quickMapData={workloadStore.getData}
                 rowIndex={workloadStore.getAssignee}
@@ -153,6 +189,7 @@ const Workload = observer(() => {
                 columns={workloadStore.getDate}
                 sumArr={workloadStore.getTotal}
                 render={renderCell}
+                rowLength={rowSize.length}
               />
             ) : <EmptyPage content="暂无数据" />
         );
@@ -161,9 +198,10 @@ const Workload = observer(() => {
     } if (startSprintDs.status !== 'loading') {
       return <EmptyPage />; // content="暂无活跃的冲刺"
     }
+    return '';
   }
   return (
-    <OverviewWrap>
+    <OverviewWrap containerRef={containerRef}>
       <OverviewWrap.Header title={renderTitle()} />
       <OverviewWrap.Content>
         {render()}

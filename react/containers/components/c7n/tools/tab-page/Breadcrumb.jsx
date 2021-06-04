@@ -169,7 +169,7 @@ const Breadcrumb = ({
           isTheme4 ? (
             <>
               {renderMenus()}
-              {renderName()}
+              {/*{renderName()}*/}
             </>
           ) : (
             <>

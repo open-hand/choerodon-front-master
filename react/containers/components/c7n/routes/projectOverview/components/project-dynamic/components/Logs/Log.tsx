@@ -114,14 +114,14 @@ const Log: React.FC<LogProps> = ({ log, fieldsMap }) => {
     return fieldConfig && (
     <>
       <span className="c7n-Log-operation">{fieldConfig.create?.operation || '更新'}</span>
-      <span>{issueTypeVO?.name}</span>
+      <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
       <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
-      <span>的</span>
+      <span className="c7n-Log-operation">的</span>
       <span className="c7n-Log-field">{`【${fieldConfig.name}】`}</span>
       {
         !(fieldConfig.create && fieldConfig.create.hidden) && (
           <>
-            <span>为</span>
+            <span className="c7n-Log-operation">为</span>
             <span className="c7n-Log-value">{`【${fieldConfig.create?.transform ? fieldConfig.create.transform({ newString, oldString }) : newString}】`}</span>
           </ >
         )
@@ -140,22 +140,22 @@ const Log: React.FC<LogProps> = ({ log, fieldsMap }) => {
       {
         !(fieldConfig.update && fieldConfig.update.hidden) ? (
           <>
-            <span>将</span>
-            <span>{issueTypeVO?.name}</span>
+            <span className="c7n-Log-operation">将</span>
+            <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
             <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
-            <span>的</span>
+            <span className="c7n-Log-operation">的</span>
             <span className="c7n-Log-field">{`【${fieldConfig.name}】`}</span>
-            <span>由</span>
+            <span className="c7n-Log-operation">由</span>
             <span className="c7n-Log-value">{`【${fieldConfig.update?.transform ? fieldConfig.update.transform({ oldString }) : oldString}】`}</span>
-            <span>改变为</span>
+            <span className="c7n-Log-operation">改变为</span>
             <span className="c7n-Log-value">{`【${fieldConfig.update?.transform ? fieldConfig.update.transform({ newString }) : newString}】`}</span>
           </>
         ) : (
           <>
             <span className="c7n-Log-operation">{fieldConfig.update?.operation || '更新'}</span>
-            <span>{issueTypeVO?.name}</span>
+            <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
             <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
-            <span>的</span>
+            <span className="c7n-Log-operation">的</span>
             <span className="c7n-Log-field">{`【${fieldConfig.name}】`}</span>
           </>
         )
@@ -172,9 +172,9 @@ const Log: React.FC<LogProps> = ({ log, fieldsMap }) => {
     return fieldConfig && (
     <>
       <span className="c7n-Log-operation">{fieldConfig.delete?.operation || '移除'}</span>
-      <span>{issueTypeVO?.name}</span>
+      <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
       <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
-      <span>的</span>
+      <span className="c7n-Log-operation">的</span>
       <span className="c7n-Log-field">{`【${fieldConfig.name}】`}</span>
       {
           !(fieldConfig.delete && fieldConfig.delete.hidden) && (
