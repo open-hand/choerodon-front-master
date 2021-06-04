@@ -25,6 +25,9 @@ const iconMap = {
   'choerodon.code.project.develop': 'kaifa',
   //  测试
   'choerodon.code.project.test': 'ceshi',
+  'choerodon.code.project.demand': 'xuqiu',
+  'choerodon.code.site.infra': 'jichu',
+  'choerodon.code.project.doc': 'wendang',
   // 设置
   'choerodon.code.project.setting': 'shezhi',
   // 组织层管理
