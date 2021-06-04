@@ -240,6 +240,18 @@ const WorkBench = () => {
               },
             ],
           },
+          {
+            name: 'asdas',
+            groupBtnItems: [
+              {
+                name: 'test',
+                handler: () => alert('dsada'),
+                tooltipsConfig: {
+                  title: 'hell',
+                },
+              },
+            ],
+          },
         ]}
         />
       </Header> */}
