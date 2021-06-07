@@ -188,8 +188,9 @@ export default class CommonMenu extends Component {
           </span>
           )}
       >
-        {data.subMenus.filter((v) => v.type !== 'tab').map(
-          (two) => this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed),
+        {data.subMenus.filter((v) => v.type !== 'tab' && v.code !== 'choerodon.code.project.deploy.app-deployment.pipeline').map(
+          (two) =>
+            this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed)
         )}
       </SubMenu>
     );
