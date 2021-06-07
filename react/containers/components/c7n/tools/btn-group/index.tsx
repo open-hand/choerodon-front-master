@@ -6,14 +6,14 @@ import { flatten, map } from 'lodash';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
 import classNames from 'classnames';
 import Permission from '@/containers/components/c7n/tools/permission';
-import { CustomBtnGroupProps, itemsProps } from './interface';
+import { CustomBtnGroupProps, GroupBtnItemProps } from '@/containers/components/c7n/tools/btn-group/interface';
 
 import './index.less';
 
-export {
-  itemsProps as GroupBtnItemProps,
-  CustomBtnGroupProps,
-};
+// export {
+//   itemsProps as GroupBtnItemProps,
+//   CustomBtnGroupProps,
+// };
 
 const prefixCls = 'c7ncd-btnGroup';
 
@@ -35,7 +35,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     if (!btnItems?.length) {
       return null;
     }
-    return map(btnItems, (itemProps:itemsProps, index:number) => {
+    return map(btnItems, (itemProps:GroupBtnItemProps, index:number) => {
       const {
         name: itemName,
         handler,

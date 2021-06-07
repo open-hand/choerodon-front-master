@@ -13,7 +13,8 @@ import './index.less';
 import classNames from 'classnames';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
 import { ButtonProps } from 'choerodon-ui/pro/lib/button/Button';
-import ButtonGroup, { GroupBtnItemProps } from '@/containers/components/c7n/tools/btn-group';
+import ButtonGroup from '@/containers/components/c7n/tools/btn-group';
+import { GroupBtnItemProps } from '@/containers/components/c7n/tools/btn-group/interface';
 import { ToolTipsConfigType } from './interface';
 
 export interface itemsProps extends ButtonProps {

@@ -8,13 +8,13 @@ export interface CustomBtnGroupProps {
   name: string,
   display?:boolean,
   icon?: string,
-  btnItems?: itemsProps[],
+  btnItems?: GroupBtnItemProps[],
   placement?: TooltipPlacement,
   trigger?: 'click' | 'hover' | 'focus' | 'contextMenu'
   disabled?: boolean
 }
 
-export interface itemsProps extends ButtonProps {
+export interface GroupBtnItemProps extends ButtonProps {
   name: string,
   handler?(): void,
   permissions?: Array<string>,
