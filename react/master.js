@@ -62,6 +62,17 @@ export default class Index extends React.Component {
     }
     this.getNotificationPermission();
     this.initTheme();
+    this.syncStyleFix()
+  }
+
+  syncStyleFix = () => {
+    const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+    console.log(isSafari);
+    // 如果是safari浏览器
+    if (isSafari) {
+      document.body.setAttribute('data-browser', ('safari'));
+      import('./containers/components/style/safari.less');
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
