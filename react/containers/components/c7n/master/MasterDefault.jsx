@@ -473,7 +473,7 @@ class Masters extends Component {
                     disabled={!item.permitted}
                     onClick={() => {
                       if (item.pageUrl) {
-                        this.props.history.push(item.pageUrl);
+                        window.open(`${window.location.origin}/#${item.pageUrl}`);
                       }
                     }}
                   >
