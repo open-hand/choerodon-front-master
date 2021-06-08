@@ -28,6 +28,10 @@ const { Column } = Table;
 
 let maxLength = 0;
 
+// 这里是因为在路由改变时 函数中拿到的当前activeMenu可能还未变化
+// 给定一个参数 如果重复调用方法三次还没改变则跳过逻辑
+let activeMenuTimes = 0;
+
 function parseQueryToMenuType(search) {
   const menuType = {};
   if (search) {
@@ -123,11 +127,79 @@ class Masters extends Component {
       guideOpen: false,
       guideContent: undefined,
     }
+    this.handleSetGuideContent(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
     this.judgeIfGetUserCountCheck(nextProps, this.props);
     this.initMenuType(nextProps);
+    this.getGuideContentByLocationChange(nextProps, this.props);
+  }
+
+  handleSetGuideContent = (newProps) => {
+    const activeMenu = newProps.MenuStore.activeMenu;
+    // 如果activeMenu是当前路由
+    if (activeMenu && window.location.hash.includes(activeMenu.route)) {
+      activeMenuTimes = 0;
+      const { projectId, organizationId } = newProps.AppState.menuType;
+      const menuId = activeMenu.id;
+      const search = newProps.location.search
+      const searchParams = new URLSearchParams(search);
+      let data = {};
+      switch (searchParams.get('type')) {
+        case 'project': {
+          data = {
+            menuId: activeMenu.id,
+            orgId: organizationId,
+            proId: projectId,
+          }
+          break;
+        }
+        case 'organization': {
+          data = {
+            menuId: activeMenu.id,
+            orgId: organizationId,
+          }
+          break;
+        }
+        case null: {
+          // 平台层
+          data = {
+            menuId: activeMenu.id,
+            orgId: 0,
+          }
+          break;
+        }
+      }
+      MasterServices.axiosGetGuide(data).then((res) => {
+        this.setState({
+          guideContent: res,
+        });
+      })
+    } else if (activeMenuTimes < 3) {
+      activeMenuTimes += 1;
+      setTimeout(() => {
+        this.handleSetGuideContent(newProps)
+      }, 500)
+    } else {
+      activeMenuTimes = 0
+      this.setState({
+        guideContent: undefined,
+      })
+    }
+  }
+
+  getGuideContentByLocationChange = (newProps, oldProps) => {
+    const { pathname: newPathname, search: newSearch } = newProps.location;
+    const { pathname: oldPathname, search: oldSearch } = oldProps.location;
+    if (newPathname !== oldPathname || newSearch !== oldSearch) {
+      if (this.state.guideOpen) {
+        this.setState({
+          guideOpen: false,
+        })
+      }
+      this.handleSetGuideContent(newProps);
+    }
   }
 
   judgeIfGetUserCountCheck = (newProps, oldProps) => {
@@ -491,62 +563,14 @@ class Masters extends Component {
   handleClickGuide() {
     this.setState({
       guideOpen: !this.state.guideOpen
-    }, () => {
-      if (this.state.guideOpen) {
-        const activeMenu = this.props.MenuStore.activeMenu;
-        // 如果activeMenu是当前路由
-        if (activeMenu && window.location.hash.includes(activeMenu.route)) {
-          const { projectId, organizationId } = this.props.AppState.menuType;
-          const menuId = activeMenu.id;
-          const search = this.props.location.search
-          const searchParams = new URLSearchParams(search);
-          let data = {};
-          switch (searchParams.get('type')) {
-            case 'project': {
-              data = {
-                menuId: activeMenu.id,
-                orgId: organizationId,
-                proId: projectId,
-              }
-              break;
-            }
-            case 'organization': {
-              data = {
-                menuId: activeMenu.id,
-                orgId: organizationId,
-              }
-              break;
-            }
-            case null: {
-              // 平台层
-              data = {
-                menuId: activeMenu.id,
-                orgId: 0,
-              }
-              break;
-            }
-          }
-          MasterServices.axiosGetGuide(data).then((res) => {
-            this.setState({
-              guideContent: res,
-            });
-          })
-        }
-        this.setState({
-          guideContent: undefined,
-        })
-      }
-      this.setState({
-        guideContent: undefined,
-      })
-    })
+    });
   }
 
   /**
    * 指引dom
    */
   renderGuide() {
-    if (HAS_BASE_PRO) {
+    if (HAS_BASE_PRO && this.state.guideContent) {
       return (
         <Popover
           visible={this.state.guideOpen}
