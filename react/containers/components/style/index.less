@@ -1,5 +1,6 @@
 @import '~choerodon-ui/dist/choerodon-ui.less';
 @import '~choerodon-ui/lib/style/themes/default';
+
 :root {
   // 主色
   --primary-color: #5365EA;
@@ -44,6 +45,7 @@
   // 表格调整聚焦背景
   --ck-color-focus-border: var(--primary-color);
 }
+
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -152,11 +154,16 @@ body:not([data-theme="theme4"]) {
   }
 }
 
-.c7n-modal-sidebar .c7n-modal-header{
+.c7n-modal-sidebar .c7n-modal-header {
   border-color: rgb(217, 230, 242);
 }
+
 .c7n-modal-sidebar .c7n-modal-body {
   padding: 20px !important;
+}
+
+.c7n-modal-sidebar .c7n-modal-footer {
+  justify-content: flex-end;
 }
 
 .c7n-radio-group-wrapper .c7n-radio-group-label {
