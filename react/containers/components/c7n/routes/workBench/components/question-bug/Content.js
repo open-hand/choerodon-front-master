@@ -25,7 +25,7 @@ const TodoQuestion = observer(() => {
   } = useTodoQuestionStore();
 
   const {
-    cacheStore,
+    selectedProjectId,
   } = useWorkBenchStore();
 
   const [btnLoading, changeBtnLoading] = useState(false);
@@ -45,12 +45,12 @@ const TodoQuestion = observer(() => {
     questionDs.query().finally(() => {
       changeBtnLoading(false);
     });
-  }, [questionDs]);
+  }, [questionDs, questionStore]);
 
   const handleTabChange = useCallback((key) => {
     questionStore.changeTabKey(key);
     questionStore.setPage(1);
-  }, []);
+  }, [questionStore]);
 
   const nodeRenderer = useCallback(({ record }) => (
     <QuestionNode
