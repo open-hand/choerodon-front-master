@@ -40,7 +40,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const questionDs = useMemo(() => new DataSet(QuestionDataSet({
     organizationId, type: tabKey, questionStore, selectedProjectId, cacheStore,
-  })), [organizationId, selectedProjectId, tabKey]);
+  })), [cacheStore, organizationId, questionStore, selectedProjectId, tabKey]);
 
   useEffect(() => {
     const mainData = bugQuestions;

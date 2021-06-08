@@ -30,7 +30,7 @@ export default (({
           questionStore.setHasMore(res.totalElements && (res.number + 1) < res.totalPages);
           const storeArr = get(cacheStore.bugQuestions, 'content')?.slice();
           const tempType = get(cacheStore.bugQuestions, 'type');
-          const tempId = get(cacheStore.focusQuestions, 'selectedProjectId');
+          const tempId = get(cacheStore.bugQuestions, 'selectedProjectId');
           let tempArr;
           if (storeArr) {
             if (tempType !== type || tempId !== selectedProjectId) {
