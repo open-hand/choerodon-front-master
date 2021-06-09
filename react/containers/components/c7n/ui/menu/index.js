@@ -464,8 +464,9 @@ export default class CommonMenu extends Component {
       <div
         className="c7ncd-theme4-menuSide"
         style={{
-        backgroundImage: `url(${bg})`,
-      }}
+          backgroundImage: `url(${bg})`,
+          backgroundSize: 'cover',
+        }}
       >
         {
           menuData.map((data) => (
