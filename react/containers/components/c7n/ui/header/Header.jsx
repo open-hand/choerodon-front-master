@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useContext, useState, useRef,
+  useEffect, useContext, useState, useRef, useCallback,
 } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
@@ -72,28 +72,27 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     });
   }
 
-  async function checkAuthOfSaas() {
-    const checkAuth = mount('base-pro:saasFeebackGetAuth');
-    if (typeof checkAuth === 'function' && SAAS_FEEDBACK) {
+  function getAuth() {
+    const {
+      AppState: { currentMenuType: { organizationId } },
+    } = props;
+    return axios.get(`iam/choerodon/v1/register_saas/check_is_owner?tenantId=${organizationId}`);
+  }
+
+  const checkAuthOfSaas = useCallback(async () => {
+    if (SAAS_FEEDBACK) {
       try {
-        const {
-          AppState: { currentMenuType: { organizationId } },
-        } = props;
-        const res = await checkAuth(organizationId);
-        if (res && res.failed) {
-          setSaasAuth(false);
-          return;
-        }
-        !res && setSaasAuth(true);
+        const res = await getAuth();
+        setSaasAuth(!!res);
       } catch (error) {
         setSaasAuth(false);
       }
     }
-  }
+  }, [props.AppState.currentMenuType.organizationId]);
 
   useEffect(() => {
     checkAuthOfSaas();
-  }, []);
+  }, [checkAuthOfSaas]);
 
   useEffect(() => {
     const { AppState, HeaderStore, MenuStore } = props;
