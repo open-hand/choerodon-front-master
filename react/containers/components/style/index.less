@@ -162,9 +162,18 @@ body:not([data-theme="theme4"]) {
   padding: 20px !important;
 }
 
+
 .c7n-modal-sidebar .c7n-modal-footer {
   justify-content: flex-end;
-  flex-direction: row-reverse;
+  // 翻转按钮
+  .c7n-modal-btns {
+    transform: rotate(180deg);
+
+    button {
+      transform: rotate(180deg);
+    }
+  }
+
   border-color: rgb(217, 230, 242);
 }
 
