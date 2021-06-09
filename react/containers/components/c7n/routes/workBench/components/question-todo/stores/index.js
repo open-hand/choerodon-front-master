@@ -34,9 +34,13 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const questionStore = useStore();
 
-  const questionDs = useMemo(() => new DataSet(QuestionDataSet({
-    organizationId, questionStore, selectedProjectId, cacheStore,
-  })), [organizationId, selectedProjectId]);
+  const questionDs = useMemo(() => {
+    questionStore.init();
+
+    return new DataSet(QuestionDataSet({
+      organizationId, questionStore, selectedProjectId, cacheStore,
+    }));
+  }, [organizationId, selectedProjectId]);
 
   useEffect(() => {
     const mainData = todoQuestions;

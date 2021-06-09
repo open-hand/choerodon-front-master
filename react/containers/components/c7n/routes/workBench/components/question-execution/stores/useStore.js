@@ -25,6 +25,11 @@ export default function useStore(history) {
     setHasMore(data) {
       this.hasMore = data;
     },
+    init() {
+      this.page = 1;
+      this.totalCount = 0;
+      this.hasMore = false;
+    },
 
   }));
 }

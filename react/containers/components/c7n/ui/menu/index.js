@@ -491,7 +491,6 @@ export default class CommonMenu extends Component {
               {/*}*/}
               <div
                 style={{
-                  background: 'rgba(15, 19, 88, 0.08)',
                   borderRadius: '8px',
                   width: 30,
                   height: 30,

@@ -29,5 +29,10 @@ export default function useStore(bugQuestions) {
     setHasMore(data) {
       this.hasMore = data;
     },
+    init() {
+      this.page = 1;
+      this.totalCount = 0;
+      this.hasMore = false;
+    },
   }));
 }

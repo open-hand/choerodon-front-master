@@ -26,8 +26,13 @@ export default function useStore(focusQuestions) {
     get getHasMore() {
       return this.hasMore;
     },
-    setHasMore(data) {
+setHasMore(data) {
       this.hasMore = data;
+    },
+    init() {
+      this.page = 1;
+      this.totalCount = 0;
+      this.hasMore = false;
     },
 
   }));

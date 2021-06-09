@@ -38,9 +38,12 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     tabKey,
   } = questionStore;
 
-  const questionDs = useMemo(() => new DataSet(QuestionDataSet({
-    organizationId, type: tabKey, questionStore, selectedProjectId, cacheStore,
-  })), [organizationId, selectedProjectId, tabKey]);
+  const questionDs = useMemo(() => {
+    questionStore.init();
+    return new DataSet(QuestionDataSet({
+      organizationId, type: tabKey, questionStore, selectedProjectId, cacheStore,
+    }));
+  }, [organizationId, selectedProjectId, tabKey]);
 
   useEffect(() => {
     const mainData = focusQuestions;
