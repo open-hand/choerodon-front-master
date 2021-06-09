@@ -274,9 +274,11 @@ class MenuStore {
       }
       const menuRoot = this.getActiveMenuRoot || {};
       const root = this.getMenuData.find((i) => i.id === this.activeMenu.rootId);
-      menuRoot[root.level] = root;
-      this.setOpenkeysBaseonRoot(root);
-      this.setActiveMenuRoot(JSON.parse(JSON.stringify(menuRoot)));
+      if (root) {
+        menuRoot[root.level] = root;
+        this.setOpenkeysBaseonRoot(root);
+        this.setActiveMenuRoot(JSON.parse(JSON.stringify(menuRoot)));
+      }
     }
   }
 

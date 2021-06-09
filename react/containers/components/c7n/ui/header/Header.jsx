@@ -51,7 +51,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     const { HeaderStore, MenuStore } = props;
     const type = 'project';
     HeaderStore.setRecentItem(data);
-    MenuStore.loadMenuData({ type, id: organizationId }, false).then((menus) => {
+    MenuStore.loadMenuData({ type, id }, false).then((menus) => {
       let route = '';
       let path;
       let domain;
