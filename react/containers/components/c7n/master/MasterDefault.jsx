@@ -226,6 +226,9 @@ class Masters extends Component {
   setDocUrl = async (params) => {
     if (JSON.stringify(params) !== '{}') {
       const result = await MasterServices.axiosGetHelpDoc(params);
+      if (result) {
+        this.props.AppState.setDocUrl(result);
+      }
       console.log(result);
     }
   }

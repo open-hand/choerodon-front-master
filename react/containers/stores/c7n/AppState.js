@@ -13,6 +13,8 @@ function getDefaultLanguage() {
 }
 
 class AppState {
+  @observable helpDocUrl = '';
+
   @observable starProject = [];
 
   @observable recentUse = [];
@@ -91,6 +93,15 @@ class AppState {
     } else {
       this.setDropDownPro(undefined);
     }
+  }
+
+  @computed
+  get getDocUrl() {
+    return this.helpDocUrl;
+  }
+
+  @action setDocUrl(str) {
+    this.helpDocUrl = str;
   }
 
   @computed

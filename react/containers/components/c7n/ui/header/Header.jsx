@@ -119,6 +119,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   }
 
   const menuItems = () => {
+    const { AppState } = props;
     const [url, text, icon] = EXTERNAL_LINK?.split(',') || [];
     const itemsGroup = [];
     const docItem = (
@@ -126,7 +127,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         <div
           role="none"
           onClick={() => {
-            window.open(url);
+            window.open(AppState.getDocUrl || url);;
           }}
           style={{
             display: 'flex',
