@@ -581,7 +581,7 @@ class Masters extends Component {
     return (
       <div className="c7ncd-guide-popover">
         <div className="c7ncd-guide-popover-head">
-          <span style={{ width: '43%', display: 'inline-block' }}>
+          <span style={{ width: '43%', display: 'inline-block', position: 'relative', zIndex: 1 }}>
             {this.state.guideContent && this.state.guideContent.title ? this.state.guideContent.title : '平台指引'}
           </span>
           <img src={popoverHead} alt=""/>
