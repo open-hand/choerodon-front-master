@@ -193,7 +193,7 @@ const WorkBench = () => {
 
   return (
     <Page className={`${prefixCls}`}>
-      <Header>
+      {/* <Header>
         <HeaderButtons items={[
           {
             icon: 'info',
@@ -274,7 +274,7 @@ const WorkBench = () => {
             </div>
           )}
         />
-      </Header>
+      </Header> */}
       <div
         className={`${prefixCls}-container`}
       >
