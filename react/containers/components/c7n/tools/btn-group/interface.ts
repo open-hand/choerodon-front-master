@@ -1,6 +1,7 @@
 import { ButtonProps } from 'choerodon-ui/lib/button';
 import { TooltipPlacement } from 'choerodon-ui/lib/tooltip';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
+import { ReactNode } from 'react';
 import { ToolTipsConfigType } from '../header-btns/interface';
 
 export interface CustomBtnGroupProps {
@@ -12,6 +13,7 @@ export interface CustomBtnGroupProps {
   placement?: TooltipPlacement,
   trigger?: 'click' | 'hover' | 'focus' | 'contextMenu'
   disabled?: boolean
+  renderCustomDropDownPanel?: (visbileSet?:CallableFunction)=> ReactNode,
 }
 
 export interface GroupBtnItemProps extends ButtonProps {
