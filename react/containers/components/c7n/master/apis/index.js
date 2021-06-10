@@ -18,4 +18,18 @@ export default class MasterApis {
   static getCleanMemberUrl(tenantId) {
     return `/iam/choerodon/v1/register_saas/clean_member?tenant_id=${tenantId}`;
   }
+
+  static getHelpDocUrl(props) {
+    let str = '';
+    if (props.menuId) {
+      str += `menu_id=${props.menuId}`;
+    }
+    if (props.menuCode) {
+      str += `&menu_code=${props.menuCode}`;
+    }
+    if (props.tabCode) {
+      str += `&tab_code=${props.tabCode}`;
+    }
+    return `/iam/choerodon/v1/help-doc?${str}`;
+  }
 }

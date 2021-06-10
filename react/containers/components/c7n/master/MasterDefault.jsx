@@ -24,6 +24,22 @@ const spinStyle = {
   paddingTop: 300,
 };
 
+// 这里是没有菜单的界面合集
+// 记录下route和code 为了方便查询该界面的文档地址
+const routeWithNoMenu = [{
+  route: 'workbench',
+  code: 'workbench',
+}, {
+  route: 'projects',
+  code: 'projects',
+}, {
+  route: 'knowledge/organization',
+  code: 'knowledge',
+}, {
+  route: 'app-market',
+  code: 'app-market',
+}]
+
 const { Column } = Table;
 
 let maxLength = 0;
@@ -31,6 +47,9 @@ let maxLength = 0;
 // 这里是因为在路由改变时 函数中拿到的当前activeMenu可能还未变化
 // 给定一个参数 如果重复调用方法三次还没改变则跳过逻辑
 let activeMenuTimes = 0;
+
+// 这里是helpDoc的
+let activeMenuTimes_doc = 0;
 
 function parseQueryToMenuType(search) {
   const menuType = {};
@@ -128,6 +147,7 @@ class Masters extends Component {
       guideContent: undefined,
     }
     this.handleSetGuideContent(this.props);
+    this.handleGetHelpDocUrl(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -199,7 +219,48 @@ class Masters extends Component {
         })
       }
       this.handleSetGuideContent(newProps);
+      this.handleGetHelpDocUrl(newProps);
     }
+  }
+
+  setDocUrl = async (params) => {
+    if (JSON.stringify(params) !== '{}') {
+      const result = await MasterServices.axiosGetHelpDoc(params);
+      console.log(result);
+    }
+  }
+
+  /**
+   * 路径改变时 查询当前路由对应的文档地址
+   */
+  handleGetHelpDocUrl = (newProps) => {
+    const params = {};
+    const pathname = newProps?.history?.location?.pathname;
+    const item = pathname && routeWithNoMenu.find(i => pathname.includes(i.route));
+    // 如果当前路由匹配到了没有菜单的界面
+    if (item) {
+      params.menuCode = item.code;
+      this.setDocUrl(params);
+    } else {
+      const activeMenu = newProps.MenuStore.activeMenu;
+      if (activeMenu && window.location.hash.includes(activeMenu.route)) {
+        activeMenuTimes_doc = 0;
+        params.menuId = activeMenu.id;
+        if (newProps.history.location.search.includes('activeKey')) {
+          const params = new URLSearchParams(newProps.history.location.search);
+          params.tabCode = params.get('activeKey');
+        }
+        this.setDocUrl(params);
+      } else if (activeMenuTimes_doc < 3) {
+        activeMenuTimes_doc += 1;
+        setTimeout(() => {
+          this.handleGetHelpDocUrl(newProps);
+        }, 500)
+      } else {
+        activeMenuTimes = 0
+      }
+    }
+    console.log(params);
   }
 
   judgeIfGetUserCountCheck = (newProps, oldProps) => {

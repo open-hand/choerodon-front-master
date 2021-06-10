@@ -19,4 +19,8 @@ export default class MasterServices {
       data: userIds
     })
   }
+
+  static axiosGetHelpDoc(props) {
+    return axios.get(MasterApis.getHelpDocUrl(props));
+  }
 }
