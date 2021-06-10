@@ -193,7 +193,7 @@ const WorkBench = () => {
 
   return (
     <Page className={`${prefixCls}`}>
-      {/* <Header>
+      <Header>
         <HeaderButtons items={[
           {
             icon: 'info',
@@ -254,7 +254,27 @@ const WorkBench = () => {
           },
         ]}
         />
-      </Header> */}
+        <BtnGroup
+          name="shit"
+          renderCustomDropDownPanel={(setvisible) => (
+            <div style={{
+              height: '20px',
+            }}
+            >
+              fuck
+              <span
+                role="none"
+                onClick={(e) => {
+                  alert('sssss');
+                  setvisible(true, e);
+                }}
+              >
+                fukcss
+              </span>
+            </div>
+          )}
+        />
+      </Header>
       <div
         className={`${prefixCls}-container`}
       >

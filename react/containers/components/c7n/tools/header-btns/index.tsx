@@ -31,7 +31,8 @@ export interface itemsProps extends ButtonProps {
   tooltipsConfig?: ToolTipsConfigType,
   element?: React.ReactElement,
   preElement?: React.ReactElement,
-  groupBtnItems?: GroupBtnItemProps[]
+  groupBtnItems?: GroupBtnItemProps[],
+  // groupBtnConfigs
 }
 
 const HeaderButtons = ({ items, children, showClassName = false }: {

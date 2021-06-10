@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { ReactEventHandler, useCallback, useMemo, useState } from 'react';
 
 import { Menu, Popover, Icon } from 'choerodon-ui';
 import { Button, Tooltip } from 'choerodon-ui/pro';
@@ -9,11 +9,6 @@ import Permission from '@/containers/components/c7n/tools/permission';
 import { CustomBtnGroupProps, GroupBtnItemProps } from '@/containers/components/c7n/tools/btn-group/interface';
 
 import './index.less';
-
-// export {
-//   itemsProps as GroupBtnItemProps,
-//   CustomBtnGroupProps,
-// };
 
 const prefixCls = 'c7ncd-btnGroup';
 
@@ -27,6 +22,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     display = true,
     name,
     disabled: triggerBtnDisabled = false,
+    renderCustomDropDownPanel,
   } = props;
 
   const [popverVisible, setVisible] = useState<boolean>(false);
@@ -70,11 +66,25 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     });
   }, [btnItems, name]);
 
+  const renderContent = useCallback(() => {
+    if (renderCustomDropDownPanel && typeof renderCustomDropDownPanel === 'function') {
+      return popverVisible && (
+        <div className={`${prefixCls}-customPanel`}>
+          {renderCustomDropDownPanel((isVisible = false, e:Event) => {
+            e && e.stopPropagation();
+            setVisible(isVisible);
+          })}
+        </div>
+      );
+    }
+    return renderMenu();
+  }, [popverVisible, renderCustomDropDownPanel, renderMenu]);
+
   const menu = useMemo(() => (
     <Menu onClick={() => setVisible(false)}>
-      {renderMenu()}
+      {renderContent()}
     </Menu>
-  ), [renderMenu]);
+  ), [renderContent]);
 
   const dropdownBtnCls = classNames(prefixCls);
 
