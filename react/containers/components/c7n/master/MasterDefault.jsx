@@ -229,7 +229,6 @@ class Masters extends Component {
       if (result) {
         this.props.AppState.setDocUrl(result);
       }
-      console.log(result);
     }
   }
 
@@ -237,33 +236,34 @@ class Masters extends Component {
    * 路径改变时 查询当前路由对应的文档地址
    */
   handleGetHelpDocUrl = (newProps) => {
-    const params = {};
-    const pathname = newProps?.history?.location?.pathname;
-    const item = pathname && routeWithNoMenu.find(i => pathname.includes(i.route));
-    // 如果当前路由匹配到了没有菜单的界面
-    if (item) {
-      params.menuCode = item.code;
-      this.setDocUrl(params);
-    } else {
-      const activeMenu = newProps.MenuStore.activeMenu;
-      if (activeMenu && window.location.hash.includes(activeMenu.route)) {
-        activeMenuTimes_doc = 0;
-        params.menuId = activeMenu.id;
-        if (newProps.history.location.search.includes('activeKey')) {
-          const params = new URLSearchParams(newProps.history.location.search);
-          params.tabCode = params.get('activeKey');
-        }
+    if (HAS_BASE_PRO) {
+      const params = {};
+      const pathname = newProps?.history?.location?.pathname;
+      const item = pathname && routeWithNoMenu.find(i => pathname.includes(i.route));
+      // 如果当前路由匹配到了没有菜单的界面
+      if (item) {
+        params.menuCode = item.code;
         this.setDocUrl(params);
-      } else if (activeMenuTimes_doc < 3) {
-        activeMenuTimes_doc += 1;
-        setTimeout(() => {
-          this.handleGetHelpDocUrl(newProps);
-        }, 500)
       } else {
-        activeMenuTimes = 0
+        const activeMenu = newProps.MenuStore.activeMenu;
+        if (activeMenu && window.location.hash.includes(activeMenu.route)) {
+          activeMenuTimes_doc = 0;
+          params.menuId = activeMenu.id;
+          if (newProps.history.location.search.includes('activeKey')) {
+            const params = new URLSearchParams(newProps.history.location.search);
+            params.tabCode = params.get('activeKey');
+          }
+          this.setDocUrl(params);
+        } else if (activeMenuTimes_doc < 3) {
+          activeMenuTimes_doc += 1;
+          setTimeout(() => {
+            this.handleGetHelpDocUrl(newProps);
+          }, 500)
+        } else {
+          activeMenuTimes = 0
+        }
       }
     }
-    console.log(params);
   }
 
   judgeIfGetUserCountCheck = (newProps, oldProps) => {
