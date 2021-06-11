@@ -127,7 +127,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         <div
           role="none"
           onClick={() => {
-            window.open(AppState.getDocUrl || url);;
+            window.open(AppState.getDocUrl || url);
           }}
           style={{
             display: 'flex',
@@ -164,10 +164,28 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
 
   const renderExternalLink = () => {
     if ((EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') || (SAAS_FEEDBACK)) {
+      const saasFeedbackBtn = mount('base-pro:saasFeebackBtn');
+      const hasSaasFeedback = SAAS_FEEDBACK && saasFeedbackBtn && isOrgSaasAuth;
+      const { AppState } = props;
+      const [url, text, icon] = EXTERNAL_LINK?.split(',') || [];
       return (
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
-          <Dropdown overlay={menuItems()} trigger={['click']} placement="bottomCenter">
+          <Dropdown
+            {
+              ...!hasSaasFeedback ? {
+                hidden: true,
+              } : {}
+            }
+            overlay={menuItems()}
+            trigger={['click']}
+            placement="bottomCenter"
+          >
             <ProButton
+              onClick={() => {
+                if (!hasSaasFeedback) {
+                  window.open(AppState.getDocUrl || url);
+                }
+              }}
               funcType="flat"
               className="theme4-external"
               icon="help_outline"
