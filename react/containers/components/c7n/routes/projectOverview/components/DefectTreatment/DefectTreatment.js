@@ -174,7 +174,7 @@ const DefectTreatment = observer(() => {
       <OverviewWrap.Header
         title={renderTitle()}
         style={{
-          margin: '6px 0 10px 10px',
+          margin: '6px 0 10px 4px',
         }}
       />
       {render()}
