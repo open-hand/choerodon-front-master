@@ -19,7 +19,7 @@ class AppState {
 
   @observable recentUse = [];
 
-  @observable dropDownPro = undefined;
+  @observable dropDownPro = null;
 
   @observable currentTheme = localStorage.getItem('theme') || '';
 
@@ -48,33 +48,23 @@ class AppState {
   @observable canShowRoute = false;
 
   getProjects = () => {
-    let p1Data;
-    let p2Data;
     if (this.currentMenuType.organizationId) {
-      const p1 = new Promise((resolve) => {
-        axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`).then((res) => {
-          const data = res.splice(0, 3).map(i => ({
-            ...i,
-            ...i.projectDTO,
-          }));
-          this.setRecentUse(data);
-          p1Data = data;
-          resolve('1');
-        })
+      const recentProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`);
+      const starProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`);
+      Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
+        const [recentProjectData = [], starProjectData = []] = res;
+
+        const tempRecentProjectData = recentProjectData.splice(0, 3).map((i) => ({
+          ...i,
+          ...i.projectDTO,
+        }));
+        const tempStarProjectData = starProjectData.splice(0, 6);
+
+        this.setRecentUse(tempRecentProjectData);
+        this.setStarProject(tempStarProjectData);
+
+        this.setCurrentDropDown(tempRecentProjectData, tempStarProjectData);
       });
-      const p2 = new Promise((resolve) => {
-        axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`).then((res) => {
-          const data = res.splice(0, 6);
-          this.setStarProject(data);
-          p2Data = data;
-          resolve('2');
-        });
-      })
-      Promise.all([p1, p2]).then((result) => {
-        this.setCurrentDropDown(p1Data, p2Data);
-      }).catch((error) => {
-        console.log(error)
-      })
     }
   }
 
@@ -83,15 +73,15 @@ class AppState {
     const type = params.get('type');
     const id = params.get('id');
     if (type && type === 'project' && ((data1 && data1.length > 0) || (data2 && data2.length > 0))) {
-      const flag = data1.find(i => String(i.id) === String(id)) || data2.find(i => String(i.id) === String(id));
+      const flag = data1.find((i) => String(i.id) === String(id)) || data2.find((i) => String(i.id) === String(id));
       if (flag) {
         // 最近使用
         this.setDropDownPro(`项目: ${flag.name}`);
       } else {
-        this.setDropDownPro(undefined);
+        this.setDropDownPro();
       }
     } else {
-      this.setDropDownPro(undefined);
+      this.setDropDownPro();
     }
   }
 
@@ -110,6 +100,7 @@ class AppState {
   }
 
   @action setDropDownPro(data) {
+    debugger
     this.dropDownPro = data;
   }
 

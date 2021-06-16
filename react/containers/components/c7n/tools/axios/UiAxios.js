@@ -25,22 +25,15 @@ function handleDefaultTransformResponse(data) {
 }
 
 function handleResponseInttercept(response) {
+  handleResponseCancelToken(response);
   if (get(response, 'status') === 204) {
     return response;
   }
   if (response?.data?.failed === true) {
     throw response.data;
   }
-  handleResponseCancelToken(response);
   return transformResponsePage(get(response, 'data'));
 }
-
-const instance = axios.create({
-  timeout: 30000,
-  baseURL: API_HOST,
-  transformResponse: [handleDefaultTransformResponse],
-  paramsSerializer: handleDefaultTransformParamsSerializer,
-});
 
 function handleRequestIntercept(config) {
   const newConfig = config;
@@ -83,6 +76,14 @@ function handleRequestIntercept(config) {
 
   return handleRequestCancelToken(newConfig);
 }
+
+const instance = axios.create({
+  timeout: 30000,
+  baseURL: API_HOST,
+  transformResponse: [handleDefaultTransformResponse],
+  paramsSerializer: handleDefaultTransformParamsSerializer,
+});
+
 instance.defaults.routeChangeCancel = false;
 
 instance.defaults.enabledCancelMark = false;

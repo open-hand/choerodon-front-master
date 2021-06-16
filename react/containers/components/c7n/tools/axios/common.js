@@ -7,6 +7,7 @@ import {
 import qs from 'qs';
 import BigNumber from 'bignumber.js';
 import get from 'lodash/get';
+import { Base64 } from 'js-base64';
 
 // eslint-disable-next-line import/no-cycle
 import MenuStore from '../../../../stores/c7n/MenuStore';
@@ -37,17 +38,31 @@ function cursiveSetCorrectId(source, correctId, flag) {
   return tempCorrectedId;
 }
 
+function getDataMark(data, contentType) {
+  let stringifyData;
+  if (contentType === 'application/json') {
+    try {
+      const parseData = JSON.stringify(data);
+      stringifyData = encodeURIComponent(parseData);
+    } catch (error) {
+      stringifyData = encodeURIComponent(data);
+    }
+  }
+  return stringifyData;
+}
+
 function handleRequestCancelToken(config) {
   const tempConfig = config;
   // 区别请求的唯一标识，这里用方法名+请求路径
   // 如果一个项目里有多个不同baseURL的请求 + 参数
-  // const queryParams = tempConfig.params || {};
   const enabledCancelMark = get(config, 'enabledCancelMark');
 
   if (enabledCancelMark) {
     const tempQueryString = config.paramsSerializer(tempConfig.params);
+    const dataMark = getDataMark(get(config, 'data'), get(get(config, 'headers'), 'Content-Type'));
 
     const requestMark = JSON.stringify({
+      data: dataMark,
       method: tempConfig.method,
       query: tempQueryString,
       url: tempConfig.url,
@@ -58,7 +73,7 @@ function handleRequestCancelToken(config) {
     // 存在，即重复了
     if (markIndex) {
       // 取消上个重复的请求
-      markIndex.cancel();
+      markIndex?.cancel && markIndex.cancel();
       // 删掉在pendingRequest中的请求标识
       pendingRequest.delete(requestMark);
     }

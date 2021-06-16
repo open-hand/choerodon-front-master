@@ -71,6 +71,7 @@ function handleRequestIntercept(config) {
 }
 
 function handleResponseInttercept(response) {
+  handleResponseCancelToken(response);
   if (get(response, 'status') === 204) {
     return response;
   }
@@ -80,7 +81,6 @@ function handleResponseInttercept(response) {
     }
     throw response.data;
   }
-  handleResponseCancelToken(response);
   return transformResponsePage(get(response, 'data'));
 }
 
