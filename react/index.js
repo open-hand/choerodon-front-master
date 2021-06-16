@@ -63,3 +63,5 @@ export { default as SprintEmptyPage } from './containers/components/c7n/routes/p
 export { useProjectOverviewStore } from './containers/components/c7n/routes/projectOverview/stores';
 
 export { default as Charts } from './containers/components/c7n/routes/charts';
+
+export { default as TabCode } from './utils/tabCode';
