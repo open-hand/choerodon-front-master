@@ -76,7 +76,6 @@ function handleRequestCancelToken(config) {
       markIndex?.cancel && markIndex.cancel();
       // 删掉在pendingRequest中的请求标识
       pendingRequest.delete(requestMark);
-      console.log(markIndex);
     }
     // （重新）新建针对这次请求的axios的cancelToken标识
     const { CancelToken } = axios;

@@ -35,13 +35,6 @@ function handleResponseInttercept(response) {
   return transformResponsePage(get(response, 'data'));
 }
 
-const instance = axios.create({
-  timeout: 30000,
-  baseURL: API_HOST,
-  transformResponse: [handleDefaultTransformResponse],
-  paramsSerializer: handleDefaultTransformParamsSerializer,
-});
-
 function handleRequestIntercept(config) {
   const newConfig = config;
   const str = window.location.hash.split('?')[1];
@@ -83,9 +76,17 @@ function handleRequestIntercept(config) {
 
   return handleRequestCancelToken(newConfig);
 }
-instance.defaults.routeChangeCancel = true;
 
-instance.defaults.enabledCancelMark = true;
+const instance = axios.create({
+  timeout: 30000,
+  baseURL: API_HOST,
+  transformResponse: [handleDefaultTransformResponse],
+  paramsSerializer: handleDefaultTransformParamsSerializer,
+});
+
+instance.defaults.routeChangeCancel = false;
+
+instance.defaults.enabledCancelMark = false;
 
 instance.interceptors.request.use(
   handleRequestIntercept,
