@@ -55,6 +55,7 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
       if (path) {
         historyPushMenu(history, path, domain);
       }
+      AppState.getProjects();
     });
   }
 

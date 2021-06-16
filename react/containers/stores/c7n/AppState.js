@@ -100,7 +100,6 @@ class AppState {
   }
 
   @action setDropDownPro(data) {
-    debugger
     this.dropDownPro = data;
   }
 
