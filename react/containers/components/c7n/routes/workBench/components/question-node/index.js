@@ -103,7 +103,7 @@ const QuestionNode = observer(({
     let mes = '';
     let icon = '';
     let color = '';
-    let otherStyle = {};
+    let otherStyle = { fontSize: '26px' };
     const newTypeCode = isBacklogType ? 'backlog' : originTypeCode;
     switch (newTypeCode) {
       case 'story':
@@ -150,7 +150,15 @@ const QuestionNode = observer(({
     }
     const reverse = ['agile_epic', 'agile_story', 'agile_fault', 'agile_task', 'agile_subtask', 'test-case', 'test-automation', 'agile-feature'].includes(icon);
     if (!reverse && newTypeCode !== 'test-execution') {
-      otherStyle = { background: color, fontSize: 14.5, borderRadius: '2px' };
+      otherStyle = {
+        background: color,
+        fontSize: '16.25px',
+        borderRadius: '3px',
+        width: 20,
+        height: 20,
+        lineHeight: '20px',
+        textAlign: 'center',
+      };
       color = 'white';
     }
 
