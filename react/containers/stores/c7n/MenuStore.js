@@ -334,7 +334,7 @@ class MenuStore {
             await AppState.loadUserInfo();
           }
         } else if (type === 'organization') {
-          const orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
+          const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
           if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
             await axios({
               url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
@@ -354,7 +354,7 @@ class MenuStore {
         AppState.setCanShowRoute(true);
       }
       async function getMenu(that) {
-        const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
+        const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
         let url = '/iam/choerodon/v1/menu';
         if (type === 'project') {
           url += `?projectId=${id}&tenantId=${currentOrgId}`;
@@ -391,7 +391,7 @@ class MenuStore {
           }
         }
       } else if (id && (['project', 'organization'].includes(type))) {
-        const orgId = String(organizationId || new URLSearchParams(window.location.hash).get('organizationId') || id);
+        const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
         if (!loadingTenant.includes(orgId)) {
           loadingTenant.push(String(orgId));
           await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`);
