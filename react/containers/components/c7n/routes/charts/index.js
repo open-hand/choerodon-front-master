@@ -13,7 +13,7 @@ import './style/index.less';
 const Home = (props) => {
   const [list, setList] = useState([]);
   const {
-    AppState, reportType,
+    AppState, reportType, service,
   } = props;
 
   const { search } = useLocation();
@@ -49,7 +49,7 @@ const Home = (props) => {
   ), [handleClickItem]);
 
   return (
-    <Page>
+    <Page service={service}>
       <Breadcrumb />
       <Content className="c7n-charts">
         <div className="line">
@@ -64,6 +64,11 @@ const Home = (props) => {
 
 Home.propTypes = {
   reportType: PropTypes.oneOf(['agile', 'develop', 'deploy']).isRequired,
+  service: PropTypes.arrayOf(PropTypes.string),
+};
+
+Home.defaultProps = {
+  service: [],
 };
 
 export default inject('AppState')(Home);
