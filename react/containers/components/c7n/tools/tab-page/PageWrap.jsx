@@ -10,14 +10,16 @@ const { TabPane } = Tabs;
 
 export const Context = React.createContext({});
 
-const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
-  const keyShowArr = React.Children.map(children, child => ({
+const PageWrap = ({
+  children, noHeader, className, cache, ...props
+}) => {
+  const keyShowArr = React.Children.map(children, (child) => ({
     route: child.props.route,
     tabKey: child.props.tabKey,
     alwaysShow: child.props.alwaysShow,
   }));
-  const keyArr = React.Children.map(children, child => child.props.tabKey);
-  const Children = React.Children.map(children, child => child);
+  const keyArr = React.Children.map(children, (child) => child.props.tabKey);
+  const Children = React.Children.map(children, (child) => child);
   const [currentKey, setCurrentKey] = useState(null);
 
   function loadMenu() {
@@ -40,10 +42,13 @@ const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
       setCurrentKey(key);
     } else {
       const realCode = key;
-      const realTabNode = keyShowArr.find(v => v.tabKey === realCode);
+      const realTabNode = keyShowArr.find((v) => v.tabKey === realCode);
       if (realTabNode && realTabNode.route) {
         props.history.push(`${realTabNode.route}${props.location.search}`);
       }
+    }
+    if (props.onChange) {
+      props.onChange();
     }
   }
 
@@ -61,11 +66,11 @@ const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
         onChange={callback}
         activeKey={currentKey}
       >
-        {Children.map(child => {
+        {Children.map((child) => {
           const { type } = child;
           if (type === PageTab) {
             if (
-              (keyShowArr && keyShowArr.filter(v => v.route).find(v => v.tabKey === child.props.tabKey))
+              (keyShowArr && keyShowArr.filter((v) => v.route).find((v) => v.tabKey === child.props.tabKey))
               || child.props.alwaysShow
             ) {
               return (
@@ -76,12 +81,10 @@ const PageWrap = ({ children, noHeader, className, cache, ...props }) => {
                     : null}
                 </TabPane>
               );
-            } else {
-              return null;
             }
-          } else {
-            return child;
+            return null;
           }
+          return child;
         })}
       </Tabs>
     </Context.Provider>
