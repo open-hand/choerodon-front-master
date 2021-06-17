@@ -2,8 +2,8 @@ import axios from '../../tools/axios';
 import MasterApis from "@/containers/components/c7n/master/apis";
 
 export default class MasterServices {
-  static axiosGetGuide({menuId, orgId, proId, guideCode}) {
-    return axios.get(MasterApis.getGuideUrl(menuId, orgId, proId, guideCode));
+  static axiosGetGuide({menuId, orgId, proId, tab_code}) {
+    return axios.get(MasterApis.getGuideUrl(menuId, orgId, proId, tab_code));
   }
 
   static axiosGetCheckUserCount(tenantId) {
