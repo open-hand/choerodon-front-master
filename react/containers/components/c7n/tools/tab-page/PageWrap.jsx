@@ -48,7 +48,7 @@ const PageWrap = ({
       }
     }
     if (props.onChange) {
-      props.onChange();
+      props.onChange(key);
     }
   }
 
