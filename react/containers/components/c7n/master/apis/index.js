@@ -1,6 +1,6 @@
 export default class MasterApis {
   static getGuideUrl(menuId, orgId, proId, tab_code) {
-    return `/iam/choerodon/v1/guides?${menuId ? `menu_id=${menuId}` : ''}${orgId ? `&organization_id=${orgId}` : ''}${proId ? `&project_id=${proId}` : ''}${guideCode ? `&tab_code=${tab_code}` : ''}`
+    return `/iam/choerodon/v1/guides?${menuId ? `menu_id=${menuId}` : ''}${orgId ? `&organization_id=${orgId}` : ''}${proId ? `&project_id=${proId}` : ''}${tab_code ? `&tab_code=${tab_code}` : ''}`
   }
 
   static getCheckUserCountUrl(tenantId) {
