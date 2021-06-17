@@ -21,7 +21,7 @@ class AppState {
 
   @observable dropDownPro = null;
 
-  @observable currentTheme = localStorage.getItem('theme') || '';
+  @observable currentTheme = localStorage.getItem('theme') || 'theme4';
 
   @observable currentProject = null;
 
