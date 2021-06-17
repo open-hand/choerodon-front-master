@@ -258,8 +258,8 @@ class Masters extends Component {
           activeMenuTimes_doc = 0;
           params.menuId = activeMenu.id;
           if (newProps.history.location.search.includes('activeKey')) {
-            const params = new URLSearchParams(newProps.history.location.search);
-            params.tabCode = params.get('activeKey');
+            const paramsUrl = new URLSearchParams(newProps.history.location.search);
+            params.tabCode = paramsUrl.get('activeKey');
           }
           this.setDocUrl(params);
         } else if (activeMenuTimes_doc < 3) {
