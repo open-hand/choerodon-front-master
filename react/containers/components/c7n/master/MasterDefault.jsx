@@ -35,7 +35,7 @@ const routeWithNoMenu = [{
   code: 'workbench',
 }, {
   route: 'projects',
-  code: 'projects',
+  code: 'project-list',
 }, {
   route: 'knowledge/organization',
   code: 'knowledge',
