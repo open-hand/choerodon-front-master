@@ -25,7 +25,11 @@ const PageWrap = ({
   function loadMenu() {
     const { location } = props;
     const { pathname } = location;
-    setCurrentKey(`${keyArr[0]}`);
+    let activeKey;
+    if (new URLSearchParams(window.location.hash.split('?')[1]).get('activeKey')) {
+      activeKey = new URLSearchParams(window.location.hash.split('?')[1]).get('activeKey');
+    }
+    setCurrentKey(activeKey || `${keyArr[0]}`);
     keyShowArr.forEach((menu) => {
       if (menu.route === pathname) {
         setCurrentKey(`${menu.tabKey}`);
