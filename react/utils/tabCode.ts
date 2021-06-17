@@ -1,6 +1,8 @@
 const TabCodeMap = new Map([
-  ['test-case', 'test-case'],
-  ['api-test-case', 'api-test-case'],
+  ['/testManager/IssueManage', {
+    name: '用例库',
+    tabCodes: ['test-case', 'api-test-case'],
+  }],
 ]);
 
 export default TabCodeMap;

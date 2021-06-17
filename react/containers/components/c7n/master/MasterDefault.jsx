@@ -1,13 +1,17 @@
 import React, { Component, useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import {inject, observer, Provider} from 'mobx-react';
-import {Icon, Popover, Spin, Message} from 'choerodon-ui';
+import { inject, observer, Provider } from 'mobx-react';
+import {
+  Icon, Popover, Spin, Message,
+} from 'choerodon-ui';
 import { observer as liteObserver } from 'mobx-react-lite';
 import queryString from 'query-string';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
-import { message, Button, Modal, DataSet, Table, Tooltip } from 'choerodon-ui/pro';
+import {
+  message, Button, Modal, DataSet, Table, Tooltip,
+} from 'choerodon-ui/pro';
 import get from 'lodash/get';
-import MasterServices from "@/containers/components/c7n/master/services";
+import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '../tools/axios';
 import MasterHeader from '../ui/header';
 import AnnouncementBanner from '../ui/header/AnnouncementBanner';
@@ -16,8 +20,8 @@ import themeColorClient from './themeColorClient';
 import './style';
 import Skeleton from './skeleton';
 import CommonMenu, { defaultBlackList } from '../ui/menu';
-import popoverHead from "@/containers/images/popoverHead.png";
-import MasterApis from "@/containers/components/c7n/master/apis";
+import popoverHead from '@/containers/images/popoverHead.png';
+import MasterApis from '@/containers/components/c7n/master/apis';
 
 const spinStyle = {
   textAlign: 'center',
@@ -38,7 +42,7 @@ const routeWithNoMenu = [{
 }, {
   route: 'app-market',
   code: 'app-market',
-}]
+}];
 
 const { Column } = Table;
 
@@ -88,9 +92,7 @@ function parseQueryToMenuType(search) {
 
 const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
 
-
-
-let ExceedCountUserDataSet
+let ExceedCountUserDataSet;
 
 const OwnerTitle = liteObserver((props) => {
   const { ds } = props;
@@ -99,17 +101,19 @@ const OwnerTitle = liteObserver((props) => {
 
   useEffect(() => {
     setNum(ds.selected.length);
-  }, [ds.selected])
+  }, [ds.selected]);
 
   return (
     <p className="c7ncd-master-header">
       <span>选择组织用户</span>
       <span>
-        (已选择<span>{num || 0}</span>人)
+        (已选择
+        <span>{num || 0}</span>
+        人)
       </span>
     </p>
-  )
-})
+  );
+});
 
 const OwnerModal = liteObserver((props) => {
   const {
@@ -131,8 +135,8 @@ const OwnerModal = liteObserver((props) => {
         <Column name="roleNames" />
       </Table>
     </div>
-  )
-})
+  );
+});
 
 @withRouter
 @inject('AppState', 'MenuStore', 'HeaderStore')
@@ -145,7 +149,7 @@ class Masters extends Component {
     this.state = {
       guideOpen: false,
       guideContent: undefined,
-    }
+    };
     this.handleSetGuideContent(this.props);
     this.handleGetHelpDocUrl(this.props);
   }
@@ -157,29 +161,32 @@ class Masters extends Component {
   }
 
   handleSetGuideContent = (newProps) => {
-    const activeMenu = newProps.MenuStore.activeMenu;
+    const { activeMenu } = newProps.MenuStore;
     // 如果activeMenu是当前路由
     if (activeMenu && window.location.hash.includes(activeMenu.route)) {
       activeMenuTimes = 0;
       const { projectId, organizationId } = newProps.AppState.menuType;
       const menuId = activeMenu.id;
-      const search = newProps.location.search
+      const { search } = newProps.location;
       const searchParams = new URLSearchParams(search);
       let data = {};
+      const tabCode = searchParams.get('activeKey');
       switch (searchParams.get('type')) {
         case 'project': {
           data = {
             menuId: activeMenu.id,
             orgId: organizationId,
             proId: projectId,
-          }
+            tab_code: tabCode,
+          };
           break;
         }
         case 'organization': {
           data = {
             menuId: activeMenu.id,
             orgId: organizationId,
-          }
+            tab_code: tabCode,
+          };
           break;
         }
         case null: {
@@ -187,7 +194,8 @@ class Masters extends Component {
           data = {
             menuId: activeMenu.id,
             orgId: 0,
-          }
+            tab_code: tabCode,
+          };
           break;
         }
       }
@@ -195,17 +203,17 @@ class Masters extends Component {
         this.setState({
           guideContent: res,
         });
-      })
+      });
     } else if (activeMenuTimes < 3) {
       activeMenuTimes += 1;
       setTimeout(() => {
-        this.handleSetGuideContent(newProps)
-      }, 500)
+        this.handleSetGuideContent(newProps);
+      }, 500);
     } else {
-      activeMenuTimes = 0
+      activeMenuTimes = 0;
       this.setState({
         guideContent: undefined,
-      })
+      });
     }
   }
 
@@ -216,7 +224,7 @@ class Masters extends Component {
       if (this.state.guideOpen) {
         this.setState({
           guideOpen: false,
-        })
+        });
       }
       this.handleSetGuideContent(newProps);
       this.handleGetHelpDocUrl(newProps);
@@ -239,13 +247,13 @@ class Masters extends Component {
     if (HAS_BASE_PRO) {
       const params = {};
       const pathname = newProps?.history?.location?.pathname;
-      const item = pathname && routeWithNoMenu.find(i => pathname.includes(i.route));
+      const item = pathname && routeWithNoMenu.find((i) => pathname.includes(i.route));
       // 如果当前路由匹配到了没有菜单的界面
       if (item) {
         params.menuCode = item.code;
         this.setDocUrl(params);
       } else {
-        const activeMenu = newProps.MenuStore.activeMenu;
+        const { activeMenu } = newProps.MenuStore;
         if (activeMenu && window.location.hash.includes(activeMenu.route)) {
           activeMenuTimes_doc = 0;
           params.menuId = activeMenu.id;
@@ -258,9 +266,9 @@ class Masters extends Component {
           activeMenuTimes_doc += 1;
           setTimeout(() => {
             this.handleGetHelpDocUrl(newProps);
-          }, 500)
+          }, 500);
         } else {
-          activeMenuTimes = 0
+          activeMenuTimes = 0;
         }
       }
     }
@@ -297,10 +305,10 @@ class Masters extends Component {
                 });
                 return newRes;
               } catch (e) {
-                return newRes
+                return newRes;
               }
-            }
-          })
+            },
+          });
         },
       },
       fields: [{
@@ -324,15 +332,15 @@ class Masters extends Component {
           this.setRecordByMaxLength(dataSet, record, maxLength, false);
         },
         load: ({ dataSet }) => {
-          dataSet.records.forEach(i => {
+          dataSet.records.forEach((i) => {
             if (i.get('owner')) {
               i.selectable = false;
               i.isSelected = true;
             }
-          })
-        }
-      }
-    })
+          });
+        },
+      },
+    });
     // if (pathname.includes('access_token') && pathname.includes('token_type') && localStorage.getItem(`historyPath-${getUserId}`)) {
     //   window.location = `/#${localStorage.getItem(`historyPath-${getUserId}`)}`;
     // }
@@ -340,28 +348,28 @@ class Masters extends Component {
 
   setRecordByMaxLength = (ds, re, length, selectIf) => {
     const selectedLength = ds.selected.length;
-    const selectedIds = ds.selected.map(i => i.id);
+    const selectedIds = ds.selected.map((i) => i.id);
     if (selectIf) {
       if (selectedLength >= length) {
-        ds.records.forEach(i => {
+        ds.records.forEach((i) => {
           if (!selectedIds.includes(i.id)) {
             i.selectable = false;
           }
-        })
+        });
       }
     } else {
-      ds.records.forEach(i => {
+      ds.records.forEach((i) => {
         if (!i.get('owner')) {
           i.selectable = true;
         }
-      })
+      });
     }
   }
 
   getUserCountCheck = async (orgId) => {
     const organizationId = orgId || this.props.AppState.currentMenuType.organizationId;
     if (organizationId) {
-      let res = await MasterServices.axiosGetCheckUserCount(organizationId);
+      const res = await MasterServices.axiosGetCheckUserCount(organizationId);
       if (res && !res.data && res.data !== '') {
         // 用户超过套餐任务
         maxLength = res;
@@ -378,22 +386,21 @@ class Masters extends Component {
             okCancel: false,
             key: Modal.key(),
             title: <OwnerTitle ds={ExceedCountUserDataSet} />,
-            children: <OwnerModal num={res} ds={ExceedCountUserDataSet}  />,
+            children: <OwnerModal num={res} ds={ExceedCountUserDataSet} />,
             onOk: async () => {
               const selectedLength = ExceedCountUserDataSet.selected.length;
               if (selectedLength !== maxLength) {
                 message.error(`请选择${maxLength}个用户`);
                 return false;
-              } else {
-                try {
-                  await MasterServices.axiosDeleteCleanMember(organizationId, ExceedCountUserDataSet.selected.map(i => i.get('id')));
-                  this.getUserCountCheck();
-                } catch (e) {
-                  return false;
-                }
               }
-            }
-          })
+              try {
+                await MasterServices.axiosDeleteCleanMember(organizationId, ExceedCountUserDataSet.selected.map((i) => i.get('id')));
+                this.getUserCountCheck();
+              } catch (e) {
+                return false;
+              }
+            },
+          });
         } else {
           // 此user是注册者
           const { email, realName } = user;
@@ -403,15 +410,14 @@ class Masters extends Component {
             title: 'SaaS组织升级中',
             children: `您所在组织的组织所有者${realName}(${email})升级组织后尚未确认组织用户，请联系组织所有者确认。`,
             footer: null,
-          })
+          });
         }
       }
       return true;
-    } else {
-      setTimeout(() => {
-        this.getUserCountCheck();
-      }, 500);
     }
+    setTimeout(() => {
+      this.getUserCountCheck();
+    }, 500);
   }
 
   updateTheme = (newPrimaryColor) => {
@@ -581,16 +587,19 @@ class Masters extends Component {
     return (
       <div className="c7ncd-guide-popover">
         <div className="c7ncd-guide-popover-head">
-          <span style={{ width: '43%', display: 'inline-block', position: 'relative', zIndex: 1 }}>
+          <span style={{
+            width: '43%', display: 'inline-block', position: 'relative', zIndex: 1,
+          }}
+          >
             {this.state.guideContent && this.state.guideContent.title ? this.state.guideContent.title : '平台指引'}
           </span>
-          <img src={popoverHead} alt=""/>
+          <img src={popoverHead} alt="" />
         </div>
         <div className="c7ncd-guide-popover-content">
           {
             this.state.guideContent
             && this.state.guideContent.userGuideStepVOList
-            && this.state.guideContent.userGuideStepVOList.map(item => (
+            && this.state.guideContent.userGuideStepVOList.map((item) => (
               <div className="c7ncd-guide-popover-content-item">
                 <div className="c7ncd-guide-popover-content-item-left">
                   <p className="c7ncd-guide-popover-content-item-left-stepName">{item.stepName}</p>
@@ -600,7 +609,9 @@ class Masters extends Component {
                       onClick={() => {
                         window.open(item.docUrl);
                       }}
-                    >指引文档</span>
+                    >
+                      指引文档
+                    </span>
                   </p>
                 </div>
                 <Tooltip title={!item.permitted && '暂无目标页面权限'}>
@@ -620,12 +631,12 @@ class Masters extends Component {
           }
         </div>
       </div>
-    )
+    );
   }
 
   handleClickGuide() {
     this.setState({
-      guideOpen: !this.state.guideOpen
+      guideOpen: !this.state.guideOpen,
     });
   }
 
@@ -647,11 +658,11 @@ class Masters extends Component {
             onClick={this.handleClickGuide.bind(this)}
           >
             <Icon
-              type={this.state.guideOpen ? 'close' : "touch_app-o"}
+              type={this.state.guideOpen ? 'close' : 'touch_app-o'}
             />
           </div>
         </Popover>
-      )
+      );
     }
     return '';
   }
