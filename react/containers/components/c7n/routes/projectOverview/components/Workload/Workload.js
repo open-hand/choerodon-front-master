@@ -2,7 +2,7 @@ import React, {
   useState, memo, useEffect, useRef,
 } from 'react';
 import {
-  Button, Tooltip, Select, Icon,
+  Button, Tooltip, Select, Icon, Form,
 } from 'choerodon-ui/pro';
 import { debounce, toLength } from 'lodash';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
@@ -124,32 +124,29 @@ const Workload = observer(() => {
       {// 若冲刺数据已加载完成 但工作量无数据则不显示
         startSprintDs.status !== 'loading' && workloadStore.getData ? (
 
-          <span>
-            <Tooltip title={selectOption.map((option) => workloadStore.getAssignee[option]).join('，')} placement="top">
-              <span>
-                <Select
-                  multiple
+          <Tooltip title={selectOption.map((option) => workloadStore.getAssignee[option]).join('，')} placement="top">
+            <Form style={{ marginLeft: 24, width: '2rem', marginBottom: '-.2rem' }}>
+              <Select
+                multiple
                   // searchable
                   // getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                  style={{ marginLeft: 24, minWidth: '1.06rem' }}
-                  className="c7n-project-overview-SelectTheme"
-                  label="选择经办人"
-                  placeholder="选择经办人"
-                  clearButton
-                  labelLayout="float"
-                  maxTagCount={5}
-                  popupCls="c7n-project-overview-assignee"
-                  popupStyle={{ minWidth: '2rem' }}
+                  // style={{ marginLeft: 24 }}
+                  // className="c7n-project-overview-SelectTheme"
+                label="选择经办人"
+                placeholder="选择经办人"
+                clearButton
+                  // labelLayout="placeholder"
+                maxTagCount={5}
+                popupCls="c7n-project-overview-assignee"
+                popupStyle={{ minWidth: '2rem' }}
                   // defaultValue={selectValue}
-                  onChange={handleChangeSelect}
-                >
-                  {workloadStore.getAssignee ? workloadStore.getAssignee.map((item, index) => <Option value={index}>{item}</Option>) : ''}
-                </Select>
+                onChange={handleChangeSelect}
+              >
+                {workloadStore.getAssignee ? workloadStore.getAssignee.map((item, index) => <Option value={index}>{item}</Option>) : ''}
+              </Select>
 
-              </span>
-            </Tooltip>
-
-          </span>
+            </Form>
+          </Tooltip>
 
         ) : ''
       }
@@ -163,7 +160,7 @@ const Workload = observer(() => {
       let newRowSizeLength = 3;
       const initRowSizeHeight = 136; // 初始时实际一行高度
       const dateTableHeaderHeight = 58; // 表格头部
-      const containerHeaderHeight = 46; // 容器头部（标题）
+      const containerHeaderHeight = 62; // 容器头部（标题）
       const containerPaddingHeight = 40; // 上下padding
       let dateTableContentMaxHeight = containerSize.height - containerPaddingHeight - containerHeaderHeight - dateTableHeaderHeight;
       dateTableContentMaxHeight -= initRowSizeHeight;// 预留一行总和， 减去总和这一行高度
