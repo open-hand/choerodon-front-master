@@ -49,6 +49,11 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   }, [checkAuthOfSaas]);
 
   useEffect(() => {
+    const { AppState } = props;
+    AppState.setCurrentDropDown(AppState.getStarProject, AppState.getRecentUse);
+  }, [props.location]);
+
+  useEffect(() => {
     const { AppState, HeaderStore } = props;
     HeaderStore.axiosGetOrgAndPro(AppState.getUserId);
     AppState.getProjects();
