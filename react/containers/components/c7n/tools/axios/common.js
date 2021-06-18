@@ -101,7 +101,7 @@ function handleResponseCancelToken(config) {
 
 function handelResponseError(error, ...rest) {
   const { response } = error;
-  let errorFormat;
+  // let errorFormat;
   if (response) {
     const { status } = response;
     switch (status) {
@@ -123,17 +123,15 @@ function handelResponseError(error, ...rest) {
     }
     handleResponseCancelToken(response.config);
     // 设置返回的错误对象格式
-    errorFormat = {
-      ...error,
-      status: response.status,
-      data: response.data,
-    };
+    // errorFormat = {
+    //   ...error,
+    // };
   }
   // 如果是主动取消了请求，做个标识
   if (axios.isCancel(error)) {
-    return Promise.resolve();
+    return new Promise(() => {});
   }
-  return Promise.reject(errorFormat);
+  return Promise.reject(error);
 }
 
 function handleDefaultTransformParamsSerializer(params) {
