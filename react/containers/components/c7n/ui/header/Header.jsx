@@ -26,15 +26,16 @@ const prefixCls = 'c7n-boot-header';
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
   const [isOrgSaasAuth, setSaasAuth] = useState(false);
 
+  const {
+    AppState: { currentMenuType: { organizationId } },
+  } = props;
+
   function getAuth() {
-    const {
-      AppState: { currentMenuType: { organizationId } },
-    } = props;
     return axios.get(`iam/choerodon/v1/register_saas/check_is_owner?tenantId=${organizationId}`);
   }
 
   const checkAuthOfSaas = useCallback(async () => {
-    if (SAAS_FEEDBACK) {
+    if (SAAS_FEEDBACK && organizationId) {
       try {
         const res = await getAuth();
         setSaasAuth(!!res);
@@ -42,7 +43,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         setSaasAuth(false);
       }
     }
-  }, [props.AppState.currentMenuType.organizationId]);
+  }, [getAuth, organizationId]);
 
   useEffect(() => {
     checkAuthOfSaas();
