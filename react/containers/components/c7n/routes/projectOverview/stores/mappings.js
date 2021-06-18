@@ -340,11 +340,11 @@ const componentsObj = {
   // 项目动态
   personalWorkload: {
     layout: {
-      h: 5,
+      h: 4,
       i: 'personalWorkload',
-      minH: 5,
-      minW: 10,
-      w: 10,
+      minH: 4,
+      minW: 4,
+      w: 6,
       x: 0,
       y: 33,
     },
