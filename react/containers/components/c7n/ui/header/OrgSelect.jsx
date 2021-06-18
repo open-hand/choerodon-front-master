@@ -228,7 +228,7 @@ export default class OrgSelect extends Component {
     return (
       <>
         <li style={{ width: 'auto' }}>
-          {true ? (
+          {HAS_BASE_PRO ? (
             <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
               {orgButton}
             </Dropdown>
