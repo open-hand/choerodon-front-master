@@ -54,7 +54,7 @@ function handleRequestCancelToken(config) {
     const tempQueryString = config.paramsSerializer(tempConfig.params);
     const dataMark = JSON.stringify(getDataMark(get(config, 'data')));
 
-    const requestMark = [
+    let requestMark = [
       tempConfig.method,
       tempConfig.url,
     ];
@@ -62,12 +62,16 @@ function handleRequestCancelToken(config) {
     tempQueryString && requestMark.push(tempQueryString);
     dataMark && requestMark.push(dataMark);
 
+    requestMark = requestMark.join('&');
+
     // 找当前请求的标识是否存在pendingRequest中，即是否重复请求了
-    const markIndex = pendingRequest.get(requestMark.join('&'));
+    const markIndex = pendingRequest.get(requestMark);
     // 存在，即重复了
     if (markIndex) {
       // 取消上个重复的请求
-      markIndex?.cancel && markIndex.cancel();
+      markIndex?.cancel && markIndex.cancel({
+        config,
+      });
       // 删掉在pendingRequest中的请求标识
       pendingRequest.delete(requestMark);
     }
@@ -95,9 +99,9 @@ function handleResponseCancelToken(config) {
   markIndex && pendingRequest.delete(mark);
 }
 
-function handelResponseError(error) {
+function handelResponseError(error, ...rest) {
   const { response } = error;
-  let errorFormat = error;
+  let errorFormat;
   if (response) {
     const { status } = response;
     switch (status) {
@@ -120,16 +124,16 @@ function handelResponseError(error) {
     handleResponseCancelToken(response.config);
     // 设置返回的错误对象格式
     errorFormat = {
+      ...error,
       status: response.status,
       data: response.data,
-      ...errorFormat,
     };
   }
   // 如果是主动取消了请求，做个标识
   if (axios.isCancel(error)) {
-    return;
+    return Promise.resolve();
   }
-  throw errorFormat;
+  return Promise.reject(errorFormat);
 }
 
 function handleDefaultTransformParamsSerializer(params) {
