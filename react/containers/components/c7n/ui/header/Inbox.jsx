@@ -8,7 +8,7 @@ import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import {
-  Badge, Button, Tabs, Avatar, Tooltip, notification,
+  Badge, Button, Tabs, Avatar, Tooltip, notification, Animate,
 } from 'choerodon-ui';
 import {
   Button as ButtonPro, CheckBox, Modal, Icon, Spin,
@@ -280,13 +280,14 @@ export default class Inbox extends Component {
   };
 
   handleMessagePopClick = async (messageId) => {
+    const { HeaderStore } = this.props;
     notification.close(`msg-${messageId}`);
+    HeaderStore.notificationKeyList?.delete(`msg-${messageId}`);
     this.handleButtonClick();
     if (!messageId) {
       return;
     }
     try {
-      const { HeaderStore } = this.props;
       const res = await HeaderStore.loadMsgDetail(messageId);
       if (res) {
         setTimeout(() => {
@@ -299,10 +300,13 @@ export default class Inbox extends Component {
   };
 
   handleMessagePop = (data) => {
+    const { HeaderStore } = this.props;
     const newData = JSONBig.parse(data);
     const content = newData && newData.content && <p dangerouslySetInnerHTML={{ __html: `${newData.content.replace(imgreg, '[图片]').replace(tablereg, '').replace(reg, '').replace(detailLinkReg, '')}` }} />;
+    const notificationKey = `msg-${newData?.messageId}`;
+    HeaderStore.notificationKeyList?.add(notificationKey);
     notification.info({
-      key: `msg-${newData?.messageId}`,
+      key: notificationKey,
       message: (
         <span role="none" onClick={() => this.handleMessagePopClick(newData?.messageId)}>
           {newData && newData.title}
@@ -310,7 +314,18 @@ export default class Inbox extends Component {
       ),
       description: content,
       duration: 5,
+      onClose: () => {
+        HeaderStore.notificationKeyList?.delete(notificationKey);
+      },
     });
+  };
+
+  handleCloseAllNotification = () => {
+    const { HeaderStore } = this.props;
+    HeaderStore.notificationKeyList?.forEach((value) => {
+      notification.close(value);
+    });
+    HeaderStore.notificationKeyList?.clear();
   };
 
   handleMessageClick = (e) => {
@@ -421,7 +436,7 @@ export default class Inbox extends Component {
   render() {
     const {
       AppState, HeaderStore: {
-        inboxData, inboxLoading, getUnreadMessageCount, getCurrentTheme,
+        inboxData, inboxLoading, getUnreadMessageCount, getCurrentTheme, notificationKeyList,
       },
     } = this.props;
     const SelfButton = true ? ButtonPro : Button;
@@ -475,7 +490,16 @@ export default class Inbox extends Component {
           readAllMsg={this.readAllMsg}
           openCleanAllModal={this.openCleanAllModal}
         />
-
+        {notificationKeyList?.size > 2 ? createPortal((
+          <div className={`${prefixCls}-notification-all`}>
+            <span>
+              共有
+              {notificationKeyList?.size}
+              条通知
+            </span>
+            <Button onClick={this.handleCloseAllNotification}>关闭全部</Button>
+          </div>
+        ), document.body) : null}
       </div>
     );
   }
