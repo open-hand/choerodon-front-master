@@ -303,7 +303,7 @@ export default class CommonMenu extends Component {
     } else {
       this.savedOpenKeys = openKeys;
       MenuStore.setCollapsed(true);
-      // MenuStore.setOpenKeys([]);
+      MenuStore.setOpenKeys([]);
     }
   };
 
