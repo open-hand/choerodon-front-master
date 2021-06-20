@@ -54,7 +54,7 @@ class AppState {
       Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
         const [recentProjectData = [], starProjectData = []] = res;
 
-        const tempRecentProjectData = recentProjectData.splice(0, 3).map((i) => ({
+        const tempRecentProjectData = recentProjectData?.splice(0, 3).map((i) => ({
           ...i,
           ...i.projectDTO,
         }));

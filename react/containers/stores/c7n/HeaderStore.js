@@ -238,28 +238,19 @@ class HeaderStore {
   }
 
   axiosGetOrgAndPro(userId) {
-    return axios.all([
-      axios({
-        method: 'get',
-        routeChangeCancel: false,
-        enabledCancelMark: false,
-        url: '/iam/choerodon/v1/users/self-tenants',
-      }),
-      // axios.get(`/iam/choerodon/v1/users/${userId}/projects`),
-    ]).then((data) => {
-      const [organizations] = data;
-      organizations.forEach((value) => {
+    return axios({
+      method: 'get',
+      routeChangeCancel: false,
+      enabledCancelMark: false,
+      url: '/iam/choerodon/v1/users/self-tenants',
+    }).then((data) => {
+      data.forEach((value) => {
         value.id = value.tenantId;
         value.name = value?.tenantName;
         value.organizationId = value.id;
         value.type = ORGANIZATION_TYPE;
       });
-      // projects.forEach((value) => {
-      //   value.type = PROJECT_TYPE;
-      //   value.projectId = value.id;
-      // });
-      this.setOrgData(organizations);
-      // this.setProData(projects);
+      this.setOrgData(data);
       return data;
     });
   }
