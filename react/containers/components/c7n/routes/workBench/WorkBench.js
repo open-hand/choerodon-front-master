@@ -13,6 +13,7 @@ import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 import { Modal } from 'choerodon-ui/pro';
 
 import HeaderButtons from '@/containers/components/c7n/tools/header-btns';
+import axios from '@/containers/components/c7n/tools/axios';
 import { Page, Header } from '../../../../../index';
 
 import StarTargetPro from './components/StarTargetPro';
@@ -71,7 +72,22 @@ const WorkBench = () => {
     history,
     allowedModules,
     AppState,
+    organizationId,
   } = useWorkBenchStore();
+
+  useEffect(() => {
+    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
+    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
+    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
+    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
+    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
+    axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.AGENT_BIND_SCRAPE');
+    axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.AGENT_BIND_SCRAPE');
+    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.TENANT_ROLE');
+    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
+    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.AGENT_BIND_SCRAPE');
+    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.TENANT_ROLE');
+  });
 
   const {
     isEdit,

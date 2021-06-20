@@ -8,10 +8,12 @@ import MenuStore from '../../../../stores/c7n/MenuStore';
 
 import {
   cursiveSetCorrectId,
-  handleResponseCancelToken,
   handleRequestCancelToken,
   handelResponseError,
+  getMark,
   handleDefaultTransformParamsSerializer,
+  cacheSymbol,
+  axiosEvent,
 } from './common';
 
 const JSONbigString = JSONbig({ storeAsString: true });
@@ -25,14 +27,34 @@ function handleDefaultTransformResponse(data) {
 }
 
 function handleResponseInttercept(response) {
-  handleResponseCancelToken(response);
+  const resData = get(response, 'data');
+  const config = get(response, 'config') || {};
+  const { enabledCancelCache, useCache } = config;
+  const cancelCacheKey = getMark(config);
+
   if (get(response, 'status') === 204) {
     return response;
   }
-  if (response?.data?.failed === true) {
-    throw response.data;
+  if (resData.failed === true) {
+    window[cacheSymbol].set(cancelCacheKey, {
+      ...window[cacheSymbol].get(cancelCacheKey),
+      isPending: false,
+    });
+    throw resData;
   }
-  return transformResponsePage(get(response, 'data'));
+
+  const transformPageData = transformResponsePage(resData);
+
+  if (enabledCancelCache && !useCache) {
+    window[cacheSymbol].set(cancelCacheKey, {
+      data: transformPageData,
+      isPending: false,
+      expire: Date.now() + Number(enabledCancelCache) * 1000,
+    });
+    axiosEvent.emit(cancelCacheKey, resData);
+  }
+
+  return transformPageData;
 }
 
 function handleRequestIntercept(config) {
@@ -84,9 +106,7 @@ const instance = axios.create({
   paramsSerializer: handleDefaultTransformParamsSerializer,
 });
 
-instance.defaults.routeChangeCancel = true;
-
-instance.defaults.enabledCancelMark = true;
+instance.defaults.enabledCancelCache = 2;
 
 instance.interceptors.request.use(
   handleRequestIntercept,

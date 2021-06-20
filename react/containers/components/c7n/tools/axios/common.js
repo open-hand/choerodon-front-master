@@ -14,9 +14,15 @@ import { authorizeC7n } from "@/utils/authorize";
 // eslint-disable-next-line import/no-cycle
 import MenuStore from '../../../../stores/c7n/MenuStore';
 
+import AxiosEmmitter from './utils/axiosEventEmmiter';
+
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 
-const pendingRequest = new Map();
+const axiosEvent = new AxiosEmmitter();
+
+const cacheSymbol = Symbol('choerodon_axios_cache');
+
+window[cacheSymbol] = new Map();
 
 // 是否出现身份认证失效的弹框
 let isExistInvalidTokenNotification = false;
@@ -50,64 +56,79 @@ function getDataMark(data) {
   return data;
 }
 
+// 区别请求的唯一标识，这里用方法名+请求路径
+// 如果一个项目里有多个不同baseURL的请求 + 参数
+function getMark(config) {
+  const tempQueryString = config.paramsSerializer(config.params);
+  const dataMark = JSON.stringify(getDataMark(get(config, 'data')));
+  let requestMark = [
+    config.method,
+    config.url,
+  ];
+
+  tempQueryString && requestMark.push(tempQueryString);
+  dataMark && requestMark.push(dataMark);
+  requestMark = requestMark.join('&');
+  return requestMark;
+}
+
 function handleRequestCancelToken(config) {
   const tempConfig = config;
-  // 区别请求的唯一标识，这里用方法名+请求路径
-  // 如果一个项目里有多个不同baseURL的请求 + 参数
-  const enabledCancelMark = get(config, 'enabledCancelMark');
+  const enabledCancelCache = get(tempConfig, 'enabledCancelCache');
 
-  if (enabledCancelMark) {
-    const tempQueryString = config.paramsSerializer(tempConfig.params);
-    const dataMark = JSON.stringify(getDataMark(get(config, 'data')));
+  if (enabledCancelCache) {
+    const cancelCacheKey = getMark(tempConfig);
+    const {
+      data,
+      isPending,
+      expire,
+    } = window[cacheSymbol].get(cancelCacheKey) || {};
 
-    let requestMark = [
-      tempConfig.method,
-      tempConfig.url,
-    ];
-
-    tempQueryString && requestMark.push(tempQueryString);
-    dataMark && requestMark.push(dataMark);
-
-    requestMark = requestMark.join('&');
-
-    // 找当前请求的标识是否存在pendingRequest中，即是否重复请求了
-    const markIndex = pendingRequest.get(requestMark);
-    // 存在，即重复了
-    if (markIndex) {
-      // 取消上个重复的请求
-      markIndex?.cancel && markIndex.cancel({
-        config,
+    if (isPending) {
+      tempConfig.adapter = () => new Promise((resolve) => {
+        axiosEvent.once(cancelCacheKey, (res) => {
+          resolve({
+            data: res,
+            status: tempConfig.status,
+            statusText: tempConfig.statusText,
+            headers: tempConfig.headers,
+            config: {
+              ...tempConfig,
+              useCache: true,
+            },
+            request: tempConfig,
+          });
+        });
       });
-      // 删掉在pendingRequest中的请求标识
-      pendingRequest.delete(requestMark);
+    } else if (expire && Date.now() <= expire) {
+      tempConfig.adapter = () => {
+        const resolveData = {
+          data,
+          status: tempConfig.status,
+          statusText: tempConfig.statusText,
+          headers: tempConfig.headers,
+          config: {
+            ...tempConfig,
+            useCache: true,
+          },
+          request: tempConfig,
+        };
+        console.log(cancelCacheKey, resolveData);
+        return Promise.resolve(resolveData);
+      };
+    } else {
+      window[cacheSymbol].set(cancelCacheKey, {
+        isPending: true,
+        ...window[cacheSymbol].get(cancelCacheKey),
+      });
     }
-    // （重新）新建针对这次请求的axios的cancelToken标识
-    const { CancelToken } = axios;
-    const source = CancelToken.source();
-    tempConfig.cancelToken = source.token;
-    // 设置自定义配置requestMark项，主要用于响应拦截中
-    tempConfig.requestMark = requestMark;
-    // 记录本次请求的标识
-    pendingRequest.set(requestMark, {
-      name: requestMark,
-      cancel: source.cancel,
-      routeChangeCancel: tempConfig.routeChangeCancel, // 可能会有优先级高于默认设置的routeChangeCancel项值
-    });
   }
 
   return tempConfig;
 }
 
-function handleResponseCancelToken(config) {
-  const mark = config?.config?.requestMark;
-  const markIndex = pendingRequest.get(mark);
-  // 找到了就删除该标识
-  markIndex && pendingRequest.delete(mark);
-}
-
 function handelResponseError(error, ...rest) {
   const { response } = error;
-  // let errorFormat;
   if (response) {
     const { status } = response;
     switch (status) {
@@ -148,15 +169,6 @@ function handelResponseError(error, ...rest) {
         prompt(response.data, 'error');
         break;
     }
-    handleResponseCancelToken(response.config);
-    // 设置返回的错误对象格式
-    // errorFormat = {
-    //   ...error,
-    // };
-  }
-  // 如果是主动取消了请求，做个标识
-  if (axios.isCancel(error)) {
-    return new Promise(() => {});
   }
   return Promise.reject(error);
 }
@@ -177,8 +189,9 @@ function handleDefaultTransformParamsSerializer(params) {
 export {
   cursiveSetCorrectId,
   handleRequestCancelToken,
-  handleResponseCancelToken,
   handelResponseError,
+  getMark,
   handleDefaultTransformParamsSerializer,
-  pendingRequest,
+  cacheSymbol,
+  axiosEvent,
 };

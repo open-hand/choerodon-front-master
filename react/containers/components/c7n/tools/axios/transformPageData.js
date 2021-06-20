@@ -1,16 +1,16 @@
 import queryString from 'query-string';
 
 export function transformResponsePage(data) {
-  if (data?.content) {
-    data.list = data.content;
-    data.total = data.totalElements;
-    data.pageSize = data.size;
-    data.pageNum = data.number + 1;
-    data.hasNextPage = data.totalElements > 0 && data.totalElements / data.size > data.number + 1;
-    data.isFirstPage = data.number === 0;
+  const tempData = data;
+  if (tempData?.content) {
+    tempData.list = data.content;
+    tempData.total = data.totalElements;
+    tempData.pageSize = data.size;
+    tempData.pageNum = data.number + 1;
+    tempData.hasNextPage = data.totalElements > 0 && data.totalElements / data.size > data.number + 1;
+    tempData.isFirstPage = data.number === 0;
   }
-  // console.log(data);
-  return data;
+  return tempData;
 }
 export function transformRequestPage(request) {
   // 先把url上的参数去掉，放到params上

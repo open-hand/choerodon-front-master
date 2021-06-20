@@ -10,9 +10,11 @@ import { transformResponsePage, transformRequestPage } from './transformPageData
 import {
   cursiveSetCorrectId,
   handleRequestCancelToken,
-  handleResponseCancelToken,
   handelResponseError,
+  getMark,
   handleDefaultTransformParamsSerializer,
+  cacheSymbol,
+  axiosEvent,
 } from './common';
 
 // eslint-disable-next-line import/no-cycle
@@ -71,17 +73,37 @@ function handleRequestIntercept(config) {
 }
 
 function handleResponseInttercept(response) {
-  handleResponseCancelToken(response);
+  const resData = get(response, 'data');
+  const config = get(response, 'config') || {};
+  const { enabledCancelCache, useCache } = config;
+  const cancelCacheKey = getMark(config);
+
   if (get(response, 'status') === 204) {
     return response;
   }
-  if (response?.data?.failed === true) {
+  if (resData.failed === true) {
+    window[cacheSymbol].set(cancelCacheKey, {
+      isPending: false,
+    });
+
     if (!response?.config.noPrompt) {
-      prompt(response?.data.message, 'error');
+      prompt(resData.message, 'error');
     }
-    throw response.data;
+    throw resData;
   }
-  return transformResponsePage(get(response, 'data'));
+
+  const transformPageData = transformResponsePage(resData);
+
+  if (enabledCancelCache && !useCache) {
+    window[cacheSymbol].set(cancelCacheKey, {
+      data: transformPageData,
+      isPending: false,
+      expire: Date.now() + Number(enabledCancelCache) * 1000,
+    });
+    axiosEvent.emit(cancelCacheKey, resData);
+  }
+
+  return transformPageData;
 }
 
 axios.defaults.timeout = 30000;
@@ -92,11 +114,8 @@ axios.defaults.transformResponse = [
 
 axios.defaults.paramsSerializer = handleDefaultTransformParamsSerializer;
 
-// 这里配置一个路由取消请求得标识
-axios.defaults.routeChangeCancel = true;
-
 // 这里配置一个路由取消重复请求得标识
-axios.defaults.enabledCancelMark = true;
+axios.defaults.enabledCancelCache = 2;
 
 axios.interceptors.request.use(handleRequestIntercept,
   (err) => {
