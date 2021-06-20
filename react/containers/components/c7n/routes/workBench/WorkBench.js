@@ -80,11 +80,11 @@ const WorkBench = () => {
     // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
     // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
     // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
-    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
-    axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.AGENT_BIND_SCRAPE');
-    axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.AGENT_BIND_SCRAPE');
+    axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
+    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
+    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
     // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.TENANT_ROLE');
-    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
+    axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
     // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.AGENT_BIND_SCRAPE');
     // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.TENANT_ROLE');
   });

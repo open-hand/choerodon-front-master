@@ -82,9 +82,7 @@ function handleResponseInttercept(response) {
     return response;
   }
   if (resData.failed === true) {
-    window[cacheSymbol].set(cancelCacheKey, {
-      isPending: false,
-    });
+    window[cacheSymbol][cancelCacheKey].isPending = false;
 
     if (!response?.config.noPrompt) {
       prompt(resData.message, 'error');
@@ -95,11 +93,14 @@ function handleResponseInttercept(response) {
   const transformPageData = transformResponsePage(resData);
 
   if (enabledCancelCache && !useCache) {
-    window[cacheSymbol].set(cancelCacheKey, {
+    // if (cancelCacheKey === 'get&http://api.c7n.devops.hand-china.com/iam/choerodon/v1/organizations/631/star_projects') {
+    //   console.log(window[cacheSymbol]);
+    // }
+    window[cacheSymbol][cancelCacheKey] = {
       data: transformPageData,
       isPending: false,
       expire: Date.now() + Number(enabledCancelCache) * 1000,
-    });
+    };
     axiosEvent.emit(cancelCacheKey, resData);
   }
 
@@ -115,7 +116,7 @@ axios.defaults.transformResponse = [
 axios.defaults.paramsSerializer = handleDefaultTransformParamsSerializer;
 
 // 这里配置一个路由取消重复请求得标识
-axios.defaults.enabledCancelCache = 2;
+axios.defaults.enabledCancelCache = true;
 
 axios.interceptors.request.use(handleRequestIntercept,
   (err) => {

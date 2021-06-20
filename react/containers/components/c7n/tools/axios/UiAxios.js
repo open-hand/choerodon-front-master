@@ -36,21 +36,18 @@ function handleResponseInttercept(response) {
     return response;
   }
   if (resData.failed === true) {
-    window[cacheSymbol].set(cancelCacheKey, {
-      ...window[cacheSymbol].get(cancelCacheKey),
-      isPending: false,
-    });
+    window[cacheSymbol][cancelCacheKey].isPending = false;
     throw resData;
   }
 
   const transformPageData = transformResponsePage(resData);
 
   if (enabledCancelCache && !useCache) {
-    window[cacheSymbol].set(cancelCacheKey, {
+    window[cacheSymbol][cancelCacheKey] = {
       data: transformPageData,
       isPending: false,
       expire: Date.now() + Number(enabledCancelCache) * 1000,
-    });
+    };
     axiosEvent.emit(cancelCacheKey, resData);
   }
 
@@ -106,7 +103,7 @@ const instance = axios.create({
   paramsSerializer: handleDefaultTransformParamsSerializer,
 });
 
-instance.defaults.enabledCancelCache = 2;
+instance.defaults.enabledCancelCache = true;
 
 instance.interceptors.request.use(
   handleRequestIntercept,

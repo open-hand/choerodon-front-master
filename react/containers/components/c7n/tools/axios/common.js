@@ -22,7 +22,7 @@ const axiosEvent = new AxiosEmmitter();
 
 const cacheSymbol = Symbol('choerodon_axios_cache');
 
-window[cacheSymbol] = new Map();
+window[cacheSymbol] = {};
 
 // 是否出现身份认证失效的弹框
 let isExistInvalidTokenNotification = false;
@@ -78,16 +78,24 @@ function handleRequestCancelToken(config) {
 
   if (enabledCancelCache) {
     const cancelCacheKey = getMark(tempConfig);
+    if (!window[cacheSymbol][cancelCacheKey]) {
+      window[cacheSymbol][cancelCacheKey] = {};
+    }
     const {
       data,
       isPending,
       expire,
-    } = window[cacheSymbol].get(cancelCacheKey) || {};
+    } = window[cacheSymbol][cancelCacheKey];
+
+    // if(cancelCacheKey === 'get&http://api.c7n.devops.hand-china.com/iam/choerodon/v1/organizations/631/star_projects'){
+    //   debugger
+    // }
 
     if (isPending) {
+      // 说明上个重复的请求还在pending，这时候
       tempConfig.adapter = () => new Promise((resolve) => {
         axiosEvent.once(cancelCacheKey, (res) => {
-          resolve({
+          const resolveData = {
             data: res,
             status: tempConfig.status,
             statusText: tempConfig.statusText,
@@ -97,10 +105,14 @@ function handleRequestCancelToken(config) {
               useCache: true,
             },
             request: tempConfig,
-          });
+          };
+          if (cancelCacheKey.indexOf('star_projects') !== -1) {
+            console.log(resolveData);
+          }
+          resolve(resolveData);
         });
       });
-    } else if (expire && Date.now() <= expire) {
+    } else if (expire && Date.now() < expire) {
       tempConfig.adapter = () => {
         const resolveData = {
           data,
@@ -113,14 +125,10 @@ function handleRequestCancelToken(config) {
           },
           request: tempConfig,
         };
-        console.log(cancelCacheKey, resolveData);
         return Promise.resolve(resolveData);
       };
     } else {
-      window[cacheSymbol].set(cancelCacheKey, {
-        isPending: true,
-        ...window[cacheSymbol].get(cancelCacheKey),
-      });
+      window[cacheSymbol][cancelCacheKey].isPending = true;
     }
   }
 
