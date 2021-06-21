@@ -131,7 +131,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
             <ProButton
               onClick={() => {
                 if (!hasSaasFeedback) {
-                  window.open(AppState.getDocUrl || url);
+                  window.open(AppState.getDocUrl.status ? url : AppState.getDocUrl);
                 }
               }}
               funcType="flat"
