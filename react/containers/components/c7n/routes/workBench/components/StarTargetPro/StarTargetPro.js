@@ -21,10 +21,8 @@ import './index.less';
 const StarTargetPro = observer(() => {
   const {
     prefixCls,
-    starProjectsDs,
+    getStarProject,
   } = useStarTargetPro();
-
-  const [theme] = useTheme();
 
   const {
     workBenchUseStore,
@@ -39,7 +37,6 @@ const StarTargetPro = observer(() => {
     isEdit,
     setEdit,
     setActiveStarProject,
-    initData,
   } = workBenchUseStore;
 
   const handleClickItem = (s) => {
@@ -76,14 +73,7 @@ const StarTargetPro = observer(() => {
   );
 
   const renderContent = () => {
-    const starProjects = starProjectsDs.toData();
-    if (starProjectsDs.status === 'loading') {
-      return (
-        <div style={{ padding: '56px 0px' }} className={`${prefixCls}-content`}>
-          <LoadingBar display />
-        </div>
-      );
-    }
+    const starProjects = getStarProject.slice();
     if (starProjects.length === 0) {
       return renderEmptypage();
     }
