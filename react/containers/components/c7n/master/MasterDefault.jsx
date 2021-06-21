@@ -553,7 +553,7 @@ class Masters extends Component {
         } else {
           res = currentProject;
         }
-        const checkArray = ['category', 'name', 'organizationId'];
+        const checkArray = ['name', 'organizationId'];
         if (checkArray.some((c) => {
           if (menuType[c] && menuType[c] !== 'undefined' && String(menuType[c]) !== String(res[c])) {
             return true;
