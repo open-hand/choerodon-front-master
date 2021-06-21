@@ -78,6 +78,7 @@ function handleRequestCancelToken(config) {
 
   if (enabledCancelCache) {
     const cancelCacheKey = getMark(tempConfig);
+    console.log(cancelCacheKey);
     if (!window[cacheSymbol][cancelCacheKey]) {
       window[cacheSymbol][cancelCacheKey] = {};
     }
@@ -97,8 +98,6 @@ function handleRequestCancelToken(config) {
         axiosEvent.once(cancelCacheKey, (res) => {
           const resolveData = {
             data: res,
-            status: tempConfig.status,
-            statusText: tempConfig.statusText,
             headers: tempConfig.headers,
             config: {
               ...tempConfig,
@@ -106,18 +105,13 @@ function handleRequestCancelToken(config) {
             },
             request: tempConfig,
           };
-          if (cancelCacheKey.indexOf('star_projects') !== -1) {
-            console.log(resolveData);
-          }
           resolve(resolveData);
         });
       });
-    } else if (expire && Date.now() < expire) {
+    } else if (expire && expire > Date.now()) {
       tempConfig.adapter = () => {
         const resolveData = {
           data,
-          status: tempConfig.status,
-          statusText: tempConfig.statusText,
           headers: tempConfig.headers,
           config: {
             ...tempConfig,

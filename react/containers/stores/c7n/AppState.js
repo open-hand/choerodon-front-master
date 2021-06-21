@@ -49,8 +49,12 @@ class AppState {
 
   getProjects = () => {
     if (this.currentMenuType.organizationId) {
-      const recentProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`);
-      const starProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`);
+      const recentProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`, {
+        enabledCancelCache: false,
+      });
+      const starProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`, {
+        enabledCancelCache: false,
+      });
       Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
         const [recentProjectData = [], starProjectData = []] = res;
 

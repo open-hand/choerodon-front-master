@@ -55,7 +55,9 @@ export default function useStore(AppState, history) {
       this.allProjects = data;
     },
     axiosGetRecentProjects() {
-      axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/projects/latest_visit`).then((res) => {
+      axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/projects/latest_visit`, {
+        enabledCancelCache: false,
+      }).then((res) => {
         this.setRecentProjects(res);
       });
     },
@@ -180,7 +182,9 @@ export default function useStore(AppState, history) {
     axiosGetStarProjects() {
       const orgId = AppState.currentMenuType.organizationId;
       if (orgId) {
-        axios.get(`/iam/choerodon/v1/organizations/${orgId}/star_projects`).then((res) => {
+        axios.get(`/iam/choerodon/v1/organizations/${orgId}/star_projects`, {
+          enabledCancelCache: false,
+        }).then((res) => {
           this.setStarProjectsList(get(res, 'length') ? res.map((r) => {
             r.background = getRandomBackground();
             return r;
