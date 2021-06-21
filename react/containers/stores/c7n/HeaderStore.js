@@ -76,6 +76,8 @@ class HeaderStore {
 
   @observable unreadMessageCount = 0;
 
+  @observable notificationKeyList = new Set();
+
   @action setInboxActiveKey(flag) {
     this.inboxActiveKey = flag;
   }

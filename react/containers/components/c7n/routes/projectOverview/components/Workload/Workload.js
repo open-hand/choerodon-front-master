@@ -123,29 +123,26 @@ const Workload = observer(() => {
       </Tooltip>
       {// 若冲刺数据已加载完成 但工作量无数据则不显示
         startSprintDs.status !== 'loading' && workloadStore.getData ? (
-
           <Tooltip title={selectOption.map((option) => workloadStore.getAssignee[option]).join('，')} placement="top">
-            <Form style={{ marginLeft: 24, width: '2rem', marginBottom: '-.2rem' }}>
+            <div className="c7n-pro-form-float" style={{ marginLeft: 24 }}>
               <Select
                 multiple
-                  // searchable
-                  // getPopupContainer={(triggerNode) => triggerNode.parentNode}
-                  // style={{ marginLeft: 24 }}
-                  // className="c7n-project-overview-SelectTheme"
                 label="选择经办人"
                 placeholder="选择经办人"
                 clearButton
-                  // labelLayout="placeholder"
                 maxTagCount={5}
+                style={{
+                  width: 'auto',
+                }}
+                labelLayout="float"
                 popupCls="c7n-project-overview-assignee"
                 popupStyle={{ minWidth: '2rem' }}
-                  // defaultValue={selectValue}
                 onChange={handleChangeSelect}
               >
                 {workloadStore.getAssignee ? workloadStore.getAssignee.map((item, index) => <Option value={index}>{item}</Option>) : ''}
               </Select>
+            </div>
 
-            </Form>
           </Tooltip>
 
         ) : ''
