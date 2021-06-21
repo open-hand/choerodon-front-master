@@ -1,0 +1,29 @@
+import { get } from 'lodash';
+import { AxiosRequestConfig } from 'axios';
+import paramsSerializer from './paramsSerializer';
+
+function getDataMark(data:any) {
+  let stringifyData;
+  try {
+    const parseData = JSON.stringify(data);
+    stringifyData = encodeURIComponent(parseData);
+  } catch (error) {
+    stringifyData = encodeURIComponent(data);
+  }
+  return stringifyData;
+}
+
+// 区别请求的唯一标识，这里用方法名+请求路径
+// 如果一个项目里有多个不同baseURL的请求 + 参数
+export default function getMark(config:AxiosRequestConfig) {
+  const tempQueryString = (config.paramsSerializer ?? paramsSerializer)(config.params);
+  const dataMark = JSON.stringify(getDataMark(get(config, 'data')));
+  const requestMark = [
+    config.method,
+    config.url,
+  ];
+
+  tempQueryString && requestMark.push(tempQueryString);
+  dataMark && requestMark.push(dataMark);
+  return requestMark.join('&');
+}
