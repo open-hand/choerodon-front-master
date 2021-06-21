@@ -38,6 +38,10 @@ const UI_CONFIG = {
     size: pageSize,
     sort: sortName && (sortOrder ? `${sortName},${sortOrder}` : sortName),
   }),
+  lookupAxiosConfig: () => ({
+    enabledCancelMark: false,
+    routeChangeCancel: false,
+  }),
   lovDefineAxiosConfig: (code) => ({
     url: `/iam/choerodon/v1/lov/code?code=${code}`,
     method: 'GET',
