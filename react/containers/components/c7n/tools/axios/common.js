@@ -7,7 +7,6 @@ import {
 import qs from 'qs';
 import BigNumber from 'bignumber.js';
 import get from 'lodash/get';
-import { Base64 } from 'js-base64';
 
 // eslint-disable-next-line import/no-cycle
 import MenuStore from '../../../../stores/c7n/MenuStore';
@@ -38,17 +37,11 @@ function cursiveSetCorrectId(source, correctId, flag) {
   return tempCorrectedId;
 }
 
-function getDataMark(data, contentType) {
-  let stringifyData;
-  if (contentType === 'application/json') {
-    try {
-      const parseData = JSON.stringify(data);
-      stringifyData = encodeURIComponent(parseData);
-    } catch (error) {
-      stringifyData = encodeURIComponent(data);
-    }
+function getDataMark(data) {
+  if (typeof data === 'string') {
+    return JSON.parse(data);
   }
-  return stringifyData;
+  return data;
 }
 
 function handleRequestCancelToken(config) {
@@ -59,21 +52,26 @@ function handleRequestCancelToken(config) {
 
   if (enabledCancelMark) {
     const tempQueryString = config.paramsSerializer(tempConfig.params);
-    const dataMark = getDataMark(get(config, 'data'), get(get(config, 'headers'), 'Content-Type'));
+    const dataMark = JSON.stringify(getDataMark(get(config, 'data')));
 
-    const requestMark = JSON.stringify({
-      data: dataMark,
-      method: tempConfig.method,
-      query: tempQueryString,
-      url: tempConfig.url,
-    });
+    let requestMark = [
+      tempConfig.method,
+      tempConfig.url,
+    ];
+
+    tempQueryString && requestMark.push(tempQueryString);
+    dataMark && requestMark.push(dataMark);
+
+    requestMark = requestMark.join('&');
 
     // 找当前请求的标识是否存在pendingRequest中，即是否重复请求了
     const markIndex = pendingRequest.get(requestMark);
     // 存在，即重复了
     if (markIndex) {
       // 取消上个重复的请求
-      markIndex?.cancel && markIndex.cancel();
+      markIndex?.cancel && markIndex.cancel({
+        config,
+      });
       // 删掉在pendingRequest中的请求标识
       pendingRequest.delete(requestMark);
     }
@@ -101,9 +99,9 @@ function handleResponseCancelToken(config) {
   markIndex && pendingRequest.delete(mark);
 }
 
-function handelResponseError(error) {
+function handelResponseError(error, ...rest) {
   const { response } = error;
-  let errorFormat = error;
+  // let errorFormat;
   if (response) {
     const { status } = response;
     switch (status) {
@@ -125,17 +123,15 @@ function handelResponseError(error) {
     }
     handleResponseCancelToken(response.config);
     // 设置返回的错误对象格式
-    errorFormat = {
-      status: response.status,
-      data: response.data,
-      ...errorFormat,
-    };
+    // errorFormat = {
+    //   ...error,
+    // };
   }
   // 如果是主动取消了请求，做个标识
   if (axios.isCancel(error)) {
-    return;
+    return new Promise(() => {});
   }
-  throw errorFormat;
+  return Promise.reject(error);
 }
 
 function handleDefaultTransformParamsSerializer(params) {

@@ -84,9 +84,9 @@ const instance = axios.create({
   paramsSerializer: handleDefaultTransformParamsSerializer,
 });
 
-instance.defaults.routeChangeCancel = false;
+instance.defaults.routeChangeCancel = true;
 
-instance.defaults.enabledCancelMark = false;
+instance.defaults.enabledCancelMark = true;
 
 instance.interceptors.request.use(
   handleRequestIntercept,
