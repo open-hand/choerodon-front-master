@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
 import { axios } from "@/index";
 import { ValueChangeAction } from 'choerodon-ui/pro/lib/text-field/enum';
-import { useDebounceFn } from 'ahooks';
+import { useDebounceFn, useVirtualList } from 'ahooks';
 // @ts-expect-error
 import queryString from 'query-string';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
@@ -34,6 +34,10 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
   const [projectFilter, setProjectFilter] = useState('');
   const [spinning, setSpinning] = useState(false);
   const [filterList, setFilterList] = useState([]);
+  const { list, containerProps, wrapperProps } = useVirtualList(filterList, {
+    overscan: 30,
+    itemHeight: 49,
+  });
 
   // const debouncedFilter = useDebounce(projectFilter, { wait: 500 });
 
@@ -145,9 +149,19 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
 
   const handleRenderPopRest = (filterStarProject: object[], filterRecentUser: object[]) => {
     if (filterList && filterList.length > 0) {
-      return filterList.map((i: any) => (
-        <p role="none" onClick={() => handleClickPopContent(`${i.id}`)} className={`${prefixCls}-popContent-option`}>{i.name}</p>
-      ))
+      return (
+        <div { ...containerProps } style={{ height: '300px', overflow: 'auto' }}>
+          <div {...wrapperProps}>
+            {list.map((i: any) => {
+              return (
+                <p key={i.index} role="none" onClick={() => handleClickPopContent(`${i.data.id}`)} className={`${prefixCls}-popContent-option`}>{i.data.name}</p>
+
+              )
+            }
+              )}
+          </div>
+        </div>
+      )
     } else {
       return (
         <>
