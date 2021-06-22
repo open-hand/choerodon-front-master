@@ -23,7 +23,7 @@ export default function getMark(config:AxiosRequestConfig) {
     config.url,
   ];
 
-  tempQueryString && requestMark.push(tempQueryString);
-  dataMark && requestMark.push(dataMark);
+  config.params && requestMark.push(tempQueryString);
+  get(config, 'data') && requestMark.push(dataMark);
   return requestMark.join('&');
 }

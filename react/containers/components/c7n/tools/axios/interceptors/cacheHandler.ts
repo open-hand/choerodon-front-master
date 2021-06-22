@@ -1,6 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { get } from 'lodash';
-import getMark from './getMark';
+import getMark from '../utils/getMark';
 import { axiosCache, axiosEvent } from '../instances';
 
 export function handleCancelCacheRequest(config:AxiosRequestConfig) {
