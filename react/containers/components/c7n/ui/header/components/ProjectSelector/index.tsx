@@ -58,7 +58,7 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
     async function callback() {
       // 如果有过滤值
       if (projectFilter) {
-        const res = await axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=${pagination.page}&size=${pagination.size}&params=${projectFilter}`);
+        const res = await axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=0&params=${projectFilter}`);
         // @ts-ignore
         setFilterList(res.content);
         setSpinning(false);

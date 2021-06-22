@@ -1,4 +1,5 @@
 import axios from 'axios';
+import React from 'react';
 import { removeAccessToken } from '@/utils/accessToken';
 import { authorizeUrl } from '@/utils/authorize';
 import {
@@ -8,6 +9,7 @@ import { notification } from 'choerodon-ui';
 import qs from 'qs';
 import BigNumber from 'bignumber.js';
 import get from 'lodash/get';
+import { authorizeC7n } from "@/utils/authorize";
 
 // eslint-disable-next-line import/no-cycle
 import MenuStore from '../../../../stores/c7n/MenuStore';
@@ -114,7 +116,17 @@ function handelResponseError(error, ...rest) {
           isExistInvalidTokenNotification = true;
           notification.error({
             message: '未登录或身份认证已失效',
-            description: '您未登录或者身份认证已失效，请刷新后重新登录',
+            description:
+              // '您未登录或者身份认证已失效 ，请',
+            (
+              <span>
+                您未登录或者身份认证已失效 ，请
+                <a onClick={() => {
+                  removeAccessToken();
+                  authorizeC7n();
+                }}>重新登录</a>
+              </span>
+            ),
             duration: null,
             placement: 'bottomLeft',
             onClose: () => {
@@ -122,7 +134,6 @@ function handelResponseError(error, ...rest) {
             }
           });
         }
-        // removeAccessToken();
         // authorizeUrl();
         break;
       }
