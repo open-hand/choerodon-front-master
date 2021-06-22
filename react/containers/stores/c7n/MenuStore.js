@@ -326,8 +326,12 @@ class MenuStore {
       if (menu.length || hasMenu()) {
         if (type === 'site') {
           if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-            await axios.put('iam/v1/users/tenant-id?tenantId=0');
-            const result = await axios.get('/iam/choerodon/v1/switch/site');
+            await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
+              enabledCancelCache: false,
+            });
+            const result = await axios.get('/iam/choerodon/v1/switch/site', {
+              enabledCancelCache: false,
+            });
             if (!result) {
               this.setHasSitePermission(false);
             }
@@ -339,8 +343,7 @@ class MenuStore {
             await axios({
               url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
               method: 'put',
-              routeChangeCancel: false,
-              enabledCancelMark: false,
+              enabledCancelCache: false,
             });
             AppState.loadUserInfo();
           }
@@ -369,8 +372,7 @@ class MenuStore {
         const data = await axios({
           url,
           method:'get',
-          routeChangeCancel: false,
-          enabledCancelMark: false,
+          enabledCancelCache: false,
         });
         const child = filterEmptyMenus(data || []);
         if (type === 'project') {
@@ -384,8 +386,12 @@ class MenuStore {
       let flag = 0;
       if (type === 'site') {
         if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-          await axios.put('iam/v1/users/tenant-id?tenantId=0');
-          const result = await axios.get('/iam/choerodon/v1/switch/site');
+          await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
+            enabledCancelCache: false,
+          });
+          const result = await axios.get('/iam/choerodon/v1/switch/site', {
+            enabledCancelCache: false,
+          });
           if (!result) {
             this.setHasSitePermission(false);
           }
@@ -394,7 +400,9 @@ class MenuStore {
         const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
         if (!loadingTenant.includes(orgId)) {
           loadingTenant.push(String(orgId));
-          await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`);
+          await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
+            enabledCancelCache: false,
+          });
           loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);
         } else {
           flag = 1;
@@ -421,17 +429,6 @@ class MenuStore {
       }
       isLoadMenu = 0;
       AppState.setCanShowRoute(true);
-      // const item = roles.find(r => (type === 'site' ? r.level === type : r.level === 'organization'));
-      // if (item) {
-      //   isLoadMenu = 0;
-      //   // await axios.put(`iam/v1/users/roles?roleId=${item.id}`);
-      //   AppState.loadUserInfo();
-      //   const data = await getMenu(this);
-      //   return resolve(data);
-      // } else {
-      //   isLoadMenu = 0;
-      //   return resolve([]);
-      // }
       } catch (e) {
         AppState.setCanShowRoute(true);
       }

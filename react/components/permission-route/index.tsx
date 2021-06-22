@@ -5,13 +5,6 @@ import { noaccess as NoAccess, Permission } from '@/index';
 import useQueryString from '@/hooks/useQueryString';
 import Skeleton from '@/containers/components/c7n/master/skeleton';
 // @ts-ignore
-import { pendingRequest } from '@/containers/components/c7n/tools/axios';
-import {observer} from "mobx-react-lite";
-import {inject} from "mobx-react";
-import Page from "@/containers/components/c7n/tools/page";
-import Header from "@/containers/components/c7n/tools/page/Header";
-import Breadcrumb from "@/containers/components/c7n/tools/tab-page/Breadcrumb";
-import Content from "@/containers/components/c7n/tools/page/Content";
 
 interface PermissionRouteProps extends RouteProps {
   service: string[] | ((type: 'project' | 'organization' | 'site') => string[]),
@@ -29,16 +22,16 @@ const PermissionRoute: React.FC<PermissionRouteProps> = ({ enabledRouteChangedAj
     />
   );
 
-  useEffect(() => function () {
-    // @ts-ignore
-    if (enabledRouteChangedAjaxBlock && pendingRequest) {
-    // @ts-ignore
-      pendingRequest.forEach((item:any) => {
-        item.routeChangeCancel && item.cancel();
-      });
-    }
-  },
-  [location]);
+  // useEffect(() => function () {
+  //   // @ts-ignore
+  //   if (enabledRouteChangedAjaxBlock && pendingRequest) {
+  //   // @ts-ignore
+  //     pendingRequest.forEach((item:any) => {
+  //       item.routeChangeCancel && item.cancel();
+  //     });
+  //   }
+  // },
+  // [location]);
 
   return (codes.length > 0)
     ? (
