@@ -19,19 +19,7 @@ interface PermissionRouteProps extends RouteProps {
 }
 const isFunction = (something: unknown): something is Function => typeof something === 'function';
 
-const EmptyLoading = (props: {
-  activeMenu: {
-    name: string,
-  }
-}) => (
-  <Page>
-    <Header title={props.activeMenu.name || ''} />
-    <Breadcrumb />
-    <Content />
-  </Page>
-)
-
-const PermissionRoute: React.FC<PermissionRouteProps> = inject('MenuStore')(observer(({ enabledRouteChangedAjaxBlock = true, service, ...rest }) => {
+const PermissionRoute: React.FC<PermissionRouteProps> = ({ enabledRouteChangedAjaxBlock = true, service, ...rest }) => {
   const { type } = useQueryString();
   const location = useLocation();
   const codes = useMemo(() => (isFunction(service) ? service(type) : (service || [])), [service, type]);
@@ -57,7 +45,7 @@ const PermissionRoute: React.FC<PermissionRouteProps> = inject('MenuStore')(obse
       <Permission
         service={codes}
         noAccessChildren={<NoAccess />}
-        defaultChildren={<EmptyLoading activeMenu={rest.MenuStore.activeMenu} />}
+        defaultChildren={<Skeleton />}
       >
         {route}
       </Permission>
@@ -67,5 +55,5 @@ const PermissionRoute: React.FC<PermissionRouteProps> = inject('MenuStore')(obse
         {...rest}
       />
     );
-}));
+};
 export default PermissionRoute;
