@@ -326,7 +326,7 @@ class MenuStore {
       if (menu.length || hasMenu()) {
         if (type === 'site') {
           if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-            await axios.put('iam/v1/users/tenant-id?tenantId=0', {
+            await axios.put('iam/v1/users/tenant-id?tenantId=0', null,  {
               enabledCancelCache: false,
             });
             const result = await axios.get('/iam/choerodon/v1/switch/site', {
@@ -386,7 +386,7 @@ class MenuStore {
       let flag = 0;
       if (type === 'site') {
         if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-          await axios.put('iam/v1/users/tenant-id?tenantId=0', {
+          await axios.put('iam/v1/users/tenant-id?tenantId=0', null,  {
             enabledCancelCache: false,
           });
           const result = await axios.get('/iam/choerodon/v1/switch/site', {
@@ -400,7 +400,7 @@ class MenuStore {
         const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
         if (!loadingTenant.includes(orgId)) {
           loadingTenant.push(String(orgId));
-          await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`, {
+          await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
             enabledCancelCache: false,
           });
           loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);

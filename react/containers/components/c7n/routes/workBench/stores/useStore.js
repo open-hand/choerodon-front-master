@@ -38,7 +38,6 @@ export default function useStore(history, AppState) {
       const type = 'project';
       HeaderStore.setRecentItem(data);
       MenuStore.loadMenuData({ type, id }, false).then((menus) => {
-        debugger
         let route = '';
         let path;
         let domain;
