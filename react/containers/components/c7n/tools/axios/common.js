@@ -4,6 +4,7 @@ import { authorizeUrl } from '@/utils/authorize';
 import {
   prompt,
 } from '@/utils';
+import { notification } from 'choerodon-ui';
 import qs from 'qs';
 import BigNumber from 'bignumber.js';
 import get from 'lodash/get';
@@ -14,6 +15,9 @@ import MenuStore from '../../../../stores/c7n/MenuStore';
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 
 const pendingRequest = new Map();
+
+// 是否出现身份认证失效的弹框
+let isExistInvalidTokenNotification = false;
 
 function cursiveSetCorrectId(source, correctId, flag) {
   let tempCorrectedId = correctId;
@@ -106,8 +110,20 @@ function handelResponseError(error, ...rest) {
     const { status } = response;
     switch (status) {
       case 401: {
-        removeAccessToken();
-        authorizeUrl();
+        if (!isExistInvalidTokenNotification) {
+          isExistInvalidTokenNotification = true;
+          notification.error({
+            message: '未登录或身份认证已失效',
+            description: '您未登录或者身份认证已失效，请刷新后重新登录',
+            duration: null,
+            placement: 'bottomLeft',
+            onClose: () => {
+              isExistInvalidTokenNotification = false;
+            }
+          });
+        }
+        // removeAccessToken();
+        // authorizeUrl();
         break;
       }
       case 403: {
