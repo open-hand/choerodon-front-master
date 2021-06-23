@@ -75,6 +75,12 @@ const WorkBench = () => {
     organizationId,
   } = useWorkBenchStore();
 
+  async function test() {
+    const res = await axios.get('http://172.23.16.92:30094/iam/choerodon/v1/organizations/1131/quick_links/scope/self?page=0&size=10', {
+      enabledCancelCache: 20,
+    });
+  }
+
   useEffect(() => {
     // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
     // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
@@ -83,10 +89,10 @@ const WorkBench = () => {
     // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
     // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
     // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
-    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.TENANT_ROLE');
+    // axios.get('http://172.23.16.92:30094/iam/choerodon/v1/organizations/1131/quick_links/scope/self?page=0&size=10');
+    // axios.get('/hpfm/v1/lov/value?lovCode=OPADM.TENANT_ROLE');
     // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
     // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.AGENT_BIND_SCRAPE');
-    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.TENANT_ROLE');
     // checkPermission({
     //   organizationId,
     //   codeArr: ['choerodon.code.project.infra.code-lib-management.ps.project-owner'],
@@ -95,7 +101,7 @@ const WorkBench = () => {
     //   organizationId,
     //   codeArr: ['choerodon.code.project.infra.code-lib-management.ps.project-owner'],
     // });
-  });
+  }, []);
 
   const {
     isEdit,
@@ -217,7 +223,7 @@ const WorkBench = () => {
 
   return (
     <Page className={`${prefixCls}`}>
-      {/* <Header>
+      <Header>
         <HeaderButtons items={[
           {
             icon: 'info',
@@ -226,13 +232,7 @@ const WorkBench = () => {
             groupBtnItems: [
               {
                 name: 'test',
-                handler: () => {
-                  Modal.open({
-                    key: Modal.key(),
-                    title: 'dsadas',
-                    children: ' sadasdas',
-                  });
-                },
+                handler: test,
                 tooltipsConfig: {
                   title: 'hell',
                 },
@@ -299,7 +299,7 @@ const WorkBench = () => {
             </div>
           )}
         />
-      </Header> */}
+      </Header>
       <div
         className={`${prefixCls}-container`}
       >

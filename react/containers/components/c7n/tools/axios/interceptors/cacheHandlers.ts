@@ -1,17 +1,17 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { get } from 'lodash';
-import getMark from '../utils/getMark';
+import getMark, { transformDataToString } from '../utils/getMark';
 import { axiosCache, axiosEvent } from '../instances';
 
 export function handleCancelCacheRequest(config:AxiosRequestConfig) {
   const tempConfig = config;
   const enabledCancelCache = get(tempConfig, 'enabledCancelCache');
-
   if (enabledCancelCache) {
     const cancelCacheKey = getMark(tempConfig);
     if (!axiosCache.has(cancelCacheKey)) {
       axiosCache.set(cancelCacheKey, {});
     }
+
     const {
       data,
       isPending,
@@ -19,7 +19,7 @@ export function handleCancelCacheRequest(config:AxiosRequestConfig) {
     } = axiosCache.get(cancelCacheKey);
 
     if (isPending) {
-      // 说明上个重复的请求还在pending，这时候
+      // 说明找到了请求但是找到的这个缓存的请求还在pending，这时候订阅一个期约待会要用
       tempConfig.adapter = () => new Promise((resolve) => {
         axiosEvent.once(cancelCacheKey, (res:unknown) => {
           const resolveData: AxiosResponse = {
@@ -38,7 +38,7 @@ export function handleCancelCacheRequest(config:AxiosRequestConfig) {
     } else if (expire && expire > Date.now()) {
       tempConfig.adapter = () => {
         const resolveData: AxiosResponse = {
-          data,
+          data: transformDataToString(data),
           headers: tempConfig.headers,
           config: {
             ...tempConfig,
@@ -51,7 +51,7 @@ export function handleCancelCacheRequest(config:AxiosRequestConfig) {
       };
     } else {
       axiosCache.set(cancelCacheKey, {
-        ...axiosCache.get(cancelCacheKey),
+        useCache: false,
         isPending: true,
       });
     }

@@ -6,6 +6,8 @@ import {
 } from '@/utils';
 import { AxiosError } from 'axios';
 import { notification } from 'choerodon-ui';
+import getMark from '../utils/getMark';
+import { axiosCache } from '../instances';
 
 // 是否出现身份认证失效的弹框
 let isExistInvalidTokenNotification = false;
@@ -13,7 +15,13 @@ let isExistInvalidTokenNotification = false;
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 
 export default function handelResponseError(error: AxiosError) {
-  const { response } = error;
+  const { response, config } = error;
+
+  const cancelCacheKey = getMark(config);
+  if (axiosCache.has(cancelCacheKey)) {
+    axiosCache.clear(cancelCacheKey);
+  }
+
   if (response) {
     const { status } = response;
     switch (status) {
