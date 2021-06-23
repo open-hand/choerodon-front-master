@@ -695,7 +695,8 @@ class Masters extends Component {
               </div>
               {this.renderGuide()}
               <div id="autoRouter" className="content">
-                {
+                <RouteIndex AutoRouter={AutoRouter} />
+                {/* {
                   AppState.getCanShowRoute || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
                     <RouteIndex AutoRouter={AutoRouter} />
                   ) : (
@@ -703,7 +704,7 @@ class Masters extends Component {
                       <Skeleton />
                     </div>
                   )
-                }
+                } */}
               </div>
             </div>
           </div>

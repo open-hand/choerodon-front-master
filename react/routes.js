@@ -18,7 +18,7 @@ const AutoRouter = () => (
   //   {routes.map(([path, component]) => <Route path={path} component={React.lazy(component)} />)}
   //   <CacheRoute path="*" component={nomatch} />
   // </CacheSwitch>
-  <Suspense fallback={<Skeleton />}>
+  <Suspense fallback={Skeleton}>
     <CacheSwitch>
       {routes.map(([path, component]) => <Route path={path} component={React.lazy(component)} />)}
       {/*<PermissionRoute path="/test" component={test}*/}
