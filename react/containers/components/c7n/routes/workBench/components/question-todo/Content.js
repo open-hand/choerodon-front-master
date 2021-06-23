@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { Tree } from 'choerodon-ui/pro';
+import {
+  Icon, TextField, Tree, Button, Dropdown, Form,
+} from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
+import { Select } from 'choerodon-ui/pro/lib/select/Select';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionNode from '../question-node';
 
 import './index.less';
+import QuestionSearch from '../question-serach';
 
 const TodoQuestion = observer(() => {
   const {
@@ -19,7 +23,6 @@ const TodoQuestion = observer(() => {
     prefixCls,
     questionStore,
   } = useTodoQuestionStore();
-
   const [btnLoading, changeBtnLoading] = useState(false);
 
   function loadMoreData() {
@@ -29,7 +32,11 @@ const TodoQuestion = observer(() => {
       changeBtnLoading(false);
     });
   }
-
+  function load(search) {
+    console.log('search :>> ', search);
+    questionStore.setPage(1);
+    questionDs.query();
+  }
   function nodeRenderer({ record }) {
     return (
       <QuestionNode
@@ -80,10 +87,13 @@ const TodoQuestion = observer(() => {
   }
 
   const renderTitle = () => (
-    <>
-      <span>待办事项</span>
-      <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
-    </>
+    <div>
+      <span>
+        <span>待办事项</span>
+        <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
+      </span>
+      <QuestionSearch onQuery={load} />
+    </div>
   );
 
   return (
