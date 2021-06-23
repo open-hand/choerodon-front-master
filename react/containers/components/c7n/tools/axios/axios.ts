@@ -36,12 +36,14 @@ instance.interceptors.request.use(transformRequestPage);
 instance.interceptors.request.use(addCustomHeader, handleRequestError);
 
 // -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-// 添加拦截器
+// 添加响应拦截器
 instance.interceptors.response.use(handleResponseInterceptor, handelResponseError);
 
 instance.all = axios.all;
 instance.bind = axios.bind;
+
+
+console.log(axios, instance);
+debugger
 
 export default instance;
