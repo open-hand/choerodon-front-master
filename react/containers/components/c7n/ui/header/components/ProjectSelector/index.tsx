@@ -36,7 +36,7 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
   const [filterList, setFilterList] = useState([]);
   const { list, containerProps, wrapperProps } = useVirtualList(filterList, {
     overscan: 30,
-    itemHeight: 49,
+    itemHeight: 46,
   });
 
   // const debouncedFilter = useDebounce(projectFilter, { wait: 500 });
@@ -154,8 +154,15 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
           <div {...wrapperProps}>
             {list.map((i: any) => {
               return (
-                <p key={i.index} role="none" onClick={() => handleClickPopContent(`${i.data.id}`)} className={`${prefixCls}-popContent-option`}>{i.data.name}</p>
-
+                <p
+                  style={{
+                    height: 46,
+                    overflow: 'hidden',
+                  }}
+                  key={i.index}
+                  role="none"
+                  onClick={() => handleClickPopContent(`${i.data.id}`)} className={`${prefixCls}-popContent-option`}
+                >{i.data.name}</p>
               )
             }
               )}
