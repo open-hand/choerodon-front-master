@@ -35,10 +35,6 @@ const QuickLink = observer(() => {
     listHasMore,
   } = quickLinkUseStore;
 
-  // useEffect(() => {
-  //   handleRefresh();
-  // }, []);
-
   const handleRefresh = async () => {
     await quickLinkDs.query();
   };

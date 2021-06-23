@@ -13,7 +13,6 @@ export default ({
     read: ({ dataSet }) => ({
       url: `/iam/choerodon/v1/organizations/${organizationId}/quick_links/scope/${linkType}${selectedProjectId ? `?project_id=${selectedProjectId}` : ''}`,
       method: 'get',
-      enabledCancelCache: 2000,
       transformResponse(res) {
         try {
           const mainData = Jsonbig.parse(res);
