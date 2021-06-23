@@ -35,7 +35,7 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
   const [spinning, setSpinning] = useState(false);
   const [filterList, setFilterList] = useState([]);
   const { list, containerProps, wrapperProps } = useVirtualList(filterList, {
-    overscan: 30,
+    overscan: 5,
     itemHeight: 46,
   });
 
