@@ -19,7 +19,7 @@ export function handleCancelCacheRequest(config:AxiosRequestConfig) {
     } = axiosCache.get(cancelCacheKey);
 
     if (isPending) {
-      // 说明上个重复的请求还在pending，这时候
+      // 说明上个重复的请求还在pending，这时候订阅一个期约待会要用
       tempConfig.adapter = () => new Promise((resolve) => {
         axiosEvent.once(cancelCacheKey, (res:unknown) => {
           const resolveData: AxiosResponse = {
@@ -52,6 +52,7 @@ export function handleCancelCacheRequest(config:AxiosRequestConfig) {
     } else {
       axiosCache.set(cancelCacheKey, {
         ...axiosCache.get(cancelCacheKey),
+        useCache: false,
         isPending: true,
       });
     }

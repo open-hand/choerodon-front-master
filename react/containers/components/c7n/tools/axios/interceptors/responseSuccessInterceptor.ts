@@ -5,15 +5,6 @@ import {
 } from '@/utils';
 import { axiosCache, axiosEvent } from '../instances';
 import getMark from '../utils/getMark';
-import transformResponsePage from './transformResponsePage';
-
-declare module 'axios' {
-  interface AxiosRequestConfig {
-    noPrompt?: boolean
-    enabledCancelCache?: boolean,
-    useCache?:boolean
-  }
-}
 
 export default function handleResponseInterceptor(response:AxiosResponse) {
   const resData = get(response, 'data');
@@ -36,16 +27,14 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
     throw resData;
   }
 
-  const transformPageData = transformResponsePage(resData);
-
   if (enabledCancelCache && !useCache) {
     axiosCache.set(cancelCacheKey, {
-      data: transformPageData,
+      data: resData,
       isPending: false,
-      expire: Date.now() + Number(enabledCancelCache) * 1000,
+      expire: Date.now() + Number(enabledCancelCache) * 500,
     });
     axiosEvent.emit(cancelCacheKey, resData);
   }
 
-  return transformPageData;
+  return response;
 }

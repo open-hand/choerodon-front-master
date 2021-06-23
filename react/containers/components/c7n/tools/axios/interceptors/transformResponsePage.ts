@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 
-export default function transformResponsePage(resData:any) {
-  const data = resData;
+export default function transformResponsePage(response:AxiosResponse) {
+  const { data } = response;
   if (data?.content) {
     data.list = data.content;
     data.total = data.totalElements;
