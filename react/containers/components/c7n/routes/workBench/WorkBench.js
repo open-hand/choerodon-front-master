@@ -76,7 +76,9 @@ const WorkBench = () => {
   } = useWorkBenchStore();
 
   async function test() {
-    const res = await axios.get('/hpfm/v1/lov/value?lovCode=OPADM.TENANT_ROLE');
+    const res = await axios.get('http://172.23.16.92:30094/iam/choerodon/v1/organizations/1131/quick_links/scope/self?page=0&size=10', {
+      enabledCancelCache: 20,
+    });
   }
 
   useEffect(() => {
@@ -87,7 +89,7 @@ const WorkBench = () => {
     // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
     // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
     // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
-    // axios.get('/hpfm/v1/lov/value?lovCode=OPADM.TENANT_ROLE');
+    // axios.get('http://172.23.16.92:30094/iam/choerodon/v1/organizations/1131/quick_links/scope/self?page=0&size=10');
     // axios.get('/hpfm/v1/lov/value?lovCode=OPADM.TENANT_ROLE');
     // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
     // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.AGENT_BIND_SCRAPE');

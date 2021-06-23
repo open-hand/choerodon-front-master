@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import Action from '@/containers/components/c7n/tools/action';
@@ -34,6 +34,10 @@ const QuickLink = observer(() => {
     setType,
     listHasMore,
   } = quickLinkUseStore;
+
+  // useEffect(() => {
+  //   handleRefresh();
+  // }, []);
 
   const handleRefresh = async () => {
     await quickLinkDs.query();

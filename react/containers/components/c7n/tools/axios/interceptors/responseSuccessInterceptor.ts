@@ -4,14 +4,15 @@ import {
   prompt,
 } from '@/utils';
 import { axiosCache, axiosEvent } from '../instances';
-import getMark from '../utils/getMark';
+import getMark, { transformDataToString } from '../utils/getMark';
 
 export default function handleResponseInterceptor(response:AxiosResponse) {
   const resData = get(response, 'data');
   const config = get(response, 'config') || {};
+  const isTransportResponseHandled = get(config, 'isCustomTransformResponseHandled');
+
   const { enabledCancelCache, useCache } = config;
   const cancelCacheKey = getMark(config);
-
   if (get(response, 'status') === 204) {
     return response;
   }
@@ -29,12 +30,12 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
 
   if (enabledCancelCache && !useCache) {
     axiosCache.set(cancelCacheKey, {
-      data: resData,
+      data: isTransportResponseHandled ? axiosCache.get(cancelCacheKey)?.data : resData,
       isPending: false,
       expire: Date.now() + Number(enabledCancelCache) * 500,
     });
     axiosEvent.emit(cancelCacheKey, resData);
   }
 
-  return response;
+  return resData;
 }

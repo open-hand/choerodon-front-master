@@ -50,9 +50,9 @@ instance.interceptors.request.use(addCustomHeader); // 1
 
 // -------------------------------------------------------------------
 // 添加响应拦截器
-instance.interceptors.response.use(handleResponseInterceptor, handelResponseError); // 1
-instance.interceptors.response.use((value) => value); // 2
-instance.interceptors.response.use(transformResponsePage); // 3
+instance.interceptors.response.use(transformResponsePage); // 1
+instance.interceptors.response.use(handleResponseInterceptor, handelResponseError); // 2
+instance.interceptors.response.use((value) => value); // 3
 
 instance.all = axios.all;
 instance.bind = axios.bind;

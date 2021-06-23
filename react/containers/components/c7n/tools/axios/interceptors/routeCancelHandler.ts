@@ -5,7 +5,6 @@ import getMark from '../utils/getMark';
 
 export function routeCancelInterceptor(config:AxiosRequestConfig) {
   const enabledCancelRoute = get(config, 'enabledCancelRoute');
-
   if (enabledCancelRoute) {
     const cancelRouteKey = getMark(config);
     const { CancelToken } = axios;
