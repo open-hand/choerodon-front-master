@@ -9,6 +9,7 @@ export default async function checkPermission({
       url: '/iam/choerodon/v1/permissions/menus/check-permissions',
       data: codeArr || [code],
       params: { tenantId: organizationId, projectId },
+      enabledCancelCache: false,
     });
     if (res && res.failed) {
       return false;
