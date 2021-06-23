@@ -75,12 +75,6 @@ const WorkBench = () => {
     organizationId,
   } = useWorkBenchStore();
 
-  async function test() {
-    const res = await axios.get('http://172.23.16.92:30094/iam/choerodon/v1/organizations/1131/quick_links/scope/self?page=0&size=10', {
-      enabledCancelCache: 20,
-    });
-  }
-
   useEffect(() => {
     // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
     // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
@@ -223,7 +217,7 @@ const WorkBench = () => {
 
   return (
     <Page className={`${prefixCls}`}>
-      <Header>
+      {/* <Header>
         <HeaderButtons items={[
           {
             icon: 'info',
@@ -299,7 +293,7 @@ const WorkBench = () => {
             </div>
           )}
         />
-      </Header>
+      </Header> */}
       <div
         className={`${prefixCls}-container`}
       >
