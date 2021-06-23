@@ -3,12 +3,9 @@ import { AxiosRequestConfig } from 'axios';
 import paramsSerializer from './paramsSerializer';
 
 function getDataMark(data:any) {
-  let stringifyData;
-  try {
-    const parseData = JSON.stringify(data);
-    stringifyData = encodeURIComponent(parseData);
-  } catch (error) {
-    stringifyData = encodeURIComponent(data);
+  let stringifyData = data;
+  if (typeof stringifyData === 'string') {
+    stringifyData = JSON.parse(stringifyData);
   }
   return stringifyData;
 }
