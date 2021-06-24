@@ -29,7 +29,6 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
   }
 
   if (enabledCancelCache && !useCache) {
-    debugger
     axiosCache.set(config?.cancelCacheKey || cancelCacheKey, {
       data: isTransportResponseHandled ? axiosCache.get(cancelCacheKey)?.data : resData,
       isPending: false,
