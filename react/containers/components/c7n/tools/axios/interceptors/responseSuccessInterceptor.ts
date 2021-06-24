@@ -29,12 +29,13 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
   }
 
   if (enabledCancelCache && !useCache) {
+    const finalData = isTransportResponseHandled ? axiosCache.get(cancelCacheKey)?.data : resData;
     axiosCache.set(config?.cancelCacheKey || cancelCacheKey, {
-      data: isTransportResponseHandled ? axiosCache.get(cancelCacheKey)?.data : resData,
+      data: finalData,
       isPending: false,
       expire: Date.now() + Number(enabledCancelCache) * 500,
     });
-    axiosEvent.emit(cancelCacheKey, resData);
+    axiosEvent.emit(cancelCacheKey, finalData);
   }
 
   return resData;
