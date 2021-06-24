@@ -23,7 +23,7 @@ export default function getMark(config:AxiosRequestConfig) {
   const tempQueryString = (config?.paramsSerializer ?? paramsSerializer)(config?.params);
   const dataMark = JSON.stringify(getDataMark(get(config, 'data')));
   const requestMark = [
-    config?.method,
+    config?.method ? config?.method.toLowerCase() : '',
     config?.url,
   ];
 
