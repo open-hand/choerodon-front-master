@@ -2,6 +2,7 @@ import { AxiosAdapter, AxiosRequestConfig } from 'axios';
 import { API_HOST } from '@/utils/constants';
 import { axiosCache } from '../instances';
 import getMark from '../utils/getMark';
+import transformRequestPage from '../interceptors/transformRequestPage';
 
 interface customAxiosRequestConfig extends AxiosRequestConfig {
   isCustomTransformResponseHandled?: boolean
@@ -10,7 +11,7 @@ interface customAxiosRequestConfig extends AxiosRequestConfig {
 function handleCustomTransformResponseHandler(config:customAxiosRequestConfig, data:any) {
   const tempConfig = config;
   tempConfig.url = `${API_HOST}${config.url}`;
-  const cancelCacheKey = getMark(tempConfig);
+  const cancelCacheKey = getMark(transformRequestPage(tempConfig));
   axiosCache.set(cancelCacheKey, {
     ...axiosCache.get(cancelCacheKey),
     data,
