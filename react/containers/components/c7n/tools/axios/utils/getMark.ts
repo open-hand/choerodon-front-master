@@ -1,10 +1,11 @@
 import { get } from 'lodash';
 import { AxiosRequestConfig } from 'axios';
+import JSONbig from 'json-bigint';
 import paramsSerializer from './paramsSerializer';
 
 export function transformDataToString(data:any) {
   if (typeof data !== 'string') {
-    return JSON.stringify(data);
+    return JSONbig.stringify(data);
   }
   return data;
 }
@@ -12,7 +13,7 @@ export function transformDataToString(data:any) {
 function getDataMark(data:any) {
   let stringifyData = data;
   if (typeof stringifyData === 'string') {
-    stringifyData = JSON.parse(stringifyData);
+    stringifyData = JSONbig.parse(stringifyData);
   }
   return stringifyData;
 }
@@ -21,7 +22,7 @@ function getDataMark(data:any) {
 // 如果一个项目里有多个不同baseURL的请求 + 参数
 export default function getMark(config:AxiosRequestConfig) {
   const tempQueryString = (config?.paramsSerializer ?? paramsSerializer)(config?.params);
-  const dataMark = JSON.stringify(getDataMark(get(config, 'data')));
+  const dataMark = JSONbig.stringify(getDataMark(get(config, 'data')));
   const requestMark = [
     config?.method ? config?.method.toLowerCase() : '',
     config?.url,
