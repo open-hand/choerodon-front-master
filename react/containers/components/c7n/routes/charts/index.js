@@ -15,7 +15,7 @@ import './style/index.less';
 const Home = (props) => {
   const [list, setList] = useState([]);
   const {
-    AppState, reportType, service,
+    AppState, reportType, service, showCreate = false, extraCharts = [],
   } = props;
 
   const { search } = useLocation();
@@ -53,7 +53,7 @@ const Home = (props) => {
   return (
     <Page service={service}>
       <Header>
-        {reportType === 'agile' && (
+        {showCreate && (
         <>
           {mount('agile:AgileChartHeaderButtons', {})}
         </>
@@ -63,7 +63,7 @@ const Home = (props) => {
       <Content className="c7n-charts">
         <div className="line">
           <div className="line-content">
-            {sortBy(list, 'sort').map((chart) => renderGroup(chart))}
+            {[...sortBy(list, 'sort'), ...extraCharts].map((chart) => renderGroup(chart))}
           </div>
         </div>
       </Content>
