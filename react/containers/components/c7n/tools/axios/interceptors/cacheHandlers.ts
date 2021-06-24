@@ -18,6 +18,9 @@ export function handleCancelCacheRequest(config:AxiosRequestConfig) {
       expire,
     } = axiosCache.get(cancelCacheKey);
 
+    // @ts-ignore
+    tempConfig.cancelCacheKey = cancelCacheKey;
+
     if (isPending) {
       // 说明找到了请求但是找到的这个缓存的请求还在pending，这时候订阅一个期约待会要用
       tempConfig.adapter = () => new Promise((resolve) => {
