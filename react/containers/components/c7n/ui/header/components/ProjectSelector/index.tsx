@@ -150,7 +150,7 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
   const handleRenderPopRest = (filterStarProject: object[], filterRecentUser: object[]) => {
     if (filterList && filterList.length > 0) {
       return (
-        <div { ...containerProps } style={{ height: '300px', overflow: 'auto' }}>
+        <div { ...containerProps } style={{ maxHeight: '300px', overflow: 'auto' }}>
           <div {...wrapperProps}>
             {list.map((i: any) => {
               return (
@@ -158,6 +158,8 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
                   style={{
                     height: 46,
                     overflow: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
                   }}
                   key={i.index}
                   role="none"
