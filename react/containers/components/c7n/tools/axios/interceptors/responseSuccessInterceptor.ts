@@ -4,7 +4,7 @@ import {
   prompt,
 } from '@/utils';
 import { axiosCache, axiosEvent } from '../instances';
-import getMark, { transformDataToString } from '../utils/getMark';
+import getMark from '../utils/getMark';
 
 export default function handleResponseInterceptor(response:AxiosResponse) {
   const resData = get(response, 'data');
@@ -29,7 +29,8 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
   }
 
   if (enabledCancelCache && !useCache) {
-    axiosCache.set(cancelCacheKey, {
+    debugger
+    axiosCache.set(config?.cancelCacheKey || cancelCacheKey, {
       data: isTransportResponseHandled ? axiosCache.get(cancelCacheKey)?.data : resData,
       isPending: false,
       expire: Date.now() + Number(enabledCancelCache) * 500,
