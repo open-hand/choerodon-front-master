@@ -1,7 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
 import JSONbig from 'json-bigint';
 
-import { get, map } from 'lodash';
+import { get, isEqual, map } from 'lodash';
+import { toJS } from 'mobx';
 
 export default (({
   organizationId, questionStore, selectedProjectId, type, cacheStore,
@@ -15,7 +16,7 @@ export default (({
     read: ({ data }) => ({
       url: `agile/v1/organizations/${organizationId}/work_bench/personal/backlog_issues?page=${questionStore.getPage || 1}&size=20${selectedProjectId ? `&projectId=${selectedProjectId}` : ''}`,
       method: 'post',
-      data: { type },
+      data: { searchVO: {}, ...(data.searchData || {}), type },
       transformResponse(response) {
         try {
           const res = JSONbig.parse(response);
@@ -31,8 +32,10 @@ export default (({
           const storeArr = get(cacheStore.bugQuestions, 'content')?.slice();
           const tempType = get(cacheStore.bugQuestions, 'type');
           const tempId = get(cacheStore.bugQuestions, 'selectedProjectId');
+          const searchData = toJS(get(cacheStore.bugQuestions, 'searchData'));
+
           let tempArr;
-          if (storeArr) {
+          if (storeArr && (!data.searchData || isEqual(searchData, data.searchData))) {
             if (tempType !== type || tempId !== selectedProjectId) {
               tempArr = content;
             } else {
@@ -46,6 +49,7 @@ export default (({
             content: tempArr,
             selectedProjectId,
             type,
+            searchData: data.searchData,
           };
           cacheStore.setBugQuestions(tempObj);
           return tempArr;

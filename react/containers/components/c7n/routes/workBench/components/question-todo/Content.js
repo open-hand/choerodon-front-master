@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Icon, TextField, Tree, Button, Dropdown, Form,
 } from 'choerodon-ui/pro';
@@ -13,7 +13,7 @@ import emptyImg from './image/empty.svg';
 import QuestionNode from '../question-node';
 
 import './index.less';
-import QuestionSearch from '../question-serach';
+import QuestionSearch, { questionSearchFields } from '../question-serach';
 
 const TodoQuestion = observer(() => {
   const {
@@ -24,7 +24,14 @@ const TodoQuestion = observer(() => {
     questionStore,
   } = useTodoQuestionStore();
   const [btnLoading, changeBtnLoading] = useState(false);
+  const searchField = useMemo(() => questionSearchFields.filter((i) => ['contents', 'issueType', 'status', 'priority'].includes(i.code)), []);
 
+  function load(search) {
+    console.log('search :>> ', search);
+    questionStore.setPage(1);
+    questionDs.setQueryParameter('searchData', search);
+    questionDs.query();
+  }
   function loadMoreData() {
     changeBtnLoading(true);
     questionStore.setPage(questionStore.getPage + 1);
@@ -32,11 +39,7 @@ const TodoQuestion = observer(() => {
       changeBtnLoading(false);
     });
   }
-  function load(search) {
-    console.log('search :>> ', search);
-    questionStore.setPage(1);
-    questionDs.query();
-  }
+
   function nodeRenderer({ record }) {
     return (
       <QuestionNode
@@ -92,7 +95,7 @@ const TodoQuestion = observer(() => {
         <span>待办事项</span>
         <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
       </span>
-      <QuestionSearch onQuery={load} />
+      <QuestionSearch onQuery={load} fields={searchField} key={`QuestionSearch-${questionDs.id}`} />
     </div>
   );
 

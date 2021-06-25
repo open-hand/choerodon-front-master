@@ -14,6 +14,7 @@ import QuestionNode from '../question-node';
 
 import './index.less';
 import { useWorkBenchStore } from '../../stores';
+import QuestionSearch, { questionSearchFields } from '../question-serach';
 
 const TodoQuestion = observer(() => {
   const {
@@ -27,12 +28,23 @@ const TodoQuestion = observer(() => {
   const {
     selectedProjectId,
   } = useWorkBenchStore();
-
-  const [btnLoading, changeBtnLoading] = useState(false);
-
   const {
     tabKey,
   } = questionStore;
+
+  const [btnLoading, changeBtnLoading] = useState(false);
+  const searchField = useMemo(() => {
+    const showCodes = ['contents', 'status', 'assignee'];
+    tabKey === 'myBug' && showCodes.pop();
+    return questionSearchFields.filter((i) => showCodes.includes(i.code));
+  }, [tabKey]);
+
+  function load(search) {
+    console.log('search :>> ', search);
+    questionStore.setPage(1);
+    questionDs.setQueryParameter('searchData', search);
+    questionDs.query();
+  }
 
   const emptyPrompt = useMemo(() => {
     const [title, describe] = tabKey === 'reportedBug' ? ['暂无已提缺陷', '当前迭代您尚未提交任何缺陷'] : ['暂无待办问题', '当前迭代暂无待办问题'];
@@ -104,15 +116,19 @@ const TodoQuestion = observer(() => {
         <span>缺陷</span>
         <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
       </div>
-      <Switch
-        defaultValue="myStarBeacon"
-        value={tabKey}
-        options={[
-          { value: 'reportedBug', text: '已提缺陷' },
-          { value: 'myBug', text: '待修复缺陷' },
-        ]}
-        onChange={handleTabChange}
-      />
+      <span className={`${prefixCls}-title-right`}>
+        <Switch
+          defaultValue="myStarBeacon"
+          value={tabKey}
+          options={[
+            { value: 'reportedBug', text: '已提缺陷' },
+            { value: 'myBug', text: '待修复缺陷' },
+          ]}
+          onChange={handleTabChange}
+        />
+        <QuestionSearch key={`c7n-focus-QuestionSearch-${tabKey}`} onQuery={load} fields={searchField} />
+
+      </span>
     </div>
   );
 
