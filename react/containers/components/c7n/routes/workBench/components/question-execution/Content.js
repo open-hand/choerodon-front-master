@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Tree } from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
@@ -8,6 +8,7 @@ import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionNode from '../question-node';
+import QuestionSearch, { questionSearchFields } from '../question-serach';
 
 import './index.less';
 
@@ -21,6 +22,14 @@ const TodoQuestion = observer(() => {
   } = useTodoQuestionStore();
 
   const [btnLoading, changeBtnLoading] = useState(false);
+  const searchField = useMemo(() => questionSearchFields.filter((i) => ['contents', 'testStatus', 'testPriority'].includes(i.code)), []);
+
+  function load(search) {
+    console.log('search :>> ', search);
+    questionStore.setPage(1);
+    questionDs.setQueryParameter('searchData', search);
+    questionDs.query();
+  }
 
   function loadMoreData() {
     changeBtnLoading(true);
@@ -81,10 +90,13 @@ const TodoQuestion = observer(() => {
   }
 
   const renderTitle = () => (
-    <>
-      <span>我执行的用例</span>
-      <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
-    </>
+    <div>
+      <span>
+        <span>我执行的用例</span>
+        <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
+      </span>
+      <QuestionSearch onQuery={load} fields={searchField} />
+    </div>
   );
 
   return (
