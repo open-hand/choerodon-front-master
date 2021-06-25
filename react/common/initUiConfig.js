@@ -1,4 +1,4 @@
-import uiInstance, { adapter } from '@/containers/components/c7n/tools/axios';
+import uiInstance from '@/containers/components/c7n/tools/axios';
 import AppState from '@/containers/stores/c7n/AppState';
 import { UI_CONFIGURE } from '@/utils';
 import { configure } from 'choerodon-ui';
@@ -7,9 +7,9 @@ const uiConfigure = UI_CONFIGURE || {};
 
 const UI_CONFIG = {
   ...uiConfigure,
-  transport: {
-    adapter,
-  },
+  // transport: {
+  //   adapter,
+  // },
   pagination: {
     showSizeChangerLabel: false,
     showTotal: (total, range) => `显示${range[0]}-${range[1]} 共 ${total}条`,
