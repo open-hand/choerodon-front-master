@@ -30,33 +30,31 @@ export default function handelResponseError(error: AxiosError) {
         // 如果没有出现头部 说明系统都没进去 直接进入重新登录界面
         if (!hasPageHeader) {
           authorizeUrl();
-        } else {
-          if (!isExistInvalidTokenNotification) {
-            isExistInvalidTokenNotification = true;
-            notification.error({
-              message: '未登录或身份认证已失效',
-              description:
+        } else if (!isExistInvalidTokenNotification) {
+          isExistInvalidTokenNotification = true;
+          notification.error({
+            message: '未登录或身份认证已失效',
+            description:
                 (
                   <span>
-                您未登录或者身份认证已失效 ，请
-                <a
-                  role="none"
-                  onClick={() => {
-                    removeAccessToken();
-                    authorizeC7n();
-                  }}
-                >
-                  重新登录
-                </a>
-              </span>
+                    您未登录或者身份认证已失效 ，请
+                    <a
+                      role="none"
+                      onClick={() => {
+                        removeAccessToken();
+                        authorizeC7n();
+                      }}
+                    >
+                      重新登录
+                    </a>
+                  </span>
                 ),
-              duration: null,
-              placement: 'bottomLeft',
-              onClose: () => {
-                isExistInvalidTokenNotification = false;
-              },
-            });
-          }
+            duration: null,
+            placement: 'bottomLeft',
+            onClose: () => {
+              isExistInvalidTokenNotification = false;
+            },
+          });
         }
         break;
       }

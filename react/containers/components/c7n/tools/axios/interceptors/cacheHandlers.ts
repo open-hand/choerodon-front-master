@@ -2,6 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { get } from 'lodash';
 import getMark, { transformDataToString } from '../utils/getMark';
 import { axiosCache, axiosEvent } from '../instances';
+import handleCustomTransformResponseHandler from '../utils/customTransformResponseHandler';
 
 export function handleCancelCacheRequest(config:AxiosRequestConfig) {
   const tempConfig = config;
@@ -11,15 +12,24 @@ export function handleCancelCacheRequest(config:AxiosRequestConfig) {
     if (!axiosCache.has(cancelCacheKey)) {
       axiosCache.set(cancelCacheKey, {});
     }
-
     const {
       data,
       isPending,
       expire,
     } = axiosCache.get(cancelCacheKey);
 
-    // @ts-ignore
     tempConfig.cancelCacheKey = cancelCacheKey;
+
+    const tempTransformResponse = tempConfig?.transformResponse;
+
+    if (tempTransformResponse && typeof tempTransformResponse === 'function') {
+      // @ts-ignore
+      tempConfig.isCustomTransformResponseHandled = true;
+      tempConfig.transformResponse = function (tempData:any, ...rest) {
+        handleCustomTransformResponseHandler(tempConfig, tempData);
+        return tempTransformResponse(tempData, ...rest);
+      };
+    }
 
     if (isPending) {
       // 说明找到了请求但是找到的这个缓存的请求还在pending，这时候订阅一个期约待会要用

@@ -8,9 +8,11 @@ interface customAxiosRequestConfig extends AxiosRequestConfig {
   isCustomTransformResponseHandled?: boolean
 }
 
-function handleCustomTransformResponseHandler(config:customAxiosRequestConfig, data:any) {
+export function handleCustomTransformResponseHandler(config:customAxiosRequestConfig, data:any) {
   const tempConfig = config;
-  tempConfig.url = `${API_HOST}${config.url}`;
+  if (tempConfig.url?.indexOf(API_HOST) === -1) {
+    tempConfig.url = `${API_HOST}${config.url}`;
+  }
   const cancelCacheKey = getMark(transformRequestPage(tempConfig));
   axiosCache.set(cancelCacheKey, {
     ...axiosCache.get(cancelCacheKey),

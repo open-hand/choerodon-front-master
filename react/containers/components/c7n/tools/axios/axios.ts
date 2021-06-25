@@ -33,7 +33,7 @@ instance.defaults.transformResponse = [
 instance.defaults.paramsSerializer = paramsSerializer;
 
 // 这里配置一个缓存请求得标识
-instance.defaults.enabledCancelCache = false;
+instance.defaults.enabledCancelCache = true;
 
 // 这里配置一个切换路由取消全部pending请求的标识
 instance.defaults.enabledCancelRoute = true;
