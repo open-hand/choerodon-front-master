@@ -15,6 +15,7 @@ export default ({
       method: 'get',
       enabledCancelCache: 200,
       transformResponse(res) {
+        debugger
         try {
           const mainData = Jsonbig.parse(res);
           if (mainData && mainData.failed) {

@@ -9,7 +9,7 @@ export default function handleCustomTransformResponseHandler(config:customAxiosR
   if (tempConfig.url?.indexOf(API_HOST) === -1) {
     tempConfig.url = `${API_HOST}${config.url}`;
   }
-  const cancelCacheKey = getMark(transformRequestPage(tempConfig));
+  const cancelCacheKey = tempConfig.cancelCacheKey || getMark(transformRequestPage(tempConfig));
   axiosCache.set(cancelCacheKey, {
     ...axiosCache.get(cancelCacheKey),
     data,

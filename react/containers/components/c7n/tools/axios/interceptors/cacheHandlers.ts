@@ -25,6 +25,8 @@ export function handleCancelCacheRequest(config:AxiosRequestConfig) {
     // 将config赋值cancelCacheKey，避免了后续transformRequest重写了params会导致response拦截器里头getMark获取到的标识会和本次的不一样
     tempConfig.cancelCacheKey = cancelCacheKey;
 
+    debugger;
+
     const tempTransformResponse = tempConfig?.transformResponse;
 
     if (tempTransformResponse && typeof tempTransformResponse === 'function') {
