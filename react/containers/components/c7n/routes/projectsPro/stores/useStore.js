@@ -57,6 +57,7 @@ export default function useStore(AppState, history) {
     axiosGetRecentProjects() {
       axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/projects/latest_visit`, {
         enabledCancelCache: false,
+        enabledCancelRoute: false,
       }).then((res) => {
         this.setRecentProjects(res);
       });
@@ -184,6 +185,7 @@ export default function useStore(AppState, history) {
       if (orgId) {
         axios.get(`/iam/choerodon/v1/organizations/${orgId}/star_projects`, {
           enabledCancelCache: false,
+          enabledCancelRoute: false,
         }).then((res) => {
           this.setStarProjectsList(get(res, 'length') ? res.map((r) => {
             r.background = getRandomBackground();

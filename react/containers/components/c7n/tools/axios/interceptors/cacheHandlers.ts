@@ -6,18 +6,23 @@ import handleCustomTransformResponseHandler from '../utils/customTransformRespon
 
 export function handleCancelCacheRequest(config:AxiosRequestConfig) {
   const tempConfig = config;
+  // 是否开启了缓存（复用重复请求状态）
   const enabledCancelCache = get(tempConfig, 'enabledCancelCache');
   if (enabledCancelCache) {
+    // 获取标识
     const cancelCacheKey = getMark(tempConfig);
+
     if (!axiosCache.has(cancelCacheKey)) {
       axiosCache.set(cancelCacheKey, {});
     }
+
     const {
-      data,
-      isPending,
-      expire,
+      data, // 缓存的数据
+      isPending, // 请求是否是pending状态
+      expire, // 时间戳
     } = axiosCache.get(cancelCacheKey);
 
+    // 将config赋值cancelCacheKey，避免了后续transformRequest重写了params会导致response拦截器里头getMark获取到的标识会和本次的不一样
     tempConfig.cancelCacheKey = cancelCacheKey;
 
     const tempTransformResponse = tempConfig?.transformResponse;
@@ -64,7 +69,6 @@ export function handleCancelCacheRequest(config:AxiosRequestConfig) {
       };
     } else {
       axiosCache.set(cancelCacheKey, {
-        useCache: false,
         isPending: true,
       });
     }

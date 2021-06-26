@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import {
   prompt,
 } from '@/utils';
-import { axiosCache, axiosEvent } from '../instances';
+import { axiosCache, axiosEvent, axiosRoutesCancel } from '../instances';
 import getMark from '../utils/getMark';
 
 export default function handleResponseInterceptor(response:AxiosResponse) {
@@ -11,8 +11,13 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
   const config = get(response, 'config') || {};
   const isTransportResponseHandled = get(config, 'isCustomTransformResponseHandled');
 
-  const { enabledCancelCache, useCache } = config;
-  const cancelCacheKey = getMark(config);
+  const { enabledCancelCache, useCache, enabledCancelRoute } = config;
+  const cancelCacheKey = get(config, 'cancelCacheKey') || getMark(config);
+
+  if (enabledCancelRoute) {
+    axiosRoutesCancel.delete(cancelCacheKey);
+  }
+
   if (get(response, 'status') === 204) {
     return response;
   }

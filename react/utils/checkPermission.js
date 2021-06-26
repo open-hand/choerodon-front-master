@@ -1,4 +1,4 @@
-import axios from  '../containers/components/c7n/tools/axios';
+import axios from '../containers/components/c7n/tools/axios';
 
 export default async function checkPermission({
   projectId, organizationId, resourceType, code, codeArr,
@@ -10,6 +10,7 @@ export default async function checkPermission({
       data: codeArr || [code],
       params: { tenantId: organizationId, projectId },
       enabledCancelCache: false,
+      enabledCancelRoute: false,
     });
     if (res && res.failed) {
       return false;

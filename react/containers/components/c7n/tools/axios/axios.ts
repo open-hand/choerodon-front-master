@@ -9,6 +9,7 @@ import { handleCancelCacheRequest } from './interceptors/cacheHandlers';
 import addCustomHeader from './interceptors/addCustomHeader';
 import transformRequestPage from './interceptors/transformRequestPage';
 import transformResponsePage from './interceptors/transformResponsePage';
+import { routeCancelInterceptor } from './interceptors/routeCancelHandler';
 
 declare module 'axios' {
   interface AxiosRequestConfig {
@@ -39,6 +40,9 @@ instance.defaults.enabledCancelCache = true;
 instance.defaults.enabledCancelRoute = true;
 
 // -------------------------------------------------------------------
+
+// 添加切换路由取消pending请求拦截器
+instance.interceptors.request.use(routeCancelInterceptor); // 3
 
 // 添加缓存(复用重复请求)请求拦截器
 instance.interceptors.request.use(handleCancelCacheRequest, handleRequestError); // 3
