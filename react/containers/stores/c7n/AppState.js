@@ -48,9 +48,11 @@ class AppState {
     if (this.currentMenuType.organizationId) {
       const recentProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`, {
         enabledCancelCache: false,
+        enabledCancelRoute: false,
       });
       const starProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`, {
         enabledCancelCache: false,
+        enabledCancelRoute: false,
       });
       Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
         const [recentProjectData = [], starProjectData = []] = res;
@@ -306,6 +308,7 @@ class AppState {
 
   loadUserInfo = () => axios.get('iam/choerodon/v1/users/self', {
     enabledCancelCache: false,
+    enabledCancelRoute: false,
   }).then((res) => {
     res = {
       ...res,
@@ -318,20 +321,24 @@ class AppState {
 
   loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`, {
     enabledCancelCache: false,
+    enabledCancelRoute: false,
   });
 
   loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting', {
     enabledCancelCache: false,
+    enabledCancelRoute: false,
   });
 
   checkEnterpriseInfo = () => axios.get('/iam/choerodon/v1/enterprises/default', {
     enabledCancelCache: false,
+    enabledCancelRoute: false,
   });
 
   loadModules = async () => {
     try {
       const res = await axios.get('/hadm/choerodon/v1/services/model', {
         enabledCancelCache: false,
+        enabledCancelRoute: false,
       });
       if (res && !res.failed) {
         this.modules = res;
@@ -345,6 +352,7 @@ class AppState {
     try {
       const res = await axios.get('/hadm/choerodon/v1/services', {
         enabledCancelCache: false,
+        enabledCancelRoute: false,
       });
       if (res && !res.failed) {
         this.deployServices = res;

@@ -1,29 +1,34 @@
 class AxiosCache {
   constructor() {
-    this.cacheData = {};
+    this.cacheData = new Map();
   }
 
-  set(key, data) {
-    this.cacheData[key] = data;
-  }
-
-  has(key) {
-    return Object.prototype.hasOwnProperty.call(this.cacheData, key);
+  get size() {
+    return this.cacheData.size;
   }
 
   get(key) {
-    return this.cacheData[key];
+    return this.cacheData.get(key);
   }
 
-  clear(key) {
-    delete this.cacheData[key];
+  delete(key) {
+    this.cacheData.delete(key);
   }
 
-  * [Symbol.iterator]() {
-    const propKeys = Object.keys(this);
-    for (const propKey of propKeys) {
-      yield [propKey, this[propKey]];
-    }
+  has(key) {
+    return this.cacheData.has(key);
+  }
+
+  set(key, value) {
+    this.cacheData.set(key, value);
+  }
+
+  isEmpty() {
+    return !!this.cacheData.size;
+  }
+
+  clear() {
+    this.cacheData = new Map();
   }
 }
 

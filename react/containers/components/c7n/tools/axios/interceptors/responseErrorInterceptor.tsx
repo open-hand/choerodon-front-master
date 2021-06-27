@@ -4,10 +4,11 @@ import React from 'react';
 import {
   prompt,
 } from '@/utils';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { notification } from 'choerodon-ui';
+import get from 'lodash/get';
 import getMark from '../utils/getMark';
-import { axiosCache } from '../instances';
+import { axiosCache, axiosRoutesCancel } from '../instances';
 
 // 是否出现身份认证失效的弹框
 let isExistInvalidTokenNotification = false;
@@ -17,9 +18,22 @@ const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTo
 export default function handelResponseError(error: AxiosError) {
   const { response, config } = error;
 
-  const cancelCacheKey = getMark(config);
-  if (axiosCache.has(cancelCacheKey)) {
-    axiosCache.clear(cancelCacheKey);
+  const enabledCancelRoute = get(config, 'enabledCancelRoute');
+  const enabledCancelCache = get(config, 'enabledCancelCache');
+
+  const cancelCacheKey = get(config, 'cancelCacheKey') || getMark(config);
+
+  if (enabledCancelRoute) {
+    axiosRoutesCancel.delete(cancelCacheKey);
+  }
+
+  if (enabledCancelCache && axiosCache.has(cancelCacheKey)) {
+    axiosCache.delete(cancelCacheKey);
+  }
+
+  // 如果是主动取消了请求，做个标识
+  if (axios.isCancel(error)) {
+    return new Promise(() => {});
   }
 
   if (response) {

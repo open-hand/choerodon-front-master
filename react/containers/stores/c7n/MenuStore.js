@@ -328,9 +328,11 @@ class MenuStore {
           if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
             await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
               enabledCancelCache: false,
+              enabledCancelRoute: false,
             });
             const result = await axios.get('/iam/choerodon/v1/switch/site', {
               enabledCancelCache: false,
+              enabledCancelRoute: false,
             });
             if (!result) {
               this.setHasSitePermission(false);
@@ -344,6 +346,7 @@ class MenuStore {
               url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
               method: 'put',
               enabledCancelCache: false,
+              enabledCancelRoute: false,
             });
             AppState.loadUserInfo();
           }
@@ -373,6 +376,7 @@ class MenuStore {
           url,
           method:'get',
           enabledCancelCache: false,
+          enabledCancelRoute: false,
         });
         const child = filterEmptyMenus(data || []);
         if (type === 'project') {
@@ -388,9 +392,11 @@ class MenuStore {
         if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
           await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
             enabledCancelCache: false,
+            enabledCancelRoute: false,
           });
           const result = await axios.get('/iam/choerodon/v1/switch/site', {
             enabledCancelCache: false,
+            enabledCancelRoute: false,
           });
           if (!result) {
             this.setHasSitePermission(false);
@@ -402,6 +408,7 @@ class MenuStore {
           loadingTenant.push(String(orgId));
           await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
             enabledCancelCache: false,
+            enabledCancelRoute: false,
           });
           loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);
         } else {
