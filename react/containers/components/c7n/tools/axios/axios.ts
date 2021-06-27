@@ -42,7 +42,7 @@ instance.defaults.enabledCancelRoute = true;
 // -------------------------------------------------------------------
 
 // 添加切换路由取消pending请求拦截器
-instance.interceptors.request.use(routeCancelInterceptor); // 3
+instance.interceptors.request.use(routeCancelInterceptor); // 4
 
 // 添加缓存(复用重复请求)请求拦截器
 instance.interceptors.request.use(handleCancelCacheRequest, handleRequestError); // 3
@@ -57,7 +57,6 @@ instance.interceptors.request.use(addCustomHeader); // 1
 // 添加响应拦截器
 instance.interceptors.response.use(transformResponsePage); // 1
 instance.interceptors.response.use(handleResponseInterceptor, handelResponseError); // 2
-instance.interceptors.response.use((value) => value); // 3
 
 instance.all = axios.all;
 instance.bind = axios.bind;

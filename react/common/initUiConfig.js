@@ -7,9 +7,6 @@ const uiConfigure = UI_CONFIGURE || {};
 
 const UI_CONFIG = {
   ...uiConfigure,
-  // transport: {
-  //   adapter,
-  // },
   pagination: {
     showSizeChangerLabel: false,
     showTotal: (total, range) => `显示${range[0]}-${range[1]} 共 ${total}条`,

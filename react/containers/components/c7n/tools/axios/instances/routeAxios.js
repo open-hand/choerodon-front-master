@@ -1,7 +1,13 @@
-class RouteAxios extends Map {
+// eslint-disable-next-line import/no-cycle
+import { axiosCache } from './index';
+
+class RouteAxios {
   constructor() {
-    super();
     this.pendingRequest = new Map();
+  }
+
+  get size() {
+    return this.pendingRequest.size;
   }
 
   get(key) {
@@ -32,8 +38,10 @@ class RouteAxios extends Map {
     for (const [key, value] of this.pendingRequest) {
       if (value?.cancel && typeof value.cancel === 'function') {
         value.cancel();
+        axiosCache.delete(key);
       }
     }
+    this.clear();
   }
 }
 

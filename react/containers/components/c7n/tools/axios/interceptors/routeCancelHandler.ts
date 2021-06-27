@@ -4,17 +4,18 @@ import { axiosRoutesCancel } from '../instances';
 import getMark from '../utils/getMark';
 
 export function routeCancelInterceptor(config:AxiosRequestConfig) {
-  const enabledCancelRoute = get(config, 'enabledCancelRoute');
-
+  const tempConfig = config;
+  const enabledCancelRoute = get(tempConfig, 'enabledCancelRoute');
   if (enabledCancelRoute) {
-    const cancelRouteKey = config.cancelCacheKey || getMark(config);
+    const cancelRouteKey = tempConfig?.cancelCacheKey || getMark(config);
     const { CancelToken } = axios;
     const source = CancelToken.source();
+    tempConfig.cancelToken = source.token;
     axiosRoutesCancel.set(cancelRouteKey, {
       cancel: source.cancel,
       name: cancelRouteKey,
     });
   }
 
-  return config;
+  return tempConfig;
 }
