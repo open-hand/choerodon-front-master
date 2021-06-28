@@ -1,19 +1,18 @@
 import React, { useMemo, useState } from 'react';
 import {
-  Icon, TextField, Tree, Button, Dropdown, Form,
+  Tree,
 } from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
-import { Select } from 'choerodon-ui/pro/lib/select/Select';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionNode from '../question-node';
 
+import QuestionSearch, { questionSearchFields } from '../question-search';
 import './index.less';
-import QuestionSearch, { questionSearchFields } from '../question-serach';
 
 const TodoQuestion = observer(() => {
   const {
@@ -27,7 +26,6 @@ const TodoQuestion = observer(() => {
   const searchField = useMemo(() => questionSearchFields.filter((i) => ['contents', 'issueType', 'status', 'priority'].includes(i.code)), []);
 
   function load(search) {
-    console.log('search :>> ', search);
     questionStore.setPage(1);
     questionDs.setQueryParameter('searchData', search);
     questionDs.query();

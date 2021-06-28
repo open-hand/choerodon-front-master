@@ -11,7 +11,7 @@ import Switch from '@/containers/components/c7n/routes/workBench/components/mult
 import { clone, find } from 'lodash';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
-import QuestionSearch, { questionSearchFields } from '../question-serach';
+import QuestionSearch, { questionSearchFields } from '../question-search';
 
 import './index.less';
 
