@@ -12,11 +12,18 @@ export function transformDataToString(data:any) {
 
 // response里面返回的config.data是个字符串对象
 function getDataMark(data:any) {
-  let stringifyData = data;
-  if (typeof stringifyData === 'string') {
-    stringifyData = JSONbig.parse(stringifyData);
+  if (data) {
+    let tempData = data;
+    if (typeof tempData !== 'string') {
+      try {
+        tempData = JSONbig.stringify(tempData);
+      } catch (error) {
+        console.info('stringfy markKey of data failed');
+      }
+    }
+    return tempData;
   }
-  return stringifyData;
+  return '';
 }
 
 // 区别请求的唯一标识，这里用方法名+请求路径
@@ -26,7 +33,7 @@ export default function getMark(config:AxiosRequestConfig) {
   // params标识处理
   const tempQueryString = (getKey('paramsSerializer') ?? paramsSerializer)(getKey('params'));
   // data标识处理
-  const dataMark = JSONbig.stringify(getDataMark(getKey('data')));
+  const dataMark = getDataMark(getKey('data'));
   // base标识
   const requestMark = [
     config?.method?.toLowerCase() || 'unknownMethod',
