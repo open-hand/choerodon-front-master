@@ -14,7 +14,7 @@ import QuestionNode from '../question-node';
 
 import './index.less';
 import { useWorkBenchStore } from '../../stores';
-import QuestionSearch, { questionSearchFields } from '../question-serach';
+import QuestionSearch, { questionSearchFields } from '../question-search';
 
 const TodoQuestion = observer(() => {
   const {

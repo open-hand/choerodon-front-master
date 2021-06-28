@@ -245,6 +245,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
         onInput={(e) => setValue(e.target.value) || handleInputContent(e.target.value)}
         placeholder="请输入搜索内容"
         clearButton
+        onClear={() => setValue(undefined)}
         onChange={(v) => handleChange('contents', v)}
       />
       <Dropdown

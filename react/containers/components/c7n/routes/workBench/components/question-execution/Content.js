@@ -8,7 +8,7 @@ import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionNode from '../question-node';
-import QuestionSearch, { questionSearchFields } from '../question-serach';
+import QuestionSearch, { questionSearchFields } from '../question-search';
 
 import './index.less';
 
