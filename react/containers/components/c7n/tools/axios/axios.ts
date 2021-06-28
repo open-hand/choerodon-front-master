@@ -27,17 +27,17 @@ const instance:AxiosStatic = axios.create({
   baseURL: API_HOST,
 });
 
-instance.defaults.transformResponse = [
-  transformJSONBig,
-];
-
-instance.defaults.paramsSerializer = paramsSerializer;
-
 // 这里配置一个缓存请求得标识
 instance.defaults.enabledCancelCache = true;
 
 // 这里配置一个切换路由取消全部pending请求的标识
 instance.defaults.enabledCancelRoute = true;
+
+instance.defaults.transformResponse = [
+  transformJSONBig,
+];
+
+instance.defaults.paramsSerializer = paramsSerializer;
 
 // -------------------------------------------------------------------
 
