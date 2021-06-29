@@ -22,25 +22,35 @@ const SERVICE_CODE = {
 const Setting = ({
   AppState, HeaderStore, MenuStore, history, ...props
 }) => {
-  const [isSaas, setIsSaas] = useState(false);
+  const [isSaas, setIsSaas] = useState(undefined);
+
+  // 组织改变 重新查询getIsSaas
+  useEffect(() => {
+    if (isSaas && !Object.keys(isSaas).includes(AppState.currentMenuType.organizationId)) {
+      getIsSaas();
+    }
+  }, [AppState.currentMenuType.organizationId])
 
   useEffect(() => {
-    function getIsSaas() {
-      if (!AppState.currentMenuType.organizationId) {
-        setTimeout(() => {
-          getIsSaas()
-        }, 1000);
-      } else {
-        axios.get(`/iam/choerodon/v1/register_saas/is_saas_tenant?tenant_id=${AppState.currentMenuType.organizationId}`).then((res) => {
-          setIsSaas(res)
-        })
-      }
-    }
     getIsSaas();
   }, [])
 
   const theme = 'theme4';
   const { currentServices } = AppState;
+
+  function getIsSaas() {
+    if (!AppState.currentMenuType.organizationId) {
+      setTimeout(() => {
+        getIsSaas()
+      }, 1000);
+    } else {
+      axios.get(`/iam/choerodon/v1/register_saas/is_saas_tenant?tenant_id=${AppState.currentMenuType.organizationId}`).then((res) => {
+        const selfIsSaas = isSaas || {};
+        selfIsSaas[AppState.currentMenuType.organizationId] = res;
+        setIsSaas(selfIsSaas)
+      })
+    }
+  }
 
   const LI_MAPPING = useMemo(() => {
     const mapping = [
@@ -65,7 +75,7 @@ const Setting = ({
           break;
         case SERVICE_CODE.market:
           // 如果不是saas 才显示应用市场
-          if (!isSaas) {
+          if (!isSaas || !isSaas[AppState.currentMenuType.organizationId]) {
             mapping.push({
               title: '应用市场',
               icon: theme === 'theme4' ? 'local_mall-o' : 'application_market',
