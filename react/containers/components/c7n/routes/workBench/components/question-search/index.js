@@ -6,7 +6,10 @@ import { observer } from 'mobx-react-lite';
 import {
   Icon, TextField, Button, Dropdown, Form, Select, DataSet,
 } from 'choerodon-ui/pro';
-import { debounce, isEqual } from 'lodash';
+import {
+  cloneDeep,
+  debounce, isEqual, pick, set, uniqueId,
+} from 'lodash';
 import { useDebounce, useDebounceFn, usePersistFn } from 'ahooks';
 import { transformFieldsToSearch } from './utils';
 import QuestionSearchSelect from './SearchSelect';
@@ -179,7 +182,6 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
   const prefixCls = 'c7ncd-question-search';
   const needRenderFields = useMemo(() => fields.filter((i) => i.display), [fields]);
   const hiddenFields = useMemo(() => fields.filter((i) => !i.display), [fields]);
-  const [value, setValue] = useState(undefined);
   const [searchData, setSearchData] = useState(undefined);
   const searchMode = useMemo(() => {
     const codes = fields.map((i) => i.source).filter(Boolean);
@@ -197,37 +199,36 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
     })),
   }), [fields]);
   const [hidden, setHidden] = useState(true);
-  const handleQuery = (data) => {
+  const { run: handleQuery, cancel: handleCancelQuery } = useDebounceFn((data) => {
     const currentSearchData = data || searchDs.toJSONData()[0];
-    onQuery && onQuery(transformFieldsToSearch(currentSearchData, searchMode));
-  };
+    const temp = transformFieldsToSearch(currentSearchData, searchMode);
+    console.log('query....onQuery', currentSearchData, pick(temp, '_id'));
+    onQuery && onQuery(temp);
+  }, { wait: 320 });
   const handleChange = (code, v) => {
-    const currentValue = searchDs.current.get(code);
-    if (!isEqual(currentValue, v)) {
-      searchDs.current.set(code, v);
-      setSearchData((oldValue) => {
-        const temp = searchDs.toJSONData()[0];
-        if (!isEqual(oldValue, temp)) {
-          handleQuery(temp);
-          return temp;
-        }
-        return oldValue;
-      });
-      // handleQuery();
-    }
+    searchDs.current.set(code, v);
+    setSearchData((oldValue) => {
+      const temp = set(cloneDeep(oldValue || {}), code, v);
+      console.log('handleChange.......', temp, oldValue);
+
+      if (!oldValue || !isEqual(oldValue, temp)) {
+        handleQuery(temp);
+
+        return temp;
+      }
+
+      return oldValue;
+    });
   };
-  useEffect(() => {
-    console.log('searchData....', searchData);
-    // onQuery && onQuery(transformFieldsToSearch(searchData, searchMode));
-  }, [searchData, searchMode]);
+
   const { run: handleInputContent } = useDebounceFn((v) => {
     handleChange('contents', v);
   }, { wait: 400 });
 
   const handleClear = () => {
     searchDs.current.clear();
-    setValue(undefined);
     setSearchData(undefined);
+    handleCancelQuery();
     handleQuery();
     // handleQuery();
   };
@@ -239,13 +240,12 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
   return (
     <div className={prefixCls}>
       <TextField
+        record={searchDs.current}
         className={`${prefixCls}-summary`}
         prefix={<Icon type="search" />}
-        value={value}
-        onInput={(e) => setValue(e.target.value) || handleInputContent(e.target.value)}
+        onInput={(e) => handleInputContent(e.target.value)}
         placeholder="请输入搜索内容"
         clearButton
-        onClear={() => setValue(undefined)}
         onChange={(v) => handleChange('contents', v)}
       />
       <Dropdown
