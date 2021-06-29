@@ -1,16 +1,18 @@
 import JSONbig from 'json-bigint';
-import { get } from 'lodash';
+import { get, isEqual } from 'lodash';
+import { toJS } from 'mobx';
 
 const MyHandlerDataSet = ({
   selectedProjectId, organizationId, myHandlerStore, cacheStore,
 }) => ({
+  id: `my-handler-${organizationId}-${selectedProjectId}`,
   autoQuery: false,
   selection: false,
   primaryKey: 'issueId',
   idField: 'issueId',
   parentField: 'parentId',
   transport: {
-    read: () => ({
+    read: ({ data }) => ({
       url: `/agile/v1/organizations/${organizationId}/work_bench/personal/my_assigned`,
       method: 'post',
       params: {
@@ -18,6 +20,7 @@ const MyHandlerDataSet = ({
         page: myHandlerStore.getPage || 1,
         size: 10,
       },
+      data: data.searchData || { searchVO: {} },
       transformResponse(response) {
         try {
           const res = JSONbig.parse(response);
@@ -28,8 +31,10 @@ const MyHandlerDataSet = ({
           myHandlerStore.setHasMore(res.totalElements && (res.number + 1) < res.totalPages);
           const storeArr = get(cacheStore.myHandlerIssues, 'content');
           const tempId = get(cacheStore.myHandlerIssues, 'selectedProjectId');
+          const searchData = toJS(get(cacheStore.myHandlerIssues, 'searchData'));
+
           let tempArr;
-          if (storeArr) {
+          if (storeArr && isEqual(searchData, data.searchDataId)) {
             if (tempId !== selectedProjectId) {
               tempArr = res.content;
             } else {
@@ -42,6 +47,7 @@ const MyHandlerDataSet = ({
             ...res,
             content: tempArr || [],
             selectedProjectId,
+            searchData: data.searchDataId,
           };
           cacheStore.setMyHandlerIssues(tempObj);
           return tempArr;

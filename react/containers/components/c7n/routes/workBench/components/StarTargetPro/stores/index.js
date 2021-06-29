@@ -1,10 +1,8 @@
 import React, {
-  createContext, useContext, useMemo,
+  createContext, useContext,
 } from 'react';
 import { inject } from 'mobx-react';
-import { DataSet } from 'choerodon-ui/pro/lib';
 import { observer } from 'mobx-react-lite';
-import starProjectDataset from './starProjectDataset';
 
 const Store = createContext();
 
@@ -17,15 +15,14 @@ export const StoreProvider = inject('AppState')(observer((props) => {
     children,
     AppState: {
       currentMenuType: { organizationId },
+      getStarProject,
     },
   } = props;
-
-  const starProjectsDs = useMemo(() => new DataSet(starProjectDataset({ organizationId })), [organizationId]);
 
   const value = {
     ...props,
     prefixCls: 'c7n-starTargetPro',
-    starProjectsDs,
+    getStarProject,
     organizationId,
   };
 

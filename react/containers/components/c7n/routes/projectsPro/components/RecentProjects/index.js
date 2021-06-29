@@ -15,7 +15,7 @@ export default observer(() => {
     ProjectsProUseStore,
   } = useProjectsProStore();
 
-  const renderProjects = () => ProjectsProUseStore.getRecentProjects.map((p) => {
+  const renderProjects = () => ProjectsProUseStore.getRecentProjects?.map((p) => {
     if (!p || !p.projectDTO) {
       return null;
     }

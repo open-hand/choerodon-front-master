@@ -21,6 +21,9 @@ const AutoRouter = () => (
   <Suspense fallback={<Skeleton />}>
     <CacheSwitch>
       {routes.map(([path, component]) => <Route path={path} component={React.lazy(component)} />)}
+      {/*<PermissionRoute path="/test" component={test}*/}
+      {/*  service={['choerodon.code.project.develop.app-service.ps.default']}*/}
+      {/*/>*/}
       <CacheRoute path="*" component={nomatch} />
     </CacheSwitch>
   </Suspense>
