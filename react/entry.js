@@ -8,6 +8,7 @@ import { Modal } from 'choerodon-ui/pro';
 
 import asyncRouter from './containers/components/util/asyncRouter';
 import autoRefresh from './utils/autoRefresh';
+import './utils/iframeStorage';
 
 const history = createBrowserHistory();
 const MASTERS = asyncRouter(
