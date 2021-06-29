@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { Button, Icon } from 'choerodon-ui';
 import { Permission } from '@/index';
 import classNames from 'classnames';
 import forEach from 'lodash/forEach';
+import { axios } from "@/index";
 import getSearchString from '../../util/gotoSome';
 
 import './headerSettingTheme4.less';
@@ -21,6 +22,23 @@ const SERVICE_CODE = {
 const Setting = ({
   AppState, HeaderStore, MenuStore, history, ...props
 }) => {
+  const [isSaas, setIsSaas] = useState(false);
+
+  useEffect(() => {
+    function getIsSaas() {
+      if (!AppState.currentMenuType.organizationId) {
+        setTimeout(() => {
+          getIsSaas()
+        }, 1000);
+      } else {
+        axios.get(`/iam/choerodon/v1/register_saas/is_saas_tenant?tenant_id=${AppState.currentMenuType.organizationId}`).then((res) => {
+          setIsSaas(res)
+        })
+      }
+    }
+    getIsSaas();
+  }, [])
+
   const theme = 'theme4';
   const { currentServices } = AppState;
 
@@ -46,17 +64,20 @@ const Setting = ({
           });
           break;
         case SERVICE_CODE.market:
-          mapping.push({
-            title: '应用市场',
-            icon: theme === 'theme4' ? 'local_mall-o' : 'application_market',
-            activePath: '/market/app-market',
-            style: { marginLeft: 2 },
-          });
+          // 如果不是saas 才显示应用市场
+          if (!isSaas) {
+            mapping.push({
+              title: '应用市场',
+              icon: theme === 'theme4' ? 'local_mall-o' : 'application_market',
+              activePath: '/market/app-market',
+              style: { marginLeft: 2 },
+            });
+          }
           break;
       }
     });
     return mapping;
-  }, [currentServices, theme]);
+  }, [currentServices, theme, isSaas]);
 
   async function goto(obj) {
     const queryObj = queryString.parse(history.location.search);

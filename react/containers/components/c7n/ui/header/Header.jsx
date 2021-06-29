@@ -75,7 +75,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         <div
           role="none"
           onClick={() => {
-            window.open(AppState.getDocUrl || url);
+            window.open(AppState.getDocUrl.status ? url : 'https://open.hand-china.com/document-center/doc/product/10177/10419?doc_code=118818&doc_id=124273');
           }}
           style={{
             display: 'flex',
@@ -131,7 +131,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
             <ProButton
               onClick={() => {
                 if (!hasSaasFeedback) {
-                  window.open(AppState.getDocUrl.status ? url : AppState.getDocUrl);
+                  window.open(AppState.getDocUrl.status ? url : 'https://open.hand-china.com/document-center/doc/product/10177/10419?doc_code=118818&doc_id=124273');
                 }
               }}
               funcType="flat"
