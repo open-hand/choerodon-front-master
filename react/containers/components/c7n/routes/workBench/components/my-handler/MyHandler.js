@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
+import { omit } from 'lodash';
 import { useMyHandler } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionNode from '../question-node';
@@ -26,7 +27,9 @@ const MyHandler = observer(() => {
 
   function load(search) {
     myHandlerStore.setPage(1);
-    myHandlerDs.setQueryParameter('searchData', search);
+    myHandlerDs.setQueryParameter('searchData', omit(search, '_id'));
+    // eslint-disable-next-line no-underscore-dangle
+    myHandlerDs.setQueryParameter('searchDataId', search._id);
     myHandlerDs.query();
   }
   function loadMoreData() {

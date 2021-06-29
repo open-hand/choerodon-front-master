@@ -8,7 +8,7 @@ import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import Switch from '@/containers/components/c7n/routes/workBench/components/multiple-switch';
-import { clone, find } from 'lodash';
+import { clone, find, omit } from 'lodash';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionSearch, { questionSearchFields } from '../question-search';
@@ -38,6 +38,9 @@ const TodoQuestion = observer(() => {
     tabKey === 'myStarBeacon_backlog' ? showCodes.push('backlogStatus', 'backlogPriority', 'handler')
       : showCodes.push('status', 'priority', 'assignee');
     const newFields = questionSearchFields.filter((i) => showCodes.includes(i.code));
+    if (tabKey === 'myStarBeacon_backlog') {
+      return newFields;
+    }
     const issueTypeField = find(questionSearchFields, { code: 'issueType' });
     if (HAS_AGILEPRO) {
       newFields.push({
@@ -58,7 +61,9 @@ const TodoQuestion = observer(() => {
   function load(search) {
     console.log('search :>> ', search);
     questionStore.setPage(1);
-    questionDs.setQueryParameter('searchData', search);
+    questionDs.setQueryParameter('searchData', omit(search, '_id'));
+    // eslint-disable-next-line no-underscore-dangle
+    questionDs.setQueryParameter('searchDataId', search._id);
     questionDs.query();
   }
   const emptyPrompt = useMemo(() => {
@@ -133,7 +138,7 @@ const TodoQuestion = observer(() => {
         <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
       </div>
       <span className={`${prefixCls}-title-right`}>
-        {HAS_BACKLOG || true && (
+        {HAS_BACKLOG && (
           <Switch
             defaultValue="myStarBeacon"
             value={tabKey}

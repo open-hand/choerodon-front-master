@@ -12,6 +12,7 @@ export default (({
   primaryKey: 'issueId',
   idField: 'issueId',
   parentField: 'parentId',
+  paging: false,
   transport: {
     read: ({ data }) => ({
       url: `agile/v1/organizations/${organizationId}/work_bench/personal/backlog_issues?page=${questionStore.getPage || 1}&size=10${selectedProjectId ? `&projectId=${selectedProjectId}` : ''}`,
@@ -29,7 +30,7 @@ export default (({
           const tempId = get(cacheStore.todoQuestions, 'selectedProjectId');
           const searchData = toJS(get(cacheStore.todoQuestions, 'searchData'));
           let tempArr;
-          if (storeArr && (!data.searchData || isEqual(searchData, data.searchData))) {
+          if (storeArr && isEqual(searchData, data.searchDataId)) {
             if (tempId !== selectedProjectId) {
               tempArr = res.content;
             } else {
@@ -42,8 +43,9 @@ export default (({
             ...res,
             content: tempArr,
             selectedProjectId,
-            searchData: data.searchData,
+            searchData: data.searchDataId,
           };
+          // console.log('searchData....', searchData, data.searchDataId, isEqual(searchData, data.searchDataId), tempObj);
           cacheStore.setTodoQuestions(tempObj);
           return tempArr;
         } catch (e) {

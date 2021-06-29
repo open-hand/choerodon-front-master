@@ -37,7 +37,7 @@ export default (({
             const searchData = toJS(get(cacheStore.focusQuestions, 'searchData'));
 
             let tempArr = [];
-            if (storeArr && (!data.searchData || isEqual(searchData, data.searchData))) {
+            if (storeArr && isEqual(searchData, data.searchDataId)) {
               if (tempType !== type || tempId !== selectedProjectId) {
                 tempArr = content;
               } else {
@@ -51,7 +51,7 @@ export default (({
               content: tempArr,
               selectedProjectId,
               type,
-              searchData: data.searchData,
+              searchData: data.searchDataId,
             };
             cacheStore.setFocusQuestions(tempObj);
             return tempArr;

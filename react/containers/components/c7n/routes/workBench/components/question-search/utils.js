@@ -1,12 +1,13 @@
+import { randomString } from '@/utils';
 import {
-  has, isEmpty, omit, set,
+  has, isEmpty, omit, set, uniqueId,
 } from 'lodash';
 
 const filedMapSearch = {
   issueType: 'searchVO.advancedSearchArgs.typeCodes',
   status: 'searchVO.advancedSearchArgs.statusId',
   priority: 'searchVO.advancedSearchArgs.priorityId',
-  assigneeId: 'searchVO.otherArgs.assigneeId',
+  assignee: 'searchVO.otherArgs.assigneeId',
   contents: 'searchVO.contents',
   // 需求
   backlogPriority: 'advancedSearchArgs.priorityIds',
@@ -17,10 +18,12 @@ const filedMapSearch = {
   // 测试
   summary: 'searchArgs.summary',
   testStatus: 'searchArgs.executionStatusList',
-  testPriority: 'searchArgs.priorityId',
+  testPriority: 'searchArgs.priorityIdList',
   testContents: 'contents',
 };
 export function transformFieldsToSearch(fields, searchMode = 'agile') {
+  const searchUniqId = uniqueId(randomString(5));
+
   if (!fields || !Object.keys(fields).length) {
     return undefined;
   }
@@ -29,6 +32,7 @@ export function transformFieldsToSearch(fields, searchMode = 'agile') {
   Object.entries(omit(fields, 'contents')).forEach(([key, value]) => {
     set(searchObj, filedMapSearch[key] || key, value);
   });
+  set(searchObj, '_id', searchUniqId);
   if (isEmpty(contents)) {
     return Object.keys(searchObj).length > 0 ? searchObj : undefined;
   }

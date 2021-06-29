@@ -34,7 +34,7 @@ const MyHandlerDataSet = ({
           const searchData = toJS(get(cacheStore.myHandlerIssues, 'searchData'));
 
           let tempArr;
-          if (storeArr && (!data.searchData || isEqual(searchData, data.searchData))) {
+          if (storeArr && isEqual(searchData, data.searchDataId)) {
             if (tempId !== selectedProjectId) {
               tempArr = res.content;
             } else {
@@ -47,7 +47,7 @@ const MyHandlerDataSet = ({
             ...res,
             content: tempArr || [],
             selectedProjectId,
-            searchData: data.searchData,
+            searchData: data.searchDataId,
           };
           cacheStore.setMyHandlerIssues(tempObj);
           return tempArr;

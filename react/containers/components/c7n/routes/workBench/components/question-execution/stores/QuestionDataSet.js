@@ -38,7 +38,8 @@ export default (({
             issueTypeVO: { icon: 'insert_invitation', name: '执行用例', color: '#6887E8' },
             typeCode: 'test-execution',
           }));
-          if (storeArr && (!data.searchData || isEqual(searchData, data.searchData))) {
+          console.log('contet,,', content, data.searchDataId, searchData, isEqual(searchData, data.searchDataId));
+          if (storeArr && isEqual(searchData, data.searchDataId)) {
             if (tempId !== selectedProjectId) {
               tempArr = content;
             } else {
@@ -51,8 +52,9 @@ export default (({
             ...res,
             content: tempArr,
             selectedProjectId,
-            searchData: data.searchData,
+            searchData: data.searchDataId,
           };
+          console.log('tempObj...', tempObj, tempArr);
           cacheStore.setMyExecutionQuestions(tempObj);
           return tempArr;
         } catch (e) {

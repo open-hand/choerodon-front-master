@@ -29,7 +29,7 @@ export default (({
           const tempId = get(cacheStore.reportQuestions, 'selectedProjectId');
           const searchData = toJS(get(cacheStore.reportQuestions, 'searchData'));
           let tempArr;
-          if (storeArr && (!data.searchData || isEqual(searchData, data.searchData))) {
+          if (storeArr && isEqual(searchData, data.searchDataId)) {
             if (tempId !== selectedProjectId) {
               tempArr = res.content;
             } else {
@@ -42,7 +42,7 @@ export default (({
             ...res,
             content: tempArr || [],
             selectedProjectId,
-            searchData: data.searchData,
+            searchData: data.searchDataId,
           };
           cacheStore.setReportQuestions(tempObj);
           return tempArr;
