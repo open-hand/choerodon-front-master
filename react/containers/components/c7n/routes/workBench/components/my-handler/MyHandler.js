@@ -91,7 +91,7 @@ const MyHandler = observer(() => {
   }
 
   const renderTitle = () => (
-    <div>
+    <div className={`${prefixCls}-title`}>
       <span>
         <span>我经手的</span>
         <span className={`${prefixCls}-title-count`}>{myHandlerStore.getTotalCount}</span>
