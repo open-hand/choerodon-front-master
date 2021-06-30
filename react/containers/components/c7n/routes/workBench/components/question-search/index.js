@@ -239,15 +239,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
 
   return (
     <div className={prefixCls}>
-      <TextField
-        record={searchDs.current}
-        className={`${prefixCls}-summary`}
-        prefix={<Icon type="search" />}
-        onInput={(e) => handleInputContent(e.target.value)}
-        placeholder="请输入搜索内容"
-        clearButton
-        onChange={(v) => handleChange('contents', v)}
-      />
+
       <Dropdown
         hidden={hidden}
         overlay={(
@@ -284,6 +276,15 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
           }}
         />
       </Dropdown>
+      <TextField
+        record={searchDs.current}
+        className={`${prefixCls}-summary`}
+        prefix={<Icon type="search" />}
+        onInput={(e) => handleInputContent(e.target.value)}
+        placeholder="请输入搜索内容"
+        clearButton
+        onChange={(v) => handleChange('contents', v)}
+      />
     </div>
   );
 });

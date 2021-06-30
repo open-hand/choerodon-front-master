@@ -138,7 +138,7 @@ const TodoQuestion = observer(() => {
         <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
       </div>
       <span className={`${prefixCls}-title-right`}>
-        {HAS_BACKLOG && (
+        {HAS_BACKLOG || true && (
           <Switch
             defaultValue="myStarBeacon"
             value={tabKey}
