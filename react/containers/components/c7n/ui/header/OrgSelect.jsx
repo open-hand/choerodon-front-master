@@ -15,8 +15,7 @@ import { historyPushMenu } from '../../util';
 import Setting from './Setting';
 import MouserOverWrapper from './components/MouseOverWrapper';
 
-// const HAS_BASE_PRO = C7NHasModule('@choerodon/base-business');
-const HAS_BASE_PRO = true;
+const HAS_BASE_PRO = C7NHasModule('@choerodon/base-business');
 const prefixCls = 'c7n-boot-header-menu-type';
 const homePage = '/workbench';
 @withRouter
