@@ -4,13 +4,14 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
-  Icon, TextField, Button, Dropdown, Form, Select, DataSet,
+  Icon, TextField, Button, Dropdown, Form, DataSet,
 } from 'choerodon-ui/pro';
 import {
   cloneDeep,
-  debounce, isEqual, pick, set, uniqueId,
+  isEqual, merge, pick, set,
 } from 'lodash';
-import { useDebounce, useDebounceFn, usePersistFn } from 'ahooks';
+import classNames from 'classnames';
+import { useDebounceFn } from 'ahooks';
 import { transformFieldsToSearch } from './utils';
 import QuestionSearchSelect from './SearchSelect';
 
@@ -212,7 +213,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
       console.log('handleChange.......', temp, oldValue);
 
       if (!oldValue || !isEqual(oldValue, temp)) {
-        handleQuery(temp);
+        handleQuery(merge(searchDs.toJSONData()[0], temp));
 
         return temp;
       }
@@ -228,6 +229,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
   const handleClear = () => {
     searchDs.current.clear();
     setSearchData(undefined);
+    searchDs.setState('status', undefined);
     handleCancelQuery();
     handleQuery();
     // handleQuery();
@@ -260,7 +262,16 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
               ))}
             </Form>
             <div className={`${prefixCls}-menu-bottom`}>
-              <Button color="primary" onClick={() => handleQuery()} style={{ marginLeft: '.1rem' }}>查询</Button>
+              <Button
+                color="primary"
+                onClick={() => {
+                  searchDs.setState('status', 'search');
+                  handleQuery();
+                }}
+                style={{ marginLeft: '.1rem' }}
+              >
+                查询
+              </Button>
               <Button onClick={handleClear}>重置</Button>
             </div>
           </div>
@@ -270,6 +281,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
 
         <Button
           icon="filter2"
+          className={classNames({ [`${prefixCls}-search-btn-active`]: searchDs.current.dirty && searchDs.getState('status') })}
           onClick={(e) => {
             e.nativeEvent.stopImmediatePropagation();
             setHidden((old) => !old);
