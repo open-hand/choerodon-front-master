@@ -1,4 +1,4 @@
-import uiAxios from '@/containers/components/c7n/tools/axios/UiAxios';
+import uiInstance from '@/containers/components/c7n/tools/axios';
 import AppState from '@/containers/stores/c7n/AppState';
 import { UI_CONFIGURE } from '@/utils';
 import { configure } from 'choerodon-ui';
@@ -14,7 +14,7 @@ const UI_CONFIG = {
     showQuickJumper: true,
   },
   modalMaskClosable: 'dblclick',
-  axios: uiAxios,
+  axios: uiInstance,
   dataKey: 'list',
   labelLayout: 'float',
   queryBar: 'bar',
@@ -38,9 +38,15 @@ const UI_CONFIG = {
     size: pageSize,
     sort: sortName && (sortOrder ? `${sortName},${sortOrder}` : sortName),
   }),
+  lookupAxiosConfig: () => ({
+    enabledCancelMark: false,
+    routeChangeCancel: false,
+  }),
   lovDefineAxiosConfig: (code) => ({
     url: `/iam/choerodon/v1/lov/code?code=${code}`,
     method: 'GET',
+    enabledCancelMark: false,
+    routeChangeCancel: false,
     transformResponse: [
       (data) => {
         let originData = {};
@@ -144,6 +150,8 @@ const UI_CONFIG = {
     return {
       url: realUrl,
       method: 'GET',
+      enabledCancelMark: false,
+      routeChangeCancel: false,
     };
   },
 };

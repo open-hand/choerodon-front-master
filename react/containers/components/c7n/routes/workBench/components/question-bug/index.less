@@ -8,11 +8,13 @@
   .c7n-workbench-card-content {
     height: calc(~"100% - 58px");
   }
+
   &-title {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-right: 10px;
+    // margin-right: 10px;
 
     &-count {
       display: inline-block;
@@ -24,6 +26,14 @@
       font-weight: 500;
       color: #f48590;
       line-height: 20px;
+    }
+
+    &-right {
+      display: inline-flex;
+      align-items: center;
+      &>*+* {
+        margin-left: .1rem;
+      }
     }
   }
 

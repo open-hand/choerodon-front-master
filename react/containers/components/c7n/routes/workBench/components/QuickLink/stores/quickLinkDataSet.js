@@ -1,5 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import Jsonbig from 'json-bigint';
+import axios from '@/containers/components/c7n/tools/axios';
 
 export default ({
   quickLinkUseStore, organizationId, selectedProjectId, linkType,
@@ -7,10 +8,12 @@ export default ({
   autoQuery: true,
   paging: true,
   pageSize: 10,
+  axios,
   transport: {
     read: ({ dataSet }) => ({
       url: `/iam/choerodon/v1/organizations/${organizationId}/quick_links/scope/${linkType}${selectedProjectId ? `?project_id=${selectedProjectId}` : ''}`,
       method: 'get',
+      enabledCancelCache: 200,
       transformResponse(res) {
         try {
           const mainData = Jsonbig.parse(res);
@@ -30,7 +33,7 @@ export default ({
           );
           return newData;
         } catch (error) {
-          throw new Error(error);
+          return res;
         }
       },
     }),

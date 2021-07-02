@@ -25,7 +25,7 @@ export default ({
           workBenchUseStore.setInitData(res);
           return res;
         } catch (error) {
-          throw new Error(error);
+          return error;
         }
       },
     }),

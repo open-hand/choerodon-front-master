@@ -1,22 +1,24 @@
 /* eslint-disable import/no-anonymous-default-export */
 import JSONbig from 'json-bigint';
-import { get, map } from 'lodash';
+import { get, isEqual, map } from 'lodash';
+import { toJS } from 'mobx';
 
 export default (({
   organizationId, questionStore, cacheStore, selectedProjectId, type,
 }) => ({
+  id: `focus-${type}-${organizationId}-${selectedProjectId}`,
   autoQuery: false,
   selection: false,
   primaryKey: 'issueId',
   idField: 'issueId',
   parentField: 'parentId',
   transport: {
-    read: ({ dataSet }) => {
+    read: ({ dataSet, data }) => {
       const isRequire = type === 'myStarBeacon_backlog';
       return ({
         url: `agile/v1/organizations/${organizationId}/${isRequire ? 'backlog/work_bench/personal/backlog_my_star_beacon' : 'work_bench/personal/backlog_issues'}?page=${questionStore.getPage || 1}&size=20${selectedProjectId ? `&projectId=${selectedProjectId}` : ''}`,
-        method: isRequire ? 'get' : 'post',
-        data: isRequire ? null : { type: 'myStarBeacon' },
+        method: 'post',
+        data: { searchVO: {}, ...(data.searchData || {}), type: isRequire ? undefined : 'myStarBeacon' },
         transformResponse(response) {
           try {
             const res = JSONbig.parse(response);
@@ -32,8 +34,10 @@ export default (({
             const storeArr = get(cacheStore.focusQuestions, 'content')?.slice();
             const tempType = get(cacheStore.focusQuestions, 'type');
             const tempId = get(cacheStore.focusQuestions, 'selectedProjectId');
+            const searchData = toJS(get(cacheStore.focusQuestions, 'searchData'));
+
             let tempArr = [];
-            if (storeArr) {
+            if (storeArr && isEqual(searchData, data.searchDataId)) {
               if (tempType !== type || tempId !== selectedProjectId) {
                 tempArr = content;
               } else {
@@ -47,6 +51,7 @@ export default (({
               content: tempArr,
               selectedProjectId,
               type,
+              searchData: data.searchDataId,
             };
             cacheStore.setFocusQuestions(tempObj);
             return tempArr;
