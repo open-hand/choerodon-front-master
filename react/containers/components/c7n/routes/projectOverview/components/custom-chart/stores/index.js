@@ -17,7 +17,10 @@ import getOptions from './utils';
 const JSONbigString = JSONbig({ storeAsString: true });
 
 const Store = createContext();
-
+// 需提供一个能返回echarts图表配置数据的方法
+const loadOptionDataMaps = {
+  agile: get('agile:AgileCustomChartLoadData'),
+};
 export function useCustomChartStore() {
   return useContext(Store);
 }
@@ -31,9 +34,6 @@ export const StoreProvider = inject('AppState')(observer((props) => {
   const { startedRecord, customChartAvailableList } = useProjectOverviewStore();
   const [optionConfig, setOptionConfig] = useState({});
 
-  // 缺陷累积趋势ds
-  // const CustomChartDataProvider = mount('agile:AgileCustomChartUseChart', { customChartConfig });
-
   // TODO:后续需要假如其他服务，请使用使用customChartAvailableList 进行判断是否有服务 保证进来使用的hook是存在的
   // const { loading, optionConfig } = get('agile:AgileCustomChartUseChartHook')(customChartConfig);
   useEffect(() => {
@@ -44,8 +44,8 @@ export const StoreProvider = inject('AppState')(observer((props) => {
         statisticsType: customData.statisticsType,
         analysisField: customData.analysisField,
         comparedField: customData.comparedField,
-        analysisFieldPredefined: true, //
-        comparedFieldPredefined: false,
+        analysisFieldPredefined: !['pro', 'org'].includes(String(customData.analysisField).split('_')[0]), //
+        comparedFieldPredefined: !['pro', 'org'].includes(String(customData.comparedField).split('_')[0]),
         searchVO: isEmpty(customData.searchJson) ? undefined : JSONbigString.parse(customData.searchJson),
       };
       const res = await axios(`/agile/v1/projects/${projectId}/reports/custom_chart`, {
@@ -56,9 +56,7 @@ export const StoreProvider = inject('AppState')(observer((props) => {
       setOptionConfig(newOptions);
     }
     loadOptionData(toJS(customChartConfig));
-  }, [customChartConfig, customData.analysisField, customData.chartType, customData.comparedField, customData.searchJson, customData.statisticsType, projectId]);
-
-  const burnDownChartStore = useStore(organizationId, projectId);
+  }, [customChartConfig, customData.analysisField, customData.chartType, customData.comparedField, customData.searchJson, customData.statisticsType, organizationId, projectId]);
 
   const value = {
     ...props,
