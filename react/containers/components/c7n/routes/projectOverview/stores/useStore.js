@@ -6,7 +6,7 @@ import { axios } from '@/index';
 import mappings from './mappings';
 import barThumbnail from '../img/bar.svg';
 import lineThumbnail from '../img/line.svg';
-import pieThumbnail from '../img/pie.svg';
+import pieThumbnail from '../img/pieNew.png';
 import stackedBarThumbnail from '../img/stackedBar.svg';
 
 export default function useStore(projectId) {

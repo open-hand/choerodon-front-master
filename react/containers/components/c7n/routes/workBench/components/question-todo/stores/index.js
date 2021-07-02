@@ -48,7 +48,9 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     const currentId = get(mainData, 'selectedProjectId');
     const searchDataId = get(mainData, 'searchDataId');
     const searchData = get(mainData, 'searchData');
+    console.log('searchDataId......', searchDataId, selectedProjectId, currentId);
     if (selectedProjectId !== currentId) {
+      console.log('if....give up');
       searchDataId || questionDs.query();
       return;
     }

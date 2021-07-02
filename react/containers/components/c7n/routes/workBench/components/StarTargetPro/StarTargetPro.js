@@ -209,6 +209,7 @@ const StarTargetPro = observer(() => {
       style: {
         width: '740px',
       },
+      contentStyle: { padding: 0 },
       children: <AddModal
         subPrefix={subPrefix}
         existTypes={typeArr}

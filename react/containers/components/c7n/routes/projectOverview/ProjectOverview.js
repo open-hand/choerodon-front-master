@@ -9,7 +9,7 @@ import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 import useTheme from '@/hooks/useTheme';
-
+import { Prompt } from 'react-router-dom';
 import {
   get, filter, map, forEach, some, without, keys,
 } from 'lodash';
@@ -150,6 +150,7 @@ const ProjectOverview = () => {
       style: {
         width: '740px',
       },
+      bodyStyle: { padding: 0 },
       children: <AddModal
         subPrefix={subPrefix}
         existTypes={typeArr}
