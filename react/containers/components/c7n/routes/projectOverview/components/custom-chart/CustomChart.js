@@ -21,8 +21,6 @@ const CustomChart = observer(() => {
     loading,
     optionConfig,
   } = useCustomChartStore();
-  const forceUpdate = useForceUpdate();
-  // useEffect(() => { forceUpdate(); }, [forceUpdate, optionConfig]);
   const getOption = useCallback(() => ({
     textStyle: {
       fontSize: 12,
@@ -34,7 +32,6 @@ const CustomChart = observer(() => {
     if (loading !== 'loading' && !optionConfig) {
       return <EmptyPage content="当前暂无数据" />;
     }
-    console.log('getOptions', getOption());
     return <Echart option={getOption()} style={{ height: '100%' }} />;
 
     // return '';
