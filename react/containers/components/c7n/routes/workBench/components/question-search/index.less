@@ -1,24 +1,36 @@
 @prefixCls: c7ncd-question-search;
-.@{prefixCls} {
-    display: flex;
-    flex: 1;
-    float: right;
-    flex-flow: row-reverse;
-    &-summary{
-        margin-right: .16rem;
 
+.@{prefixCls} {
+  display: flex;
+  flex: 1;
+  float: right;
+  flex-flow: row-reverse;
+
+  &-summary {
+    margin-right: .16rem;
+
+  }
+
+  &-menu {
+    width: 2.97rem;
+    padding: .14rem .12rem;
+    padding-bottom: .2rem;
+
+    &-bottom {
+      display: flex;
+      flex-flow: row-reverse;
     }
-    &-menu{
-        width: 2.97rem;
-        padding: .14rem .12rem;
-        padding-bottom: .2rem;
-        &-bottom{
-            display: flex;
-            flex-flow: row-reverse;
-        }
-    }
-    &-search-btn-active{
-        background-color: #7B8CFF !important;
-        color: #ffff !important;
-    }
+  }
+
+  &-search-btn-active::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: block;
+    content: ' ';
+    width: 6px;
+    height: 6px;
+    background: #F76776;
+    border-radius: 50%;
+  }
 }

@@ -45,13 +45,19 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
     const mainData = myHandlerIssues;
     const tempArr = get(mainData, 'content');
     const currentId = get(mainData, 'selectedProjectId');
+    const searchDataId = get(mainData, 'searchDataId');
+    const searchData = get(mainData, 'searchData');
+
     if (selectedProjectId !== currentId) {
       myHandlerStore.setPage(0);
       myHandlerStore.setTotalCount(0);
-      myHandlerDs.query();
+      searchDataId || myHandlerDs.query();
       return;
     }
     if (tempArr) {
+      searchDataId && myHandlerDs.setQueryParameter('searchDataId', searchDataId);
+      searchDataId && myHandlerDs.setQueryParameter('searchData', searchData);
+
       myHandlerDs.loadData(tempArr);
       myHandlerStore.setHasMore(
         mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,

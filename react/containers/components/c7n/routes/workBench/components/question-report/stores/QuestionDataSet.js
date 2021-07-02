@@ -6,7 +6,7 @@ import { toJS } from 'mobx';
 export default (({
   organizationId, questionStore, selectedProjectId, cacheStore,
 }) => ({
-  id: `report-${organizationId}-${selectedProjectId}`,
+  id: `report-${organizationId}`,
   autoQuery: false,
   selection: false,
   primaryKey: 'issueId',

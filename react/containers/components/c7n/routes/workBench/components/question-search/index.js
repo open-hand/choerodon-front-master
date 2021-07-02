@@ -8,7 +8,9 @@ import {
 } from 'choerodon-ui/pro';
 import {
   cloneDeep,
-  isEqual, merge, pick, set,
+  get,
+  isEmpty,
+  isEqual, isEqualWith, merge, pick, set,
 } from 'lodash';
 import classNames from 'classnames';
 import { useDebounceFn } from 'ahooks';
@@ -16,6 +18,7 @@ import { transformFieldsToSearch } from './utils';
 import QuestionSearchSelect from './SearchSelect';
 
 import './index.less';
+import { useWorkBenchStore } from '../../stores';
 
 export const questionSearchFields = [
   {
@@ -184,6 +187,8 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
   const needRenderFields = useMemo(() => fields.filter((i) => i.display), [fields]);
   const hiddenFields = useMemo(() => fields.filter((i) => !i.display), [fields]);
   const [searchData, setSearchData] = useState(undefined);
+  const { selectedProjectId } = useWorkBenchStore();
+
   const searchMode = useMemo(() => {
     const codes = fields.map((i) => i.source).filter(Boolean);
     if (codes.includes('backlog')) {
@@ -204,15 +209,14 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
     const currentSearchData = data || searchDs.toJSONData()[0];
     const temp = transformFieldsToSearch(currentSearchData, searchMode);
     console.log('query....onQuery', currentSearchData, pick(temp, '_id'));
-    onQuery && onQuery(temp);
+    temp && onQuery && onQuery(temp);
   }, { wait: 320 });
   const handleChange = (code, v) => {
     searchDs.current.set(code, v);
     setSearchData((oldValue) => {
       const temp = set(cloneDeep(oldValue || {}), code, v);
       console.log('handleChange.......', temp, oldValue);
-
-      if (!oldValue || !isEqual(oldValue, temp)) {
+      if (!oldValue || !isEqualWith(oldValue, temp, (a, b) => (isEmpty(a) && isEmpty(b) ? true : undefined))) {
         handleQuery(merge(searchDs.toJSONData()[0], temp));
 
         return temp;
@@ -221,6 +225,12 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
       return oldValue;
     });
   };
+
+  useEffect(() => {
+    if (selectedProjectId && searchData) {
+      handleQuery();
+    }
+  }, [handleQuery, searchData, selectedProjectId]);
 
   const { run: handleInputContent } = useDebounceFn((v) => {
     handleChange('contents', v);

@@ -7,6 +7,7 @@ import { toJS } from 'mobx';
 export default (({
   organizationId, questionStore, selectedProjectId, type, cacheStore,
 }) => ({
+  id: `bug-${organizationId}`,
   autoQuery: false,
   selection: false,
   primaryKey: 'issueId',
@@ -32,10 +33,11 @@ export default (({
           const storeArr = get(cacheStore.bugQuestions, 'content')?.slice();
           const tempType = get(cacheStore.bugQuestions, 'type');
           const tempId = get(cacheStore.bugQuestions, 'selectedProjectId');
-          const searchData = toJS(get(cacheStore.bugQuestions, 'searchData'));
+          // const searchData = toJS(get(cacheStore.bugQuestions, 'searchData'));
+          const searchDataId = get(cacheStore.bugQuestions, 'searchDataId');
 
           let tempArr;
-          if (storeArr && isEqual(searchData, data.searchDataId)) {
+          if (storeArr && isEqual(searchDataId, data.searchDataId)) {
             if (tempType !== type || tempId !== selectedProjectId) {
               tempArr = content;
             } else {
@@ -49,7 +51,9 @@ export default (({
             content: tempArr,
             selectedProjectId,
             type,
-            searchData: data.searchDataId,
+            searchData: data.searchData,
+            searchDataId: data.searchDataId,
+            organizationId,
           };
           cacheStore.setBugQuestions(tempObj);
           return tempArr;

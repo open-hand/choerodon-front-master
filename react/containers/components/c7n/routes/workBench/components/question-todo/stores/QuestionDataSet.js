@@ -6,7 +6,7 @@ import { toJS } from 'mobx';
 export default (({
   organizationId, questionStore, selectedProjectId, cacheStore,
 }) => ({
-  id: `backlog_issues-${organizationId}-${selectedProjectId}`,
+  id: `backlog_issues-${organizationId}`,
   autoQuery: false,
   selection: false,
   primaryKey: 'issueId',
@@ -28,9 +28,11 @@ export default (({
           questionStore.setHasMore(res.totalElements && (res.number + 1) < res.totalPages);
           const storeArr = get(cacheStore.todoQuestions, 'content');
           const tempId = get(cacheStore.todoQuestions, 'selectedProjectId');
-          const searchData = toJS(get(cacheStore.todoQuestions, 'searchData'));
+          // const searchData = toJS(get(cacheStore.todoQuestions, 'searchData'));
+          const searchDataId = get(cacheStore.todoQuestions, 'searchDataId');
+
           let tempArr;
-          if (storeArr && isEqual(searchData, data.searchDataId)) {
+          if (storeArr && isEqual(searchDataId, data.searchDataId)) {
             if (tempId !== selectedProjectId) {
               tempArr = res.content;
             } else {
@@ -43,7 +45,9 @@ export default (({
             ...res,
             content: tempArr,
             selectedProjectId,
-            searchData: data.searchDataId,
+            searchData: data.searchData,
+            searchDataId: data.searchDataId,
+            organizationId,
           };
           // console.log('searchData....', searchData, data.searchDataId, isEqual(searchData, data.searchDataId), tempObj);
           cacheStore.setTodoQuestions(tempObj);
