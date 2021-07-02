@@ -6,6 +6,7 @@ import { toJS } from 'mobx';
 export default (({
   organizationId, questionStore, selectedProjectId, cacheStore,
 }) => ({
+  id: `execution-${organizationId}`,
   autoQuery: false,
   selection: false,
   primaryKey: 'executeId',
@@ -26,7 +27,8 @@ export default (({
           questionStore.setHasMore(res.totalElements && (res.number + 1) < res.totalPages);
           const storeArr = get(cacheStore.myExecutionQuestions, 'content');
           const tempId = get(cacheStore.myExecutionQuestions, 'selectedProjectId');
-          const searchData = toJS(get(cacheStore.myExecutionQuestions, 'searchData'));
+          // const searchData = toJS(get(cacheStore.myExecutionQuestions, 'searchData'));
+          const searchDataId = get(cacheStore.myExecutionQuestions, 'searchDataId');
 
           let tempArr;
           const content = res.content.map((item) => ({
@@ -38,8 +40,7 @@ export default (({
             issueTypeVO: { icon: 'insert_invitation', name: '执行用例', color: '#6887E8' },
             typeCode: 'test-execution',
           }));
-          console.log('contet,,', content, data.searchDataId, searchData, isEqual(searchData, data.searchDataId));
-          if (storeArr && isEqual(searchData, data.searchDataId)) {
+          if (storeArr && isEqual(searchDataId, data.searchDataId)) {
             if (tempId !== selectedProjectId) {
               tempArr = content;
             } else {
@@ -52,9 +53,10 @@ export default (({
             ...res,
             content: tempArr,
             selectedProjectId,
-            searchData: data.searchDataId,
+            searchData: data.searchData,
+            searchDataId: data.searchDataId,
+            organizationId,
           };
-          console.log('tempObj...', tempObj, tempArr);
           cacheStore.setMyExecutionQuestions(tempObj);
           return tempArr;
         } catch (e) {

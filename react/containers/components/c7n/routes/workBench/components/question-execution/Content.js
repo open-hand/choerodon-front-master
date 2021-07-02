@@ -98,7 +98,7 @@ const TodoQuestion = observer(() => {
         <span>我执行的用例</span>
         <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
       </span>
-      <QuestionSearch onQuery={load} fields={searchField} />
+      <QuestionSearch onQuery={load} fields={searchField} key={`QuestionSearch-${questionDs.id}`} />
     </div>
   );
 

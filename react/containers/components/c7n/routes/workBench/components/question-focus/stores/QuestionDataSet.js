@@ -6,7 +6,7 @@ import { toJS } from 'mobx';
 export default (({
   organizationId, questionStore, cacheStore, selectedProjectId, type,
 }) => ({
-  id: `focus-${type}-${organizationId}-${selectedProjectId}`,
+  id: `focus-${type}-${organizationId}`,
   autoQuery: false,
   selection: false,
   primaryKey: 'issueId',
@@ -34,10 +34,11 @@ export default (({
             const storeArr = get(cacheStore.focusQuestions, 'content')?.slice();
             const tempType = get(cacheStore.focusQuestions, 'type');
             const tempId = get(cacheStore.focusQuestions, 'selectedProjectId');
-            const searchData = toJS(get(cacheStore.focusQuestions, 'searchData'));
+            // const searchData = toJS(get(cacheStore.focusQuestions, 'searchData'));
+            const searchDataId = get(cacheStore.focusQuestions, 'searchDataId');
 
             let tempArr = [];
-            if (storeArr && isEqual(searchData, data.searchDataId)) {
+            if (storeArr && isEqual(searchDataId, data.searchDataId)) {
               if (tempType !== type || tempId !== selectedProjectId) {
                 tempArr = content;
               } else {
@@ -51,7 +52,9 @@ export default (({
               content: tempArr,
               selectedProjectId,
               type,
-              searchData: data.searchDataId,
+              searchData: data.searchData,
+              searchDataId: data.searchDataId,
+              organizationId,
             };
             cacheStore.setFocusQuestions(tempObj);
             return tempArr;

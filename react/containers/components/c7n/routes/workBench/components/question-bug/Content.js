@@ -129,7 +129,7 @@ const TodoQuestion = observer(() => {
           ]}
           onChange={handleTabChange}
         />
-        <QuestionSearch key={`c7n-focus-QuestionSearch-${tabKey}`} onQuery={load} fields={searchField} />
+        <QuestionSearch key={`c7n-focus-QuestionSearch-${tabKey}-${questionDs.id}`} onQuery={load} fields={searchField} />
 
       </span>
     </div>

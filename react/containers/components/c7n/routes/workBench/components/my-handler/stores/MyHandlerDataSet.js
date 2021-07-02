@@ -5,7 +5,7 @@ import { toJS } from 'mobx';
 const MyHandlerDataSet = ({
   selectedProjectId, organizationId, myHandlerStore, cacheStore,
 }) => ({
-  id: `my-handler-${organizationId}-${selectedProjectId}`,
+  id: `my-handler-${organizationId}`,
   autoQuery: false,
   selection: false,
   primaryKey: 'issueId',
@@ -31,10 +31,11 @@ const MyHandlerDataSet = ({
           myHandlerStore.setHasMore(res.totalElements && (res.number + 1) < res.totalPages);
           const storeArr = get(cacheStore.myHandlerIssues, 'content');
           const tempId = get(cacheStore.myHandlerIssues, 'selectedProjectId');
-          const searchData = toJS(get(cacheStore.myHandlerIssues, 'searchData'));
+          // const searchData = toJS(get(cacheStore.myHandlerIssues, 'searchData'));
+          const searchDataId = get(cacheStore.myHandlerIssues, 'searchDataId');
 
           let tempArr;
-          if (storeArr && isEqual(searchData, data.searchDataId)) {
+          if (storeArr && isEqual(searchDataId, data.searchDataId)) {
             if (tempId !== selectedProjectId) {
               tempArr = res.content;
             } else {
@@ -47,7 +48,9 @@ const MyHandlerDataSet = ({
             ...res,
             content: tempArr || [],
             selectedProjectId,
-            searchData: data.searchDataId,
+            searchData: data.searchData,
+            searchDataId: data.searchDataId,
+            organizationId,
           };
           cacheStore.setMyHandlerIssues(tempObj);
           return tempArr;
