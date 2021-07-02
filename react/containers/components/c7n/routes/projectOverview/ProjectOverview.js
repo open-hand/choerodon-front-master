@@ -41,6 +41,7 @@ import IssueTable from './components/issue-table';
 import ProjectDynamic from './components/project-dynamic';
 import PersonalWorkload from './components/personal-workload';
 import Workload from './components/Workload';
+import CustomChart from './components/custom-chart';
 
 let observerLayout;
 
@@ -54,6 +55,7 @@ const ProjectOverview = () => {
     prefixCls,
     projectOverviewStore,
     componentsDs,
+    customChartAvailableList,
     allCode,
   } = useProjectOverviewStore();
 
@@ -101,6 +103,15 @@ const ProjectOverview = () => {
     personalWorkload: <PersonalWorkload />,
   }), []);
 
+  const renderCustomChart = useCallback((type) => {
+    const chartConfig = projectOverviewStore.getCustomChart(type);
+    // 无敏捷数据获取hook 则返回空
+    if (!chartConfig || !customChartAvailableList.length) {
+      return undefined;
+    }
+    return <CustomChart customChartConfig={chartConfig} />;
+  }, [customChartAvailableList, projectOverviewStore]);
+
   const renderBg = useCallback(() => <GridBg rowHeight={(layOutWidth - 11 * 18) / 10} selector={`.${prefixCls}-container`} cols={10} style={{ padding: '0' }} />, [layOutWidth]);
 
   function handleEditable() {
@@ -117,7 +128,8 @@ const ProjectOverview = () => {
     forEach(newTypeArr, (type) => {
       const {
         layout,
-      } = mappings[type];
+      } = mappings[type] || projectOverviewStore.getCustomChart(type);
+
       const tempCp = {
         ...layout,
         x: 0,
@@ -131,7 +143,6 @@ const ProjectOverview = () => {
   function openAddComponents() {
     const subPrefix = 'c7ncd-workbench-addModal';
     const typeArr = map(componentsDs.toData(), (item) => get(item, 'i'));
-
     Modal.open({
       title: '添加卡片',
       key: Modal.key(),
@@ -143,9 +154,9 @@ const ProjectOverview = () => {
         subPrefix={subPrefix}
         existTypes={typeArr}
         addComponent={addComponent}
-        mappings={allCode.map((item) => (
+        mappings={[...allCode.map((item) => (
           mappings[item]
-        ))}
+        )), ...projectOverviewStore.customDataList]}
         isProjects
       />,
       className: `${subPrefix}`,
@@ -231,21 +242,24 @@ const ProjectOverview = () => {
   function onLayoutChange(layout, layouts) {
     componentsDs.loadData(layout);
   }
-
+  function renderEmptyTitle(groupId, customFlag) {
+    if (customFlag === 'agile' && groupId === 'agile') {
+      return customChartAvailableList.length === 0 ? '未安装【敏捷服务】，卡片无法显示' : '当前自定义敏捷图表已被删除，此卡片无法显示';
+    }
+    return groupId === 'devops' ? '未选择【DevOps流程】项目类型，卡片暂不可用' : '未选择【敏捷管理】项目类型，卡片暂不可用';
+  }
   const SwitchComponents = (type, title) => {
-    let tempComponent;
-    const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
-    const hasType = allCode.includes(type);
+    let tempComponent = renderCustomChart(type);
+    const hasOwnProperty = tempComponent || Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
+    const hasType = allCode.includes(type) || projectOverviewStore.getCustomChart(type);
     if (hasOwnProperty && hasType) {
-      tempComponent = ComponetsObjs[type];
+      tempComponent = tempComponent || ComponetsObjs[type];
     } else {
+      const chartConfig = mappings[type] || projectOverviewStore.getCustomChart(type);
       tempComponent = (
         <EmptyCard
           title={title}
-          emptyTitle={
-          get(mappings[type], 'groupId') === 'devops' ? '未选择【DevOps流程】项目类型，卡片暂不可用' : '未选择【敏捷管理】项目类型，卡片暂不可用'
-
-        }
+          emptyTitle={renderEmptyTitle(get(chartConfig, 'groupId'), get(chartConfig, 'groupId'))}
           index={type}
           sizeObserver={['appService', 'env'].includes(type)}
         />
