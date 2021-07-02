@@ -290,6 +290,8 @@ class Masters extends Component {
 
     ExceedCountUserDataSet = new DataSet({
       autoQuery: false,
+      cacheSelection: true,
+      primaryKey: 'id',
       transport: {
         read: ({ data }) => {
           const { orgId } = data;
@@ -390,7 +392,7 @@ class Masters extends Component {
             children: <OwnerModal num={res} ds={ExceedCountUserDataSet} />,
             onOk: async () => {
               const selectedLength = ExceedCountUserDataSet.selected.length;
-              if (selectedLength !== maxLength) {
+              if (selectedLength > maxLength) {
                 message.error(`请选择${maxLength}个用户`);
                 return false;
               }
