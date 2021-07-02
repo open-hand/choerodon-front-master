@@ -1,7 +1,7 @@
 import React, {
   useState, useCallback, useMemo,
 } from 'react';
-import { Tree } from 'choerodon-ui/pro';
+import { Tree, Tooltip } from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
@@ -115,11 +115,15 @@ const TodoQuestion = observer(() => {
 
   const renderTitle = () => (
     <div className={`${prefixCls}-title`}>
-      <div>
+      <div className={`${prefixCls}-title-left`}>
         <span>缺陷</span>
-        <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
+        <Tooltip title={questionStore.getTotalCount}>
+          <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
+        </Tooltip>
       </div>
       <span className={`${prefixCls}-title-right`}>
+        <QuestionSearch key={`c7n-focus-QuestionSearch-${tabKey}-${questionDs.id}`} onQuery={load} fields={searchField} />
+
         <Switch
           defaultValue="myStarBeacon"
           value={tabKey}
@@ -129,7 +133,6 @@ const TodoQuestion = observer(() => {
           ]}
           onChange={handleTabChange}
         />
-        <QuestionSearch key={`c7n-focus-QuestionSearch-${tabKey}-${questionDs.id}`} onQuery={load} fields={searchField} />
 
       </span>
     </div>

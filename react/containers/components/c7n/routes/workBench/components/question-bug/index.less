@@ -18,6 +18,9 @@
 
     &-count {
       display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: .5rem;
       margin-left: .08rem;
       padding: 0 .06rem;
       background: rgba(244, 133, 144, 0.1);
@@ -27,12 +30,16 @@
       color: #f48590;
       line-height: 20px;
     }
-
+    &-left{
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
     &-right {
       display: inline-flex;
       align-items: center;
       &>*+* {
-        margin-left: .1rem;
+        margin-left: .16rem;
       }
     }
   }
