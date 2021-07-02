@@ -2,7 +2,8 @@ import React, {
   useState, useMemo, useCallback,
 } from 'react';
 import { Tree } from 'choerodon-ui/pro';
-import { Spin } from 'choerodon-ui';
+import J from 'choerodon-ui/pro/lib/tooltip';
+import { Spin, Tooltip } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
@@ -133,11 +134,14 @@ const TodoQuestion = observer(() => {
 
   const renderTitle = () => (
     <div className={`${prefixCls}-title`}>
-      <div>
+      <div className={`${prefixCls}-title-left`}>
         <span>我的关注</span>
-        <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
+        <Tooltip title={questionStore.getTotalCount}>
+          <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
+        </Tooltip>
       </div>
       <span className={`${prefixCls}-title-right`}>
+        <QuestionSearch key={`QuestionSearch-${questionDs.id}`} onQuery={load} fields={searchField} />
         {HAS_BACKLOG && (
           <Switch
             defaultValue="myStarBeacon"
@@ -149,7 +153,6 @@ const TodoQuestion = observer(() => {
             onChange={handleTabChange}
           />
         )}
-        <QuestionSearch key={`QuestionSearch-${questionDs.id}`} onQuery={load} fields={searchField} />
       </span>
     </div>
   );
