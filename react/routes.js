@@ -21,7 +21,7 @@ const AutoRouter = () => {
     // </CacheSwitch>
     <Suspense fallback={<Skeleton />}>
       <CacheSwitch>
-        {routes.map(([path, component]) => <Route path={path} component={React.lazy(component)} />)}
+        {routes.map(([path, component]) => <Route path={path} component={component} />)}
         <CacheRoute path="*" component={nomatch} />
       </CacheSwitch>
     </Suspense>
