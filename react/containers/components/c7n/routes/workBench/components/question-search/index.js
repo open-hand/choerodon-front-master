@@ -208,7 +208,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
   const { run: handleQuery, cancel: handleCancelQuery } = useDebounceFn((data) => {
     const currentSearchData = data || searchDs.toJSONData()[0];
     const temp = transformFieldsToSearch(currentSearchData, searchMode);
-    console.log('query....onQuery', currentSearchData, pick(temp, '_id'));
+    console.log('query....onQuery', temp, currentSearchData, pick(temp, '_id'));
     temp && onQuery && onQuery(temp);
   }, { wait: 320 });
   const handleChange = (code, v) => {
@@ -227,6 +227,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
   };
 
   useEffect(() => {
+    console.log('selectedProjectId......', selectedProjectId, searchData);
     if (selectedProjectId && searchData) {
       handleQuery();
     }
@@ -266,6 +267,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
                 <QuestionSearchSelect
                   name={item.code}
                   multiple
+                  onChange={(v) => setSearchData((oldData) => ({ ...(oldData || {}), [item.code]: v }))}
                   getPopupContainer={(node) => node.parentElement}
                   {...item.selectConfig}
                 />
@@ -277,6 +279,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
                 onClick={() => {
                   searchDs.setState('status', 'search');
                   handleQuery();
+                  setHidden(true);
                 }}
                 style={{ marginLeft: '.1rem' }}
               >
@@ -291,7 +294,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
 
         <Button
           icon="filter2"
-          className={classNames({ [`${prefixCls}-search-btn-active`]: searchDs.current.dirty && searchDs.getState('status') })}
+          className={classNames(`${prefixCls}-search-btn`, { [`${prefixCls}-search-btn-active`]: searchDs.current.dirty && searchDs.getState('status') })}
           onClick={(e) => {
             e.nativeEvent.stopImmediatePropagation();
             setHidden((old) => !old);
