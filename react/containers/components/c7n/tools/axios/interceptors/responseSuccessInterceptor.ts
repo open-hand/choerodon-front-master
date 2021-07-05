@@ -12,18 +12,20 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
   const isTransportResponseHandled = get(config, 'isCustomTransformResponseHandled');
 
   const { enabledCancelCache, useCache, enabledCancelRoute } = config;
-  const cancelCacheKey = get(config, 'cancelCacheKey') || getMark(config);
+  const cancelCacheKey = getMark(config);
 
   if (enabledCancelRoute) {
     axiosRoutesCancel.delete(cancelCacheKey);
   }
 
   if (get(response, 'status') === 204) {
+    axiosCache.set(cancelCacheKey, {
+      isPending: false,
+    });
     return response;
   }
   if (resData?.failed === true) {
     axiosCache.set(cancelCacheKey, {
-      ...(axiosCache.get(cancelCacheKey) || {}),
       isPending: false,
     });
 
