@@ -1,14 +1,14 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
-  Tooltip, Progress, Icon, Spin,
+  Tooltip, Icon, Spin,
 } from 'choerodon-ui/pro';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import queryString from 'querystring';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router';
+import classnames from 'classnames';
 import useQueryString from '@/hooks/useQueryString';
 import OverviewWrap from '../OverviewWrap';
-
 import { useProjectOverviewStore } from '../../stores';
 import { useSprintCountChartStore } from './stores';
 import normalToSvg from '../number-font';
@@ -87,12 +87,9 @@ const SprintCount = observer(() => {
             >
               {normalToSvg(count)}
             </h3>
-            <Progress
-              value={count > 0 ? count / total * 100 : 0}
-              className={`${clsPrefix}-issue-${key}`}
-              strokeWidth={4}
-              showInfo={false}
-            />
+            <div className={classnames(`${clsPrefix}-issue-progress`, `${clsPrefix}-issue-${key}`)}>
+              <span className={`${clsPrefix}-issue-progress-inner`} style={{ width: `${(count > 0 ? count / total * 100 : 0)}%` }} />
+            </div>
           </div>,
         );
       }

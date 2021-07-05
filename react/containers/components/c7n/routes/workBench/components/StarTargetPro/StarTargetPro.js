@@ -21,10 +21,8 @@ import './index.less';
 const StarTargetPro = observer(() => {
   const {
     prefixCls,
-    starProjectsDs,
+    getStarProject,
   } = useStarTargetPro();
-
-  const [theme] = useTheme();
 
   const {
     workBenchUseStore,
@@ -39,7 +37,6 @@ const StarTargetPro = observer(() => {
     isEdit,
     setEdit,
     setActiveStarProject,
-    initData,
   } = workBenchUseStore;
 
   const handleClickItem = (s) => {
@@ -76,14 +73,7 @@ const StarTargetPro = observer(() => {
   );
 
   const renderContent = () => {
-    const starProjects = starProjectsDs.toData();
-    if (starProjectsDs.status === 'loading') {
-      return (
-        <div style={{ padding: '56px 0px' }} className={`${prefixCls}-content`}>
-          <LoadingBar display />
-        </div>
-      );
-    }
+    const starProjects = getStarProject.slice();
     if (starProjects.length === 0) {
       return renderEmptypage();
     }
@@ -193,8 +183,9 @@ const StarTargetPro = observer(() => {
     setEdit(false);
   }
 
-  function addComponent(types) {
-    forEach(types, (type) => {
+  function addComponent(newTypeArr, deleteArr) {
+    const existData = map(componentsDs.filter((record) => !deleteArr.includes(record.get('i'))), (record) => record.toData());
+    forEach(newTypeArr, (type) => {
       const {
         layout,
       } = mappings[type];
@@ -203,8 +194,9 @@ const StarTargetPro = observer(() => {
         x: 0,
         y: Infinity,
       };
-      componentsDs.create(tempCp);
+      existData.push(tempCp);
     });
+    componentsDs.loadData(existData);
   }
 
   function openAddComponents() {
@@ -217,6 +209,7 @@ const StarTargetPro = observer(() => {
       style: {
         width: '740px',
       },
+      contentStyle: { padding: 0 },
       children: <AddModal
         subPrefix={subPrefix}
         existTypes={typeArr}
@@ -257,35 +250,22 @@ const StarTargetPro = observer(() => {
 
   const renderBtns = () => {
     let btnGroups;
-    const secondBtnObj = {
-      funcType: 'raised',
-    };
-    const primaryBtnObj = {
-      color: 'primary',
-      funcType: 'raised',
-    };
-    if (theme !== 'theme4') {
-      secondBtnObj.color = 'primary';
-      primaryBtnObj.funcType = 'flat';
-    }
     if (isEdit) {
       btnGroups = [
         <Button
-          {...primaryBtnObj}
           key="1"
           onClick={openAddComponents}
+          icon="settings-o"
         >
-          添加卡片
+          卡片配置
         </Button>,
         <Button
-          {...primaryBtnObj}
           key="2"
           onClick={hanldeSave}
         >
           保存
         </Button>,
         <Button
-          {...secondBtnObj}
           key="3"
           onClick={handleResetModal}
         >
@@ -293,8 +273,8 @@ const StarTargetPro = observer(() => {
         </Button>,
         <Button
           key="4"
-          {...secondBtnObj}
           onClick={handleCancel}
+          color="primary"
         >
           取消
         </Button>,
@@ -302,9 +282,10 @@ const StarTargetPro = observer(() => {
     } else {
       btnGroups = [
         <Button
-          {...secondBtnObj}
           key="5"
           onClick={handleEditable}
+          icon="settings-o"
+          color="primary"
         >
           工作台配置
         </Button>,

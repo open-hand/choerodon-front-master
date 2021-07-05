@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router-dom';
@@ -8,7 +8,10 @@ import { Button, Icon } from 'choerodon-ui';
 import { Permission } from '@/index';
 import classNames from 'classnames';
 import forEach from 'lodash/forEach';
+import { axios } from "@/index";
 import getSearchString from '../../util/gotoSome';
+
+import './headerSettingTheme4.less';
 
 const iconStyle = { marginLeft: 0, marginRight: 0 };
 const SERVICE_CODE = {
@@ -19,15 +22,42 @@ const SERVICE_CODE = {
 const Setting = ({
   AppState, HeaderStore, MenuStore, history, ...props
 }) => {
-  const theme = AppState.getCurrentTheme;
+  const [isSaas, setIsSaas] = useState(undefined);
+
+  // 组织改变 重新查询getIsSaas
+  useEffect(() => {
+    if (isSaas && !Object.keys(isSaas).includes(AppState.currentMenuType.organizationId)) {
+      getIsSaas();
+    }
+  }, [AppState.currentMenuType.organizationId])
+
+  useEffect(() => {
+    getIsSaas();
+  }, [])
+
+  const theme = 'theme4';
   const { currentServices } = AppState;
+
+  function getIsSaas() {
+    if (!AppState.currentMenuType.organizationId) {
+      setTimeout(() => {
+        getIsSaas()
+      }, 1000);
+    } else {
+      axios.get(`/iam/choerodon/v1/register_saas/is_saas_tenant?tenant_id=${AppState.currentMenuType.organizationId}`).then((res) => {
+        const selfIsSaas = isSaas || {};
+        selfIsSaas[AppState.currentMenuType.organizationId] = res;
+        setIsSaas(selfIsSaas)
+      })
+    }
+  }
 
   const LI_MAPPING = useMemo(() => {
     const mapping = [
       { title: '工作台', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/workbench' },
-      {
-        title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects', style: { marginLeft: 3 },
-      },
+      // {
+      //   title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects', style: { marginLeft: 3 },
+      // },
     ];
     forEach(currentServices, ({ serviceCode }) => {
       switch (serviceCode) {
@@ -44,17 +74,20 @@ const Setting = ({
           });
           break;
         case SERVICE_CODE.market:
-          mapping.push({
-            title: '应用市场',
-            icon: theme === 'theme4' ? 'local_mall-o' : 'application_market',
-            activePath: '/market/app-market',
-            style: { marginLeft: 2 },
-          });
+          // 如果不是saas 才显示应用市场
+          if (!isSaas || !isSaas[AppState.currentMenuType.organizationId]) {
+            mapping.push({
+              title: '应用市场',
+              icon: theme === 'theme4' ? 'local_mall-o' : 'application_market',
+              activePath: '/market/app-market',
+              style: { marginLeft: 2 },
+            });
+          }
           break;
       }
     });
     return mapping;
-  }, [currentServices, theme]);
+  }, [currentServices, theme, isSaas]);
 
   async function goto(obj) {
     const queryObj = queryString.parse(history.location.search);
@@ -86,9 +119,9 @@ const Setting = ({
               key={list.activePath}
               className={classNames({
                 [`block ${extraCls(list)}`]: true,
-                'theme4-headerButton': AppState.getCurrentTheme === 'theme4',
+                'theme4-headerButton': true,
               })}
-              {...AppState.getCurrentTheme === 'theme4' && index === 0 ? {
+              {...index === 0 ? {
                 style: {
                   marginLeft: '-8px',
                 },
@@ -97,9 +130,9 @@ const Setting = ({
               type="primary"
               funcType="flat"
             >
-              <Icon type={list.icon} style={iconStyle} />
+              {/*<Icon type={list.icon} style={iconStyle} />*/}
               <span
-                {...AppState.getCurrentTheme === 'theme4' && list.style ? {
+                {...true && list.style ? {
                   style: list.style,
                 } : {}}
               >

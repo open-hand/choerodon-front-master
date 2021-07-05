@@ -25,6 +25,9 @@ const iconMap = {
   'choerodon.code.project.develop': 'kaifa',
   //  测试
   'choerodon.code.project.test': 'ceshi',
+  'choerodon.code.project.demand': 'xuqiu',
+  'choerodon.code.site.infra': 'jichu',
+  'choerodon.code.project.doc': 'wendang',
   // 设置
   'choerodon.code.project.setting': 'shezhi',
   // 组织层管理
@@ -137,15 +140,8 @@ export default class CommonMenu extends Component {
         >
           <span
             className={classNames({
-              'theme4-iconwrap': this.props.AppState.getCurrentTheme === 'theme4',
+              'theme4-iconwrap': true,
             })}
-            {
-              ...this.props.AppState.getCurrentTheme === '' && collapsed ? {
-                style: {
-                  marginRight: 16,
-                },
-              } : {}
-            }
           >
             <Icon
               type={data.icon}
@@ -153,7 +149,7 @@ export default class CommonMenu extends Component {
           </span>
           <span
             className={classNames({
-              'theme4-iconwrap-text': this.props.AppState.getCurrentTheme === 'theme4',
+              'theme4-iconwrap-text': true,
             })}
           >
             {data.name}
@@ -181,7 +177,7 @@ export default class CommonMenu extends Component {
             }}
           >
             <span className={classNames({
-              'theme4-iconwrap': this.props.AppState.getCurrentTheme === 'theme4',
+              'theme4-iconwrap': true,
             })}
             >
               <Icon
@@ -192,8 +188,9 @@ export default class CommonMenu extends Component {
           </span>
           )}
       >
-        {data.subMenus.filter((v) => v.type !== 'tab').map(
-          (two) => this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed),
+        {data.subMenus.filter((v) => v.type !== 'tab' && v.code !== 'choerodon.code.project.deploy.app-deployment.pipeline').map(
+          (two) =>
+            this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed)
         )}
       </SubMenu>
     );
@@ -306,7 +303,7 @@ export default class CommonMenu extends Component {
     } else {
       this.savedOpenKeys = openKeys;
       MenuStore.setCollapsed(true);
-      // MenuStore.setOpenKeys([]);
+      MenuStore.setOpenKeys([]);
     }
   };
 
@@ -360,7 +357,7 @@ export default class CommonMenu extends Component {
         className={
           classNames('common-menu-right', {
             collapsed,
-            'theme4-common-menu': AppState.getCurrentTheme === 'theme4',
+            'theme4-common-menu': true,
           })
         }
         style={{
@@ -371,18 +368,16 @@ export default class CommonMenu extends Component {
           className="common-menu-right-header"
           style={{
             position: 'relative',
-            ...AppState.getCurrentTheme === 'theme4' ? {
-              height: 0,
-            } : {},
+            height: 0,
           }}
         >
           <div
             className={classNames({
-              'theme4-iconToggle': AppState.getCurrentTheme === 'theme4',
+              'theme4-iconToggle': true,
             })}
           >
             {
-              AppState.getCurrentTheme === 'theme4' ? (
+              true ? (
                 <img
                   role="none"
                   style={{
@@ -411,7 +406,7 @@ export default class CommonMenu extends Component {
         </div>
         <div className="common-menu-right-content">
           <Menu
-            className={classNames({ 'theme4-menu-ul': AppState.getCurrentTheme === 'theme4' })}
+            className={classNames({ 'theme4-menu-ul': true })}
             mode="inline"
             inlineCollapsed={collapsed}
             selectedKeys={[activeMenu && activeMenu.code]}
@@ -444,7 +439,7 @@ export default class CommonMenu extends Component {
     const { MenuStore, AppState } = this.props;
     const str = iconMap[data.code] || 'xiezuo';
     const root = MenuStore.getActiveMenuRoot;
-    if (AppState.getCurrentTheme === 'theme4') {
+    if (true) {
       return `${str}new.sprite`;
     }
     if (root && data.code === root[AppState.menuType.type]?.code) {
@@ -468,29 +463,21 @@ export default class CommonMenu extends Component {
     return (
       <div
         className="c7ncd-theme4-menuSide"
-        {
-          ...AppState.getCurrentTheme === '' ? {
-            style: {
-              background: 'white',
-              borderRight: '1px solid #D9E6F2',
-            },
-          } : {
-            style: {
-              backgroundImage: `url(${bg})`,
-            },
-          }
-        }
+        style={{
+          backgroundImage: `url(${bg})`,
+          backgroundSize: 'cover',
+        }}
       >
         {
           menuData.map((data) => (
             <div
               className={classNames('c7ncd-theme4-menuSide-item', {
-                'c7ncd-origin-menuSide': activeMenuRoot.id === data.id && AppState.getCurrentTheme === '',
-                'c7ncd-origin-menuSide-item': AppState.getCurrentTheme === '',
-                'c7ncd-theme4-menuSide-item-hover': AppState.getCurrentTheme === 'theme4',
+                // 'c7ncd-origin-menuSide': activeMenuRoot.id === data.id && AppState.getCurrentTheme === '',
+                // 'c7ncd-origin-menuSide-item': AppState.getCurrentTheme === '',
+                'c7ncd-theme4-menuSide-item-hover': true,
               })}
               {
-                ...(activeMenuRoot.id === data.id) && AppState.getCurrentTheme === 'theme4' ? {
+                ...(activeMenuRoot.id === data.id) && true ? {
                   style: {
                     background: 'rgba(140, 158, 255, 0.35)',
                   },
@@ -498,14 +485,13 @@ export default class CommonMenu extends Component {
               }
               onClick={() => this.handleClickItemMenuSide(data)}
             >
-              {
-                (activeMenuRoot.id === data.id) && AppState.getCurrentTheme === '' && (
-                  <div className="c7ncd-origin-selected-line" />
-                )
-              }
+              {/*{*/}
+              {/*  (activeMenuRoot.id === data.id) && AppState.getCurrentTheme === '' && (*/}
+              {/*    <div className="c7ncd-origin-selected-line" />*/}
+              {/*  )*/}
+              {/*}*/}
               <div
                 style={{
-                  background: AppState.getCurrentTheme === '' ? '' : 'rgba(255, 255, 255, 0.08)',
                   borderRadius: '8px',
                   width: 30,
                   height: 30,
@@ -517,13 +503,6 @@ export default class CommonMenu extends Component {
                 <MenuSideIcon name={this.renderMenuSideIconName(data)} />
               </div>
               <p
-                {
-                  ...AppState.getCurrentTheme === '' ? {
-                    style: {
-                      color: '#0F1358',
-                    },
-                  } : {}
-                }
               >
                 {data.name}
               </p>

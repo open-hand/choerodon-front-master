@@ -34,7 +34,7 @@ const SprintWaterWave = observer(() => {
             <WaterWave
               height={120}
               title="剩余时间"
-              percent={totalDays && remainingDays > 0 ? ((totalDays - remainingDays) / totalDays) * 100 : 0} // "totalDays": remainingDays
+              percent={totalDays && remainingDays > 0 ? (remainingDays / totalDays) * 100 : 0} // "totalDays": remainingDays
               percentRender={() => (
                 <div className={`${clsPrefix}-percent`}>
                   {normalToSvg(current ? current.get('remainingDays') : '', 20)}
@@ -47,21 +47,21 @@ const SprintWaterWave = observer(() => {
             <li>
               <label>问题数</label>
               <span>
-                {current.get('issueCount')}
+                {`${current.get('remainingIssueCount')}/${current.get('totalIssueCount')}`}
                 (个)
               </span>
             </li>
             <li>
               <label>故事点</label>
               <span>
-                {current.get('storyPoints')}
+                {`${current.get('remainingStoryPoints')}/${current.get('totalStoryPoints')}`}
                 (个)
               </span>
             </li>
             <li>
               <label>剩余工时</label>
               <span>
-                {current.get('remainingEstimatedTime')}
+                {`${current.get('remainingEstimatedTime')}/${current.get('totalEstimatedTime')}`}
                 (小时)
               </span>
             </li>

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { get, map } from 'lodash';
+import ResizeObserver from 'resize-observer-polyfill';
 import './index.less';
 
 // function getColsNumber(domWidth) {

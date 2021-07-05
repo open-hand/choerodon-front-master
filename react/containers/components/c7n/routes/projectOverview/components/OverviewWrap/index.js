@@ -12,10 +12,12 @@ const OverviewWrap = observer((props) => {
     style,
     marginRight,
     titleMarginBottom,
+    containerRef,
+    ...otherProps
   } = props;
-
   return (
     <div
+      ref={containerRef}
       className="c7n-project-overview-wrap"
       style={{
         width,
@@ -23,12 +25,15 @@ const OverviewWrap = observer((props) => {
         marginRight,
         ...style,
       }}
+      {...otherProps}
     >
       {children}
     </div>
   );
 });
-OverviewWrap.Header = function Header({ style, titleMarginBottom, title, children }) {
+OverviewWrap.Header = function Header({
+  style, titleMarginBottom, title, children,
+}) {
   const renderTitleRight = () => {
 
   };

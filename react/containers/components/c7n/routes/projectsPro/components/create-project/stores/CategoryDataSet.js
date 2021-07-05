@@ -1,8 +1,12 @@
 /* eslint-disable no-param-reassign */
 
 function handleDisabled({
-  dataSet, record, categoryCodes, isSelected,
+  dataSet, record, categoryCodes, isSelected, createProjectStore,
 }) {
+  const isSenior = createProjectStore.getIsSenior;
+  if (!isSenior) {
+    return;
+  }
   if (record.get('code') === categoryCodes.agile) {
     if (!record.getState('isAgile')) {
       const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.program);
@@ -39,7 +43,7 @@ function setRequireModule({ dataSet, selected, categoryCodes }) {
   }
 }
 
-export default ({ organizationId, categoryCodes }) => ({
+export default ({ organizationId, categoryCodes, createProjectStore }) => ({
   autoCreate: false,
   autoQuery: false,
   selection: 'multiple',
@@ -54,13 +58,13 @@ export default ({ organizationId, categoryCodes }) => ({
     select: ({ dataSet, record }) => {
       record.isSelected = true;
       handleDisabled({
-        dataSet, record, categoryCodes, isSelected: true,
+        dataSet, record, categoryCodes, isSelected: true, createProjectStore,
       });
     },
     unSelect: ({ dataSet, record }) => {
       record.isSelected = false;
       handleDisabled({
-        dataSet, record, categoryCodes, isSelected: false,
+        dataSet, record, categoryCodes, isSelected: false, createProjectStore,
       });
     },
   },

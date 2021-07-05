@@ -1,63 +1,146 @@
-import React, { useEffect, useContext } from 'react';
+import React, {
+  useEffect, useState, useCallback,
+} from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router';
-import { Tooltip, Icon, Button } from 'choerodon-ui';
-import { EXTERNAL_LINK } from '@/utils/constants';
+import {
+  Menu, Dropdown, Icon, Button as ProButton,
+} from 'choerodon-ui/pro';
+
+import { EXTERNAL_LINK, SAAS_FEEDBACK } from '@/utils/constants';
 import classNames from 'classnames';
-import Logo from './Logo';
-import User from './User';
-import Inbox from './Inbox';
-// import SkinPeeler from './SkinPeeler';
-import HeaderSetting from './HeaderSetting';
+import { mount } from '@choerodon/inject';
+import { axios } from '@/index';
+
 import './style';
 import OrgSelect from './OrgSelect';
+import HeaderSetting from './HeaderSetting';
+import Inbox from './Inbox';
+import User from './User';
+import Logo from './Logo';
+import ProjectSelector from './components/ProjectSelector';
 
 const prefixCls = 'c7n-boot-header';
 
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
-  const schema = '';
+  const [isOrgSaasAuth, setSaasAuth] = useState(false);
+
+  const {
+    AppState: { currentMenuType: { organizationId } },
+  } = props;
+
+  function getAuth() {
+    return axios.get(`iam/choerodon/v1/register_saas/check_is_owner?tenantId=${organizationId}`);
+  }
+
+  const checkAuthOfSaas = useCallback(async () => {
+    if (SAAS_FEEDBACK && organizationId) {
+      try {
+        const res = await getAuth();
+        setSaasAuth(!!res);
+      } catch (error) {
+        setSaasAuth(false);
+      }
+    }
+  }, [getAuth, organizationId]);
 
   useEffect(() => {
-    const { AppState, HeaderStore, MenuStore } = props;
-    // MenuStore.loadMenuData({ type: 'site' }, false);
-    HeaderStore.axiosGetOrgAndPro(AppState.getUserId);
-  }, []);
-  //
+    checkAuthOfSaas();
+  }, [checkAuthOfSaas]);
+
   useEffect(() => {
-    const { getUserId } = props.AppState;
+    const { AppState } = props;
+    AppState.setCurrentDropDown(AppState.getStarProject, AppState.getRecentUse);
+  }, [props.location]);
+
+  useEffect(() => {
+    const { AppState, HeaderStore } = props;
+    HeaderStore.axiosGetOrgAndPro(AppState.getUserId);
+    AppState.getProjects();
+  }, []);
+
+  useEffect(() => {
     if (!props.location.pathname.includes('unauthorized')) {
       sessionStorage.setItem('historyPath', props.location.pathname + props.location.search);
     }
   }, [props.location.pathname, props.location.search]);
 
-  function handleGuideClick() {
+  const menuItems = () => {
     const { AppState } = props;
-    AppState.setGuideExpanded(!AppState.getGuideExpanded);
-  }
+    const [url, text, icon] = EXTERNAL_LINK?.split(',') || [];
+    const itemsGroup = [];
+    const docItem = (
+      <Menu.Item>
+        <div
+          role="none"
+          onClick={() => {
+            window.open(AppState.getDocUrl || 'https://open.hand-china.com/document-center/doc/product/10177/10419?doc_code=118818&doc_id=124273');
+          }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Icon type="collections_bookmark-o" />
+          <span>
+            {text}
+          </span>
+        </div>
+      </Menu.Item>
+    );
+    if (EXTERNAL_LINK) {
+      itemsGroup.push(docItem);
+    }
+    const saasFeedbackBtn = mount('base-pro:saasFeebackBtn');
+    if (SAAS_FEEDBACK && saasFeedbackBtn && isOrgSaasAuth) {
+      const saasFeedbackItem = (
+        <Menu.Item>
+          {mount('base-pro:saasFeebackBtn')}
+        </Menu.Item>
+      );
+      itemsGroup.push(saasFeedbackItem);
+    }
+    return (
+      <Menu>
+        {
+          itemsGroup
+        }
+      </Menu>
+    );
+  };
 
   const renderExternalLink = () => {
-    if (EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') {
-      const [url, text, icon] = EXTERNAL_LINK.split(',');
+    if ((EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') || (SAAS_FEEDBACK)) {
+      const saasFeedbackBtn = mount('base-pro:saasFeebackBtn');
+      const hasSaasFeedback = SAAS_FEEDBACK && saasFeedbackBtn && isOrgSaasAuth;
+      const { AppState } = props;
+      const [url, text, icon] = EXTERNAL_LINK?.split(',') || [];
       return (
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
-          <Tooltip title={text}>
-            <Button
-              className={classNames({
-                'theme4-external': props.AppState.getCurrentTheme === 'theme4',
-              })}
-              icon={icon}
-              {
-                ...props.AppState.getCurrentTheme === '' ? {
-                  shape: 'circle',
-                } : {}
-              }
+          <Dropdown
+            {
+              ...!hasSaasFeedback ? {
+                hidden: true,
+              } : {}
+            }
+            overlay={menuItems()}
+            trigger={['click']}
+            placement="bottomCenter"
+          >
+            <ProButton
               onClick={() => {
-                window.open(url);
+                if (!hasSaasFeedback) {
+                  window.open(AppState.getDocUrl || 'https://open.hand-china.com/document-center/doc/product/10177/10419?doc_code=118818&doc_id=124273');
+                }
               }}
-              style={{ margin: `0 ${props.AppState.getCurrentTheme === 'theme4' ? '20px' : '15px'}` }}
+              funcType="flat"
+              className="theme4-external"
+              icon="help_outline"
+              shape="circle"
+              style={{ margin: '0 20px' }}
             />
-          </Tooltip>
+          </Dropdown>
         </li>
       );
     }
@@ -65,10 +148,10 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
   };
 
   const {
-    AppState: { getUserInfo: { image_url: imgUrl } }, MenuStore: { getSiteMenuData }, history, location: { pathname },
+    AppState: { getUserInfo: { image_url: imgUrl } }, history, location: { pathname },
   } = props;
 
-  const shouldHiddenHead = (pathname) => {
+  const shouldHiddenHead = () => {
     const defaultBlackList = ['/iam/enterprise'];
     if (defaultBlackList.some((pname) => pathname.startsWith(pname))) {
       return true;
@@ -76,41 +159,28 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     return false;
   };
 
-  if (shouldHiddenHead(pathname)) {
+  if (shouldHiddenHead()) {
     return null;
   }
   return (
     <div
       className={classNames({
         [`${prefixCls}-wrap`]: true,
-        [`${prefixCls}-wrap-theme4`]: schema === 'theme4',
+        [`${prefixCls}-wrap-theme4`]: true,
       })}
     >
       <div className={`${prefixCls}-left`}>
         <Logo history={history} />
       </div>
+      <ProjectSelector />
       <ul className={`${prefixCls}-center`}>
-        <li style={{ display: 'flex' }}><HeaderSetting /></li>
+        <li style={{ display: 'flex' }}>
+          <HeaderSetting />
+          {mount('base-pro:saasUpgrade')}
+        </li>
       </ul>
       <ul className={`${prefixCls}-right`}>
         <OrgSelect />
-        <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
-          {/* <SkinPeeler /> */}
-          {/* <Button */}
-          {/*  icon="toys" */}
-          {/*  onClick={() => { */}
-          {/*    const { AppState } = this.props; */}
-          {/*    const theme = AppState.getTheme; */}
-          {/*    let newTheme; */}
-          {/*    if (theme === 'theme4') { */}
-          {/*      newTheme = ''; */}
-          {/*    } else { */}
-          {/*      newTheme = 'theme4'; */}
-          {/*    } */}
-          {/*    AppState.setTheme(newTheme); */}
-          {/*  }} */}
-          {/* /> */}
-        </li>
         {renderExternalLink()}
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
           <Inbox />

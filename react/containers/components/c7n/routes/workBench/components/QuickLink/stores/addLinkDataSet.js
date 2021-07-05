@@ -25,7 +25,7 @@ export default (AppState) => ({
     defaultValue: 10,
   }, {
     name: 'projectId',
-    type: 'number',
+    type: 'string',
     label: '项目',
     textField: 'name',
     valueField: 'id',

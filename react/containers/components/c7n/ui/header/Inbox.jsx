@@ -1,17 +1,19 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable react/no-danger */
 import React, { Component } from 'react';
+import { createPortal } from 'react-dom';
 import TimeAgo from 'timeago-react';
 import { withRouter } from 'react-router-dom';
 import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import {
-  Badge, Button, Tabs, Avatar, Tooltip,
+  Badge, Button, Tabs, Avatar, Tooltip, notification, Animate,
 } from 'choerodon-ui';
 import {
   Button as ButtonPro, CheckBox, Modal, Icon, Spin,
 } from 'choerodon-ui/pro';
+import JSONBig from 'json-bigint';
 import WSHandler from '../../tools/ws/WSHandler';
 import defaultAvatar from './style/icons/favicon.png';
 
@@ -23,7 +25,9 @@ const prefixCls = `${PREFIX_CLS}-boot-header-inbox`;
 const reg = /\n|&nbsp;|&lt|&gt|<[^a\/][^>]*>|<\/[^a][^>]*>/g;
 const imgreg = /(<img[\s\S]*?src\s*=\s*["|']|\[img\])(.*?)(["|'][\s\S]*?>|\[\/img\])/;
 const tablereg = /<table(.*?)>(.*?)<\/table>/g;
+const detailLinkReg = /<a(.*?)>查看详情<\/a>/g;
 const cleanModalKey = Modal.key();
+const orgReg = /\${orgString}/;
 
 @inject('HeaderStore', 'AppState')
 @onClickOutside
@@ -57,14 +61,13 @@ class RenderPopoverContentClass extends Component {
       </>
     );
     return (
-      <div className={siderClasses}>
+      createPortal(<div className={siderClasses}>
         <div className={`${prefixCls}-sider-header-wrap no-mr ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
           <div className={`${prefixCls}-sider-header`}>
             <div className={`${prefixCls}-sider-header-title`}>
               <span className="msgTitle">消息通知</span>
               <Button
                 funcType="flat"
-                type="primary"
                 icon="close"
                 shape="circle"
                 onClick={() => handleVisibleChange(!inboxVisible)}
@@ -75,12 +78,12 @@ class RenderPopoverContentClass extends Component {
                 tab={<span><Badge count={getUnreadMsg.filter((v) => !v.read).length} style={{ transform: 'scale(.75)' }}>消息</Badge></span>}
                 key="1"
               >
-                <Spin spinning={inboxLoading}>
+                <Spin spinning={inboxLoading} className={`${prefixCls}-sider-header-loading`}>
                   {renderMessages(getUnreadMsg)}
                 </Spin>
               </TabPane>
               <TabPane tab="公告" key="3">
-                <Spin spinning={inboxLoading}>
+                <Spin spinning={inboxLoading} className={`${prefixCls}-sider-header-loading`}>
                   {renderMessages(getUnreadOther)}
                 </Spin>
               </TabPane>
@@ -90,7 +93,8 @@ class RenderPopoverContentClass extends Component {
         <RenderPopoverContentDetailClass
           handleVisibleChange={this.handleVisibleChange}
         />
-      </div>
+      </div>,
+      document.body)
     );
   }
 }
@@ -131,7 +135,7 @@ class RenderPopoverContentDetailClass extends Component {
       return null;
     }
     return (
-      <div className={siderClasses} style={{ zIndex: '20' }}>
+      <div className={siderClasses}>
         <div className={`${prefixCls}-sider-header-wrap`}>
           <div className="header">
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -180,7 +184,7 @@ class RenderPopoverContentDetailClass extends Component {
                   <span>{realSendTime}</span>
                 ) : (
                   <TimeAgo
-                    datetime={realSendTime.slice(0, realSendTime.length - 3)}
+                    datetime={realSendTime?.slice(0, realSendTime.length - 3)}
                     locale="zh_CN"
                   />
                 )
@@ -213,7 +217,7 @@ export default class Inbox extends Component {
   }
 
   cleanMsg = (e, data) => {
-    e.stopPropagation();
+    e && e.stopPropagation();
     const { AppState, HeaderStore } = this.props;
     HeaderStore.readMsg(AppState.userInfo.id, data, 0);
   };
@@ -255,7 +259,7 @@ export default class Inbox extends Component {
 
   openSettings = () => {
     const { history, AppState } = this.props;
-    history.push(`/notify/receive-setting/project?type=site&organizationId=${AppState.currentMenuType.organizationId}`);
+    history.push(`/notify/receive-setting/project?type=user&organizationId=${AppState.currentMenuType.organizationId}`);
   };
 
   handleButtonClick = () => {
@@ -269,10 +273,59 @@ export default class Inbox extends Component {
 
   handleMessage = (data) => {
     const { HeaderStore } = this.props;
-    const newData = JSON.parse(data);
+    const newData = JSONBig.parse(data);
     const count = HeaderStore.getUnreadMessageCount + (newData ? newData.number : 0) || 0;
     HeaderStore.setUnreadMessageCount(count < 0 ? 0 : count);
     this.props.HeaderStore.setInboxLoaded(false);
+  };
+
+  handleMessagePopClick = async (messageId) => {
+    const { HeaderStore } = this.props;
+    notification.close(`msg-${messageId}`);
+    HeaderStore.notificationKeyList?.delete(`msg-${messageId}`);
+    this.handleButtonClick();
+    if (!messageId) {
+      return;
+    }
+    try {
+      const res = await HeaderStore.loadMsgDetail(messageId);
+      if (res) {
+        setTimeout(() => {
+          this.handleMessageTitleClick(null, res);
+        }, 700);
+      }
+    } catch (error) {
+      // return false
+    }
+  };
+
+  handleMessagePop = (data) => {
+    const { HeaderStore } = this.props;
+    const newData = JSONBig.parse(data);
+    const content = newData && newData.content && <p dangerouslySetInnerHTML={{ __html: `${newData.content.replace(imgreg, '[图片]').replace(tablereg, '').replace(reg, '').replace(detailLinkReg, '')}` }} />;
+    const notificationKey = `msg-${newData?.messageId}`;
+    HeaderStore.notificationKeyList?.add(notificationKey);
+    notification.info({
+      key: notificationKey,
+      message: (
+        <span role="none" onClick={() => this.handleMessagePopClick(newData?.messageId)}>
+          {newData && newData.title}
+        </span>
+      ),
+      description: content,
+      duration: 5,
+      onClose: () => {
+        HeaderStore.notificationKeyList?.delete(notificationKey);
+      },
+    });
+  };
+
+  handleCloseAllNotification = () => {
+    const { HeaderStore } = this.props;
+    HeaderStore.notificationKeyList?.forEach((value) => {
+      notification.close(value);
+    });
+    HeaderStore.notificationKeyList?.clear();
   };
 
   handleMessageClick = (e) => {
@@ -297,8 +350,9 @@ export default class Inbox extends Component {
   };
 
   renderMessages = (inboxData) => {
-    const { AppState } = this.props;
+    const { AppState, HeaderStore } = this.props;
     if (inboxData.length > 0) {
+      const org = HeaderStore?.getOrgData?.[0];
       return (
         <ul>
           {
@@ -317,10 +371,10 @@ export default class Inbox extends Component {
                   <div className={`${prefixCls}-sider-content-list-title`}>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {iconWithBadge}
-                      <a onClick={(e) => this.handleMessageTitleClick(e, data)} style={{ marginLeft: 10 }}>{title}</a>
+                      <a role="none" onClick={(e) => this.handleMessageTitleClick(e, data)} style={{ marginLeft: 10 }}>{title}</a>
                     </span>
                     <div style={{
-                      display: 'flex', alignItems: 'center', flexShrink: 0, color: 'rgba(0, 0, 0, 0.54)',
+                      display: 'flex', alignItems: 'center', flexShrink: 0, color: 'var(--text-color4)',
                     }}
                     >
                       {
@@ -328,7 +382,7 @@ export default class Inbox extends Component {
                           <span>{realSendTime}</span>
                         ) : (
                           <TimeAgo
-                            datetime={realSendTime.slice(0, realSendTime.length - 3)}
+                            datetime={realSendTime?.slice(0, realSendTime.length - 3)}
                             locale="zh_CN"
                           />
                         )
@@ -346,7 +400,7 @@ export default class Inbox extends Component {
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
                     <div style={{ maxHeight: 63, overflow: 'hidden' }}>
-                      {content && <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(tablereg, '').replace(reg, '')}` }} />}
+                      {content && <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(tablereg, '').replace(reg, '').replace(orgReg, `organizationId=${org?.id}`)}` }} />}
                       {document.getElementById(`#li-${id}`) && document.getElementById(`#li-${id}`).offsetHeight > 63 ? (
                         <a href="#" target="_blank" rel="noreferrer noopener">
                           <span>了解更多</span>
@@ -382,13 +436,14 @@ export default class Inbox extends Component {
   render() {
     const {
       AppState, HeaderStore: {
-        inboxData, inboxLoading, getUnreadMessageCount, getCurrentTheme,
+        inboxData, inboxLoading, getUnreadMessageCount, getCurrentTheme, notificationKeyList,
       },
     } = this.props;
+    const SelfButton = true ? ButtonPro : Button;
     const popOverContent = { inboxData, inboxLoading };
     return (
       <div className={classNames({
-        'theme4-badge': AppState.getCurrentTheme === 'theme4',
+        'theme4-badge': true,
       })}
       >
         <WSHandler
@@ -403,28 +458,28 @@ export default class Inbox extends Component {
                   classNames(
                     [prefixCls],
                     'ignore-react-onclickoutside',
-                    { 'theme4-inbox-badge': AppState.getCurrentTheme === 'theme4' },
+                    { 'theme4-inbox-badge': true },
                   )
                 }
                 count={getUnreadMessageCount}
               >
-                <Button
+                <SelfButton
                   className={classNames({
-                    'theme4-inbox': AppState.getCurrentTheme === 'theme4',
+                    'theme4-inbox': true,
                   })}
-                  functype="flat"
-                  {
-                  ...AppState.getCurrentTheme === '' ? {
-                    shape: 'circle',
-                    style: { color: '#fff' },
-                  } : {}
-                  }
+                  funcType="flat"
                 >
-                  <Icon type={AppState.getCurrentTheme === 'theme4' ? 'notifications_none' : 'notifications'} />
-                </Button>
+                  <Icon type={true ? 'notifications_none' : 'notifications'} />
+                </SelfButton>
               </Badge>
             )
           }
+        </WSHandler>
+        <WSHandler
+          messageKey="choerodon-pop-ups"
+          onMessage={this.handleMessagePop}
+        >
+          {() => <></>}
         </WSHandler>
         <RenderPopoverContentClass
           {...popOverContent}
@@ -435,7 +490,16 @@ export default class Inbox extends Component {
           readAllMsg={this.readAllMsg}
           openCleanAllModal={this.openCleanAllModal}
         />
-
+        {notificationKeyList?.size > 2 ? createPortal((
+          <div className={`${prefixCls}-notification-all`}>
+            <span>
+              共有
+              {notificationKeyList?.size}
+              条通知
+            </span>
+            <Button onClick={this.handleCloseAllNotification}>关闭全部</Button>
+          </div>
+        ), document.body) : null}
       </div>
     );
   }

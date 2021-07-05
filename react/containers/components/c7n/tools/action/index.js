@@ -65,7 +65,7 @@ export default class Action extends Component {
         type={type}
       >
         <Dropdown overlay={this.renderMenu(data)} trigger={['click']} placement={placement} getPopupContainer={getPopupContainer} disabled={disabled}>
-          <Button size="small" shape="circle" style={{ color: '#000' }} icon="more_vert" {...restProps} />
+          <Button size="small" shape="circle" style={{ color: '#5365EA' }} icon="more_vert" {...restProps} />
         </Dropdown>
       </Permission>
     );

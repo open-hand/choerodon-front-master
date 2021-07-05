@@ -1,15 +1,16 @@
 import { useLocalStore } from 'mobx-react-lite';
-import queryString from 'query-string';
 import { axios } from '@/index';
-import HeaderStore from '@/containers/stores/c7n/HeaderStore';
-import MenuStore from '@/containers/stores/c7n/MenuStore';
-import moment from 'moment';
-import { getRandomBackground } from '@/containers/components/c7n/util';
-import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
-import { historyPushMenu } from '@/utils';
 
 export default function useStore() {
   return useLocalStore(() => ({
+    isSenior: true,
+    get getIsSenior() {
+      return this.isSenior;
+    },
+    setIsSenior(flag) {
+      this.isSenior = flag;
+    },
+
     async hasProgramProjects(organizationId, projectId) {
       try {
         const res = await axios.get(`/iam/choerodon/v1/organizations/${organizationId}/project_relations/${projectId}/${projectId}`);
@@ -18,6 +19,21 @@ export default function useStore() {
         }
         return false;
       } catch (error) {
+        return false;
+      }
+    },
+
+    async checkSenior(organizationId) {
+      try {
+        const res = await axios.get(`/iam/choerodon/v1/register_saas/check_senior_project_type?tenantId=${organizationId}`);
+        if (res && res.failed) {
+          this.setIsSenior(false);
+          return false;
+        }
+        this.setIsSenior(res);
+        return res;
+      } catch (error) {
+        this.setIsSenior(false);
         return false;
       }
     },

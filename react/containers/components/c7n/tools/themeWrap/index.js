@@ -1,7 +1,8 @@
 import React from 'react';
 import { inject } from 'mobx-react';
+import { observer } from "mobx-react-lite";
 
-export default inject('AppState')((props) => {
+export default inject('AppState')(observer((props) => {
   const {
     map,
     children,
@@ -36,4 +37,4 @@ export default inject('AppState')((props) => {
   };
 
   return React.Children.map(children, (child) => React.cloneElement(child, renderParams()));
-});
+}));

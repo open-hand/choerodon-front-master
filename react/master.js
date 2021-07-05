@@ -4,12 +4,14 @@ import queryString from 'query-string';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { observer, Provider } from 'mobx-react';
 import { Spin } from 'choerodon-ui';
-import { Modal } from 'choerodon-ui/pro';
+import { Modal, ModalProvider } from 'choerodon-ui/pro';
 import _ from 'lodash';
 import {
   authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
 } from '@/utils';
-import { defaultBlackList } from '@/containers/components/c7n/ui/menu';
+import { initTheme, Container } from '@hzero-front-ui/core';
+import C7nTemplate from '@hzero-front-ui/c7n-ui';
+import { theme4 } from '@hzero-front-ui/themes';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
@@ -57,6 +59,19 @@ export default class Index extends React.Component {
     if (!this.isInOutward(this.props.location.pathname)) {
       this.auth();
     }
+    this.getNotificationPermission();
+    this.initTheme();
+    this.syncStyleFix()
+  }
+
+  syncStyleFix = () => {
+    const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+    console.log(isSafari);
+    // 如果是safari浏览器
+    if (isSafari) {
+      document.body.setAttribute('data-browser', ('safari'));
+      import('./containers/components/style/safari.less');
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -73,12 +88,40 @@ export default class Index extends React.Component {
     }
   }
 
+  initTheme() {
+    initTheme({
+      defaultTheme: 'theme4',
+      scope: [],
+      themes: [
+        {
+          name: 'theme4',
+          data: theme4,
+        },
+      ],
+      templates: [
+        {
+          id: 'c7n',
+          component: C7nTemplate,
+        },
+      ],
+    });
+  }
+
+
   componentWillUnmount() {
     window.removeEventListener('storage', this.handleStorageChange);
   }
 
   static getDerivedStateFromProps(props, state) {
     syncBodyThemeAttribute();
+  }
+
+  getNotificationPermission = () => {
+    if (!('Notification' in window)) {
+      console.log('This browser does not support desktop notification');
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission();
+    }
   }
 
   handleStorageChange = (e) => {
@@ -170,7 +213,9 @@ export default class Index extends React.Component {
               <Provider {...stores}>
                 <Switch>
                   <Route path="/">
-                    <Outward AutoRouter={this.props.AutoRouter} />
+                    <Container>
+                      <Outward AutoRouter={this.props.AutoRouter} />
+                    </Container>
                   </Route>
                 </Switch>
               </Provider>
@@ -190,15 +235,19 @@ export default class Index extends React.Component {
       <QueryClientProvider client={queryClient}>
         <UILocaleProviderAsync>
           <IntlProviderAsync>
-            <Provider {...stores}>
-              <Switch>
-                <Route
-                  path="/"
-                >
-                  <Master AutoRouter={this.props.AutoRouter} />
-                </Route>
-              </Switch>
-            </Provider>
+            <ModalProvider location={window.location}>
+              <Provider {...stores}>
+                <Switch>
+                  <Route
+                    path="/"
+                  >
+                    <Container>
+                      <Master AutoRouter={this.props.AutoRouter} />
+                    </Container>
+                  </Route>
+                </Switch>
+              </Provider>
+            </ModalProvider>
           </IntlProviderAsync>
         </UILocaleProviderAsync>
       </QueryClientProvider>

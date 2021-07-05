@@ -22,7 +22,11 @@ export function logout() {
 export function authorizeC7n() {
   // 为了把这个hash传到oauth里要把#换成%23
   let historyPath = sessionStorage.getItem('historyPath');
-  if (historyPath.includes('access_token') || historyPath.includes('unauthorized') || historyPath.includes('invite-user')) {
+  if (historyPath.includes('access_token')
+    || historyPath.includes('unauthorized')
+    || historyPath.includes('invite-user')
+    || historyPath.includes('register-saas')
+  ) {
     historyPath = '/';
     sessionStorage.setItem('historyPath', '/');
   }

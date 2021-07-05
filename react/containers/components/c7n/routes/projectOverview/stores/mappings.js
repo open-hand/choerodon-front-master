@@ -14,6 +14,8 @@ import priorityChart from '../img/13.png';
 import issueTypeChart from '../img/14.png';
 import issueTable from '../img/15.png';
 import projectDynamic from '../img/16.svg';
+import workLoad from '../img/17.svg';
+import personalWorkload from '../img/18.svg';
 
 const componentsObj = {
   // 冲刺未完成统计
@@ -300,7 +302,7 @@ const componentsObj = {
   // 项目动态
   projectDynamic: {
     layout: {
-      h: 6,
+      h: 5,
       i: 'projectDynamic',
       minH: 5,
       minW: 10,
@@ -315,6 +317,44 @@ const componentsObj = {
     describe:
       '此模块展示此项目下动态列表。',
     img: projectDynamic,
+  },
+  // 每人每日工作量
+  workLoad: {
+    layout: {
+      h: 6,
+      i: 'workLoad',
+      minH: 5,
+      minW: 10,
+      w: 10,
+      x: 0,
+      y: 8,
+    },
+    name: 'workLoad',
+    type: 'workLoad',
+    groupId: 'agile',
+    title: '每人每日工作量',
+    describe:
+        '此模块展示此项目下每人每日工作量。',
+    img: workLoad,
+  },
+  // 项目动态
+  personalWorkload: {
+    layout: {
+      h: 4,
+      i: 'personalWorkload',
+      minH: 4,
+      minW: 4,
+      w: 6,
+      x: 0,
+      y: 33,
+    },
+    name: 'personalWorkload',
+    type: 'personalWorkload',
+    groupId: 'agile',
+    title: '个人工作量统计',
+    describe:
+      '此模块按问题计数、工时数2种维度统计当前迭代各个团队成员任务总量、完成量和剩余量。',
+    img: personalWorkload,
   },
 };
 

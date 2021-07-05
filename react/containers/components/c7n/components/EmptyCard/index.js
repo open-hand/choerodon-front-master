@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { get } from 'lodash';
+import ResizeObserver from 'resize-observer-polyfill';
 import EmptyPage from '../empty-page';
 
 import './index.less';
@@ -36,12 +37,11 @@ const EmptyCard = ({
 
   return (
     <div className={prefixCls} id={`emtyCard-${index}`}>
-      <header style={{
-        marginBottom: isOnlyShowText ? 0 : '20px',
-      }}
-      >
+      {!isOnlyShowText && (
+      <header>
         <span>{title}</span>
       </header>
+      )}
       <main className={isOnlyShowText ? `${prefixCls}-onlyText` : ''}>
         <EmptyPage title={emptyTitle} describe={emptyDiscribe} />
       </main>

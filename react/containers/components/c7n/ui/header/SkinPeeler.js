@@ -11,8 +11,7 @@ export default inject('AppState')((props) => {
       className={classNames({
         'theme4-skinPeeler': theme === 'theme4',
       })}
-      functype="flat"
-      shape="circle"
+      funcType="flat"
       {
         ...theme === '' ? {
           style: { color: '#fff' },

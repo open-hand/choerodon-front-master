@@ -4,13 +4,13 @@ import React from 'react';
 import { render } from 'react-dom';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import { Modal } from 'choerodon-ui';
+import { Modal } from 'choerodon-ui/pro';
 
 import asyncRouter from './containers/components/util/asyncRouter';
 import autoRefresh from './utils/autoRefresh';
+import './utils/iframeStorage';
 
 const history = createBrowserHistory();
-const { confirm } = Modal;
 const MASTERS = asyncRouter(
   () => import('./master'),
   {
@@ -19,10 +19,10 @@ const MASTERS = asyncRouter(
 );
 
 const getConfirmation = (message, callback) => {
-  confirm({
+  Modal.open({
     className: 'c7n-iam-confirm-modal',
     title: message.split('__@.@__')[0],
-    content: message.split('__@.@__')[1],
+    children: message.split('__@.@__')[1],
     onOk() {
       callback(true);
     },
@@ -39,9 +39,6 @@ const App = () => (
     </Switch>
   </Router>
 );
-if (module.hot) {
-  module.hot.accept();
-}
 
 autoRefresh();
 render(

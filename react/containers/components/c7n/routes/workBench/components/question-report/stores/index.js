@@ -34,21 +34,29 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const questionStore = useStore();
 
-  const questionDs = useMemo(() => new DataSet(QuestionDataSet({
-    organizationId, questionStore, selectedProjectId, cacheStore,
-  })), [cacheStore, organizationId, questionStore, selectedProjectId]);
+  const questionDs = useMemo(() => {
+    questionStore.init();
+    return new DataSet(QuestionDataSet({
+      organizationId, questionStore, selectedProjectId, cacheStore,
+    }));
+  }, [cacheStore, organizationId, questionStore, selectedProjectId]);
 
   useEffect(() => {
     const mainData = reportQuestions;
     const tempArr = get(mainData, 'content');
     const currentId = get(mainData, 'selectedProjectId');
+    const searchDataId = get(mainData, 'searchDataId');
+    const searchData = get(mainData, 'searchData');
     if (selectedProjectId !== currentId) {
       questionStore.setPage(0);
       questionStore.setTotalCount(0);
-      questionDs.query();
+      searchDataId || questionDs.query();
       return;
     }
     if (tempArr) {
+      searchDataId && questionDs.setQueryParameter('searchDataId', searchDataId);
+      searchDataId && questionDs.setQueryParameter('searchData', searchData);
+
       questionDs.loadData(tempArr);
       questionStore.setHasMore(
         mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,

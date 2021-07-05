@@ -9,7 +9,7 @@ import {
 } from 'lodash';
 import mappings from './mappings';
 
-export default function useStore(history) {
+export default function useStore(history, AppState) {
   return useLocalStore(() => ({
     initData: [],
     setInitData(value) {
@@ -55,6 +55,7 @@ export default function useStore(history) {
             historyPushMenu(history, path, domain);
           }
         }
+        AppState.getProjects();
       });
     },
     loadBacklogs({

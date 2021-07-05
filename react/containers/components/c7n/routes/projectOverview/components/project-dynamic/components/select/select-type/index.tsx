@@ -3,7 +3,7 @@ import { Select } from 'choerodon-ui/pro';
 import { find } from 'lodash';
 import useSelect, { SelectConfig } from '@/hooks/useSelect';
 import { SelectProps } from 'choerodon-ui/pro/lib/select/Select';
-import FlatSelect from '@/containers/components/c7n/components/flat-select';
+import { FlatSelect } from '@choerodon/components';
 import { issueTypeApi } from '@/containers/components/c7n/routes/projectOverview/components/project-dynamic/api';
 import { IIssueType } from '@/types';
 

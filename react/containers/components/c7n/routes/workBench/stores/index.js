@@ -21,6 +21,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
     AppState: { currentMenuType: { organizationId, projectId }, currentModules },
+    AppState,
     history,
   } = props;
 
@@ -34,7 +35,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     return [...new Set(allowedModules)];
   }
 
-  const workBenchUseStore = useStore(history);
+  const workBenchUseStore = useStore(history, AppState);
   const cacheStore = useCpCacheStore();
 
   const selectedProjectId = get(workBenchUseStore.getActiveStarProject, 'id');

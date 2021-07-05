@@ -1,0 +1,49 @@
+@import "~choerodon-ui/lib/style/themes/default";
+
+.c7ncd-header {
+  &-split {
+    margin: 0 0 0 0.16rem !important;
+    height: 0.2rem !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+  }
+  &-btns {
+    z-index: 1;
+    position: absolute;
+    top: -1.05rem;
+    left: -15px;
+    padding-left: 0.24rem;
+    width: 100%;
+    height: 0.39rem;
+    line-height: 0.39rem;
+    overflow: hidden;
+  }
+
+  &-btn {
+    &-flex {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      button {
+        margin-left: 0.16rem !important;
+      }
+      .c7n-pro-btn.c7n-pro-btn.c7n-pro-btn-raised.c7n-pro-btn-primary {
+        background-color: #5365ea !important;
+        color: #fff !important;
+        border-color: #5365ea !important;
+      }
+      .c7n-pro-btn.c7n-pro-btn.c7n-pro-btn-raised.c7n-pro-btn-primary.c7n-pro-btn-focused,
+      .c7n-pro-btn.c7n-pro-btn.c7n-pro-btn-raised.c7n-pro-btn-primary:hover,
+      .c7n-pro-btn.c7n-pro-btn.c7n-pro-btn-raised.c7n-pro-btn-primary:active,
+      .c7n-pro-btn.c7n-pro-btn.c7n-pro-btn-raised.c7n-pro-btn-primary:focus {
+        color: #fff !important;
+        background-color: #7b8cff !important;
+        border-color: #7b8cff !important;
+      }
+      .c7n-pro-btn.c7n-pro-btn.c7n-pro-btn-raised.c7n-pro-btn-primary:not(.c7n-pro-btn-icon-only).c7n-pro-btn-disabled {
+        background-color: rgb(246, 246, 249) !important;
+        color: rgba(15, 19, 88, 0.25) !important;
+        border: 1px solid rgba(217, 219, 230, 0.5) !important;
+      }
+    }
+  }
+}

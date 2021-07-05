@@ -1,8 +1,5 @@
 import { action, computed, observable } from 'mobx';
-import { message } from 'choerodon-ui/pro';
-import getSearchString from '@/containers/components/c7n/util/gotoSome';
-import { map, get } from 'lodash';
-import axios from '../../components/c7n/tools/axios';
+import axios from '@/containers/components/c7n/tools/axios';
 
 function getDefaultLanguage() {
   let locale;
@@ -13,7 +10,15 @@ function getDefaultLanguage() {
 }
 
 class AppState {
-  @observable currentTheme = localStorage.getItem('theme') || '';
+  @observable helpDocUrl = '';
+
+  @observable starProject = [];
+
+  @observable recentUse = [];
+
+  @observable dropDownPro = null;
+
+  @observable currentTheme = localStorage.getItem('theme') || 'theme4';
 
   @observable currentProject = null;
 
@@ -38,6 +43,86 @@ class AppState {
   @observable projectCategorys = {};
 
   @observable canShowRoute = false;
+
+  getProjects = () => {
+    if (this.currentMenuType.organizationId) {
+      const recentProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`, {
+        enabledCancelCache: false,
+        enabledCancelRoute: false,
+      });
+      const starProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`, {
+        enabledCancelCache: false,
+        enabledCancelRoute: false,
+      });
+      Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
+        const [recentProjectData = [], starProjectData = []] = res;
+
+        const tempRecentProjectData = recentProjectData?.splice(0, 3).map((i) => ({
+          ...i,
+          ...i.projectDTO,
+        }));
+        const tempStarProjectData = starProjectData.splice(0, 6);
+
+        this.setRecentUse(tempRecentProjectData);
+        this.setStarProject(tempStarProjectData);
+
+        this.setCurrentDropDown(tempRecentProjectData, tempStarProjectData);
+      });
+    }
+  }
+
+  setCurrentDropDown = (data1, data2) => {
+    const params = new URLSearchParams(window.location.hash.split('?')[1]);
+    const type = params.get('type');
+    const id = params.get('id');
+    if (type && type === 'project' && ((data1 && data1.length > 0) || (data2 && data2.length > 0))) {
+      const flag = data1.find((i) => String(i.id) === String(id)) || data2.find((i) => String(i.id) === String(id));
+      if (flag) {
+        // 最近使用
+        this.setDropDownPro(`项目: ${flag.name}`);
+      } else {
+        this.setDropDownPro();
+      }
+    } else {
+      this.setDropDownPro();
+    }
+  }
+
+  @computed
+  get getDocUrl() {
+    return this.helpDocUrl;
+  }
+
+  @action setDocUrl(str) {
+    this.helpDocUrl = str;
+  }
+
+  @computed
+  get getDropDownPro() {
+    return this.dropDownPro;
+  }
+
+  @action setDropDownPro(data) {
+    this.dropDownPro = data;
+  }
+
+  @computed
+  get getStarProject() {
+    return this.starProject;
+  }
+
+  @computed
+  get getRecentUse() {
+    return this.recentUse;
+  }
+
+  @action setStarProject(data) {
+    this.starProject = data;
+  }
+
+  @action setRecentUse(data) {
+    this.recentUse = data;
+  }
 
   @computed
   get getCanShowRoute() {
@@ -221,25 +306,40 @@ class AppState {
     return this.deployServices.slice();
   }
 
-  loadUserInfo = () => axios.get('iam/choerodon/v1/users/self').then((res) => {
+  loadUserInfo = () => axios.get('iam/choerodon/v1/users/self', {
+    enabledCancelCache: false,
+    enabledCancelRoute: false,
+  }).then((res) => {
     res = {
       ...res,
-      organizationName: res.tenantName,
-      organizationCode: res.tenantNum,
+      organizationName: res?.tenantName,
+      organizationCode: res?.tenantNum,
     };
     this.setUserInfo(res);
     return res;
   });
 
-  loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`);
+  loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`, {
+    enabledCancelCache: false,
+    enabledCancelRoute: false,
+  });
 
-  loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting');
+  loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting', {
+    enabledCancelCache: false,
+    enabledCancelRoute: false,
+  });
 
-  checkEnterpriseInfo = () => axios.get('/iam/choerodon/v1/enterprises/default');
+  checkEnterpriseInfo = () => axios.get('/iam/choerodon/v1/enterprises/default', {
+    enabledCancelCache: false,
+    enabledCancelRoute: false,
+  });
 
   loadModules = async () => {
     try {
-      const res = await axios.get('/hadm/choerodon/v1/services/model');
+      const res = await axios.get('/hadm/choerodon/v1/services/model', {
+        enabledCancelCache: false,
+        enabledCancelRoute: false,
+      });
       if (res && !res.failed) {
         this.modules = res;
       }
@@ -250,7 +350,10 @@ class AppState {
 
   loadDeployServices = async () => {
     try {
-      const res = await axios.get('/hadm/choerodon/v1/services');
+      const res = await axios.get('/hadm/choerodon/v1/services', {
+        enabledCancelCache: false,
+        enabledCancelRoute: false,
+      });
       if (res && !res.failed) {
         this.deployServices = res;
       }

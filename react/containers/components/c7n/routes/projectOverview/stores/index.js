@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
 import { forEach, get } from 'lodash';
+import { has } from '@choerodon/inject';
 import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 import useStore from './useStore';
 import modulesMapping from './modulesMapping';
@@ -38,13 +39,21 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
   }
 
   const projectOverviewStore = useStore(projectId);
-
+  useEffect(() => {
+    projectOverviewStore.loadAgileCustomData();
+  }, [projectOverviewStore]);
   const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ projectId, projectOverviewStore })), [projectId, projectOverviewStore]);
 
   // 已开启的迭代DS
   const startSprintDs = useMemo(() => new DataSet(StartSprintDataSet({ projectId })), [projectId]);
   const startedRecord = startSprintDs.toData()[0];
-
+  const customChartAvailableList = useMemo(() => {
+    return ['agile'];
+    if (has('agile:AgileCustomChartUseChartHook')) {
+      return ['agile'];
+    }
+    return [];
+  }, []);
   const value = {
     ...props,
     projectOverviewStore,
@@ -53,6 +62,7 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
     componentsDs,
     startedRecord,
     MenuStore,
+    customChartAvailableList,
     allCode: getAllCode(),
   };
 
