@@ -1,6 +1,6 @@
 import { useLocalStore } from 'mobx-react-lite';
 import {
-  flatMapDeep, map, merge, pick, set,
+  flatMapDeep, map, merge, pick,
 } from 'lodash';
 import { axios } from '@/index';
 import mappings from './mappings';
@@ -29,7 +29,6 @@ export default function useStore(projectId) {
     customData: new Map(),
 
     setCustomData(data, customFlag = 'agile') {
-      console.log('setCustomData', data);
       Array.isArray(data) && this.customData.set('agile', new Map(data.map((item) => ([`${customFlag}-${item.layout.i}`, {
         ...item,
         layout: { ...item.layout, i: `${customFlag}-${item.layout.i}` },
@@ -39,8 +38,6 @@ export default function useStore(projectId) {
       // this.customData = data;
     },
     get customDataList() {
-      console.log('this.', this.customData);
-
       return flatMapDeep([...this.customData.values()].map((mapItem) => [...mapItem.values()]));
     },
     /**
@@ -70,7 +67,7 @@ export default function useStore(projectId) {
     loadAgileCustomData() {
       axios.get(`agile/v1/projects/${projectId}/custom_chart`).then((res) => this.setCustomData(res?.map((item) => {
         const layout = {
-          h: 4, i: item.id, minH: 4, minW: 4, w: 5, x: 0, y: 33, customFlag: 'agile',
+          h: 4, i: item.id, minH: 3, minW: 4, w: 5, x: 0, y: 33, customFlag: 'agile',
         };
         return {
           layout,
@@ -98,7 +95,6 @@ export default function useStore(projectId) {
         temp.layout = merge(temp.layout, item);
         return temp;
       });
-      console.log('tempData', tempObj);
       axios.post(`iam/choerodon/v1/projects/${projectId}/project_overview_config`, JSON.stringify({
         data: JSON.stringify(tempObj),
       }));
