@@ -61,7 +61,10 @@ export default function useStore(projectId) {
   },
  */
     chartTypeToImg: {
-      pie: pieThumbnail, bar: barThumbnail, line: lineThumbnail, stackedBar: stackedBarThumbnail,
+      pie: pieThumbnail,
+      bar: { src: barThumbnail, style: { padding: 12 } },
+      line: { src: lineThumbnail, style: { padding: 12 } },
+      stackedBar: { src: stackedBarThumbnail, style: { padding: 12 } },
     },
 
     loadAgileCustomData() {

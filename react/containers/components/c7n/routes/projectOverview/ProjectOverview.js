@@ -56,6 +56,7 @@ const ProjectOverview = () => {
     projectOverviewStore,
     componentsDs,
     customChartAvailableList,
+    availableServiceList,
     allCode,
   } = useProjectOverviewStore();
 
@@ -244,10 +245,13 @@ const ProjectOverview = () => {
     componentsDs.loadData(layout);
   }
   function renderEmptyTitle(groupId, customFlag) {
+    if (!availableServiceList.includes(groupId)) {
+      return groupId === 'devops' ? '未选择【DevOps流程】项目类型，卡片暂不可用' : '未选择【敏捷管理】项目类型，卡片暂不可用';
+    }
     if (customFlag === 'agile' && groupId === 'agile') {
       return customChartAvailableList.length === 0 ? '未安装【敏捷服务】，卡片无法显示' : '当前自定义敏捷图表已被删除，此卡片无法显示';
     }
-    return groupId === 'devops' ? '未选择【DevOps流程】项目类型，卡片暂不可用' : '未选择【敏捷管理】项目类型，卡片暂不可用';
+    return '卡片暂不可用';
   }
   const SwitchComponents = (type, title) => {
     let tempComponent = renderCustomChart(type);
@@ -260,7 +264,7 @@ const ProjectOverview = () => {
       tempComponent = (
         <EmptyCard
           title={title}
-          emptyTitle={renderEmptyTitle(get(chartConfig, 'groupId'), get(chartConfig, 'groupId'))}
+          emptyTitle={renderEmptyTitle(get(chartConfig, 'groupId'), get(chartConfig, 'layout.customFlag'))}
           index={type}
           sizeObserver={['appService', 'env'].includes(type)}
         />
