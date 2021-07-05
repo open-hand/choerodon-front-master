@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './index.less';
 
 import {
-  get, xor, map, without, difference,
+  get, xor, map, without, difference, omit,
 } from 'lodash';
 import { Icon } from 'choerodon-ui';
 import classnames from 'classnames';
@@ -74,6 +74,7 @@ const AddModal = (props) => {
         [`${subPrefix}-right-item`]: true,
         [`${subPrefix}-right-item-selected`]: hasItem,
       });
+      const imgProps = typeof (item.img) === 'object' ? omit(item.img, 'className') : { };
       return (
         <div
           className={itemsClassname}
@@ -83,7 +84,7 @@ const AddModal = (props) => {
         >
           <div className={`${subPrefix}-right-item-img`}>
             {/* <div></div> */}
-            <img src={item.img} alt="" className={`${subPrefix}-right-item-img-wrap`} />
+            <img src={item.img} alt="" className={classnames(`${subPrefix}-right-item-img-wrap`, imgProps.className)} {...imgProps} />
             <div
               className={`${subPrefix}-right-item-img-selected`}
               style={{
