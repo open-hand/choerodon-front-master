@@ -3,8 +3,7 @@ import { Route, RouteProps, useLocation } from 'react-router-dom';
 import { noaccess as NoAccess, Permission } from '@/index';
 import useQueryString from '@/hooks/useQueryString';
 import Skeleton from '@/containers/components/c7n/master/skeleton';
-// @ts-ignore
-import { pendingRequest } from '@/containers/components/c7n/tools/axios';
+import { axiosRoutesCancel } from '@/containers/components/c7n/tools/axios/instances';
 
 interface PermissionRouteProps extends RouteProps {
   service: string[] | ((type: 'project' | 'organization' | 'site') => string[]),
@@ -23,12 +22,8 @@ const PermissionRoute: React.FC<PermissionRouteProps> = ({ enabledRouteChangedAj
   );
 
   useEffect(() => function () {
-    // @ts-ignore
-    if (enabledRouteChangedAjaxBlock && pendingRequest) {
-    // @ts-ignore
-      pendingRequest.forEach((item:any) => {
-        item.routeChangeCancel && item.cancel();
-      });
+    if (enabledRouteChangedAjaxBlock && axiosRoutesCancel.size) {
+      axiosRoutesCancel.cancelAllRequest();
     }
   },
   [location]);

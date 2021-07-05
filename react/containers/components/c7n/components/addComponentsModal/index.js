@@ -82,7 +82,8 @@ const AddModal = (props) => {
           onClick={() => handleSelect(type)}
         >
           <div className={`${subPrefix}-right-item-img`}>
-            <img src={item.img} alt="" />
+            {/* <div></div> */}
+            <img src={item.img} alt="" className={`${subPrefix}-right-item-img-wrap`} />
             <div
               className={`${subPrefix}-right-item-img-selected`}
               style={{

@@ -12,7 +12,6 @@ import {
 import { initTheme, Container } from '@hzero-front-ui/core';
 import C7nTemplate from '@hzero-front-ui/c7n-ui';
 import { theme4 } from '@hzero-front-ui/themes';
-import { defaultBlackList } from '@/containers/components/c7n/ui/menu';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
