@@ -36,6 +36,7 @@ const QuickLink = observer(() => {
   } = quickLinkUseStore;
 
   const handleRefresh = async () => {
+    quickLinkDs.setQueryParameter('forceUpdate', true);
     await quickLinkDs.query();
   };
 
