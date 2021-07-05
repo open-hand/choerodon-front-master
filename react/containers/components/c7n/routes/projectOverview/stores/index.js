@@ -48,8 +48,8 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
   const startSprintDs = useMemo(() => new DataSet(StartSprintDataSet({ projectId })), [projectId]);
   const startedRecord = startSprintDs.toData()[0];
   const customChartAvailableList = useMemo(() => {
-    return ['agile'];
-    if (has('agile:AgileCustomChartUseChartHook')) {
+    // return ['agile'];
+    if (has('agile:AgileCustomChartLoadData')) {
       return ['agile'];
     }
     return [];

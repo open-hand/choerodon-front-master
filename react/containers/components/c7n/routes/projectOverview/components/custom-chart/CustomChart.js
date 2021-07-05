@@ -1,16 +1,14 @@
 import React, {
-  useEffect, useCallback,
+  useCallback,
 } from 'react';
 import {
-  Select, CheckBox, Spin,
+  Spin,
 } from 'choerodon-ui/pro';
-import { observer, useForceUpdate } from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
-import { get } from '@choerodon/inject';
 import { useCustomChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
-import { useProjectOverviewStore } from '../../stores';
 
 import EmptyPage from '../EmptyPage';
 
