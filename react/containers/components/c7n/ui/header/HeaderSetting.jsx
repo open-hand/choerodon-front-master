@@ -22,7 +22,7 @@ const SERVICE_CODE = {
 const Setting = ({
   AppState, HeaderStore, MenuStore, history, ...props
 }) => {
-  const [isSaas, setIsSaas] = useState(undefined);
+  const isSaas = AppState.getIsSaasList;
 
   // 组织改变 重新查询getIsSaas
   useEffect(() => {
@@ -47,7 +47,7 @@ const Setting = ({
       axios.get(`/iam/choerodon/v1/register_saas/is_saas_tenant?tenant_id=${AppState.currentMenuType.organizationId}`).then((res) => {
         const selfIsSaas = isSaas || {};
         selfIsSaas[AppState.currentMenuType.organizationId] = res;
-        setIsSaas(selfIsSaas)
+        AppState.setIsSaasList(selfIsSaas);
       })
     }
   }
