@@ -215,7 +215,6 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
     searchDs.current.set(code, v);
     setSearchData((oldValue) => {
       const temp = set(cloneDeep(oldValue || {}), code, v);
-      console.log('handleChange.......', temp, oldValue);
       if (!oldValue || !isEqualWith(oldValue, temp, (a, b) => (isEmpty(a) && isEmpty(b) ? true : undefined))) {
         handleQuery(merge(searchDs.toJSONData()[0], temp));
 
@@ -227,8 +226,16 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
   };
 
   useEffect(() => {
+<<<<<<< HEAD
     console.log('selectedProjectId......', selectedProjectId, searchData);
+=======
+<<<<<<< Updated upstream
+>>>>>>> a0787ab8 ([FIX]修复取消选中项目时工作台敏捷卡片不加载)
     if (selectedProjectId && searchData) {
+=======
+    console.log('selectedProjectId......', selectedProjectId, searchData);
+    if (searchData) {
+>>>>>>> Stashed changes
       handleQuery();
     }
   }, [handleQuery, searchData, selectedProjectId]);
