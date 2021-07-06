@@ -53,7 +53,6 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props: any) 
         path += `&organizationId=${organizationId}`;
       }
       if (path) {
-        historyPushMenu(history, path, domain);
         // @ts-ignore
         const t = getMenuType({ type, id }, false) || 'site';
         if (t !== 'user') {
@@ -62,6 +61,7 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props: any) 
             AppState.currentMenuType.id = id;
           }
         }
+        historyPushMenu(history, path, domain);
       }
       AppState.getProjects();
     });
