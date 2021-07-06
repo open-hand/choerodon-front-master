@@ -18,7 +18,7 @@ function getDataMark(data:any) {
       try {
         tempData = JSONbig.stringify(tempData);
       } catch (error) {
-        console.info('stringfy markKey of data failed');
+        console.error('stringfy markKey of data failed');
       }
     }
     return tempData;
@@ -30,8 +30,12 @@ function getDataMark(data:any) {
 // 如果一个项目里有多个不同baseURL的请求 + 参数
 export default function getMark(config:AxiosRequestConfig) {
   const getKey = (key:string) => get(config, key);
+  const tempParam = getKey('params');
+  if (get(tempParam, 'forceUpdate')) {
+    delete tempParam.forceUpdate;
+  }
   // params标识处理
-  const tempQueryString = (getKey('paramsSerializer') ?? paramsSerializer)(getKey('params'));
+  const tempQueryString = (getKey('paramsSerializer') ?? paramsSerializer)(tempParam);
   // data标识处理
   const dataMark = getDataMark(getKey('data'));
   // base标识

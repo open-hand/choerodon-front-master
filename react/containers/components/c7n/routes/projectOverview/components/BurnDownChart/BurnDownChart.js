@@ -208,17 +208,6 @@ const BurnDownChart = observer(() => {
             type: 'dotted',
             color: 'rgba(0,0,0,0.65)',
           },
-          markArea: {
-            // itemStyle: {
-            //   color: 'rgba(235,235,235,0.65)',
-            // },
-            // emphasis: {
-            //   itemStyle: {
-            //     color: 'rgba(220,220,220,0.65)',
-            //   },
-            // },
-            // data: markArea,
-          },
         },
         {
           symbol: 'none',

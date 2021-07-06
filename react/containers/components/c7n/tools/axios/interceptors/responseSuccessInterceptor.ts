@@ -29,9 +29,10 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
       isPending: false,
     });
 
-    if (!response?.config?.noPrompt) {
-      prompt(resData.message, 'error');
-    }
+    // if (!response?.config?.noPrompt) {
+    //   prompt(resData?.message, 'error');
+    // }
+
     throw resData;
   }
 
