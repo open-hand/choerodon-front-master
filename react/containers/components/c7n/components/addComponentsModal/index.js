@@ -4,10 +4,12 @@ import './index.less';
 import {
   get, xor, map, without, difference,
 } from 'lodash';
-import { Icon } from 'choerodon-ui';
+import { Icon, Spin } from 'choerodon-ui';
 import classnames from 'classnames';
+import useUpgrade from '@/hooks/useUpgrade';
 import groupMappings from './groupMappings';
 import EmptyPage from '../empty-page';
+import AppState from '../../../../stores/c7n/AppState';
 
 const AddModal = (props) => {
   const {
@@ -23,6 +25,9 @@ const AddModal = (props) => {
   const [activeItem, setActiveItem] = useState(groupMappings(mappings)[0]);
   const [dis, setDis] = useState(0);
   const [seletedComponents, setSelectedComponents] = useState(existTypes);
+  const { isFetching, data: needUpgrade } = useUpgrade({
+    organizationId: AppState.currentMenuType?.organizationId,
+  });
 
   useEffect(() => {
     // console.log(mappings, existTypes);
@@ -46,7 +51,7 @@ const AddModal = (props) => {
     setSelectedComponents(seletedComponents.concat([type]));
   }
 
-  const renderMenuItems = () => map(groupMappings(mappings), (item, index) => ((
+  const renderMenuItems = () => map(groupMappings(mappings, needUpgrade), (item, index) => ((
     <div
       role="none"
       onClick={() => handleClick(item, index)}
@@ -123,18 +128,22 @@ const AddModal = (props) => {
 
   return (
     <div className={`${subPrefix}-container`}>
-      <div className={`${subPrefix}-sider`}>
-        {renderMenuItems()}
-        <div
-          className={`${subPrefix}-sider-shadow`}
-          style={{
-            transform: `translateY(${renderDis()}px)`,
-          }}
-        />
-      </div>
-      <div className={`${subPrefix}-right`}>
-        {renderItems()}
-      </div>
+      <Spin spinning={isFetching}>
+        <div className={`${subPrefix}-content`}>
+          <div className={`${subPrefix}-sider`}>
+            {renderMenuItems()}
+            <div
+              className={`${subPrefix}-sider-shadow`}
+              style={{
+                transform: `translateY(${renderDis()}px)`,
+              }}
+            />
+          </div>
+          <div className={`${subPrefix}-right`}>
+            {renderItems()}
+          </div>
+        </div>
+      </Spin>
     </div>
   );
 };
