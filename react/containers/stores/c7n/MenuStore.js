@@ -20,7 +20,7 @@ let isLoadMenu = [];
 
 const loadingTenant = [];
 
-function getMenuType(menuType = AppState.currentMenuType, isUser = AppState.isTypeUser) {
+export function getMenuType(menuType = AppState.currentMenuType, isUser = AppState.isTypeUser) {
   return isUser ? 'user' : menuType.type;
   // return menuType.type;
 }
