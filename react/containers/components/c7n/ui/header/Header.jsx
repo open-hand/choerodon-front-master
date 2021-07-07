@@ -10,7 +10,7 @@ import {
 
 import { EXTERNAL_LINK, SAAS_FEEDBACK } from '@/utils/constants';
 import classNames from 'classnames';
-import { mount } from '@choerodon/inject';
+import { mount, has as hasInject } from '@choerodon/inject';
 import { axios } from '@/index';
 
 import './style';
@@ -176,10 +176,14 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
       <ul className={`${prefixCls}-center`}>
         <li style={{ display: 'flex' }}>
           <HeaderSetting />
-          {mount('base-pro:saasUpgrade')}
         </li>
       </ul>
       <ul className={`${prefixCls}-right`}>
+        {hasInject('base-pro:saasUpgrade') ? (
+          <li style={{ width: 'auto', marginLeft: 10 }} className={`${prefixCls}-right-li`}>
+            {mount('base-pro:saasUpgrade')}
+          </li>
+        ) : null}
         <OrgSelect />
         {renderExternalLink()}
         <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
