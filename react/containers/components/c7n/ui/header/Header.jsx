@@ -180,7 +180,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
       </ul>
       <ul className={`${prefixCls}-right`}>
         {hasInject('base-pro:saasUpgrade') ? (
-          <li style={{ width: 'auto', marginLeft: 10 }} className={`${prefixCls}-right-li`}>
+          <li style={{ width: 'auto', marginRight: 10 }} className={`${prefixCls}-right-li`}>
             {mount('base-pro:saasUpgrade')}
           </li>
         ) : null}
