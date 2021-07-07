@@ -283,7 +283,7 @@ class MenuStore {
   }
 
   @action
-  loadMenuData(menuType = AppState.currentMenuType, isUser) {
+  loadMenuData(menuType = AppState.currentMenuType, isUser, setData = true) {
     this.setRootBaseOnActiveMenu();
     if (isLoadMenu === 1) {
       return new Promise((resolve) => {
@@ -303,12 +303,15 @@ class MenuStore {
     async function mainFunc(resolve) {
       try {
       const type = getMenuType(menuType, isUser) || 'site';
+      if (setData) {
         if (type !== 'user') {
-        AppState.currentMenuType.type = type;
+          AppState.currentMenuType.type = type;
           if (menuType?.id) {
-          AppState.currentMenuType.id = menuType?.id
+            AppState.currentMenuType.id = menuType?.id
+          }
         }
       }
+
       const { id = 0, organizationId, orgId } = menuType;
       const menu = this.menuData(type, id);
       let hasMenu = () => {

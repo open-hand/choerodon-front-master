@@ -3,7 +3,7 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { Select, Icon, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
-import { axios } from "@/index";
+import { axios } from '@/index';
 import { ValueChangeAction } from 'choerodon-ui/pro/lib/text-field/enum';
 import { useDebounceFn, useVirtualList } from 'ahooks';
 // @ts-expect-error
@@ -18,7 +18,7 @@ import { withRouter } from 'react-router';
 let pagination = {
   page: 0,
   size: 10,
-}
+};
 
 const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) => {
   const Ref = React.createRef<any>();
@@ -48,12 +48,12 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
       pagination = {
         page: 0,
         size: 10,
-      }
+      };
     }
     setProjectFilter(value);
   }, {
     wait: 500,
-  })
+  });
 
   /**
    * 这里是设置上过滤input的回调
@@ -71,9 +71,8 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
         setSpinning(false);
       }
     }
-    callback()
-  }, [projectFilter])
-
+    callback();
+  }, [projectFilter]);
 
   function handleClickProject(data:any) {
     const {
@@ -83,7 +82,8 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
     const type = 'project';
     HeaderStore.setRecentItem(data);
 
-    MenuStore.loadMenuData({ type, id }, false).then((menus) => {
+    // @ts-ignore
+    MenuStore.loadMenuData({ type, id }, false, false).then((menus) => {
       let route = '';
       let path;
       let domain;
@@ -99,6 +99,14 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
         path += `&organizationId=${organizationId}`;
       }
       if (path) {
+        // @ts-ignore
+        const t = getMenuType({ type, id }, false) || 'site';
+        if (t !== 'user') {
+          AppState.currentMenuType.type = t;
+          if (id) {
+            AppState.currentMenuType.id = id;
+          }
+        }
         historyPushMenu(history, path, domain);
       }
       AppState.getProjects();
@@ -150,50 +158,49 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
   const handleRenderPopRest = (filterStarProject: object[], filterRecentUser: object[]) => {
     if (filterList && filterList.length > 0) {
       return (
-        <div { ...containerProps } style={{ maxHeight: '300px', overflow: 'auto' }}>
+        <div {...containerProps} style={{ maxHeight: '300px', overflow: 'auto' }}>
           <div {...wrapperProps}>
-            {list.map((i: any) => {
-              return (
-                <p
-                  style={{
-                    height: 46,
-                    overflow: 'hidden',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                  key={i.index}
-                  role="none"
-                  onClick={() => handleClickPopContent(`${i.data.id}`)} className={`${prefixCls}-popContent-option`}
-                >{i.data.name}</p>
-              )
-            }
-              )}
+            {list.map((i: any) => (
+              <p
+                style={{
+                  height: 46,
+                  overflow: 'hidden',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+                key={i.index}
+                role="none"
+                onClick={() => handleClickPopContent(`${i.data.id}`)}
+                className={`${prefixCls}-popContent-option`}
+              >
+                {i.data.name}
+              </p>
+            ))}
           </div>
         </div>
-      )
-    } else {
-      return (
-        <>
-          <p className={`${prefixCls}-popContent-label`}>星标项目</p>
-          {
+      );
+    }
+    return (
+      <>
+        <p className={`${prefixCls}-popContent-label`}>星标项目</p>
+        {
             filterStarProject && filterStarProject.length > 0 ? filterStarProject.map((i:any) => (
               <p role="none" onClick={() => handleClickPopContent(`star_${i.id}`)} className={`${prefixCls}-popContent-option`}>{i.name}</p>
             )) : (
               <p className={`${prefixCls}-popContent-noOption`}>暂无星标项目</p>
             )
           }
-          <p className={`${prefixCls}-popContent-label`}>最近使用</p>
-          {
+        <p className={`${prefixCls}-popContent-label`}>最近使用</p>
+        {
             filterRecentUser && filterRecentUser.length > 0 ? filterRecentUser.map((i:any) => (
               <p role="none" onClick={() => handleClickPopContent(`recent_${i.id}`)} className={`${prefixCls}-popContent-option`}>{i.name}</p>
             )) : (
               <p className={`${prefixCls}-popContent-noOption`}>暂无最近使用项目</p>
             )
           }
-        </>
-      )
-    }
-  }
+      </>
+    );
+  };
 
   const getPopContent = () => {
     const filterStarProject = AppState.getStarProject;
