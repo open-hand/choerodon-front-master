@@ -14,6 +14,7 @@ export default observer(() => {
   const {
     history,
     ProjectsProUseStore,
+    AppState,
   } = useProjectsProStore();
 
   const renderProjects = () => ProjectsProUseStore.getRecentProjects.map((p) => {
@@ -26,7 +27,7 @@ export default observer(() => {
         key={p.projectId}
         onClick={() => {
           if (r.enabled) {
-            handleClickProject(r, history);
+            handleClickProject(r, history, AppState);
           }
         }}
         className="recentProjects-content"

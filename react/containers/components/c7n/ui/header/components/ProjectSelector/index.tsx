@@ -35,14 +35,14 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props: any) 
     if (value.includes('star')) {
       const starItem = AppState.getStarProject.find((i: any) => String(i.id) === String(value.split('_')[1]));
       AppState.setDropDownPro(`项目: ${starItem.name}`);
-      handleClickProject(starItem, history);
+      handleClickProject(starItem, history, AppState);
       Ref.current.setPopup(false);
       Ref.current.text = `项目: ${starItem.name}`;
     } else {
       const recentItem = AppState.getRecentUse.find((i: any) => String(i.id) === String(value.split('_')[1]));
 
       AppState.setDropDownPro(`项目: ${recentItem.name}`);
-      handleClickProject(recentItem, history);
+      handleClickProject(recentItem, history, AppState);
 
       Ref.current.setPopup(false);
       Ref.current.text = `项目: ${recentItem.name}`;

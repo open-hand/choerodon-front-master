@@ -242,7 +242,7 @@ export default observer(() => {
           key={p.id}
           onClick={() => {
             if (p.enabled && checkOperation(p)) {
-              handleClickProject(p, history);
+              handleClickProject(p, history, AppState);
             }
           }}
           className="allProjects-content-item"

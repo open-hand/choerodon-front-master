@@ -28,6 +28,7 @@ const StarTargetPro = observer(() => {
   const [theme] = useTheme();
 
   const {
+    AppState,
     workBenchUseStore,
     history,
     componentsDs,
@@ -168,7 +169,7 @@ const StarTargetPro = observer(() => {
                   }}
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleClickProject(s, history);
+                    handleClickProject(s, history, AppState);
                   }}
                   role="none"
                 >

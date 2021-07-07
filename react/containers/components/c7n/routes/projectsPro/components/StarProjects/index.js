@@ -40,7 +40,7 @@ export default observer(() => {
           <div
             onClick={() => {
               if (p.enabled) {
-                handleClickProject(p, history);
+                handleClickProject(p, history, AppState);
               }
             }}
             className="starProjects-items"
