@@ -13,6 +13,8 @@ import getSearchString from '../../util/gotoSome';
 
 import './headerSettingTheme4.less';
 
+const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
+
 const iconStyle = { marginLeft: 0, marginRight: 0 };
 const SERVICE_CODE = {
   knowledge: 'knowledgebase-service',
@@ -39,16 +41,19 @@ const Setting = ({
   const { currentServices } = AppState;
 
   function getIsSaas() {
-    if (!AppState.currentMenuType.organizationId) {
-      setTimeout(() => {
-        getIsSaas()
-      }, 1000);
-    } else {
-      axios.get(`/iam/choerodon/v1/register_saas/is_saas_tenant?tenant_id=${AppState.currentMenuType.organizationId}`).then((res) => {
-        const selfIsSaas = isSaas || {};
-        selfIsSaas[AppState.currentMenuType.organizationId] = res;
-        AppState.setIsSaasList(selfIsSaas);
-      })
+    // 汉得版才会有这个逻辑
+    if (HAS_BASE_PRO) {
+      if (!AppState.currentMenuType.organizationId) {
+        setTimeout(() => {
+          getIsSaas()
+        }, 1000);
+      } else {
+        axios.get(`/iam/choerodon/v1/register_saas/is_saas_tenant?tenant_id=${AppState.currentMenuType.organizationId}`).then((res) => {
+          const selfIsSaas = isSaas || {};
+          selfIsSaas[AppState.currentMenuType.organizationId] = res;
+          AppState.setIsSaasList(selfIsSaas);
+        })
+      }
     }
   }
 
