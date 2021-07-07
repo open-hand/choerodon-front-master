@@ -43,7 +43,7 @@ export default async function handleClickProject(data, history, AppState) {
           if (isOwner) {
             window.open(window._env_.window._env_.UPGRADE_LINK.split(',')[0])
           } else {
-            gotoProject();
+            gotoProject(true);
           }
         },
         okText: isOwner ? '前往续费' : '进入项目',
@@ -54,7 +54,7 @@ export default async function handleClickProject(data, history, AppState) {
                 <>
                   {cancelBtn}
                   <Button
-                    onClick={() => gotoProject()}
+                    onClick={() => gotoProject(true)}
                   >进入项目</Button>
                   {okBtn}
                 </>
@@ -76,7 +76,11 @@ export default async function handleClickProject(data, history, AppState) {
     gotoProject()
   }
 
-  function gotoProject() {
+  /**
+   *
+   * @param isOwe 是否已欠费
+   */
+  function gotoProject(isOwe = true) {
     const type = 'project';
     HeaderStore.setRecentItem(data);
     // @ts-ignore
@@ -87,7 +91,12 @@ export default async function handleClickProject(data, history, AppState) {
 
       if (menus.length) {
         const { route: menuRoute, domain: menuDomain } = findFirstLeafMenu(menus[0]);
-        route = menuRoute;
+        // 如果是欠费 默认跳转到知识库界面
+        if (isOwe) {
+          route = '/knowledge/project';
+        } else {
+          route = menuRoute;
+        }
         domain = menuDomain;
       }
       path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
