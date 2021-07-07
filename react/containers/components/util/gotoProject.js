@@ -7,8 +7,9 @@ import { historyPushMenu } from "@/utils";
 import axios from '../c7n/tools/axios';
 import { inject } from "mobx-react";
 import { Modal, Button } from 'choerodon-ui/pro';
+import { Alert } from 'choerodon-ui';
 
-const isPro = true || C7NHasModule('@choerodon/base-pro');
+const isPro = C7NHasModule('@choerodon/base-pro');
 const isHuawei = C7NHasModule('@choerodon/base-huawei')
 
 export default async function handleClickProject(data, history, AppState) {
@@ -31,10 +32,16 @@ export default async function handleClickProject(data, history, AppState) {
             {
               isOwner ? (
                 // 说明是owner
-                <p>续费后，您将可以继续使用高级版功能。之前的项目群数据将永久保留，不会丢失。</p>
+                <Alert
+                  message="续费后，您将可以继续使用高级版功能。之前的项目群数据将永久保留，不会丢失。"
+                  type="info"
+                />
               ) : (
                 // 成员
-                <p>{`请联系您所在组织的组织所有者${res.ownerRealName}(${res.ownerEmail})进行续费`}</p>
+              <Alert
+              message={`请联系您所在组织的组织所有者${res.ownerRealName}(${res.ownerEmail})进行续费`}
+              type="info"
+              />
               )
             }
           </>
