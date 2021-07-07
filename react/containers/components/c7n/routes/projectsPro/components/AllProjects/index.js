@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import Permission from '@/containers/components/c7n/tools/permission';
 import some from 'lodash/some';
+import handleClickProject from "@/containers/components/util/gotoProject";
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import EmptyPage from '../empty-page';
@@ -38,10 +39,6 @@ export default observer(() => {
     ProjectsProUseStore.axiosGetProjects();
     ProjectsProUseStore.checkCreate(organizationId);
   }
-
-  const handleClickProject = (data) => {
-    ProjectsProUseStore.handleClickProject(data);
-  };
 
   const handleAddProject = (currentProjectId) => {
     Modal.open({
@@ -245,7 +242,7 @@ export default observer(() => {
           key={p.id}
           onClick={() => {
             if (p.enabled && checkOperation(p)) {
-              handleClickProject(p);
+              handleClickProject(p, history);
             }
           }}
           className="allProjects-content-item"
@@ -342,7 +339,7 @@ export default observer(() => {
         </div>
       </Tooltip>
     )) : <EmptyPage title="暂无项目" describe="该组织下暂无项目" />;
-  }, [ProjectsProUseStore.getAllProjects]);
+  }, [ProjectsProUseStore.getAllProjects, history]);
 
   const handleBlurProjects = ({ ...e }) => {
     ProjectsProUseStore.setAllProjectsParams(e.target.value);

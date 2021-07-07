@@ -10,6 +10,7 @@ import { useDebounceFn, useVirtualList } from 'ahooks';
 import queryString from 'query-string';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
+import handleClickProject from "@/containers/components/util/gotoProject";
 import MenuStore, { getMenuType } from '@/containers/stores/c7n/MenuStore';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import './index.less';
@@ -74,58 +75,58 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
     callback();
   }, [projectFilter]);
 
-  function handleClickProject(data:any) {
-    const {
-      id, name, organizationId, category,
-    } = data;
-
-    const type = 'project';
-    HeaderStore.setRecentItem(data);
-
-    // @ts-ignore
-    MenuStore.loadMenuData({ type, id }, false, false).then((menus) => {
-      let route = '';
-      let path;
-      let domain;
-
-      if (menus.length) {
-        const { route: menuRoute, domain: menuDomain } = findFirstLeafMenu(menus[0]);
-        route = menuRoute;
-        domain = menuDomain;
-      }
-      path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
-
-      if (String(organizationId)) {
-        path += `&organizationId=${organizationId}`;
-      }
-      if (path) {
-        // @ts-ignore
-        const t = getMenuType({ type, id }, false) || 'site';
-        if (t !== 'user') {
-          AppState.currentMenuType.type = t;
-          if (id) {
-            AppState.currentMenuType.id = id;
-          }
-        }
-        historyPushMenu(history, path, domain);
-      }
-      AppState.getProjects();
-    });
-  }
+  // function handleClickProject(data:any) {
+  //   const {
+  //     id, name, organizationId, category,
+  //   } = data;
+  //
+  //   const type = 'project';
+  //   HeaderStore.setRecentItem(data);
+  //
+  //   // @ts-ignore
+  //   MenuStore.loadMenuData({ type, id }, false, false).then((menus) => {
+  //     let route = '';
+  //     let path;
+  //     let domain;
+  //
+  //     if (menus.length) {
+  //       const { route: menuRoute, domain: menuDomain } = findFirstLeafMenu(menus[0]);
+  //       route = menuRoute;
+  //       domain = menuDomain;
+  //     }
+  //     path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
+  //
+  //     if (String(organizationId)) {
+  //       path += `&organizationId=${organizationId}`;
+  //     }
+  //     if (path) {
+  //       // @ts-ignore
+  //       const t = getMenuType({ type, id }, false) || 'site';
+  //       if (t !== 'user') {
+  //         AppState.currentMenuType.type = t;
+  //         if (id) {
+  //           AppState.currentMenuType.id = id;
+  //         }
+  //       }
+  //       historyPushMenu(history, path, domain);
+  //     }
+  //     AppState.getProjects();
+  //   });
+  // }
 
   const handleClickPopContent = (value:any) => {
     setProjectFilter('');
     if (value.includes('star')) {
       const starItem = AppState.getStarProject.find((i:any) => String(i.id) === String(value.split('_')[1]));
       AppState.setDropDownPro(`项目: ${starItem.name}`);
-      handleClickProject(starItem);
+      handleClickProject(starItem, history);
       Ref.current.setPopup(false);
       Ref.current.text = `项目: ${starItem.name}`;
     } else if (value.includes('recent')) {
       const recentItem = AppState.getRecentUse.find((i:any) => String(i.id) === String(value.split('_')[1]));
 
       AppState.setDropDownPro(`项目: ${recentItem.name}`);
-      handleClickProject(recentItem);
+      handleClickProject(recentItem, history);
 
       Ref.current.setPopup(false);
       Ref.current.text = `项目: ${recentItem.name}`;
@@ -133,7 +134,7 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
       const item: any = filterList.find((i:any) => String(i.id) === String(value));
 
       AppState.setDropDownPro(`项目: ${item?.name}`);
-      handleClickProject(item);
+      handleClickProject(item, history);
 
       Ref.current.setPopup(false);
       Ref.current.text = `项目: ${item?.name}`;
