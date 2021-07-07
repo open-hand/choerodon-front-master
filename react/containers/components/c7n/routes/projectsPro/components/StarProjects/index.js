@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import {
   Droppable, Draggable, DragDropContext,
 } from 'react-beautiful-dnd';
+import handleClickProject from "@/containers/components/util/gotoProject";
 import { useProjectsProStore } from '../../stores';
 import ProjectTaskContent from '../projectTaskContent';
 
@@ -12,7 +13,8 @@ import './index.less';
 export default observer(() => {
   const {
     ProjectsProUseStore,
-    AppState
+    AppState,
+    history,
   } = useProjectsProStore();
 
   const getItemStyle = (isDragging, draggableStyle, enabled) => ({
@@ -38,7 +40,7 @@ export default observer(() => {
           <div
             onClick={() => {
               if (p.enabled) {
-                ProjectsProUseStore.handleClickProject(p);
+                handleClickProject(p, history);
               }
             }}
             className="starProjects-items"
@@ -59,7 +61,7 @@ export default observer(() => {
       }
     </Draggable>
 
-  )), [ProjectsProUseStore.getStarProjectsList]);
+  )), [ProjectsProUseStore.getStarProjectsList, history]);
 
   function swap(arr, from, to) {
     arr.splice(to, 0, arr.splice(from, 1)[0]);
