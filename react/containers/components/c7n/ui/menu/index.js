@@ -123,6 +123,9 @@ export default class CommonMenu extends Component {
 
   getMenuSingle(data, num, collapsed) {
     const paddingStyleObj = num === 0 && collapsed ? { padding: '0 !important' } : {};
+    if (!data.subMenus && !data.route) {
+      return null;
+    }
     if (!data.subMenus || data.subMenus.every((v) => v.type === 'tab')) {
       const { route } = findFirstLeafMenu(data);
       const link = (
@@ -189,8 +192,7 @@ export default class CommonMenu extends Component {
           )}
       >
         {data.subMenus.filter((v) => v.type !== 'tab' && v.code !== 'choerodon.code.project.deploy.app-deployment.pipeline').map(
-          (two) =>
-            this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed)
+          (two) => this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed),
         )}
       </SubMenu>
     );
@@ -327,6 +329,7 @@ export default class CommonMenu extends Component {
         </Item>
       );
     }
+
     return (
       <ItemGroup
           // onTitleClick={this.handleClick}
@@ -485,11 +488,11 @@ export default class CommonMenu extends Component {
               }
               onClick={() => this.handleClickItemMenuSide(data)}
             >
-              {/*{*/}
-              {/*  (activeMenuRoot.id === data.id) && AppState.getCurrentTheme === '' && (*/}
-              {/*    <div className="c7ncd-origin-selected-line" />*/}
-              {/*  )*/}
-              {/*}*/}
+              {/* { */}
+              {/*  (activeMenuRoot.id === data.id) && AppState.getCurrentTheme === '' && ( */}
+              {/*    <div className="c7ncd-origin-selected-line" /> */}
+              {/*  ) */}
+              {/* } */}
               <div
                 style={{
                   borderRadius: '8px',
@@ -502,8 +505,7 @@ export default class CommonMenu extends Component {
               >
                 <MenuSideIcon name={this.renderMenuSideIconName(data)} />
               </div>
-              <p
-              >
+              <p>
                 {data.name}
               </p>
             </div>
