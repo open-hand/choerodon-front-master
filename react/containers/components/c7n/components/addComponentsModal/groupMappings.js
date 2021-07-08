@@ -13,7 +13,7 @@ const cardsMappings = (mappings, needUpgrade = true) => {
     {
       name: '全部分类',
       key: 'all',
-      opts: [...getArr('agile'), ...getArr('devops'), ...getArr('backlog'), ...getArr('common')],
+      opts: [...getArr('agile'), ...getArr('devops'), ...(getArr('backlog')?.length && !needUpgrade ? getArr('backlog') : []), ...getArr('common')],
     },
     {
       name: '敏捷管理',
