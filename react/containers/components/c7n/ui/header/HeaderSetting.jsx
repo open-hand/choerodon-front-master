@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { Button as ProButton } from 'choerodon-ui/pro';
 import { Button, Icon } from 'choerodon-ui';
+import _ from 'lodash';
 import { Permission } from '@/index';
 import classNames from 'classnames';
 import forEach from 'lodash/forEach';
@@ -49,7 +50,7 @@ const Setting = ({
         }, 1000);
       } else {
         axios.get(`/iam/choerodon/v1/register_saas/is_saas_tenant?tenant_id=${AppState.currentMenuType.organizationId}`).then((res) => {
-          const selfIsSaas = isSaas || {};
+          const selfIsSaas = _.clone(isSaas) || {};
           selfIsSaas[AppState.currentMenuType.organizationId] = res;
           AppState.setIsSaasList(selfIsSaas);
         })
@@ -92,7 +93,7 @@ const Setting = ({
       }
     });
     return mapping;
-  }, [currentServices, theme, isSaas]);
+  }, [currentServices, theme, isSaas, AppState.currentMenuType.organizationId]);
 
   async function goto(obj) {
     const queryObj = queryString.parse(history.location.search);
