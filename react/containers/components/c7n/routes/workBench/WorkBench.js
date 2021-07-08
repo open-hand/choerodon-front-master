@@ -9,12 +9,9 @@ import ResizeObserver from 'resize-observer-polyfill';
 import { observer } from 'mobx-react-lite';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
-
 import { Modal } from 'choerodon-ui/pro';
-
-import HeaderButtons from '@/containers/components/c7n/tools/header-btns';
-import { Page, Header } from '../../../../../index';
-
+import useUpgrade from '@/hooks/useUpgrade';
+import { Page } from '../../../../../index';
 import StarTargetPro from './components/StarTargetPro';
 import SelfIntro from './components/SelfIntro';
 import ServiceList from './components/ServiceList';
@@ -34,7 +31,6 @@ import ExecutionQuestions from './components/question-execution';
 import './WorkBench.less';
 import SelfCode from './components/SelfCode';
 import MyHandler from './components/my-handler';
-import BtnGroup from '../../tools/btn-group';
 
 let observerLayout;
 
@@ -72,6 +68,10 @@ const WorkBench = () => {
     allowedModules,
     AppState,
   } = useWorkBenchStore();
+
+  const { data: needUpgrade } = useUpgrade({
+    organizationId: AppState.currentMenuType?.organizationId,
+  });
 
   const {
     isEdit,
@@ -145,8 +145,7 @@ const WorkBench = () => {
       const key = record.get('i');
       const title = get(componnetsMapping[key], 'title');
       const emptyDiscribe = `安装部署【${groupMap.get(get(componnetsMapping[key], 'groupId') || 'agile')}】模块后，才能使用该卡片。`;
-
-      return (
+      return key === 'backlogApprove' && needUpgrade ? null : (
         <DragCard
           record={record}
           onDelete={() => handleDelete(record)}
