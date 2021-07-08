@@ -87,7 +87,7 @@ export default async function handleClickProject(data, history, AppState) {
    *
    * @param isOwe 是否已欠费
    */
-  function gotoProject(isOwe = true) {
+  function gotoProject(isOwe = false) {
     const type = 'project';
     HeaderStore.setRecentItem(data);
     // @ts-ignore
