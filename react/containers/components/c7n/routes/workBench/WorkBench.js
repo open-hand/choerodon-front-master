@@ -130,10 +130,14 @@ const WorkBench = () => {
     let tempComponent;
     const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
     const hasType = allowedModules.includes(type);
+
     if (hasOwnProperty && hasType) {
       tempComponent = ComponetsObjs[type];
     } else {
       tempComponent = <EmptyCard title={title} emptyDiscribe={emptyDiscribe} emptyTitle="暂未安装对应模块" />;
+    }
+    if (type === 'backlogApprove' && needUpgrade) {
+      tempComponent = <EmptyCard title={title} emptyDiscribe="此模块为高级版功能，升级高级版后，才能使用此卡片。" emptyTitle="暂未安装对应模块" />;
     }
     return tempComponent;
   };
@@ -144,8 +148,8 @@ const WorkBench = () => {
     componentsDs.map((record) => {
       const key = record.get('i');
       const title = get(componnetsMapping[key], 'title');
-      const emptyDiscribe = `安装部署【${groupMap.get(get(componnetsMapping[key], 'groupId') || 'agile')}】模块后，才能使用该卡片。`;
-      return key === 'backlogApprove' && needUpgrade ? null : (
+      const emptyDiscribe = `安装部署【${groupMap.get(get(componnetsMapping[key], 'groupId') || 'agile')}】模块后，才能使用此卡片。`;
+      return (
         <DragCard
           record={record}
           onDelete={() => handleDelete(record)}
