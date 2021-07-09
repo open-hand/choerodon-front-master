@@ -119,14 +119,14 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
     if (value.includes('star')) {
       const starItem = AppState.getStarProject.find((i:any) => String(i.id) === String(value.split('_')[1]));
       AppState.setDropDownPro(`项目: ${starItem.name}`);
-      handleClickProject(starItem, history);
+      handleClickProject(starItem, history, AppState);
       Ref.current.setPopup(false);
       Ref.current.text = `项目: ${starItem.name}`;
     } else if (value.includes('recent')) {
       const recentItem = AppState.getRecentUse.find((i:any) => String(i.id) === String(value.split('_')[1]));
 
       AppState.setDropDownPro(`项目: ${recentItem.name}`);
-      handleClickProject(recentItem, history);
+      handleClickProject(recentItem, history, AppState);
 
       Ref.current.setPopup(false);
       Ref.current.text = `项目: ${recentItem.name}`;
@@ -134,7 +134,7 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
       const item: any = filterList.find((i:any) => String(i.id) === String(value));
 
       AppState.setDropDownPro(`项目: ${item?.name}`);
-      handleClickProject(item, history);
+      handleClickProject(item, history, AppState);
 
       Ref.current.setPopup(false);
       Ref.current.text = `项目: ${item?.name}`;
