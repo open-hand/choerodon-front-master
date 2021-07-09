@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="126px" height="126px" viewBox="0 0 126 126" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>饼图</title>
+    <g id="自定义敏捷报表" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="协作图表" transform="translate(-919.000000, -480.000000)" fill-rule="nonzero" stroke="#FFFFFF" stroke-width="1.5">
+            <g id="自定义报表" transform="translate(-2.000000, 0.000000)">
+                <g id="所有报表－燃尽图" transform="translate(849.000000, 440.000000)">
+                    <g id="路径" transform="translate(73.000000, 41.000000)">
+                        <path d="M62.1,62 L25.9,12.1 C36.3310623,4.27425015 49.0608777,0.124752294 62.1,0.3 L62.1,62 Z" fill="#FF812C"></path>
+                        <path d="M62.1,62 L3.5,81 C-4.9,55.1 3.9,28.1 25.9,12.1 L62.1,62 Z" fill="#FFCE2B"></path>
+                        <path d="M62.1,62 L98.3,111.9 C70.7625667,131.895197 32.2338108,125.809354 12.2,98.3 C8.33141988,93.0954087 5.35734031,87.282435 3.4,81.1 L62.1,62 Z" fill="#00C5D2"></path>
+                        <path d="M62.1,62 L62.1,0.4 C96.1138817,0.416553113 123.683447,27.9861183 123.7,62 C123.7,82.4 114.8,99.9 98.3,111.9 L62.1,62 Z" fill="#648DFF"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

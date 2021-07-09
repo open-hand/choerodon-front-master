@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Tree } from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
+import { omit } from 'lodash';
 import { useMyHandler } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionNode from '../question-node';
+import QuestionSearch, { questionSearchFields } from '../question-search';
 
 import './MyHandler.less';
 
@@ -21,7 +23,15 @@ const MyHandler = observer(() => {
   } = useMyHandler();
 
   const [btnLoading, changeBtnLoading] = useState(false);
+  const searchField = useMemo(() => questionSearchFields.filter((i) => ['contents', 'issueType', 'status', 'priority', 'assignee'].includes(i.code)), []);
 
+  function load(search) {
+    myHandlerStore.setPage(1);
+    myHandlerDs.setQueryParameter('searchData', omit(search, '_id'));
+    // eslint-disable-next-line no-underscore-dangle
+    myHandlerDs.setQueryParameter('searchDataId', search._id);
+    myHandlerDs.query();
+  }
   function loadMoreData() {
     changeBtnLoading(true);
     myHandlerStore.setPage(myHandlerStore.getPage + 1);
@@ -81,10 +91,14 @@ const MyHandler = observer(() => {
   }
 
   const renderTitle = () => (
-    <>
-      <span>我经手的</span>
-      <span className={`${prefixCls}-title-count`}>{myHandlerStore.getTotalCount}</span>
-    </>
+    <div className={`${prefixCls}-title`}>
+      <span>
+        <span>我经手的</span>
+        <span className={`${prefixCls}-title-count`}>{myHandlerStore.getTotalCount}</span>
+      </span>
+      <QuestionSearch onQuery={load} fields={searchField} key={`QuestionSearch-${myHandlerDs.id}`} />
+    </div>
+
   );
 
   return (

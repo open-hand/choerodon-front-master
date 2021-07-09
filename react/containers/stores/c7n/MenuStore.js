@@ -387,30 +387,99 @@ class MenuStore {
         let flag = 0;
         if (type === 'site') {
           if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-            await axios.put('iam/v1/users/tenant-id?tenantId=0');
-            const result = await axios.get('/iam/choerodon/v1/switch/site');
+            await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
+              enabledCancelCache: false,
+              enabledCancelRoute: false,
+            });
+            const result = await axios.get('/iam/choerodon/v1/switch/site', {
+              enabledCancelCache: false,
+              enabledCancelRoute: false,
+            });
             if (!result) {
               this.setHasSitePermission(false);
             }
           }
         } else if (id && (['project', 'organization'].includes(type))) {
           const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
-          if (!loadingTenant.includes(orgId)) {
-            loadingTenant.push(String(orgId));
-            await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`);
-            loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);
-          } else {
-            flag = 1;
+          if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
+            await axios({
+              url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
+              method: 'put',
+              enabledCancelCache: false,
+              enabledCancelRoute: false,
+            });
+            AppState.loadUserInfo();
           }
         }
-        if (!flag) {
-          let data;
-          const menu = this.menuData(type, id);
-          if (['organization', 'project'].includes(type)) {
-            if (!Object.keys(menuStore.menuGroup[type]).includes(id)) {
-              data = await getMenu(this);
-            }
-          } else if (!menu.length && !menu.level) {
+        if (!AppState.currentMenuType.hasChangeCategorys) {
+          isLoadMenu = 0;
+          AppState.setCanShowRoute(true);
+          return resolve(menu);
+        }
+        delete AppState.menuType.hasChangeCategorys;
+        AppState.setCanShowRoute(true);
+      }
+      async function getMenu(that) {
+        const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
+        let url = '/iam/choerodon/v1/menu';
+        if (type === 'project') {
+          url += `?projectId=${id}&tenantId=${currentOrgId}`;
+        } else if (type === 'organization') {
+          url += `?labels=TENANT_MENU&tenantId=${currentOrgId}`;
+        } else if (type === 'user') {
+          url += '?labels=USER_MENU';
+        } else {
+          url += '?labels=SITE_MENU&tenantId=0';
+          that.setRequestedSiteMenu(true);
+        }
+        const data = await axios({
+          url,
+          method:'get',
+          enabledCancelCache: false,
+          enabledCancelRoute: false,
+        });
+        const child = filterEmptyMenus(data || []);
+        if (type === 'project') {
+          changeMenuLevel({ level: 'project', child });
+        } else if (type === 'user') {
+          changeMenuLevel({ level: 'user', child });
+        }
+        that.setMenuData(child, type, id);
+        return child;
+      }
+      let flag = 0;
+      if (type === 'site') {
+        if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
+          await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
+            enabledCancelCache: false,
+            enabledCancelRoute: false,
+          });
+          const result = await axios.get('/iam/choerodon/v1/switch/site', {
+            enabledCancelCache: false,
+            enabledCancelRoute: false,
+          });
+          if (!result) {
+            this.setHasSitePermission(false);
+          }
+        }
+      } else if (id && (['project', 'organization'].includes(type))) {
+        const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
+        if (!loadingTenant.includes(orgId)) {
+          loadingTenant.push(String(orgId));
+          await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
+            enabledCancelCache: false,
+            enabledCancelRoute: false,
+          });
+          loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);
+        } else {
+          flag = 1;
+        }
+      }
+      if (!flag) {
+        let data;
+        const menu = this.menuData(type, id);
+        if (['organization', 'project'].includes(type)) {
+          if (!Object.keys(menuStore.menuGroup[type]).includes(id)) {
             data = await getMenu(this);
           }
           if (AppState.userInfo.currentRoleLevel !== type) {
@@ -423,18 +492,10 @@ class MenuStore {
           return resolve(data || []);
         }
         isLoadMenu = 0;
-        AppState.setCanShowRoute(true);
-        // const item = roles.find(r => (type === 'site' ? r.level === type : r.level === 'organization'));
-        // if (item) {
-        //   isLoadMenu = 0;
-        //   // await axios.put(`iam/v1/users/roles?roleId=${item.id}`);
-        //   AppState.loadUserInfo();
-        //   const data = await getMenu(this);
-        //   return resolve(data);
-        // } else {
-        //   isLoadMenu = 0;
-        //   return resolve([]);
-        // }
+        return resolve(data || []);
+      }
+      isLoadMenu = 0;
+      AppState.setCanShowRoute(true);
       } catch (e) {
         AppState.setCanShowRoute(true);
       }

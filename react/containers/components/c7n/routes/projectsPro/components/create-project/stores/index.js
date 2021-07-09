@@ -14,8 +14,9 @@ import useStore from './useStore';
 
 const Store = createContext();
 
+// TODO 使用@choerodon/inject
 // eslint-disable-next-line no-undef
-const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
+const HAS_BASE_PRO = C7NHasModule('@choerodon/base-saas');
 
 export function useCreateProjectProStore() {
   return useContext(Store);

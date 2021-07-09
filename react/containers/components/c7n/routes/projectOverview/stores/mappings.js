@@ -14,7 +14,7 @@ import priorityChart from '../img/13.png';
 import issueTypeChart from '../img/14.png';
 import issueTable from '../img/15.png';
 import projectDynamic from '../img/16.svg';
-import workLoad from '../img/17.png';
+import workLoad from '../img/17.svg';
 import personalWorkload from '../img/18.svg';
 
 const componentsObj = {

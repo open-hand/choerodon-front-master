@@ -1,8 +1,5 @@
 import { action, computed, observable } from 'mobx';
-import { message } from 'choerodon-ui/pro';
-import getSearchString from '@/containers/components/c7n/util/gotoSome';
-import { map, get } from 'lodash';
-import axios from '../../components/c7n/tools/axios';
+import axios from '@/containers/components/c7n/tools/axios';
 
 function getDefaultLanguage() {
   let locale;
@@ -52,12 +49,18 @@ class AppState {
 
   getProjects = () => {
     if (this.currentMenuType.organizationId) {
-      const recentProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`);
-      const starProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`);
+      const recentProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`, {
+        enabledCancelCache: false,
+        enabledCancelRoute: false,
+      });
+      const starProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`, {
+        enabledCancelCache: false,
+        enabledCancelRoute: false,
+      });
       Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
         const [recentProjectData = [], starProjectData = []] = res;
 
-        const tempRecentProjectData = recentProjectData.splice(0, 3).map((i) => ({
+        const tempRecentProjectData = recentProjectData?.splice(0, 3).map((i) => ({
           ...i,
           ...i.projectDTO,
         }));
@@ -315,11 +318,9 @@ class AppState {
     return this.deployServices.slice();
   }
 
-  loadUserInfo = () => axios({
-    method: 'get',
-    url: 'iam/choerodon/v1/users/self',
-    routeChangeCancel: false,
-    enabledCancelMark: false,
+  loadUserInfo = () => axios.get('iam/choerodon/v1/users/self', {
+    enabledCancelCache: false,
+    enabledCancelRoute: false,
   }).then((res) => {
     res = {
       ...res,
@@ -330,34 +331,26 @@ class AppState {
     return res;
   });
 
-  loadOrgDate = (email) => axios({
-    url: `/iam/choerodon/v1/organizations/daysRemaining?email=${email}`,
-    method: 'get',
-    routeChangeCancel: false,
-    enabledCancelMark: false,
+  loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`, {
+    enabledCancelCache: false,
+    enabledCancelRoute: false,
   });
 
-  loadSiteInfo = () => axios({
-    url: '/iam/choerodon/v1/system/setting',
-    method: 'get',
-    routeChangeCancel: false,
-    enabledCancelMark: false,
+  loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting', {
+    enabledCancelCache: false,
+    enabledCancelRoute: false,
   });
 
-  checkEnterpriseInfo = () => axios({
-    url: '/iam/choerodon/v1/enterprises/default',
-    method: 'get',
-    routeChangeCancel: false,
-    enabledCancelMark: false,
+  checkEnterpriseInfo = () => axios.get('/iam/choerodon/v1/enterprises/default', {
+    enabledCancelCache: false,
+    enabledCancelRoute: false,
   });
 
   loadModules = async () => {
     try {
-      const res = await axios({
-        url: '/hadm/choerodon/v1/services/model',
-        method: 'get',
-        routeChangeCancel: false,
-        enabledCancelMark: false,
+      const res = await axios.get('/hadm/choerodon/v1/services/model', {
+        enabledCancelCache: false,
+        enabledCancelRoute: false,
       });
       if (res && !res.failed) {
         this.modules = res;
@@ -369,11 +362,9 @@ class AppState {
 
   loadDeployServices = async () => {
     try {
-      const res = await axios({
-        url: '/hadm/choerodon/v1/services',
-        method: 'get',
-        routeChangeCancel: false,
-        enabledCancelMark: false,
+      const res = await axios.get('/hadm/choerodon/v1/services', {
+        enabledCancelCache: false,
+        enabledCancelRoute: false,
       });
       if (res && !res.failed) {
         this.deployServices = res;

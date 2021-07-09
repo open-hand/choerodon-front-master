@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import {
   Droppable, Draggable, DragDropContext,
 } from 'react-beautiful-dnd';
-import handleClickProject from "@/containers/components/util/gotoProject";
+import handleClickProject from '@/containers/components/util/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import ProjectTaskContent from '../projectTaskContent';
 
@@ -31,7 +31,7 @@ export default observer(() => {
     if (projectSelectStarProjects !== selfStarProjects) {
       AppState.getProjects();
     }
-  }, [ProjectsProUseStore.getStarProjectsList.length])
+  }, [ProjectsProUseStore.getStarProjectsList.length]);
 
   const renderProjects = useCallback(() => ProjectsProUseStore.getStarProjectsList.map((p, index) => (
     <Draggable key={`pre-${p.id}`} draggableId={`pre-${p.id}`} index={index}>

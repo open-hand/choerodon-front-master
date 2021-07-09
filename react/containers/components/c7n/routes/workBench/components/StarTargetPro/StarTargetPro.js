@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Tooltip, Modal } from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import { observer } from 'mobx-react-lite';
-import handleClickProject from "@/containers/components/util/gotoProject";
+import handleClickProject from '@/containers/components/util/gotoProject';
 import { Icon } from 'choerodon-ui';
 import moment from 'moment';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
@@ -22,10 +22,8 @@ import './index.less';
 const StarTargetPro = observer(() => {
   const {
     prefixCls,
-    starProjectsDs,
+    getStarProject,
   } = useStarTargetPro();
-
-  const [theme] = useTheme();
 
   const {
     AppState,
@@ -41,7 +39,6 @@ const StarTargetPro = observer(() => {
     isEdit,
     setEdit,
     setActiveStarProject,
-    initData,
   } = workBenchUseStore;
 
   const handleClickItem = (s) => {
@@ -78,14 +75,7 @@ const StarTargetPro = observer(() => {
   );
 
   const renderContent = () => {
-    const starProjects = starProjectsDs.toData();
-    if (starProjectsDs.status === 'loading') {
-      return (
-        <div style={{ padding: '56px 0px' }} className={`${prefixCls}-content`}>
-          <LoadingBar display />
-        </div>
-      );
-    }
+    const starProjects = getStarProject.slice();
     if (starProjects.length === 0) {
       return renderEmptypage();
     }
@@ -221,6 +211,7 @@ const StarTargetPro = observer(() => {
       style: {
         width: '740px',
       },
+      contentStyle: { padding: 0 },
       children: <AddModal
         subPrefix={subPrefix}
         existTypes={typeArr}

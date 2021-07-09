@@ -37,27 +37,6 @@ export default observer(({
       }
     }
     dataSet.current.getField('projectId').options.loadData(res.content, res.content.length);
-    // axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=${size}`).then((res) => {
-    //   console.log(dataSet);
-    //   if (res.content.length % 10 === 0) {
-    //     res.content.push({
-    //       id: 'more',
-    //       name: '加载更多',
-    //     });
-    //   }
-    //   if (data) {
-    //     if (!res.content.some((n) => n.id === data.projectId)) {
-    //       res.content.unshift({
-    //         id: data.projectId,
-    //         name: data.projectName,
-    //       });
-    //     }
-    //   }
-    //   console.log(dataSet.getField('projectId'));
-    //   debugger;
-    //   dataSet.current.getField('projectId').options.loadData(res.content, res.content.length);
-    //   dataSet.current.set('size', size);
-    // });
   };
 
   const renderer = ({ text }) => (text === '加载更多' ? (
