@@ -21,9 +21,8 @@ const CustomChart = observer(() => {
   const {
     customData,
     loading,
-    optionConfig,
+    optionConfig, searchProps,
   } = useCustomChartStore();
-  const [searchVO, setSearchVO] = useState();
   const getOption = useCallback(() => ({
     textStyle: {
       fontSize: 12,
@@ -37,7 +36,7 @@ const CustomChart = observer(() => {
     }
     return (
       <div style={{ height: '100%', overflowY: 'auto' }}>
-        {mount('agile:CustomChartSearch', { searchVO, setSearchVO })}
+        {mount('agile:CustomChartSearch', searchProps)}
         <Echart option={getOption()} style={{ height: 'calc(100% - .5rem)' }} />
       </div>
     );
