@@ -1,6 +1,5 @@
 import React, {
-  useCallback, Fragment,
-  useState,
+  useCallback,
 } from 'react';
 import {
   Spin,
@@ -20,7 +19,7 @@ const CustomChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-custom-chart';
   const {
     customData,
-    loading,
+    loading, isHasData, searchId,
     optionConfig, searchProps,
   } = useCustomChartStore();
   const getOption = useCallback(() => ({
@@ -31,13 +30,16 @@ const CustomChart = observer(() => {
   }), [optionConfig]);
 
   function render() {
-    if (loading !== 'loading' && !optionConfig) {
+    if (loading !== 'loading' && !optionConfig && !isHasData) {
       return <EmptyPage content="当前暂无数据" />;
     }
     return (
       <div style={{ height: '100%', overflowY: 'auto' }}>
-        {mount('agile:CustomChartSearch', searchProps)}
-        <Echart option={getOption()} style={{ height: 'calc(100% - .5rem)' }} />
+        <div className={`${clsPrefix}-search`}>
+          {mount('agile:CustomChartSearch', searchProps)}
+        </div>
+        {optionConfig ? <Echart option={getOption()} style={{ height: 'calc(100% - .5rem)' }} key={`echarts-${searchId}`} /> : <EmptyPage content="当前暂无数据" />}
+
       </div>
     );
 
