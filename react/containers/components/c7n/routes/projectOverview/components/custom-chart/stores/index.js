@@ -25,20 +25,23 @@ export const StoreProvider = inject('AppState')(observer((props) => {
   } = props;
   const { customChartAvailableList } = useProjectOverviewStore();
   const [optionConfig, setOptionConfig] = useState({});
+  const [searchVO, setSearchVO] = useState();
 
   // TODO:后续需要假如其他服务，请使用使用customChartAvailableList 进行判断是否有服务
   useEffect(() => {
     async function loadOptionData() {
-      const newOptions = await loadOptionDataMaps.agile(toJS(customChartConfig));
+      const config = toJS(customChartConfig);
+      const newOptions = await loadOptionDataMaps.agile({ ...config, customData: { ...config.customData, extendSearchVO: searchVO } });
       setOptionConfig(isEmpty(newOptions) ? undefined : newOptions);
     }
     loadOptionData();
-  }, [customChartConfig, customData.analysisField, customData.chartType, customData.comparedField, customData.searchJson, customData.statisticsType, organizationId, projectId]);
+  }, [customChartConfig, customData.analysisField, customData.chartType, customData.comparedField, customData.searchJson, customData.statisticsType, organizationId, projectId, searchVO]);
 
   const value = {
     ...props,
     customData,
     optionConfig,
+    searchProps: { searchVO, setSearchVO },
     loading: typeof (optionConfig) === 'object' && !Object.keys(optionConfig).length,
   };
   return (
