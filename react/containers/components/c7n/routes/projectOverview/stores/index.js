@@ -50,7 +50,7 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
     const maps = {
       N_DEVOPS: 'devops', N_TEST: 'test', N_AGILE: 'agile', N_REQUIREMENT: 'backlog',
     };
-    return categories?.map((i) => maps[i.code] || i.code);
+    return categories?.map((i) => maps[i.code] || i.code) || [];
   }, [categories]);
   const customChartAvailableList = useMemo(() => {
     // return ['agile'];

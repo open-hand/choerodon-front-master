@@ -1,17 +1,21 @@
 import React, {
-  useCallback,
+  useCallback, Fragment,
+  useState,
 } from 'react';
 import {
   Spin,
 } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import { mount } from '@choerodon/inject';
 import Echart from 'echarts-for-react';
 import { useCustomChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
-
+// E:\hand\agile615\agile-service\react\routes\ReportHost\custom-report\components\ChartSearch\index.ts
 import EmptyPage from '../EmptyPage';
 
+// const ChartSearch =
+// console.log('ChartSearch...', ChartSearch);
 const CustomChart = observer(() => {
   const clsPrefix = 'c7n-project-overview-custom-chart';
   const {
@@ -19,6 +23,7 @@ const CustomChart = observer(() => {
     loading,
     optionConfig,
   } = useCustomChartStore();
+  const [searchVO, setSearchVO] = useState();
   const getOption = useCallback(() => ({
     textStyle: {
       fontSize: 12,
@@ -30,7 +35,12 @@ const CustomChart = observer(() => {
     if (loading !== 'loading' && !optionConfig) {
       return <EmptyPage content="当前暂无数据" />;
     }
-    return <Echart option={getOption()} style={{ height: '100%' }} />;
+    return (
+      <div style={{ height: '100%', overflowY: 'auto' }}>
+        {mount('agile:CustomChartSearch', { searchVO, setSearchVO })}
+        <Echart option={getOption()} style={{ height: 'calc(100% - .5rem)' }} />
+      </div>
+    );
 
     // return '';
   }
