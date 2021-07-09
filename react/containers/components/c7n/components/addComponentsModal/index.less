@@ -1,8 +1,16 @@
 .c7ncd-workbench-addModal {
   &-container {
-    display: flex;
-    align-items: center;
     height: 100%;
+    .c7n-spin-nested-loading {
+      height: 100%;
+      .c7n-spin-container {
+        height: 100%;
+        .c7ncd-workbench-addModal-content {
+          display: flex;
+          height: 100%;
+        }
+      }
+    }
   }
 
   &-sider {
@@ -11,7 +19,7 @@
     height: inherit;
     padding: 22px;
     position: relative;
-
+    overflow-y: auto;
     &-shadow {
       position: absolute;
       background: rgba(83, 101, 234, 0.08);
@@ -142,7 +150,7 @@
   }
 
   .c7n-pro-modal-body {
-    padding: 0;
+    padding: 0 !important;
     height: 100%;
     overflow: hidden;
   }

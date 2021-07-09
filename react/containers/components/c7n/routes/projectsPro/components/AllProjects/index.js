@@ -1,12 +1,12 @@
 import React, { useCallback, Fragment } from 'react';
 import {
-  TextField, Button, Pagination, Tooltip, Modal, Icon, Spin
+  TextField, Button, Pagination, Tooltip, Modal, Icon, Spin,
 } from 'choerodon-ui/pro';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import Permission from '@/containers/components/c7n/tools/permission';
 import some from 'lodash/some';
-import handleClickProject from "@/containers/components/util/gotoProject";
+import handleClickProject from '@/containers/components/util/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import EmptyPage from '../empty-page';
@@ -242,7 +242,7 @@ export default observer(() => {
           key={p.id}
           onClick={() => {
             if (p.enabled && checkOperation(p)) {
-              handleClickProject(p, history);
+              handleClickProject(p, history, AppState);
             }
           }}
           className="allProjects-content-item"
@@ -409,8 +409,8 @@ export default observer(() => {
           <Pagination
             showSizeChangerLabel={false}
             showTotal={false}
-            showPager={true}
-            showQuickJumper={true}
+            showPager
+            showQuickJumper
             onChange={handleChangePagination}
             page={ProjectsProUseStore.getPagination.page}
             total={ProjectsProUseStore.getPagination.total}

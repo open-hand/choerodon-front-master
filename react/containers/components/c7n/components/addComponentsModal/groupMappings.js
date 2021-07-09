@@ -1,6 +1,6 @@
-import { filter, get } from 'lodash';
+import { filter } from 'lodash';
 
-const cardsMappings = (mappings) => {
+const cardsMappings = (mappings, needUpgrade = true) => {
   const getArr = (type) => {
     let res = [];
     if (mappings) {
@@ -13,7 +13,7 @@ const cardsMappings = (mappings) => {
     {
       name: '全部分类',
       key: 'all',
-      opts: [...getArr('agile'), ...getArr('devops'), ...getArr('backlog'), ...getArr('common')],
+      opts: [...getArr('agile'), ...getArr('devops'), ...(getArr('backlog')?.length && !needUpgrade ? getArr('backlog') : []), ...getArr('common')],
     },
     {
       name: '敏捷管理',
@@ -36,7 +36,7 @@ const cardsMappings = (mappings) => {
     },
   ];
 
-  if (getArr('backlog')?.length) {
+  if (getArr('backlog')?.length && !needUpgrade) {
     groupArr.splice(groupArr.length - 1, 0, {
       name: '需求管理',
       key: 'backlog',

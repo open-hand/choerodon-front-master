@@ -3,7 +3,7 @@ import { Icon } from 'choerodon-ui';
 import queryString from 'query-string';
 import TimeAgo from 'timeago-react';
 import { observer } from 'mobx-react-lite';
-import handleClickProject from "@/containers/components/util/gotoProject";
+import handleClickProject from '@/containers/components/util/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import ProjectTaskContent from '../projectTaskContent';
@@ -14,6 +14,7 @@ export default observer(() => {
   const {
     history,
     ProjectsProUseStore,
+    AppState,
   } = useProjectsProStore();
 
   const renderProjects = () => ProjectsProUseStore.getRecentProjects?.map((p) => {
@@ -23,10 +24,11 @@ export default observer(() => {
     const r = p.projectDTO || {};
     return (
       <div
+        role="none"
         key={p.projectId}
         onClick={() => {
           if (r.enabled) {
-            handleClickProject(r, history);
+            handleClickProject(r, history, AppState);
           }
         }}
         className="recentProjects-content"

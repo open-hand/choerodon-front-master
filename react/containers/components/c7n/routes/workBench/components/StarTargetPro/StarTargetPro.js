@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Tooltip, Modal } from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import { observer } from 'mobx-react-lite';
-import handleClickProject from "@/containers/components/util/gotoProject";
+import handleClickProject from '@/containers/components/util/gotoProject';
 import { Icon } from 'choerodon-ui';
 import moment from 'moment';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
@@ -26,6 +26,7 @@ const StarTargetPro = observer(() => {
   } = useStarTargetPro();
 
   const {
+    AppState,
     workBenchUseStore,
     history,
     componentsDs,
@@ -158,7 +159,7 @@ const StarTargetPro = observer(() => {
                   }}
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleClickProject(s, history);
+                    handleClickProject(s, history, AppState);
                   }}
                   role="none"
                 >

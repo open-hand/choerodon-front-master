@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { Button as ProButton } from 'choerodon-ui/pro';
 import { Button, Icon } from 'choerodon-ui';
+import _ from 'lodash';
 import { Permission } from '@/index';
 import classNames from 'classnames';
 import forEach from 'lodash/forEach';
@@ -12,6 +13,8 @@ import { axios } from "@/index";
 import getSearchString from '../../util/gotoSome';
 
 import './headerSettingTheme4.less';
+
+const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
 
 const iconStyle = { marginLeft: 0, marginRight: 0 };
 const SERVICE_CODE = {
@@ -22,7 +25,7 @@ const SERVICE_CODE = {
 const Setting = ({
   AppState, HeaderStore, MenuStore, history, ...props
 }) => {
-  const [isSaas, setIsSaas] = useState(undefined);
+  const isSaas = AppState.getIsSaasList;
 
   // 组织改变 重新查询getIsSaas
   useEffect(() => {
@@ -39,16 +42,19 @@ const Setting = ({
   const { currentServices } = AppState;
 
   function getIsSaas() {
-    if (!AppState.currentMenuType.organizationId) {
-      setTimeout(() => {
-        getIsSaas()
-      }, 1000);
-    } else {
-      axios.get(`/iam/choerodon/v1/register_saas/is_saas_tenant?tenant_id=${AppState.currentMenuType.organizationId}`).then((res) => {
-        const selfIsSaas = isSaas || {};
-        selfIsSaas[AppState.currentMenuType.organizationId] = res;
-        setIsSaas(selfIsSaas)
-      })
+    // 汉得版才会有这个逻辑
+    if (HAS_BASE_PRO) {
+      if (!AppState.currentMenuType.organizationId) {
+        setTimeout(() => {
+          getIsSaas()
+        }, 1000);
+      } else {
+        axios.get(`/iam/choerodon/v1/register_saas/is_saas_tenant?tenant_id=${AppState.currentMenuType.organizationId}`).then((res) => {
+          const selfIsSaas = _.clone(isSaas) || {};
+          selfIsSaas[AppState.currentMenuType.organizationId] = res;
+          AppState.setIsSaasList(selfIsSaas);
+        })
+      }
     }
   }
 
@@ -87,7 +93,7 @@ const Setting = ({
       }
     });
     return mapping;
-  }, [currentServices, theme, isSaas]);
+  }, [currentServices, theme, isSaas, AppState.currentMenuType.organizationId]);
 
   async function goto(obj) {
     const queryObj = queryString.parse(history.location.search);

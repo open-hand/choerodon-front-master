@@ -9,13 +9,9 @@ import ResizeObserver from 'resize-observer-polyfill';
 import { observer } from 'mobx-react-lite';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
-
 import { Modal } from 'choerodon-ui/pro';
-
-import HeaderButtons from '@/containers/components/c7n/tools/header-btns';
-import axios from '@/containers/components/c7n/tools/axios';
-import { Page, Header } from '../../../../../index';
-
+import useUpgrade from '@/hooks/useUpgrade';
+import { Page } from '../../../../../index';
 import StarTargetPro from './components/StarTargetPro';
 import SelfIntro from './components/SelfIntro';
 import ServiceList from './components/ServiceList';
@@ -35,7 +31,6 @@ import ExecutionQuestions from './components/question-execution';
 import './WorkBench.less';
 import SelfCode from './components/SelfCode';
 import MyHandler from './components/my-handler';
-import BtnGroup from '../../tools/btn-group';
 
 let observerLayout;
 
@@ -75,27 +70,9 @@ const WorkBench = () => {
     organizationId,
   } = useWorkBenchStore();
 
-  useEffect(() => {
-    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
-    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
-    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
-    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
-    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
-    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
-    // axios.get(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`);
-    // axios.get('http://172.23.16.92:30094/iam/choerodon/v1/organizations/1131/quick_links/scope/self?page=0&size=10');
-    // axios.get('/hpfm/v1/lov/value?lovCode=OPADM.TENANT_ROLE');
-    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.HOST_WITHOUT_AGENT');
-    // axios.get('/hpfm/v1/lovs/value?lovCode=OPADM.AGENT_BIND_SCRAPE');
-    // checkPermission({
-    //   organizationId,
-    //   codeArr: ['choerodon.code.project.infra.code-lib-management.ps.project-owner'],
-    // });
-    // checkPermission({
-    //   organizationId,
-    //   codeArr: ['choerodon.code.project.infra.code-lib-management.ps.project-owner'],
-    // });
-  }, []);
+  const { data: needUpgrade } = useUpgrade({
+    organizationId: AppState.currentMenuType?.organizationId,
+  });
 
   const {
     isEdit,
@@ -154,10 +131,14 @@ const WorkBench = () => {
     let tempComponent;
     const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
     const hasType = allowedModules.includes(type);
+
     if (hasOwnProperty && hasType) {
       tempComponent = ComponetsObjs[type];
     } else {
       tempComponent = <EmptyCard title={title} emptyDiscribe={emptyDiscribe} emptyTitle="暂未安装对应模块" />;
+    }
+    if (type === 'backlogApprove' && needUpgrade) {
+      tempComponent = <EmptyCard title={title} emptyDiscribe="此模块为高级版功能，升级高级版后，才能使用此卡片。" emptyTitle="暂未安装对应模块" />;
     }
     return tempComponent;
   };
@@ -168,8 +149,7 @@ const WorkBench = () => {
     componentsDs.map((record) => {
       const key = record.get('i');
       const title = get(componnetsMapping[key], 'title');
-      const emptyDiscribe = `安装部署【${groupMap.get(get(componnetsMapping[key], 'groupId') || 'agile')}】模块后，才能使用该卡片。`;
-
+      const emptyDiscribe = `安装部署【${groupMap.get(get(componnetsMapping[key], 'groupId') || 'agile')}】模块后，才能使用此卡片。`;
       return (
         <DragCard
           record={record}

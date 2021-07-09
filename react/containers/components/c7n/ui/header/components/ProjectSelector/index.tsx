@@ -10,7 +10,7 @@ import { useDebounceFn, useVirtualList } from 'ahooks';
 import queryString from 'query-string';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
-import handleClickProject from "@/containers/components/util/gotoProject";
+import handleClickProject from '@/containers/components/util/gotoProject';
 import MenuStore, { getMenuType } from '@/containers/stores/c7n/MenuStore';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import './index.less';

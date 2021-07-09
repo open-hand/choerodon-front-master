@@ -10,6 +10,9 @@ function getDefaultLanguage() {
 }
 
 class AppState {
+  // 一个组织id对应是否是saas组织的list
+  @observable isSaasList = undefined;
+
   @observable helpDocUrl = '';
 
   @observable starProject = [];
@@ -86,6 +89,15 @@ class AppState {
     } else {
       this.setDropDownPro();
     }
+  }
+
+  @computed
+  get getIsSaasList() {
+    return this.isSaasList;
+  }
+
+  @action setIsSaasList(data) {
+    this.isSaasList = data;
   }
 
   @computed

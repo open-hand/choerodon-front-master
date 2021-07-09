@@ -22,21 +22,21 @@ export function logout() {
 export function authorizeC7n() {
   // 为了把这个hash传到oauth里要把#换成%23
   let historyPath = sessionStorage.getItem('historyPath');
-  if (historyPath.includes('access_token')
+  if (historyPath && (historyPath.includes('access_token')
     || historyPath.includes('unauthorized')
     || historyPath.includes('invite-user')
     || historyPath.includes('register-saas')
-  ) {
+  )) {
     historyPath = '/';
     sessionStorage.setItem('historyPath', '/');
   }
   let uri = `${window.location.origin}/#${historyPath || '/'}`;
   if (uri.indexOf('?') > 0) {
-    uri += '&redirectFlag'
+    uri += '&redirectFlag';
   } else {
-    uri += '?redirectFlag'
+    uri += '?redirectFlag';
   }
-  const redirect_uri = escape(uri)
+  const redirect_uri = escape(uri);
   window.localStorage.removeItem('lastClosedId');
   // 这里是为了告诉oauth我要重定向的uri是什么，必须和client中对应，跳转到非client的页面会报错。
   window.location = `${AUTH_URL}&redirect_uri=${redirect_uri}`;
