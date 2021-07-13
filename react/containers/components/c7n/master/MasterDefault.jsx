@@ -161,59 +161,61 @@ class Masters extends Component {
   }
 
   handleSetGuideContent = (newProps) => {
-    const { activeMenu } = newProps.MenuStore;
-    // 如果activeMenu是当前路由
-    if (activeMenu && window.location.hash.includes(activeMenu.route)) {
-      activeMenuTimes = 0;
-      const { projectId, organizationId } = newProps.AppState.menuType;
-      const menuId = activeMenu.id;
-      const { search } = newProps.location;
-      const searchParams = new URLSearchParams(search);
-      let data = {};
-      const tabCode = searchParams.get('activeKey');
-      switch (searchParams.get('type')) {
-        case 'project': {
-          data = {
-            menuId: activeMenu.id,
-            orgId: organizationId,
-            proId: projectId,
-            tab_code: tabCode,
-          };
-          break;
+    if (HAS_BASE_PRO) {
+      const { activeMenu } = newProps.MenuStore;
+      // 如果activeMenu是当前路由
+      if (activeMenu && window.location.hash.includes(activeMenu.route)) {
+        activeMenuTimes = 0;
+        const { projectId, organizationId } = newProps.AppState.menuType;
+        const menuId = activeMenu.id;
+        const { search } = newProps.location;
+        const searchParams = new URLSearchParams(search);
+        let data = {};
+        const tabCode = searchParams.get('activeKey');
+        switch (searchParams.get('type')) {
+          case 'project': {
+            data = {
+              menuId: activeMenu.id,
+              orgId: organizationId,
+              proId: projectId,
+              tab_code: tabCode,
+            };
+            break;
+          }
+          case 'organization': {
+            data = {
+              menuId: activeMenu.id,
+              orgId: organizationId,
+              tab_code: tabCode,
+            };
+            break;
+          }
+          case null: {
+            // 平台层
+            data = {
+              menuId: activeMenu.id,
+              orgId: 0,
+              tab_code: tabCode,
+            };
+            break;
+          }
         }
-        case 'organization': {
-          data = {
-            menuId: activeMenu.id,
-            orgId: organizationId,
-            tab_code: tabCode,
-          };
-          break;
-        }
-        case null: {
-          // 平台层
-          data = {
-            menuId: activeMenu.id,
-            orgId: 0,
-            tab_code: tabCode,
-          };
-          break;
-        }
-      }
-      MasterServices.axiosGetGuide(data).then((res) => {
-        this.setState({
-          guideContent: res,
+        MasterServices.axiosGetGuide(data).then((res) => {
+          this.setState({
+            guideContent: res,
+          });
         });
-      });
-    } else if (activeMenuTimes < 3) {
-      activeMenuTimes += 1;
-      setTimeout(() => {
-        this.handleSetGuideContent(newProps);
-      }, 500);
-    } else {
-      activeMenuTimes = 0;
-      this.setState({
-        guideContent: undefined,
-      });
+      } else if (activeMenuTimes < 3) {
+        activeMenuTimes += 1;
+        setTimeout(() => {
+          this.handleSetGuideContent(newProps);
+        }, 500);
+      } else {
+        activeMenuTimes = 0;
+        this.setState({
+          guideContent: undefined,
+        });
+      }
     }
   }
 
@@ -371,56 +373,58 @@ class Masters extends Component {
 
   getUserCountCheck = async (orgId) => {
     const organizationId = orgId || this.props.AppState.currentMenuType.organizationId;
-    if (organizationId) {
-      const res = await MasterServices.axiosGetCheckUserCount(organizationId);
-      if (res && !res.data && res.data !== '') {
-        // 用户超过套餐任务
-        maxLength = res;
-        const user = await MasterServices.axiosGetCheckOwner(organizationId);
-        if (user && user.data === '') {
-          // 当前用户就是注册者
-          ExceedCountUserDataSet.setQueryParameter('orgId', organizationId);
-          await ExceedCountUserDataSet.query();
-          Modal.open({
-            maskClosable: false,
-            style: {
-              width: 820,
-            },
-            okCancel: false,
-            key: Modal.key(),
-            title: <OwnerTitle ds={ExceedCountUserDataSet} />,
-            children: <OwnerModal num={res} ds={ExceedCountUserDataSet} />,
-            onOk: async () => {
-              const selectedLength = ExceedCountUserDataSet.selected.length;
-              if (selectedLength > maxLength) {
-                message.error(`请选择${maxLength}个用户`);
-                return false;
-              }
-              try {
-                await MasterServices.axiosDeleteCleanMember(organizationId, ExceedCountUserDataSet.selected.map((i) => i.get('id')));
-                this.getUserCountCheck();
-              } catch (e) {
-                return false;
-              }
-            },
-          });
-        } else {
-          // 此user是注册者
-          const { email, realName } = user;
-          Modal.open({
-            maskClosable: false,
-            key: Modal.key(),
-            title: 'SaaS组织升级中',
-            children: `您所在组织的组织所有者${realName}(${email})升级组织后尚未确认组织用户，请联系组织所有者确认。`,
-            footer: null,
-          });
+    if (HAS_BASE_PRO) {
+      if (organizationId) {
+        const res = await MasterServices.axiosGetCheckUserCount(organizationId);
+        if (res && !res.data && res.data !== '') {
+          // 用户超过套餐任务
+          maxLength = res;
+          const user = await MasterServices.axiosGetCheckOwner(organizationId);
+          if (user && user.data === '') {
+            // 当前用户就是注册者
+            ExceedCountUserDataSet.setQueryParameter('orgId', organizationId);
+            await ExceedCountUserDataSet.query();
+            Modal.open({
+              maskClosable: false,
+              style: {
+                width: 820,
+              },
+              okCancel: false,
+              key: Modal.key(),
+              title: <OwnerTitle ds={ExceedCountUserDataSet} />,
+              children: <OwnerModal num={res} ds={ExceedCountUserDataSet} />,
+              onOk: async () => {
+                const selectedLength = ExceedCountUserDataSet.selected.length;
+                if (selectedLength > maxLength) {
+                  message.error(`请选择${maxLength}个用户`);
+                  return false;
+                }
+                try {
+                  await MasterServices.axiosDeleteCleanMember(organizationId, ExceedCountUserDataSet.selected.map((i) => i.get('id')));
+                  this.getUserCountCheck();
+                } catch (e) {
+                  return false;
+                }
+              },
+            });
+          } else {
+            // 此user是注册者
+            const { email, realName } = user;
+            Modal.open({
+              maskClosable: false,
+              key: Modal.key(),
+              title: 'SaaS组织升级中',
+              children: `您所在组织的组织所有者${realName}(${email})升级组织后尚未确认组织用户，请联系组织所有者确认。`,
+              footer: null,
+            });
+          }
         }
+        return true;
       }
-      return true;
+      setTimeout(() => {
+        this.getUserCountCheck();
+      }, 500);
     }
-    setTimeout(() => {
-      this.getUserCountCheck();
-    }, 500);
   }
 
   updateTheme = (newPrimaryColor) => {
