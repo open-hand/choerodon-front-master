@@ -44,7 +44,6 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const category = get(workBenchUseStore.getActiveStarProject, 'category');
 
   const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ workBenchUseStore })), [workBenchUseStore]);
-  console.log(currentModules, getAllCode());
   const value = {
     ...props,
     prefixCls: 'c7n-workbench',
