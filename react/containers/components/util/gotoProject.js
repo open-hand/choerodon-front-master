@@ -1,19 +1,17 @@
 import React from 'react';
-import HeaderStore from '../../stores/c7n/HeaderStore'
-import MenuStore, { getMenuType } from '../../stores/c7n/MenuStore';
-import findFirstLeafMenu from './findFirstLeafMenu';
-import AppState from '../../stores/c7n/AppState';
-import { historyPushMenu } from "@/utils";
-import axios from '../c7n/tools/axios';
-import { inject } from "mobx-react";
+import { historyPushMenu } from '@/utils';
 import { Modal, Button } from 'choerodon-ui/pro';
 import { Alert } from 'choerodon-ui';
+import HeaderStore from '../../stores/c7n/HeaderStore';
+import MenuStore, { getMenuType } from '../../stores/c7n/MenuStore';
+import findFirstLeafMenu from './findFirstLeafMenu';
+import axios from '../c7n/tools/axios';
 
 const isPro = C7NHasModule('@choerodon/base-pro');
-const isHuawei = C7NHasModule('@choerodon/base-huawei')
+const isHuawei = C7NHasModule('@choerodon/base-huawei');
 
 export default async function handleClickProject(data, history, AppState) {
-  let {
+  const {
     id, name, organizationId, category,
   } = data;
 
@@ -37,18 +35,18 @@ export default async function handleClickProject(data, history, AppState) {
                   type="info"
                 />
               ) : (
-                // 成员
-              <Alert
-              message={`请联系您所在组织的组织所有者${res.ownerRealName}(${res.ownerEmail})进行续费`}
-              type="info"
-              />
+              // 成员
+                <Alert
+                  message={`请联系您所在组织的组织所有者${res.ownerRealName}(${res.ownerEmail})进行续费`}
+                  type="info"
+                />
               )
             }
           </>
         ),
         onOk: () => {
           if (isOwner) {
-            window.open(window._env_.window._env_.UPGRADE_LINK.split(',')[0])
+            window.open(window._env_.UPGRADE_LINK.split(',')[0]);
           } else {
             gotoProject(true);
           }
@@ -62,7 +60,9 @@ export default async function handleClickProject(data, history, AppState) {
                   {cancelBtn}
                   <Button
                     onClick={() => gotoProject(true)}
-                  >进入项目</Button>
+                  >
+                    进入项目
+                  </Button>
                   {okBtn}
                 </>
               ) : (
@@ -74,13 +74,13 @@ export default async function handleClickProject(data, history, AppState) {
             }
 
           </div>
-        )
-      })
+        ),
+      });
     } else {
-      gotoProject()
+      gotoProject();
     }
   } else {
-    gotoProject()
+    gotoProject();
   }
 
   /**

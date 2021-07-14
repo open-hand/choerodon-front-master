@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="74" viewBox="0 0 128 74">
   <defs>
     <rect id="代办事项-b" width="120" height="66" x="0" y="0" rx="4"/>
-    <filter id="代办事项-a" width="110.8%" height="119.7%" x="-5.4%" y="-8.3%" filterUnits="objectBoundingBox">
+    <!-- <filter id="代办事项-a" width="110.8%" height="119.7%" x="-5.4%" y="-8.3%" filterUnits="objectBoundingBox">
       <feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"/>
       <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
       <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.0549019608   0 0 0 0 0.11372549   0 0 0 0 0.501960784  0 0 0 0.16 0"/>
-    </filter>
+    </filter> -->
   </defs>
   <g fill="none" fill-rule="evenodd" transform="translate(4 3)">
-    <use fill="#000" filter="url(#代办事项-a)" xlink:href="#代办事项-b"/>
+    <!-- <use fill="#000" filter="url(#代办事项-a)" xlink:href="#代办事项-b"/> -->
     <use fill="#FFF" xlink:href="#代办事项-b"/>
     <rect width="84" height="6" x="18" y="10" fill="#0E1D80" fill-opacity=".16" rx="2"/>
     <rect width="60" height="7" x="18" y="23" fill="#0E1D80" fill-opacity=".06" rx="2"/>

@@ -53,29 +53,17 @@ const QuestionNode = observer(({
         merge(queryData, { paramBacklogStatus: statusCode });
       }
       merge(queryData, { paramBacklogId: id, paramBacklogName: backlogNum });
-      history.push({
-        pathname: `/agile/${pathSuffix}`,
-        search: `?${queryString.stringify(queryData)}`,
-        state: {
-          backlogId: id,
-        },
-      });
+      window.open(`#/agile/${pathSuffix}?${queryString.stringify(queryData)}`);
       return;
     }
     if (switchCode === 'myStarBeacon') {
       if (typeCode !== 'feature') {
         merge(queryData, { paramIssueId: issueId, paramName: issueNum });
-        history.push({
-          pathname: '/agile/work-list/issue',
-          search: `?${queryString.stringify(queryData)}`,
-        });
+
+        window.open(`#/agile/work-list/issue?${queryString.stringify(queryData)}`);
       } else {
         merge(queryData, { paramIssueId: issueId, paramName: issueNum, category: 'PROGRAM' });
-
-        history.push({
-          pathname: '/agile/feature',
-          search: `?${queryString.stringify(queryData)}`,
-        });
+        window.open(`#/agile/feature?${queryString.stringify(queryData)}`);
       }
       return;
     }
@@ -84,19 +72,11 @@ const QuestionNode = observer(({
         planId, executeId, cycleId, assignedTo,
       } = otherData;
       merge(queryData, { cycle_id: cycleId, plan_id: planId, assignerId: assignedTo });
-      history.push({
-        pathname: `/testManager/TestPlan/execute/${executeId}`,
-        search: `?${queryString.stringify(queryData)}`,
-      });
+      window.open(`#/testManager/TestPlan/execute/${executeId}?${queryString.stringify(queryData)}`);
+
       return;
     }
-    history.push({
-      pathname: '/agile/scrumboard',
-      search: `?${queryString.stringify(queryData)}`,
-      state: {
-        issueId,
-      },
-    });
+    window.open(`#/agile/scrumboard?${queryString.stringify(merge(queryData, { paramIssueId: issueId }))}`);
   }
 
   function getIssueType(originTypeCode, isBacklogType = false) {

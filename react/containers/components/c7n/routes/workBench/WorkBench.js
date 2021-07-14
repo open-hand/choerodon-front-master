@@ -67,6 +67,7 @@ const WorkBench = () => {
     history,
     allowedModules,
     AppState,
+    organizationId,
   } = useWorkBenchStore();
 
   const { data: needUpgrade } = useUpgrade({
@@ -205,13 +206,7 @@ const WorkBench = () => {
             groupBtnItems: [
               {
                 name: 'test',
-                handler: () => {
-                  Modal.open({
-                    key: Modal.key(),
-                    title: 'dsadas',
-                    children: ' sadasdas',
-                  });
-                },
+                handler: test,
                 tooltipsConfig: {
                   title: 'hell',
                 },

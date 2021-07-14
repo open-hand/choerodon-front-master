@@ -46,11 +46,18 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     const mainData = todoQuestions;
     const tempArr = get(mainData, 'content');
     const currentId = get(mainData, 'selectedProjectId');
+    const searchDataId = get(mainData, 'searchDataId');
+    const searchData = get(mainData, 'searchData');
+    console.log('searchDataId......', searchDataId, selectedProjectId, currentId);
     if (selectedProjectId !== currentId) {
-      questionDs.query();
+      console.log('if....give up');
+      searchDataId || questionDs.query();
       return;
     }
     if (tempArr) {
+      searchDataId && questionDs.setQueryParameter('searchDataId', searchDataId);
+      searchDataId && questionDs.setQueryParameter('searchData', searchData);
+
       questionDs.loadData(tempArr);
       questionStore.setHasMore(
         mainData.totalElements > 0 && (mainData.number + 1) < mainData.totalPages,
