@@ -11,6 +11,7 @@ import {
   message, Button, Modal, DataSet, Table, Tooltip,
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
+import { mount, get as cherodonGet } from '@choerodon/inject';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '../tools/axios';
 import MasterHeader from '../ui/header';
@@ -47,10 +48,6 @@ const routeWithNoMenu = [{
 const { Column } = Table;
 
 let maxLength = 0;
-
-// 这里是因为在路由改变时 函数中拿到的当前activeMenu可能还未变化
-// 给定一个参数 如果重复调用方法三次还没改变则跳过逻辑
-let activeMenuTimes = 0;
 
 // 这里是helpDoc的
 let activeMenuTimes_doc = 0;
@@ -150,8 +147,16 @@ class Masters extends Component {
       guideOpen: false,
       guideContent: undefined,
     };
-    this.handleSetGuideContent(this.props);
+
+    cherodonGet('base-pro:handleSetGuideContent') && (cherodonGet('base-pro:handleSetGuideContent')(this.props, MasterServices, this.callback));
+    // this.handleSetGuideContent(this.props);
     this.handleGetHelpDocUrl(this.props);
+  }
+
+  callback = (data) => {
+    this.setState({
+      guideContent: data,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -160,64 +165,10 @@ class Masters extends Component {
     this.getGuideContentByLocationChange(nextProps, this.props);
   }
 
-  handleSetGuideContent = (newProps) => {
-    if (HAS_BASE_PRO) {
-      const { activeMenu } = newProps.MenuStore;
-      // 如果activeMenu是当前路由
-      if (activeMenu && window.location.hash.includes(activeMenu.route)) {
-        activeMenuTimes = 0;
-        const { projectId, organizationId } = newProps.AppState.menuType;
-        const menuId = activeMenu.id;
-        const { search } = newProps.location;
-        const searchParams = new URLSearchParams(search);
-        let data = {};
-        const tabCode = searchParams.get('activeKey');
-        switch (searchParams.get('type')) {
-          case 'project': {
-            data = {
-              menuId: activeMenu.id,
-              orgId: organizationId,
-              proId: projectId,
-              tab_code: tabCode,
-            };
-            break;
-          }
-          case 'organization': {
-            data = {
-              menuId: activeMenu.id,
-              orgId: organizationId,
-              tab_code: tabCode,
-            };
-            break;
-          }
-          case null: {
-            // 平台层
-            data = {
-              menuId: activeMenu.id,
-              orgId: 0,
-              tab_code: tabCode,
-            };
-            break;
-          }
-        }
-        MasterServices.axiosGetGuide(data).then((res) => {
-          this.setState({
-            guideContent: res,
-          });
-        });
-      } else if (activeMenuTimes < 3) {
-        activeMenuTimes += 1;
-        setTimeout(() => {
-          this.handleSetGuideContent(newProps);
-        }, 500);
-      } else {
-        activeMenuTimes = 0;
-        this.setState({
-          guideContent: undefined,
-        });
-      }
-    }
-  }
+  // handleSetGuideContent = (newProps) => {
+  //   if (HAS_BASE_PRO) {
+
+  // }
 
   getGuideContentByLocationChange = (newProps, oldProps) => {
     const { pathname: newPathname, search: newSearch } = newProps.location;
@@ -228,7 +179,7 @@ class Masters extends Component {
           guideOpen: false,
         });
       }
-      this.handleSetGuideContent(newProps);
+      cherodonGet('base-pro:handleSetGuideContent') && (cherodonGet('base-pro:handleSetGuideContent')(newProps, MasterServices, this.callback));
       this.handleGetHelpDocUrl(newProps);
     }
   }
