@@ -11,6 +11,8 @@ import useCpCacheStore from './useCpCacheStore';
 import modulesMapping from './modulesMapping';
 import ComponentsDataset from './ComponentsDataset';
 
+// eslint-disable-next-line no-undef
+const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
 const Store = createContext();
 
 export function useWorkBenchStore() {
@@ -24,9 +26,9 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     AppState,
     history,
   } = props;
-
+  const hasAgile = currentModules && currentModules.includes('agile');
   function getAllCode() {
-    let allowedModules = [...modulesMapping.common, ...modulesMapping.backlog];
+    let allowedModules = [...modulesMapping.common, ...hasAgile && HAS_BACKLOG ? modulesMapping.backlog : []];
     forEach(currentModules, (item) => {
       if (Object.prototype.hasOwnProperty.call(modulesMapping, item)) {
         allowedModules = allowedModules.concat(modulesMapping[item]);
@@ -42,7 +44,6 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const category = get(workBenchUseStore.getActiveStarProject, 'category');
 
   const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ workBenchUseStore })), [workBenchUseStore]);
-
   const value = {
     ...props,
     prefixCls: 'c7n-workbench',
