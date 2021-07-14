@@ -1,4 +1,6 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, {
+  Component, useEffect, useState,
+} from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer, Provider } from 'mobx-react';
 import {
@@ -48,9 +50,6 @@ const routeWithNoMenu = [{
 const { Column } = Table;
 
 let maxLength = 0;
-
-// 这里是helpDoc的
-let activeMenuTimes_doc = 0;
 
 function parseQueryToMenuType(search) {
   const menuType = {};
@@ -150,7 +149,7 @@ class Masters extends Component {
 
     cherodonGet('base-pro:handleSetGuideContent') && (cherodonGet('base-pro:handleSetGuideContent')(this.props, MasterServices, this.callback));
     // this.handleSetGuideContent(this.props);
-    this.handleGetHelpDocUrl(this.props);
+    cherodonGet('base-pro:handleGetHelpDocUrl') && (cherodonGet('base-pro:handleGetHelpDocUrl')(this.props, routeWithNoMenu, this.setDocUrl));
   }
 
   callback = (data) => {
@@ -180,7 +179,7 @@ class Masters extends Component {
         });
       }
       cherodonGet('base-pro:handleSetGuideContent') && (cherodonGet('base-pro:handleSetGuideContent')(newProps, MasterServices, this.callback));
-      this.handleGetHelpDocUrl(newProps);
+      cherodonGet('base-pro:handleGetHelpDocUrl') && (cherodonGet('base-pro:handleGetHelpDocUrl')(this.props, routeWithNoMenu, this.setDocUrl));
     }
   }
 
@@ -189,40 +188,6 @@ class Masters extends Component {
       const result = await MasterServices.axiosGetHelpDoc(params);
       if (result) {
         this.props.AppState.setDocUrl(result);
-      }
-    }
-  }
-
-  /**
-   * 路径改变时 查询当前路由对应的文档地址
-   */
-  handleGetHelpDocUrl = (newProps) => {
-    if (HAS_BASE_PRO) {
-      const params = {};
-      const pathname = newProps?.history?.location?.pathname;
-      const item = pathname && routeWithNoMenu.find((i) => pathname.includes(i.route));
-      // 如果当前路由匹配到了没有菜单的界面
-      if (item) {
-        params.menuCode = item.code;
-        this.setDocUrl(params);
-      } else {
-        const { activeMenu } = newProps.MenuStore;
-        if (activeMenu && window.location.hash.includes(activeMenu.route)) {
-          activeMenuTimes_doc = 0;
-          params.menuId = activeMenu.id;
-          if (newProps.history.location.search.includes('activeKey')) {
-            const paramsUrl = new URLSearchParams(newProps.history.location.search);
-            params.tabCode = paramsUrl.get('activeKey');
-          }
-          this.setDocUrl(params);
-        } else if (activeMenuTimes_doc < 3) {
-          activeMenuTimes_doc += 1;
-          setTimeout(() => {
-            this.handleGetHelpDocUrl(newProps);
-          }, 500);
-        } else {
-          activeMenuTimes = 0;
-        }
       }
     }
   }
@@ -302,25 +267,25 @@ class Masters extends Component {
     // }
   }
 
-  setRecordByMaxLength = (ds, re, length, selectIf) => {
-    const selectedLength = ds.selected.length;
-    const selectedIds = ds.selected.map((i) => i.id);
-    if (selectIf) {
-      if (selectedLength >= length) {
-        ds.records.forEach((i) => {
-          if (!selectedIds.includes(i.id)) {
-            i.selectable = false;
-          }
-        });
-      }
-    } else {
-      ds.records.forEach((i) => {
-        if (!i.get('owner')) {
-          i.selectable = true;
-        }
-      });
-    }
-  }
+	setRecordByMaxLength = (ds, re, length, selectIf) => {
+	  const selectedLength = ds.selected.length;
+	  const selectedIds = ds.selected.map((i) => i.id);
+	  if (selectIf) {
+	    if (selectedLength >= length) {
+	      ds.records.forEach((i) => {
+	        if (!selectedIds.includes(i.id)) {
+	          i.selectable = false;
+	        }
+	      });
+	    }
+	  } else {
+	    ds.records.forEach((i) => {
+	      if (!i.get('owner')) {
+	        i.selectable = true;
+	      }
+	    });
+	  }
+	}
 
   getUserCountCheck = async (orgId) => {
     const organizationId = orgId || this.props.AppState.currentMenuType.organizationId;
