@@ -47,7 +47,7 @@ const routeWithNoMenu = [{
   code: 'app-market',
 }];
 
-// const { Column } = Table;
+const { Column } = Table;
 
 let maxLength = 0;
 
@@ -88,51 +88,51 @@ function parseQueryToMenuType(search) {
 
 const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
 
-// let ExceedCountUserDataSet;
+let ExceedCountUserDataSet;
 
-// const OwnerTitle = liteObserver((props) => {
-//   const { ds } = props;
+const OwnerTitle = liteObserver((props) => {
+  const { ds } = props;
 
-//   const [num, setNum] = useState(0);
+  const [num, setNum] = useState(0);
 
-//   useEffect(() => {
-//     setNum(ds.selected.length);
-//   }, [ds.selected]);
+  useEffect(() => {
+    setNum(ds.selected.length);
+  }, [ds.selected]);
 
-//   return (
-//     <p className="c7ncd-master-header">
-//       <span>选择组织用户</span>
-//       <span>
-//         (已选择
-//         <span>{num || 0}</span>
-//         人)
-//       </span>
-//     </p>
-//   );
-// });
+  return (
+    <p className="c7ncd-master-header">
+      <span>选择组织用户</span>
+      <span>
+        (已选择
+        <span>{num || 0}</span>
+        人)
+      </span>
+    </p>
+  );
+});
 
-// const OwnerModal = liteObserver((props) => {
-//   const {
-//     num,
-//     ds,
-//   } = props;
+const OwnerModal = liteObserver((props) => {
+  const {
+    num,
+    ds,
+  } = props;
 
-//   return (
-//     <div className="c7ncd-master-owner">
-//       <p>
-//         <Icon type="info" />
-//         {`因您购买的高级版套餐最多允许组织内${num}人同时使用，请在组织下已有用户中选择${num}人。未选中的用户后续将不能进入该组织。`}
-//       </p>
-//       <Table
-//         dataSet={ds}
-//       >
-//         <Column name="realName" />
-//         <Column name="email" />
-//         <Column name="roleNames" />
-//       </Table>
-//     </div>
-//   );
-// });
+  return (
+    <div className="c7ncd-master-owner">
+      <p>
+        <Icon type="info" />
+        {`因您购买的高级版套餐最多允许组织内${num}人同时使用，请在组织下已有用户中选择${num}人。未选中的用户后续将不能进入该组织。`}
+      </p>
+      <Table
+        dataSet={ds}
+      >
+        <Column name="realName" />
+        <Column name="email" />
+        <Column name="roleNames" />
+      </Table>
+    </div>
+  );
+});
 
 @withRouter
 @inject('AppState', 'MenuStore', 'HeaderStore')
