@@ -1,5 +1,5 @@
 import React, {
-  Component, useEffect, useState,
+  Component, useEffect, useState, createRef,
 } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer, Provider } from 'mobx-react';
@@ -138,25 +138,23 @@ const OwnerModal = liteObserver((props) => {
 @inject('AppState', 'MenuStore', 'HeaderStore')
 @observer
 class Masters extends Component {
+  constructor(props) {
+    super(props);
+    this.cRef = createRef();
+  }
+
   componentWillMount() {
     this.initMenuType(this.props);
     const themeColor = localStorage.getItem('C7N-THEME-COLOR');
     this.updateTheme(themeColor);
-    this.state = {
-      guideOpen: false,
-      guideContent: undefined,
-    };
-
-    cherodonGet('base-pro:handleSetGuideContent') && (cherodonGet('base-pro:handleSetGuideContent')(this.props, MasterServices, this.callback));
-    // this.handleSetGuideContent(this.props);
     cherodonGet('base-pro:handleGetHelpDocUrl') && (cherodonGet('base-pro:handleGetHelpDocUrl')(this.props, routeWithNoMenu, this.setDocUrl));
   }
 
-  callback = (data) => {
-    this.setState({
-      guideContent: data,
-    });
-  }
+  // callback = (data) => {
+  //   this.setState({
+  //     guideContent: data,
+  //   });
+  // }
 
   componentWillReceiveProps(nextProps) {
     this.judgeIfGetUserCountCheck(nextProps, this.props);
@@ -173,12 +171,10 @@ class Masters extends Component {
     const { pathname: newPathname, search: newSearch } = newProps.location;
     const { pathname: oldPathname, search: oldSearch } = oldProps.location;
     if (newPathname !== oldPathname || newSearch !== oldSearch) {
-      if (this.state.guideOpen) {
-        this.setState({
-          guideOpen: false,
-        });
+      if (this.cRef.current.guideOpen) {
+        this.cRef.current.setguideOpen(false);
       }
-      cherodonGet('base-pro:handleSetGuideContent') && (cherodonGet('base-pro:handleSetGuideContent')(newProps, MasterServices, this.callback));
+      this.cRef.current.handleSetGuideContent(newProps);
       cherodonGet('base-pro:handleGetHelpDocUrl') && (cherodonGet('base-pro:handleGetHelpDocUrl')(this.props, routeWithNoMenu, this.setDocUrl));
     }
   }
@@ -506,89 +502,89 @@ class Masters extends Component {
     // }
   }
 
-  guidePopover() {
-    return (
-      <div className="c7ncd-guide-popover">
-        <div className="c7ncd-guide-popover-head">
-          <span style={{
-            width: '43%', display: 'inline-block', position: 'relative', zIndex: 1,
-          }}
-          >
-            {this.state.guideContent && this.state.guideContent.title ? this.state.guideContent.title : '平台指引'}
-          </span>
-          <img src={popoverHead} alt="" />
-        </div>
-        <div className="c7ncd-guide-popover-content">
-          {
-            this.state.guideContent
-            && this.state.guideContent.userGuideStepVOList
-            && this.state.guideContent.userGuideStepVOList.map((item) => (
-              <div className="c7ncd-guide-popover-content-item">
-                <div className="c7ncd-guide-popover-content-item-left">
-                  <p className="c7ncd-guide-popover-content-item-left-stepName">{item.stepName}</p>
-                  <p className="c7ncd-guide-popover-content-item-left-description">
-                    {item.description}
-                    <span
-                      onClick={() => {
-                        window.open(item.docUrl);
-                      }}
-                    >
-                      指引文档
-                    </span>
-                  </p>
-                </div>
-                <Tooltip title={!item.permitted && '暂无目标页面权限'}>
-                  <Button
-                    disabled={!item.permitted}
-                    onClick={() => {
-                      if (item.pageUrl) {
-                        window.open(`${window.location.origin}/#${item.pageUrl}`);
-                      }
-                    }}
-                  >
-                    去设置
-                  </Button>
-                </Tooltip>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    );
-  }
+  // guidePopover() {
+  //   return (
+  //     <div className="c7ncd-guide-popover">
+  //       <div className="c7ncd-guide-popover-head">
+  //         <span style={{
+  //           width: '43%', display: 'inline-block', position: 'relative', zIndex: 1,
+  //         }}
+  //         >
+  //           {this.state.guideContent && this.state.guideContent.title ? this.state.guideContent.title : '平台指引'}
+  //         </span>
+  //         <img src={popoverHead} alt="" />
+  //       </div>
+  //       <div className="c7ncd-guide-popover-content">
+  //         {
+  //           this.state.guideContent
+  //           && this.state.guideContent.userGuideStepVOList
+  //           && this.state.guideContent.userGuideStepVOList.map((item) => (
+  //             <div className="c7ncd-guide-popover-content-item">
+  //               <div className="c7ncd-guide-popover-content-item-left">
+  //                 <p className="c7ncd-guide-popover-content-item-left-stepName">{item.stepName}</p>
+  //                 <p className="c7ncd-guide-popover-content-item-left-description">
+  //                   {item.description}
+  //                   <span
+  //                     onClick={() => {
+  //                       window.open(item.docUrl);
+  //                     }}
+  //                   >
+  //                     指引文档
+  //                   </span>
+  //                 </p>
+  //               </div>
+  //               <Tooltip title={!item.permitted && '暂无目标页面权限'}>
+  //                 <Button
+  //                   disabled={!item.permitted}
+  //                   onClick={() => {
+  //                     if (item.pageUrl) {
+  //                       window.open(`${window.location.origin}/#${item.pageUrl}`);
+  //                     }
+  //                   }}
+  //                 >
+  //                   去设置
+  //                 </Button>
+  //               </Tooltip>
+  //             </div>
+  //           ))
+  //         }
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  handleClickGuide() {
-    this.setState({
-      guideOpen: !this.state.guideOpen,
-    });
-  }
+  // handleClickGuide() {
+  //   this.setState({
+  //     guideOpen: !this.state.guideOpen,
+  //   });
+  // }
 
   /**
    * 指引dom
    */
-  renderGuide() {
-    if (HAS_BASE_PRO && this.state.guideContent) {
-      return (
-        <Popover
-          visible={this.state.guideOpen}
-          content={this.guidePopover()}
-          trigger="click"
-          placement="topRight"
-          overlayClassName="c7ncd-guide-origin"
-        >
-          <div
-            className="c7ncd-guide"
-            onClick={this.handleClickGuide.bind(this)}
-          >
-            <Icon
-              type={this.state.guideOpen ? 'close' : 'touch_app-o'}
-            />
-          </div>
-        </Popover>
-      );
-    }
-    return '';
-  }
+  // renderGuide() {
+  //   if (HAS_BASE_PRO && this.state.guideContent) {
+  //     return (
+  //       <Popover
+  //         visible={this.state.guideOpen}
+  //         content={this.guidePopover()}
+  //         trigger="click"
+  //         placement="topRight"
+  //         overlayClassName="c7ncd-guide-origin"
+  //       >
+  //         <div
+  //           className="c7ncd-guide"
+  //           onClick={this.handleClickGuide.bind(this)}
+  //         >
+  //           <Icon
+  //             type={this.state.guideOpen ? 'close' : 'touch_app-o'}
+  //           />
+  //         </div>
+  //       </Popover>
+  //     );
+  //   }
+  //   return '';
+  // }
 
   render() {
     const {
@@ -615,7 +611,12 @@ class Masters extends Component {
               <div id="menu" style={fullPage ? { display: 'none' } : {}}>
                 <CommonMenu />
               </div>
-              {this.renderGuide()}
+              {mount('base-pro:Guide', {
+                ...this.props,
+                MasterServices,
+                popoverHead,
+                cRef: this.cRef,
+              })}
               <div id="autoRouter" className="content">
                 {
                   AppState.getCanShowRoute || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
