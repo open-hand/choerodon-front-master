@@ -35,9 +35,6 @@ const CustomChart = observer(() => {
     }
     return (
       <div style={{ height: '100%', overflowY: 'auto' }}>
-        <div className={`${clsPrefix}-search`}>
-          {mount('agile:CustomChartSearch', searchProps)}
-        </div>
         {optionConfig ? <Echart option={getOption()} style={{ height: 'calc(100% - .5rem)' }} key={`echarts-${searchId}`} /> : <EmptyPage content="当前暂无数据" />}
 
       </div>
@@ -62,7 +59,11 @@ const CustomChart = observer(() => {
         style={{
           margin: '2px 0 10px 4px',
         }}
-      />
+      >
+        <span className={`${clsPrefix}-search`}>
+          {mount('agile:CustomChartSearch', searchProps)}
+        </span>
+      </OverviewWrap.Header>
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
         <Spin spinning={loading}>
           {render()}
