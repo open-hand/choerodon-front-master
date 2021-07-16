@@ -1,0 +1,28 @@
+@import "~choerodon-ui/lib/style/themes/default";
+
+.card {
+  padding: 12px 24px;
+
+  &-header {
+    &-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #3a345f;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 6px;
+
+      i {
+        font-size: 20px;
+        color: #6887e8;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &-content {
+    height: calc(100% - 30px);
+    overflow: auto;
+  }
+}

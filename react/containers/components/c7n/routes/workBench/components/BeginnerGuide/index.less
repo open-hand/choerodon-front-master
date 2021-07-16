@@ -1,0 +1,38 @@
+.c7n-card-guide {
+  &-ul {
+    padding-left: 0;
+    list-style-type: none;
+  }
+
+  &-li {
+    display: flex;
+    flex-direction: column;
+    padding: 0 .12rem 0 .3rem;
+    background: #f5f6fa;
+    margin-bottom: .16rem;
+  }
+
+  &-title {
+    position: relative;
+    line-height: .6rem;
+    font-size: .13rem;
+    cursor: pointer;
+
+    &::before {
+      position: absolute;
+      left: -.18rem;
+      top: .23rem;
+      display: inline-block;
+      content: '';
+      background-image: url(./image/file-edit-outline.svg);
+      width: 13px;
+      height: 14px;
+    }
+  }
+
+  &-subtitle {
+    line-height: .3rem;
+    font-size: .12rem;
+    color: #0f1358a6;
+  }
+}
