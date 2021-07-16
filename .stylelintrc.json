@@ -18,6 +18,7 @@
     "selector-combinator-space-after": null,
     "selector-list-comma-newline-after": null,
     "selector-pseudo-element-colon-notation": null,
+    "selector-pseudo-class-no-unknown": [true, {"ignorePseudoClasses": ["global"] }],
     "unit-no-unknown": null,
     "value-list-max-empty-lines": null,
     "font-family-no-missing-generic-family-keyword": null,

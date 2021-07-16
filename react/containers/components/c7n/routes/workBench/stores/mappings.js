@@ -285,6 +285,80 @@ const componentsObj = {
     describe: '展示当前迭代中我经手的问题项。',
     img: todoQuestions,
   },
+  // #region 资源概览
+  // 资源概览
+  resourceOverview: {
+    layout: {
+      x: 0,
+      y: 23,
+      h: 1,
+      w: 7,
+      minH: 1,
+      minW: 7,
+      i: 'resourceOverview',
+    },
+    name: 'resourceOverview',
+    type: 'resourceOverview',
+    groupId: 'devops',
+    title: '资源概览',
+    describe: '资源概览',
+    img: todoQuestions,
+  },
+  // 资源池监控
+  resourceMonitoring: {
+    layout: {
+      x: 0,
+      y: 23,
+      h: 5,
+      w: 7,
+      minH: 5,
+      minW: 7,
+      i: 'resourceMonitoring',
+    },
+    name: 'resourceMonitoring',
+    type: 'resourceMonitoring',
+    groupId: 'devops',
+    title: '资源池监控',
+    describe: '资源池监控',
+    img: todoQuestions,
+  },
+  // 新手入门
+  beginnerGuide: {
+    layout: {
+      x: 7,
+      y: 3,
+      h: 4,
+      w: 5,
+      minH: 4,
+      minW: 5,
+      i: 'beginnerGuide',
+    },
+    name: 'beginnerGuide',
+    type: 'beginnerGuide',
+    groupId: 'common',
+    title: '新手入门',
+    describe: '新手入门',
+    img: todoQuestions,
+  },
+  // 公告
+  notice: {
+    layout: {
+      x: 7,
+      y: 3,
+      h: 4,
+      w: 5,
+      minH: 4,
+      minW: 5,
+      i: 'notice',
+    },
+    name: 'notice',
+    type: 'notice',
+    groupId: 'common',
+    title: '公告',
+    describe: '公告',
+    img: todoQuestions,
+  },
+  // #endregion 资源概览
 };
 
 export default componentsObj;
