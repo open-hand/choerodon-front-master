@@ -2,33 +2,16 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
-import { DataSet, Table } from 'choerodon-ui/pro';
+import { Table } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
-import { TableProps } from 'choerodon-ui/pro/lib/table/Table';
 import { TableQueryBarType, TableColumnTooltip, TableAutoHeightType } from 'choerodon-ui/pro/lib/table/enum';
 import { ColumnProps } from 'choerodon-ui/pro/lib/table/Column';
 import { StatusTag } from '@choerodon/components';
 
 import AppState from '@/containers/stores/c7n/AppState';
 import { statusKindMap, statusKindMapKey } from './common';
+import useStore from './store';
 import styles from './index.less';
-
-const dataset = new DataSet({
-  paging: false,
-  autoQuery: true,
-  selection: false,
-  transport: {
-    read: () => ({
-      url: `devops/v1/organizations/${AppState.currentMenuType?.organizationId}/resource/cluster`,
-      method: 'get',
-    }),
-  },
-  fields: [
-    { name: 'name', label: '主机名' },
-    { name: 'status', label: '运行状态' },
-    { name: 'creationDate', label: '创建时间' },
-  ],
-});
 
 interface K8STableProps {
   classNamePrefix: string;
@@ -36,6 +19,7 @@ interface K8STableProps {
 
 function ClusterTable(props: K8STableProps) {
   const history = useHistory();
+  const { clusterDataSet } = useStore();
   const { classNamePrefix } = props;
 
   // 跳转到集群管理页面
@@ -81,13 +65,13 @@ function ClusterTable(props: K8STableProps) {
   // const containerHeight = '50%';
   // let autoHeight: TableProps['autoHeight'] = false;
 
-  // if (dataset.length >= 6) {
+  // if (clusterDataSet.length >= 6) {
   //   // containerHeight = '300px';
   //   autoHeight = { type: TableAutoHeightType.minHeight, diff: 20 };
   // }
 
   return (
-    <Table dataSet={dataset} columns={columns} queryBar={TableQueryBarType.none} autoHeight={{ type: TableAutoHeightType.minHeight, diff: 20 }} />
+    <Table dataSet={clusterDataSet} columns={columns} queryBar={TableQueryBarType.none} autoHeight={{ type: TableAutoHeightType.minHeight, diff: 20 }} />
   );
 }
 
