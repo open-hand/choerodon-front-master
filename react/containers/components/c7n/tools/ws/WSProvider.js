@@ -80,7 +80,7 @@ export default class WSProvider extends Component {
       onMessage(message, key);
     }
     if (handlers) {
-      handlers.forEach(handler => handler(data));
+      handlers.forEach((handler) => handler(data));
     }
   };
 
@@ -118,16 +118,15 @@ export default class WSProvider extends Component {
     }
   };
 
-
   destroySocketByPath(path) {
     const { ws } = this;
     const w = ws.get(path);
     if (w) {
       clearInterval(w.hb);
-      w.removeEventListener('open', evt => this.handleOpen(evt, path));
-      w.removeEventListener('message', evt => this.handleMessage(evt, path));
-      w.removeEventListener('error', evt => this.handleError(evt, path));
-      w.removeEventListener('close', evt => this.handleClose(evt, path));
+      w.removeEventListener('open', (evt) => this.handleOpen(evt, path));
+      w.removeEventListener('message', (evt) => this.handleMessage(evt, path));
+      w.removeEventListener('error', (evt) => this.handleError(evt, path));
+      w.removeEventListener('close', (evt) => this.handleClose(evt, path));
       w.close();
       ws.set(path, null);
     }
@@ -159,10 +158,10 @@ export default class WSProvider extends Component {
     if (server && path) {
       try {
         const ws = new WebSocket(`${server}/${path}`);
-        ws.addEventListener('open', evt => this.handleOpen(evt, path));
-        ws.addEventListener('message', evt => this.handleMessage(evt, path));
-        ws.addEventListener('error', evt => this.handleError(evt, path));
-        ws.addEventListener('close', evt => this.handleClose(evt, path));
+        ws.addEventListener('open', (evt) => this.handleOpen(evt, path));
+        ws.addEventListener('message', (evt) => this.handleMessage(evt, path));
+        ws.addEventListener('error', (evt) => this.handleError(evt, path));
+        ws.addEventListener('close', (evt) => this.handleClose(evt, path));
         ws.hb = setInterval(() => this.heartBeat(path), TIMEOUT_TIME);
         this.ws.set(path, ws);
       } catch (e) {

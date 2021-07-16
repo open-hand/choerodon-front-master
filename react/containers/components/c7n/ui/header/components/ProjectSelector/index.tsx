@@ -3,7 +3,8 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { Select, Icon, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
-import { axios } from '@/index';
+import Jsonbig from 'json-bigint';
+import { axios, WSHandler } from '@/index';
 import { ValueChangeAction } from 'choerodon-ui/pro/lib/text-field/enum';
 import { useDebounceFn, useVirtualList } from 'ahooks';
 // @ts-expect-error
@@ -12,6 +13,7 @@ import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
 import handleClickProject from '@/containers/components/util/gotoProject';
 import MenuStore, { getMenuType } from '@/containers/stores/c7n/MenuStore';
+
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import './index.less';
 import { withRouter } from 'react-router';
@@ -222,24 +224,49 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
     );
   };
 
+  const handleMessage = (d: any, k: string) => {
+    if (k === 'star-projects') {
+      AppState.setStarProject(Jsonbig.parse(d));
+    } else {
+      AppState.setRecentUse(Jsonbig.parse(d).map((i: any) => i.projectDTO));
+    }
+  };
+
   return (
-    <Select
-      valueChangeAction={'input' as ValueChangeAction}
-      clearButton={false}
-      ref={Ref as any}
-      searchable
-      value={AppState.getDropDownPro}
-      onInput={(e:FormEvent<any>) => {
+    <>
+      <WSHandler
+        messageKey="star-projects"
+        onMessage={(data: any) => handleMessage(data, 'star-projects')}
+      >
+        <>
+        </>
+      </WSHandler>
+      <WSHandler
+        messageKey="latest_visit"
+        onMessage={(data: any) => handleMessage(data, 'latest_visit')}
+      >
+        <>
+        </>
+      </WSHandler>
+      <Select
+        valueChangeAction={'input' as ValueChangeAction}
+        clearButton={false}
+        ref={Ref as any}
+        searchable
+        value={AppState.getDropDownPro}
+        onInput={(e:FormEvent<any>) => {
         // @ts-expect-error
-        run(e.target.value);
-      }}
-      onBlur={() => {
-        setProjectFilter('');
-      }}
-      placeholder="请选择项目"
-      popupContent={getPopContent}
-      className={prefixCls}
-    />
+          run(e.target.value);
+        }}
+        onBlur={() => {
+          setProjectFilter('');
+        }}
+        placeholder="请选择项目"
+        popupContent={getPopContent}
+        className={prefixCls}
+      />
+    </>
+
   );
 }));
 

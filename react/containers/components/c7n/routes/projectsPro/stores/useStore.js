@@ -125,7 +125,7 @@ export default function useStore(AppState, history) {
         if (path) {
           historyPushMenu(history, path, domain);
         }
-        AppState.getProjects();
+        // AppState.getProjects();
       });
     },
 

@@ -122,7 +122,7 @@ export default async function handleClickProject(data, history, AppState) {
         }
         historyPushMenu(history, path, domain);
       }
-      AppState.getProjects();
+      // AppState.getProjects();
     });
   }
 }
