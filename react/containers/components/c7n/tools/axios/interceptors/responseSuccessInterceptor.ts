@@ -19,11 +19,15 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
   }
 
   if (get(response, 'status') === 204) {
-    axiosCache.set(cancelCacheKey, {
-      isPending: false,
-    });
+    if (enabledCancelCache && !useCache) {
+      axiosCache.set(cancelCacheKey, {
+        isPending: false,
+      });
+      axiosEvent.emit(cancelCacheKey, response);
+    }
     return response;
   }
+
   if (resData?.failed === true) {
     axiosCache.set(cancelCacheKey, {
       isPending: false,
