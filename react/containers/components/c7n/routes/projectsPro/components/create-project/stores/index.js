@@ -14,10 +14,6 @@ import useStore from './useStore';
 
 const Store = createContext();
 
-// TODO 使用@choerodon/inject
-// eslint-disable-next-line no-undef
-const HAS_BASE_PRO = C7NHasModule('@choerodon/base-saas');
-
 export function useCreateProjectProStore() {
   return useContext(Store);
 }
@@ -54,7 +50,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   const loadCategory = async () => {
     await axios.all([
       categoryDs.query(),
-      HAS_BASE_PRO ? createProjectStore.checkSenior(organizationId) : null,
+      createProjectStore.checkSenior(organizationId),
     ]);
     const isSenior = createProjectStore.getIsSenior;
     categoryDs.forEach((eachRecord) => {
@@ -71,7 +67,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       const [, projectData] = await axios.all([
         categoryDs.query(),
         formDs.query(),
-        HAS_BASE_PRO ? createProjectStore.checkSenior(organizationId) : null,
+        createProjectStore.checkSenior(organizationId),
       ]);
       const isSenior = createProjectStore.getIsSenior;
       if (projectData && projectData.categories && projectData.categories.length) {
