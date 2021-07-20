@@ -18,6 +18,7 @@ declare module 'axios' {
     useCache?:boolean
     enabledCancelRoute?:boolean,
     cancelCacheKey?: string,
+    application?: 'default' | 'ui'
   }
 }
 
@@ -32,6 +33,9 @@ instance.defaults.enabledCancelCache = true;
 
 // 这里配置一个切换路由取消全部pending请求的标识
 instance.defaults.enabledCancelRoute = true;
+
+// ds还是默认
+instance.defaults.application = 'default';
 
 instance.defaults.transformResponse = [
   transformJSONBig,
