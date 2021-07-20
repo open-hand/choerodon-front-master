@@ -33,8 +33,8 @@ const Doc = () => {
   const goKnowledgeLink = ({
     baseId, orgFlag, projectId, organizationId, spaceId, baseName, name,
   }) => {
-    const url = `/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}?baseName=${baseName}&id=${orgFlag ? organizationId : projectId}&organizationId=${organizationId}&spaceId=${spaceId}&name=${name}&type=${orgFlag ? 'organization' : 'project'}`;
-    history.push(url);
+    const url = `#/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}?baseName=${baseName}&id=${orgFlag ? organizationId : projectId}&organizationId=${organizationId}&spaceId=${spaceId}&name=${name}&type=${orgFlag ? 'organization' : 'project'}`;
+    window.open(url);
   };
 
   const renderUserList = (userList, visibleText = false) => map(userList, ({
