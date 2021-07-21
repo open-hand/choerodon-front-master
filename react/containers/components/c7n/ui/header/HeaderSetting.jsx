@@ -29,12 +29,12 @@ const Setting = ({
   // 组织改变 重新查询getIsSaas
   useEffect(() => {
     if (isSaas && !Object.keys(isSaas).includes(AppState.currentMenuType.organizationId)) {
-      get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState);
+      get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState, isSaas);
     }
   }, [AppState.currentMenuType.organizationId])
 
   useEffect(() => {
-    get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState);
+    get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState, isSaas);
   }, [])
 
   const theme = 'theme4';
