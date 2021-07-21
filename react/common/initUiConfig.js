@@ -1,4 +1,4 @@
-import uiInstance from '@/containers/components/c7n/tools/axios';
+import { uiAxiosInstance } from '@/containers/components/c7n/tools/axios';
 import AppState from '@/containers/stores/c7n/AppState';
 import { UI_CONFIGURE } from '@/utils';
 import { configure } from 'choerodon-ui';
@@ -14,7 +14,7 @@ const UI_CONFIG = {
     showQuickJumper: true,
   },
   modalMaskClosable: 'dblclick',
-  axios: uiInstance,
+  axios: uiAxiosInstance,
   dataKey: 'list',
   labelLayout: 'float',
   queryBar: 'bar',

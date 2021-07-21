@@ -1,10 +1,15 @@
-import axiosIntance from './axios';
+import choerodonAxios from './axios';
 
-const uiAxiosInstance = axiosIntance;
-uiAxiosInstance.defaults.application = 'ui';
+const uiAxiosInstance = choerodonAxios({
+  type: 'ui',
+});
+
+const c7nAxios = choerodonAxios({
+  type: 'default',
+});
 
 export {
   uiAxiosInstance,
 };
 
-export default axiosIntance;
+export default c7nAxios;
