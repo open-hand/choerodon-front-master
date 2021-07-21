@@ -9,6 +9,10 @@ import env from '../img/envLists.png';
 import selfInfo from '../img/selfInfo.svg';
 import selfCode from '../img/selfCode.svg';
 import myExecution from '../img/myExecution.png';
+import resourceOverview from '../img/resourceOverview.svg';
+import resourceMonitoring from '../img/resourceMonitoring.svg';
+import beginnerGuide from '../img/beginnerGuide.svg';
+import notice from '../img/notice.svg';
 
 const componentsObj = {
   // 星标项目
@@ -302,7 +306,7 @@ const componentsObj = {
     groupId: 'devops',
     title: '资源概览',
     describe: '资源概览',
-    img: todoQuestions,
+    img: resourceOverview,
   },
   // 资源池监控
   resourceMonitoring: {
@@ -320,7 +324,7 @@ const componentsObj = {
     groupId: 'devops',
     title: '资源池监控',
     describe: '资源池监控',
-    img: todoQuestions,
+    img: resourceMonitoring,
   },
   // 新手入门
   beginnerGuide: {
@@ -338,7 +342,7 @@ const componentsObj = {
     groupId: 'common',
     title: '新手入门',
     describe: '新手入门',
-    img: todoQuestions,
+    img: beginnerGuide,
   },
   // 公告
   notice: {
@@ -356,7 +360,7 @@ const componentsObj = {
     groupId: 'common',
     title: '公告',
     describe: '公告',
-    img: todoQuestions,
+    img: notice,
   },
   // #endregion 资源概览
 };
