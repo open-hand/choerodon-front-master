@@ -23,9 +23,13 @@
 
   &-title {
     position: relative;
+    flex: 1;
     font-size: .13rem;
     color: #0f1358;
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &::before {
       position: absolute;
@@ -38,6 +42,7 @@
   }
 
   &-date {
+    width: 80px;
     font-size: .12rem;
     color: rgba(15, 19, 88, 0.65);
   }
