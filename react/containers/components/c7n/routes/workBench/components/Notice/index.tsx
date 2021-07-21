@@ -20,6 +20,7 @@ export default function Notice() {
       drawer: true,
       children: <DetailModal item={item} />,
       closable: true,
+      footer: false,
     } as ModalProps);
   };
 
