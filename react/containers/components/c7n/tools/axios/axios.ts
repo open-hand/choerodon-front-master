@@ -22,47 +22,56 @@ declare module 'axios' {
   }
 }
 
-// @ts-ignore
-const instance:AxiosStatic = axios.create({
-  timeout: 30000,
-  baseURL: API_HOST,
-});
+type choerodonAxiosProps = {
+  type: 'default' | 'ui',
+}
 
-// 这里配置一个缓存请求得标识
-instance.defaults.enabledCancelCache = true;
+function choerodonAxios({
+  type,
+}:choerodonAxiosProps) {
+  // @ts-ignore
+  const instance:AxiosStatic = axios.create({
+    timeout: 30000,
+    baseURL: API_HOST,
+  });
 
-// 这里配置一个切换路由取消全部pending请求的标识
-instance.defaults.enabledCancelRoute = true;
+  // 这里配置一个缓存请求得标识
+  instance.defaults.enabledCancelCache = true;
 
-// ds还是默认
-instance.defaults.application = 'default';
+  // 这里配置一个切换路由取消全部pending请求的标识
+  instance.defaults.enabledCancelRoute = true;
 
-instance.defaults.transformResponse = [
-  transformJSONBig,
-];
+  // ds还是默认
+  instance.defaults.application = type || 'default';
 
-instance.defaults.paramsSerializer = paramsSerializer;
+  instance.defaults.transformResponse = [
+    transformJSONBig,
+  ];
 
-// -------------------------------------------------------------------
+  instance.defaults.paramsSerializer = paramsSerializer;
 
-// 添加切换路由取消pending请求拦截器
-instance.interceptors.request.use(routeCancelInterceptor); // 4
+  // -------------------------------------------------------------------
 
-// 添加缓存(复用重复请求)请求拦截器
-instance.interceptors.request.use(handleCancelCacheRequest, handleRequestError); // 3
+  // 添加切换路由取消pending请求拦截器
+  instance.interceptors.request.use(routeCancelInterceptor); // 4
 
-// 分页数据转换拦截器
-instance.interceptors.request.use(transformRequestPage); // 2
+  // 添加缓存(复用重复请求)请求拦截器
+  instance.interceptors.request.use(handleCancelCacheRequest, handleRequestError); // 3
 
-// 添加头部拦截器， 以及请求失败拦截器
-instance.interceptors.request.use(addCustomHeader); // 1
+  // 分页数据转换拦截器
+  instance.interceptors.request.use(transformRequestPage); // 2
 
-// -------------------------------------------------------------------
-// 添加响应拦截器
-instance.interceptors.response.use(transformResponsePage); // 1
-instance.interceptors.response.use(handleResponseInterceptor, handelResponseError); // 2
+  // 添加头部拦截器， 以及请求失败拦截器
+  instance.interceptors.request.use(addCustomHeader); // 1
 
-instance.all = axios.all;
-instance.bind = axios.bind;
+  // -------------------------------------------------------------------
+  // 添加响应拦截器
+  instance.interceptors.response.use(transformResponsePage); // 1
+  instance.interceptors.response.use(handleResponseInterceptor, handelResponseError); // 2
 
-export default instance;
+  instance.all = axios.all;
+  instance.bind = axios.bind;
+  return instance;
+}
+
+export default choerodonAxios;
