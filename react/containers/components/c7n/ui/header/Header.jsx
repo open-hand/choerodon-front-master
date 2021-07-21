@@ -179,9 +179,9 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         </li>
       </ul>
       <ul className={`${prefixCls}-right`}>
-        {hasInject('base-pro:saasUpgrade') ? (
+        {hasInject('base-saas:saasUpgrade') ? (
           <li style={{ width: 'auto', marginRight: 10 }} className={`${prefixCls}-right-li`}>
-            {mount('base-pro:saasUpgrade')}
+            {mount('base-saas:saasUpgrade')}
           </li>
         ) : null}
         <OrgSelect />

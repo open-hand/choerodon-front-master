@@ -25,8 +25,8 @@ export default function useStore() {
     },
 
     async checkSenior(organizationId) {
-      if (hasInject('base-pro:checkSaaSSenior')) {
-        const res = await getInject('base-pro:checkSaaSSenior')(organizationId);
+      if (hasInject('base-saas:checkSaaSSenior')) {
+        const res = await getInject('base-saas:checkSaaSSenior')(organizationId);
         this.setIsSenior(res);
       } else {
         this.setIsSenior(true);
