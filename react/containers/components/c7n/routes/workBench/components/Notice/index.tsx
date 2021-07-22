@@ -27,6 +27,7 @@ export default function Notice() {
   const NoticeRender = (notice: NoticeVO) => (
     <li className={styles[`${classNamePrefix}-li`]} key={notice.id}>
       <span className={styles[`${classNamePrefix}-header`]}>
+        <span className={styles[`${classNamePrefix}-icon`]} />
         <span className={styles[`${classNamePrefix}-title`]} onClick={() => openDetailModal(notice)}>{notice.title}</span>
         <span className={styles[`${classNamePrefix}-date`]}>
           (

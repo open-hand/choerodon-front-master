@@ -21,6 +21,18 @@
     line-height: .2rem;
   }
 
+  &-icon {
+    position: absolute;
+    left: -0.3rem;
+    font-family: 'icomoon' !important;
+    font-size: .2rem;
+    color: #f9a313;
+
+    &::before {
+      content: "\EBDB";
+    }
+  }
+
   &-title {
     position: relative;
     flex: 1;
@@ -30,15 +42,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
-    &::before {
-      position: absolute;
-      content: "\EBDB";
-      left: -0.3rem;
-      font-family: icomoon !important;
-      font-size: .2rem;
-      color: #f9a313;
-    }
   }
 
   &-date {

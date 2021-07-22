@@ -1,18 +1,20 @@
-.c7n-card-overview {
+@root-classname: .c7n-card-overview;
+
+@{root-classname} {
   height: 100%;
 
-  &-row {
+  @{root-classname}-row {
     max-height: 80px;
     height: 100%;
     overflow: hidden;
   }
 
-  &-col {
+  @{root-classname}-col {
     height: 100%;
     padding: 0 12px;
   }
 
-  &-card {
+  @{root-classname}-card {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,12 +23,12 @@
     height: 100%;
     background-size: 100% 100%;
 
-    &-title {
+    @{root-classname}-card-title {
       font-size: 20px;
       font-family: PingFangSC-Medium, PingFang SC;
     }
 
-    &-count {
+    @{root-classname}-card-count {
       font-size: 35px;
       font-family: DINAlternate-Bold, DINAlternate;
     }
@@ -37,17 +39,17 @@
   //   color: #1fbab3;
   // }
 
-  &-host {
+  @{root-classname}-host {
     background-image: url('./imgae/aliyunBG.svg');
     color: #31a8e9;
   }
 
-  &-cluster {
+  @{root-classname}-cluster {
     background-image: url('./imgae/k8sBG.svg');
     color: #699ffe;
   }
 
-  &-env {
+  @{root-classname}-env {
     background-image: url('./imgae/environmentBG.svg');
     color: #5d7ce5;
   }
@@ -58,16 +60,16 @@
   // }
 
   @media (max-width: 1400px) {
-    &-col {
+    @{root-classname}-col {
       padding: 0 6px;
     }
 
-    &-card {
-      &-title {
+    @{root-classname}-card {
+      @{root-classname}-card-title {
         font-size: 14px;
       }
 
-      &-count {
+      @{root-classname}-card-count {
         font-size: 30px;
       }
     }
