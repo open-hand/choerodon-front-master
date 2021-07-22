@@ -4,9 +4,21 @@
   flex: 1 1 62%;
   margin-right: .20rem;
   overflow: hidden;
+  &-title{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &-left{
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+  }
   &-title-count {
     display: inline-block;
     margin-left: .08rem;
+    margin-right: .1rem;
     padding: 0 .06rem;
     background: rgba(244, 133, 144, 0.1);
     border-radius: 10px;

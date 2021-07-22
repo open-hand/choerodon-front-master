@@ -93,7 +93,7 @@ class RenderPopoverContentClass extends Component {
         <RenderPopoverContentDetailClass
           handleVisibleChange={this.handleVisibleChange}
         />
-      </div>,
+                   </div>,
       document.body)
     );
   }

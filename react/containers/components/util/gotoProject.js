@@ -1,14 +1,11 @@
 import React from 'react';
 import { historyPushMenu } from '@/utils';
-import { inject } from 'mobx-react';
 import { Modal, Button } from 'choerodon-ui/pro';
 import { Alert } from 'choerodon-ui';
 import HeaderStore from '../../stores/c7n/HeaderStore';
 import MenuStore, { getMenuType } from '../../stores/c7n/MenuStore';
 import findFirstLeafMenu from './findFirstLeafMenu';
-import AppState from '../../stores/c7n/AppState';
 import axios from '../c7n/tools/axios';
-import menuStore from '../../stores/c7n/MenuStore';
 
 const isPro = C7NHasModule('@choerodon/base-pro');
 const isHuawei = C7NHasModule('@choerodon/base-huawei');
@@ -125,7 +122,7 @@ export default async function handleClickProject(data, history, AppState) {
         }
         historyPushMenu(history, path, domain);
       }
-      AppState.getProjects();
+      // AppState.getProjects();
     });
   }
 }

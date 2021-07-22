@@ -31,6 +31,10 @@ import ExecutionQuestions from './components/question-execution';
 import './WorkBench.less';
 import SelfCode from './components/SelfCode';
 import MyHandler from './components/my-handler';
+import ResourceOverview from './components/ResourceOverview';
+import ResourceMonitoring from './components/ResourceMonitoring';
+import BeginnerGuide from './components/BeginnerGuide';
+import Notice from './components/Notice';
 
 let observerLayout;
 
@@ -49,6 +53,10 @@ const ComponetsObjs = {
   selfCode: <SelfCode />,
   myExecution: <ExecutionQuestions />,
   myhandler: <MyHandler />,
+  resourceOverview: <ResourceOverview />,
+  resourceMonitoring: <ResourceMonitoring />,
+  beginnerGuide: <BeginnerGuide />,
+  notice: <Notice />,
 };
 export function injectWorkBench(key, component) {
   ComponetsObjs[key] = component;
@@ -67,6 +75,7 @@ const WorkBench = () => {
     history,
     allowedModules,
     AppState,
+    organizationId,
   } = useWorkBenchStore();
 
   const { data: needUpgrade } = useUpgrade({
@@ -205,13 +214,7 @@ const WorkBench = () => {
             groupBtnItems: [
               {
                 name: 'test',
-                handler: () => {
-                  Modal.open({
-                    key: Modal.key(),
-                    title: 'dsadas',
-                    children: ' sadasdas',
-                  });
-                },
+                handler: test,
                 tooltipsConfig: {
                   title: 'hell',
                 },

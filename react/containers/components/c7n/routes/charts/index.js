@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import sortBy from 'lodash/sortBy';
 import { inject } from 'mobx-react';
+import { mount } from '@choerodon/inject';
 import { withRouter, useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Header from '../../tools/page/Header';
 import Page from '../../tools/page';
 import Content from '../../tools/page/Content';
 import Breadcrumb from '../../tools/tab-page/Breadcrumb';
@@ -13,7 +15,7 @@ import './style/index.less';
 const Home = (props) => {
   const [list, setList] = useState([]);
   const {
-    AppState, reportType, service,
+    AppState, reportType, service, showCreate = false, extraCharts = [],
   } = props;
 
   const { search } = useLocation();
@@ -50,11 +52,18 @@ const Home = (props) => {
 
   return (
     <Page service={service}>
+      <Header>
+        {showCreate && (
+        <>
+          {mount('agile:AgileChartHeaderButtons', {})}
+        </>
+        )}
+      </Header>
       <Breadcrumb />
       <Content className="c7n-charts">
         <div className="line">
           <div className="line-content">
-            {sortBy(list, 'sort').map((chart) => renderGroup(chart))}
+            {[...sortBy(list, 'sort'), ...extraCharts].map((chart) => renderGroup(chart))}
           </div>
         </div>
       </Content>

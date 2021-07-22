@@ -1,0 +1,59 @@
+.c7n-card-notice {
+  &-ul {
+    padding-top: .08rem;
+    padding-left: 0;
+    list-style-type: none;
+  }
+
+  &-li {
+    display: flex;
+    flex-direction: column;
+    padding: .08rem .12rem .08rem .30rem;
+    border-top: 1px dashed #d9e6f2ff;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+  }
+
+  &-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    line-height: .2rem;
+  }
+
+  &-title {
+    position: relative;
+    flex: 1;
+    font-size: .13rem;
+    color: #0f1358;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &::before {
+      position: absolute;
+      content: "\EBDB";
+      left: -0.3rem;
+      font-family: icomoon !important;
+      font-size: .2rem;
+      color: #f9a313;
+    }
+  }
+
+  &-date {
+    width: 80px;
+    font-size: .12rem;
+    color: rgba(15, 19, 88, 0.65);
+  }
+
+  &-content {
+    margin-top: .08rem;
+    font-size: .12rem;
+    line-height: .2rem;
+    color: rgba(15, 19, 88, 0.65);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

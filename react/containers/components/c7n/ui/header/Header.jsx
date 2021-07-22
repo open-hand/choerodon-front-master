@@ -30,9 +30,9 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     AppState: { currentMenuType: { organizationId } },
   } = props;
 
-  function getAuth() {
-    return axios.get(`iam/choerodon/v1/register_saas/check_is_owner?tenantId=${organizationId}`);
-  }
+  const getAuth = useCallback(() => axios.get(`iam/choerodon/v1/register_saas/check_is_owner?tenantId=${organizationId}`, {
+    enabledCancelCache: true,
+  }), [organizationId]);
 
   const checkAuthOfSaas = useCallback(async () => {
     if (SAAS_FEEDBACK && organizationId) {
@@ -47,7 +47,7 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
 
   useEffect(() => {
     checkAuthOfSaas();
-  }, [checkAuthOfSaas]);
+  }, [organizationId]);
 
   useEffect(() => {
     const { AppState } = props;
@@ -179,9 +179,9 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         </li>
       </ul>
       <ul className={`${prefixCls}-right`}>
-        {hasInject('base-pro:saasUpgrade') ? (
+        {hasInject('base-saas:saasUpgrade') ? (
           <li style={{ width: 'auto', marginRight: 10 }} className={`${prefixCls}-right-li`}>
-            {mount('base-pro:saasUpgrade')}
+            {mount('base-saas:saasUpgrade')}
           </li>
         ) : null}
         <OrgSelect />
