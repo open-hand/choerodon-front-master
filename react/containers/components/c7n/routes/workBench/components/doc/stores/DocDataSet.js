@@ -1,3 +1,5 @@
+import Jsonbig from 'json-bigint';
+
 /* eslint-disable import/no-anonymous-default-export */
 export default (({
   organizationId, selectedProjectId, self, docStore, cacheStore,
@@ -13,7 +15,7 @@ export default (({
       method: 'get',
       transformResponse: (res) => {
         try {
-          const mainData = JSON.parse(res);
+          const mainData = Jsonbig.parse(res);
           const {
             content,
             ...rest
