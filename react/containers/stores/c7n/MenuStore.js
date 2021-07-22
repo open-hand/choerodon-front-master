@@ -20,6 +20,9 @@ let isLoadMenu = [];
 
 const loadingTenant = [];
 
+// 这里记录了查询菜单失败的menuType 下次进来直接返回空 避免失败一次 就不在查询菜单的问题
+const failedMenuType = [];
+
 export function getMenuType(menuType = AppState.currentMenuType, isUser = AppState.isTypeUser) {
   return isUser ? 'user' : menuType.type;
   // return menuType.type;
@@ -282,8 +285,24 @@ class MenuStore {
     }
   }
 
+  judgeFailedMenuType(menuType) {
+    const { type, id } = menuType;
+    const flag = failedMenuType.find(i => (i.type === type) && i.id === id);
+    if (flag) {
+      return true;
+    }
+    return false;
+  }
+
   @action
   loadMenuData(menuType = AppState.currentMenuType, isUser, setData = true) {
+    if (this.judgeFailedMenuType(menuType)) {
+      isLoadMenu = 0;
+      AppState.setCanShowRoute(true);
+      return new Promise((resolve) => {
+        resolve([]);
+      });
+    }
     this.setRootBaseOnActiveMenu();
     if (isLoadMenu === 1) {
       return new Promise((resolve) => {
@@ -440,6 +459,8 @@ class MenuStore {
         isLoadMenu = 0;
         AppState.setCanShowRoute(true);
       } catch (e) {
+        failedMenuType.push(menuType);
+        isLoadMenu = 0;
         AppState.setCanShowRoute(true);
       }
     }
