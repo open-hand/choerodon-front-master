@@ -36,7 +36,7 @@ function choerodonAxios({
   });
 
   // 这里配置一个缓存请求得标识
-  instance.defaults.enabledCancelCache = true;
+  instance.defaults.enabledCancelCache = false;
 
   // 这里配置一个切换路由取消全部pending请求的标识
   instance.defaults.enabledCancelRoute = true;
