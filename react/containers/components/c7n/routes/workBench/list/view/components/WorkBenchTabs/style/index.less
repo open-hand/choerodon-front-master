@@ -1,0 +1,191 @@
+@import './dropdown.less';
+@import './panels.less';
+@import './position.less';
+@import './rtl.less';
+
+@tabs-prefix-cls: rc-tabs;
+
+@easing-in-out: cubic-bezier(0.35, 0, 0.25, 1);
+
+@effect-duration: 0.3s;
+
+.@{tabs-prefix-cls} {
+  font-size: 14px;
+  overflow: hidden;
+
+  // ========================== Navigation ==========================
+  &-nav {
+    // display: inline-flex;
+    display: flex;
+    flex: none;
+    position: relative;
+    padding-left: 0.2rem;
+    width: calc(100% - 3.04rem);
+
+    &-measure,
+    &-wrap {
+      display: flex;
+      transform: translate(0);
+      position: relative;
+      flex: auto;
+      white-space: nowrap;
+      overflow: hidden;
+      //padding: ;
+
+      &-ping-left::before,
+      &-ping-right::after {
+        position: absolute;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity .3s;
+        content: "";
+        pointer-events: none;
+      }
+      &-ping-left::before {
+        left: 0;
+        box-shadow: inset 10px 0 8px -8px #00000014;
+      }
+      &-ping-right::after {
+        right: 0;
+        box-shadow: inset -10px 0 8px -8px #00000014;
+      }
+
+      &-ping-top::before,
+      &-ping-bottom::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+      }
+      &-ping-top::before {
+        top: 0;
+        border-top: 1px solid red;
+      }
+      &-ping-bottom::after {
+        bottom: 0;
+        border-top: 1px solid red;
+      }
+    }
+
+    &-list {
+      display: flex;
+      position: relative;
+      transition: transform 0.3s;
+    }
+
+    // >>>>>>>> Operations
+    &-operations {
+      display: flex;
+
+      &-hidden {
+        position: absolute;
+        visibility: hidden;
+        pointer-events: none;
+      }
+    }
+
+    &-more {
+      // none
+      display: none;
+      border: 1px solid blue;
+      background: rgba(255, 0, 0, 0.1);
+    }
+    &-add {
+      border: 1px solid green;
+      background: rgba(0, 255, 0, 0.1);
+    }
+  }
+
+  &-tab {
+    border: 2px solid #d9e6f2;
+    border-bottom: none;
+    font-size: 15px;
+    margin: 0 -2px 0 0;
+    width: 1.8rem;
+    height: 0.44rem;
+    padding: 6px;
+    display: flex;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    font-weight: 400;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &:first-child {
+      // border-left: 2px solid #d9e6f2;
+      border-top-left-radius: 4px;
+    }
+
+    &:nth-last-child(2) { // 最后一个tab是父节点下的最后一个元素
+      border-top-right-radius: 4px;
+      margin-right: 4px;
+    }
+
+    &-btn,
+    &-remove {
+      border: 0;
+      background: transparent;
+    }
+
+    &:hover {
+      .icon-edit-o {
+        opacity: 1;
+      }
+    }
+
+    &-btn {
+      height: 22px;
+      line-height: 22px;
+      display: flex;
+
+      .icon {
+        font-size: 16px;
+        height: 22px;
+        line-height: 22px;
+
+        &:first-child {
+          margin-left: 20px;
+          margin-right: 4px;
+        }
+      }
+
+      .icon-edit-o {
+        opacity: 0;
+        position: absolute;
+        right: 8px;
+      }
+    }
+
+    &-remove {
+      &:hover {
+        color: red;
+      }
+    }
+
+    &-active {
+      color: #5365ea;
+      transition: transform 0.3s;
+      font-weight: 500;
+      background: rgba(83, 101, 234, 0.08);
+    }
+  }
+
+  &-ink-bar {
+    position: absolute;
+    background: #5365ea;
+    pointer-events: none;
+
+    &-animated {
+      transition: all 0.3s;
+    }
+  }
+
+  &-extra-content {
+    flex: none;
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+  }
+}

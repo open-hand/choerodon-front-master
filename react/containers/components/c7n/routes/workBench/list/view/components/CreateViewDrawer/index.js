@@ -1,10 +1,10 @@
 import React from 'react';
 import { StoreProvider } from './stores';
-import WorkBench from './WorkBench';
+import CreateViewDrawer from './CreateViewDrawer';
 
 const index = (props) => (
   <StoreProvider {...props}>
-    <WorkBench />
+    <CreateViewDrawer />
   </StoreProvider>
 );
 
