@@ -38,9 +38,11 @@ export function handleCancelCacheRequest(config:AxiosRequestConfig) {
 
     const forceUpdate = get(tempConfig, 'forceUpdate');
 
+
     if (isPending) {
       // 说明找到了请求但是找到的这个缓存的请求还在pending，这时候订阅一个期约待会要用
       tempConfig.adapter = () => new Promise((resolve) => {
+        console.log('进来了');
         axiosEvent.once(cancelCacheKey, (res:unknown) => {
           const resolveData: AxiosResponse = {
             data: res,
@@ -55,7 +57,7 @@ export function handleCancelCacheRequest(config:AxiosRequestConfig) {
           resolve(resolveData);
         });
       });
-    } else if (!forceUpdate && data && expire && expire > Date.now()) {
+    } else if (!forceUpdate && expire && expire > Date.now()) {
       tempConfig.adapter = () => {
         const resolveData: AxiosResponse = {
           data: transformDataToString(data),
