@@ -2,7 +2,7 @@
 import React, {
   useMemo, useEffect, useState, useCallback,
 } from 'react';
-import isOverflow from 'choerodon-ui/pro/lib/overflow-tip/util';
+// import isOverflow from 'choerodon-ui/pro/lib/overflow-tip/util';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import {
@@ -168,13 +168,13 @@ const WorkBenchTabs = observer(() => {
             className={styles['tabpane-title']}
             onMouseEnter={(e) => {
               const { currentTarget } = e;
-              if (isOverflow(currentTarget)) {
-                Tooltip.show(currentTarget, {
-                  title: record.get('dashboardName'),
-                });
-              }
+              // if (isOverflow(currentTarget)) {
+              //   Tooltip.show(currentTarget, {
+              //     title: record.get('dashboardName'),
+              //   });
+              // }
             }}
-            onMouseLeave={Tooltip.hide}
+            // onMouseLeave={Tooltip.hide}
           >
             {record.get('dashboardName')}
           </span>
