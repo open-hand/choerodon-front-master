@@ -45,9 +45,9 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
     axiosCache.set(config?.cancelCacheKey || cancelCacheKey, {
       data: finalData,
       isPending: false,
-      expire: Date.now() + Number(enabledCancelCache) * 500,
+      expire: Date.now() + Number(enabledCancelCache) * 1000,
     });
-    axiosEvent.emit(cancelCacheKey, finalData);
+    axiosEvent.emit(config?.cancelCacheKey || cancelCacheKey, finalData);
   }
 
   return resData;

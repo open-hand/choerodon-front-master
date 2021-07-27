@@ -42,6 +42,7 @@ import ProjectDynamic from './components/project-dynamic';
 import PersonalWorkload from './components/personal-workload';
 import Workload from './components/Workload';
 import CustomChart from './components/custom-chart';
+import c7nAxios from '@/containers/components/c7n/tools/axios'
 
 let observerLayout;
 
