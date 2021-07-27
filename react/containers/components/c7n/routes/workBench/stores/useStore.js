@@ -24,6 +24,21 @@ export default function useStore(history, AppState) {
       this.activeStarProject = data;
     },
 
+    viewData: [],
+    setViewData(value) {
+      this.viewData = value;
+    },
+
+    activeTabKey: '',
+    setActiveTabKey(key) {
+      this.activeTabKey = key;
+    },
+
+    isSetting: false,
+    setIsSetting(value) {
+      this.isSetting = value;
+    },
+
     // 拖拽的参数
 
     isEdit: false,
@@ -69,14 +84,15 @@ export default function useStore(history, AppState) {
       return axios.post(`agile/v1/organizations/${organizationId}/work_bench/personal/backlog_issues?page=${page}&size=20${projectId ? `&projectId=${projectId}` : ''}`, { type });
     },
     saveConfig(value) {
-      const tempObj = map(value, (item) => {
-        const temp = pick(mappings[item.i], ['type', 'name', 'groupId']);
-        temp.layout = item;
-        return temp;
-      });
-      axios.post('iam/choerodon/v1/workbench_configs', JSON.stringify({
-        data: JSON.stringify(tempObj),
-      }));
+      return axios.put('iam/v1/dashboards', value);
+    },
+
+    rankDashboard(dashboards) {
+      return axios.post('iam//v1/dashboard-users/dashboard-rank', [...dashboards]);
+    },
+
+    loadDashboardDetail(dashboardId) {
+      return axios.get(`iam/v1/dashboard-layouts/${dashboardId}`);
     },
   }));
 }

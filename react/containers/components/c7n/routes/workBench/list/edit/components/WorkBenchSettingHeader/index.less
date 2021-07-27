@@ -1,0 +1,82 @@
+@keyframes expandAnimate {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+.c7n-workbench-setting {
+  &-header {
+    height: 0.56rem;
+    padding: 0 0.2rem;
+    background-color: #fff;
+    border-bottom: 2px solid #d9e6f2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-left {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      &-title {
+        line-height: 0.56rem;
+        font-size: 0.18rem;
+        color: #0f1358;
+
+        &-name {
+          display: block;
+          margin-left: 0.32rem;
+          width: 2.4rem;
+          height: 0.32rem;
+
+          :global {
+            .c7n-pro-input-prefix {
+              width: 1.1rem;
+              color: #0f1358;
+              // padding-left: 0.1rem;
+              line-height: .2rem;
+            }
+
+            .c7n-pro-input:not(textarea):not(:first-child) {
+              padding-left: 1.1rem;
+              color: #0f1358;
+            }
+          }
+        }
+
+        &-internal {
+          margin-left: 0.16rem;
+          width: 2.4rem;
+        }
+      }
+    }
+
+    &-right {
+      &-btnGroups {
+        // line-height: 0.56rem;
+        // position: absolute;
+        // top: 0;
+        // right: 0;
+        font-size: 13px;
+        font-weight: 500;
+        // z-index: 10;
+        button {
+          animation: expandAnimate 0.5s both;
+        }
+        .Loop(@index) when(@index < 4) {
+          button:nth-child(@{index}) {
+            animation-delay: 0.05s * @index;
+          }
+          .Loop(@index+1);
+        }
+
+        .Loop(0);
+      }
+    }
+  }
+}

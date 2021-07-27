@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import handleClickProject from '@/containers/components/util/gotoProject';
 import { Icon } from 'choerodon-ui';
 import moment from 'moment';
+import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import {
@@ -303,9 +304,14 @@ const StarTargetPro = observer(() => {
   };
   return (
     <div className={`${prefixCls}`}>
-      <p className={`${prefixCls}-name`}>星标项目</p>
-      {renderBtns()}
-      {renderContent()}
+      <Card
+        title="星标项目"
+        className={`${prefixCls}-name`}
+      >
+        {renderContent()}
+      </Card>
+      {/* <p className={`${prefixCls}-name`}>星标项目</p> */}
+      {/* {renderBtns()} */}
     </div>
   );
 });

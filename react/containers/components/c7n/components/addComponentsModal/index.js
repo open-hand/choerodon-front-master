@@ -70,9 +70,9 @@ const AddModal = (props) => {
       return <EmptyPage title={title} describe={describe} />;
     }
     return map(arr, (item, i) => {
-      if (get(item, 'type') === 'starTarget') {
-        return null;
-      }
+      // if (get(item, 'type') === 'starTarget') {
+      //   return null;
+      // }
       const type = get(item, 'type');
       const hasItem = seletedComponents.includes(type);
       const itemsClassname = classnames({
