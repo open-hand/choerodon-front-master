@@ -37,7 +37,7 @@ export default (AppState) => ({
       url: `/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=${
         (function () {
           if (data && data.record && data.record.get) {
-            return data.record.get('size');
+            return data.record.get('size') || 10;
           }
           return 10;
         }())
