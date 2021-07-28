@@ -66,6 +66,7 @@ const groupMap = new Map([
   ['devops', 'DevOps管理'],
   ['agile', '敏捷管理'],
   ['backlog', '需求管理'],
+  ['resourceManagement', 'DevOps管理'], // 资源管理目前和devops模块关联
 ]);
 
 const WorkBenchDashboard = (props) => {

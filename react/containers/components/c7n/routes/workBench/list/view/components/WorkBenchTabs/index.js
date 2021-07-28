@@ -1,6 +1,6 @@
 //
 import React, {
-  useMemo, useEffect, useState, useCallback,
+  useMemo, useEffect, useState, useCallback, useRef,
 } from 'react';
 // import isOverflow from 'choerodon-ui/pro/lib/overflow-tip/util';
 import queryString from 'query-string';
@@ -46,6 +46,7 @@ const WorkBenchTabs = observer(() => {
   } = useWorkBenchStore();
 
   const [canDrag, setCanDrag] = useState(false);
+  const originOrder = useRef([]);
 
   useEffect(() => {
     processDataSetListener(true);
@@ -63,6 +64,7 @@ const WorkBenchTabs = observer(() => {
 
   const handleLoadingStart = () => {
     if (viewDs.length) {
+      originOrder.current = viewDs.map((record) => record.get('dashboardId'));
       const { dashboardId } = queryString.parse(search);
       let currentDashboardId;
       if (dashboardId && viewDs.find((record) => record.get('dashboardId') === dashboardId)) {
@@ -86,9 +88,25 @@ const WorkBenchTabs = observer(() => {
     });
   };
 
-  const handleSetTabPane = () => {
-    setCanDrag(!canDrag);
-    workBenchUseStore.rankDashboard(viewDs.toData());
+  const handleSetTabPane = async () => {
+    if (canDrag) {
+      setCanDrag(!canDrag);
+      const res = await workBenchUseStore.rankDashboard(viewDs.toData());
+      if (res && !res.failed) {
+        const nextRes = {};
+        res.forEach((item) => {
+          nextRes[item.dashboardId] = item.objectVersionNumber;
+        });
+        viewDs.forEach((record) => record.set('objectVersionNumber', nextRes[record.get('dashboardId')]));
+      }
+      // let currentOrder = viewDs.map((record) => record.get('dashboardId'));
+      // currentOrder = currentOrder.join('&');
+      // const origin = originOrder.current.join('&');
+      // if (currentOrder !== origin) {
+      // }
+    } else {
+      setCanDrag(!canDrag);
+    }
   };
 
   const redirectToEdit = (record) => {
@@ -143,7 +161,7 @@ const WorkBenchTabs = observer(() => {
    * 删除视图
    */
   const handleDeleteView = async (record) => {
-    await viewDs.delete(record, {
+    const res = await viewDs.delete(record, {
       okText: '删除',
       title: '删除视图',
       children: `确认删除视图${record.get('dashboardName')}吗?`,
@@ -151,12 +169,17 @@ const WorkBenchTabs = observer(() => {
       okProps: { color: 'red' },
       cancelProps: { color: 'dark' },
     });
-    if (viewDs.length) {
-      const firstRecord = await viewDs.first();
-      workBenchUseStore.setActiveTabKey(firstRecord.get('dashboardId'));
-    } else {
-      setCanDrag(false);
-      viewDs.query();
+
+    if (res) {
+      if (viewDs.length) {
+        // 删除后还有视图，则定位到第一个
+        const firstRecord = await viewDs.first();
+        workBenchUseStore.setActiveTabKey(firstRecord.get('dashboardId'));
+      } else {
+        // 删除后没有视图了就重新查询全部视图
+        setCanDrag(false);
+        viewDs.query();
+      }
     }
   };
 

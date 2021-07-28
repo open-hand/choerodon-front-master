@@ -1,5 +1,5 @@
 import React, {
-  createContext, useContext, useMemo, useEffect,
+  createContext, useContext, useMemo,
 } from 'react';
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
@@ -9,7 +9,6 @@ import { DataSet } from 'choerodon-ui/pro/lib';
 import useStore from './useStore';
 import useCpCacheStore from './useCpCacheStore';
 import modulesMapping from './modulesMapping';
-import ComponentsDataset from './ComponentsDataset';
 import ViewDataSet from './ViewDataSet';
 import DashboardDataset from './DashboardDataset';
 import EditHeaderDataSet from './EditHeaderDataSet';

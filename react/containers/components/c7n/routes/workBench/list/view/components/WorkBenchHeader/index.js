@@ -39,8 +39,6 @@ const WorkBenchHeader = () => {
           </div>
         </div>
       </div>
-      {/* 因为UI图的底边不足2px，需要border来补充，所以用单独的div来放背景图 */}
-      <div className={styles[`${prefixCls}-header-right-bg`]} />
       <WorkBenchTabs />
     </div>
   );
