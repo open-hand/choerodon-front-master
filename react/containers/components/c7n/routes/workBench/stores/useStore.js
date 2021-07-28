@@ -4,10 +4,6 @@ import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
-import {
-  get, map, omit, pick,
-} from 'lodash';
-import mappings from './mappings';
 
 export default function useStore(history, AppState) {
   return useLocalStore(() => ({
@@ -88,7 +84,7 @@ export default function useStore(history, AppState) {
     },
 
     rankDashboard(dashboards) {
-      return axios.post('iam//v1/dashboard-users/dashboard-rank', [...dashboards]);
+      return axios.post('iam/v1/dashboard-users/dashboard-rank', [...dashboards]);
     },
 
     loadDashboardDetail(dashboardId) {

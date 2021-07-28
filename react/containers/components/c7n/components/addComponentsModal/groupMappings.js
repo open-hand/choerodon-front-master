@@ -13,7 +13,7 @@ const cardsMappings = (mappings, needUpgrade = true) => {
     {
       name: '全部分类',
       key: 'all',
-      opts: [...getArr('agile'), ...getArr('devops'), ...(getArr('backlog')?.length && !needUpgrade ? getArr('backlog') : []), ...getArr('common')],
+      opts: [...getArr('agile'), ...getArr('devops'), ...(getArr('backlog')?.length && !needUpgrade ? getArr('backlog') : []), ...(getArr('resourceManagement')?.length ? getArr('resourceManagement') : []), ...getArr('common')],
     },
     {
       name: '敏捷管理',
@@ -43,6 +43,16 @@ const cardsMappings = (mappings, needUpgrade = true) => {
       opts: getArr('backlog'),
       emptyTitle: '暂无对应项目类型',
       emptyDesc: '该项目未选择【需求管理】项目类型，暂不可用',
+    });
+  }
+
+  if (getArr('resourceManagement')?.length) {
+    groupArr.splice(groupArr.length - 1, 0, {
+      name: '资源管理',
+      key: 'resourceManagement',
+      opts: getArr('resourceManagement'),
+      emptyTitle: '暂无对应项目类型',
+      emptyDesc: '该项目未选择【DevOps流程】项目类型，暂不可用',
     });
   }
   return groupArr;
