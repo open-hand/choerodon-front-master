@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './index.less';
 
 import {
-  get, xor, map, without, difference,
+  get, xor, map, without, difference, omit,
 } from 'lodash';
 import { Icon, Spin } from 'choerodon-ui';
 import classnames from 'classnames';
@@ -70,15 +70,16 @@ const AddModal = (props) => {
       return <EmptyPage title={title} describe={describe} />;
     }
     return map(arr, (item, i) => {
-      if (get(item, 'type') === 'starTarget') {
-        return null;
-      }
+      // if (get(item, 'type') === 'starTarget') {
+      //   return null;
+      // }
       const type = get(item, 'type');
       const hasItem = seletedComponents.includes(type);
       const itemsClassname = classnames({
         [`${subPrefix}-right-item`]: true,
         [`${subPrefix}-right-item-selected`]: hasItem,
       });
+      const imgProps = typeof (item.img) === 'object' ? omit(item.img, 'className') : { };
       return (
         <div
           className={itemsClassname}
@@ -87,7 +88,8 @@ const AddModal = (props) => {
           onClick={() => handleSelect(type)}
         >
           <div className={`${subPrefix}-right-item-img`}>
-            <img src={item.img} alt="" />
+            {/* <div></div> */}
+            <img src={item.img} alt="" className={classnames(`${subPrefix}-right-item-img-wrap`, imgProps.className)} {...imgProps} />
             <div
               className={`${subPrefix}-right-item-img-selected`}
               style={{

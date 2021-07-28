@@ -43,9 +43,9 @@ const Logs: React.FC<Props> = ({ datalogs, fieldsMap }) => (
                     showName={false}
                     avatarProps={{
                       style: {
-                        width: 40,
-                        height: 40,
-                        lineHeight: '40px',
+                        width: 38,
+                        height: 38,
+                        lineHeight: '38px',
                       },
                     }}
                   />

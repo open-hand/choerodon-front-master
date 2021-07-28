@@ -10,6 +10,10 @@ import useStore from './useStore';
 import useCpCacheStore from './useCpCacheStore';
 import modulesMapping from './modulesMapping';
 import ComponentsDataset from './ComponentsDataset';
+import ViewDataSet from './ViewDataSet';
+import DashboardDataset from './DashboardDataset';
+import EditHeaderDataSet from './EditHeaderDataSet';
+import AddCardDataSet from './AddCardDataSet';
 
 // eslint-disable-next-line no-undef
 const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
@@ -27,6 +31,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     history,
   } = props;
   const hasAgile = currentModules && currentModules.includes('agile');
+
   function getAllCode() {
     let allowedModules = [...modulesMapping.common, ...hasAgile && HAS_BACKLOG ? modulesMapping.backlog : []];
     forEach(currentModules, (item) => {
@@ -43,12 +48,21 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const selectedProjectId = get(workBenchUseStore.getActiveStarProject, 'id');
   const category = get(workBenchUseStore.getActiveStarProject, 'category');
 
-  const componentsDs = useMemo(() => new DataSet(ComponentsDataset({ workBenchUseStore })), [workBenchUseStore]);
+  const dashboardDs = useMemo(() => new DataSet(DashboardDataset({ workBenchUseStore })), [workBenchUseStore]);
+  const addCardDs = useMemo(() => new DataSet(AddCardDataSet()), []);
+
+  const pageDS = {};
+  if (history.location.pathname === '/workbench/edit') {
+    pageDS.editHeaderDs = useMemo(() => new DataSet(EditHeaderDataSet({ workBenchUseStore })), [workBenchUseStore]);
+  } else {
+    pageDS.viewDs = useMemo(() => new DataSet(ViewDataSet({ workBenchUseStore })), [workBenchUseStore]);
+    // pageDS.dashboardDs = useMemo(() => new DataSet(DashboardDataset({ workBenchUseStore })), [workBenchUseStore]);
+  }
+
   const value = {
     ...props,
     prefixCls: 'c7n-workbench',
     dragPrefixcls: 'c7ncd-dragCard',
-    componentsDs,
     cacheStore,
     workBenchUseStore,
     organizationId,
@@ -57,6 +71,9 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     history,
     currentModules,
     allowedModules: getAllCode(),
+    dashboardDs,
+    addCardDs,
+    ...pageDS,
   };
 
   return (

@@ -9,7 +9,8 @@ import PermissionRoute from '@/components/permission-route';
 import asyncRouter from '../util/asyncRouter';
 
 const Unauthorized = asyncRouter(() => import('../routes/unauthorized'));
-const WorkBench = asyncRouter(() => import('../routes/workBench'));
+const WorkBench = asyncRouter(() => import('../routes/workBench/list/view'));
+const WorkBenchEdit = asyncRouter(() => import('../routes/workBench/list/edit'));
 const ProjectsPro = asyncRouter(() => import('../routes/projectsPro'));
 const ProjectOverview = asyncRouter(() => import('../routes/projectOverview'));
 const InnerIndex = ({ match, AutoRouter, AppState }) => (
@@ -40,6 +41,7 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
       <Route exact path="/">
         <Redirect to={`${match.url}workbench`} />
       </Route>
+      <Route path={`${match.url}workbench/edit`} component={WorkBenchEdit} />
       <Route path={match.url} component={AutoRouter} />
     </Switch>
     <ModalContainer />

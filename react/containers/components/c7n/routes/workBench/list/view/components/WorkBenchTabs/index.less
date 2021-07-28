@@ -1,0 +1,134 @@
+.workbench-tabs {
+  // margin-top: 0.12rem;
+  width: 100%;
+  position: absolute;
+  top: 0.64rem;
+  z-index: 20;
+
+ .tabs-buttons {
+    button {
+      border-radius: 50% !important;
+    }
+  }
+
+ // .droppable-wrapper {
+    // :global {
+    //   .rc-tabs-nav {
+    //     display: flex;
+    //   }
+    // }
+  // }
+
+  .draggable-items {
+    &:nth-last-child(2) {
+      margin-right: 4px;
+    }
+    :global {
+      .rc-tabs-tab {
+        justify-content: flex-end;
+      }
+    }
+    // &-last {
+    //   border-radius: 0 4px 0 0;
+    // }
+    // border: 2px solid #d9e6f2;
+    // border-bottom: none;
+    // border-left: none;
+
+    // &:first-child {
+    //   border-left: 2px solid #d9e6f2;
+    //   border-radius: 4px 0 0 0;
+    // }
+
+    // &:last-child {
+    //   border-radius: 0 4px 0 0;
+    // }
+
+    // &-dragging {
+    //   border: 2px solid #d9e6f2;
+    // }
+
+    &-active {
+      border-top: 2px solid #5365ea;
+      margin-top: -2px;
+    }
+  }
+
+  .tabpane-title {
+    display: inline-block;
+    width: 1.3rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+
+  :global {
+    .rc-tabs {
+      // .rc-tabs-bar {
+        // display: flex;
+        // border-bottom: none;
+        // height: 0.44rem;
+        // .rc-tabs-nav-container {
+          .rc-tabs-nav-wrap {
+            // padding-left: 0;
+            .rc-tabs-nav {
+              // height: 0.44rem;
+              // color: rgba(15, 19, 88, 1);
+              // border-top: 2px solid #d9e6f2;
+              // .rc-tabs-tab {
+              //   width: 1.8rem;
+              //   height: 0.44rem;
+              //   margin: 0;
+              //   padding: 0 0.16rem;
+              //   line-height: 0.44rem;
+              //   font-size: 0.15rem;
+              //   border-radius: unset;
+              //   border-top: 2px solid #d9e6f2;
+              //   border-right: 2px solid #d9e6f2;
+              //   border-bottom: none;
+              //   border-left: none;
+              //   background: #fff;
+              //   color: rgba(15, 19, 88, 1);
+              // }
+
+              // .rc-tabs-tab:nth-child(2) { // 因为第一个子元素不是tab
+              //   border-left: 2px solid #d9e6f2;
+              //   border-top-left-radius: 4px;
+              // }
+
+              // .rc-tabs-tab:last-child {
+              //   border-top-right-radius: 4px;
+              // }
+
+              // .rc-tabs-tab.rc-tabs-tab-active {
+              //   height: 0.44rem;
+              //   line-height: 0.44rem;
+              //   background: rgba(83, 101, 234, 0.08);
+              //   border-top: 2px solid #5365ea;
+              //   border-radius: unset;
+              //   > div {
+              //     color: rgba(83, 101, 234, 1);
+              //     font-weight: 500;
+              //   }
+              // }
+
+              .rc-tabs-ink-bar {
+                display: none !important;
+              }
+            }
+          }
+        }
+        .rc-tabs-extra-content {
+          order: 999;
+        }
+        .rc-tabs-nav-container-scrolling {
+          padding: 0;
+        }
+        .rc-tabs-tab-arrow-show {
+          display: none;
+        }
+      // }
+    // }
+  }
+}

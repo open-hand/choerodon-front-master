@@ -2,18 +2,18 @@
 /* eslint-disable react/no-danger */
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
-import TimeAgo from 'timeago-react';
 import { withRouter } from 'react-router-dom';
 import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import {
-  Badge, Button, Tabs, Avatar, Tooltip, notification, Animate,
+  Badge, Button, Tabs, Avatar, Tooltip, notification,
 } from 'choerodon-ui';
 import {
-  Button as ButtonPro, CheckBox, Modal, Icon, Spin,
+  Button as ButtonPro, Modal, Icon, Spin,
 } from 'choerodon-ui/pro';
 import JSONBig from 'json-bigint';
+import { TimePopover } from '@choerodon/components';
 import WSHandler from '../../tools/ws/WSHandler';
 import defaultAvatar from './style/icons/favicon.png';
 
@@ -183,10 +183,7 @@ class RenderPopoverContentDetailClass extends Component {
                 new Date() - new Date(realSendTime) >= 172800000 ? (
                   <span>{realSendTime}</span>
                 ) : (
-                  <TimeAgo
-                    datetime={realSendTime?.slice(0, realSendTime.length - 3)}
-                    locale="zh_CN"
-                  />
+                  <TimePopover content={realSendTime} />
                 )
               }
             </div>
@@ -381,10 +378,7 @@ export default class Inbox extends Component {
                         new Date() - new Date(realSendTime) >= 172800000 ? (
                           <span>{realSendTime}</span>
                         ) : (
-                          <TimeAgo
-                            datetime={realSendTime?.slice(0, realSendTime.length - 3)}
-                            locale="zh_CN"
-                          />
+                          <TimePopover content={realSendTime} />
                         )
                       }
                       {

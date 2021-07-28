@@ -12,6 +12,7 @@
       }
     }
   }
+
   &-sider {
     width: 145px;
     border-right: 1px solid #d9e6f2;
@@ -28,6 +29,7 @@
       top: 22px;
       transition: 0.5s;
       border-radius: 4px;
+
       &::before {
         position: absolute;
         content: "";
@@ -41,6 +43,7 @@
         border-radius: 2px;
       }
     }
+
     &-item {
       width: 102px;
       height: 32px;
@@ -51,14 +54,17 @@
       font-weight: 500;
       color: #0f1358;
       cursor: pointer;
-      & + & {
+
+      &+& {
         margin-top: 5px;
       }
+
       &-active {
         color: #5365ea;
       }
     }
   }
+
   &-right {
     flex: 1;
     height: inherit;
@@ -66,6 +72,7 @@
     display: flex;
     overflow: scroll;
     flex-direction: column;
+
     &-item {
       height: 102px;
       min-height: 102px;
@@ -75,15 +82,15 @@
       cursor: pointer;
       transition: 0.4s;
       position: relative;
-      & + & {
+
+      &+& {
         border-top: 1px solid #d9e6f2;
       }
+
       &-img {
         position: relative;
-        > img {
-          height: 66px;
-          width: 120px;
-        }
+
+
         &-selected {
           width: 100%;
           position: absolute;
@@ -94,7 +101,8 @@
           border-color: #5365ea;
           border-radius: 6px;
           display: none;
-          > i {
+
+          >i {
             position: absolute;
             width: 14px;
             height: 14px;
@@ -108,17 +116,29 @@
             color: #fff;
           }
         }
+
+        &-wrap {
+          background: #FFFFFF;
+          box-shadow: 0px 1px 4px 0px rgba(14, 29, 128, 0.16);
+          border-radius: 4px;
+          height: 66px;
+          width: 120px;
+        }
       }
+
       &-text {
         margin-left: 16px;
         display: flex;
         flex-direction: column;
-        > span {
+
+        >span {
           font-size: 13px;
           font-weight: 500;
+
           &:first-of-type {
             color: #0f1358;
           }
+
           &:nth-of-type(2) {
             font-weight: 400;
             color: rgba(15, 19, 88, 0.65);
@@ -128,6 +148,7 @@
       }
     }
   }
+
   .c7n-pro-modal-body {
     padding: 0 !important;
     height: 100%;

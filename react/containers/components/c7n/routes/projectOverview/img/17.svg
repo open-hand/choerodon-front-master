@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128px" height="79px" viewBox="0 0 128 79" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>个人工作量统计</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="120" height="70.4134969" rx="4"></rect>
+        <!-- <filter x="-5.4%" y="-7.8%" width="110.8%" height="118.5%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.0549019608   0 0 0 0 0.11372549   0 0 0 0 0.501960784  0 0 0 0.16 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter> -->
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="项目概览-添加卡片" transform="translate(-874.000000, -1971.000000)">
+            <g id="编组-37" transform="translate(698.000000, 0.000000)">
+                <g id="编组-33" transform="translate(170.000000, 107.000000)">
+                    <g id="编组-35备份-5" transform="translate(0.000000, 1867.315951)">
+                        <g id="个人工作量统计" transform="translate(10.000000, 0.000000)">
+                            <g id="矩形">
+                                <!-- <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use> -->
+                                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                            </g>
+                            <line x1="18.5" y1="10.1840491" x2="102" y2="10.1840491" id="直线-9" stroke="#C1C3D0" stroke-linecap="square"></line>
+                            <line x1="18.5" y1="26.8507157" x2="102" y2="26.8507157" id="直线-9备份" stroke="#C1C3D0" stroke-linecap="square"></line>
+                            <text id="01" font-family="PingFangSC-Medium, PingFang SC" font-size="10" font-weight="400" fill="#0F1358">
+                                <tspan x="22" y="23">01</tspan>
+                            </text>
+                            <rect id="矩形" fill-opacity="0.16" fill="#0E1D80" x="21" y="34" width="12" height="4"></rect>
+                            <rect id="矩形备份-12" fill-opacity="0.16" fill="#0E1D80" x="21" y="50" width="12" height="4"></rect>
+                            <rect id="矩形备份-13" fill-opacity="0.16" fill="#0E1D80" x="55" y="50" width="12" height="4"></rect>
+                            <rect id="矩形备份-14" fill-opacity="0.16" fill="#0E1D80" x="71" y="34" width="12" height="4"></rect>
+                            <rect id="矩形备份-15" fill-opacity="0.16" fill="#0E1D80" x="89" y="50" width="12" height="4"></rect>
+                            <text id="02" font-family="PingFangSC-Medium, PingFang SC" font-size="10" font-weight="400" fill="#0F1358">
+                                <tspan x="38" y="23">02</tspan>
+                            </text>
+                            <text id="03" font-family="PingFangSC-Medium, PingFang SC" font-size="10" font-weight="400" fill="#0F1358">
+                                <tspan x="55" y="23">03</tspan>
+                            </text>
+                            <text id="04" font-family="PingFangSC-Medium, PingFang SC" font-size="10" font-weight="400" fill="#0F1358">
+                                <tspan x="71" y="23">04</tspan>
+                            </text>
+                            <text id="05" font-family="PingFangSC-Medium, PingFang SC" font-size="10" font-weight="400" fill="#0F1358">
+                                <tspan x="88" y="23">05</tspan>
+                            </text>
+                            <line x1="18.5" y1="43.5173824" x2="102" y2="43.5173824" id="直线-9备份-2" stroke="#C1C3D0" stroke-linecap="square"></line>
+                            <line x1="18.5" y1="60.1840491" x2="102" y2="60.1840491" id="直线-9备份-3" stroke="#C1C3D0" stroke-linecap="square"></line>
+                            <line x1="18.390391" y1="60.1840491" x2="18.390391" y2="10.1136682" id="直线-9备份-3" stroke="#C1C3D0" stroke-linecap="square"></line>
+                            <line x1="35.190391" y1="60.1840491" x2="35.190391" y2="10.1136682" id="直线-9备份-5" stroke="#C1C3D0" stroke-linecap="square"></line>
+                            <line x1="51.990391" y1="60.1840491" x2="51.990391" y2="10.1136682" id="直线-9备份-6" stroke="#C1C3D0" stroke-linecap="square"></line>
+                            <line x1="68.790391" y1="60.1840491" x2="68.790391" y2="10.1136682" id="直线-9备份-7" stroke="#C1C3D0" stroke-linecap="square"></line>
+                            <line x1="85.590391" y1="60.1840491" x2="85.590391" y2="10.1136682" id="直线-9备份-8" stroke="#C1C3D0" stroke-linecap="square"></line>
+                            <line x1="102.390391" y1="60.1840491" x2="102.390391" y2="10.1136682" id="直线-9备份-4" stroke="#C1C3D0" stroke-linecap="square"></line>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

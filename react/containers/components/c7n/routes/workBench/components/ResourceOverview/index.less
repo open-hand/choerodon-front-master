@@ -1,0 +1,77 @@
+@root-classname: .c7n-card-overview;
+
+@{root-classname} {
+  height: 100%;
+
+  @{root-classname}-row {
+    max-height: 80px;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  @{root-classname}-col {
+    height: 100%;
+    padding: 0 12px;
+  }
+
+  @{root-classname}-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 0 25px;
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+
+    @{root-classname}-card-title {
+      font-size: 20px;
+      font-family: PingFangSC-Medium, PingFang SC;
+    }
+
+    @{root-classname}-card-count {
+      font-size: 35px;
+      font-family: DINAlternate-Bold, DINAlternate;
+    }
+  }
+
+  // &-privateCloud {
+  //   background-image: url('./imgae/privateCloudBG.svg');
+  //   color: #1fbab3;
+  // }
+
+  @{root-classname}-host {
+    background-image: url('./imgae/aliyunBG.svg');
+    color: #31a8e9;
+  }
+
+  @{root-classname}-cluster {
+    background-image: url('./imgae/k8sBG.svg');
+    color: #699ffe;
+  }
+
+  @{root-classname}-env {
+    background-image: url('./imgae/environmentBG.svg');
+    color: #5d7ce5;
+  }
+
+  // &-application {
+  //   background-image: url('./imgae/applicationBG.svg');
+  //   color: #fc6791;
+  // }
+
+  @media (max-width: 1400px) {
+    @{root-classname}-col {
+      padding: 0 6px;
+    }
+
+    @{root-classname}-card {
+      @{root-classname}-card-title {
+        font-size: 14px;
+      }
+
+      @{root-classname}-card-count {
+        font-size: 30px;
+      }
+    }
+  }
+}

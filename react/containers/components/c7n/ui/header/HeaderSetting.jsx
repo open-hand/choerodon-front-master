@@ -3,6 +3,7 @@ import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
+import { get } from '@choerodon/inject';
 import { Button as ProButton } from 'choerodon-ui/pro';
 import { Button, Icon } from 'choerodon-ui';
 import _ from 'lodash';
@@ -13,8 +14,6 @@ import { axios } from "@/index";
 import getSearchString from '../../util/gotoSome';
 
 import './headerSettingTheme4.less';
-
-const HAS_BASE_PRO = C7NHasModule('@choerodon/base-pro');
 
 const iconStyle = { marginLeft: 0, marginRight: 0 };
 const SERVICE_CODE = {
@@ -30,33 +29,16 @@ const Setting = ({
   // 组织改变 重新查询getIsSaas
   useEffect(() => {
     if (isSaas && !Object.keys(isSaas).includes(AppState.currentMenuType.organizationId)) {
-      getIsSaas();
+      get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState, isSaas);
     }
   }, [AppState.currentMenuType.organizationId])
 
   useEffect(() => {
-    getIsSaas();
+    get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState, isSaas);
   }, [])
 
   const theme = 'theme4';
   const { currentServices } = AppState;
-
-  function getIsSaas() {
-    // 汉得版才会有这个逻辑
-    if (HAS_BASE_PRO) {
-      if (!AppState.currentMenuType.organizationId) {
-        setTimeout(() => {
-          getIsSaas()
-        }, 1000);
-      } else {
-        axios.get(`/iam/choerodon/v1/register_saas/is_saas_tenant?tenant_id=${AppState.currentMenuType.organizationId}`).then((res) => {
-          const selfIsSaas = _.clone(isSaas) || {};
-          selfIsSaas[AppState.currentMenuType.organizationId] = res;
-          AppState.setIsSaasList(selfIsSaas);
-        })
-      }
-    }
-  }
 
   const LI_MAPPING = useMemo(() => {
     const mapping = [

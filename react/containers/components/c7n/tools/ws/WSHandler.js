@@ -52,15 +52,16 @@ export default class WSHandler extends Component {
   getPath(path) {
     if (typeof path === 'string') {
       return path;
-    } else if (typeof path === 'function') {
+    } if (typeof path === 'function') {
       return path();
-    } else {
-      return undefined;
     }
+    return undefined;
   }
 
   handleMessage = (data) => {
-    const { onMessage, type, dataKey, typeKey } = this.props;
+    const {
+      onMessage, type, dataKey, typeKey,
+    } = this.props;
     if (typeof onMessage === 'function') {
       onMessage(JSON.parse(data)[dataKey]);
     }
@@ -99,8 +100,7 @@ export default class WSHandler extends Component {
     const { children } = this.props;
     if (typeof children === 'function') {
       return children(data);
-    } else {
-      return children;
     }
+    return children;
   }
 }

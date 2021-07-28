@@ -7,8 +7,8 @@ export interface UpgradeConfig {
 }
 
 const checkUpgrade = (organizationId: string) => {
-  if (getInject('base-pro:checkUpgrade')) {
-    return getInject('base-pro:checkUpgrade')(organizationId);
+  if (getInject('base-saas:checkUpgrade')) {
+    return getInject('base-saas:checkUpgrade')(organizationId);
   }
   return false;
 };

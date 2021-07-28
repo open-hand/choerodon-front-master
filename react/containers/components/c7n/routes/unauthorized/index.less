@@ -4,28 +4,28 @@
     margin: 0 auto;
   }
   &-picture {
-    background: url('./assert/unauthorized.svg');
-    width: calc(50vh * 428 / 328);
-    height: 50vh;
+    background: url('./assert/unauthorized2.svg') no-repeat;
+    width: 3.23rem;
+    height: 3.35rem;
     margin: 0 auto;
-    margin-top: 14vh;
-    background-size: cover;
+    margin-top: 20vh;
+    background-size: contain;
   }
   &-text {
     height:33px;
     font-size:24px;
     font-weight:400;
-    color:rgba(0,0,0,1);
+    color:var(--text-color);
     line-height:33px;
     margin-top: 18px;
   }
   .relogin {
     width: 200px;
-    height: 40px;
+    height: 36px !important;
     margin-top: 32px;
     margin-left: calc(~"50% - 100px");
     span {
-      font-size: 15px;
+      font-size: 15px !important;
       font-weight: 500;
     }
   }

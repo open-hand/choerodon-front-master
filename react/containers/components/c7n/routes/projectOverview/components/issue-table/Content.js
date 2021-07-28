@@ -193,10 +193,7 @@ const DeployChart = () => {
       paramIssueId: issueId,
       paramName: issueNum,
     };
-    history.push({
-      pathname: '/agile/work-list/issue',
-      search: `?${queryString.stringify(params)}`,
-    });
+    window.open(`#/agile/work-list/issue?${queryString.stringify(params)}`);
   };
   const handleTabChange = (key) => {
     // const { sprintId } = this.state;
