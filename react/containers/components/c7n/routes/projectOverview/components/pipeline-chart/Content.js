@@ -8,6 +8,7 @@ import LoadingBar from '../../../../tools/loading-bar';
 
 import './index.less';
 import { usePipelineChartStore } from './stores';
+import { AnimationLoading } from '@choerodon/components';
 
 const PipelineChart = () => {
   const clsPrefix = 'c7n-project-overview-pipeline-chart';
@@ -173,7 +174,7 @@ const PipelineChart = () => {
 
   function getContent() {
     if (startSprintDs === 'loading') {
-      return <LoadingBar display />;
+      return <AnimationLoading display />;
     }
     if (!startedRecord) {
       return <EmptyPage />;

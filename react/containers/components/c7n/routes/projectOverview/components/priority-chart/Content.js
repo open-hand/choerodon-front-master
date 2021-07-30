@@ -7,6 +7,7 @@ import LoadingBar from '../../../../tools/loading-bar';
 import { usePriorityChartStore } from './stores';
 
 import './index.less';
+import { AnimationLoading } from '@choerodon/components';
 
 const DeployChart = () => {
   const clsPrefix = 'c7n-project-overview-priority-chart';
@@ -62,7 +63,7 @@ const DeployChart = () => {
   }
   function getContent() {
     if (startSprintDs.status === 'loading') {
-      return <LoadingBar display />;
+      return <AnimationLoading display />;
     }
     if (!startedRecord) {
       return <EmptyPage />;

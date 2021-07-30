@@ -8,6 +8,7 @@ import LoadingBar from '../../../../tools/loading-bar';
 
 import './index.less';
 import { useDeployChartStore } from './stores';
+import { AnimationLoading } from '@choerodon/components';
 
 const DeployChart = () => {
   const clsPrefix = 'c7n-project-overview-deploy-chart';
@@ -145,7 +146,7 @@ const DeployChart = () => {
 
   function getContent() {
     if (startSprintDs.status === 'loading') {
-      return <LoadingBar display />;
+      return <AnimationLoading display />;
     }
     if (!startedRecord) {
       return <EmptyPage />;

@@ -2,12 +2,13 @@ import React from 'react';
 import {
   Tooltip, Icon, Spin,
 } from 'choerodon-ui/pro';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+
 import queryString from 'querystring';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router';
 import classnames from 'classnames';
 import useQueryString from '@/hooks/useQueryString';
+import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import { useSprintCountChartStore } from './stores';
@@ -98,18 +99,17 @@ const SprintCount = observer(() => {
   };
 
   function render() {
+    if (startSprintDs.status === 'loading' || sprintCountDataSet.status === 'loading') {
+      return <AnimationLoading display />;
+    }
     if (startedRecord) {
       return (
-        <Spin dataSet={sprintCountDataSet}>
-          <OverviewWrap.Content className={`${clsPrefix}-content`} style={{ padding: '0 .14rem' }}>
-            {renderStatusProgress()}
-          </OverviewWrap.Content>
-        </Spin>
+        <OverviewWrap.Content className={`${clsPrefix}-content`} style={{ padding: '0 .14rem' }}>
+          {renderStatusProgress()}
+        </OverviewWrap.Content>
       );
-    } if (startSprintDs.status !== 'loading') {
-      return <EmptyPage />;
     }
-    return <LoadingBar display />;
+    return <EmptyPage />;
   }
 
   return (

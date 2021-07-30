@@ -5,7 +5,8 @@ import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import './index.less';
 import { Spin } from 'choerodon-ui';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+
+import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
@@ -149,19 +150,21 @@ const DefectTreatment = observer(() => {
     </div>
   );
   function render() {
+    if (defectTreatDs.status === 'loading') {
+      return <AnimationLoading display />;
+    }
     if (startedRecord) {
       return (
         <OverviewWrap.Content className={`${clsPrefix}-content`}>
-          <Spin spinning={defectTreatDs.status === 'loading'}>
-            {
+          {
               defectTreatDs.length > 0
                 ? <Echart style={{ width: '100%', height: '100%' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
             }
 
-          </Spin>
         </OverviewWrap.Content>
       );
-    } if (startSprintDs.status !== 'loading') {
+    }
+    if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;// 暂无活跃的冲刺"
     }
     return <LoadingBar display />;
