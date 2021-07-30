@@ -12,6 +12,7 @@ import './index.less';
 import OverviewWrap from '../OverviewWrap';
 // E:\hand\agile615\agile-service\react\routes\ReportHost\custom-report\components\ChartSearch\index.ts
 import EmptyPage from '../EmptyPage';
+import { AnimationLoading } from '@choerodon/components';
 
 // const ChartSearch =
 // console.log('ChartSearch...', ChartSearch);
@@ -30,7 +31,10 @@ const CustomChart = observer(() => {
   }), [optionConfig]);
 
   function render() {
-    if (loading !== 'loading' && !optionConfig && !isHasData) {
+    if (loading) {
+      return <AnimationLoading display />;
+    }
+    if (!optionConfig && !isHasData) {
       return <EmptyPage content="当前暂无数据" />;
     }
     return (
@@ -65,9 +69,7 @@ const CustomChart = observer(() => {
         </span>
       </OverviewWrap.Header>
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
-        <Spin spinning={loading}>
-          {render()}
-        </Spin>
+        {render()}
       </OverviewWrap.Content>
     </OverviewWrap>
 

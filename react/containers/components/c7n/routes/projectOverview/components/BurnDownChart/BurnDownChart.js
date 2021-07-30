@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import { get } from 'lodash';
 import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
+import { AnimationLoading } from '@choerodon/components';
 import { useBurnDownChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
@@ -248,6 +249,9 @@ const BurnDownChart = observer(() => {
   }
 
   function render() {
+    if (!chartDs.status === 'loading' || startSprintDs.status === 'loading') {
+      return <AnimationLoading display />;
+    }
     if (startedRecord) {
       return <Echart option={getOption()} style={{ height: '100%' }} />;
     }
@@ -300,9 +304,7 @@ const BurnDownChart = observer(() => {
         }}
       />
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
-        <Spin spinning={chartDs.status === 'loading' || startSprintDs.status === 'loading'}>
-          {render()}
-        </Spin>
+        {render()}
       </OverviewWrap.Content>
     </OverviewWrap>
 

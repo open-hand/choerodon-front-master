@@ -3,7 +3,8 @@ import React, { useEffect } from 'react';
 import { Tooltip, Icon } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import './index.less';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+
+import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import WaterWave from './components/WaterWave';
 import { useProjectOverviewStore } from '../../stores';
@@ -70,7 +71,7 @@ const SprintWaterWave = observer(() => {
       );
     }
     if (startedRecord) {
-      return <LoadingBar display />;
+      return <AnimationLoading display />;
     }
     if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;

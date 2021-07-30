@@ -5,8 +5,9 @@ import {
   Button, Tooltip, Select, Icon, Form,
 } from 'choerodon-ui/pro';
 import { debounce, toLength } from 'lodash';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+
 import { observer } from 'mobx-react-lite';
+import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import DateTable from './components/DateTable';
 import { useWorkloadStore } from './stores';
@@ -188,7 +189,7 @@ const Workload = observer(() => {
             ) : <EmptyPage content="暂无数据" />
         );
       }
-      return <LoadingBar display />;
+      return <AnimationLoading display />;
     } if (startSprintDs.status !== 'loading') {
       return <EmptyPage />; // content="暂无活跃的冲刺"
     }

@@ -2,7 +2,8 @@ import React from 'react';
 import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+
+import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import './index.less';
 import EmptyPage from '../EmptyPage';
@@ -148,19 +149,20 @@ const DefectChart = observer(() => {
     };
   }
   function render() {
+    if (defectCountDs.status === 'loading' || startSprintDs.status === 'loading') {
+      return <AnimationLoading display />;
+    }
     if (startedRecord) {
       return (
         <OverviewWrap.Content className={`${clsPrefix}-content`}>
-          <Spin spinning={defectCountDs.status === 'loading'}>
-            <Echart option={getOptions()} style={{ height: '100%' }} />
-          </Spin>
+          <Echart option={getOptions()} style={{ height: '100%' }} />
         </OverviewWrap.Content>
       );
     }
     if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;// 暂无活跃的冲刺"
     }
-    return <LoadingBar display />;
+    return <AnimationLoading display />;
   }
   return (
     <OverviewWrap>

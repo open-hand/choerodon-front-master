@@ -2,10 +2,11 @@ import React from 'react';
 import {
   Spin,
 } from 'choerodon-ui/pro';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+
 import Echart from 'echarts-for-react';
 import { reduce } from 'lodash';
 import { observer } from 'mobx-react-lite';
+import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 
 import { useProjectOverviewStore } from '../../stores';
@@ -73,18 +74,20 @@ const SprintCount = observer(() => {
     return option;
   }
   function render() {
+    if (assigneeChartDs.status === 'loading' || startSprintDs.status === 'loading') {
+      return <AnimationLoading display />;
+    }
     if (startedRecord) {
       return (
-        <Spin dataSet={assigneeChartDs}>
-          <OverviewWrap.Content className={`${clsPrefix}-content`}>
-            <Echart option={getOption()} style={{ height: '100%' }} />
-          </OverviewWrap.Content>
-        </Spin>
+        <OverviewWrap.Content className={`${clsPrefix}-content`}>
+          <Echart option={getOption()} style={{ height: '100%' }} />
+        </OverviewWrap.Content>
       );
-    } if (startSprintDs.status !== 'loading') {
+    }
+    if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;
     }
-    return <LoadingBar display />;
+    return <AnimationLoading display />;
   }
 
   return (
