@@ -1,21 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Modal } from 'choerodon-ui';
+import { Modal } from 'choerodon-ui/pro';
+import { usePersistFn } from 'ahooks';
 import './index.less';
-
-const prefixCls = 'c7ncd-userConfirm';
 
 const UserConfirmation = (props) => {
   const {
     when = false, title = false, content = '', footer = false,
   } = props;
 
-  const [isShowModal, setIsShowModal] = useState(false);
   const history = useHistory();
   const [nextLocation, setNextLocation] = useState(null);
   const [action, setAction] = useState();
   const [unblock, setUnblock] = useState(null);
-
+  const openModal = usePersistFn(() => {
+    Modal.open({
+      closable: false,
+      title,
+      onOk: onConfirm,
+      children: content || '确认进行跳转？',
+    });
+  });
   useEffect(() => {
     !when && unblock && unblock();
     if (!when || unblock) {
@@ -23,14 +28,14 @@ const UserConfirmation = (props) => {
     }
     const cancel = history.block((tnextLocation, taction) => {
       if (when) {
-        setIsShowModal(true);
+        openModal();
       }
       setNextLocation(tnextLocation);
       setAction(taction);
       return false;
     });
     setUnblock(() => cancel);
-  }, [unblock, when]);
+  }, [unblock, when, openModal]);
 
   useEffect(() => () => {
     unblock && unblock();
@@ -45,43 +50,9 @@ const UserConfirmation = (props) => {
     } else if (action === 'REPLACE') {
       history.replace(nextLocation);
     }
-    setIsShowModal(false);
   }
 
-  function onCancel() {
-    setIsShowModal(false);
-  }
-
-  return (
-    <>
-      {isShowModal && (
-      <Modal
-        visible
-        closable={false}
-        className={prefixCls}
-        footer={footer || (
-          <div className={`${prefixCls}-footer`}>
-            <Button type="default" onClick={onCancel}>
-              取消
-            </Button>
-            <Button type="primary" onClick={onConfirm}>
-              确认
-            </Button>
-          </div>
-        )}
-      >
-          {title && (
-          <div className={`${prefixCls}-title`}>
-            {title}
-          </div>
-          )}
-        <div className={`${prefixCls}-content`}>
-          {content || '确认进行跳转？'}
-        </div>
-      </Modal>
-      )}
-    </>
-  );
+  return null;
 };
 
 export default UserConfirmation;
