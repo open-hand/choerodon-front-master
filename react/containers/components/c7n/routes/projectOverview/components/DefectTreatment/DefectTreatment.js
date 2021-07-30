@@ -167,7 +167,7 @@ const DefectTreatment = observer(() => {
     if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;// 暂无活跃的冲刺"
     }
-    return <LoadingBar display />;
+    return <AnimationLoading display />;
   }
   return (
     <OverviewWrap style={{
