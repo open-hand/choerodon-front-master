@@ -145,7 +145,7 @@ class Masters extends Component {
         this.userRef.current.getUserCountCheck(newParams.get('organizationId'))
       }
       // this.getUserCountCheck(newParams.get('organizationId'));
-      // this.props.AppState.getProjects();
+      this.props.AppState.getProjects();
     }
   }
 
