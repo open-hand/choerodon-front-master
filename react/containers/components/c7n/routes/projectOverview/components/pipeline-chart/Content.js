@@ -1,14 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
+import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
-import LoadingBar from '../../../../tools/loading-bar';
 
 import './index.less';
 import { usePipelineChartStore } from './stores';
-import { AnimationLoading } from '@choerodon/components';
 
 const PipelineChart = () => {
   const clsPrefix = 'c7n-project-overview-pipeline-chart';

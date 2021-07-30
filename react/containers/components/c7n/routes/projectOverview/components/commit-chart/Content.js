@@ -1,14 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
+import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
-import LoadingBar from '../../../../tools/loading-bar';
 import { useCommitChartStore } from './stores';
 
 import './index.less';
-import { AnimationLoading } from '@choerodon/components';
 
 const CommitChart = () => {
   const clsPrefix = 'c7n-project-overview-commit-chart';
