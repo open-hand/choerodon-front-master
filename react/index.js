@@ -67,4 +67,3 @@ export { default as Charts } from './containers/components/c7n/routes/charts';
 export { default as TabCode } from './utils/tabCode';
 
 export { default as checkPermission } from './utils/checkPermission';
-export { default as UserConfirm } from './containers/components/c7n/components/UserConfirm';
