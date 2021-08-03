@@ -32,7 +32,7 @@ export default (Children: React.FC) => {
           console.log()
           const browser = this.state.browser;
           // @ts-ignore
-          browser && stylesProps[browser] && stylesProps[browser]();
+          stylesProps && browser && stylesProps[browser] && stylesProps[browser]();
         })
       }
 
