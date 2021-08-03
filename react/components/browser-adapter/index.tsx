@@ -29,10 +29,9 @@ export default (Children: React.FC) => {
         this.setState({
           browser: this.myBrowser()
         }, () => {
-          console.log()
           const browser = this.state.browser;
           // @ts-ignore
-          browser && stylesProps[browser] && stylesProps[browser]();
+          stylesProps && browser && stylesProps[browser] && stylesProps[browser]();
         })
       }
 
