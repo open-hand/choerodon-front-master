@@ -13,6 +13,7 @@ const WorkBench = asyncRouter(() => import('../routes/workBench/list/view'));
 const WorkBenchEdit = asyncRouter(() => import('../routes/workBench/list/edit'));
 const ProjectsPro = asyncRouter(() => import('../routes/projectsPro'));
 const ProjectOverview = asyncRouter(() => import('../routes/projectOverview'));
+const test = asyncRouter(() => import('./test'));
 const InnerIndex = ({ match, AutoRouter, AppState }) => (
   <div
     style={{
@@ -42,6 +43,7 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
         <Redirect to={`${match.url}workbench`} />
       </Route>
       <Route path={`${match.url}workbench/edit`} component={WorkBenchEdit} />
+      <Route path={`${match.url}test`} component={test} />
       <Route path={match.url} component={AutoRouter} />
     </Switch>
     <ModalContainer />
