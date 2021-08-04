@@ -38,10 +38,6 @@ const WorkBenchTabs = observer(() => {
     prefixCls,
     viewDs,
     history,
-    allowedModules,
-    AppState,
-    organizationId,
-    dashboardDs,
     location: { search },
   } = useWorkBenchStore();
 
@@ -58,11 +54,11 @@ const WorkBenchTabs = observer(() => {
   const processDataSetListener = (flag) => {
     if (viewDs) {
       const handler = flag ? viewDs.addEventListener : viewDs.removeEventListener;
-      handler.call(viewDs, 'load', handleLoadingStart);
+      handler.call(viewDs, 'load', handleLoading);
     }
   };
 
-  const handleLoadingStart = () => {
+  const handleLoading = () => {
     if (viewDs.length) {
       originOrder.current = viewDs.map((record) => record.get('dashboardId'));
       const { dashboardId } = queryString.parse(search);
@@ -77,7 +73,7 @@ const WorkBenchTabs = observer(() => {
     }
   };
 
-  const handleAddTabPane = () => {
+  const handleAdd = () => {
     Modal.open({
       title: '创建布局视图',
       key: modalKey,
@@ -88,24 +84,54 @@ const WorkBenchTabs = observer(() => {
     });
   };
 
-  const handleSetTabPane = async () => {
-    if (canDrag) {
-      setCanDrag(!canDrag);
-      const res = await workBenchUseStore.rankDashboard(viewDs.toData());
+  const handleSet = () => {
+    setCanDrag(!canDrag);
+  };
+
+  const handleSave = async () => {
+    const removedRecords = viewDs.destroyed;
+    if (removedRecords.length > 0) {
+      const res = await viewDs.submit();
       if (res && !res.failed) {
-        const nextRes = {};
-        res.forEach((item) => {
-          nextRes[item.dashboardId] = item.objectVersionNumber;
-        });
-        viewDs.forEach((record) => record.set('objectVersionNumber', nextRes[record.get('dashboardId')]));
+        const rankRes = await workBenchUseStore.rankDashboard(viewDs.toData());
+        if (rankRes && !rankRes.failed) {
+          setCanDrag(false);
+          const nextRankRes = {};
+          rankRes.forEach((item) => {
+            nextRankRes[item.dashboardId] = item.objectVersionNumber;
+          });
+          viewDs.forEach((record) => record.set('objectVersionNumber', nextRankRes[record.get('dashboardId')]));
+          viewDs.query();
+        }
       }
-      // let currentOrder = viewDs.map((record) => record.get('dashboardId'));
-      // currentOrder = currentOrder.join('&');
-      // const origin = originOrder.current.join('&');
-      // if (currentOrder !== origin) {
-      // }
+    }
+  };
+
+  const handleCancel = () => {
+    setCanDrag(false);
+    viewDs.reset();
+  };
+
+  /**
+   * 删除视图
+   */
+  const handleRemoveView = async (record) => {
+    // const res = await viewDs.delete(record, {
+    //   okText: '删除',
+    //   title: '删除视图',
+    //   children: `确认删除视图${record.get('dashboardName')}吗?`,
+    //   type: 'warning',
+    //   okProps: { color: 'red' },
+    //   cancelProps: { color: 'dark' },
+    // });
+    viewDs.remove(record);
+    if (viewDs.length) {
+      // 删除后还有视图，则定位到第一个
+      const firstRecord = await viewDs.first();
+      workBenchUseStore.setActiveTabKey(firstRecord.get('dashboardId'));
     } else {
-      setCanDrag(!canDrag);
+      // 删除后没有视图了显示空白图片
+      workBenchUseStore.setActiveTabKey(null);
     }
   };
 
@@ -144,12 +170,12 @@ const WorkBenchTabs = observer(() => {
     cursor: enabled ? 'all-scroll' : 'not-allowed',
   });
 
-  const getListStyle = (isDraggingOver) => ({
-    border: isDraggingOver ? '2px dotted #5266d4' : 'none',
-    borderRadius: isDraggingOver ? '3px' : '0',
-    // padding: isDraggingOver ? '4px' : 0,
-    background: isDraggingOver ? 'rgba(82, 102, 212, 0.1)' : 'none',
-  });
+  // const getListStyle = (isDraggingOver) => ({
+  //   border: isDraggingOver ? '2px dotted #5266d4' : 'none',
+  //   borderRadius: isDraggingOver ? '3px' : '0',
+  //   // padding: isDraggingOver ? '4px' : 0,
+  //   background: isDraggingOver ? 'rgba(82, 102, 212, 0.1)' : 'none',
+  // });
 
   const onChangeTab = useCallback((key) => {
     workBenchUseStore.setActiveTabKey(key);
@@ -157,51 +183,27 @@ const WorkBenchTabs = observer(() => {
     viewDs.locate(viewDs.findIndex((r) => r.get('dashboardId') === key));
   }, []);
 
-  /**
-   * 删除视图
-   */
-  const handleDeleteView = async (record) => {
-    const res = await viewDs.delete(record, {
-      okText: '删除',
-      title: '删除视图',
-      children: `确认删除视图${record.get('dashboardName')}吗?`,
-      type: 'warning',
-      okProps: { color: 'red' },
-      cancelProps: { color: 'dark' },
-    });
-
-    if (res) {
-      if (viewDs.length) {
-        // 删除后还有视图，则定位到第一个
-        const firstRecord = await viewDs.first();
-        workBenchUseStore.setActiveTabKey(firstRecord.get('dashboardId'));
-      } else {
-        // 删除后没有视图了就重新查询全部视图
-        setCanDrag(false);
-        viewDs.query();
-      }
-    }
-  };
-
   const renderTabPanes = () => viewDs.map((record) => (
     <TabPane
       tab={(
         <>
-          <span
-            className={styles['tabpane-title']}
-            onMouseEnter={(e) => {
-              const { currentTarget } = e;
-              // if (isOverflow(currentTarget)) {
-              //   Tooltip.show(currentTarget, {
-              //     title: record.get('dashboardName'),
-              //   });
-              // }
-            }}
+          <Tooltip title={record.get('dashboardName')}>
+            <span
+              className={styles['tabpane-title']}
+              onMouseEnter={(e) => {
+                const { currentTarget } = e;
+                // if (isOverflow(currentTarget)) {
+                //   Tooltip.show(currentTarget, {
+                //     title: record.get('dashboardName'),
+                //   });
+                // }
+              }}
             // onMouseLeave={Tooltip.hide}
-          >
-            {record.get('dashboardName')}
-          </span>
-          {canDrag && <Icon type="delete_forever-o" onClick={() => handleDeleteView(record)} />}
+            >
+              {record.get('dashboardName')}
+            </span>
+          </Tooltip>
+          {canDrag && <Icon type="delete_forever-o" onClick={() => handleRemoveView(record)} />}
           {canDrag && <Icon type="baseline-drag_indicator" />}
           {(!canDrag && record.get('dashboardType') === 'CUSTOMIZE') && <Icon type="edit-o" onClick={() => redirectToEdit(record)} />}
         </>
@@ -281,13 +283,10 @@ const WorkBenchTabs = observer(() => {
       return (
         <div className={styles['tabs-buttons']}>
           <Button
-            onClick={() => {
-              setCanDrag(false);
-              viewDs.reset();
-            }}
+            onClick={handleCancel}
             icon="close"
           />
-          <Button onClick={handleSetTabPane} icon="done" style={{ background: '#5365EA', color: '#fff' }} />
+          <Button onClick={handleSave} icon="done" style={{ background: '#5365EA', color: '#fff' }} />
         </div>
       );
     }
@@ -295,13 +294,12 @@ const WorkBenchTabs = observer(() => {
     return (
       <ModalProvider>
         <div className={styles['tabs-buttons']}>
-          <Button onClick={handleAddTabPane} icon="add" />
-          <Button onClick={handleSetTabPane} icon="settings-o" />
+          <Button onClick={handleAdd} icon="add" />
+          <Button onClick={handleSet} icon="settings-o" />
         </div>
       </ModalProvider>
     );
-  }, [canDrag, handleAddTabPane, handleSetTabPane]);
-
+  }, [canDrag]);
 
   return (
     <div className={styles['workbench-tabs']}>

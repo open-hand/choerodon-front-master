@@ -1,18 +1,14 @@
-import React, { useEffect } from 'react';
-import ReactGridLayout from 'react-grid-layout';
-// import {
-//   map, get, filter,
-// } from 'lodash';
-
+import React, { useEffect, useState, useRef } from 'react';
+import { Responsive, WidthProvider } from 'react-grid-layout';
+import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import { SizeMe } from 'react-sizeme';
+import { get } from 'lodash';
 
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
 // import UserConfirmationTwo from '@/containers/components/c7n/components/UserConfirm';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
-
 import useUpgrade from '@/hooks/useUpgrade';
 import EmptyPage from '../../list/components/empty-page';
 import StarTargetPro from '../StarTargetPro';
@@ -22,21 +18,22 @@ import Doc from '../doc';
 import EnvList from '../EnvList';
 import QuickLink from '../QuickLink';
 import TodoThings from '../TodoThings';
-import { useWorkBenchStore } from '../../stores';
-// import componnetsMapping from '../../stores/mappings';
-
 import QuestionTodo from '../question-todo';
 import QuestionFocus from '../question-focus';
 import QuestionBug from '../question-bug';
 import QuestionReport from '../question-report';
 import ExecutionQuestions from '../question-execution';
-import './index.less';
+
 import SelfCode from '../SelfCode';
 import MyHandler from '../my-handler';
 import ResourceOverview from '../ResourceOverview';
 import ResourceMonitoring from '../ResourceMonitoring';
 import BeginnerGuide from '../BeginnerGuide';
 import Notice from '../Notice';
+import { useWorkBenchStore } from '../../stores';
+import './index.less';
+
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const ComponetsObjs = {
   starTarget: <StarTargetPro />,
@@ -59,6 +56,8 @@ const ComponetsObjs = {
   notice: <Notice />,
 };
 
+let observerLayout;
+
 export function injectWorkBench(key, component) {
   ComponetsObjs[key] = component;
 }
@@ -78,9 +77,12 @@ const WorkBenchDashboard = (props) => {
     addCardDs,
   } = useWorkBenchStore();
 
+  const isMounted = useRef(false);
+  const [containerWidth, setContainerWidth] = useState(1280);
+
   const { isEdit = false } = props;
 
-  const loadLayout = async () => {
+  const loadLayout = () => {
     dashboardDs.setQueryParameter('dashboardId', props.dashboardId);
     dashboardDs.query();
   };
@@ -93,6 +95,23 @@ const WorkBenchDashboard = (props) => {
 
   const { data: needUpgrade } = useUpgrade({
     organizationId: AppState.currentMenuType?.organizationId,
+  });
+
+  useEffect(() => {
+    if (!observerLayout) {
+      const domTem = document.querySelector(`.${prefixCls}-container`);
+      if (domTem) {
+        new ResizeObserver((entries) => {
+          const dom = get(entries[0], 'target');
+          const width = get(dom, 'offsetWidth');
+          setContainerWidth(width);
+        }).observe(domTem);
+      }
+    }
+  }, []);
+
+  useEffect(() => function () {
+    observerLayout && observerLayout.disconnect();
   });
 
   // function openEditAlertModal(props) {
@@ -152,10 +171,10 @@ const WorkBenchDashboard = (props) => {
     return tempComponent;
   };
 
-  const generateDOM = () => (
-    dashboardDs.map((record) => {
+  const generateDOM = () => {
+    const cardData = addCardDs.toData();
+    return dashboardDs.map((record) => {
       const key = record.get('i');
-      const cardData = addCardDs.toData();
       const { title, groupId } = cardData.find((item) => item.i === key);
       const emptyDiscribe = `安装部署【${groupMap.get(groupId || 'agile')}】模块后，才能使用此卡片。`;
       return (
@@ -168,64 +187,66 @@ const WorkBenchDashboard = (props) => {
           {SwitchComponents(key, title, emptyDiscribe)}
         </DragCard>
       );
-    })
-  );
+    });
+  };
 
   const renderGridLayouts = () => {
     const layoutData = dashboardDs.toData();
     const tempObj = {
       className: `${prefixCls}-layout`,
       onLayoutChange,
-      breakpoints: 1200,
       margin: [18, 18],
-      layout: layoutData,
+      layouts: { lg: layoutData },
+      breakpoints: { lg: 1200 },
       resizeHandles: ['se'],
-      cols: 12,
-      // width: size.width,
-      // measureBeforeMount: true,
+      cols: { lg: 12 },
+      measureBeforeMount: true,
       containerPadding: [0, 0],
       useCSSTransforms: true,
-      rowHeight: 16,
       isDraggable: isEdit,
       isResizable: isEdit,
     };
 
     return (
-      <SizeMe>
-        {({ size }) => (
-          <>
-            {isEdit && <GridBg rowHeight={(size.width - 11 * 18) / 12} selector={`.${prefixCls}-container`} style={{ padding: 0 }} />}
-            <ReactGridLayout
-              {...tempObj}
-              width={size.width}
-              rowHeight={(size.width - 11 * 18) / 12}
-            >
-              {generateDOM()}
-            </ReactGridLayout>
-          </>
-        )}
-      </SizeMe>
+      <>
+        {isEdit && <GridBg rowHeight={(containerWidth - 11 * 18) / 12} selector={`.${prefixCls}-container`} style={{ padding: 0 }} />}
+        <ResponsiveGridLayout
+          {...tempObj}
+          rowHeight={(containerWidth - 11 * 18) / 12}
+        >
+          {generateDOM()}
+        </ResponsiveGridLayout>
+      </>
     );
   };
 
-  if (!dashboardDs || dashboardDs.status === 'loading' || addCardDs.status === 'loading') {
-    return <LoadingBar display />;
-  }
+  // if (!dashboardDs || dashboardDs.status === 'loading' || addCardDs.status === 'loading') {
+  //   return <LoadingBar display />;
+  // }
+
+  const renderContent = () => {
+    // debugger;
+    if (dashboardDs.status === 'loading' || addCardDs.status === 'loading') {
+      return <LoadingBar display />;
+    }
+
+    if (!dashboardDs.length || !addCardDs.length) {
+      return <EmptyPage />;
+    }
+    return renderGridLayouts();
+  };
 
   return (
-    <div className={`${prefixCls}-wrapper`}>
-      {
-        !dashboardDs.length ? <EmptyPage style={{}} /> : (
-          <div
-            className={`${prefixCls}-container`}
-          >
-            {(dashboardDs.length > 0 && addCardDs.length > 0) && (
-              renderGridLayouts()
-            )}
-            {/* <UserConfirmationTwo when={isEdit} title="提示" content="工作台配置尚未保存，是否跳转到新页面？" /> */}
-          </div>
-        )
-      }
+    <div
+      className={classnames([`${prefixCls}-wrapper`], {
+        [`${prefixCls}-wrapper-view`]: !isEdit,
+        [`${prefixCls}-wrapper-edit`]: isEdit,
+      })}
+    >
+      <div className={`${prefixCls}-container`}>
+        {renderContent()}
+      </div>
+
     </div>
   );
 };

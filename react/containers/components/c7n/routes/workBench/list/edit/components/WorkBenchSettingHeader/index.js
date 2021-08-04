@@ -52,7 +52,6 @@ const WorkBenchSettingHeader = () => {
     const subPrefix = 'c7ncd-workbench-addModal';
     const typeArr = map(dashboardDs.toData(), (item) => get(item, 'i'));
     const mappings = addCardDs.toData();
-    console.log(mappings, 'mappings')
     Modal.open({
       title: '添加卡片',
       key: Modal.key(),

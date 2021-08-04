@@ -1,7 +1,5 @@
 // 创建布局视图侧滑
-import React, {
-  createContext, useContext, useMemo, useEffect, useState, useRef
-} from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import queryString from 'query-string';
 import {
@@ -16,6 +14,7 @@ import CreateViewDataSet from './stores/CreateViewDataSet';
 const CreateViewDrawer = observer(({ modal, search, viewDs }) => {
   const history = useHistory();
   const createViewDS = useMemo(() => new DataSet(CreateViewDataSet()), []);
+  const { workBenchUseStore } = useWorkBenchStore();
 
   useEffect(() => {
     createViewDS.create();
@@ -30,6 +29,7 @@ const CreateViewDrawer = observer(({ modal, search, viewDs }) => {
       if (view === 'INTERNAL') {
         await viewDs.query();
         viewDs.locate(viewDs.findIndex((r) => r.get('dashboardId') === dashboardId));
+        workBenchUseStore.setActiveTabKey(dashboardId);
       } else {
         // 如果创建的是自定义视图 跳转到自定义视图
         let searchParams = queryString.parse(search);

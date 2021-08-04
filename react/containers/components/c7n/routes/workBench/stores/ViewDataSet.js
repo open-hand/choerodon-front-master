@@ -1,7 +1,5 @@
 // 用户视图tabs
-import { map, get, filter } from 'lodash';
 import JsonBig from 'json-bigint';
-import mappings from './mappings';
 
 /* eslint-disable import/no-anonymous-default-export */
 export default ({
@@ -27,10 +25,11 @@ export default ({
       },
     }),
     destroy: ({ data }) => {
-      const { dashboardId } = data[0];
+      const dashboardIds = data.map((dashboard) => dashboard.dashboardId);
       return {
-        url: `iam/v1/dashboards/${dashboardId}`,
+        url: 'iam/v1/dashboards',
         method: 'delete',
+        data: dashboardIds,
       };
     },
   },
