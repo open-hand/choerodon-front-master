@@ -92,7 +92,7 @@ export default function EmptyPage({
   return (
     <div className={clsPrefix} style={{ height }}>
       <div className={`${clsPrefix}-body`}>
-        <EmptyImg height={80} width={80} />
+        <EmptyImg width={100} />
         {/* <div className={`${clsPrefix}-img`} /> */}
         <div className={`${clsPrefix}-text`}>
           {content || '当前暂无冲刺'}
