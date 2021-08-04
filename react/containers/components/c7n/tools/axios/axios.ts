@@ -71,6 +71,7 @@ function choerodonAxios({
 
   instance.all = axios.all;
   instance.bind = axios.bind;
+  instance.spread = axios.spread;
   return instance;
 }
 
