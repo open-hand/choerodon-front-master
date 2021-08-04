@@ -1,29 +1,15 @@
-import React, {
-  useCallback, useMemo, useState, useEffect, useRef
-} from 'react';
-import ResizeObserver from 'resize-observer-polyfill';
+import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
-
-import useUpgrade from '@/hooks/useUpgrade';
 import { Page } from '@/index';
-
 import { useWorkBenchStore } from '../../stores';
-
-// import './WorkBench.less';
 import WorkBenchSettingHeader from './components/WorkBenchSettingHeader';
-
 import WorkBenchDashboard from '../../components/WorkBenchDashboard';
 
 const WorkBenchSetting = () => {
   const {
-    workBenchUseStore,
     prefixCls,
     editHeaderDs,
-    history,
-    allowedModules,
-    AppState,
-    organizationId,
     location: { search },
   } = useWorkBenchStore();
 
@@ -43,10 +29,6 @@ const WorkBenchSetting = () => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editHeaderDs.current.get('internalTemplate')]);
-
-  const { data: needUpgrade } = useUpgrade({
-    organizationId: AppState.currentMenuType?.organizationId,
-  });
 
   return (
     <Page className={prefixCls}>

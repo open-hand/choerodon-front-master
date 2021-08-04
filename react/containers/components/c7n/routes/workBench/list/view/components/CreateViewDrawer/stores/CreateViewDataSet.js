@@ -69,10 +69,6 @@ const CreateViewDataSet = () => ({
   transport: {
     submit: ({ data, dataSet }) => {
       const { view, ...rest } = data[0];
-      // const submitData = { ...rest };
-      // if (view === 'INTERNAL') {
-      //   rest.dashboardName = dataSet.current.getField('dashboardId').getLookupData(view).dashboardName;
-      // }
       const url = view === 'INTERNAL' ? 'iam/v1/dashboard-users' : 'iam/v1/dashboards';
       return {
         url,

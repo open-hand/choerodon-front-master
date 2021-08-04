@@ -17,7 +17,13 @@ export default () => ({
           try {
             if (value) {
               const tempData = JsonBig.parse(value);
-              const res = tempData ? tempData.map((card) => ({ ...card, i: card.cardCode })) : [];
+              let res = [];
+              if (tempData) {
+                res = tempData.map((card) => {
+                  const { maxH, maxW, ...rest } = card;
+                  return { ...rest, i: card.cardCode };
+                });
+              }
               return res;
             }
             // workBenchUseStore.setInitData(res);

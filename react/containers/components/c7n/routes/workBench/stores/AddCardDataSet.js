@@ -12,21 +12,24 @@ export default (() => ({
         try {
           if (value) {
             const { content, ...rest } = JsonBig.parse(value);
-            const tempContent = content.map((card) => ({
-              ...card,
-              i: card.cardCode,
-              type: card.cardCode,
-              describe: card.description,
-              title: card.cardName,
-              img: card.icon,
-              layout: {
-                w: card.w,
-                h: card.h,
-                minH: card.minH,
-                minW: card.minW,
+            const tempContent = content.map((card) => {
+              const { maxH, maxW, ...other } = card;
+              return {
+                ...other,
                 i: card.cardCode,
-              },
-            }));
+                type: card.cardCode,
+                describe: card.description,
+                title: card.cardName,
+                img: card.icon,
+                layout: {
+                  w: card.w,
+                  h: card.h,
+                  minH: card.minH,
+                  minW: card.minW,
+                  i: card.cardCode,
+                },
+              };
+            });
             return { ...rest, content: tempContent };
           }
         } catch (error) {
