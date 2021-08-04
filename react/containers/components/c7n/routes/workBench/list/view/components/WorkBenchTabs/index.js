@@ -15,7 +15,7 @@ import {
 } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import CreateViewDrawer from '../CreateViewDrawer/CreateViewDrawer';
+import CreateViewDrawer from '../CreateViewDrawer';
 import WorkBenchDashboard from '../../../../components/WorkBenchDashboard';
 import { useWorkBenchStore } from '../../../../stores';
 // import Store from './stores';
@@ -78,10 +78,14 @@ const WorkBenchTabs = observer(() => {
       title: '创建布局视图',
       key: modalKey,
       drawer: true,
-      children: <CreateViewDrawer search={search} viewDs={viewDs} />,
+      children: <CreateViewDrawer search={search} viewDs={viewDs} onCreateCustomView={handleCreateCustomView} />,
       destroyOnClose: true,
       okText: '创建',
     });
+  };
+
+  const handleCreateCustomView = (dashboardId) => {
+    workBenchUseStore.setActiveTabKey(dashboardId);
   };
 
   const handleSet = () => {
