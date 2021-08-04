@@ -68,6 +68,12 @@ const groupMap = new Map([
   ['resourceManagement', 'DevOps管理'], // 资源管理目前和devops模块关联
 ]);
 
+const fdLevelMap = new Map([
+  ['site', '平台'],
+  ['organization', '组织'],
+  ['project', '项目'],
+]);
+
 const WorkBenchDashboard = (props) => {
   const {
     prefixCls,
@@ -155,15 +161,17 @@ const WorkBenchDashboard = (props) => {
     dashboardDs.remove(record);
   }
 
-  const SwitchComponents = (type, title, emptyDiscribe) => {
+  const SwitchComponents = ({
+    type, title, permissionFlag = 1, emptyDiscribe,
+  }) => {
     let tempComponent;
     const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
     const hasType = allowedModules.includes(type);
 
-    if (hasOwnProperty && hasType) {
+    if ((hasOwnProperty && hasType) && permissionFlag === 1) {
       tempComponent = ComponetsObjs[type];
     } else {
-      tempComponent = <EmptyCard title={title} emptyDiscribe={emptyDiscribe} emptyTitle="暂未安装对应模块" />;
+      tempComponent = <EmptyCard title={title} emptyDiscribe={emptyDiscribe} emptyTitle={permissionFlag ? '暂未安装对应模块' : '暂无权限'} />;
     }
     if (type === 'backlogApprove' && needUpgrade) {
       tempComponent = <EmptyCard title={title} emptyDiscribe="此模块为高级版功能，升级高级版后，才能使用此卡片。" emptyTitle="暂未安装对应模块" />;
@@ -175,8 +183,15 @@ const WorkBenchDashboard = (props) => {
     const cardData = addCardDs.toData();
     return dashboardDs.map((record) => {
       const key = record.get('i');
-      const { title, groupId } = cardData.find((item) => item.i === key);
-      const emptyDiscribe = `安装部署【${groupMap.get(groupId || 'agile')}】模块后，才能使用此卡片。`;
+      const { groupId, fdLevel, title } = cardData.find((item) => item.i === key);
+      const permissionFlag = record.get('permissionFlag');
+      let emptyDiscribe;
+      if (permissionFlag) {
+        emptyDiscribe = `安装部署【${groupMap.get(groupId || 'agile')}】模块后，才能使用此卡片。`;
+      } else {
+        emptyDiscribe = `分配${fdLevelMap.get(fdLevel)}层级角色后，才能使用此卡片。`;
+      }
+
       return (
         <DragCard
           record={record}
@@ -184,7 +199,9 @@ const WorkBenchDashboard = (props) => {
           isEdit={isEdit}
           key={key}
         >
-          {SwitchComponents(key, title, emptyDiscribe)}
+          {SwitchComponents({
+            type: key, title, permissionFlag, emptyDiscribe,
+          })}
         </DragCard>
       );
     });
