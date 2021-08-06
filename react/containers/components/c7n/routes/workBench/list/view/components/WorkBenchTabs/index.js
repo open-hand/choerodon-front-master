@@ -63,7 +63,9 @@ const WorkBenchTabs = observer(() => {
       originOrder.current = viewDs.map((record) => record.get('dashboardId'));
       const { dashboardId } = queryString.parse(search);
       let currentDashboardId;
-      if (dashboardId && viewDs.find((record) => record.get('dashboardId') === dashboardId)) {
+      if (workBenchUseStore.activeTabKey) {
+        currentDashboardId = workBenchUseStore.activeTabKey;
+      } else if (dashboardId && viewDs.find((record) => record.get('dashboardId') === dashboardId)) {
         currentDashboardId = dashboardId;
       } else {
         currentDashboardId = viewDs.current.get('dashboardId');
@@ -97,17 +99,28 @@ const WorkBenchTabs = observer(() => {
     if (removedRecords.length > 0) {
       const res = await viewDs.submit();
       if (res && !res.failed) {
-        const rankRes = await workBenchUseStore.rankDashboard(viewDs.toData());
-        if (rankRes && !rankRes.failed) {
-          setCanDrag(false);
-          const nextRankRes = {};
-          rankRes.forEach((item) => {
-            nextRankRes[item.dashboardId] = item.objectVersionNumber;
-          });
-          viewDs.forEach((record) => record.set('objectVersionNumber', nextRankRes[record.get('dashboardId')]));
-          viewDs.query();
-        }
+        rankViews();
       }
+    } else {
+      const currentOrder = viewDs.map((record) => record.get('dashboardId'));
+      if (currentOrder.join('&') !== originOrder.current.join('&')) {
+        rankViews();
+      } else {
+        setCanDrag(false);
+      }
+    }
+  };
+
+  const rankViews = async () => {
+    const rankRes = await workBenchUseStore.rankDashboard(viewDs.toData());
+    if (rankRes && !rankRes.failed) {
+      setCanDrag(false);
+      const nextRankRes = {};
+      rankRes.forEach((item) => {
+        nextRankRes[item.dashboardId] = item.objectVersionNumber;
+      });
+      viewDs.forEach((record) => record.set('objectVersionNumber', nextRankRes[record.get('dashboardId')]));
+      viewDs.query();
     }
   };
 

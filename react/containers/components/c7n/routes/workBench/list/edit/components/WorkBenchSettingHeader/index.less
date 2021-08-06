@@ -1,3 +1,5 @@
+@import '~choerodon-ui/lib/style/themes/default';
+
 @keyframes expandAnimate {
   0% {
     transform: translateX(50px);
@@ -23,6 +25,7 @@
       display: flex;
       height: 100%;
       align-items: center;
+
       &-title {
         line-height: 0.56rem;
         font-size: 0.18rem;
@@ -33,20 +36,6 @@
           margin-left: 0.32rem;
           width: 2.4rem;
           height: 0.32rem;
-
-          :global {
-            .c7n-pro-input-prefix {
-              width: 1.1rem;
-              color: #0f1358;
-              // padding-left: 0.1rem;
-              line-height: .2rem;
-            }
-
-            .c7n-pro-input:not(textarea):not(:first-child) {
-              padding-left: 1.1rem;
-              color: #0f1358;
-            }
-          }
         }
 
         &-internal {
@@ -54,17 +43,41 @@
           width: 2.4rem;
         }
       }
+
+      &-form {
+        display: flex;
+        align-items: center;
+        width: calc(2.4rem * 2 + 0.16rem);
+        margin-left: 0.32rem;
+        color: rgba(15, 19, 88, 1);
+
+        :global {
+          .@{c7n-pro-prefix}-input-prefix {
+            width: 1.1rem;
+            line-height: .2rem;
+          }
+
+          .@{c7n-pro-prefix}-input:not(textarea):not(:first-child) {
+            padding-left: 1.1rem;
+          }
+
+          .@{c7n-pro-prefix}-select-prefix {
+            width: auto;
+            line-height: .2rem;
+            left: .1rem;
+          }
+
+          .@{c7n-pro-prefix}-select:not(textarea):not(:first-child) {
+            padding-left: 0.98rem;
+          }
+        }
+      }
     }
 
     &-right {
       &-btnGroups {
-        // line-height: 0.56rem;
-        // position: absolute;
-        // top: 0;
-        // right: 0;
         font-size: 13px;
         font-weight: 500;
-        // z-index: 10;
         button {
           animation: expandAnimate 0.5s both;
         }

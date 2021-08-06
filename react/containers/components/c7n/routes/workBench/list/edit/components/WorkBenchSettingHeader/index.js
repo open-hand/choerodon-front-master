@@ -1,10 +1,10 @@
 // 配置自定义视图
 import React, { useEffect, useRef } from 'react';
 import {
-  Icon, TextField, Select, Button, Modal,
+  TextField, Select, Button, Modal, Form,
 } from 'choerodon-ui/pro';
 import {
-  get, map, forEach, filter,
+  get, map, forEach,
 } from 'lodash';
 import queryString from 'query-string';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
@@ -130,18 +130,21 @@ const WorkBenchSettingHeader = () => {
     <header className={styles[`${setPrefixCls}-header`]}>
       <div className={styles[`${setPrefixCls}-header-left`]}>
         <span className={styles[`${setPrefixCls}-header-left-title`]}>配置自定义视图</span>
-        <TextField
-          dataSet={editHeaderDs}
-          name="dashboardName"
-          prefix="自定义视图名称:"
-          className={styles[`${setPrefixCls}-header-left-title-name`]}
-        />
-        <Select
-          name="internalTemplate"
-          dataSet={editHeaderDs}
-          className={styles[`${setPrefixCls}-header-left-title-internal`]}
-          // onChange={handleChange}
-        />
+        <div className={styles[`${setPrefixCls}-header-left-form`]}>
+          <Form dataSet={editHeaderDs} labelLayout="horizontal" labelWidth={1} columns={2}>
+            <TextField
+              clearButton
+              colSpan={1}
+              name="dashboardName"
+              prefix="自定义视图名称:"
+            />
+            <Select
+              name="internalTemplate"
+              colSpan={1}
+              prefix="官方模板布局:"
+            />
+          </Form>
+        </div>
       </div>
       <div className={styles[`${setPrefixCls}-header-right`]}>
         {renderBtns()}
