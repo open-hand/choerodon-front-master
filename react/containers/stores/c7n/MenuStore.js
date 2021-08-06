@@ -296,31 +296,39 @@ class MenuStore {
 
   @action
   loadMenuData(menuType = AppState.currentMenuType, isUser, setData = true, selfResolve) {
+    // debugger;
     if (this.judgeFailedMenuType(menuType)) {
       isLoadMenu = 0;
       AppState.setCanShowRoute(true);
+      // debugger;
       return new Promise((resolve) => {
+        // debugger;
         resolve([]);
       });
     }
     this.setRootBaseOnActiveMenu();
     if (isLoadMenu === 1) {
       if (selfResolve) {
+        // debugger;
         setTimeout(() => this.loadMenuData(menuType, isUser, setData, selfResolve), 500)
       } else {
+        // debugger;
         return new Promise((resolve) => {
           setTimeout(() => this.loadMenuData(menuType, isUser, setData, resolve), 500)
         });
       }
-    }
-    AppState.setCanShowRoute(false);
-    isLoadMenu = 1;
-    if (selfResolve) {
-      mainFunc.call(this, selfResolve);
     } else {
-      return new Promise((resolve) => {
-        mainFunc.call(this, resolve);
-      });
+      AppState.setCanShowRoute(false);
+      isLoadMenu = 1;
+      if (selfResolve) {
+        // debugger;
+        mainFunc.call(this, selfResolve);
+      } else {
+        // debugger;
+        return new Promise((resolve) => {
+          mainFunc.call(this, resolve);
+        });
+      }
     }
     // return new Promise((resolve) => {
     //   mainFunc.call(this, resolve);
@@ -337,7 +345,7 @@ class MenuStore {
             }
           }
         }
-
+        // debugger;
         const { id = 0, organizationId, orgId } = menuType;
         const menu = this.menuData(type, id);
         let hasMenu = () => {
@@ -352,9 +360,11 @@ class MenuStore {
           }
           return false;
         }
+        // debugger;
         if (menu.length || hasMenu()) {
           if (type === 'site') {
             if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
+              // debugger;
               await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
                 enabledCancelCache: false,
                 enabledCancelRoute: false,
@@ -363,24 +373,31 @@ class MenuStore {
                 enabledCancelCache: false,
                 enabledCancelRoute: false,
               });
+              // debugger;
               if (!result) {
                 this.setHasSitePermission(false);
               }
+              // debugger;
               await AppState.loadUserInfo();
+              // debugger;
             }
           } else if (type === 'organization') {
+            // debugger;
             const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
             if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
+              // debugger;
               await axios({
                 url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
                 method: 'put',
                 enabledCancelCache: false,
                 enabledCancelRoute: false,
               });
+              // debugger;
               AppState.loadUserInfo();
             }
           }
           if (!AppState.currentMenuType.hasChangeCategorys) {
+            // debugger;
             isLoadMenu = 0;
             AppState.setCanShowRoute(true);
             return resolve(menu);
@@ -389,6 +406,7 @@ class MenuStore {
           AppState.setCanShowRoute(true);
         }
         async function getMenu(that) {
+          // debugger;
           const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
           let url = '/iam/choerodon/v1/menu';
           if (type === 'project') {
@@ -408,17 +426,21 @@ class MenuStore {
             enabledCancelRoute: false,
           });
           const child = filterEmptyMenus(data || []);
+          // debugger;
           if (type === 'project') {
             changeMenuLevel({ level: 'project', child });
           } else if (type === 'user') {
             changeMenuLevel({ level: 'user', child });
           }
+          // debugger;
           that.setMenuData(child, type, id);
           return child;
         }
         let flag = 0;
         if (type === 'site') {
+          // debugger;
           if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
+            // debugger;
             await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
               enabledCancelCache: false,
               enabledCancelRoute: false,
@@ -427,11 +449,13 @@ class MenuStore {
               enabledCancelCache: false,
               enabledCancelRoute: false,
             });
+            // debugger;
             if (!result) {
               this.setHasSitePermission(false);
             }
           }
         } else if (id && (['project', 'organization'].includes(type))) {
+          // debugger;
           const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
           if (!loadingTenant.includes(orgId)) {
             loadingTenant.push(String(orgId));
@@ -439,33 +463,41 @@ class MenuStore {
               enabledCancelCache: false,
               enabledCancelRoute: false,
             });
+            // debugger;
             loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);
           } else {
             flag = 1;
           }
         }
         if (!flag) {
+          // debugger;
           let data;
           const menu = this.menuData(type, id);
+          // debugger;
           if (['organization', 'project'].includes(type)) {
             if (!Object.keys(menuStore.menuGroup[type]).includes(id)) {
               data = await getMenu(this);
+              // debugger;
             }
           } else if (!menu.length && !menu.level) {
             data = await getMenu(this);
+            // debugger;
           }
           if (AppState.userInfo.currentRoleLevel !== type) {
             AppState.userInfo.currentRoleLevel = type;
             AppState.loadUserInfo();
+            // debugger;
           }
           AppState.setCanShowRoute(true);
           AppState.userInfo.currentRoleLevel = type;
           isLoadMenu = 0;
+          // debugger;
           return resolve(data || []);
         }
         isLoadMenu = 0;
         AppState.setCanShowRoute(true);
       } catch (e) {
+        // debugger;
         failedMenuType.push(menuType);
         isLoadMenu = 0;
         AppState.setCanShowRoute(true);
