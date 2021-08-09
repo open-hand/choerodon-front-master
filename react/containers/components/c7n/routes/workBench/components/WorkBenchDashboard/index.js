@@ -261,19 +261,6 @@ const WorkBenchDashboard = (props) => {
         [`${prefixCls}-wrapper-edit`]: isEdit,
       })}
     >
-      <HeaderButtons items={
-        [
-          {
-            icon: 'info',
-            name: 'fuck',
-            disabled: true,
-          },
-          {
-            icon: 'info',
-            name: 'fuck me'
-          }
-        ]
-      }/>
       <div className={`${prefixCls}-container`}>
         {renderContent()}
       </div>
