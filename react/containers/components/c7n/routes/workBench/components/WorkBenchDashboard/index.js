@@ -32,6 +32,7 @@ import BeginnerGuide from '../BeginnerGuide';
 import Notice from '../Notice';
 import { useWorkBenchStore } from '../../stores';
 import './index.less';
+import HeaderButtons from '@/containers/components/c7n/tools/header-btns';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -263,7 +264,6 @@ const WorkBenchDashboard = (props) => {
       <div className={`${prefixCls}-container`}>
         {renderContent()}
       </div>
-
     </div>
   );
 };
