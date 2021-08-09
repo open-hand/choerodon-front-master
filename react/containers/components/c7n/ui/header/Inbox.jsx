@@ -24,7 +24,7 @@ const prefixCls = `${PREFIX_CLS}-boot-header-inbox`;
 /* eslint-disable-next-line */
 const reg = /\n|&nbsp;|&lt|&gt|<[^a\/][^>]*>|<\/[^a][^>]*>/g;
 const imgreg = /(<img[\s\S]*?src\s*=\s*["|']|\[img\])(.*?)(["|'][\s\S]*?>|\[\/img\])/;
-const tablereg = /<table(.*?)>(.*?)<\/table>/g;
+const tablereg = /<table(.*?)>([^]*?)<\/table>/g;
 const detailLinkReg = /<a(.*?)>查看详情<\/a>/g;
 const cleanModalKey = Modal.key();
 const orgReg = /\${orgString}/;
@@ -93,7 +93,7 @@ class RenderPopoverContentClass extends Component {
         <RenderPopoverContentDetailClass
           handleVisibleChange={this.handleVisibleChange}
         />
-      </div>,
+                   </div>,
       document.body)
     );
   }
