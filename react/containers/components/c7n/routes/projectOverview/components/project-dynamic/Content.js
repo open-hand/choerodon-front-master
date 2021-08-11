@@ -3,6 +3,9 @@ import {
   Button, Icon, Spin,
 } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import {
+  pick,
+} from 'lodash';
 import { AnimationLoading } from '@choerodon/components';
 import EmptyPage from '../EmptyPage';
 import OverviewWrap from '../OverviewWrap';
@@ -12,6 +15,16 @@ import './index.less';
 import Logs from './components/Logs';
 import DynamicSearch from './components/dynamic-search';
 import { useProjectDynamicChartStore } from './stores';
+
+function randomString(len = 32) {
+  let code = '';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const maxPos = chars.length;
+  for (let i = 0; i < len; i += 1) {
+    code += chars.charAt(Math.floor(Math.random() * (maxPos + 1)));
+  }
+  return code;
+}
 
 const ProjectDynamic = () => {
   const clsPrefix = 'c7n-project-overview-projectDynamic';
@@ -37,10 +50,41 @@ const ProjectDynamic = () => {
     if (projectDynamicDs.status === 'loading') {
       return <AnimationLoading display />;
     }
-    return projectDynamicDs.toData().length > 0 ? (
+
+    const originDataLogs = projectDynamicDs.toData();
+    const newDataLogs = [];
+    let autoTemp = [];
+    originDataLogs.forEach((log, i, logs) => {
+      if (log.field !== 'Auto Resolution' && log.field !== 'Auto Trigger' && log.field !== 'Auto Status') {
+        newDataLogs.push(log);
+      }
+      if (log.field === 'Auto Status' || log.field === 'Auto Trigger' || log.field === 'Auto Resolution') {
+        if (log.field === 'Auto Trigger' || log.field === 'Auto Resolution') {
+          autoTemp.push(log);
+        } else if (log.field === 'Auto Status') {
+          if (autoTemp.length > 0) {
+            autoTemp.push(log);
+            autoTemp = autoTemp.reverse();
+            newDataLogs.push({
+              ...autoTemp[0],
+              ...pick(autoTemp[1], ['lastUpdateDate', 'creationDate']),
+              logId: `autoUpdate-${randomString(10)}`, // 加入随机数 避免更改详情，增加日志时重复
+              field: 'autoUpdate',
+              newStatus: autoTemp[0].newString,
+              trigger: autoTemp[1].newString,
+              resolutionChanged: autoTemp.length === 3,
+              removeResolution: autoTemp.length === 3 && autoTemp[2].oldValue && !autoTemp[2].newValue,
+            });
+          }
+          autoTemp = [];
+        }
+      }
+    });
+
+    return newDataLogs.length > 0 ? (
       <div className={`${clsPrefix}-content`}>
         <Logs
-          datalogs={projectDynamicDs.toData()}
+          datalogs={newDataLogs}
           fieldsMap={fieldsMap}
         />
         <div style={{
