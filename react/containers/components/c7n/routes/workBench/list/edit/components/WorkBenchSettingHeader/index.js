@@ -70,7 +70,7 @@ const WorkBenchSettingHeader = () => {
     });
   }
 
-  function handleSave() {
+  async function handleSave() {
     const tempData = dashboardDs.toData();
     const { dashboardName, dashboardId } = editHeaderDs.current.toData();
     const dashboardLayoutS = tempData.map((item) => {
@@ -84,8 +84,10 @@ const WorkBenchSettingHeader = () => {
       updateLayoutFlag: 1,
 
     };
-    workBenchUseStore.saveConfig(data);
-    handleCancel();
+    const res = await workBenchUseStore.saveConfig(data);
+    if (res) {
+      handleCancel();
+    }
   }
 
   function handleCancel() {
