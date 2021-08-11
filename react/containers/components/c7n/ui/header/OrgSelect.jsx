@@ -10,6 +10,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { toJS } from 'mobx';
+import { mount, get } from '@choerodon/inject';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import { historyPushMenu } from '../../util';
 import Setting from './Setting';
@@ -163,7 +164,6 @@ export default class OrgSelect extends Component {
       return null;
     }
     const buttonClass = classnames(`${prefixCls}-button`, 'block', 'org-button', { 'theme4-orgSelect': true });
-    const menu = this.renderModalContent();
     const orgButton = (
       <SelfButton
         className={buttonClass}
@@ -228,11 +228,12 @@ export default class OrgSelect extends Component {
     return (
       <>
         <li style={{ width: 'auto' }}>
-          {HAS_BASE_PRO ? (
-            <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
-              {orgButton}
-            </Dropdown>
-          ) : orgButton}
+          {mount('base-pro:OrgSelect_Dropdown', {
+            selectState: this.selectState,
+            prefixCls,
+            MouserOverWrapper,
+            orgObj,
+          }) || orgButton}
         </li>
         {
           (orgObj && orgObj.into) ? (
