@@ -228,12 +228,12 @@ export default class OrgSelect extends Component {
     return (
       <>
         <li style={{ width: 'auto' }}>
-          {mount('base-pro:OrgSelect_Dropdown', {
+          {get('base-pro:OrgSelect_Dropdown') ? mount('base-pro:OrgSelect_Dropdown', {
             selectState: this.selectState,
             prefixCls,
             MouserOverWrapper,
             orgObj,
-          }) || orgButton}
+          }) : orgButton}
         </li>
         {
           (orgObj && orgObj.into) ? (
