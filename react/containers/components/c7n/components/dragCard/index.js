@@ -32,20 +32,24 @@ const DragCard = (props) => {
       className={getClassName}
     >
       {
-       isEdit && onDelete && typeof onDelete === 'function' ? (
-         <Icon
-           role="none"
-           type="delete_forever"
-           className={`${prefixCls}-icon ${prefixCls}-delete`}
-           onClick={() => onDelete(record)}
-         />
-       ) : ''
+        isEdit && onDelete && typeof onDelete === 'function' ? (
+          <Icon
+            role="none"
+            type="delete_forever"
+            className={`${prefixCls}-icon ${prefixCls}-delete`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onDelete(record);
+            }}
+          />
+        ) : ''
       }
       {isEdit && (
-      <Icon
-        type="baseline-drag_indicator"
-        className={`${prefixCls}-icon ${prefixCls}-drag`}
-      />
+        <Icon
+          type="baseline-drag_indicator"
+          className={`${prefixCls}-icon ${prefixCls}-drag`}
+        />
       )}
 
       <div className={`${prefixCls}-container`}>

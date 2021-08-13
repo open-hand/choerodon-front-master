@@ -238,14 +238,13 @@ const WorkBenchDashboard = (props) => {
     );
   };
 
-  // if (!dashboardDs || dashboardDs.status === 'loading' || addCardDs.status === 'loading') {
-  //   return <LoadingBar display />;
-  // }
-
   const renderContent = () => {
-    // debugger;
     if (dashboardDs.status === 'loading' || addCardDs.status === 'loading') {
-      return <LoadingBar display />;
+      return (
+        <div style={{ marginTop: '10%' }}>
+          <LoadingBar display />
+        </div>
+      );
     }
 
     if (!dashboardDs.length || !addCardDs.length) {
