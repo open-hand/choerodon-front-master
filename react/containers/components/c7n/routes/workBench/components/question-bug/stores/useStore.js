@@ -1,9 +1,11 @@
 import { useLocalStore } from 'mobx-react-lite';
+import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 
 export default function useStore(bugQuestions) {
   return useLocalStore(() => ({
-    tabKey: bugQuestions.type || 'reportedBug',
+    tabKey: bugQuestions.type || localPageCacheStore.getItem('work.bench.question-bug.tabKey') || 'reportedBug',
     changeTabKey(value) {
+      localPageCacheStore.setItem('work.bench.question-bug.tabKey', value);
       this.tabKey = value;
     },
     page: 1,
