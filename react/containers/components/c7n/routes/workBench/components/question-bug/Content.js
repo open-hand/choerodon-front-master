@@ -4,11 +4,11 @@ import React, {
 import { Tree, Tooltip } from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
+import { omit } from 'lodash';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import Switch from '@/containers/components/c7n/routes/workBench/components/multiple-switch';
-import { omit } from 'lodash';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionNode from '../question-node';
@@ -128,8 +128,8 @@ const TodoQuestion = observer(() => {
           defaultValue="myStarBeacon"
           value={tabKey}
           options={[
-            { value: 'reportedBug', text: '已提缺陷' },
             { value: 'myBug', text: '待修复缺陷' },
+            { value: 'reportedBug', text: '已提缺陷' },
           ]}
           onChange={handleTabChange}
         />
