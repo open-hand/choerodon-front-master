@@ -753,6 +753,9 @@ const fieldsMap = [
       transform: ({ oldString }: { oldString: string }) => oldString.split('@')[1],
     },
   }],
+  ['environment', {
+    name: '环境',
+  }],
 ];
 
 export default fieldsMap;
