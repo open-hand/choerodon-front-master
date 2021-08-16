@@ -84,8 +84,6 @@ const QuickLink = observer(() => {
       title: '删除快速链接',
       children: '确认删除快速链接吗?',
       type: 'warning',
-      okProps: { color: 'red' },
-      cancelProps: { color: 'dark' },
       onOk: () => handelDelete(l),
     });
   };
