@@ -100,72 +100,61 @@ const StarTargetPro = observer(() => {
                   />
                 </div>
               )}
-              <div
-                className={`${prefixCls}-proContainer-items-icon`}
-                style={{
-                  backgroundImage: s.imageUrl
-                    ? `url("${s.imageUrl}")`
-                    : getRandomBackground(unix.substring(unix.length - 3)),
-                }}
-              >
-                {!s.imageUrl && s.name && s.name.slice(0, 1)}
-              </div>
-
-              <Tooltip title={`${s.name} (${s.code})`} placement="top">
-                <p
-                  style={{ color: isActive ? 'white' : 'rgba(58,52,95,1)' }}
-                  className={`${prefixCls}-proContainer-items-text`}
+              <div className={`${prefixCls}-proContainer-items-header`}>
+                <div
+                  className={`${prefixCls}-proContainer-items-header-icon`}
+                  style={{
+                    backgroundImage: s.imageUrl
+                      ? `url("${s.imageUrl}")`
+                      : getRandomBackground(unix.substring(unix.length - 3)),
+                  }}
                 >
-                  {s.name}
-                  &nbsp;(
-                  {s.code}
-                  )
-                </p>
-              </Tooltip>
-              <ProjectCategory
+                  {!s.imageUrl && s.name && s.name.slice(0, 1)}
+                </div>
+                <Tooltip title={`${s.code}`} placement="top">
+                  <p
+                    style={{ color: isActive ? 'white' : 'rgba(58,52,95,0.65)' }}
+                    className={`${prefixCls}-proContainer-items-header-text`}
+                  >
+                    {s.code}
+                  </p>
+                </Tooltip>
+              </div>
+              {/* <ProjectCategory
                 data={s.categories}
                 showIcon={false}
                 style={{ color: isActive ? 'white' : 'rgba(58,52,95,0.65)' }}
                 className={`${prefixCls}-proContainer-items-project`}
-              />
-
-              <div className={`${prefixCls}-proContainer-items-extra`}>
-                <Tooltip title={s.createUserName} placement="top">
-                  <div
-                    className={`${prefixCls}-proContainer-items-extra-icon`}
-                    style={{
-                      backgroundImage: `url(${s.createUserImageUrl})`,
-                    }}
-                  >
-                    {!s.createUserImageUrl
-                      && s.createUserName
-                      && s.createUserName.slice(0, 1)}
-                  </div>
-                </Tooltip>
+              /> */}
+              <Tooltip title={`${s.name}`} placement="top">
                 <div
-                  className={`${prefixCls}-proContainer-items-extra-text`}
+                  className={`${prefixCls}-proContainer-items-project`}
                   style={{
-                    color: isActive ? 'white' : ' rgba(58, 52, 95, 0.65)',
+                    color: isActive ? 'white' : 'rgba(58, 52, 95, 1)',
                   }}
                 >
-                  <p>创建于</p>
-                  <p>{s.creationDate && s.creationDate.split(' ')[0]}</p>
+                  {s.name}
                 </div>
+              </Tooltip>
+
+              <div
+                className={`${prefixCls}-proContainer-items-extra`}
+                role="none"
+                style={{ background: isActive ? '#ECF0FC' : 'rgba(104, 135, 232, 0.12)' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClickProject(s, history, AppState);
+                }}
+              >
                 <span
-                  className={`${prefixCls}-proContainer-items-project-goNext`}
-                  style={{
-                    background: isActive
-                      ? 'rgba(255,255,255,0.12)'
-                      : 'rgba(104,135,232,0.1)',
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleClickProject(s, history, AppState);
-                  }}
-                  role="none"
+                  className={`${prefixCls}-proContainer-items-extra-text`}
+                >
+                  进入项目
+                </span>
+                <span
+                  className={`${prefixCls}-proContainer-items-extra-goNext`}
                 >
                   <Icon
-                    style={{ color: isActive ? 'white' : '#6887E8' }}
                     type="trending_flat"
                   />
                 </span>
