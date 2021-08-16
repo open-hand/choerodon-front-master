@@ -3,7 +3,7 @@ import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore
 
 export default function useStore(bugQuestions) {
   return useLocalStore(() => ({
-    tabKey: bugQuestions.type || localPageCacheStore.getItem('work.bench.question-bug.tabKey') || 'reportedBug',
+    tabKey: bugQuestions.type || localPageCacheStore.getItem('work.bench.question-bug.tabKey') || 'myBug',
     changeTabKey(value) {
       localPageCacheStore.setItem('work.bench.question-bug.tabKey', value);
       this.tabKey = value;
