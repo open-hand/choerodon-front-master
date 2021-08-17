@@ -34,8 +34,8 @@ const UI_CONFIG = {
   generatePageQuery: ({
     page, pageSize, sortName: SN, sortOrder: SO, sortname, sortorder, sort,
   }) => { // 1.4.3组件此处bug，sort的key名称更改为全小写，此处临时处理
-    const sortName = SN || sortname;
-    const sortOrder = SO || sortorder;
+    const sortName = sortname || SN;
+    const sortOrder = sortorder || SO;
     return ({
       page,
       size: pageSize,
