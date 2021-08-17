@@ -115,6 +115,10 @@ export default async function handleClickProject(data, history, AppState) {
           route = menuRoute;
         }
         domain = menuDomain;
+        if (menus[0].subMenus.length) {
+          MenuStore.setActiveMenu(menus[0].subMenus[0])
+          MenuStore.setRootBaseOnActiveMenu();
+        }
       }
       path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
 
