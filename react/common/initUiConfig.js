@@ -1,7 +1,7 @@
+import { configure } from 'choerodon-ui';
 import { uiAxiosInstance } from '@/containers/components/c7n/tools/axios';
 import AppState from '@/containers/stores/c7n/AppState';
 import { UI_CONFIGURE } from '@/utils';
-import { configure } from 'choerodon-ui';
 
 const uiConfigure = UI_CONFIGURE || {};
 
@@ -32,12 +32,16 @@ const UI_CONFIG = {
   buttonFuncType: 'raised',
   lovQueryUrl: (code) => `/iam/choerodon/v1/lov/code?code=${code}`,
   generatePageQuery: ({
-    page, pageSize, sortName, sortOrder,
-  }) => ({
-    page,
-    size: pageSize,
-    sort: sortName && (sortOrder ? `${sortName},${sortOrder}` : sortName),
-  }),
+    page, pageSize, sortName: SN, sortOrder: SO, sortname, sortorder, sort,
+  }) => { // 1.4.3组件此处bug，sort的key名称更改为全小写，此处临时处理
+    const sortName = SN || sortname;
+    const sortOrder = SO || sortorder;
+    return ({
+      page,
+      size: pageSize,
+      sort: sortName && (sortOrder ? `${sortName},${sortOrder}` : sortName),
+    });
+  },
   lookupAxiosConfig: () => ({
     enabledCancelMark: false,
     routeChangeCancel: false,
