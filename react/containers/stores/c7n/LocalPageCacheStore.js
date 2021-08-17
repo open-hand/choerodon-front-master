@@ -2,21 +2,22 @@ import { toJS } from 'mobx';
 import { merge, omit } from 'lodash';
 
 const pages = new Map();
+// 工作台不使用项目id作为前缀区分
 class LocalPageCacheStore {
-  localData= pages
+  localData = pages
 
-  projectId=''
+  projectId = ''
 
   setProjectId(data) {
     this.projectId = data;
   }
 
-  setItem(pageKey, data) {
-    pages.set(`${this.projectId}-${pageKey}`, data);
+  setItem(pageKey, data, keyPrefix = `${this.projectId}-`) {
+    pages.set(`${keyPrefix}${pageKey}`, data);
   }
 
-  mergeSetItem(pageKey, data) {
-    const oldData = pages.get(`${this.projectId}-${pageKey}`);
+  mergeSetItem(pageKey, data, keyPrefix = `${this.projectId}-`) {
+    const oldData = pages.get(`${keyPrefix}${pageKey}`);
     const omitKeys = [];
     if (typeof (oldData) === 'object' && typeof (data) === 'object') {
       for (const [key, value] of Object.entries(data)) {
@@ -29,12 +30,12 @@ class LocalPageCacheStore {
     pages.set(`${this.projectId}-${pageKey}`, newData);
   }
 
-  getItem(pageKey) {
-    return pages.get(`${this.projectId}-${pageKey}`);
+  getItem(pageKey, keyPrefix = `${this.projectId}-`) {
+    return pages.get(`${keyPrefix}${pageKey}`);
   }
 
-  remove(pageKey) {
-    pages.delete(`${this.projectId}-${pageKey}`);
+  remove(pageKey, keyPrefix = `${this.projectId}-`) {
+    pages.delete(`${keyPrefix}${pageKey}`);
   }
 
   clear = () => {
