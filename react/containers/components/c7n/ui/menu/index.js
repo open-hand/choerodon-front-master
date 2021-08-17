@@ -121,7 +121,8 @@ export default class CommonMenu extends Component {
     }
   }
 
-  getMenuSingle(data, num, collapsed) {
+  // isThird 是否渲染三级菜单
+  getMenuSingle(data, num, collapsed, isThird = false) {
     const paddingStyleObj = num === 0 && collapsed ? { padding: '0 !important' } : {};
     if (!data.subMenus && !data.route) {
       return null;
@@ -145,10 +146,17 @@ export default class CommonMenu extends Component {
             className={classNames({
               'theme4-iconwrap': true,
             })}
+            style={{
+              marginRight: isThird ? '-3px' : '16px',
+            }}
           >
-            <Icon
-              type={data.icon}
-            />
+            {
+              !isThird && (
+                <Icon
+                  type={data.icon}
+                />
+              )
+            }
           </span>
           <span
             className={classNames({
@@ -192,7 +200,7 @@ export default class CommonMenu extends Component {
           )}
       >
         {data.subMenus.filter((v) => v.type !== 'tab' && v.code !== 'choerodon.code.project.deploy.app-deployment.pipeline').map(
-          (two) => this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed),
+          (two) => this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed, true),
         )}
       </SubMenu>
     );
