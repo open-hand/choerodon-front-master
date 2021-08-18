@@ -36,5 +36,13 @@ export default function useStore(bugQuestions) {
       this.totalCount = 0;
       this.hasMore = false;
     },
+
+    treeData: {},
+    get getTreeData() {
+      return this.treeData;
+    },
+    setTreeData(data) {
+      this.treeData = data;
+    },
   }));
 }

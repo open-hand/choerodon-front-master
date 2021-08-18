@@ -1,25 +1,25 @@
-import React, { useMemo, useState } from 'react';
-import {
-  Tree,
-} from 'choerodon-ui/pro';
+import React, {
+  useMemo, useState,
+} from 'react';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
+import {
+  omit,
+} from 'lodash';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
-import { omit } from 'lodash';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
-import QuestionNode from '../question-node';
-
 import QuestionSearch, { questionSearchFields } from '../question-search';
+import QuestionTree from '../question-tree';
+
 import './index.less';
 
 const TodoQuestion = observer(() => {
   const {
     organizationId,
     questionDs,
-    history,
     prefixCls,
     questionStore,
   } = useTodoQuestionStore();
@@ -40,17 +40,6 @@ const TodoQuestion = observer(() => {
     questionDs.query().finally(() => {
       changeBtnLoading(false);
     });
-  }
-
-  function nodeRenderer({ record }) {
-    return (
-      <QuestionNode
-        record={record}
-        organizationId={organizationId}
-        history={history}
-        switchCode="all"
-      />
-    );
   }
 
   function getContent() {
@@ -80,10 +69,9 @@ const TodoQuestion = observer(() => {
     }
     return (
       <>
-        <Tree
-          dataSet={questionDs}
-          renderer={nodeRenderer}
-          className="c7n-todoQuestion-issueContent"
+        <QuestionTree
+          treeData={questionStore.getTreeData}
+          organizationId={organizationId}
         />
         {questionStore.getHasMore ? component
           : null}

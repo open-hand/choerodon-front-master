@@ -2,6 +2,7 @@
 import JSONbig from 'json-bigint';
 import { get, isEqual } from 'lodash';
 import { toJS } from 'mobx';
+import getQuestionTreeData from '../../../utils/getQuestionTreeData';
 
 export default (({
   organizationId, questionStore, selectedProjectId, cacheStore,
@@ -57,5 +58,12 @@ export default (({
         }
       },
     }),
+  },
+  events: {
+    load: ({ dataSet }) => {
+      const treeData = getQuestionTreeData(dataSet.toData());
+      console.log(treeData);
+      questionStore.setTreeData(treeData);
+    },
   },
 }));

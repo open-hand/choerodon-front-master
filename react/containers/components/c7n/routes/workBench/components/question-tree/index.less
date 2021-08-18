@@ -1,29 +1,8 @@
-@prefixCls: c7ncd-workbench-question-todo;
+@prefixCls: c7ncd-workbench-question-tree;
 
 .@{prefixCls} {
-  flex: 1 1 62%;
-  margin-right: .20rem;
-  overflow: hidden;
-  &-title{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &-title-count {
-    display: inline-block;
-    margin-left: .08rem;
-    padding: 0 .06rem;
-    margin-right: .1rem;
-    background: rgba(244, 133, 144, 0.1);
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #f48590;
-    line-height: 20px;
-  }
 
-  &-issueContent {
+  &-content {
 
     .c7n-tree .c7n-tree-treenode {
       width: 100%;
@@ -70,7 +49,7 @@
     cursor: pointer;
   }
 
-  &-projectName {
+  &-project {
     margin: .1rem 0;
     font-weight: 500;
     color: #3a345f;
@@ -81,8 +60,12 @@
     &-avatar {
       width: .2rem;
       height: .2rem;
+      margin-right: 6px;
+      border-radius: 6px;
+      color: white;
+      background-size: 100% 100%;
       line-height: .2rem;
-      margin-right: .06rem;
+      text-align: center;
     }
   }
 }

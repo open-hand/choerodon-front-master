@@ -5,14 +5,15 @@ import { Tree } from 'choerodon-ui/pro';
 import J from 'choerodon-ui/pro/lib/tooltip';
 import { Spin, Tooltip } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
+import { clone, find, omit } from 'lodash';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import Switch from '@/containers/components/c7n/routes/workBench/components/multiple-switch';
-import { clone, find, omit } from 'lodash';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionSearch, { questionSearchFields } from '../question-search';
+import QuestionTree from '../question-tree';
 
 import './index.less';
 
@@ -85,16 +86,6 @@ const TodoQuestion = observer(() => {
     questionStore.setPage(1);
   }, [questionStore]);
 
-  const nodeRenderer = useCallback(({ record }) => (
-    <QuestionNode
-      record={record}
-      organizationId={organizationId}
-      history={history}
-      switchCode={tabKey}
-      isStar
-    />
-  ), [organizationId, history, tabKey]);
-
   function getContent() {
     if ((!questionDs || questionDs.status === 'loading') && !btnLoading) {
       return <LoadingBar display />;
@@ -122,9 +113,11 @@ const TodoQuestion = observer(() => {
     }
     return (
       <>
-        <Tree
-          dataSet={questionDs}
-          renderer={nodeRenderer}
+        <QuestionTree
+          treeData={questionStore.getTreeData}
+          organizationId={organizationId}
+          isStar
+          switchCode={tabKey}
         />
         {questionStore.getHasMore ? component
           : null}

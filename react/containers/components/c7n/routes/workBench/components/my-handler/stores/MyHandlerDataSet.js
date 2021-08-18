@@ -1,6 +1,7 @@
 import JSONbig from 'json-bigint';
 import { get, isEqual } from 'lodash';
 import { toJS } from 'mobx';
+import getQuestionTreeData from '../../../utils/getQuestionTreeData';
 
 const MyHandlerDataSet = ({
   selectedProjectId, organizationId, myHandlerStore, cacheStore,
@@ -59,6 +60,12 @@ const MyHandlerDataSet = ({
         }
       },
     }),
+  },
+  events: {
+    load: ({ dataSet }) => {
+      const treeData = getQuestionTreeData(dataSet.toData());
+      myHandlerStore.setTreeData(treeData);
+    },
   },
 });
 

@@ -31,5 +31,13 @@ export default function useStore(history) {
       this.hasMore = false;
     },
 
+    treeData: {},
+    get getTreeData() {
+      return this.treeData;
+    },
+    setTreeData(data) {
+      this.treeData = data;
+    },
+
   }));
 }
