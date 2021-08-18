@@ -26,5 +26,13 @@ export default function useStore(history) {
       this.hasMore = data;
     },
 
+    treeData: {},
+    get getTreeData() {
+      return this.treeData;
+    },
+    setTreeData(data) {
+      this.treeData = data;
+    },
+
   }));
 }

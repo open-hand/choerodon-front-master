@@ -12,10 +12,11 @@ import Switch from '@/containers/components/c7n/routes/workBench/components/mult
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionNode from '../question-node';
-
-import './index.less';
 import { useWorkBenchStore } from '../../stores';
 import QuestionSearch, { questionSearchFields } from '../question-search';
+import QuestionTree from '../question-tree';
+
+import './index.less';
 
 const TodoQuestion = observer(() => {
   const {
@@ -41,7 +42,6 @@ const TodoQuestion = observer(() => {
   }, [tabKey]);
 
   function load(search) {
-    console.log('search :>> ', search);
     questionStore.setPage(1);
     questionDs.setQueryParameter('searchData', omit(search, '_id'));
     // eslint-disable-next-line no-underscore-dangle
@@ -66,15 +66,6 @@ const TodoQuestion = observer(() => {
     questionStore.changeTabKey(key);
     questionStore.setPage(1);
   }, [questionStore]);
-
-  const nodeRenderer = useCallback(({ record }) => (
-    <QuestionNode
-      record={record}
-      organizationId={organizationId}
-      history={history}
-      switchCode={tabKey}
-    />
-  ), [organizationId, history, tabKey]);
 
   function getContent() {
     if ((!questionDs || questionDs.status === 'loading') && !btnLoading) {
@@ -103,9 +94,10 @@ const TodoQuestion = observer(() => {
     }
     return (
       <>
-        <Tree
-          dataSet={questionDs}
-          renderer={nodeRenderer}
+        <QuestionTree
+          treeData={questionStore.getTreeData}
+          organizationId={organizationId}
+          switchCode={tabKey}
         />
         {questionStore.getHasMore ? component
           : null}

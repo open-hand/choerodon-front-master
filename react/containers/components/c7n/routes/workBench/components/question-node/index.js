@@ -5,9 +5,9 @@ import {
   Icon, Tooltip,
 } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
-import { getRandomBackground } from '@/containers/components/c7n/util';
 import queryString from 'query-string';
 import { merge, get } from 'lodash';
+import { getRandomBackground } from '@/containers/components/c7n/util';
 
 import './index.less';
 
@@ -29,10 +29,11 @@ const QuestionNode = observer(({
 }) => {
   const {
     projectVO, typeCode, issueTypeVO, issueNum, summary, priorityVO: customPriorityVO,
-    backlogPriority, statusVO, assigneeId, featureType, backlogNum, statusVO: { code: statusCode },
+    backlogPriority, statusVO, assigneeId, featureType, backlogNum,
     assigneeImageUrl, assigneeRealName, assignees, featureTeams, starBeacon, issueId, id,
     projectId: topProjectId, projectName: topProjectName, ...otherData
-  } = record.toData() || {};
+  } = record || {};
+  const { code: statusCode } = statusVO || {};
   const prefixCls = 'c7ncd-question-issue';
 
   const priorityVO = customPriorityVO || (backlogPriority && { colour: backlogPriority.color, name: backlogPriority.name });
@@ -253,9 +254,6 @@ const QuestionNode = observer(({
       onClick={handleClick}
       key={`${typeCode}-${issueId || id}`}
     >
-      <p className={`${prefixCls}-project`}>
-        {projectVO ? projectVO.name : topProjectName || ''}
-      </p>
       <div className={`${prefixCls}-main`}>
         {getIssueType(typeCode, !!backlogNum)}
         <Tooltip title={issueNum} placement="top">
