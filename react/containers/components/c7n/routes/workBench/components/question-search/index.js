@@ -208,7 +208,6 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
   const { run: handleQuery, cancel: handleCancelQuery } = useDebounceFn((data) => {
     const currentSearchData = data || searchDs.toJSONData()[0];
     const temp = transformFieldsToSearch(currentSearchData, searchMode);
-    console.log('query....onQuery', temp, currentSearchData, pick(temp, '_id'));
     temp && onQuery && onQuery(temp);
   }, { wait: 320 });
   const handleChange = (code, v) => {
@@ -226,7 +225,6 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
   };
 
   useEffect(() => {
-    console.log('selectedProjectId......', selectedProjectId, searchData);
     if (searchData) {
       handleQuery();
     }

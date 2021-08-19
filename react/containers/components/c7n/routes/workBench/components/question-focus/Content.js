@@ -61,7 +61,6 @@ const TodoQuestion = observer(() => {
   }, [tabKey]);
 
   function load(search) {
-    console.log('search :>> ', search);
     questionStore.setPage(1);
     questionDs.setQueryParameter('searchData', omit(search, '_id'));
     // eslint-disable-next-line no-underscore-dangle

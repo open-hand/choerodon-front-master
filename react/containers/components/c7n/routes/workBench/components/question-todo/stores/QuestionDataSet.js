@@ -50,7 +50,6 @@ export default (({
             searchDataId: data.searchDataId,
             organizationId,
           };
-          // console.log('searchData....', searchData, data.searchDataId, isEqual(searchData, data.searchDataId), tempObj);
           cacheStore.setTodoQuestions(tempObj);
           return tempArr;
         } catch (e) {
