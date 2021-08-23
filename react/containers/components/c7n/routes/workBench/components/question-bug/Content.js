@@ -36,7 +36,7 @@ const TodoQuestion = observer(() => {
 
   const [btnLoading, changeBtnLoading] = useState(false);
   const searchField = useMemo(() => {
-    const showCodes = ['contents', 'status', 'assignee'];
+    const showCodes = ['contents', 'status', 'priority', 'assignee'];
     tabKey === 'myBug' && showCodes.pop();
     return questionSearchFields.filter((i) => showCodes.includes(i.code));
   }, [tabKey]);
