@@ -3,6 +3,7 @@ import map from 'lodash/map';
 import { observer } from 'mobx-react-lite';
 import { Tooltip, Spin } from 'choerodon-ui/pro';
 import ScrollContext from 'react-infinite-scroll-component';
+import moment from 'moment';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import TimePopover from '../time-popover';
@@ -61,6 +62,23 @@ const Doc = () => {
     </Tooltip>
   ));
 
+  const getProjectAvatar = (projectVO) => {
+    const { name: projectName, imageUrl, creationDate } = projectVO || {};
+    const unix = String(moment(creationDate).unix());
+    return (
+      <div
+        className={`${clsPrefix}-project-avatar`}
+        style={{
+          backgroundImage: imageUrl
+            ? `url("${imageUrl}")`
+            : getRandomBackground(unix.substring(unix.length - 3)),
+        }}
+      >
+        {!imageUrl && projectName && projectName.slice(0, 1)}
+      </div>
+    );
+  };
+
   function renderItems() {
     return map(docDs.toData(), ({
       knowledgeBaseName, orgFlag, id, baseId, organizationId, imageUrl, title, projectId, projectName, organizationName, updatedUserList: originUpdatedUserList, lastUpdateDate,
@@ -69,16 +87,33 @@ const Doc = () => {
       return (
         <div
           role="none"
-          className="c7n-workbench-doc-item"
+          className={`${clsPrefix}-item`}
           onClick={goKnowledgeLink.bind(this, {
             baseId, orgFlag, organizationId, spaceId: id, baseName: knowledgeBaseName, projectId, name: orgFlag ? organizationName : projectName,
           })}
         >
-          <div className="c7n-workbench-doc-item-info">
-            <span className="c7n-workbench-doc-item-logo c7n-workbench-doc-item-logo-update">
-              {`${title}`.toUpperCase().substring(0, 1)}
-            </span>
-            <div className="c7n-workbench-doc-item-userlist">
+          {orgFlag ? (
+            <Tooltip title={`所属组织：${organizationName}`}>
+              {getProjectAvatar({ name: organizationName, creationDate: organizationId })}
+            </Tooltip>
+          ) : (
+            <Tooltip title={`所属项目：${projectName}`}>
+              {getProjectAvatar({ name: projectName, imageUrl, creationDate: projectId })}
+            </Tooltip>
+          )}
+          <div className={`${clsPrefix}-item-title`}>
+            <div className={`${clsPrefix}-item-title-wrap`}>
+              <Tooltip title={title}>
+                <span className={`${clsPrefix}-item-title-text`}>{title}</span>
+              </Tooltip>
+              {orgFlag && <span className={`${clsPrefix}-item-org`}>组织</span>}
+            </div>
+            <Tooltip title={knowledgeBaseName}>
+              <span className={`${clsPrefix}-item-title-text`}>{knowledgeBaseName}</span>
+            </Tooltip>
+          </div>
+          <div className={`${clsPrefix}-item-info`}>
+            <div className={`${clsPrefix}-item-userlist`}>
               {renderUserList(updatedUserList.slice(0, 3))}
 
               {updatedUserList.length > 3 && (
@@ -86,30 +121,17 @@ const Doc = () => {
                   placement="top"
                   title={renderUserList(updatedUserList.slice(3), true)}
                 >
-                  <span className="c7n-workbench-doc-item-userlist-user-item c7n-workbench-doc-item-userlist-user-item-more">
+                  <span className={`${clsPrefix}-item-userlist-user-item ${clsPrefix}-item-userlist-user-item-more`}>
                     +
                     {updatedUserList.length - 3}
                   </span>
                 </Tooltip>
               )}
             </div>
-          </div>
-          <div className={`${clsPrefix}-item-project`}>
-            {!orgFlag && (
-              <div className={`${clsPrefix}-item-project-logo`}>
-                <Tooltip placement="top" title={`所属项目：${projectName}`}><div style={{ backgroundImage: imageUrl ? `url(${imageUrl})` : getRandomBackground(organizationId || projectId + 1) }}>{imageUrl ? '' : String(projectName || organizationName)[0].toUpperCase()}</div></Tooltip>
-              </div>
-            )}
-            <Tooltip placement="top" title={knowledgeBaseName}><span className={`${clsPrefix}-item-project-text ${!orgFlag ? `${clsPrefix}-item-project-text-dot` : ''}`}>{knowledgeBaseName}</span></Tooltip>
-            {orgFlag && <span className="c7n-workbench-doc-item-org">组织</span>}
-          </div>
-          <div className="c7n-workbench-doc-item-title">
-            <Tooltip title={title}>
-              <span className="c7n-workbench-doc-item-title-text">{title}</span>
-            </Tooltip>
-            <span className="c7n-workbench-doc-item-title-time">
+            <div className={`${clsPrefix}-item-info-time`}>
+              <span>最近更新：</span>
               <TimePopover datetime={lastUpdateDate} />
-            </span>
+            </div>
           </div>
         </div>
       );
