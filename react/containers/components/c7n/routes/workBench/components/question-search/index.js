@@ -123,7 +123,7 @@ export const questionSearchFields = [
   {
     code: 'backlogPriority', // 需求优先级
     source: 'backlog',
-    name: '优先级',
+    name: '紧急程度',
     selectConfig: {
       paging: false,
       readAxiosConfig: ({ organizationId }) => ({
