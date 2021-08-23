@@ -102,15 +102,15 @@ const Doc = () => {
             </Tooltip>
           )}
           <div className={`${clsPrefix}-item-title`}>
+            <Tooltip title={title}>
+              <span className={`${clsPrefix}-item-title-text`}>{title}</span>
+            </Tooltip>
             <div className={`${clsPrefix}-item-title-wrap`}>
-              <Tooltip title={title}>
-                <span className={`${clsPrefix}-item-title-text`}>{title}</span>
+              <Tooltip title={knowledgeBaseName}>
+                <span className={`${clsPrefix}-item-title-text`}>{knowledgeBaseName}</span>
               </Tooltip>
               {orgFlag && <span className={`${clsPrefix}-item-org`}>组织</span>}
             </div>
-            <Tooltip title={knowledgeBaseName}>
-              <span className={`${clsPrefix}-item-title-text`}>{knowledgeBaseName}</span>
-            </Tooltip>
           </div>
           <div className={`${clsPrefix}-item-info`}>
             <div className={`${clsPrefix}-item-userlist`}>
