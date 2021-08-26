@@ -9,6 +9,7 @@ import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionSearch, { questionSearchFields } from '../question-search';
 import QuestionTree from '../question-tree';
+import QuestionCount from '../question-count';
 
 import './index.less';
 
@@ -80,7 +81,7 @@ const TodoQuestion = observer(() => {
     <div className={`${prefixCls}-title`}>
       <span>
         <span>我执行的用例</span>
-        <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
+        <QuestionCount count={questionStore.getTotalCount} />
       </span>
       <QuestionSearch onQuery={load} fields={searchField} key={`QuestionSearch-${questionDs.id}`} />
     </div>

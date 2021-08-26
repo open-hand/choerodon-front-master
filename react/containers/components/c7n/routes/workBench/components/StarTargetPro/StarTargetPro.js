@@ -1,16 +1,16 @@
 import React from 'react';
 import { Button, Tooltip, Modal } from 'choerodon-ui/pro';
-import { getRandomBackground } from '@/containers/components/c7n/util';
 import { observer } from 'mobx-react-lite';
-import handleClickProject from '@/containers/components/util/gotoProject';
 import { Icon } from 'choerodon-ui';
 import moment from 'moment';
-import Card from '@/containers/components/c7n/routes/workBench/components/card';
-import AddModal from '@/containers/components/c7n/components/addComponentsModal';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import {
   get, map, forEach, filter,
 } from 'lodash';
+import { getRandomBackground } from '@/containers/components/c7n/util';
+import handleClickProject from '@/containers/components/util/gotoProject';
+import Card from '@/containers/components/c7n/routes/workBench/components/card';
+import AddModal from '@/containers/components/c7n/components/addComponentsModal';
+import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import useTheme from '@/hooks/useTheme';
 import { useStarTargetPro } from './stores';
 import { useWorkBenchStore } from '../../stores';
@@ -113,7 +113,7 @@ const StarTargetPro = observer(() => {
                 </div>
                 <Tooltip title={`${s.code}`} placement="top">
                   <p
-                    style={{ color: isActive ? 'white' : 'rgba(58,52,95,0.65)' }}
+                    style={{ color: isActive ? 'white' : 'var(--text-color3)' }}
                     className={`${prefixCls}-proContainer-items-header-text`}
                   >
                     {s.code}
@@ -130,7 +130,7 @@ const StarTargetPro = observer(() => {
                 <div
                   className={`${prefixCls}-proContainer-items-project`}
                   style={{
-                    color: isActive ? 'white' : 'rgba(58, 52, 95, 1)',
+                    color: isActive ? 'white' : 'var(--text-color)',
                   }}
                 >
                   {s.name}

@@ -16,22 +16,6 @@
     justify-content: space-between;
     // margin-right: 10px;
 
-    &-count {
-      display: inline-block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: .5rem;
-      margin-left: .08rem;
-      margin-right: .1rem;
-      padding: 0 .06rem;
-      background: rgba(244, 133, 144, 0.1);
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #f48590;
-      line-height: 20px;
-    }
-
     &-left {
       display: inline-flex;
       align-items: center;
@@ -52,33 +36,8 @@
   &-issueContent {
     padding-top: .13rem;
 
-    .c7n-tree .c7n-tree-treenode {
-      width: 100%;
-      padding: 0;
-      border-top: 1px transparent solid;
-      border-image: linear-gradient(to right, rgba(216, 220, 235, 0.4), #d8dceb, rgba(216, 220, 235, 0.4)) 1 10;
-    }
-
-    .c7n-tree .c7n-tree-treenode:last-of-type {
-      border-bottom: 1px transparent solid;
-    }
-
-    .c7n-tree .c7n-tree-node-content-wrapper {
-      width: 100%;
-      padding: 0;
-      overflow: hidden;
-
-      &:hover {
-        background-color: transparent;
-      }
-    }
-
-    .c7n-tree .c7n-tree-switcher {
-      padding-top: .08rem;
-    }
-
     &-more {
-      color: #3f51b5;
+      color: var(--primary-color);
       padding: .2rem 0 0 .2rem;
       cursor: pointer;
     }

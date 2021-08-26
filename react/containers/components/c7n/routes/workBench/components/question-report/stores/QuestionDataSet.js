@@ -31,7 +31,7 @@ export default (({
           const searchData = toJS(get(cacheStore.reportQuestions, 'searchData'));
           let tempArr;
           if (storeArr && isEqual(searchData, data.searchDataId)) {
-            if (tempId !== selectedProjectId) {
+            if (tempId !== selectedProjectId || !res.number) {
               tempArr = res.content;
             } else {
               tempArr = storeArr.concat(res.content);

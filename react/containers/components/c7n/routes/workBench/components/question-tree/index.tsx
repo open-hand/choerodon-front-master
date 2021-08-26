@@ -15,6 +15,7 @@ export interface TreeItemProps {
   projectId: number,
   children?: Array<TreeItemProps | never>,
   projectVO?: { name: string, imageUrl: string }
+  projectName?: string,
 }
 
 interface QuestionTreeProps {
@@ -89,11 +90,12 @@ const QuestionTree = ({
     map(treeData, (item) => {
       // @ts-ignore
       const projectVO: ProjectProps = item && item[0]?.projectVO || {};
+      const projectName = item && item[0]?.projectName;
       return (
         <>
           <div className={`${prefixCls}-project`}>
             {getProjectAvatar(projectVO)}
-            <span>{projectVO?.name}</span>
+            <span>{projectVO?.name || projectName}</span>
           </div>
           <Tree
             className={`${prefixCls}-content`}

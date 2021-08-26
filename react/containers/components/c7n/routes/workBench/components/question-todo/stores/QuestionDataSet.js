@@ -34,7 +34,7 @@ export default (({
 
           let tempArr;
           if (storeArr && isEqual(searchDataId, data.searchDataId)) {
-            if (tempId !== selectedProjectId) {
+            if (tempId !== selectedProjectId || !res.number) {
               tempArr = res.content;
             } else {
               tempArr = storeArr.concat(res.content);
@@ -61,7 +61,6 @@ export default (({
   events: {
     load: ({ dataSet }) => {
       const treeData = getQuestionTreeData(dataSet.toData());
-      console.log(treeData);
       questionStore.setTreeData(treeData);
     },
   },

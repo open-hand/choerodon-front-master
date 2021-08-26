@@ -1,8 +1,6 @@
 import React, {
   useState, useMemo, useCallback,
 } from 'react';
-import { Tree } from 'choerodon-ui/pro';
-import J from 'choerodon-ui/pro/lib/tooltip';
 import { Spin, Tooltip } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import { clone, find, omit } from 'lodash';
@@ -14,12 +12,12 @@ import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionSearch, { questionSearchFields } from '../question-search';
 import QuestionTree from '../question-tree';
+import QuestionCount from '../question-count';
 
 import './index.less';
 
-import QuestionNode from '../question-node';
-
-const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
+// const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
+const HAS_BACKLOG = true;
 const HAS_AGILEPRO = C7NHasModule('@choerodon/agile-pro');
 const TodoQuestion = observer(() => {
   const {
@@ -128,9 +126,7 @@ const TodoQuestion = observer(() => {
     <div className={`${prefixCls}-title`}>
       <div className={`${prefixCls}-title-left`}>
         <span>我的关注</span>
-        <Tooltip title={questionStore.getTotalCount}>
-          <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
-        </Tooltip>
+        <QuestionCount count={questionStore.getTotalCount} />
       </div>
       <span className={`${prefixCls}-title-right`}>
         <QuestionSearch key={`QuestionSearch-${questionDs.id}`} onQuery={load} fields={searchField} />

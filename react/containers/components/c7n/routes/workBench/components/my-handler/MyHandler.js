@@ -9,6 +9,7 @@ import { useMyHandler } from './stores';
 import emptyImg from './image/empty.svg';
 import QuestionSearch, { questionSearchFields } from '../question-search';
 import QuestionTree from '../question-tree';
+import QuestionCount from '../question-count';
 
 import './MyHandler.less';
 
@@ -80,7 +81,7 @@ const MyHandler = observer(() => {
     <div className={`${prefixCls}-title`}>
       <span>
         <span>我经手的</span>
-        <span className={`${prefixCls}-title-count`}>{myHandlerStore.getTotalCount}</span>
+        <QuestionCount count={myHandlerStore.getTotalCount} />
       </span>
       <QuestionSearch onQuery={load} fields={searchField} key={`QuestionSearch-${myHandlerDs.id}`} />
     </div>
