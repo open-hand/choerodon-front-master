@@ -2,7 +2,7 @@
 import JSONbig from 'json-bigint';
 import { get, isEqual, map } from 'lodash';
 import { toJS } from 'mobx';
-import getQuestionTreeData from "../../../utils/getQuestionTreeData";
+import getQuestionTreeData from '../../../utils/getQuestionTreeData';
 
 export default (({
   organizationId, questionStore, cacheStore, selectedProjectId, type,
@@ -40,7 +40,7 @@ export default (({
 
             let tempArr = [];
             if (storeArr && isEqual(searchDataId, data.searchDataId)) {
-              if (tempType !== type || tempId !== selectedProjectId) {
+              if (tempType !== type || tempId !== selectedProjectId || !res.number) {
                 tempArr = content;
               } else {
                 tempArr = storeArr.concat(res.content);
@@ -68,7 +68,8 @@ export default (({
   },
   events: {
     load: ({ dataSet }) => {
-      const treeData = getQuestionTreeData(dataSet.toData());
+      const isRequire = type === 'myStarBeacon_backlog';
+      const treeData = getQuestionTreeData(dataSet.toData(), !isRequire, isRequire ? 'id' : 'issueId');
       questionStore.setTreeData(treeData);
     },
   },

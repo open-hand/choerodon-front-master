@@ -69,7 +69,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
 
   const value = {
     ...props,
-    prefixCls: 'c7ncd-workbench-question-todo',
+    prefixCls: 'c7ncd-workbench-question-report',
     questionDs,
     organizationId,
     workBenchUseStore,

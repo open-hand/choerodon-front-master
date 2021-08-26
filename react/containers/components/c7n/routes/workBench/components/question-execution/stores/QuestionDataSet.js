@@ -42,7 +42,7 @@ export default (({
             typeCode: 'test-execution',
           }));
           if (storeArr && isEqual(searchDataId, data.searchDataId)) {
-            if (tempId !== selectedProjectId) {
+            if (tempId !== selectedProjectId || !res.number) {
               tempArr = content;
             } else {
               tempArr = storeArr.concat(content);

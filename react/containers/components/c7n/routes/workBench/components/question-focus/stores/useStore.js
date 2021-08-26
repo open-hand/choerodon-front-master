@@ -42,6 +42,5 @@ export default function useStore(focusQuestions) {
     setTreeData(data) {
       this.treeData = data;
     },
-
   }));
 }

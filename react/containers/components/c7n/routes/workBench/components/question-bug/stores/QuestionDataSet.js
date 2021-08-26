@@ -39,7 +39,7 @@ export default (({
 
           let tempArr;
           if (storeArr && isEqual(searchDataId, data.searchDataId)) {
-            if (tempType !== type || tempId !== selectedProjectId) {
+            if (tempType !== type || tempId !== selectedProjectId || !res.number) {
               tempArr = content;
             } else {
               tempArr = storeArr.concat(res.content);

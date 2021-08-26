@@ -84,7 +84,7 @@ const QuestionNode = observer(({
     let mes = '';
     let icon = '';
     let color = '';
-    let otherStyle = { fontSize: '26px' };
+    let otherStyle = {};
     const newTypeCode = isBacklogType ? 'backlog' : originTypeCode;
     switch (newTypeCode) {
       case 'story':
@@ -135,9 +135,9 @@ const QuestionNode = observer(({
         background: color,
         fontSize: '16.25px',
         borderRadius: '3px',
-        width: 20,
-        height: 20,
-        lineHeight: '20px',
+        width: 18,
+        height: 18,
+        lineHeight: '18px',
         textAlign: 'center',
       };
       color = 'white';

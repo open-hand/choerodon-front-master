@@ -1,7 +1,6 @@
 import React, {
   useState, useCallback, useMemo,
 } from 'react';
-import { Tree, Tooltip } from 'choerodon-ui/pro';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import { omit } from 'lodash';
@@ -15,6 +14,7 @@ import QuestionNode from '../question-node';
 import { useWorkBenchStore } from '../../stores';
 import QuestionSearch, { questionSearchFields } from '../question-search';
 import QuestionTree from '../question-tree';
+import QuestionCount from '../question-count';
 
 import './index.less';
 
@@ -109,9 +109,7 @@ const TodoQuestion = observer(() => {
     <div className={`${prefixCls}-title`}>
       <div className={`${prefixCls}-title-left`}>
         <span>缺陷</span>
-        <Tooltip title={questionStore.getTotalCount}>
-          <span className={`${prefixCls}-title-count`}>{questionStore.getTotalCount}</span>
-        </Tooltip>
+        <QuestionCount count={questionStore.getTotalCount} />
       </div>
       <span className={`${prefixCls}-title-right`}>
         <QuestionSearch key={`c7n-focus-QuestionSearch-${tabKey}-${questionDs.id}`} onQuery={load} fields={searchField} />
