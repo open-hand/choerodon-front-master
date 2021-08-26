@@ -16,8 +16,7 @@ import QuestionCount from '../question-count';
 
 import './index.less';
 
-// const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
-const HAS_BACKLOG = true;
+const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
 const HAS_AGILEPRO = C7NHasModule('@choerodon/agile-pro');
 const TodoQuestion = observer(() => {
   const {
