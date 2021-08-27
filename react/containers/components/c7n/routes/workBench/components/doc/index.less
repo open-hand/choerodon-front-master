@@ -1,6 +1,6 @@
 .c7n-workbench-doc {
   background-color: #fff;
-  padding: 0.13rem 0.24rem .2rem;
+  padding: 0.13rem 0 .2rem;
   display: flex;
   flex-direction: column;
   font-size: .13rem;
@@ -20,6 +20,7 @@
     align-items: center;
     margin-bottom: 0.2rem;
     margin-left: 5px;
+    padding: 0 .24rem;
 
     & > span {
       font-size: 16px;
@@ -78,6 +79,8 @@
 
   &-scroll {
     height: 100%;
+    padding: 0 .24rem;
+
     &-load {
       position: absolute;
       left: 47%;
@@ -101,7 +104,8 @@
       flex-grow: 1;
       display: flex;
       align-items: center;
-      padding: 0.16rem 0;
+      padding: 0.1rem 0;
+      overflow: hidden;
     }
 
     & + & {
@@ -256,6 +260,7 @@
     &-userlist {
       margin-bottom: .05rem;
       text-align: right;
+      height: .24rem;
 
       &-user {
         display: inline-block;
@@ -319,13 +324,13 @@
   &-project {
 
     &-avatar {
-      width: .4rem;
-      height: .4rem;
+      width: .34rem;
+      height: .34rem;
       margin-right: .14rem;
       border-radius: 12px;
       color: white;
       background-size: 100% 100%;
-      line-height: .4rem;
+      line-height: .34rem;
       text-align: center;
       flex-shrink: 0;
       font-size: .2rem;
