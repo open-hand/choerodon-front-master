@@ -130,17 +130,13 @@ const QuestionNode = observer(({
       color = issueTypeVO.colour || color;
     }
     const reverse = ['agile_epic', 'agile_story', 'agile_fault', 'agile_task', 'agile_subtask', 'test-case', 'test-automation', 'agile-feature'].includes(icon);
+    let otherClassName = '';
     if (!reverse && newTypeCode !== 'test-execution') {
       otherStyle = {
         background: color,
-        fontSize: '16.25px',
-        borderRadius: '3px',
-        width: 18,
-        height: 18,
-        lineHeight: '18px',
-        textAlign: 'center',
       };
       color = 'white';
+      otherClassName = `${prefixCls}-main-icon-other`;
     }
 
     return (
@@ -158,7 +154,7 @@ const QuestionNode = observer(({
           </div>
         ) : (
           <Icon
-            className={`${prefixCls}-main-icon`}
+            className={`${prefixCls}-main-icon ${otherClassName}`}
             type={icon}
             style={{ ...otherStyle, color }}
           />
