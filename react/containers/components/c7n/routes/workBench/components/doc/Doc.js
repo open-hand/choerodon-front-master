@@ -101,22 +101,23 @@ const Doc = () => {
               {getProjectAvatar({ name: projectName, imageUrl, creationDate: projectId })}
             </Tooltip>
           )}
-          <div className={`${clsPrefix}-item-title`}>
-            <Tooltip title={title}>
-              <span className={`${clsPrefix}-item-title-text`}>{title}</span>
-            </Tooltip>
-            <div className={`${clsPrefix}-item-title-wrap`}>
-              <Tooltip title={knowledgeBaseName}>
-                <span className={`${clsPrefix}-item-title-text`}>{knowledgeBaseName}</span>
+          <div className={`${clsPrefix}-item-right`}>
+            <div className={`${clsPrefix}-item-title`}>
+              <Tooltip title={title}>
+                <span className={`${clsPrefix}-item-title-text`}>{title}</span>
               </Tooltip>
-              {orgFlag && <span className={`${clsPrefix}-item-org`}>组织</span>}
+              <div className={`${clsPrefix}-item-title-wrap`}>
+                <Tooltip title={knowledgeBaseName}>
+                  <span className={`${clsPrefix}-item-title-text`}>{knowledgeBaseName}</span>
+                </Tooltip>
+                {orgFlag && <span className={`${clsPrefix}-item-org`}>组织</span>}
+              </div>
             </div>
-          </div>
-          <div className={`${clsPrefix}-item-info`}>
-            <div className={`${clsPrefix}-item-userlist`}>
-              {renderUserList(updatedUserList.slice(0, 3))}
+            <div className={`${clsPrefix}-item-info`}>
+              <div className={`${clsPrefix}-item-userlist`}>
+                {renderUserList(updatedUserList.slice(0, 3))}
 
-              {updatedUserList.length > 3 && (
+                {updatedUserList.length > 3 && (
                 <Tooltip
                   placement="top"
                   title={renderUserList(updatedUserList.slice(3), true)}
@@ -126,11 +127,12 @@ const Doc = () => {
                     {updatedUserList.length - 3}
                   </span>
                 </Tooltip>
-              )}
-            </div>
-            <div className={`${clsPrefix}-item-info-time`}>
-              <span>最近更新：</span>
-              <TimePopover datetime={lastUpdateDate} />
+                )}
+              </div>
+              <div className={`${clsPrefix}-item-info-time`}>
+                <span>最近更新：</span>
+                <TimePopover datetime={lastUpdateDate} />
+              </div>
             </div>
           </div>
         </div>

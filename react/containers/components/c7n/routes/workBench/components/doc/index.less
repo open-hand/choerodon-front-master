@@ -93,14 +93,23 @@
   }
 
   &-item {
-    padding: 0.16rem 0;
     cursor: pointer;
     display: flex;
     align-items: center;
 
+    &-right {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid var(--divider);
+      padding: 0.16rem 0;
+    }
+
     & + & {
-      border-top: 1px transparent solid;
-      border-image: linear-gradient(to right, transparent, rgba(216, 220, 235, 0.4), #d8dceb, rgba(216, 220, 235, 0.4)) 1 10;
+
+      &-right {
+        border-top: 1px transparent solid;
+      }
     }
 
     &-info {
