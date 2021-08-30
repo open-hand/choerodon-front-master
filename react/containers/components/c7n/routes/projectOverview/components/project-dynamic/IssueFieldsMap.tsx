@@ -312,41 +312,36 @@ const fieldsMap = [
   ],
   [
     'timespent', {
-      name: '花费时间',
+      name: '耗费时间',
       create: {
-        render: (log: ILog, linkToIssue: () => void) => {
-          const {
-            summary, num, issueTypeVO,
-          } = log;
-          return (
-            <span>
-              <span className="c7n-Log-operation">更新</span>
-              <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
-              <span className="c7n-Log-operation">的</span>
-              <span className="c7n-Log-field">【花费时间】</span>
-            </span>
-          );
-        },
+        render: ({ newString, oldString }: { newString: string, oldString: string }) => (
+          <span>
+            <span className="c7n-Log-operation">登记</span>
+            <span className="c7n-Log-field">【耗费时间】</span>
+            <span className="c7n-Log-field">{`【${parseFloat(newString)}小时】`}</span>
+          </span>
+        ),
       },
       update: {
-        render: (log: ILog, linkToIssue: () => void) => {
-          const {
-            summary, num, issueTypeVO,
-          } = log;
+        render: ({ newString, oldString }: { newString: string, oldString: string }) => {
+          const diff = Math.round(((parseFloat(newString) || 0) - (parseFloat(oldString) || 0)) * 10) / 10;
           return (
             <span>
-              <span className="c7n-Log-operation">更新</span>
-              <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
-              <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
-              <span className="c7n-Log-operation">的</span>
-              <span className="c7n-Log-field">【花费时间】</span>
+              <span className="c7n-Log-operation">{diff > 0 ? '登记' : '移除'}</span>
+              <span className="c7n-Log-field">【耗费时间】</span>
+              <span className="c7n-Log-field">{`【${diff > 0 ? diff : -diff}小时】`}</span>
             </span>
           );
         },
       },
       delete: {
-        dontJudge: true,
+        render: ({ newString, oldString }: { newString: string, oldString: string }) => (
+          <span>
+            <span className="c7n-Log-operation">移除</span>
+            <span className="c7n-Log-field">【耗费时间】</span>
+            <span className="c7n-Log-field">{`【${parseFloat(oldString)}小时】`}</span>
+          </span>
+        ),
       },
     },
   ],
