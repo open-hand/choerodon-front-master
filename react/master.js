@@ -3,15 +3,15 @@ import { withRouter, Route, Switch } from 'react-router-dom';
 import queryString from 'query-string';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { observer, Provider } from 'mobx-react';
-import { Spin } from 'choerodon-ui';
 import { Modal, ModalProvider } from 'choerodon-ui/pro';
 import _ from 'lodash';
-import {
-  authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
-} from '@/utils';
 import { initTheme, Container } from '@hzero-front-ui/core';
 import C7nTemplate from '@hzero-front-ui/c7n-ui';
 import { theme4 } from '@hzero-front-ui/themes';
+import { AnimationLoading } from '@choerodon/components';
+import {
+  authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
+} from '@/utils';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
 import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
@@ -61,7 +61,7 @@ export default class Index extends React.Component {
     }
     this.getNotificationPermission();
     this.initTheme();
-    this.syncStyleFix()
+    this.syncStyleFix();
   }
 
   syncStyleFix = () => {
@@ -106,7 +106,6 @@ export default class Index extends React.Component {
       ],
     });
   }
-
 
   componentWillUnmount() {
     window.removeEventListener('storage', this.handleStorageChange);
@@ -227,7 +226,7 @@ export default class Index extends React.Component {
     if (loading) {
       return (
         <div style={spinStyle}>
-          <Spin />
+          <AnimationLoading />
         </div>
       );
     }
