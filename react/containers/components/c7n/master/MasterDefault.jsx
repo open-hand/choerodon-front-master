@@ -8,12 +8,17 @@ import {
 } from 'choerodon-ui';
 import { observer as liteObserver } from 'mobx-react-lite';
 import queryString from 'query-string';
-import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import {
-  message, Button, Modal, DataSet, Table, Tooltip,
+  message,
+  Button,
+  Modal,
+  DataSet,
+  Table,
+  Tooltip,
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import { mount, get as cherodonGet } from '@choerodon/inject';
+import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '../tools/axios';
 import MasterHeader from '../ui/header';
@@ -33,26 +38,33 @@ const spinStyle = {
 
 // 这里是没有菜单的界面合集
 // 记录下route和code 为了方便查询该界面的文档地址
-const routeWithNoMenu = [{
-  route: 'workbench',
-  code: 'workbench',
-}, {
-  route: 'projects',
-  code: 'project-list',
-}, {
-  route: 'knowledge/organization',
-  code: 'knowledge',
-}, {
-  route: 'app-market',
-  code: 'app-market',
-}];
+const routeWithNoMenu = [
+  {
+    route: 'workbench',
+    code: 'workbench',
+  },
+  {
+    route: 'projects',
+    code: 'project-list',
+  },
+  {
+    route: 'knowledge/organization',
+    code: 'knowledge',
+  },
+  {
+    route: 'app-market',
+    code: 'app-market',
+  },
+];
 
 function parseQueryToMenuType(search) {
   const menuType = {};
   if (search) {
     const {
       type, name, id, organizationId, category,
-    } = queryString.parse(search);
+    } = queryString.parse(
+      search,
+    );
     if (type) {
       menuType.type = type;
     }
@@ -90,13 +102,47 @@ class Masters extends Component {
     super(props);
     this.cRef = createRef();
     this.userRef = createRef();
+    this.info = queryString.parse(props.history.location.search);
   }
 
   componentWillMount() {
+    const { AppState, history } = this.props;
+    AppState.loadUserInfo().then((res) => {
+      if (
+        res.changePasswordFlag === 1
+        && !sessionStorage.getItem('infoCheckFlag')
+      ) {
+        Modal.open({
+          title: '密码到期提醒',
+          destroyOnClose: true,
+          children: (
+            <p>
+              您的密码即将到期，为保证消息的正常接收及您的账户安全,和
+              后续的正常使用，请前往个人中心进行修改。
+            </p>
+          ),
+          okText: '个人中心',
+          onCancel: () => {
+            sessionStorage.setItem('infoCheckFlag', true);
+          },
+          onOk: () => {
+            history.push(
+              `/iam/user-info?type=user&organizationId=${this.info.organizationId}`,
+            );
+            sessionStorage.setItem('infoCheckFlag', true);
+          },
+        });
+      }
+    });
     this.initMenuType(this.props);
     const themeColor = localStorage.getItem('C7N-THEME-COLOR');
     this.updateTheme(themeColor);
-    cherodonGet('base-pro:handleGetHelpDocUrl') && (cherodonGet('base-pro:handleGetHelpDocUrl')(this.props, routeWithNoMenu, this.setDocUrl));
+    cherodonGet('base-pro:handleGetHelpDocUrl')
+      && cherodonGet('base-pro:handleGetHelpDocUrl')(
+        this.props,
+        routeWithNoMenu,
+        this.setDocUrl,
+      );
   }
 
   // callback = (data) => {
@@ -124,9 +170,14 @@ class Masters extends Component {
         this.cRef?.current?.setguideOpen(false);
       }
       this.cRef?.current?.handleSetGuideContent(newProps);
-      cherodonGet('base-pro:handleGetHelpDocUrl') && (cherodonGet('base-pro:handleGetHelpDocUrl')(this.props, routeWithNoMenu, this.setDocUrl));
+      cherodonGet('base-pro:handleGetHelpDocUrl')
+        && cherodonGet('base-pro:handleGetHelpDocUrl')(
+          this.props,
+          routeWithNoMenu,
+          this.setDocUrl,
+        );
     }
-  }
+  };
 
   setDocUrl = async (params) => {
     if (JSON.stringify(params) !== '{}') {
@@ -135,19 +186,22 @@ class Masters extends Component {
         this.props.AppState.setDocUrl(result);
       }
     }
-  }
+  };
 
   judgeIfGetUserCountCheck = (newProps, oldProps) => {
     const newParams = new URLSearchParams(newProps.location.search);
     const oldParams = new URLSearchParams(oldProps.location.search);
     if (newParams.get('organizationId') !== oldParams.get('organizationId')) {
       if (this.userRef?.current?.getUserCountCheck) {
-        this.userRef.current.getUserCountCheck(newParams.get('organizationId'))
+        this.userRef.current.getUserCountCheck(newParams.get('organizationId'));
       }
       // this.getUserCountCheck(newParams.get('organizationId'));
-      this.initStarAndRecentProjects(newParams.get('organizationId'), newProps.AppState);
+      this.initStarAndRecentProjects(
+        newParams.get('organizationId'),
+        newProps.AppState,
+      );
     }
-  }
+  };
 
   /**
    * 更换组织后在talenntId变化后 主动变更star and recent
@@ -162,18 +216,23 @@ class Masters extends Component {
         this.initStarAndRecentProjects(newOrgId, this.props.AppState);
       }, 500);
     }
-  }
+  };
 
   componentDidMount() {
     this.initFavicon();
   }
 
   updateTheme = (newPrimaryColor) => {
-    if (newPrimaryColor === 'undefined' || newPrimaryColor === 'null' || !newPrimaryColor) {
+    if (
+      newPrimaryColor === 'undefined'
+      || newPrimaryColor === 'null'
+      || !newPrimaryColor
+    ) {
       return;
     }
     const colorArr = newPrimaryColor.split(',');
-    let c1; let c2;
+    let c1;
+    let c2;
     if (colorArr.length === 2) {
       [c1, c2] = colorArr;
     } else if (colorArr.length === 1) {
@@ -184,12 +243,11 @@ class Masters extends Component {
     } else if (!colorArr.length) {
       return;
     }
-    themeColorClient.changeColor(c1, c2)
-      .finally(() => {
-        // eslint-disable-next-line no-console
-        console.log(`[Choerodon] Current Theme Color: ${newPrimaryColor}`);
-      });
-  }
+    themeColorClient.changeColor(c1, c2).finally(() => {
+      // eslint-disable-next-line no-console
+      console.log(`[Choerodon] Current Theme Color: ${newPrimaryColor}`);
+    });
+  };
 
   isInOutward = (pathname) => {
     // eslint-disable-next-line no-underscore-dangle
@@ -199,7 +257,7 @@ class Masters extends Component {
       return arr.some((v) => pathname.startsWith(v));
     }
     return false;
-  }
+  };
 
   initFavicon() {
     const { AppState } = this.props;
@@ -217,7 +275,10 @@ class Masters extends Component {
       document.head.appendChild(link);
       if (data) {
         data.defaultTitle = document.getElementsByTagName('title')[0].innerText;
-        document.getElementsByTagName('title')[0].innerText = get(data, 'systemTitle');
+        document.getElementsByTagName('title')[0].innerText = get(
+          data,
+          'systemTitle',
+        );
       }
       AppState.setSiteInfo(data);
       this.updateTheme(data?.themeColor);
@@ -240,7 +301,10 @@ class Masters extends Component {
           id, name, type, organizationId,
         } = recent[0];
         menuType = {
-          id, name, type, organizationId,
+          id,
+          name,
+          type,
+          organizationId,
         };
         needLoad = true;
       } else {
@@ -251,7 +315,10 @@ class Masters extends Component {
       isUser = true;
     } else if (!menuType.type) {
       menuType.type = 'site';
-    } else if (menuType.type === 'project' && (!menuType.category || menuType.category === 'undefined')) {
+    } else if (
+      menuType.type === 'project'
+      && (!menuType.category || menuType.category === 'undefined')
+    ) {
       // const project = filter(HeaderStore.getProData, ({ id, organizationId }) => String(id) === menuType.id && String(organizationId) === menuType.organizationId)[0];
       // if (project) {
       //   menuType.category = project.category;
@@ -274,7 +341,11 @@ class Masters extends Component {
           }
           AppState.setCurrentProject(null);
           const queryObj = queryString.parse(history.location.search);
-          const search = await getSearchString('organization', 'id', queryObj.organizationId);
+          const search = await getSearchString(
+            'organization',
+            'id',
+            queryObj.organizationId,
+          );
           MenuStore.setActiveMenu(null);
           history.push(`/projects${search}`);
         }
@@ -282,13 +353,21 @@ class Masters extends Component {
       if (menuType.projectId) {
         const currentProject = AppState.getCurrentProject;
         let res;
-        if (!currentProject || String(menuType.projectId) !== String(currentProject?.id)) {
+        if (
+          !currentProject
+          || String(menuType.projectId) !== String(currentProject?.id)
+        ) {
           try {
-            res = await axios.get(`/iam/choerodon/v1/projects/${menuType.projectId}/basic_info`);
+            res = await axios.get(
+              `/iam/choerodon/v1/projects/${menuType.projectId}/basic_info`,
+            );
             if (!res.enabled) {
               goSafty(res);
             }
-            if (String(res.id) === String(new URLSearchParams(location.search).get('id'))) {
+            if (
+              String(res.id)
+              === String(new URLSearchParams(location.search).get('id'))
+            ) {
               AppState.setCurrentProject(res);
             } else {
               return true;
@@ -301,15 +380,24 @@ class Masters extends Component {
           res = currentProject;
         }
         const checkArray = ['name', 'organizationId'];
-        if (checkArray.some((c) => {
-          if (menuType[c] && menuType[c] !== 'undefined' && String(menuType[c]) !== String(res[c])) {
-            return true;
-          }
-        })) {
+        if (
+          checkArray.some((c) => {
+            if (
+              menuType[c]
+              && menuType[c] !== 'undefined'
+              && String(menuType[c]) !== String(res[c])
+            ) {
+              return true;
+            }
+          })
+        ) {
           goSafty();
           return true;
         }
-        AppState.changeMenuType({ ...menuType, categories: res.categories?.slice() });
+        AppState.changeMenuType({
+          ...menuType,
+          categories: res.categories?.slice(),
+        });
         return true;
       }
     }
@@ -428,51 +516,49 @@ class Masters extends Component {
         </div>
       );
     }
-    return (
-      AppState.isAuth && AppState.currentMenuType ? (
-        <div className="page-wrapper">
-          <div className="page-header" style={fullPage ? { display: 'none' } : {}}>
-            <AnnouncementBanner />
-            <MasterHeader />
-          </div>
-          <div className="page-body">
-            <div className="content-wrapper">
-              <div id="menu" style={fullPage ? { display: 'none' } : {}}>
-                <CommonMenu />
-              </div>
-              {mount('base-pro:Guide', {
-                ...this.props,
-                MasterServices,
-                popoverHead,
-                cRef: this.cRef,
-              })}
-              {
-                mount('base-pro:UserCheck', {
-                  ...this.props,
-                  MasterServices,
-                  MasterApis,
-                  cRef: this.userRef,
-                })
-              }
-              <div id="autoRouter" className="content">
-                {
-                  AppState.getCanShowRoute || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
-                    <RouteIndex AutoRouter={AutoRouter} />
-                  ) : (
-                    <div>
-                      <Skeleton />
-                    </div>
-                  )
-                }
-              </div>
+    return AppState.isAuth && AppState.currentMenuType ? (
+      <div className="page-wrapper">
+        <div
+          className="page-header"
+          style={fullPage ? { display: 'none' } : {}}
+        >
+          <AnnouncementBanner />
+          <MasterHeader />
+        </div>
+        <div className="page-body">
+          <div className="content-wrapper">
+            <div id="menu" style={fullPage ? { display: 'none' } : {}}>
+              <CommonMenu />
+            </div>
+            {mount('base-pro:Guide', {
+              ...this.props,
+              MasterServices,
+              popoverHead,
+              cRef: this.cRef,
+            })}
+            {mount('base-pro:UserCheck', {
+              ...this.props,
+              MasterServices,
+              MasterApis,
+              cRef: this.userRef,
+            })}
+            <div id="autoRouter" className="content">
+              {AppState.getCanShowRoute
+              || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
+                <RouteIndex AutoRouter={AutoRouter} />
+                ) : (
+                  <div>
+                    <Skeleton />
+                  </div>
+                )}
             </div>
           </div>
         </div>
-      ) : (
-        <div style={spinStyle}>
-          <Spin />
-        </div>
-      )
+      </div>
+    ) : (
+      <div style={spinStyle}>
+        <Spin />
+      </div>
     );
   }
 }
