@@ -748,8 +748,14 @@ const fieldsMap = [
       transform: ({ oldString }: { oldString: string }) => oldString.split('@')[1],
     },
   }],
+  ['Tag', {
+    name: 'Tag',
+  }],
   ['environment', {
     name: '环境',
+  }],
+  ['mainResponsible', {
+    name: '主要负责人',
   }],
 ];
 
