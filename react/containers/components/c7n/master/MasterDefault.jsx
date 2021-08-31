@@ -109,18 +109,16 @@ class Masters extends Component {
     const { AppState, history } = this.props;
     AppState.loadUserInfo().then((res) => {
       if (
-        res.changePasswordFlag === 1
+        res.changePasswordFlag === 0
         && !sessionStorage.getItem('infoCheckFlag')
       ) {
         Modal.open({
           title: '密码到期提醒',
+          key: Modal.key(),
           destroyOnClose: true,
-          children: (
-            <p>
-              您的密码即将到期，为保证消息的正常接收及您的账户安全,和
-              后续的正常使用，请前往个人中心进行修改。
-            </p>
-          ),
+          width: 520,
+          children:
+            '您的密码即将到期，为保证消息的正常接收及您的账户安全和后续的正常使用，请前往个人中心进行修改。',
           okText: '个人中心',
           onCancel: () => {
             sessionStorage.setItem('infoCheckFlag', true);
