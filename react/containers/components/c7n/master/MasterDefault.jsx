@@ -109,7 +109,7 @@ class Masters extends Component {
     const { AppState, history } = this.props;
     AppState.loadUserInfo().then((res) => {
       if (
-        res.changePasswordFlag === 0
+        res.changePasswordFlag === 1
         && !sessionStorage.getItem('infoCheckFlag')
       ) {
         Modal.open({
