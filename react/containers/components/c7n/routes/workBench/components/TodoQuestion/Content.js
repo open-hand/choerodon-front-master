@@ -168,8 +168,8 @@ const TodoQuestion = observer(() => {
     } else if (switchCode.backlogCode === 'myStarBeacon_backlog') {
       const { code } = statusVO;
       let pathSuffix = 'demand';
-      if (code === 'backlog_pending_approval' || code === 'backlog_rejected') {
-        pathSuffix += '-approve';
+      if (code === 'backlog_rejected') {
+        pathSuffix += '/approve';
         merge(queryData, { paramBacklogStatus: statusCode });
       }
       merge(queryData, { paramBacklogId: id, paramBacklogName: backlogNum });
