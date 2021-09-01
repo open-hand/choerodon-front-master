@@ -77,8 +77,8 @@ const Log: React.FC<LogProps> = ({ log, fieldsMap }) => {
     if (issueTypeVO?.typeCode === 'backlog') {
       const { code } = statusVO || {};
       let pathSuffix = 'demand';
-      if (code === 'backlog_pending_approval' || code === 'backlog_rejected') {
-        pathSuffix += '-approve';
+      if (code === 'backlog_rejected') {
+        pathSuffix += '/approve';
         merge(queryData, { paramBacklogStatus: code });
       }
       merge(queryData, { paramBacklogId: instanceId, paramBacklogName: num });
