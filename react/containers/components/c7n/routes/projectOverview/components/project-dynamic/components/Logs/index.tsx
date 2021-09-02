@@ -55,6 +55,15 @@ const Logs: React.FC<Props> = ({ datalogs, fieldsMap }) => (
           <div className="c7n-projectDynamic-log-right">
             <div className="c7n-projectDynamic-log-logOperation">
               <span className="c7n-projectDynamic-log-userName">{log.createdByUser?.realName}</span>
+              {
+                log.ruleName && (
+                  <>
+                    <span>触发</span>
+                    <span className="c7n-Log-value">{`【${log.ruleName}】`}</span>
+                    <span>触发器，</span>
+                  </>
+                )
+              }
               <Log log={log} fieldsMap={fieldsMap} />
             </div>
             <div className="c7n-projectDynamic-log-lastUpdateDate">
