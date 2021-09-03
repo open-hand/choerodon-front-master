@@ -41,19 +41,10 @@ const fieldsMap = [
     create: {
       render: (log: ILog, linkToIssue: () => void) => {
         const {
-          newString, ruleName, summary, num, issueTypeVO,
+          newString, summary, num, issueTypeVO,
         } = log;
         return (
           <>
-            {
-            ruleName && (
-              <span>
-                <span className="c7n-Log-operation">触发</span>
-                <span className="c7n-Log-field">{`【${ruleName}】`}</span>
-                <span className="c7n-Log-operation">触发器，</span>
-              </span>
-            )
-          }
             <span>
               <span className="c7n-Log-operation">更新</span>
               <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
@@ -70,19 +61,10 @@ const fieldsMap = [
     update: {
       render: (log: ILog, linkToIssue: () => void) => {
         const {
-          newString, oldString, ruleName, summary, num, issueTypeVO,
+          newString, oldString, summary, num, issueTypeVO,
         } = log;
         return (
           <>
-            {
-            ruleName && (
-              <span>
-                <span className="c7n-Log-operation">触发</span>
-                <span className="c7n-Log-field">{`【${ruleName}】`}</span>
-                <span className="c7n-Log-operation">触发器，</span>
-              </span>
-            )
-          }
             <span className="c7n-Log-operation">将</span>
             <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
             <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
