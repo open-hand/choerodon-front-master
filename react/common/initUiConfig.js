@@ -9,7 +9,9 @@ import { UI_CONFIGURE } from '@/utils';
 const uiConfigure = UI_CONFIGURE || {};
 function TableSpin(props) {
   const { className, style } = props;
-  const { registerChildren, cancelRegisterChildren, change } = useLoading();
+  const {
+    registerChildren, isHasProvider, cancelRegisterChildren, change,
+  } = useLoading();
   const loadId = useMemo(() => uniqueId('table-spin'), []);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -21,7 +23,8 @@ function TableSpin(props) {
       setTimeout(() => cancelRegisterChildren(loadId), 200);
     };
   }, [cancelRegisterChildren, change, loadId, registerChildren]);
-  return <AnimationLoading className={className} display={loading} />;
+  //  无统一Loading管理 则使用table表格内部loading状态判断
+  return <AnimationLoading className={className} display={loading} style={{ display: !isHasProvider || loading ? 'inline-block' : 'none' }} />;
 }
 const UI_CONFIG = {
   ...uiConfigure,
