@@ -1,10 +1,28 @@
+import React, { useEffect, useMemo, useState } from 'react';
 import { configure } from 'choerodon-ui';
+import { AnimationLoading, useLoading } from '@choerodon/components';
+import { uniqueId } from 'lodash';
 import { uiAxiosInstance } from '@/containers/components/c7n/tools/axios';
 import AppState from '@/containers/stores/c7n/AppState';
 import { UI_CONFIGURE } from '@/utils';
 
 const uiConfigure = UI_CONFIGURE || {};
-
+function TableSpin(props) {
+  const { className, style } = props;
+  const { registerChildren, cancelRegisterChildren, change } = useLoading();
+  const loadId = useMemo(() => uniqueId('table-spin'), []);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    //  注册后并更改loading状态， 卸载的时候更改loading状态并卸载
+    registerChildren({ loadId, changeLoading: setLoading });
+    change(loadId, true);
+    return () => {
+      change(loadId, false);
+      setTimeout(() => cancelRegisterChildren(loadId), 200);
+    };
+  }, [cancelRegisterChildren, change, loadId, registerChildren]);
+  return <AnimationLoading className={className} display={loading} />;
+}
 const UI_CONFIG = {
   ...uiConfigure,
   pagination: {
@@ -32,16 +50,16 @@ const UI_CONFIG = {
   buttonFuncType: 'raised',
   lovQueryUrl: (code) => `/iam/choerodon/v1/lov/code?code=${code}`,
   generatePageQuery: ({
-    page, pageSize, sortName: SN, sortOrder: SO, sortname, sortorder, sort,
-  }) => { // 1.4.3组件此处bug，sort的key名称更改为全小写，此处临时处理
-    const sortName = sortname || SN;
-    const sortOrder = sortorder || SO;
-    return ({
-      page,
-      size: pageSize,
-      sort: sortName && (sortOrder ? `${sortName},${sortOrder}` : sortName),
-    });
-  },
+    page, pageSize, sortName, sortOrder, sort,
+  }) => ({
+    page,
+    size: pageSize,
+    sort: sortName && (sortOrder ? `${sortName},${sortOrder}` : sortName),
+  }),
+  tableSpinProps: ({
+    indicator: <TableSpin />,
+
+  }),
   lookupAxiosConfig: () => ({
     enabledCancelMark: false,
     routeChangeCancel: false,
