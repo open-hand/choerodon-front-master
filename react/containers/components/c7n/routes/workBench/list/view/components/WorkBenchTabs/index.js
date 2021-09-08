@@ -16,7 +16,6 @@ import {
 import classnames from 'classnames';
 
 import CreateViewDrawer from '../CreateViewDrawer';
-import WorkBenchDashboard from '../../../../components/WorkBenchDashboard';
 import { useWorkBenchStore } from '../../../../stores';
 // import Store from './stores';
 import styles from './index.less';
@@ -35,7 +34,6 @@ const reorder = (viewDs, startIndex, endIndex) => {
 const WorkBenchTabs = observer(() => {
   const {
     workBenchUseStore,
-    prefixCls,
     viewDs,
     history,
     location: { search },
@@ -187,13 +185,6 @@ const WorkBenchTabs = observer(() => {
     cursor: enabled ? 'all-scroll' : 'not-allowed',
   });
 
-  // const getListStyle = (isDraggingOver) => ({
-  //   border: isDraggingOver ? '2px dotted #5266d4' : 'none',
-  //   borderRadius: isDraggingOver ? '3px' : '0',
-  //   // padding: isDraggingOver ? '4px' : 0,
-  //   background: isDraggingOver ? 'rgba(82, 102, 212, 0.1)' : 'none',
-  // });
-
   const onChangeTab = useCallback((key) => {
     workBenchUseStore.setActiveTabKey(key);
     workBenchUseStore.setActiveStarProject(null); // TODO:避免多个面板添加了星标卡片互相影响,需求变化需改为存储Map
@@ -226,9 +217,7 @@ const WorkBenchTabs = observer(() => {
         </>
       )}
       key={record.get('dashboardId')}
-    >
-      <WorkBenchDashboard record={record} dashboardId={record.get('dashboardId')} />
-    </TabPane>
+    />
   ));
 
   const renderDefaultTabBar = (props, DefaultTabBar) => (
@@ -275,8 +264,6 @@ const WorkBenchTabs = observer(() => {
                             style={getItemStyle(
                               draggableSnapshot.isDragging,
                               draggableProvided.draggableProps.style,
-                              // p.enabled,
-                              // true,
                             )}
                           >
                             {node}
