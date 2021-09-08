@@ -226,9 +226,7 @@ const WorkBenchTabs = observer(() => {
         </>
       )}
       key={record.get('dashboardId')}
-    >
-      <WorkBenchDashboard record={record} dashboardId={record.get('dashboardId')} />
-    </TabPane>
+    />
   ));
 
   const renderDefaultTabBar = (props, DefaultTabBar) => (
