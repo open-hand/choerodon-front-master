@@ -67,12 +67,12 @@ export default class AnnouncementBanner extends Component {
           className={classNames(`${prefixCls}`, className)}
         >
           <div className={`${prefixCls}-info`}>
-            <Icon type="info" style={{ fontSize: 24, color: '#F76776' }} />
+            <Icon type="error_outline" style={{ fontSize: 20, color: '#F76776', lineHeight: 1.2 }} />
             <span dangerouslySetInnerHTML={{ __html: content && content.replace(imgPartten, '[图片]').replace(htmlTagParttrn, '') }} />
           </div>
           <div className={`${prefixCls}-buttons`}>
-            <Button onClick={this.handleClose}>关闭提示</Button>
-            <Button type="primary" funcType="raised" onClick={this.handleInfo} style={{ height: 26 }}>了解详情</Button>
+            <Button onClick={this.handleClose} style={{ fontSize: 13 }}>关闭提示</Button>
+            <Button type="primary" funcType="raised" onClick={this.handleInfo} style={{ height: 26, fontSize: 13 }}>了解详情</Button>
           </div>
         </div>
       )
