@@ -56,7 +56,9 @@ export default class AnnouncementBanner extends Component {
   };
 
   render() {
-    const { src, children, className, HeaderStore: { announcementClosed, announcement } } = this.props;
+    const {
+      src, children, className, HeaderStore: { announcementClosed, announcement },
+    } = this.props;
     const content = get(announcement, 'content');
     const title = get(announcement, 'title');
     return (
@@ -65,12 +67,12 @@ export default class AnnouncementBanner extends Component {
           className={classNames(`${prefixCls}`, className)}
         >
           <div className={`${prefixCls}-info`}>
-            <Icon type="info" style={{ fontSize: 24, color: '#d50000' }} />
+            <Icon type="info" style={{ fontSize: 24, color: '#F76776' }} />
             <span dangerouslySetInnerHTML={{ __html: content && content.replace(imgPartten, '[图片]').replace(htmlTagParttrn, '') }} />
           </div>
           <div className={`${prefixCls}-buttons`}>
             <Button onClick={this.handleClose}>关闭提示</Button>
-            <Button type="primary" funcType="raised" onClick={this.handleInfo}>了解详情</Button>
+            <Button type="primary" funcType="raised" onClick={this.handleInfo} style={{ height: 26 }}>了解详情</Button>
           </div>
         </div>
       )
