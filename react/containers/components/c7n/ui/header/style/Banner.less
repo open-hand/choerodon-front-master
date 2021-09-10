@@ -3,14 +3,13 @@
 @c7n-boot-header-banner: ~"c7n-boot-header-banner";
 
 .@{c7n-boot-header-banner} {
-  height: @banner-height;
+  height: var(--banner-height); 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   background-color:#ECF2FF ;
-  height: 40px;
-  
+
   &-info {
     line-height: 24px;
     display: flex;
