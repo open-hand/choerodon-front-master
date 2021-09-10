@@ -51,6 +51,7 @@ const UI_CONFIG = {
   modalSectionBorder: false,
   drawerOkFirst: false,
   buttonFuncType: 'raised',
+  tableVirtualCell: false,
   lovQueryUrl: (code) => `/iam/choerodon/v1/lov/code?code=${code}`,
   generatePageQuery: ({
     page, pageSize, sortName, sortOrder, sort,
