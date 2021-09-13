@@ -3,16 +3,16 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
-import { notification } from 'choerodon-ui';
+import { notification, message } from 'choerodon-ui';
 import {
   Form, TextField, Tooltip, DatePicker, Spin, Icon, Button, TextArea, CheckBox,
 } from 'choerodon-ui/pro';
-import { fileServer, prompt } from '@/utils';
 import {
   includes, map, some, get,
 } from 'lodash';
-import axios from '@/containers/components/c7n/tools/axios';
 import { get as getInject } from '@choerodon/inject';
+import { fileServer, prompt } from '@/utils';
+import axios from '@/containers/components/c7n/tools/axios';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
@@ -93,6 +93,8 @@ const CreateProject = observer(() => {
         }
         refresh();
         return true;
+      } if (res.failed) {
+        message.error(res.message);
       }
       setIsLoading(false);
       return false;
