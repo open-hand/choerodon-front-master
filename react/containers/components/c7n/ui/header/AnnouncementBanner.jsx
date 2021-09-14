@@ -50,8 +50,7 @@ export default class AnnouncementBanner extends Component {
           />
         </div>
       ),
-      onOk: this.closeModal,
-      okText: '返回',
+      footer: <Button onClick={this.closeModal}>返回</Button>,
     });
   };
 
