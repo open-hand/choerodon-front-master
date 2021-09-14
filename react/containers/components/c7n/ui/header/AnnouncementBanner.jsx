@@ -52,6 +52,7 @@ export default class AnnouncementBanner extends Component {
       ),
       onOk: this.closeModal,
       okText: '返回',
+      okCancel: false,
     });
   };
 
