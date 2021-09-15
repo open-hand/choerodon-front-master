@@ -30,7 +30,7 @@ const UI_CONFIG = {
   ...uiConfigure,
   pagination: {
     showSizeChangerLabel: false,
-    showTotal: (total, range) => `显示${range[0]}-${range[1]} 共 ${total}条`,
+    showTotal: (total, range) => <span className="word">{`显示${range[0]}-${range[1]} 共 ${total}条`}</span>,
     showPager: true,
     showQuickJumper: true,
   },
