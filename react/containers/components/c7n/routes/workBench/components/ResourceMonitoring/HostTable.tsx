@@ -58,7 +58,16 @@ export default function HostTable(props:HostTableProps) {
       renderer: ({ value }) => <Percent percent={value} />,
       align: ColumnAlign.left,
     },
-    { name: 'hostIp', renderer: ({ value, record }) => `${value}:${record?.get('sshPort') ?? ''}`, tooltip: TableColumnTooltip.overflow },
+    {
+      name: 'hostIp',
+      renderer: ({ value, record }) => {
+        if (value && record?.get('sshPort')) {
+          return `${value}:${record?.get('sshPort')}`;
+        }
+        return <div style={{ lineHeight: '0.4rem', textAlign: 'left' }}>- -</div>;
+      },
+      tooltip: TableColumnTooltip.overflow,
+    },
     {
       name: 'hostStatus',
       renderer: ({ value }) => {

@@ -8,8 +8,10 @@ import {
 
 export default function useStore() {
   const [cards, setCards] = useState<Card[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
+    setLoading(true);
     let resourceData: RescoreDTO | undefined;
     try {
       resourceData = (await axios.get(`devops/v1/organizations/${AppState.currentMenuType?.organizationId}/resource/general`)) as unknown as RescoreDTO;
@@ -48,6 +50,7 @@ export default function useStore() {
     }));
 
     setCards(data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -56,5 +59,6 @@ export default function useStore() {
 
   return {
     cards,
+    loading,
   };
 }

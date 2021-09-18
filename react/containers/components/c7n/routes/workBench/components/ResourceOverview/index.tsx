@@ -1,4 +1,5 @@
 import React from 'react';
+import { Spin } from 'choerodon-ui/pro';
 import { Row, Col, Tooltip } from 'choerodon-ui';
 import classNames from 'classnames';
 import { flatten } from 'lodash';
@@ -11,7 +12,7 @@ import styles from './index.less';
 const classNamePrefix = 'c7n-card-overview';
 
 export default function ResourceOverview() {
-  const { cards } = useStore();
+  const { cards, loading } = useStore();
 
   // 分组
   const cardGroup: Array<Card[]> = cards.reduce((arr:Array<Card[]>, card: Card) => {
@@ -77,7 +78,7 @@ export default function ResourceOverview() {
   ));
 
   return (
-    <Layout title="资源概览">
+    <Layout title="资源概览" loading={loading}>
       <div className={styles[classNamePrefix]}>
         {renderCards(cardGroup)}
       </div>

@@ -195,22 +195,20 @@ const WorkBenchTabs = observer(() => {
     <TabPane
       tab={(
         <>
-          <Tooltip title={record.get('dashboardName')}>
-            <span
-              className={styles['tabpane-title']}
-              onMouseEnter={(e) => {
-                const { currentTarget } = e;
-                if (isOverflow(currentTarget)) {
-                  Tooltip.show(currentTarget, {
-                    title: record.get('dashboardName'),
-                  });
-                }
-              }}
-              onMouseLeave={Tooltip.hide}
-            >
-              {record.get('dashboardName')}
-            </span>
-          </Tooltip>
+          <span
+            className={styles['tabpane-title']}
+            onMouseEnter={(e) => {
+              const { currentTarget } = e;
+              if (isOverflow(currentTarget)) {
+                Tooltip.show(currentTarget, {
+                  title: record.get('dashboardName'),
+                });
+              }
+            }}
+            onMouseLeave={Tooltip.hide}
+          >
+            {record.get('dashboardName')}
+          </span>
           {canDrag && <Icon type="delete_forever-o" onClick={() => handleRemoveView(record)} />}
           {canDrag && <Icon type="baseline-drag_indicator" />}
           {(!canDrag && record.get('dashboardType') === 'CUSTOMIZE') && <Icon type="edit-o" onClick={() => redirectToEdit(record)} />}
