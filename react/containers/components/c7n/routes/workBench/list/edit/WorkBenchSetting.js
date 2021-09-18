@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { Page } from '@/index';
@@ -14,6 +14,7 @@ const WorkBenchSetting = () => {
   } = useWorkBenchStore();
 
   const [dashboardId, setDashboardId] = useState();
+  const workbenchHeaderEl = useRef();
 
   useEffect(() => {
     const { dashboardId: searchDashboardId } = queryString.parse(search);
@@ -30,10 +31,14 @@ const WorkBenchSetting = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editHeaderDs.current.get('internalTemplate')]);
 
+  const handleOpenCardModal = () => {
+    workbenchHeaderEl.current?.openAddComponents();
+  };
+
   return (
     <Page className={prefixCls}>
-      <WorkBenchSettingHeader />
-      <WorkBenchDashboard isEdit dashboardId={dashboardId} />
+      <WorkBenchSettingHeader ref={workbenchHeaderEl} />
+      <WorkBenchDashboard isEdit dashboardId={dashboardId} onOpenCardModal={handleOpenCardModal} />
     </Page>
   );
 };
