@@ -4,8 +4,8 @@ import {
 } from 'choerodon-ui/pro';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
-import Permission from '@/containers/components/c7n/tools/permission';
 import some from 'lodash/some';
+import Permission from '@/containers/components/c7n/tools/permission';
 import handleClickProject from '@/containers/components/util/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
@@ -33,11 +33,15 @@ export default observer(() => {
         organizationId,
       },
     },
+    MenuStore,
   } = useProjectsProStore();
 
-  function refresh() {
+  function refresh(projectId) {
     ProjectsProUseStore.axiosGetProjects();
     ProjectsProUseStore.checkCreate(organizationId);
+    if (projectId) {
+      MenuStore.menuGroup.project = {};
+    }
   }
 
   const handleAddProject = (currentProjectId) => {
@@ -303,20 +307,20 @@ export default observer(() => {
                 className="allProjects-content-item-right-down-text1"
               />
               {
-              p.programName
-              && (
-                <Tooltip title={p.programName}>
-                  <p className="allProjects-content-item-right-down-text2">
-                    <>
-                      <span>
-                        <Icon type="project_group" />
-                      </span>
-                      <p>{p.programName}</p>
-                    </>
-                  </p>
-                </Tooltip>
-              )
-            }
+                p.programName
+                && (
+                  <Tooltip title={p.programName}>
+                    <p className="allProjects-content-item-right-down-text2">
+                      <>
+                        <span>
+                          <Icon type="project_group" />
+                        </span>
+                        <p>{p.programName}</p>
+                      </>
+                    </p>
+                  </Tooltip>
+                )
+              }
               <p className="allProjects-content-item-right-down-time">
                 <Tooltip title={p.createUserName} placement="top">
                   <span

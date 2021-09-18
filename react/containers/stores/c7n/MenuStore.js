@@ -421,7 +421,7 @@ class MenuStore {
           }
           const data = await axios({
             url,
-            method:'get',
+            method: 'get',
             enabledCancelCache: false,
             enabledCancelRoute: false,
           });

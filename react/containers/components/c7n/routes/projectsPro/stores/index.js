@@ -13,7 +13,7 @@ export function useProjectsProStore() {
   return useContext(Store);
 }
 
-export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) => {
+export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore')((props) => {
   const {
     children,
     AppState,
