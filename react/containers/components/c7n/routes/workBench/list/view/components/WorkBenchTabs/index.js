@@ -284,11 +284,19 @@ const WorkBenchTabs = observer(() => {
     if (canDrag) {
       return (
         <div className={styles['tabs-buttons']}>
-          <Button
-            onClick={handleCancel}
-            icon="close"
-          />
-          <Button onClick={handleSave} icon="done" style={{ background: '#5365EA', color: '#fff' }} />
+          <Tooltip title="取消修改">
+            <Button
+              onClick={handleCancel}
+              icon="close"
+            />
+          </Tooltip>
+          <Tooltip title="保存修改">
+            <Button
+              onClick={handleSave}
+              icon="done"
+              style={{ background: '#5365EA', color: '#fff' }}
+            />
+          </Tooltip>
         </div>
       );
     }
