@@ -8,10 +8,8 @@ import {
   TableQueryBarType, TableColumnTooltip, TableAutoHeightType, ColumnAlign,
 } from 'choerodon-ui/pro/lib/table/enum';
 import { ColumnProps } from 'choerodon-ui/pro/lib/table/Column';
-import { StatusTag } from '@choerodon/components';
-
 import AppState from '@/containers/stores/c7n/AppState';
-import { statusKindMap, statusKindMapKey } from './common';
+import StatusTagOutLine from './StatusTagOutLine';
 import useStore from './store';
 import styles from './index.less';
 
@@ -70,19 +68,7 @@ export default function HostTable(props:HostTableProps) {
     },
     {
       name: 'hostStatus',
-      renderer: ({ value }) => {
-        const {
-          text, code,
-        } = statusKindMap[value as statusKindMapKey] || {};
-
-        return (
-          <StatusTag
-            type="border"
-            name={text}
-            colorCode={code}
-          />
-        );
-      },
+      renderer: ({ value }) => <StatusTagOutLine status={value} />,
     },
   ];
 
