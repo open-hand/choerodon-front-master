@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import {
   pick,
 } from 'lodash';
-import { AnimationLoading } from '@choerodon/components';
+import { LoadingProvider, LoadingHiddenWrap } from '@choerodon/components';
 import EmptyPage from '../EmptyPage';
 import OverviewWrap from '../OverviewWrap';
 import issueFieldsMap from './IssueFieldsMap';
@@ -47,10 +47,6 @@ const ProjectDynamic = () => {
     projectDynamicDs.page(1);
   }, [projectDynamicDs]);
   function render() {
-    if (projectDynamicDs.status === 'loading') {
-      return <AnimationLoading display />;
-    }
-
     const originDataLogs = projectDynamicDs.toData();
     const newDataLogs = [];
     let autoTemp = [];
@@ -120,7 +116,9 @@ const ProjectDynamic = () => {
         </div>
       </div>
     ) : (
-      <EmptyPage content="当前条件下暂无动态" />
+      <LoadingHiddenWrap>
+        <EmptyPage content="当前条件下暂无动态" />
+      </LoadingHiddenWrap>
     );
   }
   return (
@@ -134,7 +132,9 @@ const ProjectDynamic = () => {
         <DynamicSearch />
       </OverviewWrap.Header>
       <OverviewWrap.Content className={`${clsPrefix}-wrap`}>
-        {render()}
+        <LoadingProvider loading={projectDynamicDs.status === 'loading'} style={{ height: '100%' }}>
+          {render()}
+        </LoadingProvider>
       </OverviewWrap.Content>
     </OverviewWrap>
   );

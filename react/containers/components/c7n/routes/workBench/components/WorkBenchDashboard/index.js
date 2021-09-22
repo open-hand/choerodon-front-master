@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import { get } from 'lodash';
+import { get, noop } from 'lodash';
 
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
@@ -87,7 +87,7 @@ const WorkBenchDashboard = (props) => {
   const isMounted = useRef(false);
   const [containerWidth, setContainerWidth] = useState(1280);
 
-  const { isEdit = false } = props;
+  const { isEdit = false, onOpenCardModal = noop } = props;
 
   const loadLayout = () => {
     dashboardDs.setQueryParameter('dashboardId', props.dashboardId);
@@ -248,7 +248,12 @@ const WorkBenchDashboard = (props) => {
     }
 
     if (!dashboardDs.length || !addCardDs.length) {
-      return <EmptyPage />;
+      return (
+        <EmptyPage
+          isEdit={isEdit}
+          onOpenCardModal={onOpenCardModal}
+        />
+      );
     }
     return renderGridLayouts();
   };

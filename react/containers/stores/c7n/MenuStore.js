@@ -270,6 +270,17 @@ class MenuStore {
     ])));
   }
 
+  @action
+  clearMenuGroupByLevel(level) {
+    if (['site', 'user', 'organization', 'project'].includes(level)) {
+      if (['site', 'user'].includes(level)) {
+        this.menuGroup[level] = [];
+      } else {
+        this.menuGroup[level] = {};
+      }
+    }
+  }
+
   @action setRootBaseOnActiveMenu() {
     if (this.activeMenu && this.getMenuData && this.getMenuData.length > 0) {
       if (this.activeMenu.level !== this.getMenuData[0].level) {
@@ -333,6 +344,7 @@ class MenuStore {
     // return new Promise((resolve) => {
     //   mainFunc.call(this, resolve);
     // });
+
 
     async function mainFunc(resolve) {
       try {
@@ -421,7 +433,7 @@ class MenuStore {
           }
           const data = await axios({
             url,
-            method:'get',
+            method: 'get',
             enabledCancelCache: false,
             enabledCancelRoute: false,
           });

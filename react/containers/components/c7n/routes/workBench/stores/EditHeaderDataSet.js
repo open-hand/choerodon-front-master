@@ -30,6 +30,7 @@ export default ({
     {
       name: 'dashboardName',
       type: 'string',
+      maxLength: 40,
     },
     {
       name: 'dashboardId',

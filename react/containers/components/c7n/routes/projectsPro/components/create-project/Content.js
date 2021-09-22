@@ -91,7 +91,7 @@ const CreateProject = observer(() => {
         if (projectId) {
           openNotification({ projectId, operateType: isModify ? 'update' : 'create' });
         }
-        refresh();
+        refresh(projectId);
         return true;
       } if (res.failed) {
         message.error(res.message);

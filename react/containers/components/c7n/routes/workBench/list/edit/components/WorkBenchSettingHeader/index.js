@@ -1,5 +1,5 @@
 // 配置自定义视图
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import {
   TextField, Select, Button, Modal, Form,
 } from 'choerodon-ui/pro';
@@ -12,7 +12,7 @@ import { useWorkBenchStore } from '../../../../stores';
 // import mappings from '../../../../stores/mappings';
 import styles from './index.less';
 
-const WorkBenchSettingHeader = () => {
+const WorkBenchSettingHeader = (props, ref) => {
   const {
     prefixCls,
     AppState: { getUserInfo },
@@ -30,6 +30,10 @@ const WorkBenchSettingHeader = () => {
     editHeaderDs.current.set('dashboardName', dashboardName);
     editHeaderDs.current.set('dashboardId', dashboardId);
   }, [editHeaderDs, search]);
+
+  useImperativeHandle(ref, () => ({
+    openAddComponents,
+  }));
 
   const { current: setPrefixCls } = useRef(`${prefixCls}-setting`);
 
@@ -155,4 +159,4 @@ const WorkBenchSettingHeader = () => {
   );
 };
 
-export default WorkBenchSettingHeader;
+export default forwardRef(WorkBenchSettingHeader);

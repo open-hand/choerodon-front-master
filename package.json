@@ -1,7 +1,7 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "1.1.0",
+  "version": "1.1.0-alpha.1",
   "description": "A package of Master for Choerodon platform.",
   "main": "./lib/index.js",
   "files": [
@@ -47,11 +47,11 @@
     "react-dom": "16.14.0"
   },
   "dependencies": {
-    "@choerodon/components": "1.1.0",
+    "@choerodon/components": "1.1.0-alpha.1",
     "@choerodon/inject": "^0.1.0",
-    "@hzero-front-ui/c7n-ui": "3.0.1-alpha.12",
+    "@hzero-front-ui/c7n-ui": "3.1.0-alpha.9",
     "@hzero-front-ui/core": "3.0.1-alpha.2",
-    "@hzero-front-ui/themes": "3.0.1-alpha.11",
+    "@hzero-front-ui/themes": "3.1.0-alpha.9",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.168",
     "@types/query-string": "^6.3.0",
@@ -61,7 +61,7 @@
     "@types/react-router-dom": "^5.1.5",
     "ahooks": "^2.10.5",
     "axios": "^0.16.2",
-    "choerodon-ui": "1.4.5-alpha.9",
+    "choerodon-ui": "1.4.5-alpha.13",
     "classnames": "^2.2.5",
     "core-js": "^3.6.5",
     "echarts": "^4.8.0",
