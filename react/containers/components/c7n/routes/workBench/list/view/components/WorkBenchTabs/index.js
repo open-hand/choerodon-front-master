@@ -304,8 +304,12 @@ const WorkBenchTabs = observer(() => {
     return (
       <ModalProvider>
         <div className={styles['tabs-buttons']}>
-          <Button onClick={handleAdd} icon="add" />
-          <Button onClick={handleSet} icon="settings-o" />
+          <Tooltip title="创建视图">
+            <Button onClick={handleAdd} icon="add" />
+          </Tooltip>
+          <Tooltip title="管理视图">
+            <Button onClick={handleSet} icon="settings-o" />
+          </Tooltip>
         </div>
       </ModalProvider>
     );
