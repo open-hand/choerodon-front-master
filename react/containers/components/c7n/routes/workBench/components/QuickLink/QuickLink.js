@@ -120,7 +120,7 @@ const QuickLink = observer(() => {
 
   const renderLinks = () => quickLinkDs.toData().map((l, index) => {
     const user = get(l, 'user');
-    const lastUpdateDate = get(l, 'lastUpdateDate');
+    // const lastUpdateDate = get(l, 'lastUpdateDate');
     const projectName = get(l, 'projectName');
     const scope = get(l, 'scope');
     const top = get(l, 'top');
@@ -130,7 +130,7 @@ const QuickLink = observer(() => {
     return (
       (
         <div className="c7n-quickLink-linkItem">
-          <div className="c7n-quickLink-linkItem-left">
+          {/* <div className="c7n-quickLink-linkItem-left">
             <p className="c7n-quickLink-linkItem-left-name">
               <Tooltip title={realName} placement="top">
                 {realName}
@@ -139,7 +139,7 @@ const QuickLink = observer(() => {
             <p className="c7n-quickLink-linkItem-left-time">
               <TimePopover datetime={lastUpdateDate} />
             </p>
-          </div>
+          </div> */}
           <div className="c7n-quickLink-linkItem-right">
             <div className="c7n-quickLink-linkItem-circle" />
             <div
@@ -170,7 +170,6 @@ const QuickLink = observer(() => {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'space-between',
                 }}
               >
                 <Tooltip placement="top" title={l.name}>
@@ -193,6 +192,7 @@ const QuickLink = observer(() => {
             <div
               style={{
                 display: l.editFlag ? 'block' : 'none',
+                flex: '0 0 0.24rem',
               }}
             >
               {
