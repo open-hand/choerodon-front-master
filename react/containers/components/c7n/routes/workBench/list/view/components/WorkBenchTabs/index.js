@@ -284,11 +284,19 @@ const WorkBenchTabs = observer(() => {
     if (canDrag) {
       return (
         <div className={styles['tabs-buttons']}>
-          <Button
-            onClick={handleCancel}
-            icon="close"
-          />
-          <Button onClick={handleSave} icon="done" style={{ background: '#5365EA', color: '#fff' }} />
+          <Tooltip title="取消修改">
+            <Button
+              onClick={handleCancel}
+              icon="close"
+            />
+          </Tooltip>
+          <Tooltip title="保存修改">
+            <Button
+              onClick={handleSave}
+              icon="done"
+              style={{ background: '#5365EA', color: '#fff' }}
+            />
+          </Tooltip>
         </div>
       );
     }
@@ -296,8 +304,12 @@ const WorkBenchTabs = observer(() => {
     return (
       <ModalProvider>
         <div className={styles['tabs-buttons']}>
-          <Button onClick={handleAdd} icon="add" />
-          <Button onClick={handleSet} icon="settings-o" />
+          <Tooltip title="创建视图">
+            <Button onClick={handleAdd} icon="add" />
+          </Tooltip>
+          <Tooltip title="管理视图">
+            <Button onClick={handleSet} icon="settings-o" />
+          </Tooltip>
         </div>
       </ModalProvider>
     );

@@ -1,5 +1,7 @@
+@scrollBarWidth: 2px;
+@circlePositionWidth: 3px;
+
 .c7n-quickLink {
-  width: 40%;
   margin-right: 20px;
   //flex: 1;
   background: white;
@@ -47,16 +49,14 @@
     overflow: auto;
     padding-right: 2px;
     &::-webkit-scrollbar {
-      width: 2px;
+      width: @scrollBarWidth;
     }
   }
   &-linkItem {
-    display: flex;
-    align-items: center;
     position: relative;
     margin-bottom: 14px;
     p {
-      margin: 0;
+      margin-bottom: 0;
     }
     &-left {
       text-align: right;
@@ -85,13 +85,12 @@
       background: rgba(104, 135, 232, 1);
       border-radius: 50%;
       position: absolute;
-      left: -3px;
+      left: -(@circlePositionWidth);
       z-index: 1;
     }
     &-right {
-      margin-left: 19px;
-      flex-basis: 82%;
-      width: auto;
+      margin-left: @circlePositionWidth;
+      width: calc(100% - @scrollBarWidth);
       padding: 10px 16px;
       position: relative;
       background: rgba(245, 246, 250, 1);
@@ -100,11 +99,11 @@
       align-items: center;
       justify-content: space-between;
       &-profile {
+        flex: 0 0 0.24rem;
         width: 24px;
         height: 24px;
         border-radius: 50%;
         background-size: 100% 100%;
-        flex-shrink: 0;
         font-size: 15px;
         display: flex;
         align-items: center;
@@ -113,12 +112,15 @@
       }
       &-content {
         margin-left: 9px;
-        flex: 1;
+        margin-right: 9px;
+        flex: 1 1 auto;
+        overflow: hidden;
         &-name {
-          width: 0.8rem;
+          flex: 0 0 0.8rem;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          margin-right: 9px;
         }
         &-scope {
           font-size: 12px;
@@ -152,15 +154,13 @@
           font-size: 13px;
           font-weight: 400;
           color: var(--primary-color);
-          margin-right: auto !important;
+          overflow: hidden;
+          text-overflow: ellipsis;
           i {
             font-size: 14px;
-            margin-left: 9px;
             cursor: pointer;
           }
           span {
-            display: inline-block;
-            max-width: 100px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;

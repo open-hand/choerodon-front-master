@@ -6,10 +6,8 @@ import { Table } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { TableQueryBarType, TableColumnTooltip, TableAutoHeightType } from 'choerodon-ui/pro/lib/table/enum';
 import { ColumnProps } from 'choerodon-ui/pro/lib/table/Column';
-import { StatusTag } from '@choerodon/components';
-
 import AppState from '@/containers/stores/c7n/AppState';
-import { statusKindMap, statusKindMapKey } from './common';
+import StatusTagOutLine from './StatusTagOutLine';
 import useStore from './store';
 import styles from './index.less';
 
@@ -45,16 +43,17 @@ function ClusterTable(props: K8STableProps) {
     {
       name: 'status',
       renderer: ({ value }) => {
-        const {
-          text, code,
-        } = statusKindMap[value as statusKindMapKey] || {};
+        let nextValue = value;
+        if (value === 'running') {
+          nextValue = 'connected';
+        }
+
+        if (value === 'operating') {
+          nextValue = 'processing';
+        }
 
         return (
-          <StatusTag
-            type="border"
-            name={text}
-            colorCode={code}
-          />
+          <StatusTagOutLine status={nextValue} type="cluster" />
         );
       },
     },

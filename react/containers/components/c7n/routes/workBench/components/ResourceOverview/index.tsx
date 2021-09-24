@@ -1,5 +1,4 @@
 import React from 'react';
-import { Spin } from 'choerodon-ui/pro';
 import { Row, Col, Tooltip } from 'choerodon-ui';
 import classNames from 'classnames';
 import { flatten } from 'lodash';
@@ -12,10 +11,10 @@ import styles from './index.less';
 const classNamePrefix = 'c7n-card-overview';
 
 export default function ResourceOverview() {
-  const { cards, loading } = useStore();
+  const { cards } = useStore();
 
   // 分组
-  const cardGroup: Array<Card[]> = cards.reduce((arr:Array<Card[]>, card: Card) => {
+  const cardGroup: Array<Card[]> = cards.reduce((arr: Array<Card[]>, card: Card) => {
     if (arr[arr.length - 1].length < 3) arr[arr.length - 1].push(card);
     else arr.push([card]);
 
@@ -26,8 +25,8 @@ export default function ResourceOverview() {
   const renderCount = (card: Card) => {
     if (!card.tips) return card.data;
 
-    const getTip = (tips:Tip[]) => flatten(tips.map((tip) => {
-      const titles:string[] = [];
+    const getTip = (tips: Tip[]) => flatten(tips.map((tip) => {
+      const titles: string[] = [];
 
       if (tip.children) {
         titles.push(tip.title);
@@ -50,7 +49,7 @@ export default function ResourceOverview() {
           <div style={{ whiteSpace: 'pre', maxHeight: '300px', overflow: 'auto' }}>
             {tips.join('\n')}
           </div>
-      )}
+        )}
       >
         {card.data}
       </Tooltip>
@@ -58,7 +57,7 @@ export default function ResourceOverview() {
   };
 
   // 根据分组渲染卡片
-  const renderCards = (groups:Array<Card[]>) => groups.map((group) => (
+  const renderCards = (groups: Array<Card[]>) => groups.map((group) => (
     <Row className={styles[`${classNamePrefix}-row`]}>
       {
         group.map((card) => (
@@ -78,7 +77,7 @@ export default function ResourceOverview() {
   ));
 
   return (
-    <Layout title="资源概览" loading={loading}>
+    <Layout title="资源概览">
       <div className={styles[classNamePrefix]}>
         {renderCards(cardGroup)}
       </div>
