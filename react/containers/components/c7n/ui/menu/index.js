@@ -6,6 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import MenuSideIcon from '@/containers/components/c7n/ui/menu/MenuSideIcon';
+import { defaultThemeColor } from '../../../../../constants';
 import folding from '../../../../images/folding.svg';
 import unfold from '../../../../images/unfold.svg';
 import bg from '../header/style/icons/bg.svg';
@@ -471,12 +472,15 @@ export default class CommonMenu extends Component {
     const { MenuStore, AppState } = this.props;
     const menuData = MenuStore.getMenuData;
     const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
+    const { themeColor } = AppState.getSiteInfo;
+    const isDefaultThemeColor = themeColor === defaultThemeColor;
     return (
       <div
         className="c7ncd-theme4-menuSide"
         style={{
-          backgroundImage: `url(${bg})`,
+          backgroundImage: isDefaultThemeColor ? `url(${bg})` : 'unset',
           backgroundSize: 'cover',
+          backgroundColor: isDefaultThemeColor ? 'unset' : themeColor,
         }}
       >
         {
