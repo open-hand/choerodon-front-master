@@ -468,6 +468,26 @@ export default class CommonMenu extends Component {
     MenuStore.setActiveMenuRoot(JSON.parse(JSON.stringify(origin)));
   }
 
+  getBackgroundImage = (color, isDefault) => {
+    if (color) {
+      if (isDefault) {
+        return `url(${bg})`;
+      }
+      return 'unset';
+    }
+    return `url(${bg})`;
+  }
+
+  getBackgroundColor = (color, isDefault) => {
+    if (color) {
+      if (isDefault) {
+        return 'unset';
+      }
+      return color;
+    }
+    return 'unset';
+  }
+
   renderNewMenuSide = () => {
     const { MenuStore, AppState } = this.props;
     const menuData = MenuStore.getMenuData;
@@ -478,9 +498,9 @@ export default class CommonMenu extends Component {
       <div
         className="c7ncd-theme4-menuSide"
         style={{
-          backgroundImage: isDefaultThemeColor ? `url(${bg})` : 'unset',
+          backgroundImage: this.getBackgroundImage(themeColor, isDefaultThemeColor),
           backgroundSize: 'cover',
-          backgroundColor: isDefaultThemeColor ? 'unset' : themeColor,
+          backgroundColor: this.getBackgroundColor(themeColor, isDefaultThemeColor),
         }}
       >
         {
