@@ -4,11 +4,13 @@ import { Select, Icon, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
 import Jsonbig from 'json-bigint';
-import { axios, WSHandler } from '@/index';
 import { ValueChangeAction } from 'choerodon-ui/pro/lib/text-field/enum';
 import { useDebounceFn, useVirtualList } from 'ahooks';
-// @ts-expect-error
+// @ts-ignore
 import queryString from 'query-string';
+import { useQueryString } from '@choerodon/components';
+import { withRouter } from 'react-router';
+import { axios, WSHandler } from '@/index';
 import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
 import handleClickProject from '@/containers/components/util/gotoProject';
@@ -16,11 +18,25 @@ import MenuStore, { getMenuType } from '@/containers/stores/c7n/MenuStore';
 
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import './index.less';
-import { withRouter } from 'react-router';
 
 let pagination = {
   page: 0,
   size: 10,
+};
+
+const getListIsCurrentOrg = (starProject: any, recentProject: any, organizationId: any) => {
+  const totalList = [
+    ...starProject || [],
+    ...recentProject || [],
+  ];
+  if (totalList && totalList.length > 0) {
+    const flag = totalList.some((l) => String(l.organizationId) !== String(organizationId));
+    if (flag) {
+      return true;
+    }
+    return false;
+  }
+  return false;
 };
 
 const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) => {
@@ -41,6 +57,8 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
     overscan: 5,
     itemHeight: 46,
   });
+
+  const { organizationId } = useQueryString();
 
   // const debouncedFilter = useDebounce(projectFilter, { wait: 500 });
 
@@ -209,7 +227,7 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
     const filterStarProject = AppState.getStarProject;
     const filterRecentUser = AppState.getRecentUse;
     return (
-      <Spin spinning={spinning}>
+      <Spin spinning={spinning || getListIsCurrentOrg(filterStarProject, filterRecentUser, organizationId)}>
         <div className={`${prefixCls}-popContent`}>
           {handleRenderPopRest(filterStarProject, filterRecentUser)}
           <p role="none" onClick={handleGoAllProject} className={`${prefixCls}-popContent-allPro`}>
@@ -271,3 +289,5 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
 }));
 
 export default withRouter(ProjectSelector);
+
+export { getListIsCurrentOrg };
