@@ -99,13 +99,16 @@ export default class CommonMenu extends Component {
                 // MenuStore.setOpenKeys(collapsed ? [] : [menu, ...parents].map(({ code }) => code));
                 // this.savedOpenKeys = [menu, ...parents].map(({ code }) => code);
               }
-              MenuStore.setActiveMenu(menu.type === 'tab' ? parents[parents.length - 1] : menu);
-              MenuStore.setActiveMenuParents(parents);
-              MenuStore.setSelected(parents[0]);
-              MenuStore.setType(type);
-              MenuStore.setId(id);
-              MenuStore.setIsUser(isUser);
-              MenuStore.setRootBaseOnActiveMenu();
+              const activeMenu = menu.type === 'tab' ? parents[parents.length - 1] : menu;
+              if (activeMenu && window.location.href.includes(activeMenu.route)) {
+                MenuStore.setActiveMenu(activeMenu);
+                MenuStore.setActiveMenuParents(parents);
+                MenuStore.setSelected(parents[0]);
+                MenuStore.setType(type);
+                MenuStore.setId(id);
+                MenuStore.setIsUser(isUser);
+                MenuStore.setRootBaseOnActiveMenu();
+              }
               return true;
             }
             return false;

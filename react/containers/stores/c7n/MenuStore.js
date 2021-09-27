@@ -282,12 +282,14 @@ class MenuStore {
   }
 
   @action setRootBaseOnActiveMenu() {
+    let flag = this.activeMenu;
     if (this.activeMenu && this.getMenuData && this.getMenuData.length > 0) {
       if (this.activeMenu.level !== this.getMenuData[0].level) {
         this.setActiveMenu(this.getMenuData[0].subMenus[0]);
+        flag = this.getMenuData[0].subMenus[0];
       }
       const menuRoot = this.getActiveMenuRoot || {};
-      const root = this.getMenuData.find((i) => i.id === this.activeMenu.rootId);
+      const root = this.getMenuData.find((i) => i.id === flag.rootId);
       if (root) {
         menuRoot[root.level] = root;
         this.setOpenkeysBaseonRoot(root);
@@ -307,7 +309,6 @@ class MenuStore {
 
   @action
   loadMenuData(menuType = AppState.currentMenuType, isUser, setData = true, selfResolve) {
-    // debugger;
     if (this.judgeFailedMenuType(menuType)) {
       isLoadMenu = 0;
       AppState.setCanShowRoute(true);
