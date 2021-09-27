@@ -21,6 +21,7 @@ import './index.less';
 const QuickLink = observer(() => {
   const {
     AppState,
+    AppState: { getUserInfo },
     quickLinkUseStore,
     quickLinkDs,
   } = useQuickLinkStore();
@@ -90,16 +91,21 @@ const QuickLink = observer(() => {
   };
 
   const renderActions = (l) => {
-    const datas = [
+    const { realName } = getUserInfo || {};
+    const user = get(l, 'user');
+    const linkName = get(user, 'realName');
+
+    const setTop = [
       {
         service: [],
-        icon: '',
         text: l.top ? '取消置顶' : '置顶',
         action: () => handleTopIf(l),
       },
+    ];
+
+    const alter = [
       {
         service: [],
-        icon: '',
         text: '修改',
         action: () => {
           handleAdd(l);
@@ -107,14 +113,21 @@ const QuickLink = observer(() => {
       },
       {
         service: [],
-        icon: '',
         text: '删除',
         action: () => handelOpenDelete(l),
       },
     ];
+
+    if (linkName === realName) {
+      return (
+        <Action
+          data={setTop.concat(alter)}
+        />
+      );
+    }
     return (
       <Action
-        data={datas}
+        data={setTop}
       />
     );
   };
