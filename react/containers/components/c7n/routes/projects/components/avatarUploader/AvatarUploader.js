@@ -1,13 +1,14 @@
 /**
  * 裁剪头像上传
  */
-
+/*eslint-disable*/
 import React, { Component } from 'react';
-import { Button, Icon, Modal, Upload } from 'choerodon-ui';
+import { Icon, Modal, Upload } from 'choerodon-ui';
+import { Button } from 'choerodon-ui/pro';
 import PropTypes from 'prop-types';
 import querystring from 'query-string';
-import { prompt, handleResponseError } from '@/utils';
-import { getCookie } from '@/utils';
+import { prompt, handleResponseError, getCookie } from '@/utils';
+
 import axios from '../../../../tools/axios';
 import './AvatarUploader.less';
 
@@ -49,7 +50,9 @@ export default class AvatarUploader extends Component {
   };
 
   handleOk = () => {
-    const { x, y, size, rotate, file, imageStyle: { width, height }, img: { naturalWidth, naturalHeight } } = this.state;
+    const {
+      x, y, size, rotate, file, imageStyle: { width, height }, img: { naturalWidth, naturalHeight },
+    } = this.state;
     const flag = rotateFlag(rotate);
     const scale = naturalWidth / width;
     const startX = flag ? x - ((width - height) / 2) : x;
@@ -237,7 +240,9 @@ export default class AvatarUploader extends Component {
   }
 
   getPreviewProps(previewSize) {
-    const { size, x, y, img: { src }, rotate, imageStyle: { width, height } } = this.state;
+    const {
+      size, x, y, img: { src }, rotate, imageStyle: { width, height },
+    } = this.state;
     const previewScale = previewSize / size;
     let radius = (rotate % 360) / 90;
     let px = -x;
@@ -275,7 +280,9 @@ export default class AvatarUploader extends Component {
   }
 
   renderEditor(props) {
-    const { img, imageStyle, file, size, x, y, rotate } = this.state;
+    const {
+      img, imageStyle, file, size, x, y, rotate,
+    } = this.state;
     const { intlPrefix } = this.props;
     const { src } = img;
     const { left, top } = imageStyle;
@@ -395,7 +402,7 @@ export default class AvatarUploader extends Component {
       <Button disabled={submitting} key="cancel" onClick={this.handleCancel}>
         取消
       </Button>,
-      <Button key="save" type="primary" disabled={!img} loading={submitting} onClick={this.handleOk}>
+      <Button key="save" color="primary" disabled={!img} loading={submitting} onClick={this.handleOk}>
         保存
       </Button>,
     ];

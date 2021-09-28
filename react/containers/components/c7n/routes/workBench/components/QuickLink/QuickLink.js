@@ -1,15 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useCallback, useEffect } from 'react';
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
-import Action from '@/containers/components/c7n/tools/action';
-import TimePopover from '@/containers/components/c7n/routes/workBench/components/time-popover';
 import {
   Modal,
   Tooltip,
 } from 'choerodon-ui/pro';
-import { getRandomBackground } from '@/containers/components/c7n/util';
 import { get } from 'lodash';
+import Action from '@/containers/components/c7n/tools/action';
+import TimePopover from '@/containers/components/c7n/routes/workBench/components/time-popover';
+import { getRandomBackground } from '@/containers/components/c7n/util';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import AddQuickLink from './AddQuickLink';
 import { useWorkBenchStore } from '../../stores';
@@ -20,6 +21,7 @@ import './index.less';
 const QuickLink = observer(() => {
   const {
     AppState,
+    AppState: { getUserInfo },
     quickLinkUseStore,
     quickLinkDs,
   } = useQuickLinkStore();
@@ -89,16 +91,21 @@ const QuickLink = observer(() => {
   };
 
   const renderActions = (l) => {
-    const datas = [
+    const { realName } = getUserInfo || {};
+    const user = get(l, 'user');
+    const linkName = get(user, 'realName');
+
+    const setTop = [
       {
         service: [],
-        icon: '',
         text: l.top ? '取消置顶' : '置顶',
         action: () => handleTopIf(l),
       },
+    ];
+
+    const alter = [
       {
         service: [],
-        icon: '',
         text: '修改',
         action: () => {
           handleAdd(l);
@@ -106,14 +113,21 @@ const QuickLink = observer(() => {
       },
       {
         service: [],
-        icon: '',
         text: '删除',
         action: () => handelOpenDelete(l),
       },
     ];
+
+    if (linkName === realName) {
+      return (
+        <Action
+          data={setTop.concat(alter)}
+        />
+      );
+    }
     return (
       <Action
-        data={datas}
+        data={setTop}
       />
     );
   };
@@ -126,7 +140,11 @@ const QuickLink = observer(() => {
     const top = get(l, 'top');
 
     const realName = get(user, 'realName');
+    const loginName = get(user, 'loginName');
     const imageUrl = get(user, 'imageUrl');
+    const email = get(user, 'email');
+    const ldap = get(user, 'ldap');
+    // const id = get(user, 'id');
     return (
       (
         <div className="c7n-quickLink-linkItem">
@@ -142,16 +160,18 @@ const QuickLink = observer(() => {
           </div> */}
           <div className="c7n-quickLink-linkItem-right">
             <div className="c7n-quickLink-linkItem-circle" />
-            <div
-              className="c7n-quickLink-linkItem-right-profile"
-              style={{
-                backgroundImage: imageUrl
-                  ? `url(${imageUrl})`
-                  : getRandomBackground(index),
-              }}
-            >
-              {!imageUrl && realName && realName.slice(0, 1)}
-            </div>
+            <Tooltip title={ldap ? `${realName}(${loginName})` : `${realName}(${email})`}>
+              <div
+                className="c7n-quickLink-linkItem-right-profile"
+                style={{
+                  backgroundImage: imageUrl
+                    ? `url(${imageUrl})`
+                    : getRandomBackground(index),
+                }}
+              >
+                {!imageUrl && realName && realName.slice(0, 1)}
+              </div>
+            </Tooltip>
             <div className="c7n-quickLink-linkItem-right-content">
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Tooltip title={projectName}>
@@ -196,7 +216,7 @@ const QuickLink = observer(() => {
               }}
             >
               {
-               renderActions(l)
+                renderActions(l)
               }
             </div>
           </div>
