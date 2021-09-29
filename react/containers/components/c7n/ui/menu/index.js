@@ -496,7 +496,7 @@ export default class CommonMenu extends Component {
     const menuData = MenuStore.getMenuData;
     const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
     const { themeColor } = AppState.getSiteInfo;
-    const isDefaultThemeColor = themeColor === defaultThemeColor;
+    const isDefaultThemeColor = themeColor?.toLowerCase() === defaultThemeColor?.toLowerCase();
     return (
       <div
         className="c7ncd-theme4-menuSide"
