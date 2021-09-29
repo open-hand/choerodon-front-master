@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import queryString from 'query-string';
@@ -6,6 +6,7 @@ import { Page } from '@/index';
 import { useWorkBenchStore } from '../../stores';
 import WorkBenchHeader from './components/WorkBenchHeader';
 import WorkBenchDashboard from '../../components/WorkBenchDashboard';
+import NewUserGuide from '../../../newUserGuide/index';
 import './WorkBench.less';
 
 const WorkBench = () => {
@@ -13,8 +14,16 @@ const WorkBench = () => {
     prefixCls,
     viewDs,
     history,
+    AppState,
     location: { search },
   } = useWorkBenchStore();
+
+  useEffect(() => {
+    async function loadUserWizard() {
+      await AppState.loadUserWizard(AppState.currentMenuType.organizationId);
+    }
+    loadUserWizard();
+  }, []);
 
   const redirectToEdit = () => {
     const { dashboardId, dashboardName } = viewDs.current.toData();
@@ -26,15 +35,21 @@ const WorkBench = () => {
     });
   };
 
-  return (
+  return AppState.getUserWizardList ? (
     <Page className={prefixCls}>
-      <WorkBenchHeader />
-      <WorkBenchDashboard
-        dashboardId={viewDs.current?.get('dashboardId')}
-        isEdit={false}
-        onOpenCardModal={redirectToEdit}
-      />
+      <NewUserGuide list={AppState.getUserWizardList} />
     </Page>
+  ) : (
+    !AppState.getUserWizardList && (
+      <Page className={prefixCls}>
+        <WorkBenchHeader />
+        <WorkBenchDashboard
+          dashboardId={viewDs.current?.get('dashboardId')}
+          isEdit={false}
+          onOpenCardModal={redirectToEdit}
+        />
+      </Page>
+    )
   );
 };
 

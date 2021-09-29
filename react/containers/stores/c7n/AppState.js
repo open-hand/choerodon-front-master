@@ -33,6 +33,10 @@ class AppState {
 
   @observable userInfo = {};
 
+  @observable userWizardList = '';
+
+  @observable userWizardStatus = '';
+
   @observable siteInfo = {};
 
   @observable debugger = false; // 调试模式
@@ -206,6 +210,26 @@ class AppState {
     this.userInfo = user;
   }
 
+  @computed
+  get getUserWizardList() {
+    return this.userWizardList;
+  }
+
+  @action
+  setUserWizardList(list) {
+    this.userWizardList = list;
+  }
+
+  @computed
+  get getUserWizardStatus() {
+    return this.userWizardStatus;
+  }
+
+  @action
+  setUserWizardStatus(list) {
+    this.userWizardStatus = list;
+  }
+
   @action
   setSiteInfo(site) {
     this.siteInfo = site;
@@ -328,6 +352,24 @@ class AppState {
       organizationCode: res?.tenantNum,
     };
     this.setUserInfo(res);
+    return res;
+  });
+
+  loadUserWizard = (organizationId) => axios.get(`/iam/choerodon/v1/organizations/${organizationId}/user_wizard/list`, {
+    enabledCancelCache: false,
+    enabledCancelRoute: false,
+  }).then((res) => {
+    this.setUserWizardList(res);
+    return res;
+  });
+
+  // 新手引导完成情况
+  loadUserWizardStatus =(organizationId) => axios.get(`/iam/choerodon/v1/organizations/${organizationId}/user_wizard/list_status`, {
+    enabledCancelCache: false,
+    enabledCancelRoute: false,
+  }).then((res) => {
+    console.log(res, 'res');
+    this.setUserWizardStatus(res);
     return res;
   });
 
