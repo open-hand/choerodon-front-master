@@ -211,7 +211,7 @@ class Masters extends Component {
       const { HeaderStore } = this.props;
 
       const identity = 'platform_announcement';
-      if (!localStorage.lastClosedId || localStorage.lastClosedId !== res?.id) {
+      if (res && (!localStorage.lastClosedId || localStorage.lastClosedId !== res?.id)) {
         HeaderStore.innsertAnnouncement(identity, {
           data: res,
           onCloseCallback: () => {
@@ -236,7 +236,7 @@ class Masters extends Component {
       const { HeaderStore } = this.props;
 
       const identity = 'saas_restdays_announcement';
-      if (!localStorage.saaslastClosedId || localStorage.saaslastClosedId !== res?.id) {
+      if (res && (!localStorage.saaslastClosedId || localStorage.saaslastClosedId !== res?.id)) {
         HeaderStore.innsertAnnouncement(identity, {
           data: res,
           onCloseCallback: () => {
