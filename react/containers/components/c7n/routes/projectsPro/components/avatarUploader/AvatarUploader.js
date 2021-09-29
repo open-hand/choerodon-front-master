@@ -1,11 +1,14 @@
 /**
  * 裁剪头像上传
  */
-
+/*eslint-disable*/
 import React, { Component } from 'react';
 import {
-  Button, Icon, Modal, Upload,
+  Icon, Modal, Upload,
 } from 'choerodon-ui';
+import {
+  Button,
+} from 'choerodon-ui/pro';
 import PropTypes from 'prop-types';
 import querystring from 'query-string';
 import { prompt, handleResponseError, getCookie } from '@/utils';
@@ -402,7 +405,7 @@ export default class AvatarUploader extends Component {
       <Button disabled={submitting} key="cancel" onClick={this.handleCancel}>
         取消
       </Button>,
-      <Button key="save" type="primary" disabled={!img} loading={submitting} onClick={this.handleOk}>
+      <Button key="save" color="primary" disabled={!img} loading={submitting} onClick={this.handleOk}>
         保存
       </Button>,
     ];

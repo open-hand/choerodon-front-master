@@ -18,12 +18,15 @@ import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '../tools/axios';
 import MasterHeader from '../ui/header';
 import AnnouncementBanner from '../ui/header/AnnouncementBanner';
+import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
+import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from './RouteIndex';
 import './style';
 import Skeleton from './skeleton';
 import CommonMenu, { defaultBlackList } from '../ui/menu';
 import popoverHead from '@/containers/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
+import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
 
 const spinStyle = {
   textAlign: 'center',
@@ -197,8 +200,63 @@ class Masters extends Component {
     }
   };
 
+  // 获取系统公告
+  getPlatformAnnouncement = async () => {
+    try {
+      const res = await axiosGetNewSticky();
+      if (res && res.failed) {
+        message.error(res?.message);
+        return;
+      }
+      const { HeaderStore } = this.props;
+
+      const identity = 'platform_announcement';
+      if (!localStorage.lastClosedId || localStorage.lastClosedId !== res?.id) {
+        HeaderStore.innsertAnnouncement(identity, {
+          data: res,
+          onCloseCallback: () => {
+            window.localStorage.setItem('lastClosedId', `${res?.id}`);
+          },
+          component: <PlatformAnnouncement data={res} />,
+        });
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  // 获取SaaS 新用户的免费使用天数提醒
+  getSaaSUserRestDays = async () => {
+    try {
+      const res = await getSaaSUserAvilableDays();
+      if (res && res.failed) {
+        message.error(res?.message);
+        return;
+      }
+      const { HeaderStore } = this.props;
+
+      const identity = 'saas_restdays_announcement';
+      if (!localStorage.saaslastClosedId || localStorage.saaslastClosedId !== res?.id) {
+        HeaderStore.innsertAnnouncement(identity, {
+          data: res,
+          onCloseCallback: () => {
+            window.localStorage.setItem('saaslastClosedId', `${res?.id}`);
+          },
+          component: <SaaSUserAnnouncement data={res} />,
+        });
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   componentDidMount() {
     this.initFavicon();
+
+    // 获取系统公告
+    this.getPlatformAnnouncement();
+    // 获取适用天数
+    this.getSaaSUserRestDays();
   }
 
   isInOutward = (pathname) => {
@@ -367,7 +425,8 @@ class Masters extends Component {
           className="page-header"
           style={fullPage ? { display: 'none' } : {}}
         >
-          <AnnouncementBanner />
+          {/* <AnnouncementBanner /> */}
+          <AnnouncementBannerPro />
           <MasterHeader />
         </div>
         <div className="page-body">

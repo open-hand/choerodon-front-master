@@ -6,6 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import MenuSideIcon from '@/containers/components/c7n/ui/menu/MenuSideIcon';
+import { defaultThemeColor } from '../../../../../constants';
 import folding from '../../../../images/folding.svg';
 import unfold from '../../../../images/unfold.svg';
 import bg from '../header/style/icons/bg.svg';
@@ -98,13 +99,16 @@ export default class CommonMenu extends Component {
                 // MenuStore.setOpenKeys(collapsed ? [] : [menu, ...parents].map(({ code }) => code));
                 // this.savedOpenKeys = [menu, ...parents].map(({ code }) => code);
               }
-              MenuStore.setActiveMenu(menu.type === 'tab' ? parents[parents.length - 1] : menu);
-              MenuStore.setActiveMenuParents(parents);
-              MenuStore.setSelected(parents[0]);
-              MenuStore.setType(type);
-              MenuStore.setId(id);
-              MenuStore.setIsUser(isUser);
-              MenuStore.setRootBaseOnActiveMenu();
+              const activeMenu = menu.type === 'tab' ? parents[parents.length - 1] : menu;
+              if (activeMenu && window.location.href.includes(activeMenu.route)) {
+                MenuStore.setActiveMenu(activeMenu);
+                MenuStore.setActiveMenuParents(parents);
+                MenuStore.setSelected(parents[0]);
+                MenuStore.setType(type);
+                MenuStore.setId(id);
+                MenuStore.setIsUser(isUser);
+                MenuStore.setRootBaseOnActiveMenu();
+              }
               return true;
             }
             return false;
@@ -467,16 +471,39 @@ export default class CommonMenu extends Component {
     MenuStore.setActiveMenuRoot(JSON.parse(JSON.stringify(origin)));
   }
 
+  getBackgroundImage = (color, isDefault) => {
+    if (color) {
+      if (isDefault) {
+        return `url(${bg})`;
+      }
+      return 'unset';
+    }
+    return `url(${bg})`;
+  }
+
+  getBackgroundColor = (color, isDefault) => {
+    if (color) {
+      if (isDefault) {
+        return 'unset';
+      }
+      return color;
+    }
+    return 'unset';
+  }
+
   renderNewMenuSide = () => {
     const { MenuStore, AppState } = this.props;
     const menuData = MenuStore.getMenuData;
     const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
+    const { themeColor } = AppState.getSiteInfo;
+    const isDefaultThemeColor = themeColor === defaultThemeColor;
     return (
       <div
         className="c7ncd-theme4-menuSide"
         style={{
-          backgroundImage: `url(${bg})`,
+          backgroundImage: this.getBackgroundImage(themeColor, isDefaultThemeColor),
           backgroundSize: 'cover',
+          backgroundColor: this.getBackgroundColor(themeColor, isDefaultThemeColor),
         }}
       >
         {

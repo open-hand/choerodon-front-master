@@ -51,7 +51,7 @@ class RenderPopoverContentClass extends Component {
     const siderClasses = classNames({
       [`${prefixCls}-sider`]: true,
       [`${prefixCls}-sider-visible`]: inboxVisible,
-      [`${prefixCls}-sider-move-down`]: !announcementClosed,
+      // [`${prefixCls}-sider-move-down`]: !announcementClosed,
     });
     const operations = (
       <>
@@ -126,7 +126,7 @@ class RenderPopoverContentDetailClass extends Component {
       [`${prefixCls}-sider-no-animate`]: true,
       [`${prefixCls}-sider`]: true,
       [`${prefixCls}-sider-visible`]: inboxDetailVisible,
-      [`${prefixCls}-sider-move-down`]: !announcementClosed,
+      // [`${prefixCls}-sider-move-down`]: !announcementClosed,
     });
     if (!inboxDetail) return null;
     const realSendTime = 'sendDate' in HeaderStore.inboxDetail ? HeaderStore.inboxDetail.sendDate : HeaderStore.inboxDetail.sendTime;

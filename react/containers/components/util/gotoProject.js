@@ -1,8 +1,8 @@
 import React from 'react';
-import { historyPushMenu } from '@/utils';
 import { Modal, Button } from 'choerodon-ui/pro';
 import { Alert } from 'choerodon-ui';
 import { get, has } from '@choerodon/inject';
+import { historyPushMenu } from '@/utils';
 import HeaderStore from '../../stores/c7n/HeaderStore';
 import MenuStore, { getMenuType } from '../../stores/c7n/MenuStore';
 import findFirstLeafMenu from './findFirstLeafMenu';
@@ -20,13 +20,12 @@ export default async function handleClickProject(data, history, AppState) {
 
   // 如果是pro或者huawei
   if (has('base-pro:preVerifyProject')) {
-    get('base-pro:preVerifyProject')(id, selfEmail, gotoProject)
+    get('base-pro:preVerifyProject')(id, selfEmail, gotoProject);
   } else if (has('base-huawei:preVerifyProject')) {
-    get('base-huawei:preVerifyProject')(id, selfEmail, gotoProject)
+    get('base-huawei:preVerifyProject')(id, selfEmail, gotoProject);
   } else {
     gotoProject();
   }
-
 
   // if (isPro || isHuawei) {
   //   const res = await axios.get(`/iam/choerodon/v1/register_saas/notify_senior_due?projectId=${id}`);
@@ -116,7 +115,7 @@ export default async function handleClickProject(data, history, AppState) {
         }
         domain = menuDomain;
         if (menus[0].subMenus.length) {
-          MenuStore.setActiveMenu(menus[0].subMenus[0])
+          MenuStore.setActiveMenu(menus[0].subMenus[0]);
           MenuStore.setRootBaseOnActiveMenu();
         }
       }
