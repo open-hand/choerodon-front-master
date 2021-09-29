@@ -1,0 +1,26 @@
+.c7ncd-banner {
+  &-item {
+    min-height: var(--banner-height);
+    background-color: #ecf2ff;
+    display: flex;
+    align-items: center;
+    &-content {
+      flex: 1;
+      text-align: center;
+    }
+    &-close {
+      margin-left: auto;
+      margin-right: 17px;
+      font-size: 24px;
+      color: #abbccf;
+      transition: 0.2s;
+      cursor: pointer;
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+  }
+  &-item + &-item {
+    border-top: 1px solid #d9e6f2;
+  }
+}

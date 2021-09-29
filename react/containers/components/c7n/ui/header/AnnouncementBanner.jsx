@@ -61,7 +61,6 @@ export default class AnnouncementBanner extends Component {
       src, children, className, HeaderStore: { announcementClosed, announcement },
     } = this.props;
     const content = get(announcement, 'content');
-    const title = get(announcement, 'title');
     return (
       announcementClosed ? null : (
         <div

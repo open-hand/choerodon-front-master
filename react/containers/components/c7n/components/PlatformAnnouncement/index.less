@@ -1,0 +1,38 @@
+@c7n-boot-header-banner: ~"c7ncd-platform-announcement";
+
+.@{c7n-boot-header-banner} {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ecf2ff;
+  text-align: center;
+  width: fit-content;
+  margin: 0 auto;
+
+  button {
+    margin-left: 24px;
+  }
+
+  &-info {
+    margin: 0 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    span {
+      margin-left: 12px;
+      width: 100%;
+      font-size: 14px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      font-weight: 400;
+      color: rgba(15, 19, 88, 0.85);
+    }
+    i {
+      margin-left: 54px;
+    }
+  }
+}
