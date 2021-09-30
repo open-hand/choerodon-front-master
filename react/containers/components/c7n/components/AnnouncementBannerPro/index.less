@@ -1,9 +1,21 @@
 .c7ncd-banner {
+  &-wrapper {
+    height: 42px;
+    overflow: hidden;
+  }
+  &-content {
+    transform: translateY(0);
+    transition: transform 1s;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
   &-item {
     min-height: var(--banner-height);
     background-color: #ecf2ff;
     display: flex;
     align-items: center;
+    width: 100%;
     &-content {
       flex: 1;
       text-align: center;
@@ -20,7 +32,7 @@
       }
     }
   }
-  &-item + &-item {
-    border-top: 1px solid #d9e6f2;
-  }
+  // &-item + &-item {
+  //   border-top: 1px solid #d9e6f2;
+  // }
 }
