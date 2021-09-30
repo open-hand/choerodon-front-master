@@ -384,6 +384,8 @@ class AppState {
     .then((res) => {
       if (Array.isArray(res)) {
         this.setUserWizardList(res);
+      } else {
+        this.setUserWizardList('');
       }
       return res;
     });
@@ -400,6 +402,8 @@ class AppState {
     .then((res) => {
       if (Array.isArray(res)) {
         this.setUserWizardStatus(res);
+      } else {
+        this.setUserWizardStatus('');
       }
       return res;
     });
