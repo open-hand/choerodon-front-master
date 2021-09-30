@@ -53,21 +53,29 @@ class AppState {
 
   getProjects = () => {
     if (this.currentMenuType.organizationId) {
-      const recentProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`, {
-        enabledCancelCache: false,
-        enabledCancelRoute: false,
-      });
-      const starProjectPromise = axios.get(`/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`, {
-        enabledCancelCache: false,
-        enabledCancelRoute: false,
-      });
+      const recentProjectPromise = axios.get(
+        `/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
+        {
+          enabledCancelCache: false,
+          enabledCancelRoute: false,
+        },
+      );
+      const starProjectPromise = axios.get(
+        `/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`,
+        {
+          enabledCancelCache: false,
+          enabledCancelRoute: false,
+        },
+      );
       Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
         const [recentProjectData = [], starProjectData = []] = res;
 
-        const tempRecentProjectData = recentProjectData?.splice(0, 3).map((i) => ({
-          ...i,
-          ...i.projectDTO,
-        }));
+        const tempRecentProjectData = recentProjectData
+          ?.splice(0, 3)
+          .map((i) => ({
+            ...i,
+            ...i.projectDTO,
+          }));
         const tempStarProjectData = starProjectData.splice(0, 6);
 
         this.setRecentUse(tempRecentProjectData);
@@ -76,14 +84,19 @@ class AppState {
         this.setCurrentDropDown(tempRecentProjectData, tempStarProjectData);
       });
     }
-  }
+  };
 
   setCurrentDropDown = (data1, data2) => {
     const params = new URLSearchParams(window.location.hash.split('?')[1]);
     const type = params.get('type');
     const id = params.get('id');
-    if (type && type === 'project' && ((data1 && data1.length > 0) || (data2 && data2.length > 0))) {
-      const flag = data1.find((i) => String(i.id) === String(id)) || data2.find((i) => String(i.id) === String(id));
+    if (
+      type
+      && type === 'project'
+      && ((data1 && data1.length > 0) || (data2 && data2.length > 0))
+    ) {
+      const flag = data1.find((i) => String(i.id) === String(id))
+        || data2.find((i) => String(i.id) === String(id));
       if (flag) {
         // 最近使用
         this.setDropDownPro(`项目: ${flag.name}`);
@@ -93,7 +106,7 @@ class AppState {
     } else {
       this.setDropDownPro();
     }
-  }
+  };
 
   @computed
   get getIsSaasList() {
@@ -296,8 +309,11 @@ class AppState {
     const newData = data;
     if (data.type === 'project') {
       if (data.categories) {
-        if (this.projectCategorys[data?.projectId]) {
-          if (JSON.stringify(data.categories) !== JSON.stringify(this.projectCategorys[data?.projectId])) {
+        if (this.projectCategorys[(data?.projectId)]) {
+          if (
+            JSON.stringify(data.categories)
+            !== JSON.stringify(this.projectCategorys[(data?.projectId)])
+          ) {
             newData.hasChangeCategorys = true;
           }
         }
@@ -342,36 +358,51 @@ class AppState {
     return this.deployServices.slice();
   }
 
-  loadUserInfo = () => axios.get('iam/choerodon/v1/users/self', {
-    enabledCancelCache: false,
-    enabledCancelRoute: false,
-  }).then((res) => {
-    res = {
-      ...res,
-      organizationName: res?.tenantName,
-      organizationCode: res?.tenantNum,
-    };
-    this.setUserInfo(res);
-    return res;
-  });
+  loadUserInfo = () => axios
+    .get('iam/choerodon/v1/users/self', {
+      enabledCancelCache: false,
+      enabledCancelRoute: false,
+    })
+    .then((res) => {
+      res = {
+        ...res,
+        organizationName: res?.tenantName,
+        organizationCode: res?.tenantNum,
+      };
+      this.setUserInfo(res);
+      return res;
+    });
 
-  loadUserWizard = (organizationId) => axios.get(`/iam/choerodon/v1/organizations/${organizationId}/user_wizard/list`, {
-    enabledCancelCache: false,
-    enabledCancelRoute: false,
-  }).then((res) => {
-    this.setUserWizardList(res);
-    return res;
-  });
+  loadUserWizard = (organizationId) => axios
+    .get(
+      `/iam/choerodon/v1/organizations/${organizationId}/user_wizard/list`,
+      {
+        enabledCancelCache: false,
+        enabledCancelRoute: false,
+      },
+    )
+    .then((res) => {
+      if (Array.isArray(res)) {
+        this.setUserWizardList(res);
+      }
+      return res;
+    });
 
   // 新手引导完成情况
-  loadUserWizardStatus =(organizationId) => axios.get(`/iam/choerodon/v1/organizations/${organizationId}/user_wizard/list_status`, {
-    enabledCancelCache: false,
-    enabledCancelRoute: false,
-  }).then((res) => {
-    console.log(res, 'res');
-    this.setUserWizardStatus(res);
-    return res;
-  });
+  loadUserWizardStatus = (organizationId) => axios
+    .get(
+      `/iam/choerodon/v1/organizations/${organizationId}/user_wizard/list_status`,
+      {
+        enabledCancelCache: false,
+        enabledCancelRoute: false,
+      },
+    )
+    .then((res) => {
+      if (Array.isArray(res)) {
+        this.setUserWizardStatus(res);
+      }
+      return res;
+    });
 
   loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`, {
     enabledCancelCache: false,
@@ -400,7 +431,7 @@ class AppState {
     } catch (e) {
       //
     }
-  }
+  };
 
   loadDeployServices = async () => {
     try {
@@ -414,7 +445,7 @@ class AppState {
     } catch (e) {
       //
     }
-  }
+  };
 }
 
 const appState = new AppState();

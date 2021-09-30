@@ -9,9 +9,9 @@ import {
 import { observer } from 'mobx-react-lite';
 import { ModalContainer } from 'choerodon-ui/pro/lib';
 import { inject } from 'mobx-react';
+import { mount } from '@choerodon/inject';
 import PermissionRoute from '@/components/permission-route';
 import asyncRouter from '../util/asyncRouter';
-import GuideStep from './guideStep';
 
 const Unauthorized = asyncRouter(() => import('../routes/unauthorized'));
 const WorkBench = asyncRouter(() => import('../routes/workBench/list/view'));
@@ -51,7 +51,9 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
       <Route path={`${match.url}test`} component={test} />
       <Route path={match.url} component={AutoRouter} />
     </Switch>
-    <GuideStep />
+    {mount('base-pro:newUserGuideStep', {
+      // AppState.
+    })}
     <ModalContainer />
   </div>
 );
