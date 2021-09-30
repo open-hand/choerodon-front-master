@@ -270,6 +270,92 @@ const fieldsMap = [
       },
     },
   }],
+  ['actualStartTime', {
+    name: '实际开始时间',
+    create: {
+      render: (log: ILog, linkToIssue: () => void) => {
+        const {
+          newString, summary, num, issueTypeVO,
+        } = log;
+        return (
+          <span>
+            <span className="c7n-Log-operation">将</span>
+            <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-operation">的</span>
+            <span className="c7n-Log-field">【实际开始时间】</span>
+            <span>由</span>
+            <span className="c7n-Log-value">【无】</span>
+            <span className="c7n-Log-operation">改变为</span>
+            <span className="c7n-Log-value">{`【${newString}】`}</span>
+          </span>
+        );
+      },
+    },
+    delete: {
+      render: (log: ILog, linkToIssue: () => void) => {
+        const {
+          newString, summary, num, issueTypeVO, oldString,
+        } = log;
+        return (
+          <span>
+            <span className="c7n-Log-operation">将</span>
+            <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-operation">的</span>
+            <span className="c7n-Log-field">【实际开始时间】</span>
+            <span className="c7n-Log-operation">由</span>
+            <span className="c7n-Log-value">{`【${oldString}】`}</span>
+            <span className="c7n-Log-operation">改变为</span>
+            <span className="c7n-Log-value">【无】</span>
+          </span>
+        );
+      },
+    },
+  }],
+  ['actualEndTime', {
+    name: '实际结束时间',
+    create: {
+      render: (log: ILog, linkToIssue: () => void) => {
+        const {
+          newString, summary, num, issueTypeVO,
+        } = log;
+        return (
+          <span>
+            <span className="c7n-Log-operation">将</span>
+            <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-operation">的</span>
+            <span className="c7n-Log-field">【实际结束时间】</span>
+            <span className="c7n-Log-operation">由</span>
+            <span className="c7n-Log-value">【无】</span>
+            <span className="c7n-Log-operation">改变为</span>
+            <span className="c7n-Log-value">{`【${newString}】`}</span>
+          </span>
+        );
+      },
+    },
+    delete: {
+      render: (log: ILog, linkToIssue: () => void) => {
+        const {
+          newString, summary, num, issueTypeVO, oldString,
+        } = log;
+        return (
+          <span>
+            <span className="c7n-Log-operation">将</span>
+            <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-operation">的</span>
+            <span className="c7n-Log-field">【实际结束时间】</span>
+            <span className="c7n-Log-operation">由</span>
+            <span className="c7n-Log-value">{`【${oldString}】`}</span>
+            <span className="c7n-Log-operation">改变为</span>
+            <span className="c7n-Log-value">【无】</span>
+          </span>
+        );
+      },
+    },
+  }],
 ];
 
 export default fieldsMap;
