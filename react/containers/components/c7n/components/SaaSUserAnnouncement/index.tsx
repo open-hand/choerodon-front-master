@@ -5,16 +5,8 @@ import axios from '../../tools/axios';
 
 const prefixCls = 'c7ncd-saasUser-announcement';
 
-function getSaaSUserAvilableDays() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        link: 'http://172.21.61.8:81/market-home/detail/=3TTSyz8Ia4EivgxQ6M_JIQ===?from=myProduct',
-        restDays: 12,
-        id: '121313',
-      });
-    }, 1000);
-  });
+function getSaaSUserAvilableDays(orgId:string) {
+  return axios.get(`/iam/choerodon/v1/organizations/trial_due?organization_id=${orgId}`);
 }
 
 export {
