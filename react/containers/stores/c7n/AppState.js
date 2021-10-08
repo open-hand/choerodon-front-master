@@ -408,11 +408,6 @@ class AppState {
       return res;
     });
 
-  loadOrgDate = (email) => axios.get(`/iam/choerodon/v1/organizations/daysRemaining?email=${email}`, {
-    enabledCancelCache: false,
-    enabledCancelRoute: false,
-  });
-
   loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting', {
     enabledCancelCache: false,
     enabledCancelRoute: false,

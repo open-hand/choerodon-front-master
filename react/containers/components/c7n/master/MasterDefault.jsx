@@ -13,13 +13,13 @@ import {
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import { mount, get as cherodonGet } from '@choerodon/inject';
+import { has } from 'lodash';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '../tools/axios';
 import MasterHeader from '../ui/header';
-import AnnouncementBanner from '../ui/header/AnnouncementBanner';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
-import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
+// import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from './RouteIndex';
 import './style';
 import Skeleton from './skeleton';
@@ -227,6 +227,11 @@ class Masters extends Component {
 
   // 获取SaaS 新用户的免费使用天数提醒
   getSaaSUserRestDays = async () => {
+    if (!has('base-pro:SaaSUserAnnouncement')) {
+      return;
+    }
+    const getSaaSUserAvilableDays = cherodonGet('base-pro:getSaaSUserAvilableDays');
+    const SaaSUserAnnouncement = cherodonGet('base-pro:SaaSUserAnnouncement');
     try {
       const res = await getSaaSUserAvilableDays();
       if (res && res.failed) {
@@ -236,11 +241,11 @@ class Masters extends Component {
       const { HeaderStore } = this.props;
 
       const identity = 'saas_restdays_announcement';
-      if (res && (!localStorage.saaslastClosedId || localStorage.saaslastClosedId !== res?.id)) {
+      if (res && (!localStorage.saaslastClosedId || localStorage.saaslastClosedId !== res?.link)) {
         HeaderStore.innsertAnnouncement(identity, {
           data: res,
           onCloseCallback: () => {
-            window.localStorage.setItem('saaslastClosedId', `${res?.id}`);
+            window.localStorage.setItem('saaslastClosedId', `${res?.link}`);
           },
           component: <SaaSUserAnnouncement data={res} />,
         });
@@ -255,7 +260,7 @@ class Masters extends Component {
 
     // 获取系统公告
     this.getPlatformAnnouncement();
-    // 获取适用天数
+    // 获取适用天数in the base-pro, only applied in the hand version
     this.getSaaSUserRestDays();
   }
 
