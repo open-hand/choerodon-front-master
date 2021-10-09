@@ -93,7 +93,6 @@ const AnnouncementBannerPro = inject('HeaderStore')(observer((props:any) => {
         component,
         onCloseCallback,
       } = item;
-      console.log(key);
 
       return (
         <div className={`${prefixCls}-item`}>
