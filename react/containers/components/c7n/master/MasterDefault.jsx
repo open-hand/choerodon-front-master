@@ -231,7 +231,7 @@ class Masters extends Component {
       return;
     }
     const getSaaSUserAvilableDays = cherodonGet('base-pro:getSaaSUserAvilableDays');
-    const SaaSUserAnnouncement = mount('base-pro:SaaSUserAnnouncement', {});
+    const SaaSUserAnnouncement = cherodonGet('base-pro:SaaSUserAnnouncement');
     try {
       const res = await getSaaSUserAvilableDays();
       if (res && res.failed) {
@@ -247,9 +247,7 @@ class Masters extends Component {
           onCloseCallback: () => {
             window.localStorage.setItem('saaslastClosedId', `${res?.link}`);
           },
-          component: mount('base-pro:SaaSUserAnnouncement', {
-            data: res,
-          }),
+          component: <SaaSUserAnnouncement data={res} />,
         });
       }
     } catch (error) {
