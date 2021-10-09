@@ -1,12 +1,18 @@
-import { removeAccessToken } from '@/utils/accessToken';
-import { authorizeUrl, authorizeC7n } from '@/utils/authorize';
+/*
+ * @Author: isaac
+ * @LastEditors: isaac
+ * @Description:
+ * i made my own lucky
+ */
 import React from 'react';
-import {
-  prompt,
-} from '@/utils';
 import axios, { AxiosError } from 'axios';
 import { notification } from 'choerodon-ui';
 import get from 'lodash/get';
+import {
+  prompt,
+} from '@/utils';
+import { authorizeUrl, authorizeC7n } from '@/utils/authorize';
+import { removeAccessToken } from '@/utils/accessToken';
 import getMark from '../utils/getMark';
 import { axiosCache, axiosRoutesCancel } from '../instances';
 
@@ -80,7 +86,9 @@ export default function handelResponseError(error: AxiosError) {
         break;
       }
       default:
-        prompt(response.data, 'error');
+        if (Object.prototype.toString.call(response.data) !== '[object Blob]') {
+          prompt(response.data, 'error');
+        }
         break;
     }
   }
