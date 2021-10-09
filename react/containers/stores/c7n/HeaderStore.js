@@ -97,9 +97,9 @@ class HeaderStore {
     return this.announcementLists;
   }
 
-  // 是否公告列表中有某个key
+  // 是否公告列表中有某个key， 默认是公告的key
   @action existAnnouncement(key) {
-    return this.announcementLists.has(key);
+    return this.announcementLists.has(key || 'platform_announcement');
   }
 
   @action setIsTodo(_isTodo) {
