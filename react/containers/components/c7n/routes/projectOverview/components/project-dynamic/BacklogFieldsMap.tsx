@@ -270,7 +270,7 @@ const fieldsMap = [
       },
     },
   }],
-  ['actualStartTime', {
+  ['Actual Start Time', {
     name: '实际开始时间',
     create: {
       render: (log: ILog, linkToIssue: () => void) => {
@@ -313,7 +313,7 @@ const fieldsMap = [
       },
     },
   }],
-  ['actualEndTime', {
+  ['Actual End Time', {
     name: '实际结束时间',
     create: {
       render: (log: ILog, linkToIssue: () => void) => {
