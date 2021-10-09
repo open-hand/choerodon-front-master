@@ -19,7 +19,7 @@ import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '../tools/axios';
 import MasterHeader from '../ui/header';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
-// import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
+import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from './RouteIndex';
 import './style';
 import Skeleton from './skeleton';
@@ -177,7 +177,6 @@ class Masters extends Component {
       if (this.userRef?.current?.getUserCountCheck) {
         this.userRef.current.getUserCountCheck(newParams.get('organizationId'));
       }
-      // this.getUserCountCheck(newParams.get('organizationId'));
       this.initStarAndRecentProjects(
         newParams.get('organizationId'),
         newProps.AppState,
@@ -227,13 +226,13 @@ class Masters extends Component {
 
   // 获取SaaS 新用户的免费使用天数提醒
   getSaaSUserRestDays = async () => {
-    if (!cherodonGet('base-pro:getSaaSUserAvilableDays')) {
+    if (window._env_.BUSINESS) {
       return;
     }
-    const getSaaSUserAvilableDays = cherodonGet('base-pro:getSaaSUserAvilableDays');
-    const SaaSUserAnnouncement = cherodonGet('base-pro:SaaSUserAnnouncement');
+    // const getSaaSUserAvilableDays = cherodonGet('base-pro:getSaaSUserAvilableDays');
+    // const SaaSUserAnnouncement = cherodonGet('base-pro:SaaSUserAnnouncement');
     try {
-      const res = await getSaaSUserAvilableDays();
+      const res = await getSaaSUserAvilableDays(this.info.organizationId);
       if (res && res.failed) {
         message.error(res?.message);
         return;
@@ -430,7 +429,6 @@ class Masters extends Component {
           className="page-header"
           style={fullPage ? { display: 'none' } : {}}
         >
-          {/* <AnnouncementBanner /> */}
           <AnnouncementBannerPro />
           <MasterHeader />
         </div>
