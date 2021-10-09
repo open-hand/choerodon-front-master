@@ -227,11 +227,11 @@ class Masters extends Component {
 
   // 获取SaaS 新用户的免费使用天数提醒
   getSaaSUserRestDays = async () => {
-    if (!has('base-pro:SaaSUserAnnouncement')) {
+    debugger
+    if (!cherodonGet('base-pro:getSaaSUserAvilableDays')) {
       return;
     }
     const getSaaSUserAvilableDays = cherodonGet('base-pro:getSaaSUserAvilableDays');
-    const SaaSUserAnnouncement = cherodonGet('base-pro:SaaSUserAnnouncement');
     try {
       const res = await getSaaSUserAvilableDays();
       if (res && res.failed) {
@@ -247,7 +247,9 @@ class Masters extends Component {
           onCloseCallback: () => {
             window.localStorage.setItem('saaslastClosedId', `${res?.link}`);
           },
-          component: <SaaSUserAnnouncement data={res} />,
+          component: mount('base-pro:SaaSUserAnnouncement', {
+            data: res,
+          }),
         });
       }
     } catch (error) {

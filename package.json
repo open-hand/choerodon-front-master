@@ -27,6 +27,7 @@
   "author": "qyellow",
   "license": "ISC",
   "devDependencies": {
+    "@choerodon/base-pro": "1.1.0",
     "@choerodon/boot": "0.23.3",
     "@choerodon/compiler": "^0.0.2",
     "@types/styled-components": "^5.1.11",
