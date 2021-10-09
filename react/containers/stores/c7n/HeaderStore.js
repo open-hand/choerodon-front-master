@@ -97,6 +97,11 @@ class HeaderStore {
     return this.announcementLists;
   }
 
+  // 是否公告列表中有某个key
+  @action existAnnouncement(key) {
+    return this.announcementLists.has(key);
+  }
+
   @action setIsTodo(_isTodo) {
     this.isTodo = _isTodo;
   }
