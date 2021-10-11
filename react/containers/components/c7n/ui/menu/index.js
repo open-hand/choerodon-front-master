@@ -425,7 +425,7 @@ export default class CommonMenu extends Component {
             mode="inline"
             inlineCollapsed={collapsed}
             selectedKeys={[activeMenu && activeMenu.code]}
-            openKeys={openKeys.slice()}
+            openKeys={collapsed ? [] : openKeys.slice()}
             onOpenChange={this.handleOpenChange}
             subMenuCloseDelay={0.1}
             subMenuOpenDelay={0.1}
@@ -496,7 +496,7 @@ export default class CommonMenu extends Component {
     const menuData = MenuStore.getMenuData;
     const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
     const { themeColor } = AppState.getSiteInfo;
-    const isDefaultThemeColor = themeColor === defaultThemeColor;
+    const isDefaultThemeColor = themeColor?.toLowerCase() === defaultThemeColor?.toLowerCase();
     return (
       <div
         className="c7ncd-theme4-menuSide"
