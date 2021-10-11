@@ -1,6 +1,8 @@
 import React, { cloneElement, Component } from 'react';
 import { observer } from 'mobx-react';
-import { Button, Dropdown, Icon, Menu } from 'choerodon-ui';
+import {
+  Button, Dropdown, Icon, Menu,
+} from 'choerodon-ui';
 import Permission from '../permission';
 
 const { Item } = Menu;
@@ -33,7 +35,9 @@ export default class Action extends Component {
     );
   }
 
-  renderMenuItem({ service, text, action, icon }, i) {
+  renderMenuItem({
+    service, text, action, icon,
+  }, i) {
     const { organizationId, type } = this.props;
     const item = (
       <Item action={action}>
@@ -57,7 +61,9 @@ export default class Action extends Component {
   }
 
   render() {
-    const { data, placement, getPopupContainer, disabled, organizationId, type, ...restProps } = this.props;
+    const {
+      data, placement, getPopupContainer, disabled, organizationId, type, style, ...restProps
+    } = this.props;
     return (
       <Permission
         service={this.getAllService(data)}
@@ -65,7 +71,13 @@ export default class Action extends Component {
         type={type}
       >
         <Dropdown overlay={this.renderMenu(data)} trigger={['click']} placement={placement} getPopupContainer={getPopupContainer} disabled={disabled}>
-          <Button size="small" shape="circle" style={{ color: '#5365EA' }} icon="more_vert" {...restProps} />
+          <Button
+            size="small"
+            shape="circle"
+            style={{ color: '#5365EA', ...style }}
+            icon="more_vert"
+            {...restProps}
+          />
         </Dropdown>
       </Permission>
     );
