@@ -59,13 +59,13 @@ class AppState {
       });
       Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
         const [recentProjectData = [], starProjectData = []] = res;
-
-        const tempRecentProjectData = recentProjectData?.splice(0, 3).map((i) => ({
+        // recentProjectData?.splice(0, 3) 这里不清楚当时为什么只要3个 先注释看看问题
+        const tempRecentProjectData = recentProjectData?.map((i) => ({
           ...i,
           ...i.projectDTO,
         }));
-        const tempStarProjectData = starProjectData.splice(0, 6);
-
+        // starProjectData.splice(0, 6)
+        const tempStarProjectData = starProjectData;
         this.setRecentUse(tempRecentProjectData);
         this.setStarProject(tempStarProjectData);
 
