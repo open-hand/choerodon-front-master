@@ -26,15 +26,16 @@ function saveRecent(collection = [], value, number) {
   if (index !== -1) {
     collection.splice(index, 1);
     return [value].concat(collection.slice());
-  } else {
-    collection.unshift(value);
-    return collection.slice(0, number);
   }
+  collection.unshift(value);
+  return collection.slice(0, number);
 }
 
 @store('HeaderStore')
 class HeaderStore {
   @observable roles = [];
+
+  @observable announcementLists = new Map([]);
 
   @observable orgData = null;
 
@@ -66,8 +67,6 @@ class HeaderStore {
 
   @observable announcement = {};
 
-  @observable announcementClosed = true;
-
   @observable inboxLoading = true;
 
   @observable isTodo = false;
@@ -80,6 +79,27 @@ class HeaderStore {
 
   @action setInboxActiveKey(flag) {
     this.inboxActiveKey = flag;
+  }
+
+  // 插入公告
+  @action innsertAnnouncement(identity, data) {
+    this.announcementLists?.set(identity, data);
+  }
+
+  // 删除公告
+  @action deleteAnnouncement(identity) {
+    this.announcementLists?.delete(identity);
+  }
+
+  // 获取公告列表,Map
+  @computed
+  get getAnnouncementLists() {
+    return this.announcementLists;
+  }
+
+  // 是否公告列表中有某个key， 默认是公告的key
+  existAnnouncement(key) {
+    return this.announcementLists.has(key || 'platform_announcement');
   }
 
   @action setIsTodo(_isTodo) {
@@ -102,12 +122,6 @@ class HeaderStore {
   @action
   setInboxLoading(flag) {
     this.inboxLoading = flag;
-  }
-
-  @action
-  closeAnnouncement() {
-    this.announcementClosed = true;
-    window.localStorage.setItem('lastClosedId', `${this.announcement.id}`);
   }
 
   @computed
@@ -147,7 +161,7 @@ class HeaderStore {
 
   @computed
   get getUnreadMsg() {
-    return sortBy(this.inboxData.filter(item => !this.isTodo || item.backlogFlag), ['read']);
+    return sortBy(this.inboxData.filter((item) => !this.isTodo || item.backlogFlag), ['read']);
   }
 
   @computed
@@ -231,12 +245,12 @@ class HeaderStore {
   }
 
   axiosGetPro(key, value) {
-    return axios.post(`/iam/choerodon/v1/projects/query_by_option`, {
-      [key]: value
+    return axios.post('/iam/choerodon/v1/projects/query_by_option', {
+      [key]: value,
     }).then((res) => {
       this.addProject(res[0]);
       return res[0];
-    })
+    });
   }
 
   axiosGetOrgAndPro(userId) {
@@ -284,7 +298,9 @@ class HeaderStore {
       .then(action(({ list }) => {
         if (list && list.length) {
           list.forEach((item) => {
-            const { messageId, subject, creationDate, readFlag } = item;
+            const {
+              messageId, subject, creationDate, readFlag,
+            } = item;
             item.read = readFlag === 1;
             item.id = messageId;
             item.title = subject;
@@ -298,20 +314,6 @@ class HeaderStore {
       .catch(handleResponseError).finally(() => {
         this.inboxLoading = false;
       });
-  }
-
-  axiosGetNewSticky() {
-    return axios({
-      method: 'get',
-      url: '/hmsg/choerodon/v1/system_notice/new_sticky',
-      routeChangeCancel: false,
-      enabledCancelMark: false,
-    }).then(action((data) => {
-      this.announcement = data;
-      if (data && data.id && (!localStorage.lastClosedId || localStorage.lastClosedId !== `${data.id}`)) {
-        this.announcementClosed = false;
-      }
-    })).catch(handleResponseError);
   }
 
   axiosShowSiteMenu() {
@@ -396,7 +398,7 @@ class HeaderStore {
       recents = this.recentItem;
     } else if (localStorage.recentItem) {
       recents = JSON.parse(localStorage.recentItem)
-        .map(recent => omit(recent, 'children'));
+        .map((recent) => omit(recent, 'children'));
     }
     // return recents.filter(
     //   (value) => {
@@ -454,7 +456,6 @@ class HeaderStore {
       });
     }
   }
-
 
   @action
   clearMsg(data) {
