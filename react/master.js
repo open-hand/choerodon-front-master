@@ -173,7 +173,7 @@ export default class Index extends React.Component {
       const arr = injectOutward.split(',').concat(['/unauthorized']).map((r) => r.replace(/['"']/g, ''));
       return arr.some((v) => pathname.startsWith(v));
     }
-    return false;
+    return pathname.startsWith('/unauthorized');
   }
 
   render() {
