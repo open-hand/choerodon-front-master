@@ -1,3 +1,9 @@
+/*
+ * @Author: isaac
+ * @LastEditors: isaac
+ * @Description:
+ * i made my own lucky
+ */
 import React, { cloneElement, Component } from 'react';
 import { observer } from 'mobx-react';
 import {
@@ -77,6 +83,7 @@ export default class Action extends Component {
             style={{ color: '#5365EA', ...style }}
             icon="more_vert"
             {...restProps}
+            onClick={(e) => e && e.stopPropagation()}
           />
         </Dropdown>
       </Permission>
