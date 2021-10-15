@@ -29,11 +29,11 @@ export default class Action extends Component {
     }
   };
 
-  getAllService(data) {
+  getAllService (data) {
     return data.reduce((list, { service = [] }) => list.concat(service), []);
   }
 
-  renderMenu(data) {
+  renderMenu (data) {
     return (
       <Menu onClick={this.handleClick} style={{ minWidth: 80 }}>
         {data.map((item, i) => this.renderMenuItem(item, i))}
@@ -41,12 +41,19 @@ export default class Action extends Component {
     );
   }
 
-  renderMenuItem({
-    service, text, action, icon,
+  renderMenuItem ({
+    service, text, action, icon, disabled,
   }, i) {
     const { organizationId, type } = this.props;
     const item = (
-      <Item action={action}>
+      <Item
+        action={disabled ? () => { } : action}
+        style={disabled ? {
+          color: 'rgba(15, 19, 88, 0.25)',
+          cursor: 'not-allowed',
+          backgroundColor: 'rgb(246, 246, 249)',
+        } : {}}
+      >
         {icon && <Icon type={icon} />}
         {text}
       </Item>
@@ -55,10 +62,8 @@ export default class Action extends Component {
       <Permission
         service={service}
         organizationId={organizationId}
-        type={type}
         key={i}
         defaultChildren={cloneElement(item, { style: { display: 'none' } })}
-        organizationId={organizationId}
         type={type}
       >
         {item}
@@ -66,7 +71,7 @@ export default class Action extends Component {
     );
   }
 
-  render() {
+  render () {
     const {
       data, placement, getPopupContainer, disabled, organizationId, type, style, ...restProps
     } = this.props;
