@@ -8,9 +8,9 @@ import {
   Menu, Dropdown, Icon, Button as ProButton,
 } from 'choerodon-ui/pro';
 
-import { EXTERNAL_LINK, SAAS_FEEDBACK } from '@/utils/constants';
 import classNames from 'classnames';
 import { mount, has as hasInject } from '@choerodon/inject';
+import { EXTERNAL_LINK, SAAS_FEEDBACK } from '@/utils/constants';
 import { axios } from '@/index';
 
 import './style';
@@ -24,29 +24,30 @@ import ProjectSelector from './components/ProjectSelector';
 const prefixCls = 'c7n-boot-header';
 
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
-  const [isOrgSaasAuth, setSaasAuth] = useState(false);
+  // const [isOrgSaasAuth, setSaasAuth] = useState(false);
 
   const {
     AppState: { currentMenuType: { organizationId } },
   } = props;
 
-  const getAuth = useCallback(() => axios.get(`iam/choerodon/v1/register_saas/check_is_owner?tenantId=${organizationId}`, {
-    enabledCancelCache: true,
-  }), [organizationId]);
+  // const getAuth = useCallback(() => axios.get(`iam/choerodon/v1/register_saas/check_is_owner?tenantId=${organizationId}`, {
+  //   enabledCancelCache: true,
+  // }), [organizationId]);
 
-  const checkAuthOfSaas = useCallback(async () => {
-    if (SAAS_FEEDBACK && organizationId) {
-      try {
-        const res = await getAuth();
-        setSaasAuth(!!res);
-      } catch (error) {
-        setSaasAuth(false);
-      }
-    }
-  }, [getAuth, organizationId]);
+  // const checkAuthOfSaas = useCallback(async () => {
+  //   if (SAAS_FEEDBACK && organizationId) {
+  //     try {
+  //       const res = await getAuth();
+  //       setSaasAuth(!!res);
+  //     } catch (error) {
+  //       setSaasAuth(false);
+  //     }
+  //   }
+  // }, [getAuth, organizationId]);
 
   useEffect(() => {
-    checkAuthOfSaas();
+    // 这里应该去请求他是啥人
+    // checkAuthOfSaas();
   }, [organizationId]);
 
   useEffect(() => {
@@ -92,15 +93,13 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     if (EXTERNAL_LINK) {
       itemsGroup.push(docItem);
     }
-    const saasFeedbackBtn = mount('base-pro:saasFeebackBtn');
-    if (SAAS_FEEDBACK && saasFeedbackBtn && isOrgSaasAuth) {
-      const saasFeedbackItem = (
-        <Menu.Item>
-          {mount('base-pro:saasFeebackBtn')}
-        </Menu.Item>
-      );
-      itemsGroup.push(saasFeedbackItem);
-    }
+    const saasFeedbackItem = (
+      <Menu.Item>
+        {mount('base-pro:saasFeebackBtn')}
+      </Menu.Item>
+    );
+    itemsGroup.push(saasFeedbackItem);
+    // }
     return (
       <Menu>
         {
@@ -110,38 +109,28 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     );
   };
 
+  // 问号提示
   const renderExternalLink = () => {
     if ((EXTERNAL_LINK && typeof EXTERNAL_LINK === 'string') || (SAAS_FEEDBACK)) {
-      const saasFeedbackBtn = mount('base-pro:saasFeebackBtn');
-      const hasSaasFeedback = SAAS_FEEDBACK && saasFeedbackBtn && isOrgSaasAuth;
-      const { AppState } = props;
-      const [url, text, icon] = EXTERNAL_LINK?.split(',') || [];
+      const isPro = !!mount('base-pro:saasFeebackBtn');
       return (
-        <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
-          <Dropdown
-            {
-              ...!hasSaasFeedback ? {
-                hidden: true,
-              } : {}
-            }
-            overlay={menuItems()}
-            trigger={['click']}
-            placement="bottomCenter"
-          >
-            <ProButton
-              onClick={() => {
-                if (!hasSaasFeedback) {
-                  window.open(AppState.getDocUrl.status ? 'https://open.hand-china.com/document-center/doc/product/10177/10419?doc_code=118818&doc_id=124273' : AppState.getDocUrl);
-                }
-              }}
-              funcType="flat"
-              className="theme4-external"
-              icon="help_outline"
-              shape="circle"
-              style={{ margin: '0 20px' }}
-            />
-          </Dropdown>
-        </li>
+        isPro ? (
+          <li style={{ width: 'auto' }} className={`${prefixCls}-right-li`}>
+            <Dropdown
+              overlay={menuItems()}
+              trigger={['click']}
+              placement="bottomCenter"
+            >
+              <ProButton
+                funcType="flat"
+                className="theme4-external"
+                icon="help_outline"
+                shape="circle"
+                style={{ margin: '0 20px' }}
+              />
+            </Dropdown>
+          </li>
+        ) : <span style={{ margin: '0 0 0 20px' }} />
       );
     }
     return <span style={{ margin: '0 0 0 20px' }} />;
