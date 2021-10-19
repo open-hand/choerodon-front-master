@@ -47,7 +47,7 @@ const iconMap = {
   'choerodon.code.person.setting': 'shezhi',
 };
 
-const defaultBlackList = ['/projects', '/applications', '/iam/app-market', '/knowledge/organization', '/workbench', '/market/app-market', '/iam/enterprise'];
+const defaultBlackList = ['/projects', '/applications', '/iam/app-market', '/knowledge/organization', '/workbench', '/market/app-market', '/iam/enterprise', '/agile/work-calendar'];
 
 export { defaultBlackList };
 

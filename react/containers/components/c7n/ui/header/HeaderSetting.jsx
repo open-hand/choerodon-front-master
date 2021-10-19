@@ -43,6 +43,7 @@ const Setting = ({
   const LI_MAPPING = useMemo(() => {
     const mapping = [
       { title: '工作台', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/workbench' },
+      { title: '工作日历', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/agile/work-calendar' },
       // {
       //   title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects', style: { marginLeft: 3 },
       // },
