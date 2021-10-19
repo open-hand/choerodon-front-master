@@ -24,31 +24,9 @@ import ProjectSelector from './components/ProjectSelector';
 const prefixCls = 'c7n-boot-header';
 
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
-  // const [isOrgSaasAuth, setSaasAuth] = useState(false);
-
   const {
     AppState: { currentMenuType: { organizationId } },
   } = props;
-
-  // const getAuth = useCallback(() => axios.get(`iam/choerodon/v1/register_saas/check_is_owner?tenantId=${organizationId}`, {
-  //   enabledCancelCache: true,
-  // }), [organizationId]);
-
-  // const checkAuthOfSaas = useCallback(async () => {
-  //   if (SAAS_FEEDBACK && organizationId) {
-  //     try {
-  //       const res = await getAuth();
-  //       setSaasAuth(!!res);
-  //     } catch (error) {
-  //       setSaasAuth(false);
-  //     }
-  //   }
-  // }, [getAuth, organizationId]);
-
-  useEffect(() => {
-    // 这里应该去请求他是啥人
-    // checkAuthOfSaas();
-  }, [organizationId]);
 
   useEffect(() => {
     const { AppState } = props;
