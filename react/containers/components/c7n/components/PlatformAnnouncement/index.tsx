@@ -77,8 +77,8 @@ const PlatformAnnouncement = (props:{
       <div className={`${prefixCls}-info`}>
         <Icon type="error_outline" style={{ fontSize: 20, color: '#FA541CFF' }} />
         <span dangerouslySetInnerHTML={{ __html: content && content.replace(imgPartten, '[图片]').replace(htmlTagParttrn, '') }} />
+        <Button type="primary" funcType="raised" onClick={handleInfo} style={{ height: 26, fontSize: 13 }}>了解详情</Button>
       </div>
-      <Button type="primary" funcType="raised" onClick={handleInfo} style={{ height: 26, fontSize: 13 }}>了解详情</Button>
     </div>
   );
 };
