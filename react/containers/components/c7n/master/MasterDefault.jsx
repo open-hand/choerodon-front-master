@@ -283,6 +283,7 @@ class Masters extends Component {
   }) {
     if (color) {
       document.documentElement.style.setProperty('--primary-color', color);
+      document.documentElement.style.setProperty('--primary-color-background', `${color}0D`);
     }
   }
 
