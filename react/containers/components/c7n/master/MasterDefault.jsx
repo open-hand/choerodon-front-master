@@ -273,9 +273,23 @@ class Masters extends Component {
     return false;
   };
 
+  /**
+   * @description: 根据返回的themeColor改变全局primaryColor变量
+   * @param {*}
+   * @return {*}
+   */
+  changePrimaryColor({
+    color,
+  }) {
+    if (color) {
+      document.documentElement.style.setProperty('--primary-color', color);
+    }
+  }
+
   initFavicon() {
     const { AppState } = this.props;
     AppState.loadSiteInfo().then((data) => {
+      this.changePrimaryColor({ color: data.themeColor });
       const link = document.createElement('link');
       const linkDom = document.getElementsByTagName('link');
       if (linkDom) {
