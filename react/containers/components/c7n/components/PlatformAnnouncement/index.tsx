@@ -12,6 +12,12 @@ const htmlTagParttrn = /<[^>]*>/g;
 
 const modalStyle = {
   width: '8rem',
+  position: 'fixed',
+  top: 0,
+  bottom: 0,
+  left: 0,
+  margin: 'auto',
+  right: 0,
 };
 
 let infoModal:any;
