@@ -226,13 +226,14 @@ class Masters extends Component {
 
   // 获取SaaS 新用户的免费使用天数提醒
   getSaaSUserRestDays = async () => {
-    if (window._env_.BUSINESS) {
+    const {
+      organizationId,
+    } = this.props.AppState.currentMenuType || {};
+    if (window._env_.BUSINESS || !organizationId) {
       return;
     }
-    // const getSaaSUserAvilableDays = cherodonGet('base-pro:getSaaSUserAvilableDays');
-    // const SaaSUserAnnouncement = cherodonGet('base-pro:SaaSUserAnnouncement');
     try {
-      const res = await getSaaSUserAvilableDays(this.info.organizationId);
+      const res = await getSaaSUserAvilableDays(organizationId);
       if (res && res.failed) {
         message.error(res?.message);
         return;
