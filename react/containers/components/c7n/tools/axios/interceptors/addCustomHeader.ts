@@ -1,7 +1,7 @@
+import { AxiosRequestConfig } from 'axios';
 import {
   getAccessToken,
 } from '@/utils';
-import { AxiosRequestConfig } from 'axios';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
 import cursiveSetCorrectId from '../utils/cursiveSetCorrectedId';
 
