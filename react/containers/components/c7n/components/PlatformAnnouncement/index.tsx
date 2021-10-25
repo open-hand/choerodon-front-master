@@ -89,7 +89,7 @@ const PlatformAnnouncement = (props:{
         <div
           className="c7n-boot-header-inbox-wrap"
           style={{
-            maxHeight: '36vh',
+            maxHeight: '47vh',
           }}
         >
           <div
