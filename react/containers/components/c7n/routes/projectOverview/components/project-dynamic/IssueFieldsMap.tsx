@@ -825,6 +825,59 @@ const fieldsMap = [
       },
     },
   }],
+  ['Estimate Time', {
+    name: '预估时间',
+    create: {
+      render: (log: ILog, linkToIssue: () => void) => {
+        const {
+          newString, summary, num, issueTypeVO,
+        } = log;
+        return (
+          <span>
+            <span className="c7n-Log-operation">将</span>
+            <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-operation">的</span>
+            <span className="c7n-Log-field">【预估时间】</span>
+            <span className="c7n-Log-operation">由</span>
+            <span className="c7n-Log-value">【未预估】</span>
+            <span className="c7n-Log-operation">改变为</span>
+            <span className="c7n-Log-value">{`【${Number(newString)}】`}</span>
+          </span>
+        );
+      },
+    },
+    update: {
+      transform: ({ oldString, newString }: { oldString?: string, newString?: string }) => {
+        if (oldString) {
+          return Number(oldString);
+        } if (newString) {
+          return Number(newString);
+        }
+        return '';
+      },
+    },
+    delete: {
+      render: (log: ILog, linkToIssue: () => void) => {
+        const {
+          oldString, summary, num, issueTypeVO,
+        } = log;
+        return (
+          <span>
+            <span className="c7n-Log-operation">将</span>
+            <span className="c7n-Log-operation">{issueTypeVO?.name}</span>
+            <span className="c7n-Log-issue" role="none" onClick={linkToIssue}>{`【${num} ${summary}】`}</span>
+            <span className="c7n-Log-operation">的</span>
+            <span className="c7n-Log-field">【预估时间】</span>
+            <span className="c7n-Log-operation">由</span>
+            <span className="c7n-Log-value">{`【${Number(oldString)}】`}</span>
+            <span className="c7n-Log-operation">改变为</span>
+            <span className="c7n-Log-value">【未预估】</span>
+          </span>
+        );
+      },
+    },
+  }],
 ];
 
 export default fieldsMap;
