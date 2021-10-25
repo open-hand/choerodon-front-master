@@ -9,6 +9,23 @@
   text-align: center;
   margin: 0 auto;
   width: 80%;
+  &-modal {
+    &-title {
+      display: flex;
+      align-items: center;
+      > i {
+        cursor: pointer;
+        float: right;
+        font-size: 24px;
+        color: rgba(0, 0, 0, 0.45);
+        font-weight: 500;
+        margin-left: auto;
+        &:hover {
+          color: #444;
+        }
+      }
+    }
+  }
   &-info {
     margin: 0 auto;
     overflow: hidden;

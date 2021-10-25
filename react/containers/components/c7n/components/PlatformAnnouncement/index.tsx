@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Icon } from 'choerodon-ui';
 import { Modal } from 'choerodon-ui/pro';
 import get from 'lodash/get';
@@ -11,13 +11,12 @@ const imgPartten = /<img(.*?)>/g;
 const htmlTagParttrn = /<[^>]*>/g;
 
 const modalStyle = {
-  width: '8rem',
-  position: 'fixed',
-  top: 0,
-  bottom: 0,
-  left: 0,
-  margin: 'auto',
-  right: 0,
+  minWidth: '8rem',
+  // position: 'fixed',
+  // left: 0,
+  // margin: 'auto',
+  // right: 0,
+  // height: 'fit-content',
 };
 
 let infoModal:any;
@@ -50,22 +49,49 @@ const PlatformAnnouncement = (props:{
   const content = get(announcement, 'content');
   const title = get(announcement, 'title');
 
+  const [isFull, setFull] = useState<boolean>(false);
+
   const closeModal = () => {
     infoModal && infoModal.close();
   };
 
-  useEffect(() => {
+  const renderAnnounceTitle = () => (
+    <div className={`${prefixCls}-modal-title`}>
+      <span>
+        {title}
+      </span>
+      <Icon
+        style={{
+          cursor: 'pointer',
+          float: 'right',
+        }}
+        type={isFull ? 'fullscreen_exit' : 'fullscreen'}
+        onClick={() => setFull(!isFull)}
+      />
+    </div>
+  );
 
-  }, []);
+  useEffect(() => {
+    infoModal && infoModal.update({
+      fullScreen: isFull,
+      title: renderAnnounceTitle(),
+    });
+  }, [isFull]);
 
   const handleInfo = () => {
     infoModal = Modal.open({
       key: infoModalKey,
-      title,
-      closable: true,
+      title: renderAnnounceTitle(),
       style: modalStyle,
+      movable: false,
+      fullScreen: false,
       children: (
-        <div className="c7n-boot-header-inbox-wrap">
+        <div
+          className="c7n-boot-header-inbox-wrap"
+          style={{
+            maxHeight: '36vh',
+          }}
+        >
           <div
             className="c7n-boot-header-inbox-content"
             dangerouslySetInnerHTML={{ __html: content }}
