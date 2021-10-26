@@ -1,4 +1,7 @@
-import React, {Component, useContext, useEffect, useMemo} from 'react';
+/* eslint-disable consistent-return */
+import React, {
+  Component, useContext, useEffect, useMemo,
+} from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { toJS } from 'mobx';
@@ -169,7 +172,7 @@ const Breadcrumb = ({
           isTheme4 ? (
             <>
               {renderMenus()}
-              {/*{renderName()}*/}
+              {/* {renderName()} */}
             </>
           ) : (
             <>

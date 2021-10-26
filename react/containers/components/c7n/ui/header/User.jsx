@@ -1,11 +1,15 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { Component, Fragment } from 'react';
 import queryString from 'query-string';
 import { inject, observer } from 'mobx-react';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Popover, Icon } from 'choerodon-ui';
+import { Modal, Button, ModalProvider } from 'choerodon-ui/pro';
 import { historyPushMenu, logout } from '@/utils';
 import Avatar from './Avatar';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
+import InvitationModal from './InvitationModal';
 
 const MenuItem = Menu.Item;
 const PREFIX_CLS = 'c7n';
@@ -56,6 +60,8 @@ export default class UserPreferences extends Component {
     const { organizationId } = queryString.parse(history.location.search);
     if (key === 'site-setting') {
       this.getGlobalMenuData(organizationId);
+    } else if (key === 'invitation') {
+      this.invitation();
     } else {
       AppState.menuType.type = 'user';
       history.push(`${key}?type=user&organizationId=${organizationId}`);
@@ -65,7 +71,7 @@ export default class UserPreferences extends Component {
 
   findUserInfoMenuItem = (menu, res) => {
     if (menu.subMenus && menu.subMenus.length) {
-      menu.subMenus.forEach(v => this.findUserInfoMenuItem(v, res));
+      menu.subMenus.forEach((v) => this.findUserInfoMenuItem(v, res));
     }
     if (menu.code === 'choerodon.code.person.setting.user-info') {
       res.res = menu;
@@ -76,14 +82,29 @@ export default class UserPreferences extends Component {
     const res = { res: {} };
     const { MenuStore } = this.props;
     const realData = MenuStore.menuGroup.user;
-    realData.forEach(v => this.findUserInfoMenuItem(v, res));
+    realData.forEach((v) => this.findUserInfoMenuItem(v, res));
     return res.res;
   }
 
+  invitation = () => {
+    Modal.open({
+      title: '注册邀请',
+      maskClosable: true,
+      destroyOnClose: true,
+      style: { width: 380 },
+      drawer: true,
+      children: <InvitationModal />,
+    });
+  };
+
   render() {
-    const { AppState, HeaderStore, MenuStore, history } = this.props;
+    const {
+      AppState, HeaderStore, MenuStore, history,
+    } = this.props;
     const { organizationId } = queryString.parse(history.location.search);
-    const { imageUrl, loginName, realName, email } = AppState.getUserInfo || {};
+    const {
+      imageUrl, loginName, realName, email,
+    } = AppState.getUserInfo || {};
     // const realData = MenuStore.menuGroup && MenuStore.menuGroup.user.slice()[0] && MenuStore.menuGroup.user.slice()[0].subMenus.filter(item => !blackList.has(item.code));
     const realData = [this.getUserInfoMenuItem()];
     const AppBarIconRight = (
@@ -103,10 +124,10 @@ export default class UserPreferences extends Component {
         </div>
         <div className={`${prefixCls}-popover-menu`}>
           <Menu selectedKeys={[-1]} onClick={this.handleMenuItemClick}>
-            {realData && realData.map(item => (
+            {realData && realData.map((item) => (
               item.code && (
                 <MenuItem className={`${prefixCls}-popover-menu-item`} key={item.route}>
-                  <Icon type={item.icon} />
+                  <Icon type="account_circle-o" />
                   {item.name}
                 </MenuItem>
               )
@@ -115,10 +136,19 @@ export default class UserPreferences extends Component {
               HeaderStore.getShowSiteMenu ? [
                 <Menu.Divider />,
                 <MenuItem className={`${prefixCls}-popover-menu-item`} key="site-setting">
-                  <Icon type="settings" />
+                  <Icon type="settings-o" />
                   平台管理
                 </MenuItem>,
               ] : null
+            }
+            {
+              [
+                <Menu.Divider />,
+                <MenuItem className={`${prefixCls}-popover-menu-item`} key="invitation">
+                  <Icon type="share" />
+                  注册邀请
+                </MenuItem>,
+              ]
             }
           </Menu>
         </div>
