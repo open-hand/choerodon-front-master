@@ -51,5 +51,5 @@ export function routeCancelResponseFailedInterceptor(error:AxiosError) {
   if (axios.isCancel(error)) {
     return new Promise(() => {});
   }
-  return error;
+  return Promise.reject(error);
 }
