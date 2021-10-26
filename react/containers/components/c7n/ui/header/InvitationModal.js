@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import ReactDOM from 'react-dom';
 import { Tabs, Alert } from 'choerodon-ui';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import {
-  DataSet, TextField, Icon, Row, Col, EmailField, Form, message, Button,
+  DataSet, TextField, EmailField, Form, message, Button,
 } from 'choerodon-ui/pro';
-import { pick } from 'lodash';
 import axios from '../../tools/axios';
 import InvitationModalDataSet from './InvitationModalDataset';
 
@@ -22,43 +20,41 @@ export default function InvitationModal(props) {
 
   useEffect(() => {
     props.modal.update({ // 更新modal
-      footer: (okBtn, cancelBtn) => (
-        <div>
-          {
-            isLink ? (
-              <>
-                {cancelBtn}
-                <CopyToClipboard
-                  text={link}
-                >
-                  <Button color="primary" onClick={handleCopy}>
-                    复制
-                  </Button>
-                </CopyToClipboard>
-              </>
-            ) : (
-              <>
-                {cancelBtn}
-                <Button color="primary" onClick={handleSubmit}>
-                  邀请
-                </Button>
-              </>
-            )
-          }
-        </div>
-      ),
+      cancelText: '取消',
+      footer: (okBtn, cancelBtn) => {
+        const finsh = isLink ? (
+          <CopyToClipboard
+            text={link}
+          >
+            <Button color="primary" onClick={handleCopy}>
+              复制
+            </Button>
+          </CopyToClipboard>
+        ) : (
+          <Button color="primary" onClick={handleSubmit}>
+            邀请
+          </Button>
+        );
+        return (
+          <div>
+            {cancelBtn}
+            {finsh}
+          </div>
+        );
+      },
     });
   }, [tabkey, link]);
 
   // 获取链接
   useEffect(() => {
-    const getLink = async (ds) => {
+    const getLink = async () => {
       const res = await axios.get(
         '/iam/choerodon/v1/registers_invitation/batch_invitations',
       );
       setLink(res);
-    }; getLink();
-  }, [link]);
+    };
+    getLink();
+  }, []);
 
   // 公告栏
   const notice = (
@@ -98,7 +94,12 @@ export default function InvitationModal(props) {
 
   // 发送表单
   const handleSubmit = async () => {
-    const data = await Ds.submit();
+    try {
+      const data = await Ds.submit();
+      return true;
+    } catch (err) {
+      return '发送失败，请稍后重试';
+    }
   };
 
   return (
@@ -112,7 +113,7 @@ export default function InvitationModal(props) {
           {notice}
           <Form record={Ds.current} style={{ width: '3.4rem' }}>
             <TextField name="userName" />
-            <TextField pattern="1[3-9]\d{9}" name="userPhone" />
+            <TextField name="userPhone" />
             <EmailField name="userEmail" />
             <TextField name="orgName" />
             <TextField name="orgHomePage" />
