@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
-import { Route, RouteProps, useLocation } from 'react-router-dom';
+import {
+  Route, RouteProps, useLocation,
+} from 'react-router-dom';
 import { noaccess as NoAccess, Permission } from '@/index';
 import useQueryString from '@/hooks/useQueryString';
 import Skeleton from '@/containers/components/c7n/master/skeleton';
@@ -25,8 +27,7 @@ const PermissionRoute: React.FC<PermissionRouteProps> = ({ enabledRouteChangedAj
     if (enabledRouteChangedAjaxBlock && axiosRoutesCancel.size) {
       axiosRoutesCancel.cancelAllRequest();
     }
-  },
-  [location]);
+  }, [location.pathname]);
 
   return (codes.length > 0)
     ? (

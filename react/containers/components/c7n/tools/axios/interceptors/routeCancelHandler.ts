@@ -18,6 +18,7 @@ export function routeCancelRequestSuccessInterceptor(config:AxiosRequestConfig) 
     axiosRoutesCancel.set(cancelRouteKey, {
       cancel: source.cancel,
       name: cancelRouteKey,
+      // routePath: window.location.hash.split('?')[0].replace(/#/, ''),
     });
   }
 

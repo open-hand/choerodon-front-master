@@ -17,7 +17,6 @@ import {
 declare module 'axios' {
   interface AxiosRequestConfig {
     noPrompt?: boolean
-    enabledCancelCache?: boolean,
     useCache?:boolean
     enabledCancelRoute?:boolean,
     cancelCacheKey?: string,
