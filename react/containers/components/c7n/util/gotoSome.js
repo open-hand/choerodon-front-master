@@ -34,7 +34,7 @@ async function getSearchString(type, key, value, extraProps = {}) {
     if (orgObj) {
       const obj = {
         type,
-        id: org.id,
+        id: orgObj.id,
         name: orgObj.name,
         category: orgObj.category,
         organizationId: orgObj.id,

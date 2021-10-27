@@ -10,6 +10,7 @@ import { historyPushMenu, logout } from '@/utils';
 import Avatar from './Avatar';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
 import InvitationModal from './InvitationModal';
+import { MODAL_WIDTH } from '@/constants/MODAL';
 
 const MenuItem = Menu.Item;
 const PREFIX_CLS = 'c7n';
@@ -87,12 +88,13 @@ export default class UserPreferences extends Component {
   }
 
   invitation = () => {
+    const { MIN } = MODAL_WIDTH;
     Modal.open({
       title: '注册邀请',
       maskClosable: true,
       destroyOnClose: true,
-      style: { width: 380 },
       drawer: true,
+      style: { width: MIN },
       children: <InvitationModal />,
     });
   };
@@ -141,15 +143,11 @@ export default class UserPreferences extends Component {
                 </MenuItem>,
               ] : null
             }
-            {
-              [
-                <Menu.Divider />,
-                <MenuItem className={`${prefixCls}-popover-menu-item`} key="invitation">
-                  <Icon type="share" />
-                  注册邀请
-                </MenuItem>,
-              ]
-            }
+            <Menu.Divider />
+            <MenuItem className={`${prefixCls}-popover-menu-item`} key="invitation">
+              <Icon type="share" />
+              注册邀请
+            </MenuItem>
           </Menu>
         </div>
         <div className="divider" />

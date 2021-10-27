@@ -6,6 +6,7 @@ import {
 } from 'choerodon-ui/pro';
 import axios from '../../tools/axios';
 import InvitationModalDataSet from './InvitationModalDataset';
+import { SUCCESS } from '../../tools/permission/PermissionStatus';
 
 const { TabPane } = Tabs;
 export default function InvitationModal(props) {
@@ -96,11 +97,18 @@ export default function InvitationModal(props) {
   const handleSubmit = async () => {
     try {
       const data = await Ds.submit();
+      console.log(data);
+      if (data && data?.failed) {
+        throw new Error(data?.message);
+      }
+      props.modal.close();
       return true;
     } catch (err) {
-      return '发送失败，请稍后重试';
+      return '出现错误，请联系管理员';
     }
   };
+
+  // if(data && data?.failed){ throw new Error(data?.message)}
 
   return (
     <div>
