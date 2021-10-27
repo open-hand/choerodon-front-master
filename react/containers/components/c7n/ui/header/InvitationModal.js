@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Tabs, Alert } from 'choerodon-ui';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import {
-  DataSet, TextField, EmailField, Form, message, Button,
+  DataSet, TextField, EmailField, Form, message, Button, Select,
 } from 'choerodon-ui/pro';
 import axios from '../../tools/axios';
 import InvitationModalDataSet from './InvitationModalDataset';
@@ -117,8 +117,8 @@ export default function InvitationModal(props) {
             <EmailField name="userEmail" />
             <TextField name="orgName" />
             <TextField name="orgHomePage" />
-            <TextField name="orgBusiness" />
-            <TextField name="wants" />
+            <Select name="orgBusiness" />
+            <Select name="wants" />
           </Form>
         </TabPane>
       </Tabs>

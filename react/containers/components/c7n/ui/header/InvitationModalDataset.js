@@ -1,5 +1,10 @@
-import { pick } from 'lodash';
+import { pick, omit, join } from 'lodash';
+import { DataSet } from 'choerodon-ui/pro';
 import axios from '../../tools/axios';
+import { businessDataSet, wantsDataset } from './optionDataset';
+
+const BusinessDataSet = new DataSet(businessDataSet);
+const WantsDataset = new DataSet(wantsDataset);
 
 function InvitationModalDataSet() {
   // 手机校验
@@ -77,21 +82,37 @@ function InvitationModalDataSet() {
         name: 'orgBusiness',
         type: 'string',
         label: '行业',
+        options: BusinessDataSet,
+        textField: 'text',
+        valueField: 'value',
       },
       {
         name: 'wants',
         type: 'string',
         label: '想要使用功能',
+        options: WantsDataset,
+        textField: 'text',
+        valueField: 'value',
+        multiple: true,
       },
     ],
 
     transport: {
-      create: ({ data: [data] }) => ({
-        method: 'post',
-        url: '/iam/choerodon/v1/registers_invitation/single_invitation',
-        params: pick(data, 'userName', 'userPhone', 'userEmail', 'orgName', 'orgHomePage', 'orgBusiness', 'wants'),
-      }),
+      create: ({ data: [data] }) => {
+        const temp = data;
+        const { wants } = temp;
+        const wantsData = wants.join(',');
+        temp.wants = wantsData;
+
+        return ({
+          url: '/iam/choerodon/v1/registers_invitation/single_invitation',
+          method: 'post',
+          params: pick(data, 'userName', 'userPhone', 'userEmail', 'orgName', 'orgHomePage', 'orgBusiness', 'wants'),
+          data: temp,
+        });
+      },
     },
+
   });
 }
 
