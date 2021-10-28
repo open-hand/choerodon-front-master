@@ -7,7 +7,7 @@ function transformInjects(getInjects, inject) {
   }
   if (typeof getInjects === 'function' && inject[0].getStoreName) {
     return { [inject[0].getStoreName()]: inject[0] };
-  } else if (typeof getInjects === 'object') {
+  } if (typeof getInjects === 'object') {
     const result = {};
     Object.keys(getInjects).forEach((key, i) => {
       result[key] = inject[i];
@@ -22,7 +22,7 @@ function getInjectDataFetchers(getInjects) {
   }
   if (typeof getInjects === 'function') {
     return [getInjects()];
-  } else if (typeof getInjects === 'object') {
+  } if (typeof getInjects === 'object') {
     return Object.keys(getInjects).map((key) => getInjects[key]());
   }
 }
