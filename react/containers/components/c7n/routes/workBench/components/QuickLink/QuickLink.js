@@ -94,6 +94,7 @@ const QuickLink = observer(() => {
     const { realName } = getUserInfo || {};
     const user = get(l, 'user');
     const linkName = get(user, 'realName');
+    const editFlag = get(l, 'editFlag');
 
     const setTop = [
       {
@@ -105,20 +106,18 @@ const QuickLink = observer(() => {
 
     const alter = [
       {
-        service: [],
         text: '修改',
         action: () => {
           handleAdd(l);
         },
       },
       {
-        service: [],
         text: '删除',
         action: () => handelOpenDelete(l),
       },
     ];
 
-    if (linkName === realName) {
+    if (editFlag) {
       return (
         <Action
           data={setTop.concat(alter)}
@@ -141,6 +140,7 @@ const QuickLink = observer(() => {
 
     const realName = get(user, 'realName');
     const loginName = get(user, 'loginName');
+
     const imageUrl = get(user, 'imageUrl');
     const email = get(user, 'email');
     const ldap = get(user, 'ldap');
