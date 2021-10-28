@@ -108,7 +108,6 @@ function InvitationModalDataSet() {
         return ({
           url: '/iam/choerodon/v1/registers_invitation/single_invitation',
           method: 'post',
-          // params: pick(data, 'userName', 'userPhone', 'userEmail', 'orgName', 'orgHomePage', 'orgBusiness', 'wants'),
           data: temp,
         });
       },

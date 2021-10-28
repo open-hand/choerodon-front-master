@@ -125,7 +125,7 @@ export default function InvitationModal(props) {
             <EmailField name="userEmail" />
             <TextField name="orgName" />
             <TextField name="orgHomePage" />
-            <Select name="orgBusiness" />
+            <Select name="orgBusinessType" />
             <Select name="wants" />
           </Form>
         </TabPane>
