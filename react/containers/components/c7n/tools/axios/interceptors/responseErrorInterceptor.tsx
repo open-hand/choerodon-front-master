@@ -1,14 +1,17 @@
-import { removeAccessToken } from '@/utils/accessToken';
-import { authorizeUrl, authorizeC7n } from '@/utils/authorize';
+/*
+ * @Author: isaac
+ * @LastEditors: isaac
+ * @Description:
+ * i made my own lucky
+ */
 import React from 'react';
+import { AxiosError } from 'axios';
+import { notification } from 'choerodon-ui';
 import {
   prompt,
 } from '@/utils';
-import axios, { AxiosError } from 'axios';
-import { notification } from 'choerodon-ui';
-import get from 'lodash/get';
-import getMark from '../utils/getMark';
-import { axiosCache, axiosRoutesCancel } from '../instances';
+import { authorizeUrl, authorizeC7n } from '@/utils/authorize';
+import { removeAccessToken } from '@/utils/accessToken';
 
 // 是否出现身份认证失效的弹框
 let isExistInvalidTokenNotification = false;
@@ -16,26 +19,7 @@ let isExistInvalidTokenNotification = false;
 const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTokenExpired)/;
 
 export default function handelResponseError(error: AxiosError) {
-  const { response, config } = error;
-
-  const enabledCancelRoute = get(config, 'enabledCancelRoute');
-  const enabledCancelCache = get(config, 'enabledCancelCache');
-
-  const cancelCacheKey = get(config, 'cancelCacheKey') || getMark(config);
-
-  if (enabledCancelRoute) {
-    axiosRoutesCancel.delete(cancelCacheKey);
-  }
-
-  if (enabledCancelCache && axiosCache.has(cancelCacheKey)) {
-    axiosCache.delete(cancelCacheKey);
-  }
-
-  // 如果是主动取消了请求，做个标识
-  if (axios.isCancel(error)) {
-    return new Promise(() => {});
-  }
-
+  const { response } = error;
   if (response) {
     const { status } = response;
     switch (status) {
@@ -80,7 +64,9 @@ export default function handelResponseError(error: AxiosError) {
         break;
       }
       default:
-        prompt(response.data, 'error');
+        if (Object.prototype.toString.call(response.data) !== '[object Blob]') {
+          prompt(response.data, 'error');
+        }
         break;
     }
   }

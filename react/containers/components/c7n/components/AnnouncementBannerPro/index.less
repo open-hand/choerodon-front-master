@@ -1,0 +1,41 @@
+.c7ncd-banner {
+  &-wrapper {
+    height: var(--banner-height);
+    overflow: hidden;
+  }
+  &-content {
+    transform: translateY(0);
+    transition: transform 1s;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  &-item {
+    min-height: var(--banner-height);
+    background-color: #ecf2ff;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    &-content {
+      flex: 1;
+      text-align: center;
+      width: 100%;
+    }
+    &-close {
+      margin-left: auto;
+      margin-right: 17px;
+      font-size: 24px;
+      color: #abbccf;
+      transition: 0.2s;
+      cursor: pointer;
+      position: absolute;
+      right: 0;
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+  }
+  // &-item + &-item {
+  //   border-top: 1px solid #d9e6f2;
+  // }
+}

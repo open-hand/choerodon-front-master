@@ -3,10 +3,14 @@ body[data-theme=theme4] {
     .c7n-boot-header-wrap > ul .c7n-btn.header-setting-active {
       position: relative;
       color: #5365EA;
-      background-color: rgba(104, 111, 255, 0.05) !important;
+      background-color: var(--primary-color-background);
       span {
         color: var(--primary-color) !important
       }
+    }
+
+    .c7n-btn.c7n-btn.c7n-btn-flat.c7n-btn-flat:not(.c7n-btn-circle,.c7n-btn-dashed):enabled:hover {
+      background-color: var(--primary-color-background);
     }
 
     .c7n-boot-header-wrap > ul .c7n-btn {

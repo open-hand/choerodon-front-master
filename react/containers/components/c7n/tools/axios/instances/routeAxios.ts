@@ -1,7 +1,8 @@
 // eslint-disable-next-line import/no-cycle
-import { axiosCache } from './index';
 
 class RouteAxios {
+  pendingRequest: Map<any, any>;
+
   constructor() {
     this.pendingRequest = new Map();
   }
@@ -10,19 +11,19 @@ class RouteAxios {
     return this.pendingRequest.size;
   }
 
-  get(key) {
+  get(key:string) {
     return this.pendingRequest.get(key);
   }
 
-  delete(key) {
+  delete(key:string) {
     this.pendingRequest.delete(key);
   }
 
-  has(key) {
+  has(key:string) {
     return this.pendingRequest.has(key);
   }
 
-  set(key, value) {
+  set(key:string, value:any) {
     this.pendingRequest.set(key, value);
   }
 
@@ -38,7 +39,6 @@ class RouteAxios {
     for (const [key, value] of this.pendingRequest) {
       if (value?.cancel && typeof value.cancel === 'function') {
         value.cancel();
-        axiosCache.delete(key);
       }
     }
     this.clear();

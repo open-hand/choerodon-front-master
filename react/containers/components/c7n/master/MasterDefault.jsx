@@ -1,35 +1,32 @@
 import React, {
-  Component, useEffect, useState, createRef,
+  Component, createRef,
 } from 'react';
 import { withRouter } from 'react-router-dom';
-import { inject, observer, Provider } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import {
-  Icon, Popover, Spin, Message,
+  Spin,
 } from 'choerodon-ui';
-import { observer as liteObserver } from 'mobx-react-lite';
 import queryString from 'query-string';
 import {
   message,
-  Button,
   Modal,
-  DataSet,
-  Table,
-  Tooltip,
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import { mount, get as cherodonGet } from '@choerodon/inject';
+import { has } from 'lodash';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '../tools/axios';
 import MasterHeader from '../ui/header';
-import AnnouncementBanner from '../ui/header/AnnouncementBanner';
+import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
+import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from './RouteIndex';
-import themeColorClient from './themeColorClient';
 import './style';
 import Skeleton from './skeleton';
 import CommonMenu, { defaultBlackList } from '../ui/menu';
 import popoverHead from '@/containers/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
+import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
 
 const spinStyle = {
   textAlign: 'center',
@@ -133,8 +130,6 @@ class Masters extends Component {
       }
     });
     this.initMenuType(this.props);
-    const themeColor = localStorage.getItem('C7N-THEME-COLOR');
-    this.updateTheme(themeColor);
     cherodonGet('base-pro:handleGetHelpDocUrl')
       && cherodonGet('base-pro:handleGetHelpDocUrl')(
         this.props,
@@ -143,22 +138,11 @@ class Masters extends Component {
       );
   }
 
-  // callback = (data) => {
-  //   this.setState({
-  //     guideContent: data,
-  //   });
-  // }
-
   componentWillReceiveProps(nextProps) {
     this.judgeIfGetUserCountCheck(nextProps, this.props);
     this.initMenuType(nextProps);
     this.getGuideContentByLocationChange(nextProps, this.props);
   }
-
-  // handleSetGuideContent = (newProps) => {
-  //   if (HAS_BASE_PRO) {
-
-  // }
 
   getGuideContentByLocationChange = (newProps, oldProps) => {
     const { pathname: newPathname, search: newSearch } = newProps.location;
@@ -193,7 +177,6 @@ class Masters extends Component {
       if (this.userRef?.current?.getUserCountCheck) {
         this.userRef.current.getUserCountCheck(newParams.get('organizationId'));
       }
-      // this.getUserCountCheck(newParams.get('organizationId'));
       this.initStarAndRecentProjects(
         newParams.get('organizationId'),
         newProps.AppState,
@@ -216,36 +199,70 @@ class Masters extends Component {
     }
   };
 
-  componentDidMount() {
-    this.initFavicon();
+  // 获取系统公告
+  getPlatformAnnouncement = async () => {
+    try {
+      const res = await axiosGetNewSticky();
+      if (res && res.failed) {
+        message.error(res?.message);
+        return;
+      }
+      const { HeaderStore } = this.props;
+
+      const identity = 'platform_announcement';
+      if (res && (!localStorage.lastClosedId || localStorage.lastClosedId !== res?.id)) {
+        HeaderStore.innsertAnnouncement(identity, {
+          data: res,
+          onCloseCallback: () => {
+            window.localStorage.setItem('lastClosedId', `${res?.id}`);
+          },
+          component: <PlatformAnnouncement data={res} />,
+        });
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  updateTheme = (newPrimaryColor) => {
-    if (
-      newPrimaryColor === 'undefined'
-      || newPrimaryColor === 'null'
-      || !newPrimaryColor
-    ) {
+  // 获取SaaS 新用户的免费使用天数提醒
+  getSaaSUserRestDays = async () => {
+    const {
+      organizationId,
+    } = this.props.AppState.currentMenuType || {};
+    if (window._env_.BUSINESS || !organizationId) {
       return;
     }
-    const colorArr = newPrimaryColor.split(',');
-    let c1;
-    let c2;
-    if (colorArr.length === 2) {
-      [c1, c2] = colorArr;
-    } else if (colorArr.length === 1) {
-      // eslint-disable-next-line prefer-destructuring
-      c1 = colorArr[0];
-      // eslint-disable-next-line prefer-destructuring
-      c2 = colorArr[0];
-    } else if (!colorArr.length) {
-      return;
+    try {
+      const res = await getSaaSUserAvilableDays(organizationId);
+      if (res && res.failed) {
+        message.error(res?.message);
+        return;
+      }
+      const { HeaderStore } = this.props;
+
+      const identity = 'saas_restdays_announcement';
+      if (res && (!localStorage.saaslastClosedId || localStorage.saaslastClosedId !== res?.link)) {
+        HeaderStore.innsertAnnouncement(identity, {
+          data: res,
+          onCloseCallback: () => {
+            window.localStorage.setItem('saaslastClosedId', `${res?.link}`);
+          },
+          component: <SaaSUserAnnouncement data={res} />,
+        });
+      }
+    } catch (error) {
+      throw new Error(error);
     }
-    themeColorClient.changeColor(c1, c2).finally(() => {
-      // eslint-disable-next-line no-console
-      console.log(`[Choerodon] Current Theme Color: ${newPrimaryColor}`);
-    });
-  };
+  }
+
+  componentDidMount() {
+    this.initFavicon();
+
+    // 获取系统公告
+    this.getPlatformAnnouncement();
+    // 获取适用天数in the base-pro, only applied in the hand version
+    this.getSaaSUserRestDays();
+  }
 
   isInOutward = (pathname) => {
     // eslint-disable-next-line no-underscore-dangle
@@ -257,9 +274,24 @@ class Masters extends Component {
     return false;
   };
 
+  /**
+   * @description: 根据返回的themeColor改变全局primaryColor变量
+   * @param {*}
+   * @return {*}
+   */
+  changePrimaryColor({
+    color,
+  }) {
+    if (color) {
+      document.documentElement.style.setProperty('--primary-color', color);
+      document.documentElement.style.setProperty('--primary-color-background', `${color}0D`);
+    }
+  }
+
   initFavicon() {
     const { AppState } = this.props;
     AppState.loadSiteInfo().then((data) => {
+      this.changePrimaryColor({ color: data.themeColor });
       const link = document.createElement('link');
       const linkDom = document.getElementsByTagName('link');
       if (linkDom) {
@@ -279,8 +311,6 @@ class Masters extends Component {
         );
       }
       AppState.setSiteInfo(data);
-      this.updateTheme(data?.themeColor);
-      localStorage.setItem('C7N-THEME-COLOR', data?.themeColor);
     });
   }
 
@@ -313,14 +343,6 @@ class Masters extends Component {
       isUser = true;
     } else if (!menuType.type) {
       menuType.type = 'site';
-    } else if (
-      menuType.type === 'project'
-      && (!menuType.category || menuType.category === 'undefined')
-    ) {
-      // const project = filter(HeaderStore.getProData, ({ id, organizationId }) => String(id) === menuType.id && String(organizationId) === menuType.organizationId)[0];
-      // if (project) {
-      //   menuType.category = project.category;
-      // }
     }
     async function checkUrl() {
       async function goSafty(data) {
@@ -402,104 +424,7 @@ class Masters extends Component {
 
     AppState.setTypeUser(isUser);
     AppState.changeMenuType(menuType, checkUrl);
-    // if (needLoad) {
-    //   MenuStore.loadMenuData().then((menus) => {
-    //     if (menus.length) {
-    //       const { route, domain } = findFirstLeafMenu(menus[0]);
-    //       const { type, name, id, organizationId } = AppState.currentMenuType;
-    //       let path = `${route}?type=${type}&id=${id}&name=${name}`;
-    //       if (organizationId) {
-    //         path += `&organizationId=${organizationId}`;
-    //       }
-    //       historyReplaceMenu(history, path, domain);
-    //     }
-    //   });
-    // }
   }
-
-  // guidePopover() {
-  //   return (
-  //     <div className="c7ncd-guide-popover">
-  //       <div className="c7ncd-guide-popover-head">
-  //         <span style={{
-  //           width: '43%', display: 'inline-block', position: 'relative', zIndex: 1,
-  //         }}
-  //         >
-  //           {this.state.guideContent && this.state.guideContent.title ? this.state.guideContent.title : '平台指引'}
-  //         </span>
-  //         <img src={popoverHead} alt="" />
-  //       </div>
-  //       <div className="c7ncd-guide-popover-content">
-  //         {
-  //           this.state.guideContent
-  //           && this.state.guideContent.userGuideStepVOList
-  //           && this.state.guideContent.userGuideStepVOList.map((item) => (
-  //             <div className="c7ncd-guide-popover-content-item">
-  //               <div className="c7ncd-guide-popover-content-item-left">
-  //                 <p className="c7ncd-guide-popover-content-item-left-stepName">{item.stepName}</p>
-  //                 <p className="c7ncd-guide-popover-content-item-left-description">
-  //                   {item.description}
-  //                   <span
-  //                     onClick={() => {
-  //                       window.open(item.docUrl);
-  //                     }}
-  //                   >
-  //                     指引文档
-  //                   </span>
-  //                 </p>
-  //               </div>
-  //               <Tooltip title={!item.permitted && '暂无目标页面权限'}>
-  //                 <Button
-  //                   disabled={!item.permitted}
-  //                   onClick={() => {
-  //                     if (item.pageUrl) {
-  //                       window.open(`${window.location.origin}/#${item.pageUrl}`);
-  //                     }
-  //                   }}
-  //                 >
-  //                   去设置
-  //                 </Button>
-  //               </Tooltip>
-  //             </div>
-  //           ))
-  //         }
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  // handleClickGuide() {
-  //   this.setState({
-  //     guideOpen: !this.state.guideOpen,
-  //   });
-  // }
-
-  /**
-   * 指引dom
-   */
-  // renderGuide() {
-  //   if (HAS_BASE_PRO && this.state.guideContent) {
-  //     return (
-  //       <Popover
-  //         visible={this.state.guideOpen}
-  //         content={this.guidePopover()}
-  //         trigger="click"
-  //         placement="topRight"
-  //         overlayClassName="c7ncd-guide-origin"
-  //       >
-  //         <div
-  //           className="c7ncd-guide"
-  //           onClick={this.handleClickGuide.bind(this)}
-  //         >
-  //           <Icon
-  //             type={this.state.guideOpen ? 'close' : 'touch_app-o'}
-  //           />
-  //         </div>
-  //       </Popover>
-  //     );
-  //   }
-  //   return '';
-  // }
 
   render() {
     const {
@@ -520,7 +445,7 @@ class Masters extends Component {
           className="page-header"
           style={fullPage ? { display: 'none' } : {}}
         >
-          <AnnouncementBanner />
+          <AnnouncementBannerPro />
           <MasterHeader />
         </div>
         <div className="page-body">

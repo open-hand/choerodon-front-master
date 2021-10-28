@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import queryString from 'query-string';
+import { mount } from '@choerodon/inject';
 import { Page } from '@/index';
 import { useWorkBenchStore } from '../../stores';
 import WorkBenchHeader from './components/WorkBenchHeader';
@@ -13,8 +14,16 @@ const WorkBench = () => {
     prefixCls,
     viewDs,
     history,
+    AppState,
     location: { search },
   } = useWorkBenchStore();
+
+  useEffect(() => {
+    async function loadUserWizard() {
+      await AppState.loadUserWizard(AppState.currentMenuType.organizationId);
+    }
+    loadUserWizard();
+  }, []);
 
   const redirectToEdit = () => {
     const { dashboardId, dashboardName } = viewDs.current.toData();
@@ -26,15 +35,23 @@ const WorkBench = () => {
     });
   };
 
-  return (
+  return AppState.getUserWizardList ? (
     <Page className={prefixCls}>
-      <WorkBenchHeader />
-      <WorkBenchDashboard
-        dashboardId={viewDs.current?.get('dashboardId')}
-        isEdit={false}
-        onOpenCardModal={redirectToEdit}
-      />
+      {mount('base-pro:newUserGuidePage', {
+        list: AppState.getUserWizardList,
+      })}
     </Page>
+  ) : (
+    !AppState.getUserWizardList && (
+      <Page className={prefixCls}>
+        <WorkBenchHeader />
+        <WorkBenchDashboard
+          dashboardId={viewDs.current?.get('dashboardId')}
+          isEdit={false}
+          onOpenCardModal={redirectToEdit}
+        />
+      </Page>
+    )
   );
 };
 

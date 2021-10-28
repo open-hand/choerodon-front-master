@@ -3,14 +3,14 @@ import { withRouter, Route, Switch } from 'react-router-dom';
 import queryString from 'query-string';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { observer, Provider } from 'mobx-react';
-import { Modal, ModalProvider } from 'choerodon-ui/pro';
+import { ModalProvider } from 'choerodon-ui/pro';
 import _ from 'lodash';
 import { initTheme, Container } from '@hzero-front-ui/core';
 import C7nTemplate from '@hzero-front-ui/c7n-ui';
 import { theme4 } from '@hzero-front-ui/themes';
 import { AnimationLoading } from '@choerodon/components';
 import {
-  authorizeC7n, getAccessToken, setAccessToken, handleResponseError,
+  authorizeC7n, getAccessToken, setAccessToken,
 } from '@/utils';
 import Outward from './containers/components/c7n/routes/outward';
 import asyncRouter from './containers/components/util/asyncRouter';
@@ -144,24 +144,6 @@ export default class Index extends React.Component {
     }
   };
 
-  checkOrg = async () => {
-    const { email } = AppState.getUserInfo;
-    try {
-      const res = await AppState.loadOrgDate(email);
-      if (res && !res.failed) {
-        Modal.open({
-          key: Modal.key(),
-          title: '试用期限',
-          children: `您好，您所属组织的试用期限还剩${res}天。`,
-          okText: '我知道了',
-          okCancel: false,
-        });
-      }
-    } catch (error) {
-      handleResponseError(error);
-    }
-  }
-
   auth = async () => {
     this.setState({ loading: true });
     const { access_token: accessToken, token_type: tokenType, expires_in: expiresIn } = queryString.parse(window.location.hash);
@@ -181,13 +163,6 @@ export default class Index extends React.Component {
     AppState.loadModules();
     AppState.loadDeployServices();
     await AppState.loadUserInfo();
-    if (HAS_AGILE_PRO && !window._env_.BUSINESS) {
-      const hasConfirmed = localStorage.getItem('hasConfirmed');
-      if (!hasConfirmed) {
-        await this.checkOrg();
-        localStorage.setItem('hasConfirmed', true);
-      }
-    }
     this.setState({ loading: false });
   };
 
