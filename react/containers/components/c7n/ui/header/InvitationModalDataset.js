@@ -23,6 +23,7 @@ function InvitationModalDataSet() {
   async function checkEmail(userEmail) {
     try {
       const res = await axios.get(`/iam/choerodon/v1/registers_invitation/check_user_email?email=${userEmail}`);
+
       if (res === 'exist') {
         return '邮箱已存在';
       }
@@ -79,7 +80,7 @@ function InvitationModalDataSet() {
         label: '官网地址',
       },
       {
-        name: 'orgBusiness',
+        name: 'orgBusinessType',
         type: 'string',
         label: '行业',
         options: BusinessDataSet,
@@ -107,7 +108,6 @@ function InvitationModalDataSet() {
         return ({
           url: '/iam/choerodon/v1/registers_invitation/single_invitation',
           method: 'post',
-          params: pick(data, 'userName', 'userPhone', 'userEmail', 'orgName', 'orgHomePage', 'orgBusiness', 'wants'),
           data: temp,
         });
       },
