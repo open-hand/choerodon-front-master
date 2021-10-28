@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN, AUTH_HOST, AUTH_URL } from './constants';
+import { ACCESS_TOKEN, AUTH_HOST, AUTH_URL, NO_NEED_HISTORYPATH } from './constants';
 import { getCookieToken, removeAccessToken } from './accessToken';
 
 export function authorize() {
@@ -22,11 +22,7 @@ export function logout() {
 export function authorizeC7n() {
   // 为了把这个hash传到oauth里要把#换成%23
   let historyPath = sessionStorage.getItem('historyPath');
-  if (historyPath && (historyPath.includes('access_token')
-    || historyPath.includes('unauthorized')
-    || historyPath.includes('invite-user')
-    || historyPath.includes('register-saas')
-  )) {
+  if (historyPath && NO_NEED_HISTORYPATH.some(item => historyPath.includes(item))) {
     historyPath = '/';
     sessionStorage.setItem('historyPath', '/');
   }
