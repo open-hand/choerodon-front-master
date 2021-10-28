@@ -70,4 +70,6 @@ export { default as checkPermission } from './utils/checkPermission';
 
 export { default as BrowserAdapter } from './components/browser-adapter';
 
-export  * as CONSTANTS  from './constants';
+export { logout } from './utils/authorize';
+
+export * as CONSTANTS from './constants';
