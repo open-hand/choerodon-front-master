@@ -11,6 +11,7 @@ import autoRefresh from './utils/autoRefresh';
 import './utils/iframeStorage';
 
 const history = createBrowserHistory();
+
 const MASTERS = asyncRouter(
   () => import('./master'),
   {
