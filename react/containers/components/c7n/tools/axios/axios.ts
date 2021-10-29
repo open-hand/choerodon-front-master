@@ -20,7 +20,7 @@ declare module 'axios' {
     useCache?:boolean
     enabledCancelRoute?:boolean,
     cancelCacheKey?: string,
-    application?: 'default' | 'ui'
+    application?: 'default' | 'ui',
   }
 }
 
