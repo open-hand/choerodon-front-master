@@ -63,8 +63,10 @@ const MasterIndex = (props:{
   } = location;
 
   // 历史路径
-  const [historyPath, setHistoryPath] = useSessionStorageState('historyPath', sessionStorage.getItem('historyPath'));
+  const historyPath = sessionStorage.getItem('historyPath');
+
   const [hasEnterpriseConfirmed, setEnterPriseConfirmed] = useLocalStorageState('hasEnterpriseConfirmed', false);
+
   // 用于多relogin的逻辑，多tab之间刷新页面
   const [, setReloginValue] = useLocalStorageState('relogin', false);
 
@@ -89,11 +91,13 @@ const MasterIndex = (props:{
   const isInOutward = useMemo(() => {
     // "/knowledge/share,/knowledge/organizations/create,/knowledge/project/create,/iam/register-organization,/iam/invite-user"
     // eslint-disable-next-line no-underscore-dangle
-    let injectOutward = window._env_.outward;
+    const injectOutward = window._env_.outward;
     if (injectOutward) {
-      injectOutward += ',/unauthorized';
+      const splitArr = injectOutward.split(',').map((r) => r.replace(/['"']/g, ''));
+      splitArr.push('/unauthorized');
+      return splitArr.indexOf(pathname) >= 0;
     }
-    return injectOutward.indexOf(pathname) >= 0;
+    return false;
   }, [pathname]);
 
   /**
@@ -153,7 +157,7 @@ const MasterIndex = (props:{
 
   useMount(() => {
     // 如果不存在历史地址则设置当前地址为跳转地址
-    !historyPath && setHistoryPath(pathname + search);
+    !historyPath && sessionStorage.setItem('historyPath', pathname + search);
     // 不是就校验去登录
     !isInOutward && auth();
   });
@@ -175,7 +179,7 @@ const MasterIndex = (props:{
     });
   }, [isInOutward, AutoRouter]);
 
-  if (loading) {
+  if (loading && !isInOutward) {
     return (
       <Loading
         style={{

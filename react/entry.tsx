@@ -3,14 +3,11 @@ import 'regenerator-runtime/runtime';
 import React from 'react';
 import { render } from 'react-dom';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
 import { Modal } from 'choerodon-ui/pro';
 
 import { asyncRouter } from '@/hoc';
 import autoRefresh from './utils/autoRefresh';
 import './utils/iframeStorage';
-
-const history = createBrowserHistory();
 
 const MASTERS = asyncRouter(
   () => import('./master'),
@@ -19,7 +16,7 @@ const MASTERS = asyncRouter(
   },
 );
 
-const getConfirmation = (message, callback) => {
+const getConfirmation = (message:string, callback:CallableFunction) => {
   Modal.open({
     className: 'c7n-iam-confirm-modal',
     title: message.split('__@.@__')[0],
@@ -34,7 +31,7 @@ const getConfirmation = (message, callback) => {
 };
 
 const App = () => (
-  <Router history={history} getUserConfirmation={getConfirmation}>
+  <Router getUserConfirmation={getConfirmation}>
     <Switch>
       <Route path="/" component={MASTERS} />
     </Switch>
@@ -42,7 +39,6 @@ const App = () => (
 );
 
 autoRefresh();
-render(
-  <App />,
-  document.getElementById('app'),
-);
+
+// 入口
+render(<App />, document.getElementById('app'));
