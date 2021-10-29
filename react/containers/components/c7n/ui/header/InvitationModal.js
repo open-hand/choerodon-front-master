@@ -6,7 +6,6 @@ import {
 } from 'choerodon-ui/pro';
 import axios from '../../tools/axios';
 import InvitationModalDataSet from './InvitationModalDataset';
-import { SUCCESS } from '../../tools/permission/PermissionStatus';
 
 const { TabPane } = Tabs;
 export default function InvitationModal(props) {
@@ -15,6 +14,7 @@ export default function InvitationModal(props) {
 
   const handleCopy = () => {
     message.info('复制成功');
+    props.modal.close();
   };
 
   const isLink = tabkey === 'link';
@@ -23,7 +23,7 @@ export default function InvitationModal(props) {
     props.modal.update({ // 更新modal
       cancelText: '取消',
       footer: (okBtn, cancelBtn) => {
-        const finsh = isLink ? (
+        const confimBtn = isLink ? (
           <CopyToClipboard
             text={link}
           >
@@ -39,7 +39,7 @@ export default function InvitationModal(props) {
         return (
           <div>
             {cancelBtn}
-            {finsh}
+            {confimBtn}
           </div>
         );
       },
@@ -58,11 +58,14 @@ export default function InvitationModal(props) {
   }, []);
 
   // 公告栏
+
+  const LINK_MESSAGE = '将您的专属推广链接分享给好友，邀请好友分享页面进行试用注册，成为推荐达人可领取实物礼品';
+  const FORM_MESSAGE = '填写好友信息，分享专属邀请给好友，邀请好友在分享页面进行试用注册，成为推荐达人可领实物礼品';
   const notice = (
     <div>
       <Alert
         style={{ marginBottom: '20px', height: '60px' }}
-        message="将您的专属推广链接分享给好友，邀请好友分享页面进行适用注册，成为推荐达人可领取实物礼品"
+        message={isLink ? LINK_MESSAGE : FORM_MESSAGE}
         type="info"
         showIcon
       />
@@ -97,7 +100,6 @@ export default function InvitationModal(props) {
   const handleSubmit = async () => {
     try {
       const data = await Ds.submit();
-      console.log(data);
       if (data && data?.failed) {
         throw new Error(data?.message);
       }
@@ -107,8 +109,6 @@ export default function InvitationModal(props) {
       return '出现错误，请联系管理员';
     }
   };
-
-  // if(data && data?.failed){ throw new Error(data?.message)}
 
   return (
     <div>

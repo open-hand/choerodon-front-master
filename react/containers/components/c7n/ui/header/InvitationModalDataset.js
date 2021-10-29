@@ -1,4 +1,3 @@
-import { pick, omit, join } from 'lodash';
 import { DataSet } from 'choerodon-ui/pro';
 import axios from '../../tools/axios';
 import { businessDataSet, wantsDataset } from './optionDataset';
@@ -12,7 +11,7 @@ function InvitationModalDataSet() {
     const res = await axios.get(`/iam/choerodon/v1/registers_invitation/check_user_phone?phone=${userPhone}`);
     try {
       if (!res) {
-        return '已存在';
+        return '手机号码已存在';
       } return true;
     } catch (err) {
       return '手机校验失败，请稍后重试';
@@ -42,6 +41,19 @@ function InvitationModalDataSet() {
     }
   }
 
+  // 网站校验
+  async function checkHomepage(orgHomePage) {
+    try {
+      const rule = /(https?:\/\/)+(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
+      const res = rule.test(orgHomePage);
+      if (res === false && orgHomePage != null) {
+        return '请输入正确的url，由字母，数字和 . 组成，以http:// 或https:// 开始，以字母或数字结束';
+      }
+      return true;
+    } catch (err) {
+      return '校验官网地址失败，请稍后重试';
+    }
+  }
   return ({
     autoCreate: true,
     fields: [
@@ -73,11 +85,13 @@ function InvitationModalDataSet() {
         name: 'orgName',
         type: 'string',
         label: '公司名称',
+        required: true,
       },
       {
         name: 'orgHomePage',
         type: 'string',
         label: '官网地址',
+        validator: checkHomepage,
       },
       {
         name: 'orgBusinessType',
