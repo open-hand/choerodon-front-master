@@ -1,12 +1,12 @@
+// @ts-nocheck
 import React from 'react';
 
 function computeHeight(node) {
   const { style } = node;
   style.height = '100%';
   const totalHeight = parseInt(`${getComputedStyle(node).height}`, 10);
-  const padding =
-    parseInt(`${getComputedStyle(node).paddingTop}`, 10) +
-    parseInt(`${getComputedStyle(node).paddingBottom}`, 10);
+  const padding = parseInt(`${getComputedStyle(node).paddingTop}`, 10)
+    + parseInt(`${getComputedStyle(node).paddingBottom}`, 10);
   return totalHeight - padding;
 }
 
@@ -18,7 +18,7 @@ function getAutoHeight(n) {
   const node = n;
 
   let height = computeHeight(node);
-  const parentNode = node.parentNode;
+  const { parentNode } = node;
   if (parentNode) {
     height = computeHeight(parentNode);
   }
@@ -26,14 +26,13 @@ function getAutoHeight(n) {
   return height;
 }
 
-
 function autoHeight() {
-  return (WrappedComponent) => {
-    class AutoHeightComponent extends React.Component{
-      constructor(props){
+  return (WrappedComponent):any => {
+    class AutoHeightComponent extends React.Component {
+      constructor(props) {
         super(props);
-        
       }
+
       state = {
         computedHeight: 0,
       };
