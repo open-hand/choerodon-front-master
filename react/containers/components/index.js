@@ -30,9 +30,7 @@ export { default as nomatch } from './c7n/error-pages/404';
 
 export { default as noaccess } from './c7n/error-pages/403';
 
-export { default as asyncLocaleProvider } from './util/asyncLocaleProvider';
-
-export { default as asyncRouter } from './util/asyncRouter';
+export * from '@/hoc';
 
 export { default as WSHandler } from './c7n/ws/WSHandler';
 

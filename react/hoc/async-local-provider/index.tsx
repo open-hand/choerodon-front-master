@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { IntlProvider } from 'react-intl';
-import esModule from './esModule';
+import esModule from '../utils/esModule';
 
-export default function asyncLocaleProvider(locale, getMessage) {
-  return class AsyncLocaleProvider extends Component {
-    constructor() {
-      super();
+export default function asyncLocaleProvider(locale:string, getMessage:CallableFunction):React.ComponentType {
+  return class AsyncLocaleProvider extends Component<any, any> {
+    constructor(props:any) {
+      super(props);
       this.state = {
         messages: null,
       };
@@ -26,7 +26,13 @@ export default function asyncLocaleProvider(locale, getMessage) {
 
     render() {
       const { messages } = this.state;
-      return messages ? <IntlProvider {...this.props} locale={locale.replace('_', '-')} messages={messages} /> : null;
+      return messages ? (
+        <IntlProvider
+          {...this.props}
+          locale={locale.replace('_', '-')}
+          messages={messages}
+        />
+      ) : null;
     }
   };
 }

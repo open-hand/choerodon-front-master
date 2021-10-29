@@ -28,9 +28,7 @@ export { default as nomatch } from './containers/components/c7n/tools/error-page
 
 export { default as noaccess } from './containers/components/c7n/tools/error-pages/403';
 
-export { default as asyncLocaleProvider } from './containers/components/util/asyncLocaleProvider';
-
-export { default as asyncRouter } from './containers/components/util/asyncRouter';
+export * from '@/hoc';
 
 export { default as WSHandler } from './containers/components/c7n/tools/ws/WSHandler';
 
