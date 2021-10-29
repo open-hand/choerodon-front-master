@@ -11,7 +11,7 @@ import { ModalContainer } from 'choerodon-ui/pro/lib';
 import { inject } from 'mobx-react';
 import { mount } from '@choerodon/inject';
 import PermissionRoute from '@/components/permission-route';
-import asyncRouter from '../util/asyncRouter';
+import { asyncRouter } from '@/hoc';
 
 const Unauthorized = asyncRouter(() => import('../routes/unauthorized'));
 const WorkBench = asyncRouter(() => import('../routes/workBench/list/view'));

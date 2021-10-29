@@ -400,22 +400,6 @@ class HeaderStore {
       recents = JSON.parse(localStorage.recentItem)
         .map((recent) => omit(recent, 'children'));
     }
-    // return recents.filter(
-    //   (value) => {
-    //     let idx = -1;
-    //     switch (value.type) {
-    //       case ORGANIZATION_TYPE:
-    //         // idx = findDataIndex(this.orgData, value);
-    //         // return idx !== -1 && this.orgData[idx].into;
-    //         return false;
-    //       case PROJECT_TYPE:
-    //         idx = findDataIndex(this.proData, value);
-    //         return idx !== -1;
-    //       default:
-    //         return false;
-    //     }
-    //   },
-    // );
     return recents;
   }
 

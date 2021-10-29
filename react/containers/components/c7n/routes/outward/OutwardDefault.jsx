@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import asyncRouter from '../../util/asyncRouter';
+import { asyncRouter } from '@/hoc';
 import './style';
 import AppState from '../../../../stores/c7n/AppState';
 

@@ -17,8 +17,7 @@ import {
   authorizeC7n, getAccessToken, setAccessToken,
 } from '@/utils';
 import Outward from './containers/components/c7n/routes/outward';
-import asyncRouter from './containers/components/util/asyncRouter';
-import asyncLocaleProvider from './containers/components/util/asyncLocaleProvider';
+import { asyncLocaleProvider, asyncRouter } from '@/hoc';
 import AppState from './containers/stores/c7n/AppState';
 import HeaderStore from './containers/stores/c7n/HeaderStore';
 import stores from './containers/stores';
