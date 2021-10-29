@@ -60,7 +60,7 @@ function InvitationModalDataSet() {
     try {
       const rule = /^[-—\.\w\s\u4e00-\u9fa5]{1,32}$/;
       const res = rule.test(orgName);
-      if (res === false && orgName != null) {
+      if (!res && orgName != null) {
         return '组织名只能由中文、大小写字母、数字、.、-、——和_构成';
       }
       return true;
