@@ -1,11 +1,9 @@
 import { getCookie, removeCookie, setCookie } from './cookie';
 import {
-  ACCESS_DOMAIN, ACCESS_TOKEN, COOKIE_SERVER, LOCAL, TOKEN_TYPE,
+  ACCESS_TOKEN, TOKEN_TYPE,
 } from './constants';
 
 let cachedToken = null;
-
-const localReg = /localhost/g;
 
 export function getCookieToken() {
   const option = {
