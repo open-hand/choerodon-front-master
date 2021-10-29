@@ -1,16 +1,6 @@
-/*
- * @Author: isaac
- * @LastEditors: isaac
- * @Description:
- * i made my own lucky
- */
 import { AxiosRequestConfig } from 'axios';
 import axios from '@/containers/components/c7n/tools/axios';
 import { getProjectId, getOrganizationId } from '@/utils/getId';
-
-interface RequestConfig extends AxiosRequestConfig {
-  noPrompt?: boolean
-}
 
 class Api<T> {
   isConfig: boolean;
@@ -19,7 +9,7 @@ class Api<T> {
     this.isConfig = isConfig;
   }
 
-  request(AxiosConfig: RequestConfig) {
+  request(AxiosConfig: AxiosRequestConfig) {
     if (this.isConfig) {
       return AxiosConfig;
     }
