@@ -59,13 +59,13 @@ export default function InvitationModal(props) {
 
   // 公告栏
 
-  const message1 = '将您的专属推广链接分享给好友，邀请好友分享页面进行试用注册，成为推荐达人可领取实物礼品';
-  const message2 = '填写好友信息，分享专属邀请给好友，邀请好友在分享页面进行试用注册，成为推荐达人可领实物礼品';
+  const LINK_MESSAGE = '将您的专属推广链接分享给好友，邀请好友分享页面进行试用注册，成为推荐达人可领取实物礼品';
+  const FORM_MESSAGE = '填写好友信息，分享专属邀请给好友，邀请好友在分享页面进行试用注册，成为推荐达人可领实物礼品';
   const notice = (
     <div>
       <Alert
         style={{ marginBottom: '20px', height: '60px' }}
-        message={isLink ? message1 : message2}
+        message={isLink ? LINK_MESSAGE : FORM_MESSAGE}
         type="info"
         showIcon
       />
