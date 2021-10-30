@@ -9,7 +9,7 @@ import some from 'lodash/some';
 import { injectIntl } from 'react-intl';
 import FormDataSet from './FormDataSet';
 import CategoryDataSet from './CategoryDataSet';
-import axios from '../../../../../tools/axios';
+import axios from '@/components/axios';
 import useStore from './useStore';
 
 const Store = createContext();

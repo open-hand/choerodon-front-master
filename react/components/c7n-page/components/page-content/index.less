@@ -1,0 +1,44 @@
+@prefixCls: page-content;
+
+.@{prefixCls} {
+  padding: 12px 12px 60px 12px;
+  margin: 12px 12px 0;
+  background: #fff;
+  border-top: none !important;
+  &-isTab {
+    padding-top: 57px;
+  }
+  &-header {
+    display: block;
+    max-width: 512px;
+    .title {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 28px;
+      margin-bottom: 10px;
+    }
+  
+    .description {
+      font-size: 13px;
+      line-height: 20px;
+      margin-bottom: 24px;
+      span,
+      a {
+        color: @primary-color;
+        cursor: pointer;
+      }
+      a:link {
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      a:visited {
+        text-decoration: none;
+      }
+      .icon {
+        font-size: inherit;
+      }
+    }
+  }
+}

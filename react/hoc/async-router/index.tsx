@@ -64,7 +64,7 @@ function asyncRouter(
 
     render() {
       const { Cmp, injects } = this.state;
-      return Cmp && <Cmp {...({ ...extProps, ...this.props, ...injects })} />;
+      return Cmp && <Cmp {...{ ...extProps, ...this.props, ...injects }} />;
     }
   };
 }

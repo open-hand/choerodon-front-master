@@ -1,0 +1,42 @@
+@prefixCls: page-head;
+
+.@{prefixCls} {
+  display: flex;
+  height: 40px;
+  min-height: 40px;
+  line-height: 39px;
+  border-bottom: 1px solid #d3d3d3;
+  background-color: #fff;
+  align-items: center;
+  padding-left: 24px;
+  position: absolute;
+  right: 20px;
+  border-bottom: none !important;
+  top: 7px;
+  z-index: 1;
+
+  & + div {
+    flex-grow: 1;
+    overflow: auto;
+    margin: 0;
+    position: relative;
+  }
+
+  &-back-btn {
+    color: @primary-color;
+    margin: 0 3px 0 -12px;
+    vertical-align: middle;
+  }
+
+  &-title {
+    color: #000;
+    font-size: 18px;
+    line-height: 40px;
+    padding-right: 70px;
+  }
+
+  &-icon {
+    font-size: 18px;
+    vertical-align: text-bottom;
+  }
+}

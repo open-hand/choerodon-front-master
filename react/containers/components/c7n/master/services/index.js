@@ -1,8 +1,10 @@
-import axios from '../../tools/axios';
-import MasterApis from "@/containers/components/c7n/master/apis";
+import axios from '@/components/axios';
+import MasterApis from '@/containers/components/c7n/master/apis';
 
 export default class MasterServices {
-  static axiosGetGuide({menuId, orgId, proId, tab_code}) {
+  static axiosGetGuide({
+    menuId, orgId, proId, tab_code,
+  }) {
     return axios.get(MasterApis.getGuideUrl(menuId, orgId, proId, tab_code));
   }
 
@@ -16,8 +18,8 @@ export default class MasterServices {
 
   static axiosDeleteCleanMember(tenantId, userIds) {
     return axios.delete(MasterApis.getCleanMemberUrl(tenantId), {
-      data: userIds
-    })
+      data: userIds,
+    });
   }
 
   static axiosGetHelpDoc(props) {

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import {
@@ -8,8 +8,7 @@ import {
   Tooltip,
 } from 'choerodon-ui/pro';
 import { get } from 'lodash';
-import Action from '@/containers/components/c7n/tools/action';
-import TimePopover from '@/containers/components/c7n/routes/workBench/components/time-popover';
+import Action from '@/components/action';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import AddQuickLink from './AddQuickLink';

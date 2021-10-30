@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import Jsonbig from 'json-bigint';
-import axios from '@/containers/components/c7n/tools/axios';
+import axios from '@/components/axios';
 import { get } from 'lodash';
 
 export default ({

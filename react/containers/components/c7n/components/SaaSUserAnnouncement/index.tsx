@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Icon } from 'choerodon-ui';
 import './index.less';
-import axios from '../../tools/axios';
+import axios from '@/components/axios';
 
 const prefixCls = 'c7ncd-saasUser-announcement';
 

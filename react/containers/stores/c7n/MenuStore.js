@@ -10,7 +10,7 @@ import groupBy from 'lodash/groupBy';
 import concat from 'lodash/concat';
 import orderBy from 'lodash/orderBy';
 import flatten from 'lodash/flatten';
-import axios from '../../components/c7n/tools/axios';
+import axios from '@/components/axios';
 import AppState from './AppState';
 import HeaderStore from './HeaderStore';
 

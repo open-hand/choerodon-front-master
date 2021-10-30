@@ -14,13 +14,13 @@ export { default as Header } from './c7n/page/Header';
 
 export { default as LoadingBar } from './c7n/loading-bar';
 
-export { default as Action } from './c7n/action';
+export { default as Action } from '@/components/action';
 
-export { default as Permission } from './c7n/permission';
+export * from '@/components/permission';
 
 export { default as Remove } from './c7n/remove';
 
-export { default as axios } from './c7n/axios';
+export { default as axios } from '@/components/axios';
 
 export { default as store } from './c7n/store';
 

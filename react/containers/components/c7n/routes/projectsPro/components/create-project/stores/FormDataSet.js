@@ -1,7 +1,7 @@
 import moment from 'moment';
 import forEach from 'lodash/forEach';
 import some from 'lodash/some';
-import axios from '../../../../../tools/axios';
+import axios from '@/components/axios';
 
 // 项目编码只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"  /^[a-z](([a-z0-9]|-(?!-))*[a-z0-9])*$/
 // 项目名称只能由汉字、字母、数字、"_"、"."、"-"、"——"和空格组成   /^[-—\.\w\s\u4e00-\u9fa5]{1,32}$/

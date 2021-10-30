@@ -6,7 +6,7 @@ import pick from 'lodash/pick';
 import queryString from 'query-string';
 import { handleResponseError } from '@/utils';
 import store from '../../components/c7n/tools/store';
-import axios from '../../components/c7n/tools/axios';
+import axios from '@/components/axios';
 
 const ORGANIZATION_TYPE = 'organization';
 const PROJECT_TYPE = 'project';

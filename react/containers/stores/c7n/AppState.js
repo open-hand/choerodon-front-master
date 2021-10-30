@@ -1,5 +1,5 @@
 import { action, computed, observable } from 'mobx';
-import axios from '@/containers/components/c7n/tools/axios';
+import axios from '@/components/axios';
 
 function getDefaultLanguage() {
   let locale;

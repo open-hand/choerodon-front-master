@@ -2,10 +2,11 @@ import React, { useEffect, useMemo } from 'react';
 import {
   Route, RouteProps, useLocation,
 } from 'react-router-dom';
-import { noaccess as NoAccess, Permission } from '@/index';
+import { noaccess as NoAccess } from '@/index';
+import { Permission } from '@/components/permission';
 import useQueryString from '@/hooks/useQueryString';
 import Skeleton from '@/containers/components/c7n/master/skeleton';
-import { axiosRoutesCancel } from '@/containers/components/c7n/tools/axios/instances';
+import { axiosRoutesCancel } from '@/components/axios/instances';
 
 interface PermissionRouteProps extends RouteProps {
   service: string[] | ((type: 'project' | 'organization' | 'site') => string[]),

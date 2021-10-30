@@ -1,4 +1,4 @@
-import axios from '../containers/components/c7n/tools/axios';
+import axios from '@/components/axios';
 
 export default async function checkPermission({
   projectId, organizationId, resourceType, code, codeArr,
