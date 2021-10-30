@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { configure } from 'choerodon-ui';
 import { AnimationLoading, useLoading } from '@choerodon/components';
 import { uniqueId } from 'lodash';
-import { uiAxiosInstance } from '@/containers/components/c7n/tools/axios';
+import { uiAxiosInstance } from '@/components/axios';
 import AppState from '@/containers/stores/c7n/AppState';
 import { UI_CONFIGURE } from '@/utils';
 

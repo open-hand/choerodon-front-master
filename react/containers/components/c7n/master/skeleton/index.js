@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page, Header, Content } from '@/index';
+import { Page, Header } from '@/index';
 
 import './index.less';
 

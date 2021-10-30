@@ -16,7 +16,7 @@ import { mount, get as cherodonGet } from '@choerodon/inject';
 import { has } from 'lodash';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
-import axios from '../tools/axios';
+import axios from '@/components/axios';
 import MasterHeader from '../ui/header';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';

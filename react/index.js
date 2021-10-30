@@ -4,21 +4,11 @@ export { default as CommonMenu } from './containers/components/c7n/ui/menu';
 
 export { default as C7NIcon } from './containers/components/c7n/ui/c7n-icon';
 
-export { default as Page } from './containers/components/c7n/tools/page';
-
-export { default as Content } from './containers/components/c7n/tools/page/Content';
-
-export { default as Header } from './containers/components/c7n/tools/page/Header';
-
 export { default as LoadingBar } from './containers/components/c7n/tools/loading-bar';
-
-export { default as Action } from './containers/components/c7n/tools/action';
-
-export { default as Permission } from './containers/components/c7n/tools/permission';
 
 export { default as Remove } from './containers/components/c7n/tools/remove';
 
-export { default as axios } from './containers/components/c7n/tools/axios';
+export { default as axios } from '@/components/axios';
 
 export { default as store } from './containers/components/c7n/tools/store';
 
@@ -32,15 +22,15 @@ export * from '@/hoc';
 
 export { default as WSHandler } from './containers/components/c7n/tools/ws/WSHandler';
 
-export { default as PageTab } from './containers/components/c7n/tools/tab-page/PageTab';
+export { default as PageTab } from '@/components/tab-page/PageTab';
 
-export { default as PageWrap } from './containers/components/c7n/tools/tab-page/PageWrap';
+export { default as PageWrap } from '@/components/tab-page/PageWrap';
 
-export { default as TabPage } from './containers/components/c7n/tools/tab-page/TabPage';
+export { default as TabPage } from '@/components/tab-page/TabPage';
 
 export { default as StatusTag } from './containers/components/c7n/tools/statusTag/StatusTag';
 
-export { default as Breadcrumb } from './containers/components/c7n/tools/tab-page/Breadcrumb';
+export { default as Breadcrumb } from '@/components/tab-page/Breadcrumb';
 
 export { default as ThemeWrap } from './containers/components/c7n/tools/themeWrap';
 
@@ -71,3 +61,12 @@ export { default as BrowserAdapter } from './components/browser-adapter';
 export { logout } from './utils/authorize';
 
 export * as CONSTANTS from './constants';
+
+// 导出Page, Content, Header结构组件
+export * from '@/components/c7n-page';
+
+// 导出Permission组件以及PermissionProvider
+export * from '@/components/permission';
+
+// Action
+export { default as Action } from '@/components/action';

@@ -8,7 +8,7 @@ import {
 } from 'choerodon-ui/pro';
 import { debounce, isEmpty, isEqual } from 'lodash';
 import useSelect from '@/hooks/useSelect';
-import axios from '@/containers/components/c7n/tools/axios';
+import axios from '@/components/axios';
 import AppState from '@/containers/stores/c7n/AppState';
 
 import { transformFieldsToSearch } from './utils';

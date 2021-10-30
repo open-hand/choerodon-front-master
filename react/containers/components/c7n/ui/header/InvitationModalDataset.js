@@ -1,5 +1,5 @@
 import { DataSet } from 'choerodon-ui/pro';
-import axios from '../../tools/axios';
+import axios from '@/components/axios';
 import { businessDataSet, wantsDataset } from './optionDataset';
 
 const BusinessDataSet = new DataSet(businessDataSet);

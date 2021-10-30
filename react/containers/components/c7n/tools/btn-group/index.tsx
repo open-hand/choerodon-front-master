@@ -1,12 +1,14 @@
-import React, { ReactEventHandler, useCallback, useMemo, useState } from 'react';
+import React, {
+  useCallback, useMemo, useState,
+} from 'react';
 
 import { Menu, Popover, Icon } from 'choerodon-ui';
 import { Button, Tooltip } from 'choerodon-ui/pro';
 import { flatten, map } from 'lodash';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
 import classNames from 'classnames';
-import Permission from '@/containers/components/c7n/tools/permission';
-import { CustomBtnGroupProps, GroupBtnItemProps } from '@/containers/components/c7n/tools/btn-group/interface';
+import { Permission } from '@/components/permission';
+import { CustomBtnGroupProps, GroupBtnItemProps } from './interface';
 
 import './index.less';
 

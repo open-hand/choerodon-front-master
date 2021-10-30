@@ -4,7 +4,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import {
   DataSet, TextField, EmailField, Form, message, Button, Select,
 } from 'choerodon-ui/pro';
-import axios from '../../tools/axios';
+import axios from '@/components/axios';
 import InvitationModalDataSet from './InvitationModalDataset';
 
 const { TabPane } = Tabs;

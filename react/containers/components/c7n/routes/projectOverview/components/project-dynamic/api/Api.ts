@@ -1,5 +1,5 @@
-import axios from '@/containers/components/c7n/tools/axios';
 import { AxiosRequestConfig } from 'axios';
+import axios from '@/components/axios';
 import AppState from '@/containers/stores/c7n/AppState';
 import globalCache from './Cache';
 

@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios';
-import axios from '@/containers/components/c7n/tools/axios';
+import axios from '@/components/axios';
 import { getProjectId, getOrganizationId } from '@/utils/getId';
 
 class Api<T> {

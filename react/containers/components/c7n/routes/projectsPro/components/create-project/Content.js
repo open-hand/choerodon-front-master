@@ -12,7 +12,7 @@ import {
 } from 'lodash';
 import { get as getInject } from '@choerodon/inject';
 import { fileServer, prompt } from '@/utils';
-import axios from '@/containers/components/c7n/tools/axios';
+import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';

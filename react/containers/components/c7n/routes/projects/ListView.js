@@ -1,15 +1,21 @@
-import React, { useContext, useEffect, useRef, useCallback, Fragment } from 'react';
+import React, {
+  useContext, useEffect, useRef, useCallback, Fragment,
+} from 'react';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
-import { Icon, Button, Modal as OldModal, Tooltip } from 'choerodon-ui';
-import { Modal, Select, message, TextField } from 'choerodon-ui/pro';
-import { prompt } from '@/utils';
-import { historyPushMenu } from '@/utils';
+import {
+  Icon, Button, Modal as OldModal, Tooltip,
+} from 'choerodon-ui';
+import {
+  Modal, Select, message, TextField,
+} from 'choerodon-ui/pro';
+import { prompt, historyPushMenu } from '@/utils';
 import Store from './stores';
 import List from './List';
 import findFirstLeafMenu from '../../../util/findFirstLeafMenu';
 import FormView from './FormView';
-import { Content, Page, axios, Permission } from '../../../../../index';
+import { Content, Page, axios } from '../../../../../index';
+import { Permission } from '@/components/permission';
 import './style/index.less';
 
 const { Option } = Select;
@@ -36,7 +42,7 @@ const ListView = observer(() => {
   const recents = HeaderStore.getRecentItem;
   const { getCanCreate } = projectStore;
   const checkRecentIsEmpty = useCallback(({ dataSet: ds }) => {
-    if (!ds.find(r => recents.find(v => v.id === r.get('id')))) {
+    if (!ds.find((r) => recents.find((v) => v.id === r.get('id')))) {
       toggleRecent('all');
     } else {
       toggleRecent('recent');
@@ -46,15 +52,14 @@ const ListView = observer(() => {
   function filterRecent(record, type) {
     if (type === 'all') {
       return true;
-    } else if (type === 'recent') {
-      return !!recents.find(v => v.id === record.get('id'));
-    } else {
-      return record.get('createdBy') === AppState.getUserId;
+    } if (type === 'recent') {
+      return !!recents.find((v) => v.id === record.get('id'));
     }
+    return record.get('createdBy') === AppState.getUserId;
   }
 
   function realData(type) {
-    return dataSet.filter(r => filterRecent(r, type));
+    return dataSet.filter((r) => filterRecent(r, type));
   }
 
   useEffect(() => {
@@ -65,7 +70,9 @@ const ListView = observer(() => {
     const { currentMenuType: { organizationId } } = AppState;
     const { current } = dataSet;
     if (await current.validate() === true) {
-      const { category, code, name, imageUrl } = current.toData();
+      const {
+        category, code, name, imageUrl,
+      } = current.toData();
       const data = {
         name,
         code,
@@ -76,29 +83,27 @@ const ListView = observer(() => {
       if (res.failed) {
         prompt(res.message);
         return false;
-      } else {
-        prompt('创建成功');
-        HeaderStore.setRecentItem(res);
-        dataSet.query();
-        projectStore.checkCreate(organizationId);
-        return true;
       }
+      prompt('创建成功');
+      HeaderStore.setRecentItem(res);
+      dataSet.query();
+      projectStore.checkCreate(organizationId);
+      return true;
     }
   }
 
   async function handleOkEdit() {
     if (dataSet.current.status === 'add') {
       return (await handleCreate() === true);
-    } else {
-      try {
-        if ((await dataSet.submit()) !== false) {
-          dataSet.query();
-        } else {
-          return false;
-        }
-      } catch (e) {
+    }
+    try {
+      if ((await dataSet.submit()) !== false) {
+        dataSet.query();
+      } else {
         return false;
       }
+    } catch (e) {
+      return false;
     }
   }
 
@@ -154,8 +159,10 @@ const ListView = observer(() => {
   async function handleEnabledProject() {
     const { current } = dataSet;
     try {
-      const { id, organizationId, enabled, name, category, categories } = current.toData();
-      const isSubProject = categories.some(c => c.code === 'PROGRAM_PROJECT');
+      const {
+        id, organizationId, enabled, name, category, categories,
+      } = current.toData();
+      const isSubProject = categories.some((c) => c.code === 'PROGRAM_PROJECT');
       const okProps = {
         disabled: true,
         color: 'red',
@@ -167,7 +174,7 @@ const ListView = observer(() => {
         let extraMessage;
         if (category === 'PROGRAM') {
           extraMessage = (
-            <Fragment>
+            <>
               <div className="c7n-projects-enable-tips">
                 警告：项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
               </div>
@@ -190,7 +197,7 @@ const ListView = observer(() => {
                   });
                 }}
               />
-            </Fragment>
+            </>
           );
         } else if (isSubProject) {
           extraMessage = (
@@ -214,7 +221,11 @@ const ListView = observer(() => {
                 请仔细阅读下列事项！
               </p>
             )}
-            <span>确定要停用项目“{name}”吗？停用后，您和项目下其他成员将无法进入此项目。</span>
+            <span>
+              确定要停用项目“
+              {name}
+              ”吗？停用后，您和项目下其他成员将无法进入此项目。
+            </span>
             {extraMessage}
           </div>
         );
@@ -241,7 +252,7 @@ const ListView = observer(() => {
             okProps,
             okText: '我已经知道后果，停用此项目',
             closable: true,
-            footer: okBtn => okBtn,
+            footer: (okBtn) => okBtn,
           });
         } else {
           Modal.open({
@@ -284,7 +295,9 @@ const ListView = observer(() => {
   }
 
   function handleClickProject(record) {
-    const { id, name, organizationId, category } = record.toData();
+    const {
+      id, name, organizationId, category,
+    } = record.toData();
     const type = 'project';
     HeaderStore.setRecentItem(record.toData());
     MenuStore.loadMenuData({ type, id }, false).then((menus) => {
@@ -310,7 +323,7 @@ const ListView = observer(() => {
 
   function renderHeader() {
     const { organizationId } = queryString.parse(history.location.search);
-    const org = (HeaderStore.getOrgData || []).find(v => String(v.id) === organizationId) || { name: '' };
+    const org = (HeaderStore.getOrgData || []).find((v) => String(v.id) === organizationId) || { name: '' };
     return (
       <div className="c7n-projects-header">
         <div className="c7n-projects-title">{`${org.name}中的项目`}</div>

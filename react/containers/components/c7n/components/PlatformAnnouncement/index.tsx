@@ -3,7 +3,7 @@ import { Button, Icon } from 'choerodon-ui';
 import { Modal } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import './index.less';
-import axios from '../../tools/axios';
+import axios from '@/components/axios';
 
 const prefixCls = 'c7ncd-platform-announcement';
 
