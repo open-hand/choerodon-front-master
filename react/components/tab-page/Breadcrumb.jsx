@@ -15,7 +15,7 @@ import './style/Bread.less';
 const { Item } = Bread;
 
 const Breadcrumb = ({
-  title, AppState, HeaderStore, MenuStore, history, custom, children, extraNode, ...props
+  title, AppState, HeaderStore, MenuStore, history, custom, children, extraNode,
 }) => {
   const { isTab } = useContext(Context);
   const [theme] = useTheme();
