@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon, Tooltip } from 'choerodon-ui/pro';
+import { Loading } from '@choerodon/components';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import { useWorkBenchStore } from '../../stores';
-import LoadingBar from '../../../../tools/loading-bar';
 
 import './index.less';
 
@@ -34,7 +34,7 @@ const Check = observer(() => {
   }
 
   if (!auditDs || auditDs.status === 'loading') {
-    return <LoadingBar display />;
+    return <Loading display />;
   }
 
   if (!auditDs.length) {

@@ -13,7 +13,6 @@ import {
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import { mount, get as cherodonGet } from '@choerodon/inject';
-import { has } from 'lodash';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '@/components/axios';
@@ -22,7 +21,7 @@ import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformA
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from './RouteIndex';
 import './style';
-import Skeleton from './skeleton';
+import Skeleton from '@/components/skeleton';
 import CommonMenu, { defaultBlackList } from '../ui/menu';
 import popoverHead from '@/containers/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
@@ -428,7 +427,7 @@ class Masters extends Component {
 
   render() {
     const {
-      AutoRouter, AppState, location, MenuStore,
+      AutoRouter, AppState, location,
     } = this.props;
     const search = new URLSearchParams(location.search);
     const fullPage = search.get('fullPage');

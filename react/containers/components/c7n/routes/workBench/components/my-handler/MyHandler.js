@@ -2,8 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import { omit } from 'lodash';
+import { Loading } from '@choerodon/components';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import { useMyHandler } from './stores';
 import emptyImg from './image/empty.svg';
@@ -41,7 +41,7 @@ const MyHandler = observer(() => {
 
   function getContent() {
     if ((!myHandlerDs || myHandlerDs.status === 'loading') && !btnLoading) {
-      return <LoadingBar display />;
+      return <Loading display />;
     }
     if (!myHandlerDs.length) {
       return (

@@ -7,8 +7,9 @@ import AppState from '@/containers/stores/c7n/AppState';
 import { UI_CONFIGURE } from '@/utils';
 
 const uiConfigure = UI_CONFIGURE || {};
+
 function TableSpin(props) {
-  const { className, style } = props;
+  const { className } = props;
   const {
     registerChildren, isHasProvider, cancelRegisterChildren, change,
   } = useLoading();
@@ -44,8 +45,8 @@ const UI_CONFIG = {
   lookupAxiosMethod: 'get',
   lookupUrl: (code) => `/hpfm/v1/lovs/value?lovCode=${code}`,
   tableHighLightRow: false,
-  tableRowHeight: 32,
   tableColumnResizable: false,
+  tableRowHeight: 50,
   modalOkFirst: false,
   modalKeyboard: false,
   modalSectionBorder: false,
@@ -62,17 +63,10 @@ const UI_CONFIG = {
   }),
   tableSpinProps: ({
     indicator: <TableSpin />,
-
-  }),
-  lookupAxiosConfig: () => ({
-    enabledCancelMark: false,
-    routeChangeCancel: false,
   }),
   lovDefineAxiosConfig: (code) => ({
     url: `/iam/choerodon/v1/lov/code?code=${code}`,
     method: 'GET',
-    enabledCancelMark: false,
-    routeChangeCancel: false,
     transformResponse: [
       (data) => {
         let originData = {};
@@ -176,17 +170,12 @@ const UI_CONFIG = {
     return {
       url: realUrl,
       method: 'GET',
-      enabledCancelMark: false,
-      routeChangeCancel: false,
     };
   },
 };
-const UI_CONFIG_THEME4 = {
-  ...UI_CONFIG,
-  tableRowHeight: 50,
-};
-function initUiConfigure(theme) {
-  configure(theme === 'theme4' ? UI_CONFIG_THEME4 : UI_CONFIG);
+
+function initUiConfigure() {
+  configure(UI_CONFIG);
 }
 
 export {

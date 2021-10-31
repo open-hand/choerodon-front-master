@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { Button } from 'choerodon-ui';
-import './style/404.less';
+import './404.less';
 
 const NoMatch = ({ MenuStore, button = true }) => {
   useEffect(() => {

@@ -4,7 +4,7 @@ export { default as CommonMenu } from './containers/components/c7n/ui/menu';
 
 export { default as C7NIcon } from './containers/components/c7n/ui/c7n-icon';
 
-export { default as LoadingBar } from './containers/components/c7n/tools/loading-bar';
+export { default as Loading } from './containers/components/c7n/tools/loading-bar';
 
 export { default as Remove } from './containers/components/c7n/tools/remove';
 
@@ -14,9 +14,9 @@ export { default as store } from './containers/components/c7n/tools/store';
 
 export { default as stores } from './containers/stores';
 
-export { default as nomatch } from './containers/components/c7n/tools/error-pages/404';
+export { default as nomatch } from '@/components/c7n-error-pages/404';
 
-export { default as noaccess } from './containers/components/c7n/tools/error-pages/403';
+export { default as noaccess } from '@/components/c7n-error-pages/403';
 
 export * from '@/hoc';
 
@@ -28,7 +28,7 @@ export { default as PageWrap } from '@/components/tab-page/PageWrap';
 
 export { default as TabPage } from '@/components/tab-page/TabPage';
 
-export { default as StatusTag } from './containers/components/c7n/tools/statusTag/StatusTag';
+export { default as StatusTag } from '@/components/statusTag/StatusTag';
 
 export { default as Breadcrumb } from '@/components/tab-page/Breadcrumb';
 
@@ -44,7 +44,7 @@ export { default as useTheme } from './hooks/useTheme';
 
 export { default as HeaderButtons } from './containers/components/c7n/tools/header-btns';
 
-export { default as ButtonGroup } from './containers/components/c7n/tools/btn-group';
+export { default as ButtonGroup } from './components/btn-group';
 
 export { default as OverviewWrap } from './containers/components/c7n/routes/projectOverview/components/OverviewWrap';
 export { default as SprintEmptyPage } from './containers/components/c7n/routes/projectOverview/components/EmptyPage';

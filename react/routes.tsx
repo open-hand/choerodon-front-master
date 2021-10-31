@@ -2,7 +2,7 @@
 import React, { Suspense } from 'react';
 import { Route } from 'react-router-dom';
 import CacheRoute, { CacheSwitch } from 'react-router-cache-route';
-import nomatch from './containers/components/c7n/tools/error-pages/404';
+import nomatch from '@/components/c7n-error-pages/404';
 import Skeleton from '@/components/skeleton';
 
 // @ts-expect-error
