@@ -7,8 +7,7 @@ import { get, noop } from 'lodash';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
-// import UserConfirmationTwo from '@/containers/components/c7n/components/UserConfirm';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+import { Loading } from '@choerodon/components';
 import useUpgrade from '@/hooks/useUpgrade';
 import EmptyPage from '../../list/components/empty-page';
 import StarTargetPro from '../StarTargetPro';
@@ -242,7 +241,7 @@ const WorkBenchDashboard = (props) => {
     if (dashboardDs.status === 'loading' || addCardDs.status === 'loading') {
       return (
         <div style={{ marginTop: '10%' }}>
-          <LoadingBar display />
+          <Loading display />
         </div>
       );
     }

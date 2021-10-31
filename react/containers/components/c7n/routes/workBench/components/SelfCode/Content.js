@@ -7,7 +7,7 @@ import { Tooltip } from 'choerodon-ui/pro';
 import ScrollContext from 'react-infinite-scroll-component';
 import { Spin } from 'choerodon-ui';
 import { debounce, get } from 'lodash';
-import LoadingBar from '../../../../tools/loading-bar';
+import Loading from '../../../../tools/loading-bar';
 
 import { useSelfCodeStore } from './stores';
 
@@ -73,7 +73,7 @@ const SelfCode = () => {
   }
 
   const getContent = () => ((!selfCodeDs || (selfCodeDs.status === 'loading' && !selfCodeDs.length)) ? (
-    <LoadingBar display />
+    <Loading display />
   ) : (
     <div className={`${prefixCls}-content`}>
       {!selfCodeDs.length ? (

@@ -13,7 +13,7 @@ import { getRandomBackground } from '@/containers/components/c7n/util';
 import handleClickProject from '@/containers/components/util/gotoProject';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+import { Loading } from '@choerodon/components';
 import useTheme from '@/hooks/useTheme';
 import { getListIsCurrentOrg } from '../../../../ui/header/components/ProjectSelector';
 import { useStarTargetPro } from './stores';

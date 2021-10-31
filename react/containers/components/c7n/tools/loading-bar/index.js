@@ -4,11 +4,11 @@ import { Progress } from 'choerodon-ui';
 import classNames from 'classnames';
 import './index.less';
 
-const LoadingBarRequiredProps = {
+const LoadingRequiredProps = {
   display: PropTypes.bool,
 };
 
-function LoadingBar({ display = false }) {
+function Loading({ display = false }) {
   const spinClass = classNames({
     'spin-hidden': !display,
     'spin-container': display,
@@ -20,6 +20,6 @@ function LoadingBar({ display = false }) {
   );
 }
 
-LoadingBar.propTypes = LoadingBarRequiredProps;
+Loading.propTypes = LoadingRequiredProps;
 
-export default LoadingBar;
+export default Loading;

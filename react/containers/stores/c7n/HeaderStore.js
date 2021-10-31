@@ -137,8 +137,6 @@ class HeaderStore {
     axios({
       url: 'iam/hzero/v1/member-roles/self-roles',
       method: 'get',
-      routeChangeCancel: false,
-      enabledCancelMark: false,
     }).then((res) => {
       this.setRoles(res);
     });
@@ -256,8 +254,6 @@ class HeaderStore {
   axiosGetOrgAndPro(userId) {
     return axios({
       method: 'get',
-      routeChangeCancel: false,
-      enabledCancelMark: false,
       url: '/iam/choerodon/v1/users/self-tenants',
     }).then((data) => {
       data.forEach((value) => {
@@ -320,8 +316,6 @@ class HeaderStore {
     return axios({
       url: '/iam/choerodon/v1/menus/site_menu_flag',
       method: 'get',
-      routeChangeCancel: false,
-      enabledCancelMark: false,
     }).then(action((data) => {
       this.setShowSiteMenu(data);
     })).catch(() => {
@@ -333,8 +327,6 @@ class HeaderStore {
     return axios({
       url: 'hmsg/v1/0/messages/user/count',
       method: 'get',
-      routeChangeCancel: false,
-      enabledCancelMark: false,
     }).then(action((data) => {
       this.setUnreadMessageCount(data ? data.unreadMessageCount : 0);
     })).catch(() => {

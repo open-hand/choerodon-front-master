@@ -12,6 +12,7 @@ import './utils/iframeStorage';
 const MASTERS = asyncRouter(
   () => import('./master'),
   {
+    // 收集子服务的路由
     AutoRouter: () => import('./routes'),
   },
 );
@@ -40,5 +41,7 @@ const App = () => (
 
 autoRefresh();
 
-// 入口
-render(<App />, document.getElementById('app'));
+const rootNode = document.getElementById('app');
+
+// 入口,react 18之后可以替换为createRoot真正开启fiber的神仙调度机制
+render(<App />, rootNode);

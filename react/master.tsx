@@ -197,13 +197,9 @@ const MasterIndex = (props:{
         <IntlProviderAsync>
           <ModalProvider location={window.location}>
             <Provider {...stores}>
-              <Switch>
-                <Route path="/">
-                  <Container>
-                    {getContainer}
-                  </Container>
-                </Route>
-              </Switch>
+              <Container>
+                {getContainer}
+              </Container>
             </Provider>
           </ModalProvider>
         </IntlProviderAsync>

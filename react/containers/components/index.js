@@ -12,7 +12,7 @@ export { default as Content } from './c7n/page/Content';
 
 export { default as Header } from './c7n/page/Header';
 
-export { default as LoadingBar } from './c7n/loading-bar';
+export { default as Loading } from './c7n/loading-bar';
 
 export { default as Action } from '@/components/action';
 
@@ -26,9 +26,9 @@ export { default as store } from './c7n/store';
 
 export { default as stores } from '../stores';
 
-export { default as nomatch } from './c7n/error-pages/404';
+export { default as nomatch } from '@/components/c7n-error-pages/404';
 
-export { default as noaccess } from './c7n/error-pages/403';
+export { default as noaccess } from '@/components/c7n-error-pages/403';
 
 export * from '@/hoc';
 
@@ -44,4 +44,4 @@ export { default as Breadcrumb } from './c7n/tab-page/Breadcrumb';
 
 export { default as StatusTag } from './c7n/StatusTag';
 
-export { default as ButtonGroup } from './c7n/tools/btn-group';
+export { default as ButtonGroup } from '../../components/btn-group';

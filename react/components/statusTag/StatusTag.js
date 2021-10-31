@@ -1,4 +1,4 @@
-import React, { Component, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Icon } from 'choerodon-ui';
 import PropTypes from 'prop-types';
 import './StatusTag.less';

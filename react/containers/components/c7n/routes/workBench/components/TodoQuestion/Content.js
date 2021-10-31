@@ -8,9 +8,9 @@ import { Spin } from 'choerodon-ui';
 import { merge } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
+import { Loading } from '@choerodon/components';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import Switch from '@/containers/components/c7n/routes/workBench/components/multiple-switch';
 import { useTodoQuestionStore } from './stores';
@@ -376,7 +376,7 @@ const TodoQuestion = observer(() => {
   }
   function getContent() {
     if (!questionDs || questionDs.status === 'loading' || loading) {
-      return <LoadingBar display />;
+      return <Loading display />;
     }
     if (!questionDs.length) {
       return (
