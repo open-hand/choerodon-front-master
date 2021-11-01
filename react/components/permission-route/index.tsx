@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import {
   Route, RouteProps, useLocation,
 } from 'react-router-dom';
-import { noaccess as NoAccess } from '@/index';
+import { NoAccess } from '@/index';
 import { Permission } from '@/components/permission';
 import useQueryString from '@/hooks/useQueryString';
 import Skeleton from '@/components/skeleton';
