@@ -2,7 +2,7 @@ import { ButtonProps } from 'choerodon-ui/lib/button';
 import { TooltipPlacement } from 'choerodon-ui/lib/tooltip';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
 import { ReactNode } from 'react';
-import { ToolTipsConfigType } from '../../containers/components/c7n/tools/header-btns/interface';
+import { ToolTipsConfigType } from '../header-btns/interface';
 
 export interface CustomBtnGroupProps {
   color?: ButtonColor

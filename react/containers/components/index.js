@@ -12,8 +12,6 @@ export { default as Content } from './c7n/page/Content';
 
 export { default as Header } from './c7n/page/Header';
 
-export { default as Loading } from './c7n/loading-bar';
-
 export { default as Action } from '@/components/action';
 
 export * from '@/components/permission';

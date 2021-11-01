@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
+import { Loading } from '@choerodon/components';
 import TimePopover from '../time-popover';
-import Loading from '../../../../tools/loading-bar';
 
 import './index.less';
 import { useRecentAppStore } from './stores';

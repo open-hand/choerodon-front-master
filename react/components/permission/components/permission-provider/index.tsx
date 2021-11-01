@@ -29,6 +29,8 @@ class PermissionProvider extends Component {
   getChildContext() {
     return {
       permission: this,
+    } as {
+      permission: any
     };
   }
 

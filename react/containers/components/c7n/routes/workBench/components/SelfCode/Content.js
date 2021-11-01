@@ -1,17 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import './index.less';
-import UserInfo from '@/containers/components/c7n/components/user-info';
-import TimePopover from '@/containers/components/c7n/components/time-popover';
 import { Tooltip } from 'choerodon-ui/pro';
 import ScrollContext from 'react-infinite-scroll-component';
-import { Spin } from 'choerodon-ui';
-import { debounce, get } from 'lodash';
-import Loading from '../../../../tools/loading-bar';
+import { Loading, TimePopover, UserInfo } from '@choerodon/components';
 
 import { useSelfCodeStore } from './stores';
-
-let resizeObserverCode;
 
 const SelfCode = () => {
   const {

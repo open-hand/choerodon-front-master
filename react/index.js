@@ -4,8 +4,6 @@ export { default as CommonMenu } from './containers/components/c7n/ui/menu';
 
 export { default as C7NIcon } from './containers/components/c7n/ui/c7n-icon';
 
-export { default as Loading } from './containers/components/c7n/tools/loading-bar';
-
 export { default as Remove } from './containers/components/c7n/tools/remove';
 
 export { default as axios } from '@/components/axios';
@@ -32,7 +30,7 @@ export { default as StatusTag } from '@/components/statusTag/StatusTag';
 
 export { default as Breadcrumb } from '@/components/tab-page/Breadcrumb';
 
-export { default as ThemeWrap } from './containers/components/c7n/tools/themeWrap';
+export { default as ThemeWrap } from '@/components/themeWrap';
 
 export { default as SagaDetails } from './containers/components/c7n/tools/saga-details';
 
@@ -41,8 +39,6 @@ export { default as Choerodon } from './utils/choerodon';
 export { default as PermissionRoute } from './components/permission-route';
 
 export { default as useTheme } from './hooks/useTheme';
-
-export { default as HeaderButtons } from './containers/components/c7n/tools/header-btns';
 
 export { default as ButtonGroup } from './components/btn-group';
 
@@ -70,3 +66,6 @@ export * from '@/components/permission';
 
 // Action
 export { default as Action } from '@/components/action';
+
+// 头部按钮组件
+export { default as HeaderButtons } from '@/components/header-btns';
