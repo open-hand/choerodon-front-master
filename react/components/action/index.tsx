@@ -62,7 +62,7 @@ const Action:React.FC<ActionProps> = (props) => {
   );
 
   const renderMenuItem = ({
-    service, text, action, icon, disabled,
+    service, text, action, icon, disabled, tooltipsConfig,
   }:ActionItemProps, i:number) => {
     const item = (
       <Item

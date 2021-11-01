@@ -1,4 +1,4 @@
-import { TooltipProps, TooltipPlacement } from 'choerodon-ui/lib/tooltip';
+import { TooltipPlacement } from 'choerodon-ui/lib/tooltip';
 
 export interface ToolTipsConfigType {
   title?: string,
