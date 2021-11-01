@@ -2,7 +2,7 @@ export { default as MasterHeader } from './containers/components/c7n/ui/header';
 
 export { default as CommonMenu } from './containers/components/c7n/ui/menu';
 
-export { default as C7NIcon } from './containers/components/c7n/ui/c7n-icon';
+export { default as C7NIcon } from '@/components/c7n-icon';
 
 export { default as axios } from '@/components/axios';
 
@@ -28,7 +28,7 @@ export { default as Breadcrumb } from '@/components/tab-page/Breadcrumb';
 
 export { default as ThemeWrap } from '@/components/themeWrap';
 
-export { default as SagaDetails } from './containers/components/c7n/tools/saga-details';
+export { default as SagaDetails } from '@/components/saga-details';
 
 export { default as Choerodon } from './utils/choerodon';
 

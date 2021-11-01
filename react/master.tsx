@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { withRouter, Route, Switch } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import {
   useEventListener,
   useLocalStorageState,
@@ -11,7 +11,7 @@ import { Provider } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { ModalProvider } from 'choerodon-ui/pro';
 import { Container } from '@hzero-front-ui/core';
-import { Loading } from '@choerodon/components';
+import { Loading, useQueryString } from '@choerodon/components';
 import {
   authorizeC7n, getAccessToken, setAccessToken,
 } from '@/utils';
@@ -71,6 +71,9 @@ const MasterIndex = (props:{
   const [, setReloginValue] = useLocalStorageState('relogin', false);
 
   const [loading, setLoading] = useState<boolean>(true);
+
+  // 获取url的params
+  const params = useQueryString();
 
   // 监听storage，作用在于如果有其他重新登录了，就触发刷新事件
   useEventListener('storage', handleStorageChange);
@@ -132,10 +135,11 @@ const MasterIndex = (props:{
    */
   async function auth() {
     setLoading(true);
-    const params = new URLSearchParams(search);
-    const accessToken = params.get('access_token');
-    const tokenType = params.get('token_type');
-    const expiresIn = params.get('expires_in');
+    const {
+      access_token: accessToken,
+      token_type: tokenType,
+      expires_in: expiresIn,
+    } = params;
     if (accessToken) {
       setAccessToken(accessToken, tokenType, expiresIn);
       // 通知其他tab页刷新，在localstorage里头设置
@@ -158,6 +162,7 @@ const MasterIndex = (props:{
   useMount(() => {
     // 如果不存在历史地址则设置当前地址为跳转地址
     !historyPath && sessionStorage.setItem('historyPath', pathname + search);
+
     // 不是就校验去登录
     !isInOutward && auth();
   });

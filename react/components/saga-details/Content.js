@@ -2,13 +2,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, {
-  createRef, useEffect, useState, useCallback,
+  createRef, useEffect, useState,
 } from 'react';
 import { Tabs } from 'choerodon-ui';
-import { Content, Choerodon } from '@/index';
 import classnames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import { observer } from 'mobx-react-lite';
+import { Content, Choerodon } from '@/index';
 import TaskRunDetail from './components/taskRunDetail';
 import TaskDetail from './components/taskDetail';
 import CodeShow from './components/codeShow';
