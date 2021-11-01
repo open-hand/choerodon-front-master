@@ -135,7 +135,7 @@ const Breadcrumb = ({
       <section
         className="page-breadcrumb"
         style={{
-          marginBottom: isTab && !isTheme4 ? '33px' : 'auto',
+          marginBottom: isTab ? '33px' : '',
         }}
       >
         <Bread separator={icon}>
@@ -152,7 +152,7 @@ const Breadcrumb = ({
         'theme4-page-breadcrumb': isTheme4,
       })}
       style={{
-        marginBottom: isTab && !isTheme4 ? '33px' : 'auto',
+        marginBottom: isTab ? '33px' : '',
       }}
     >
       <Bread separator={icon}>
