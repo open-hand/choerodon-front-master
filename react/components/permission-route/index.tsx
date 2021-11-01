@@ -5,7 +5,7 @@ import {
 import { noaccess as NoAccess } from '@/index';
 import { Permission } from '@/components/permission';
 import useQueryString from '@/hooks/useQueryString';
-import Skeleton from '@/containers/components/c7n/master/skeleton';
+import Skeleton from '@/components/skeleton';
 import { axiosRoutesCancel } from '@/components/axios/instances';
 
 interface PermissionRouteProps extends RouteProps {

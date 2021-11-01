@@ -42,7 +42,7 @@ const UILocaleProviderAsync = asyncRouter(
 );
 
 const IntlProviderAsync = asyncLocaleProvider(language,
-  () => import(`./containers/locale/${language}`));
+  () => import(`./locale/${language}`));
 
 /** @type {boolean} 是否安装了敏捷模块 */
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');

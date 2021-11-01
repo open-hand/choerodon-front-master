@@ -4,10 +4,10 @@ import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { get, noop } from 'lodash';
 
+import { Loading } from '@choerodon/components';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
-import { Loading } from '@choerodon/components';
 import useUpgrade from '@/hooks/useUpgrade';
 import EmptyPage from '../../list/components/empty-page';
 import StarTargetPro from '../StarTargetPro';
@@ -31,7 +31,6 @@ import BeginnerGuide from '../BeginnerGuide';
 import Notice from '../Notice';
 import { useWorkBenchStore } from '../../stores';
 import './index.less';
-import HeaderButtons from '@/containers/components/c7n/tools/header-btns';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -83,7 +82,6 @@ const WorkBenchDashboard = (props) => {
     addCardDs,
   } = useWorkBenchStore();
 
-  const isMounted = useRef(false);
   const [containerWidth, setContainerWidth] = useState(1280);
 
   const { isEdit = false, onOpenCardModal = noop } = props;
@@ -119,27 +117,6 @@ const WorkBenchDashboard = (props) => {
   useEffect(() => function () {
     observerLayout && observerLayout.disconnect();
   });
-
-  // function openEditAlertModal(props) {
-  //   Modal.open({
-  //     title: '提示',
-  //     children: '工作台改动未保存，是否进行保存?',
-  //     cancelProps: {
-  //       color: 'dark',
-  //     },
-  //     onOk() {
-  //       const tempData = dashboardDs.toData();
-  //       workBenchUseStore.setInitData(tempData);
-  //       workBenchUseStore.saveConfig(tempData);
-  //       workBenchUseStore.setEdit(false);
-  //     },
-  //     onCancel() {
-  //       history.push({ ...props });
-  //       return true;
-  //     },
-  //   });
-  //   return false;
-  // }
 
   function onLayoutChange(layouts) {
     layouts.map((card) => {
