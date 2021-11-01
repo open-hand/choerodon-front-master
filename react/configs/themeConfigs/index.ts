@@ -1,23 +1,28 @@
-import { theme4 } from '@hzero-front-ui/themes';
-import C7nTemplate from '@hzero-front-ui/c7n-ui';
+import { useLayoutEffect, useCallback } from 'react';
+import { initTheme } from '@hzero-front-ui/core';
+import { useUpdateEffect } from 'ahooks';
+import { theme4Configs } from './config';
 
-const theme4Configs = {
-  defaultTheme: 'theme4',
-  scope: [],
-  themes: [
-    {
-      name: 'theme4',
-      data: theme4,
-    },
-  ],
-  templates: [
-    {
-      id: 'c7n',
-      component: C7nTemplate,
-    },
-  ],
-};
+/**
+ * hook
+ * 初始化新UI hook
+ */
+function useC7NThemeInit() {
+  const handleInitTheme = useCallback(() => {
+    initTheme(theme4Configs);
+  }, []);
 
-export {
-  theme4Configs,
-};
+  function syncBodyThemeAttribute() {
+    document.body.setAttribute('data-theme', localStorage.getItem('theme') ?? '');
+  }
+
+  useUpdateEffect(() => {
+    syncBodyThemeAttribute();
+  });
+
+  useLayoutEffect(() => {
+    handleInitTheme();
+  }, []);
+}
+
+export { useC7NThemeInit };

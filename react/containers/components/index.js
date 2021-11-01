@@ -16,8 +16,6 @@ export { default as Action } from '@/components/action';
 
 export * from '@/components/permission';
 
-export { default as Remove } from './c7n/remove';
-
 export { default as axios } from '@/components/axios';
 
 export { default as store } from './c7n/store';

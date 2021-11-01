@@ -1,13 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router';
-import { initUiConfigure } from '@/common/initUiConfig';
-import useTheme from '@/hooks/useTheme';
+import { useInitUiConfig } from '@/configs';
 import MasterDefault from './MasterDefault';
 
-const InitUiConfigMaster = ({ AutoRouter, location }) => {
-  useEffect(() => {
-    initUiConfigure();
-  }, []);
+const InitUiConfigMaster = ({ AutoRouter }) => {
+  useInitUiConfig();
 
   return (
     <MasterDefault

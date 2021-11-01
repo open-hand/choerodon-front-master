@@ -13,14 +13,11 @@ import { getRandomBackground } from '@/containers/components/c7n/util';
 import handleClickProject from '@/containers/components/util/gotoProject';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
-import { Loading } from '@choerodon/components';
-import useTheme from '@/hooks/useTheme';
 import { getListIsCurrentOrg } from '../../../../ui/header/components/ProjectSelector';
 import { useStarTargetPro } from './stores';
 import { useWorkBenchStore } from '../../stores';
-import emptyImg from '../../../../../../images/owner.png';
+import emptyImg from '@/assets/images/owner.png';
 import mappings from '../../stores/mappings';
-import ProjectCategory from '../../../projectsPro/components/project-category';
 
 import './index.less';
 

@@ -24,7 +24,8 @@ import Master from './containers/components/c7n/master';
 import './containers/components/style';
 import { enterprisesApi } from './apis';
 import { ENTERPRISE_ADDRESS } from './constants';
-import { useC7NNotification, useC7NThemeInit, useSafariAdapter } from './hooks';
+import { useC7NThemeInit } from './configs';
+import { useC7NNotification, useSafariAdapter } from './hooks';
 
 const queryClient = new QueryClient({
   defaultOptions: {
