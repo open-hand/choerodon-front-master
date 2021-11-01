@@ -49,7 +49,7 @@ npm publish
 
 - Header
 
-- LoadingBar
+- Loading
 
 - Action
 

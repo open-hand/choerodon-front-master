@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import queryString from 'query-string';
 import _ from 'lodash';
 import { Icon, Menu, Tooltip } from 'choerodon-ui';
 import { Link, withRouter } from 'react-router-dom';
@@ -7,8 +6,8 @@ import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import MenuSideIcon from '@/containers/components/c7n/ui/menu/MenuSideIcon';
 import { defaultThemeColor } from '../../../../../constants';
-import folding from '../../../../images/folding.svg';
-import unfold from '../../../../images/unfold.svg';
+import folding from '@/assets/images/folding.svg';
+import unfold from '@/assets/images/unfold.svg';
 import bg from '../header/style/icons/bg.svg';
 import './RequireSvgResources';
 import findFirstLeafMenu from '../../util/findFirstLeafMenu';
@@ -47,7 +46,7 @@ const iconMap = {
   'choerodon.code.person.setting': 'shezhi',
 };
 
-const defaultBlackList = ['/projects', '/applications', '/iam/app-market', '/knowledge/organization', '/workbench', '/market/app-market', '/iam/enterprise'];
+const defaultBlackList = ['/projects', '/applications', '/iam/app-market', '/knowledge/organization', '/workbench', '/market/app-market', '/iam/enterprise', '/agile/work-calendar'];
 
 export { defaultBlackList };
 

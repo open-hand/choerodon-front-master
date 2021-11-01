@@ -12,7 +12,7 @@ import {
 } from 'lodash';
 import { get as getInject } from '@choerodon/inject';
 import { fileServer, prompt } from '@/utils';
-import axios from '@/containers/components/c7n/tools/axios';
+import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
@@ -197,7 +197,7 @@ const CreateProject = observer(() => {
       return '';
     }
     if (!createProjectStore.getIsSenior && standardDisable.includes(code)) {
-      return '仅SaaS高级版可选此项目类型';
+      return '仅SaaS企业版可选此项目类型';
     }
     if (code === categoryCodes.require) {
       return '请先选择【敏捷管理】或【敏捷项目群】项目类型';

@@ -7,7 +7,7 @@ import {
   omit,
 } from 'lodash';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
-import LoadingBar from '@/containers/components/c7n/tools/loading-bar';
+import { Loading } from '@choerodon/components';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
@@ -45,7 +45,7 @@ const TodoQuestion = observer(() => {
 
   function getContent() {
     if ((!questionDs || questionDs.status === 'loading') && !btnLoading) {
-      return <LoadingBar display />;
+      return <Loading display />;
     }
     if (!questionDs.length) {
       return (

@@ -5,14 +5,14 @@ import {
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import some from 'lodash/some';
-import Permission from '@/containers/components/c7n/tools/permission';
+import { Permission } from '@/components/permission';
 import handleClickProject from '@/containers/components/util/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import EmptyPage from '../empty-page';
 import CreateProject from '../create-project';
 import ProjectCategory from '../project-category';
-import Action from '../../../../tools/action';
+import Action from '@/components/action';
 
 import './index.less';
 

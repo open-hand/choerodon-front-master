@@ -1,11 +1,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */
 import React from 'react';
-import {
-  Button, Tooltip,
-} from 'choerodon-ui/pro';
 import { Popover } from 'choerodon-ui';
 
-import popoverHead from '@/containers/images/popoverHead.png';
+import popoverHead from '@/assets/images/popoverHead.png';
 import useStore, { whithStoreProvider } from './store';
 import { GuideVO } from './model';
 import Layout from '../Layout';

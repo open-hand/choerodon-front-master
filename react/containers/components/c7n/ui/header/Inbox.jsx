@@ -14,7 +14,7 @@ import {
 } from 'choerodon-ui/pro';
 import JSONBig from 'json-bigint';
 import { TimePopover } from '@choerodon/components';
-import WSHandler from '../../tools/ws/WSHandler';
+import WSHandler from '@/components/ws/WSHandler';
 import defaultAvatar from './style/icons/favicon.png';
 
 const { TabPane } = Tabs;
@@ -51,7 +51,7 @@ class RenderPopoverContentClass extends Component {
     const siderClasses = classNames({
       [`${prefixCls}-sider`]: true,
       [`${prefixCls}-sider-visible`]: inboxVisible,
-      [`${prefixCls}-sider-move-down`]: !announcementClosed,
+      // [`${prefixCls}-sider-move-down`]: !announcementClosed,
     });
     const operations = (
       <>
@@ -126,7 +126,7 @@ class RenderPopoverContentDetailClass extends Component {
       [`${prefixCls}-sider-no-animate`]: true,
       [`${prefixCls}-sider`]: true,
       [`${prefixCls}-sider-visible`]: inboxDetailVisible,
-      [`${prefixCls}-sider-move-down`]: !announcementClosed,
+      // [`${prefixCls}-sider-move-down`]: !announcementClosed,
     });
     if (!inboxDetail) return null;
     const realSendTime = 'sendDate' in HeaderStore.inboxDetail ? HeaderStore.inboxDetail.sendDate : HeaderStore.inboxDetail.sendTime;

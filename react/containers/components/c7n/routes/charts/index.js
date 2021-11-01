@@ -2,13 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import sortBy from 'lodash/sortBy';
 import { inject } from 'mobx-react';
 import { mount } from '@choerodon/inject';
-import { withRouter, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Header from '../../tools/page/Header';
-import Page from '../../tools/page';
-import Content from '../../tools/page/Content';
-import Breadcrumb from '../../tools/tab-page/Breadcrumb';
-import axios from '../../tools/axios';
+import { Content, Header, Page } from '@/components/c7n-page';
+import Breadcrumb from '@/components/tab-page/Breadcrumb';
+import axios from '@/components/axios';
 
 import './style/index.less';
 

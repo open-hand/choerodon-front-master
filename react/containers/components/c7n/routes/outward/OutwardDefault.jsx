@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import asyncRouter from '../../util/asyncRouter';
 import './style';
+import { Loading } from '@choerodon/components';
 import AppState from '../../../../stores/c7n/AppState';
 
-const Unauthorized = asyncRouter(() => import('../unauthorized'));
+const Unauthorized = React.lazy(() => import('../unauthorized'));
 @withRouter
 @inject('AppState')
 @observer
@@ -54,10 +54,12 @@ class Outward extends Component {
     if (this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">
-          <Switch>
-            <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
-            <Route path={match.url} component={AutoRouter} />
-          </Switch>
+          <Suspense fallback={<Loading type="c7n" />}>
+            <Switch>
+              <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
+              <Route path={match.url} component={AutoRouter} />
+            </Switch>
+          </Suspense>
         </div>
       );
     }

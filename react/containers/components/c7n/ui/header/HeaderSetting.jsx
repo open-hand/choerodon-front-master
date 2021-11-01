@@ -7,10 +7,9 @@ import { get } from '@choerodon/inject';
 import { Button as ProButton } from 'choerodon-ui/pro';
 import { Button, Icon } from 'choerodon-ui';
 import _ from 'lodash';
-import { Permission } from '@/index';
 import classNames from 'classnames';
 import forEach from 'lodash/forEach';
-import { axios } from "@/index";
+import { Permission } from '@/components/permission';
 import getSearchString from '../../util/gotoSome';
 
 import './headerSettingTheme4.less';
@@ -31,11 +30,11 @@ const Setting = ({
     if (isSaas && !Object.keys(isSaas).includes(AppState.currentMenuType.organizationId)) {
       get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState, isSaas);
     }
-  }, [AppState.currentMenuType.organizationId])
+  }, [AppState.currentMenuType.organizationId]);
 
   useEffect(() => {
     get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState, isSaas);
-  }, [])
+  }, []);
 
   const theme = 'theme4';
   const { currentServices } = AppState;
@@ -43,6 +42,7 @@ const Setting = ({
   const LI_MAPPING = useMemo(() => {
     const mapping = [
       { title: '工作台', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/workbench' },
+      { title: '工作日历', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/agile/work-calendar' },
       // {
       //   title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects', style: { marginLeft: 3 },
       // },
@@ -118,7 +118,7 @@ const Setting = ({
               type="primary"
               funcType="flat"
             >
-              {/*<Icon type={list.icon} style={iconStyle} />*/}
+              {/* <Icon type={list.icon} style={iconStyle} /> */}
               <span
                 {...true && list.style ? {
                   style: list.style,

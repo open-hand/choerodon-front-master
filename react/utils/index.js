@@ -15,7 +15,7 @@ export {
 export { getAccessToken, removeAccessToken, setAccessToken } from './accessToken';
 export { getCookie, removeCookie, setCookie } from './cookie';
 export {
-  ACCESS_TOKEN, AUTH_URL, FILE_SERVER, LOCAL, WEBSOCKET_SERVER, STRING_DEVIDER, API_HOST, UI_CONFIGURE,
+  ACCESS_TOKEN, AUTH_URL, FILE_SERVER, LOCAL, WEBSOCKET_SERVER, STRING_DEVIDER, API_HOST,
 } from './constants';
 export { getMessage, intl } from './intl';
 // 生成指定长度的随机字符串

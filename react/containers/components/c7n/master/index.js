@@ -1,8 +1,8 @@
 import React from 'react';
 import { WEBSOCKET_SERVER } from '@/utils';
 import Master from './Master';
-import PermissionProvider from '../tools/permission/PermissionProvider';
-import WSProvider from '../tools/ws/WSProvider';
+import { PermissionProvider } from '@/components/permission';
+import WSProvider from '@/components/ws/WSProvider';
 import './index.less';
 
 const PermissionAndWSProviderIndex = ({ AutoRouter }) => (

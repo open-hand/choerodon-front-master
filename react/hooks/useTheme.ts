@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { getLocalConfig, setLocalConfig, ThemeContext } from '@hzero-front-ui/core';
+import { useContext, useEffect } from 'react';
+import { setLocalConfig, ThemeContext } from '@hzero-front-ui/core';
 
 function syncBodyThemeAttribute(theme?: string) {
   if (!(_.isUndefined(theme) || _.isNull(theme))) {
@@ -16,14 +16,6 @@ export default function useTheme() {
     if (schema) {
       setTheme(schema);
     }
-    // eslint-disable-next-line no-shadow
-    // const { schema: localSchema, config: schemaConfig } = getLocalConfig();
-    // if (localSchema) {
-    //   changeTheme(localSchema, schemaConfig);
-    // }
-    // if (schema) {
-    //   setLocalConfig(schema, config); // 保存到本地
-    // }
   }, []);
 
   const setTheme = (theme: any) => {
@@ -33,21 +25,4 @@ export default function useTheme() {
   };
 
   return [schema, setTheme];
-
-  // const { setTheme: changeTheme, schema } = useContext(ThemeContext);
-  // const { readOriginLocalTheme, setLocalTheme } = useThemeHelper();
-  // const setTheme = useCallback((theme: 'default' | 'theme4') => {
-  //   localStorage.setItem('theme', theme);
-  //   const conf = {
-  //     current: {
-  //       ...defaultConfig,
-  //       schema: theme,
-  //     },
-  //     prev: {},
-  //   };
-  //   // @ts-ignore
-  //   setLocalTheme(conf);
-  //   changeTheme(conf);
-  // }, [changeTheme]);
-  // return [schema, setTheme];
 }

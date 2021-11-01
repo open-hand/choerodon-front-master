@@ -1,6 +1,3 @@
-import { message } from 'choerodon-ui/pro';
-import url from 'url';
-
 function historyPushMenu(history, path, domain, method = 'push') {
   if (!domain || LOCAL) {
     history[method](path);

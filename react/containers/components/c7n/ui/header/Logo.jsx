@@ -1,10 +1,10 @@
-import React, { Component, useContext } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
 import useTheme from '@/hooks/useTheme';
-import favicon from '../../../../images/favicon.svg';
+import favicon from '@/assets/images/favicon.svg';
 
 const PREFIX_CLS = 'c7n';
 const prefixCls = `${PREFIX_CLS}-boot-header-logo`;

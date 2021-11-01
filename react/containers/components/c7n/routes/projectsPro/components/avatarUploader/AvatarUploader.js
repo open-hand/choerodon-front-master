@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import querystring from 'query-string';
 import { prompt, handleResponseError, getCookie } from '@/utils';
 
-import axios from '../../../../tools/axios';
+import axios from '@/components/axios';
 import './AvatarUploader.less';
 
 const { Dragger } = Upload;

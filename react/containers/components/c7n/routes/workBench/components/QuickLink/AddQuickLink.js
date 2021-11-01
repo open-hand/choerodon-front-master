@@ -5,7 +5,7 @@ import {
   DataSet, Form, Select, SelectBox, TextField, Tooltip,
 } from 'choerodon-ui/pro';
 import { Icon } from 'choerodon-ui';
-import axios from '@/containers/components/c7n/tools/axios';
+import axios from '@/components/axios';
 import addLinkDataSet from './stores/addLinkDataSet';
 
 const { Option } = Select;

@@ -6,7 +6,7 @@ import pick from 'lodash/pick';
 import queryString from 'query-string';
 import { handleResponseError } from '@/utils';
 import store from '../../components/c7n/tools/store';
-import axios from '../../components/c7n/tools/axios';
+import axios from '@/components/axios';
 
 const ORGANIZATION_TYPE = 'organization';
 const PROJECT_TYPE = 'project';
@@ -26,15 +26,16 @@ function saveRecent(collection = [], value, number) {
   if (index !== -1) {
     collection.splice(index, 1);
     return [value].concat(collection.slice());
-  } else {
-    collection.unshift(value);
-    return collection.slice(0, number);
   }
+  collection.unshift(value);
+  return collection.slice(0, number);
 }
 
 @store('HeaderStore')
 class HeaderStore {
   @observable roles = [];
+
+  @observable announcementLists = new Map([]);
 
   @observable orgData = null;
 
@@ -66,8 +67,6 @@ class HeaderStore {
 
   @observable announcement = {};
 
-  @observable announcementClosed = true;
-
   @observable inboxLoading = true;
 
   @observable isTodo = false;
@@ -80,6 +79,27 @@ class HeaderStore {
 
   @action setInboxActiveKey(flag) {
     this.inboxActiveKey = flag;
+  }
+
+  // 插入公告
+  @action innsertAnnouncement(identity, data) {
+    this.announcementLists?.set(identity, data);
+  }
+
+  // 删除公告
+  @action deleteAnnouncement(identity) {
+    this.announcementLists?.delete(identity);
+  }
+
+  // 获取公告列表,Map
+  @computed
+  get getAnnouncementLists() {
+    return this.announcementLists;
+  }
+
+  // 是否公告列表中有某个key， 默认是公告的key
+  existAnnouncement(key) {
+    return this.announcementLists.has(key || 'platform_announcement');
   }
 
   @action setIsTodo(_isTodo) {
@@ -104,12 +124,6 @@ class HeaderStore {
     this.inboxLoading = flag;
   }
 
-  @action
-  closeAnnouncement() {
-    this.announcementClosed = true;
-    window.localStorage.setItem('lastClosedId', `${this.announcement.id}`);
-  }
-
   @computed
   get getRoles() {
     return this.roles;
@@ -123,8 +137,6 @@ class HeaderStore {
     axios({
       url: 'iam/hzero/v1/member-roles/self-roles',
       method: 'get',
-      routeChangeCancel: false,
-      enabledCancelMark: false,
     }).then((res) => {
       this.setRoles(res);
     });
@@ -147,7 +159,7 @@ class HeaderStore {
 
   @computed
   get getUnreadMsg() {
-    return sortBy(this.inboxData.filter(item => !this.isTodo || item.backlogFlag), ['read']);
+    return sortBy(this.inboxData.filter((item) => !this.isTodo || item.backlogFlag), ['read']);
   }
 
   @computed
@@ -231,19 +243,17 @@ class HeaderStore {
   }
 
   axiosGetPro(key, value) {
-    return axios.post(`/iam/choerodon/v1/projects/query_by_option`, {
-      [key]: value
+    return axios.post('/iam/choerodon/v1/projects/query_by_option', {
+      [key]: value,
     }).then((res) => {
       this.addProject(res[0]);
       return res[0];
-    })
+    });
   }
 
   axiosGetOrgAndPro(userId) {
     return axios({
       method: 'get',
-      routeChangeCancel: false,
-      enabledCancelMark: false,
       url: '/iam/choerodon/v1/users/self-tenants',
     }).then((data) => {
       data.forEach((value) => {
@@ -284,7 +294,9 @@ class HeaderStore {
       .then(action(({ list }) => {
         if (list && list.length) {
           list.forEach((item) => {
-            const { messageId, subject, creationDate, readFlag } = item;
+            const {
+              messageId, subject, creationDate, readFlag,
+            } = item;
             item.read = readFlag === 1;
             item.id = messageId;
             item.title = subject;
@@ -300,26 +312,10 @@ class HeaderStore {
       });
   }
 
-  axiosGetNewSticky() {
-    return axios({
-      method: 'get',
-      url: '/hmsg/choerodon/v1/system_notice/new_sticky',
-      routeChangeCancel: false,
-      enabledCancelMark: false,
-    }).then(action((data) => {
-      this.announcement = data;
-      if (data && data.id && (!localStorage.lastClosedId || localStorage.lastClosedId !== `${data.id}`)) {
-        this.announcementClosed = false;
-      }
-    })).catch(handleResponseError);
-  }
-
   axiosShowSiteMenu() {
     return axios({
       url: '/iam/choerodon/v1/menus/site_menu_flag',
       method: 'get',
-      routeChangeCancel: false,
-      enabledCancelMark: false,
     }).then(action((data) => {
       this.setShowSiteMenu(data);
     })).catch(() => {
@@ -331,8 +327,6 @@ class HeaderStore {
     return axios({
       url: 'hmsg/v1/0/messages/user/count',
       method: 'get',
-      routeChangeCancel: false,
-      enabledCancelMark: false,
     }).then(action((data) => {
       this.setUnreadMessageCount(data ? data.unreadMessageCount : 0);
     })).catch(() => {
@@ -396,24 +390,8 @@ class HeaderStore {
       recents = this.recentItem;
     } else if (localStorage.recentItem) {
       recents = JSON.parse(localStorage.recentItem)
-        .map(recent => omit(recent, 'children'));
+        .map((recent) => omit(recent, 'children'));
     }
-    // return recents.filter(
-    //   (value) => {
-    //     let idx = -1;
-    //     switch (value.type) {
-    //       case ORGANIZATION_TYPE:
-    //         // idx = findDataIndex(this.orgData, value);
-    //         // return idx !== -1 && this.orgData[idx].into;
-    //         return false;
-    //       case PROJECT_TYPE:
-    //         idx = findDataIndex(this.proData, value);
-    //         return idx !== -1;
-    //       default:
-    //         return false;
-    //     }
-    //   },
-    // );
     return recents;
   }
 
@@ -454,7 +432,6 @@ class HeaderStore {
       });
     }
   }
-
 
   @action
   clearMsg(data) {

@@ -8,14 +8,13 @@ import ResizeObserver from 'resize-observer-polyfill';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
-import useTheme from '@/hooks/useTheme';
-import { Prompt } from 'react-router-dom';
 import {
-  get, filter, map, forEach, some, without, keys,
+  get, forEach, some, without, keys,
 } from 'lodash';
 import {
-  Content, Breadcrumb, Page, Permission,
+  Content, Breadcrumb, Page,
 } from '../../../../../index';
+import { Permission } from '@/components/permission';
 import ServiceInfo from './components/ServiceInfo';
 import EnvInfo from './components/EnvInfo';
 
@@ -42,7 +41,6 @@ import ProjectDynamic from './components/project-dynamic';
 import PersonalWorkload from './components/personal-workload';
 import Workload from './components/Workload';
 import CustomChart from './components/custom-chart';
-import c7nAxios from '@/containers/components/c7n/tools/axios';
 
 let observerLayout;
 
@@ -67,7 +65,6 @@ const ProjectOverview = () => {
   } = projectOverviewStore;
 
   const [layOutWidth, setWidth] = useState(0);
-  const [theme] = useTheme();
 
   useEffect(() => {
     if (!observerLayout) {

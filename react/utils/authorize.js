@@ -52,7 +52,7 @@ export function logoutC7n() {
     logoutUrl += `?${ACCESS_TOKEN}=${getCookieToken()}`;
   }
   removeAccessToken();
-  window.localStorage.removeItem('lastClosedId');
+  localStorage.clear();
   sessionStorage.clear();
   window.location = logoutUrl;
 }
