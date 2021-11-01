@@ -2,7 +2,7 @@
 import React from 'react';
 import { Icon } from 'choerodon-ui';
 import { Tooltip } from 'choerodon-ui/pro';
-import TimePopover from '@/containers/components/c7n/routes/workBench/components/time-popover';
+import { TimePopover } from '@choerodon/components';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import { useProjectsProStore } from '../stores';
 
@@ -89,7 +89,7 @@ export default ({ data, alltrue }) => {
                     color: 'rgba(58,52,95,0.65)',
                   }}
                 >
-                  <TimePopover datetime={data.creationDate} />创建
+                  <TimePopover content={data.creationDate} />创建
                 </p>
               </div>
             </div>

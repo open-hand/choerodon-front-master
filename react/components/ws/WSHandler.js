@@ -1,8 +1,8 @@
 /* eslint-disable react/static-property-placement */
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getCookie } from '@/utils';
-import AppState from '../../../../stores/c7n/AppState';
+import AppState from '../../containers/stores/c7n/AppState';
 
 export default class WSHandler extends Component {
   static defaultProps = {

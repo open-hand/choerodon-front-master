@@ -147,16 +147,6 @@ const QuickLink = observer(() => {
     return (
       (
         <div className="c7n-quickLink-linkItem">
-          {/* <div className="c7n-quickLink-linkItem-left">
-            <p className="c7n-quickLink-linkItem-left-name">
-              <Tooltip title={realName} placement="top">
-                {realName}
-              </Tooltip>
-            </p>
-            <p className="c7n-quickLink-linkItem-left-time">
-              <TimePopover datetime={lastUpdateDate} />
-            </p>
-          </div> */}
           <div className="c7n-quickLink-linkItem-right">
             <div className="c7n-quickLink-linkItem-circle" />
             <Tooltip title={ldap ? `${realName}(${loginName})` : `${realName}(${email})`}>

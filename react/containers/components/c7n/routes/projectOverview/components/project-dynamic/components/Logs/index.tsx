@@ -1,6 +1,4 @@
 import React from 'react';
-import { Tooltip } from 'choerodon-ui';
-import TimeAgo from 'timeago-react';
 import './Logs.less';
 import UserInfo from '@/containers/components/c7n/components/user-info';
 import Log, { ILog } from './Log';
