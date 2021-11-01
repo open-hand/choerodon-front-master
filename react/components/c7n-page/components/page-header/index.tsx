@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { Size } from 'choerodon-ui/lib/_util/enum';
 import { FuncType } from 'choerodon-ui/pro/lib/button/enum';
 import { PageHeaderProps } from '../../interface';
+import './index.less';
 
 const prefixCls = 'page-head';
 
