@@ -44,4 +44,18 @@
       }
     }
   }
+  // 页面中只有一个表格的特殊样式
+  &-table,
+  & > .@{c7n-pro-prefix}-table-wrapper:first-child,
+  & > .@{c7n-prefix}-table-wrapper:first-child {
+    margin-top: -12px;
+
+    .@{c7n-pro-prefix}-table-filter-select {
+      border-top: none !important;
+    }
+
+    .@{c7n-prefix}-table-filter-bar {
+      border-top: none !important;
+    }
+  }
 }
