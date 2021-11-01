@@ -1,3 +1,4 @@
+import { TooltipPlacement } from 'choerodon-ui/lib/tooltip';
 import { Placements } from 'choerodon-ui/pro/lib/dropdown/enum';
 import { CSSProperties } from 'react';
 import { PermissionService, PermissionType } from '../permission/interface';
@@ -19,6 +20,18 @@ type ActionItemProps = {
   action?: (e:Event) => any
   icon?:string
   disabled?:boolean
+  tooltipsConfig?:ToolTipsConfigType
+}
+
+export interface ToolTipsConfigType {
+  title?: string,
+  placement?: TooltipPlacement,
+  style?: React.CSSProperties,
+  overlayStyle?: React.CSSProperties,
+  defaultVisible?: boolean,
+  visible?: boolean,
+  arrowPointAtCenter?: boolean;
+  overlayClassName?:string
 }
 
 export {

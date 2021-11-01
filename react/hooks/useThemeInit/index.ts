@@ -4,6 +4,7 @@ import { useUpdateEffect } from 'ahooks';
 import { theme4Configs } from '@/configs';
 
 /**
+ * hook
  * 初始化新UI hook
  */
 function useC7NThemeInit() {

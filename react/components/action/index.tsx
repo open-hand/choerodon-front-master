@@ -1,8 +1,9 @@
-import React, { cloneElement, Component } from 'react';
+import React, { cloneElement } from 'react';
 import { observer } from 'mobx-react';
 import {
   Button, Dropdown, Icon, Menu,
 } from 'choerodon-ui';
+import { Tooltip } from 'choerodon-ui/pro';
 import { Size } from 'choerodon-ui/lib/_util/enum';
 import { get } from 'lodash';
 import classNames from 'classnames';
@@ -62,15 +63,25 @@ const Action:React.FC<ActionProps> = (props) => {
   );
 
   const renderMenuItem = ({
-    service, text, action, icon, disabled,
+    service, text, action, icon, disabled, tooltipsConfig,
   }:ActionItemProps, i:number) => {
     const item = (
       <Item
         action={disabled ? () => { } : action}
         style={disabled ? menuItemDisabeldStyle : {}}
+        className={`${prefixCls}-menu-item`}
       >
-        {icon && <Icon type={icon} />}
-        {text}
+        <Tooltip
+          style={{
+            width: '100%',
+          }}
+          {...tooltipsConfig}
+        >
+          <span className={`${prefixCls}-menu-item-content`}>
+            {icon && <Icon type={icon} />}
+            {text}
+          </span>
+        </Tooltip>
       </Item>
     );
     return (
