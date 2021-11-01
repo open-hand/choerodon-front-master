@@ -17,9 +17,11 @@ import {
 } from '@/utils';
 import Outward from './containers/components/c7n/routes/outward';
 import { asyncLocaleProvider, asyncRouter } from '@/hoc';
+
 import AppState from './containers/stores/c7n/AppState';
 import HeaderStore from './containers/stores/c7n/HeaderStore';
 import stores from './containers/stores';
+
 import Master from './containers/components/c7n/master';
 import './containers/components/style';
 import { enterprisesApi } from './apis';

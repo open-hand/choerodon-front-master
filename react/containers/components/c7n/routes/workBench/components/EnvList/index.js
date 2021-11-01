@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import uniqWith from 'lodash/uniqWith';
+import { TimePopover } from '@choerodon/components';
 import StatusDot from '../StatusDot';
-import TimePopover from '../time-popover';
 import { useWorkBenchStore } from '../../stores';
 
 import './index.less';
@@ -79,7 +79,7 @@ const EnvList = observer(() => {
                 </span>
               </div>
               <span className="c7n-envList-content-item-main-date">
-                <TimePopover datetime={clickTime} />
+                <TimePopover content={clickTime} />
               </span>
             </main>
             <footer>

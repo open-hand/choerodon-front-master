@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
-import { Loading } from '@choerodon/components';
-import TimePopover from '../time-popover';
+import { Loading, TimePopover } from '@choerodon/components';
 
 import './index.less';
 import { useRecentAppStore } from './stores';
@@ -38,7 +37,7 @@ const ServiceList = observer((props) => {
           <header>
             <Icon type="date_range-o" />
             <span className="c7n-serviceList-content-item-date">
-              <TimePopover datetime={lastUpdateDate} />
+              <TimePopover content={lastUpdateDate} />
               &nbsp;操作
             </span>
           </header>

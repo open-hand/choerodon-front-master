@@ -4,9 +4,9 @@ import { observer } from 'mobx-react-lite';
 import { Tooltip, Spin } from 'choerodon-ui/pro';
 import ScrollContext from 'react-infinite-scroll-component';
 import moment from 'moment';
+import { TimePopover } from '@choerodon/components';
 import { getRandomBackground } from '@/containers/components/c7n/util';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
-import TimePopover from '../time-popover';
 import Switch from './components/SwitchTabs';
 import EmptyImg from './image/empty.svg';
 import './index.less';
@@ -131,7 +131,7 @@ const Doc = () => {
               </div>
               <div className={`${clsPrefix}-item-info-time`}>
                 <span>最近更新：</span>
-                <TimePopover datetime={lastUpdateDate} />
+                <TimePopover content={lastUpdateDate} />
               </div>
             </div>
           </div>

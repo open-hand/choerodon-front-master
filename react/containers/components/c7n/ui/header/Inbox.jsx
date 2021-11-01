@@ -14,7 +14,7 @@ import {
 } from 'choerodon-ui/pro';
 import JSONBig from 'json-bigint';
 import { TimePopover } from '@choerodon/components';
-import WSHandler from '../../tools/ws/WSHandler';
+import WSHandler from '@/components/ws/WSHandler';
 import defaultAvatar from './style/icons/favicon.png';
 
 const { TabPane } = Tabs;
