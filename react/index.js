@@ -10,11 +10,12 @@ export { default as store } from './containers/components/c7n/tools/store';
 
 export { default as stores } from './containers/stores';
 
-export { default as nomatch } from '@/components/c7n-error-pages/404';
+export { default as NoMatch } from '@/components/c7n-error-pages/404';
 
-export { default as noaccess } from '@/components/c7n-error-pages/403';
+export { default as NoAccess } from '@/components/c7n-error-pages/403';
 
 export { default as WSHandler } from '@/components/ws/WSHandler';
+export { default as WSProvider } from '@/components/ws/WSProvider';
 
 export { default as PageTab } from '@/components/tab-page/PageTab';
 
