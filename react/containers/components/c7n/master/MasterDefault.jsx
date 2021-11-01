@@ -23,7 +23,7 @@ import RouteIndex from './RouteIndex';
 import './style';
 import Skeleton from '@/components/skeleton';
 import CommonMenu, { defaultBlackList } from '../ui/menu';
-import popoverHead from '@/containers/images/popoverHead.png';
+import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
 

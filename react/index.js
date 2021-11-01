@@ -4,8 +4,6 @@ export { default as CommonMenu } from './containers/components/c7n/ui/menu';
 
 export { default as C7NIcon } from './containers/components/c7n/ui/c7n-icon';
 
-export { default as Remove } from './containers/components/c7n/tools/remove';
-
 export { default as axios } from '@/components/axios';
 
 export { default as store } from './containers/components/c7n/tools/store';
@@ -15,8 +13,6 @@ export { default as stores } from './containers/stores';
 export { default as nomatch } from '@/components/c7n-error-pages/404';
 
 export { default as noaccess } from '@/components/c7n-error-pages/403';
-
-export * from '@/hoc';
 
 export { default as WSHandler } from './containers/components/c7n/tools/ws/WSHandler';
 
@@ -69,3 +65,6 @@ export { default as Action } from '@/components/action';
 
 // 头部按钮组件
 export { default as HeaderButtons } from '@/components/header-btns';
+
+// 高阶组件导出
+export * from '@/hoc';
