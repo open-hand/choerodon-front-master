@@ -84,7 +84,7 @@ export default observer(() => {
         disabled: true,
         color: 'red',
         style: {
-          width: '100%', border: '1px solid rgba(27,31,35,.2)', height: 36, marginTop: -26,
+          width: '100%', border: '1px solid rgba(27,31,35,.2)', height: 36, marginLeft: 0,
         },
       };
       const ModalContent = ({ modal: newModal }) => {
@@ -131,8 +131,8 @@ export default observer(() => {
                 background: '#fffbdd',
                 padding: '15px 26px',
                 border: '1px solid rgba(27,31,35,.15)',
-                width: 'calc(100% + 49px)',
-                marginLeft: -25,
+                width: 'calc(100% + 40px)',
+                marginLeft: -20,
               }}
               >
                 请仔细阅读下列事项！
