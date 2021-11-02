@@ -4,6 +4,7 @@ import { businessDataSet, wantsDataset } from './optionDataset';
 
 const BusinessDataSet = new DataSet(businessDataSet);
 const WantsDataset = new DataSet(wantsDataset);
+const regEmptyString = /^\s*$/;
 
 function InvitationModalDataSet() {
   // 手机校验
@@ -56,16 +57,12 @@ function InvitationModalDataSet() {
   }
 
   // 公司名称校验
-  async function cheackorgName(orgName) {
-    try {
-      const rule = /^[-—\.\w\s\u4e00-\u9fa5]{1,32}$/;
-      const res = rule.test(orgName);
-      if (!res && orgName !== null) {
-        return '组织名只能由中文、大小写字母、数字、.、-、——和_构成';
-      }
-      return true;
-    } catch (err) {
-      return '校验公司名称失败，请稍后重试';
+  async function cheackorgName(value) {
+    if (!value || regEmptyString.test(value)) {
+      return "请输入公司名称";
+    }
+    if (!/^[A-Za-z0-9\u4e00-\u9fa5_\-\.——]+$/.test(value)) {
+      return "组织名只能由中文、大小写字母、数字、.、-、——和_构成";
     }
   }
 
