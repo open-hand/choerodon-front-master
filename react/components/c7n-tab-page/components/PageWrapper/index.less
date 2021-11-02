@@ -1,0 +1,28 @@
+@prefixCls: page-wrap-tabs;
+.@{prefixCls} {
+  height: 100%;
+  > .c7n-tabs-bar {
+    position: absolute;
+    width: calc(~"100% - 48px");
+    margin-left: 24px;
+    margin-right: 24px;
+    top: 68px !important;
+    background: white;
+    z-index: 3;
+    padding-top: 6px;
+  }
+
+  .c7n-tabs-content {
+    height: 100%;
+
+    .c7n-tabs-tabpane {
+      height: 100%;
+    }
+  }
+
+  &-hasHeader {
+    > .c7n-tabs-bar {
+      top: 104px !important;
+    }
+  }
+}

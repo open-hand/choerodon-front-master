@@ -17,15 +17,7 @@ export { default as NoAccess } from '@/components/c7n-error-pages/403';
 export { default as WSHandler } from '@/components/ws/WSHandler';
 export { default as WSProvider } from '@/components/ws/WSProvider';
 
-export { default as PageTab } from '@/components/tab-page/PageTab';
-
-export { default as PageWrap } from '@/components/tab-page/PageWrap';
-
-export { default as TabPage } from '@/components/tab-page/TabPage';
-
 export { default as StatusTag } from '@/components/statusTag/StatusTag';
-
-export { default as Breadcrumb } from '@/components/tab-page/Breadcrumb';
 
 export { default as ThemeWrap } from '@/components/themeWrap';
 
@@ -60,6 +52,9 @@ export * as CONSTANTS from './constants';
 // 导出Page, Content, Header结构组件
 export * from '@/components/c7n-page';
 
+// 导出PageTabsWrapper，TabPage，PageTab 结构组件
+export * from '@/components/c7n-tab-page';
+
 // 导出Permission组件以及PermissionProvider
 export * from '@/components/permission';
 
@@ -71,3 +66,6 @@ export { default as HeaderButtons } from '@/components/header-btns';
 
 // 高阶组件导出
 export * from '@/hoc';
+
+// 面包屑组件
+export { default as Breadcrumb } from '@/components/c7n-breadCrumb';
