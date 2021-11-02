@@ -21,6 +21,7 @@ const InnerIndex = ({ match, AutoRouter, AppState }) => (
   <div
     style={{
       background: 'white',
+      height: '100%',
     }}
   >
     <Suspense fallback={<Loading type="c7n" />}>
