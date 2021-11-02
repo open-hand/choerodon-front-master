@@ -59,11 +59,12 @@ function InvitationModalDataSet() {
   // 公司名称校验
   async function cheackorgName(value) {
     if (!value || regEmptyString.test(value)) {
-      return "请输入公司名称";
+      return '请输入公司名称';
     }
     if (!/^[A-Za-z0-9\u4e00-\u9fa5_\-\.——]+$/.test(value)) {
-      return "组织名只能由中文、大小写字母、数字、.、-、——和_构成";
+      return '公司名只能由中文、大小写字母、数字、.、-、——和_构成';
     }
+    return true;
   }
 
   return ({
