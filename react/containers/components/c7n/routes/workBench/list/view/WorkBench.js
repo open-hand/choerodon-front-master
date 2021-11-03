@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 
 import queryString from 'query-string';
 import { mount } from '@choerodon/inject';
-import { Page } from '@/index';
+import { Page } from '@/components/c7n-page';
 import { useWorkBenchStore } from '../../stores';
 import WorkBenchHeader from './components/WorkBenchHeader';
 import WorkBenchDashboard from '../../components/WorkBenchDashboard';
