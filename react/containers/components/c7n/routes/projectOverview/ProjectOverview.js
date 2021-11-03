@@ -5,15 +5,16 @@ import { Button, Modal } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import ResponsiveReactGridLayout from 'react-grid-layout';
 import ResizeObserver from 'resize-observer-polyfill';
+import {
+  get, forEach, map,
+} from 'lodash';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 import {
-  get, forEach, some, without, keys,
-} from 'lodash';
-import {
-  Content, Breadcrumb, Page,
+  Breadcrumb,
 } from '../../../../../index';
+import { Content, Page } from '@/components/c7n-page';
 import { Permission } from '@/components/permission';
 import ServiceInfo from './components/ServiceInfo';
 import EnvInfo from './components/EnvInfo';
