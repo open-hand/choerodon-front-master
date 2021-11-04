@@ -43,5 +43,5 @@ autoRefresh();
 
 const rootNode = document.getElementById('app');
 
-// 入口,react 18之后可以替换为createRoot真正开启fiber的神仙调度机制
+// 入口,react 18之后可以替换为createRoot
 render(<App />, rootNode);

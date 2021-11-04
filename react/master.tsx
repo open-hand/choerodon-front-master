@@ -1,7 +1,6 @@
-import React, { useState, useMemo } from 'react';
-import { withRouter, Route } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { useHistory, useLocation, withRouter } from 'react-router-dom';
 import {
-  useEventListener,
   useLocalStorageState,
   useMount,
   useUpdateEffect,
@@ -11,15 +10,11 @@ import { Provider } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { ModalProvider } from 'choerodon-ui/pro';
 import { Container } from '@hzero-front-ui/core';
-import { Loading, useQueryString } from '@choerodon/components';
-import {
-  authorizeC7n, getAccessToken, setAccessToken,
-} from '@/utils';
+import { Loading } from '@choerodon/components';
 import Outward from './containers/components/c7n/routes/outward';
 import { asyncLocaleProvider, asyncRouter } from '@/hoc';
 
 import AppState from './containers/stores/c7n/AppState';
-import HeaderStore from './containers/stores/c7n/HeaderStore';
 import stores from './containers/stores';
 
 import Master from './containers/components/c7n/master';
@@ -27,7 +22,9 @@ import './containers/components/style';
 import { enterprisesApi } from './apis';
 import { ENTERPRISE_ADDRESS } from './constants';
 import { useC7NThemeInit } from './configs';
-import { useC7NNotification, useSafariAdapter } from './hooks';
+import {
+  useC7NAuth, useC7NNotification, useMultiTabsAutoRefresh, useSafariAdapter, useSetHistoryPath,
+} from './hooks';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,31 +51,23 @@ const MasterIndex = (props:{
   [fields:string]:any
 }) => {
   const {
-    location,
-    history,
     AutoRouter,
   } = props;
 
+  const location = useLocation();
+  const history = useHistory();
+
   const {
     pathname,
-    search,
   } = location;
-
-  // 历史路径
-  const historyPath = sessionStorage.getItem('historyPath');
 
   const [hasEnterpriseConfirmed, setEnterPriseConfirmed] = useLocalStorageState('hasEnterpriseConfirmed', false);
 
-  // 用于多relogin的逻辑，多tab之间刷新页面
-  const [, setReloginValue] = useLocalStorageState('relogin', false);
-
-  const [loading, setLoading] = useState<boolean>(true);
-
-  // 获取url的params
-  const params = useQueryString();
+  // c7n登录hook
+  const [authStatus, auth] = useC7NAuth();
 
   // 监听storage，作用在于如果有其他重新登录了，就触发刷新事件
-  useEventListener('storage', handleStorageChange);
+  const [, setReloginValue] = useMultiTabsAutoRefresh();
 
   // 注入Notification授权的hook
   useC7NNotification();
@@ -88,6 +77,9 @@ const MasterIndex = (props:{
 
   // 为safari浏览器做适配的hook
   useSafariAdapter();
+
+  // 注入存储历史访问url的hook
+  useSetHistoryPath();
 
   /**
    * 判断当前pathname是否存在于环境变量outward中，表明是否需要认证
@@ -106,16 +98,6 @@ const MasterIndex = (props:{
   }, [pathname]);
 
   /**
-   * 其他tab页重新登录，刷新当前页面
-   * @param {*} e {StorageEvent}
-   */
-  function handleStorageChange(e:StorageEvent) {
-    if (e.key === 'relogin') {
-      window.location.reload();
-    }
-  }
-
-  /**
    * 开源版admin账号登录判断是否展示企业信息完善页面
    */
   async function checkEnterprise() {
@@ -131,52 +113,23 @@ const MasterIndex = (props:{
     }
   }
 
-  /**
-   * todo....
-   * @return {*}
-   */
-  async function auth() {
-    setLoading(true);
-    const {
-      access_token: accessToken,
-      token_type: tokenType,
-      expires_in: expiresIn,
-    } = params;
-    if (accessToken) {
-      setAccessToken(accessToken, tokenType, expiresIn);
-      // 通知其他tab页刷新，在localstorage里头设置
-      setReloginValue(true);
-      window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
-    } else if (!getAccessToken()) {
-      authorizeC7n();
-      return;
-    }
-    if (!HAS_AGILE_PRO && !pathname?.startsWith(ENTERPRISE_ADDRESS)) {
-      await checkEnterprise();
-    }
-    HeaderStore.axiosGetRoles();
-    AppState.loadModules();
-    AppState.loadDeployServices();
-    await AppState.loadUserInfo();
-    setLoading(false);
-  }
-
   useMount(() => {
-    // 如果不存在历史地址则设置当前地址为跳转地址
-    !historyPath && sessionStorage.setItem('historyPath', pathname + search);
     // 不是就校验去登录
     !isInOutward && auth();
   });
 
   useUpdateEffect(() => {
     if (!isInOutward) {
-      if (loading) {
+      if (authStatus === 'pending') {
         auth();
-      } else if (pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !HAS_AGILE_PRO) {
-        checkEnterprise();
+      } else if (authStatus === 'success') {
+        if (pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !HAS_AGILE_PRO) {
+          checkEnterprise();
+        }
+        setReloginValue(true);
       }
     }
-  }, [pathname, loading, isInOutward]);
+  }, [pathname, authStatus, isInOutward]);
 
   const getContainer = useMemo(() => {
     const content = isInOutward ? Outward : Master;
@@ -185,7 +138,7 @@ const MasterIndex = (props:{
     });
   }, [isInOutward, AutoRouter]);
 
-  if (loading && !isInOutward) {
+  if (authStatus === 'pending' && !isInOutward) {
     return (
       <Loading
         style={{

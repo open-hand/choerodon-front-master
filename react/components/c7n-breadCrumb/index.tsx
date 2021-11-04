@@ -34,7 +34,7 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
     subMenus,
     name: menuName,
     route,
-  } = currentMenu;
+  } = currentMenu || {};
 
   const currentRoute = useMemo(() => {
     if (subMenus && subMenus?.length && subMenus[0]?.type === 'tab') {
