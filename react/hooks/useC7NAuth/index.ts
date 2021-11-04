@@ -1,5 +1,6 @@
 import { useQueryString } from '@choerodon/components';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useBoolean } from 'ahooks';
 import { authorizeC7n, getAccessToken, setAccessToken } from '@/utils';
 
 import AppState from '@/containers/stores/c7n/AppState';
@@ -13,7 +14,7 @@ type AuthStatus = 'noAuth' | 'pending' | 'success' | 'failed'
  * @return {[AuthStatus, auth]}
  */
 function useC7NAuth(autoAuth?:boolean) {
-  const [authStatus, setStatus] = useState<AuthStatus>('pending');
+  const [loading, { setTrue, setFalse }] = useBoolean(true);
 
   // 获取url的params
   const params = useQueryString();
@@ -25,24 +26,21 @@ function useC7NAuth(autoAuth?:boolean) {
   } = params;
 
   const handleAuth = useCallback(async () => {
+    setTrue();
     try {
       if (accessToken) {
         setAccessToken(accessToken, tokenType, expiresIn);
         window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
-        setStatus('pending');
         HeaderStore.axiosGetRoles();
         AppState.loadModules();
         AppState.loadDeployServices();
         await AppState.loadUserInfo();
-        setStatus('success');
       } else if (!getAccessToken()) {
         authorizeC7n();
-        setStatus('noAuth');
-      } else {
-        setStatus('failed');
       }
+      setFalse();
     } catch (e) {
-      setStatus('failed');
+      throw new Error(e);
     }
   }, [accessToken, expiresIn, tokenType]);
 
@@ -50,7 +48,7 @@ function useC7NAuth(autoAuth?:boolean) {
     autoAuth && handleAuth();
   }, [autoAuth, handleAuth]);
 
-  return [authStatus, handleAuth] as const;
+  return [loading, handleAuth] as const;
 }
 
 export default useC7NAuth;

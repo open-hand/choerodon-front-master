@@ -19,7 +19,9 @@ function useMultiTabsAutoRefresh() {
     }
   }
 
-  useEventListener('storage', handleStorageChange);
+  useEventListener('storage', handleStorageChange, {
+    once: true,
+  });
 
   return [isRelogin, setReloginValue] as const;
 }

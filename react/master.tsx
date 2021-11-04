@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useHistory, useLocation, withRouter } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   useLocalStorageState,
   useMount,
@@ -120,9 +120,7 @@ const MasterIndex = (props:{
 
   useUpdateEffect(() => {
     if (!isInOutward) {
-      if (authStatus === 'pending') {
-        auth();
-      } else if (authStatus === 'success') {
+      if (!authStatus) {
         if (pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !HAS_AGILE_PRO) {
           checkEnterprise();
         }
@@ -138,7 +136,7 @@ const MasterIndex = (props:{
     });
   }, [isInOutward, AutoRouter]);
 
-  if (authStatus === 'pending' && !isInOutward) {
+  if (authStatus && !isInOutward) {
     return (
       <Loading
         style={{
@@ -168,4 +166,4 @@ const MasterIndex = (props:{
   );
 };
 
-export default withRouter(observer(MasterIndex));
+export default observer(MasterIndex);
