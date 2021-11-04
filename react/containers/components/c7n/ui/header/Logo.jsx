@@ -20,8 +20,13 @@ export default withRouter(inject('AppState', 'MenuStore')(observer((props) => {
         [`${prefixCls}-wrap-theme4`]: schema === 'theme4',
       })}
     >
-      <div className={classnames(`${prefixCls}-icon`, systemLogo ? null : `${prefixCls}-default-icon`)} style={{ backgroundImage: systemLogo ? `url(${systemLogo})` : `url(${favicon})` }} />
-      <div className={classnames(schema === 'theme4' ? `${prefixCls}-theme4` : null, `${prefixCls}`, systemName ? null : `${prefixCls}-default-logo`)}>{systemName || 'Choerodon'}</div>
+      {/* 为了避免 接口查询慢 导致icon logo闪烁 */}
+      {JSON.stringify(AppState.getSiteInfo) === '{}' ? '' : (
+        <>
+          <div className={classnames(`${prefixCls}-icon`, systemLogo ? null : `${prefixCls}-default-icon`)} style={{ backgroundImage: systemLogo ? `url(${systemLogo})` : `url(${favicon})` }} />
+          <div className={classnames(schema === 'theme4' ? `${prefixCls}-theme4` : null, `${prefixCls}`, systemName ? null : `${prefixCls}-default-logo`)}>{systemName || 'Choerodon'}</div>
+        </>
+      )}
     </div>
   );
 })));
