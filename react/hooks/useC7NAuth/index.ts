@@ -37,12 +37,13 @@ function useC7NAuth(autoAuth?:boolean) {
         await AppState.loadUserInfo();
       } else if (!getAccessToken()) {
         authorizeC7n();
+        return;
       }
       setFalse();
     } catch (e) {
       throw new Error(e);
     }
-  }, [accessToken, expiresIn, tokenType]);
+  }, [accessToken, expiresIn, setFalse, setTrue, tokenType]);
 
   useEffect(() => {
     autoAuth && handleAuth();

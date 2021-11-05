@@ -4,7 +4,6 @@ import { UI_CONFIG } from './config';
 
 /**
  *初始化UI默认配置的hook
- *
  */
 function useInitUiConfig() {
   useEffect(() => {

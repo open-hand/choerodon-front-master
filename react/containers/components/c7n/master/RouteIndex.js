@@ -6,7 +6,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { ModalContainer } from 'choerodon-ui/pro/lib';
+import { ModalContainer } from 'choerodon-ui/pro';
 import { inject } from 'mobx-react';
 import { mount } from '@choerodon/inject';
 import { Loading } from '@choerodon/components';
