@@ -98,6 +98,10 @@ export default function InvitationModal(props) {
 
   // 发送表单
   const handleSubmit = async () => {
+    const checkRes = await Ds.current.validate();
+    if (!checkRes) {
+      return false;
+    }
     try {
       const data = await Ds.submit();
       if (data && data?.failed) {

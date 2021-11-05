@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import {
   useEventListener,
   useLocalStorageState,
@@ -100,7 +100,7 @@ const MasterIndex = (props:{
     if (injectOutward) {
       const splitArr = injectOutward.split(',').map((r) => r.replace(/['"']/g, ''));
       splitArr.push('/unauthorized');
-      return splitArr.indexOf(pathname) >= 0;
+      return splitArr.some((path) => pathname.startsWith(path));
     }
     return false;
   }, [pathname]);
@@ -164,7 +164,6 @@ const MasterIndex = (props:{
   useMount(() => {
     // 如果不存在历史地址则设置当前地址为跳转地址
     !historyPath && sessionStorage.setItem('historyPath', pathname + search);
-
     // 不是就校验去登录
     !isInOutward && auth();
   });

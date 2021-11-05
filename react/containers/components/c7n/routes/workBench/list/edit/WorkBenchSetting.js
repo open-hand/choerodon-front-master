@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
-import { Page } from '@/index';
+import { Page } from '@/components/c7n-page';
 import { useWorkBenchStore } from '../../stores';
 import WorkBenchSettingHeader from './components/WorkBenchSettingHeader';
 import WorkBenchDashboard from '../../components/WorkBenchDashboard';

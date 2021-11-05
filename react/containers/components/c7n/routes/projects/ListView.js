@@ -14,7 +14,8 @@ import Store from './stores';
 import List from './List';
 import findFirstLeafMenu from '../../../util/findFirstLeafMenu';
 import FormView from './FormView';
-import { Content, Page, axios } from '../../../../../index';
+import { axios } from '../../../../../index';
+import { Content, Page } from '@/components/c7n-page';
 import { Permission } from '@/components/permission';
 import './style/index.less';
 
