@@ -45,7 +45,7 @@ export { default as BrowserAdapter } from './components/browser-adapter';
 
 export { logout } from './utils/authorize';
 
-export * from './commonInterface';
+// export * from './commonInterface';
 
 export * as CONSTANTS from './constants';
 
