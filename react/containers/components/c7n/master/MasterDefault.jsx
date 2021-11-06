@@ -20,6 +20,7 @@ import MasterHeader from '../ui/header';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from './RouteIndex';
+import './index.less';
 import './style';
 import Skeleton from '@/components/skeleton';
 import CommonMenu, { defaultBlackList } from '../ui/menu';
@@ -427,14 +428,14 @@ class Masters extends Component {
 
   render() {
     const {
-      AutoRouter, AppState, location,
+      AppState, location,
     } = this.props;
     const search = new URLSearchParams(location.search);
     const fullPage = search.get('fullPage');
     if (this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">
-          <RouteIndex AutoRouter={AutoRouter} />
+          <RouteIndex />
         </div>
       );
     }
@@ -467,7 +468,7 @@ class Masters extends Component {
             <div id="autoRouter" className="content">
               {AppState.getCanShowRoute
               || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
-                <RouteIndex AutoRouter={AutoRouter} />
+                <RouteIndex />
                 ) : (
                   <div>
                     <Skeleton />

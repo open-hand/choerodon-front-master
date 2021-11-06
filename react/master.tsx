@@ -5,44 +5,33 @@ import {
   useMount,
   useUpdateEffect,
 } from 'ahooks';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
-import { ModalProvider } from 'choerodon-ui/pro';
-import { Container } from '@hzero-front-ui/core';
 import { Loading } from '@choerodon/components';
-import Outward from './containers/components/c7n/routes/outward';
-import { asyncLocaleProvider, asyncRouter } from '@/hoc';
 
-import AppState from './containers/stores/c7n/AppState';
 import stores from './containers/stores';
 
 import Master from './containers/components/c7n/master';
+import Outward from './containers/components/c7n/routes/outward';
+
 import './containers/components/style';
+
 import { enterprisesApi } from './apis';
 import { ENTERPRISE_ADDRESS } from './constants';
-import { useC7NThemeInit } from './configs';
+
+import {
+  C7NReactQueryContainer,
+  UIConfigInitContainer,
+} from './configs';
+
 import {
   useC7NAuth, useC7NNotification, useMultiTabsAutoRefresh, useSafariAdapter, useSetHistoryPath,
 } from './hooks';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+import WSProvider from '@/components/ws/WSProvider';
+import { PermissionProvider } from '@/components/permission';
 
-const language = AppState.currentLanguage;
-
-const UILocaleProviderAsync = asyncRouter(
-  () => import('choerodon-ui/lib/locale-provider'),
-  { locale: () => import(`choerodon-ui/lib/locale-provider/${language}.js`) },
-);
-
-const IntlProviderAsync = asyncLocaleProvider(language,
-  () => import(`./locale/${language}`));
+import { WEBSOCKET_SERVER } from './utils';
 
 /** @type {boolean} 是否安装了敏捷模块 */
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
@@ -50,10 +39,6 @@ const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 const MasterIndex = (props:{
   [fields:string]:any
 }) => {
-  const {
-    AutoRouter,
-  } = props;
-
   const location = useLocation();
   const history = useHistory();
 
@@ -69,13 +54,10 @@ const MasterIndex = (props:{
   // 监听storage，作用在于如果有其他重新登录了，就触发刷新事件
   const [, setReloginValue] = useMultiTabsAutoRefresh();
 
-  // 注入Notification授权的hook
+  // 注入Notification授权
   useC7NNotification();
 
-  // 初始化注入新UI的版本hook
-  useC7NThemeInit();
-
-  // 为safari浏览器做适配的hook
+  // 为safari浏览器做适配
   useSafariAdapter();
 
   // 注入存储历史访问url的hook
@@ -131,10 +113,8 @@ const MasterIndex = (props:{
 
   const getContainer = useMemo(() => {
     const content = isInOutward ? Outward : Master;
-    return React.createElement(content, {
-      AutoRouter,
-    });
-  }, [isInOutward, AutoRouter]);
+    return React.createElement(content);
+  }, [isInOutward]);
 
   if (authStatus && !isInOutward) {
     return (
@@ -150,19 +130,17 @@ const MasterIndex = (props:{
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <UILocaleProviderAsync>
-        <IntlProviderAsync>
-          <ModalProvider location={window.location}>
-            <Provider {...stores}>
-              <Container>
-                {getContainer}
-              </Container>
-            </Provider>
-          </ModalProvider>
-        </IntlProviderAsync>
-      </UILocaleProviderAsync>
-    </QueryClientProvider>
+    <C7NReactQueryContainer>
+      <UIConfigInitContainer>
+        <Provider {...stores}>
+          <PermissionProvider>
+            <WSProvider server={WEBSOCKET_SERVER}>
+              {getContainer}
+            </WSProvider>
+          </PermissionProvider>
+        </Provider>
+      </UIConfigInitContainer>
+    </C7NReactQueryContainer>
   );
 };
 

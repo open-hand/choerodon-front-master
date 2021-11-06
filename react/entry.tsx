@@ -7,16 +7,8 @@ import {
 } from 'react-router-dom';
 import { Modal } from 'choerodon-ui/pro';
 
-import { asyncRouter } from '@/hoc';
+import Master from './master';
 import './utils/iframeStorage';
-
-const MASTERS = asyncRouter(
-  () => import('./master'),
-  {
-    // 收集子服务的路由
-    AutoRouter: () => import('./routes'),
-  },
-);
 
 const getConfirmation = (message:string, callback:CallableFunction) => {
   Modal.open({
@@ -34,7 +26,7 @@ const getConfirmation = (message:string, callback:CallableFunction) => {
 
 const App = () => (
   <Router getUserConfirmation={getConfirmation}>
-    <MASTERS />
+    <Master />
   </Router>
 );
 
