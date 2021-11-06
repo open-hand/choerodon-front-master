@@ -6,7 +6,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { ModalContainer } from 'choerodon-ui/pro/lib';
+import { ModalContainer } from 'choerodon-ui/pro';
 import { inject } from 'mobx-react';
 import { mount } from '@choerodon/inject';
 import { Loading } from '@choerodon/components';
@@ -17,6 +17,7 @@ const WorkBench = React.lazy(() => import('../routes/workBench/list/view'));
 const WorkBenchEdit = React.lazy(() => import('../routes/workBench/list/edit'));
 const ProjectsPro = React.lazy(() => import('../routes/projectsPro'));
 const ProjectOverview = React.lazy(() => import('../routes/projectOverview'));
+
 const InnerIndex = ({ match, AutoRouter, AppState }) => (
   <div
     style={{

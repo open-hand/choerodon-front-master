@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { HEADER_TITLE_NAME } from '@/utils/constants';
-import { Context } from '@/components/tab-page/PageWrap';
+import { Context } from '@/components/c7n-tab-page';
 import { PageContentProps } from '../../interface';
 import './index.less';
 

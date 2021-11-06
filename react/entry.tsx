@@ -2,11 +2,12 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import React from 'react';
 import { render } from 'react-dom';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  HashRouter as Router,
+} from 'react-router-dom';
 import { Modal } from 'choerodon-ui/pro';
 
 import { asyncRouter } from '@/hoc';
-import autoRefresh from './utils/autoRefresh';
 import './utils/iframeStorage';
 
 const MASTERS = asyncRouter(
@@ -33,15 +34,11 @@ const getConfirmation = (message:string, callback:CallableFunction) => {
 
 const App = () => (
   <Router getUserConfirmation={getConfirmation}>
-    <Switch>
-      <Route path="/" component={MASTERS} />
-    </Switch>
+    <MASTERS />
   </Router>
 );
 
-autoRefresh();
-
 const rootNode = document.getElementById('app');
 
-// 入口,react 18之后可以替换为createRoot真正开启fiber的神仙调度机制
+// 入口,react 18之后可以替换为createRoot
 render(<App />, rootNode);

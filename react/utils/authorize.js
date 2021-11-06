@@ -34,6 +34,7 @@ export function authorizeC7n() {
   }
   const redirect_uri = escape(uri);
   window.localStorage.removeItem('lastClosedId');
+
   // 这里是为了告诉oauth我要重定向的uri是什么，必须和client中对应，跳转到非client的页面会报错。
   window.location = `${AUTH_URL}&redirect_uri=${redirect_uri}`;
 }
