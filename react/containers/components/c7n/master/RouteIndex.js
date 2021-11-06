@@ -17,8 +17,9 @@ const WorkBench = React.lazy(() => import('../routes/workBench/list/view'));
 const WorkBenchEdit = React.lazy(() => import('../routes/workBench/list/edit'));
 const ProjectsPro = React.lazy(() => import('../routes/projectsPro'));
 const ProjectOverview = React.lazy(() => import('../routes/projectOverview'));
+const AutoRouter = React.lazy(() => import('@/routes'));
 
-const InnerIndex = ({ match, AutoRouter, AppState }) => (
+const InnerIndex = ({ match, AppState }) => (
   <div
     style={{
       background: 'white',

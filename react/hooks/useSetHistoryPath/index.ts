@@ -1,6 +1,9 @@
 import { useMount } from 'ahooks';
 import { useLocation } from 'react-router-dom';
 
+/**
+ * 初次渲染界面将当前path存入session
+ */
 function useSetHistoryPath() {
   const location = useLocation();
   const {
