@@ -8,7 +8,7 @@ import { Menu, Popover, Icon } from 'choerodon-ui';
 import { Modal, Button, ModalProvider } from 'choerodon-ui/pro';
 import { historyPushMenu, logout } from '@/utils';
 import Avatar from './Avatar';
-import findFirstLeafMenu from '../../util/findFirstLeafMenu';
+import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 import InvitationModal from './InvitationModal';
 import { MODAL_WIDTH } from '@/constants/MODAL';
 

@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
 import {
-  Button, Icon, Dropdown, Menu,
+  Button, Icon, Menu,
 } from 'choerodon-ui';
 import {
-  Button as ProButton
+  Button as ProButton,
 } from 'choerodon-ui/pro';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { toJS } from 'mobx';
 import { mount, get } from '@choerodon/inject';
-import findFirstLeafMenu from '../../util/findFirstLeafMenu';
-import { historyPushMenu } from '../../util';
+import { historyPushMenu } from '@/utils';
 import Setting from './Setting';
 import MouserOverWrapper from './components/MouseOverWrapper';
 
@@ -48,7 +47,7 @@ export default class OrgSelect extends Component {
 
   selectState = (value, gotoHome) => {
     const {
-      AppState, HeaderStore, MenuStore, history,
+      AppState, MenuStore, history,
     } = this.props;
     const {
       id, name, type, organizationId, category,
@@ -194,10 +193,15 @@ export default class OrgSelect extends Component {
                 fontFamily: 'PingFangSC-Medium, PingFang SC',
                 fontWeight: 500,
                 color: 'rgba(15, 19, 88, 0.65)',
-                fontSize: '14px', lineHeight: '20px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'none',
+                fontSize: '14px',
+                lineHeight: '20px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                textTransform: 'none',
                 ...true ? {
                   paddingLeft: 9,
-                } : {}
+                } : {},
               }}
             >
               {orgObj.name}

@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useState, useCallback,
+  useEffect,
 } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
@@ -11,7 +11,6 @@ import {
 import classNames from 'classnames';
 import { mount, has as hasInject } from '@choerodon/inject';
 import { EXTERNAL_LINK, SAAS_FEEDBACK } from '@/utils/constants';
-import { axios } from '@/index';
 
 import './style';
 import OrgSelect from './OrgSelect';
@@ -25,7 +24,7 @@ const prefixCls = 'c7n-boot-header';
 
 export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observer((props) => {
   const {
-    AppState: { currentMenuType: { organizationId } },
+    AppState: { getUserInfo: { image_url: imgUrl } }, history, location: { pathname },
   } = props;
 
   useEffect(() => {
@@ -114,10 +113,6 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
     return <span style={{ margin: '0 0 0 20px' }} />;
   };
 
-  const {
-    AppState: { getUserInfo: { image_url: imgUrl } }, history, location: { pathname },
-  } = props;
-
   const shouldHiddenHead = () => {
     const defaultBlackList = ['/iam/enterprise'];
     if (defaultBlackList.some((pname) => pathname.startsWith(pname))) {
@@ -136,15 +131,19 @@ export default withRouter(inject('AppState', 'HeaderStore', 'MenuStore')(observe
         [`${prefixCls}-wrap-theme4`]: true,
       })}
     >
+      {/* done */}
       <div className={`${prefixCls}-left`}>
         <Logo history={history} />
       </div>
+      {/* not yet */}
       <ProjectSelector />
+      {/* done */}
       <ul className={`${prefixCls}-center`}>
         <li style={{ display: 'flex' }}>
           <HeaderSetting />
         </li>
       </ul>
+      {/* doing */}
       <ul className={`${prefixCls}-right`}>
         {hasInject('base-saas:saasUpgrade') ? (
           <li style={{ width: 'auto', marginRight: 10 }} className={`${prefixCls}-right-li`}>

@@ -9,29 +9,29 @@ import { Provider } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { Loading } from '@choerodon/components';
 
-import stores from './containers/stores';
+import stores from '@/containers/stores';
 
-import Master from './containers/components/c7n/master';
-import Outward from './containers/components/c7n/routes/outward';
+import Master from '@/containers/components/c7n/master';
+import Outward from '@/containers/components/c7n/routes/outward';
 
-import './containers/components/style';
+import '@/containers/components/style';
 
-import { enterprisesApi } from './apis';
-import { ENTERPRISE_ADDRESS } from './constants';
+import { enterprisesApi } from '@/apis';
+import { ENTERPRISE_ADDRESS } from '@/constants';
 
 import {
   C7NReactQueryContainer,
   UIConfigInitContainer,
-} from './configs';
+} from '@/configs';
 
 import {
   useC7NAuth, useC7NNotification, useMultiTabsAutoRefresh, useSafariAdapter, useSetHistoryPath,
-} from './hooks';
+} from '@/hooks';
 
 import WSProvider from '@/components/ws/WSProvider';
 import { PermissionProvider } from '@/components/permission';
 
-import { WEBSOCKET_SERVER } from './utils';
+import { WEBSOCKET_SERVER } from '@/utils';
 
 /** @type {boolean} 是否安装了敏捷模块 */
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
@@ -130,8 +130,8 @@ const MasterIndex = (props:{
   }
 
   return (
-    <C7NReactQueryContainer>
-      <UIConfigInitContainer>
+    <UIConfigInitContainer>
+      <C7NReactQueryContainer>
         <Provider {...stores}>
           <PermissionProvider>
             <WSProvider server={WEBSOCKET_SERVER}>
@@ -139,8 +139,8 @@ const MasterIndex = (props:{
             </WSProvider>
           </PermissionProvider>
         </Provider>
-      </UIConfigInitContainer>
-    </C7NReactQueryContainer>
+      </C7NReactQueryContainer>
+    </UIConfigInitContainer>
   );
 };
 

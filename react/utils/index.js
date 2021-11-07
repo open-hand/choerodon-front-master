@@ -30,8 +30,6 @@ export function randomString(len = 32) {
 }
 
 export function historyPushMenu(history, path, domain, method = 'push') {
-  // eslint-disable-next-line no-param-reassign
-  method = 'push';
   if (!domain || LOCAL) {
     history[method](path);
   } else if (!path) {

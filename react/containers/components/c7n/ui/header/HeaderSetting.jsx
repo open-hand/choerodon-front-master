@@ -1,11 +1,10 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { get } from '@choerodon/inject';
-import { Button as ProButton } from 'choerodon-ui/pro';
-import { Button, Icon } from 'choerodon-ui';
+import { Button } from 'choerodon-ui';
 import _ from 'lodash';
 import classNames from 'classnames';
 import forEach from 'lodash/forEach';
@@ -14,7 +13,6 @@ import getSearchString from '../../util/gotoSome';
 
 import './headerSettingTheme4.less';
 
-const iconStyle = { marginLeft: 0, marginRight: 0 };
 const SERVICE_CODE = {
   knowledge: 'knowledgebase-service',
   market: 'market-service',
@@ -23,36 +21,35 @@ const SERVICE_CODE = {
 const Setting = ({
   AppState, HeaderStore, MenuStore, history, ...props
 }) => {
-  const isSaas = AppState.getIsSaasList;
+  const {
+    getIsSaasList: isSaas,
+    currentMenuType: {
+      organizationId,
+    },
+    currentServices,
+  } = AppState;
 
   // 组织改变 重新查询getIsSaas
   useEffect(() => {
-    if (isSaas && !Object.keys(isSaas).includes(AppState.currentMenuType.organizationId)) {
+    if (isSaas && !Object.keys(isSaas).includes(organizationId)) {
       get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState, isSaas);
     }
-  }, [AppState.currentMenuType.organizationId]);
+  }, [organizationId]);
 
   useEffect(() => {
     get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState, isSaas);
   }, []);
 
-  const theme = 'theme4';
-  const { currentServices } = AppState;
-
   const LI_MAPPING = useMemo(() => {
     const mapping = [
-      { title: '工作台', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/workbench' },
-      { title: '工作日历', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/agile/work-calendar' },
-      // {
-      //   title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects', style: { marginLeft: 3 },
-      // },
+      { title: '工作台', activePath: '/workbench' },
+      { title: '工作日历', activePath: '/agile/work-calendar' },
     ];
     forEach(currentServices, ({ serviceCode }) => {
       switch (serviceCode) {
         case SERVICE_CODE.knowledge:
           mapping.push({
             title: '知识库',
-            icon: theme === 'theme4' ? 'chrome_reader_mode-o' : 'knowledge',
             activePath: '/knowledge/organization',
             style: { marginLeft: 4 },
             permission: [
@@ -63,19 +60,20 @@ const Setting = ({
           break;
         case SERVICE_CODE.market:
           // 如果不是saas 才显示应用市场
-          if (!isSaas || !isSaas[AppState.currentMenuType.organizationId]) {
+          if (!isSaas || !isSaas[organizationId]) {
             mapping.push({
               title: '应用市场',
-              icon: theme === 'theme4' ? 'local_mall-o' : 'application_market',
               activePath: '/market/app-market',
               style: { marginLeft: 2 },
             });
           }
           break;
+        default:
+          break;
       }
     });
     return mapping;
-  }, [currentServices, theme, isSaas, AppState.currentMenuType.organizationId]);
+  }, [currentServices, isSaas, organizationId]);
 
   async function goto(obj) {
     const queryObj = queryString.parse(history.location.search);
@@ -118,11 +116,8 @@ const Setting = ({
               type="primary"
               funcType="flat"
             >
-              {/* <Icon type={list.icon} style={iconStyle} /> */}
               <span
-                {...true && list.style ? {
-                  style: list.style,
-                } : {}}
+                style={list.style}
               >
                 {list.title}
               </span>

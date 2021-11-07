@@ -10,7 +10,7 @@ import folding from '@/assets/images/folding.svg';
 import unfold from '@/assets/images/unfold.svg';
 import bg from '../header/style/icons/bg.svg';
 import './RequireSvgResources';
-import findFirstLeafMenu from '../../util/findFirstLeafMenu';
+import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 import { historyPushMenu } from '../../util';
 import './index.less';
 

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { Button, Icon } from 'choerodon-ui';
 import { Button as ProButton } from 'choerodon-ui/pro';
-import findFirstLeafMenu from '../../util/findFirstLeafMenu';
+import findFirstLeafMenu from '../../../../../utils/findFirstLeafMenu';
 
 @withRouter
 @inject('AppState', 'MenuStore')
