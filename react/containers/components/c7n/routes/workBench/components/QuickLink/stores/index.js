@@ -40,7 +40,7 @@ export const StoreProvider = inject('AppState')(observer((props) => {
     selectedProjectId,
   })), [organizationId, quickLinkUseStore, selectedProjectId, type]);
   const projectIdOptionsDs = useMemo(() => new DataSet(projectIdOptionsDataSet(AppState.getUserId)), [AppState]);
-  const addLinkDs = useMemo(() => new DataSet(addLinkDataSet(AppState, projectIdOptionsDs)), [AppState]);
+  const addLinkDs = useMemo(() => new DataSet(addLinkDataSet(projectIdOptionsDs)), []);
 
   const value = {
     ...props,
