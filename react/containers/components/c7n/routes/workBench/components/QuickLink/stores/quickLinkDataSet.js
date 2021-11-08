@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import Jsonbig from 'json-bigint';
-import axios from '@/components/axios';
 import { get } from 'lodash';
+import axios from '@/components/axios';
 
 export default ({
   quickLinkUseStore, organizationId, selectedProjectId, linkType,

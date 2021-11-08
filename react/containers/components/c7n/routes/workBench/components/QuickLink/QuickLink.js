@@ -23,6 +23,7 @@ const QuickLink = observer(() => {
     AppState: { getUserInfo },
     quickLinkUseStore,
     quickLinkDs,
+    addLinkDs,
   } = useQuickLinkStore();
 
   const {
@@ -57,6 +58,7 @@ const QuickLink = observer(() => {
           useStore={quickLinkUseStore}
           workBenchUseStore={workBenchUseStore}
           handleRefresh={handleRefresh}
+          addLinkDs={addLinkDs}
         />
       ),
       drawer: true,

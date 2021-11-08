@@ -2,56 +2,16 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
-  DataSet, Form, Select, SelectBox, TextField, Tooltip,
+  Form, Select, SelectBox, TextField, Tooltip,
 } from 'choerodon-ui/pro';
 import { Icon } from 'choerodon-ui';
-import axios from '@/components/axios';
-import addLinkDataSet from './stores/addLinkDataSet';
 
 const { Option } = Select;
 
 export default observer(({
-  AppState, modal, useStore, data, workBenchUseStore, activeId, type, handleRefresh,
+  AppState, modal, useStore, data, workBenchUseStore, activeId, type, handleRefresh, addLinkDs,
 }) => {
-  const dataSet = useMemo(() => new DataSet(addLinkDataSet(AppState, data)), [data, type]);
-
-  const handleLoadMore = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    let size = dataSet.current.get('size');
-    size += 10;
-    dataSet.current.set('size', size);
-    const res = await axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=${size}`);
-    if (res.content.length % 10 === 0) {
-      res.content.push({
-        id: 'more',
-        name: '加载更多',
-      });
-    }
-    if (data) {
-      if (!res.content.some((n) => n.id === data.projectId)) {
-        res.content.unshift({
-          id: data.projectId,
-          name: data.projectName,
-        });
-      }
-    }
-    dataSet.current.getField('projectId').options.loadData(res.content, res.content.length);
-  };
-
-  const renderer = ({ text }) => (text === '加载更多' ? (
-    <a
-      style={{
-        display: 'block', width: 'calc(100% + 24px)', marginLeft: '-12px', paddingLeft: '12px',
-      }}
-      onClick={handleLoadMore}
-      role="none"
-    >
-      {text}
-    </a>
-  ) : text);
-
-  const optionRenderer = ({ text }) => renderer({ text });
+  const dataSet = addLinkDs;
 
   const handleSumbit = async () => {
     try {
@@ -93,6 +53,7 @@ export default observer(({
     if (data) {
       dataSet.loadData([data]);
       setIsProject(data.scope !== 'self');
+      dataSet.current.set('projectId', { id: data.projectId, name: data.projectName });
     } else if (workBenchUseStore.getActiveStarProject) {
       dataSet.current.set('projectId', workBenchUseStore.getActiveStarProject.id);
     }
@@ -120,8 +81,6 @@ export default observer(({
             name="projectId"
             searchable
             searchMatcher="name"
-            optionRenderer={optionRenderer}
-            renderer={renderer}
           />
         ) : ''
       }

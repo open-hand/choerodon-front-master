@@ -1,5 +1,4 @@
 /* eslint-disable import/no-anonymous-default-export */
-import JSONbig from 'json-bigint';
 
 const linkValidate = (value) => {
   if (!value) {
@@ -13,7 +12,7 @@ const linkValidate = (value) => {
   return true;
 };
 
-export default (AppState) => ({
+export default (projectIdOptionsDs) => ({
   autoCreate: true,
   fields: [{
     type: 'string',
@@ -25,45 +24,14 @@ export default (AppState) => ({
     defaultValue: 10,
   }, {
     name: 'projectId',
-    type: 'string',
+    type: 'object',
     label: '项目',
     textField: 'name',
     valueField: 'id',
     dynamicProps: {
       required: ({ record }) => record.get('scope') === 'project',
     },
-    lookupAxiosConfig: (data) => ({
-      method: 'get',
-      url: `/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/users/${AppState.getUserId}/projects/paging?page=0&size=${
-        (function () {
-          if (data && data.record && data.record.get) {
-            return data.record.get('size') || 10;
-          }
-          return 10;
-        }())
-      }`,
-      data: {
-        param: [],
-        searchParams: {
-          name: data.params.name,
-        },
-      },
-      transformResponse(res) {
-        let newRes;
-        try {
-          newRes = JSONbig.parse(res);
-          if (newRes.content.length % 10 === 0 && newRes.content.length !== 0) {
-            newRes.content.push({
-              id: 'more',
-              name: '加载更多',
-            });
-          }
-          return newRes;
-        } catch (e) {
-          return res;
-        }
-      },
-    }),
+    options: projectIdOptionsDs,
   }, {
     name: 'name',
     type: 'string',
