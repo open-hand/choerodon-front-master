@@ -451,7 +451,7 @@ class Masters extends Component {
             <div id="autoRouter" className="content">
               {AppState.getCanShowRoute
               || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
-                <RouteIndex />
+                <RouteIndex AutoRouter={this.props.AutoRouter} />
                 ) : (
                   <div>
                     <Skeleton />

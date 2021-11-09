@@ -39,6 +39,9 @@ const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 const MasterIndex = (props:{
   [fields:string]:any
 }) => {
+  const {
+    AutoRouter,
+  } = props;
   const location = useLocation();
   const history = useHistory();
 
@@ -113,7 +116,9 @@ const MasterIndex = (props:{
 
   const getContainer = useMemo(() => {
     const content = isInOutward ? Outward : Master;
-    return React.createElement(content);
+    return React.createElement(content, {
+      AutoRouter,
+    });
   }, [isInOutward]);
 
   if (authStatus && !isInOutward) {
