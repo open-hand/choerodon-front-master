@@ -23,6 +23,7 @@ interface QuestionTreeProps {
   organizationId: number,
   isStar?: boolean,
   switchCode?: string,
+  onClickStar?:(record:any)=>void,
   idField?: string,
 }
 
@@ -33,7 +34,7 @@ interface ProjectProps {
 }
 
 const QuestionTree = ({
-  treeData, organizationId, isStar = false, switchCode = 'all', idField = 'issueId',
+  treeData, organizationId, isStar = false, switchCode = 'all', idField = 'issueId', onClickStar,
 }: QuestionTreeProps) => {
   const history = useHistory();
   const prefixCls = useMemo(() => 'c7ncd-workbench-question-tree', []);
@@ -45,6 +46,7 @@ const QuestionTree = ({
       history={history}
       switchCode={switchCode}
       isStar={isStar}
+      onClickStar={onClickStar}
     />
   );
 
