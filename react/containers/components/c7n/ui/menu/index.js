@@ -222,27 +222,32 @@ export default class CommonMenu extends Component {
   }
 
   getMenuLink(route) {
-    const { AppState, history } = this.props;
+    const { AppState } = this.props;
     const {
       id, name, type, organizationId, category,
     } = AppState.currentMenuType;
-    let search = '';
+    const search = new URLSearchParams();
     switch (type) {
       case 'site':
         if (AppState.isTypeUser) {
-          search = '?type=site';
+          search.set('type', 'site');
         }
+        search.set('name', name);
         break;
       case 'organization':
       case 'project':
-        search = `?type=${type}&id=${id}${name && `&name=${encodeURIComponent(name)}`}&category=${category}`;
+        search.set('type', type);
+        search.set('id', id);
+        name && search.set('name', name);
+        category && search.set('category', category);
         break;
       case 'user':
-        search = `?type=${type}`;
+        search.set('type', type);
         break;
       default:
     }
-    return `${route}${search}${search === '' ? `?organizationId=${organizationId}` : `&organizationId=${organizationId}`}`;
+    search.set('organizationId', organizationId);
+    return `${route}?${search.toString()}`;
   }
 
   findSelectedMenuByCode(child, code) {
@@ -343,7 +348,6 @@ export default class CommonMenu extends Component {
 
     return (
       <ItemGroup
-          // onTitleClick={this.handleClick}
         key={item.code}
         className="common-menu-right-popup"
       >
@@ -360,12 +364,6 @@ export default class CommonMenu extends Component {
     let child;
     const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
     child = MenuStore.getMenuData.filter((item) => item.id === activeMenuRoot.id);
-    // if (AppState.getCurrentTheme === 'theme4') {
-    //   const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
-    //   child = MenuStore.getMenuData.filter((item) => item.id === activeMenuRoot.id);
-    // } else {
-    //   child = MenuStore.getMenuData;
-    // }
     return (
       <div
         className={
@@ -403,15 +401,6 @@ export default class CommonMenu extends Component {
                 />
               ) : (
                 <Icon
-                  type={(function () {
-                    // if (AppState.getCurrentTheme === 'theme4') {
-                    //   if (collapsed) {
-                    //     return 'keyboard_arrow_right';
-                    //   }
-                    //   return 'keyboard_arrow_left';
-                    // }
-                    return 'menu';
-                  }())}
                   onClick={this.toggleRightMenu}
                 />
               )
@@ -450,16 +439,8 @@ export default class CommonMenu extends Component {
   }
 
   renderMenuSideIconName = (data) => {
-    const { MenuStore, AppState } = this.props;
     const str = iconMap[data.code] || 'xiezuo';
-    const root = MenuStore.getActiveMenuRoot;
-    if (true) {
-      return `${str}new.sprite`;
-    }
-    if (root && data.code === root[AppState.menuType.type]?.code) {
-      return `${str}click.sprite`;
-    }
-    return `${str}.sprite`;
+    return `${str}new.sprite`;
   }
 
   handleClickItemMenuSide = (item) => {
@@ -522,11 +503,6 @@ export default class CommonMenu extends Component {
               }
               onClick={() => this.handleClickItemMenuSide(data)}
             >
-              {/* { */}
-              {/*  (activeMenuRoot.id === data.id) && AppState.getCurrentTheme === '' && ( */}
-              {/*    <div className="c7ncd-origin-selected-line" /> */}
-              {/*  ) */}
-              {/* } */}
               <div
                 style={{
                   borderRadius: '8px',

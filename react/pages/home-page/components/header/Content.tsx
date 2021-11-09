@@ -38,6 +38,18 @@ const Header = (props:any) => {
     }
   }, [location.pathname, location.search]);
 
+  const shouldHiddenHead = () => {
+    const defaultBlackList = ['/iam/enterprise'];
+    if (defaultBlackList.some((pname) => location.pathname.startsWith(pname))) {
+      return true;
+    }
+    return false;
+  };
+
+  if (shouldHiddenHead()) {
+    return null;
+  }
+
   return (
     <div className={prefixCls}>
       {/* logo */}
