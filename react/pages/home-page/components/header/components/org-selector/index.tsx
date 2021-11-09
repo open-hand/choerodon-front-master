@@ -8,14 +8,13 @@ import { observer } from 'mobx-react-lite';
 import { useHistory, useLocation } from 'react-router-dom';
 import classnames from 'classnames';
 import { toJS } from 'mobx';
-import { isNil } from 'lodash';
 import { historyPushMenu } from '@/utils';
 import './index.less';
 import { OrgSelectorProps } from './interface';
+import { HOMEPAGE_PATH } from '@/constants';
 
 const HAS_BASE_PRO = C7NHasModule('@choerodon/base-business');
 const prefixCls = 'c7ncd-orgSelector';
-const homePage = '/workbench';
 
 const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
   const {
@@ -23,7 +22,6 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
       currentMenuType: {
         name, organizationId,
       },
-      currentMenuType,
     },
     AppState,
     HeaderStore: {
@@ -40,9 +38,10 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
 
   const currentOrgData = useMemo(() => (getOrgData ? toJS(getOrgData) : []), [getOrgData]);
 
+  // todo
   function autoSelect() {
     const localOrgId = localStorage.getItem('C7N-ORG-ID');
-    if (!isNil(localOrgId)) {
+    if (localOrgId && localOrgId !== 'undefined') {
       const orgObj = currentOrgData.find((v:Record<string, any>) => String(v.id) === localOrgId);
       if (orgObj) {
         selectState(orgObj);
@@ -54,6 +53,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
     }
   }
 
+  // todo...
   const selectState = useCallback((value:Record<string, any>, gotoHome?:boolean) => {
     const {
       id: selectId, organizationId: selectOrgId,
@@ -66,9 +66,9 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
 
     let path;
     if (gotoHome) {
-      path = `${homePage}?${parsed.toString()}`;
+      path = `${HOMEPAGE_PATH}?${parsed.toString()}`;
     } else {
-      path = `${pathname === '/' ? homePage : pathname}?${parsed.toString()}`;
+      path = `${pathname === '/' ? HOMEPAGE_PATH : pathname}?${parsed.toString()}`;
       AppState.changeMenuType(path);
     }
     historyPushMenu(history, path, null, 'replace');

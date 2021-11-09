@@ -1,4 +1,6 @@
-const WORKBENCH_CONFIG = { title: '工作台', path: '/workbench' };
+import { HOMEPAGE_PATH } from '@/constants';
+
+const WORKBENCH_CONFIG = { title: '工作台', path: HOMEPAGE_PATH };
 
 const WORKCALENDAR_CONFIG = { title: '工作日历', path: '/agile/work-calendar' };
 
