@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import { Modal } from 'choerodon-ui/pro';
 
-import Master from './master';
+import PageEntry from './pages';
 import './utils/iframeStorage';
 
 const getConfirmation = (message:string, callback:CallableFunction) => {
@@ -26,7 +26,7 @@ const getConfirmation = (message:string, callback:CallableFunction) => {
 
 const App = () => (
   <Router getUserConfirmation={getConfirmation}>
-    <Master />
+    <PageEntry />
   </Router>
 );
 

@@ -305,8 +305,8 @@ class AppState {
    */
   setProjectMenuTypeCategorys(data) {
     const newData = data;
-    if (data.type === 'project') {
-      if (data.categories) {
+    if (data?.type === 'project') {
+      if (data?.categories) {
         if (this.projectCategorys[(data?.projectId)]) {
           if (
             JSON.stringify(data.categories)

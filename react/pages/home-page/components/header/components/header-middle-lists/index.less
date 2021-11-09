@@ -1,0 +1,34 @@
+@prefixCls: c7ncd-header-middle-lists;
+
+.@{prefixCls} {
+  display: flex;
+  align-items: center;
+  &-item {
+    color: rgba(15, 19, 88, 0.65);
+    font-size: 14px;
+    font-weight: 500;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 14px;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+    &:hover,
+    &-active {
+      background-color: var(--primary-color-background);
+      color: var(--primary-color);
+      &::after {
+        width: 100%;
+        height: 3px;
+        background: var(--primary-color);
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    }
+  }
+  &-item + &-item {
+    margin-left: 16px;
+  }
+}
