@@ -57,6 +57,7 @@ export default function useStore(focusQuestions, organizationId, removeCache) {
         },
       });
       removeCache('content');
+      this.init();
       this.noticeRefreshValue += 1;
       if (isNaN(this.noticeRefreshValue)) {
         this.noticeRefreshValue = 0;
