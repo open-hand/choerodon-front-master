@@ -69,3 +69,5 @@ export * from '@/hoc';
 
 // 面包屑组件
 export { default as Breadcrumb } from '@/components/c7n-breadCrumb';
+
+export * from '@/apis';
