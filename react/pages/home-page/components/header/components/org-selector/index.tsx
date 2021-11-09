@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { useHistory, useLocation } from 'react-router-dom';
 import classnames from 'classnames';
 import { toJS } from 'mobx';
+import { isNil } from 'lodash';
 import { historyPushMenu } from '@/utils';
 import './index.less';
 import { OrgSelectorProps } from './interface';
@@ -41,7 +42,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
 
   function autoSelect() {
     const localOrgId = localStorage.getItem('C7N-ORG-ID');
-    if (localOrgId && localOrgId !== 'undefined') {
+    if (!isNil(localOrgId)) {
       const orgObj = currentOrgData.find((v:Record<string, any>) => String(v.id) === localOrgId);
       if (orgObj) {
         selectState(orgObj);
@@ -117,7 +118,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
 
   const renderContent = () => (
     <Dropdown
-      // disabled={!HAS_BASE_PRO}
+      disabled={!HAS_BASE_PRO}
       overlay={renderMenu()}
       placement="bottomCenter"
       trigger={['click']}
