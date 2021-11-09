@@ -30,27 +30,16 @@ export default class UserPreferences extends Component {
     MenuStore.loadMenuData({ type: 'site' }, true);
   }
 
-  preferences = () => {
-    const { MenuStore, history, HeaderStore } = this.props;
-    MenuStore.loadMenuData({ type: 'site' }, true).then((menus) => {
-      if (menus.length) {
-        const { route, domain } = findFirstLeafMenu(menus[0]);
-        historyPushMenu(history, `${route}?type=site`, domain);
-      }
-    });
-    HeaderStore.setUserPreferenceVisible(false);
-  };
-
   handleVisibleChange = (visible) => {
     this.props.HeaderStore.setUserPreferenceVisible(visible);
   };
 
-  getGlobalMenuData = (organizationId) => {
+  getGlobalMenuData = (organizationId, name) => {
     const { MenuStore, history } = this.props;
     MenuStore.loadMenuData({ type: 'site' }, false).then((menus) => {
       if (menus.length) {
         const { route, domain } = findFirstLeafMenu(menus[0]);
-        const routeWithOrgId = `${route}/?organizationId=${organizationId}`;
+        const routeWithOrgId = `${route}?organizationId=${organizationId}&name=${name}`;
         historyPushMenu(history, routeWithOrgId, domain);
       }
     });
@@ -58,14 +47,14 @@ export default class UserPreferences extends Component {
 
   handleMenuItemClick = ({ key }) => {
     const { history, AppState } = this.props;
-    const { organizationId } = queryString.parse(history.location.search);
+    const { organizationId, name } = queryString.parse(history.location.search);
     if (key === 'site-setting') {
-      this.getGlobalMenuData(organizationId);
+      this.getGlobalMenuData(organizationId, name);
     } else if (key === 'invitation') {
       this.invitation();
     } else {
       AppState.menuType.type = 'user';
-      history.push(`${key}?type=user&organizationId=${organizationId}`);
+      history.push(`${key}?type=user&name=${name}&organizationId=${organizationId}`);
     }
     this.handleVisibleChange(false);
   };
@@ -105,7 +94,7 @@ export default class UserPreferences extends Component {
     } = this.props;
     const { organizationId } = queryString.parse(history.location.search);
     const {
-      imageUrl, loginName, realName, email,
+      imageUrl, realName, email,
     } = AppState.getUserInfo || {};
     // const realData = MenuStore.menuGroup && MenuStore.menuGroup.user.slice()[0] && MenuStore.menuGroup.user.slice()[0].subMenus.filter(item => !blackList.has(item.code));
     const realData = [this.getUserInfoMenuItem()];

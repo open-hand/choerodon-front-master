@@ -40,7 +40,7 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
         const params:Record<string, any> = {
           type,
           id,
-          name: encodeURIComponent(name),
+          name,
           organizationId: id,
         };
         if (category) params.category = category;

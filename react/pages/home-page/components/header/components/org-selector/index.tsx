@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useEffect } from 'react';
 import {
   Icon, Dropdown, Menu, Tooltip,
 } from 'choerodon-ui';
@@ -20,9 +20,9 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
   const {
     AppState: {
       currentMenuType: {
-        organizationId, id, name,
+        name, organizationId,
       },
-      changeMenuType,
+      currentMenuType,
     },
     AppState,
     HeaderStore: {
@@ -39,6 +39,20 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
 
   const currentOrgData = useMemo(() => (getOrgData ? toJS(getOrgData) : []), [getOrgData]);
 
+  function autoSelect() {
+    const localOrgId = localStorage.getItem('C7N-ORG-ID');
+    if (localOrgId && localOrgId !== 'undefined') {
+      const orgObj = currentOrgData.find((v:Record<string, any>) => String(v.id) === localOrgId);
+      if (orgObj) {
+        selectState(orgObj);
+        return;
+      }
+    }
+    if (!organizationId && currentOrgData.length) {
+      selectState(currentOrgData[0]);
+    }
+  }
+
   const selectState = useCallback((value:Record<string, any>, gotoHome?:boolean) => {
     const {
       id: selectId, organizationId: selectOrgId,
@@ -54,21 +68,20 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
       path = `${homePage}?${parsed.toString()}`;
     } else {
       path = `${pathname === '/' ? homePage : pathname}?${parsed.toString()}`;
-      changeMenuType.call(AppState);
+      AppState.changeMenuType(path);
     }
     historyPushMenu(history, path, null, 'replace');
-  }, [changeMenuType, history, pathname]);
+  }, [AppState, history, pathname]);
 
   const orgButton = useMemo(() => {
     const btnCls = classnames(`${prefixCls}-button`);
-    const hasOrgName = name;
     return (
       <div
         className={btnCls}
       >
-        {hasOrgName && <Icon type="domain" />}
+        {name && <Icon type="domain" />}
         <span>
-          {hasOrgName || '请选择组织'}
+          {name || '请选择组织'}
         </span>
         {HAS_BASE_PRO && (
           <Icon
@@ -104,7 +117,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
 
   const renderContent = () => (
     <Dropdown
-      disabled={!HAS_BASE_PRO}
+      // disabled={!HAS_BASE_PRO}
       overlay={renderMenu()}
       placement="bottomCenter"
       trigger={['click']}
@@ -112,6 +125,12 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
       {orgButton}
     </Dropdown>
   );
+
+  useEffect(() => {
+    if (!organizationId) {
+      autoSelect();
+    }
+  }, [autoSelect, organizationId]);
 
   return (
     <div className={prefixCls}>
