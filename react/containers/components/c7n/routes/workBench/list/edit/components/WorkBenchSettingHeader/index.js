@@ -1,5 +1,7 @@
 // 配置自定义视图
-import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
+import React, {
+  useEffect, useRef, useImperativeHandle, forwardRef,
+} from 'react';
 import {
   TextField, Select, Button, Modal, Form,
 } from 'choerodon-ui/pro';
@@ -9,7 +11,7 @@ import {
 import queryString from 'query-string';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 import { useWorkBenchStore } from '../../../../stores';
-// import mappings from '../../../../stores/mappings';
+import { HOMEPAGE_PATH } from '@/constants';
 import styles from './index.less';
 
 const WorkBenchSettingHeader = (props, ref) => {
@@ -100,7 +102,7 @@ const WorkBenchSettingHeader = (props, ref) => {
     let { dashboardName, ...searchParams } = queryString.parse(search);
     searchParams = { ...searchParams, dashboardId };
     history.push({
-      pathname: '/workbench',
+      pathname: HOMEPAGE_PATH,
       search: `?${queryString.stringify(searchParams)}`,
     });
   }
