@@ -1,53 +1,47 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
   Form, Select, SelectBox, TextField, Tooltip,
+  DataSet,
 } from 'choerodon-ui/pro';
 import { Icon } from 'choerodon-ui';
+import addLinkDataSet from './stores/addLinkDataSet';
+
+import projectIdOptionsDataSet from './stores/projectIdOptionsDataSet';
 
 const { Option } = Select;
 
 export default observer(({
-  AppState, modal, useStore, data, workBenchUseStore, activeId, type, handleRefresh, addLinkDs,
+  AppState, modal, useStore, data, workBenchUseStore, type, handleRefresh, addLinkDs,
 }) => {
-  const dataSet = addLinkDs;
+  const projectIdOptionsDs = useMemo(() => new DataSet(projectIdOptionsDataSet(AppState.getUserId)), [AppState]);
+  const dataSet = useMemo(() => new DataSet(addLinkDataSet(projectIdOptionsDs)), []);
 
   const handleSumbit = async () => {
     try {
       const result = await dataSet.validate();
       if (result) {
-        let res;
-        if (data) {
-          res = await dataSet.submit();
-        } else {
-          res = await useStore.axiosCreateQuickLink(dataSet.toData()[0], activeId, type);
-        }
+        const res = await dataSet.submit();
         if (res && res.failed) {
           return false;
         }
-        dataSet.reset();
         handleRefresh && handleRefresh();
         return true;
       }
       return false;
     } catch (e) {
-      dataSet.reset();
-      return true;
+      return false;
     }
   };
 
   modal.handleOk(handleSumbit);
 
-  modal.handleCancel(() => {
-    dataSet.reset();
-  });
-
   const [isProject, setIsProject] = useState(true);
 
   useEffect(() => {
     if (type) {
-      dataSet.current.set('scope', type);
+      dataSet.current?.set('scope', type);
       setIsProject(type !== 'self');
     }
     if (data) {
@@ -59,6 +53,10 @@ export default observer(({
     }
   }, []);
 
+  useEffect(() => {
+    setIsProject(dataSet.current.get('scope') === 'project');
+  }, [dataSet.current.get('scope')]);
+
   return (
     <Form labelLayout="float" className="addQuickLinkForm" record={dataSet.current}>
       <p className="addQuickLinkForm-p">
@@ -69,7 +67,6 @@ export default observer(({
       </p>
       <SelectBox
         className="addQuickLinkForm-scope"
-        onChange={(dataSource) => setIsProject(dataSource === 'project')}
         name="scope"
       >
         <Option value="project">项目可见</Option>

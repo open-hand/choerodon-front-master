@@ -51,7 +51,6 @@ const QuickLink = observer(() => {
       },
       children: (
         <AddQuickLink
-          activeId={selectedProjectId}
           type={type}
           AppState={AppState}
           data={data}
@@ -62,7 +61,7 @@ const QuickLink = observer(() => {
         />
       ),
       drawer: true,
-      okText: '添加',
+      okText: data ? '修改' : '添加',
     });
   };
 

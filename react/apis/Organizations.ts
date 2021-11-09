@@ -24,6 +24,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
       data,
     });
   }
+
+  createQuickLink(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/quick_links`,
+      method: 'post',
+      data,
+    });
+  }
 }
 
 const organizationsApi = new OrganizationsApi();

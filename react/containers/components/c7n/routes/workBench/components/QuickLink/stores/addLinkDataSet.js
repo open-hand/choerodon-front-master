@@ -22,6 +22,20 @@ export default (projectIdOptionsDs) => ({
       };
       return (organizationsApiConfig.editQuickLink(param));
     },
+    create: ({ data: [data] }) => {
+      let param;
+      if (data.scope === 'project') {
+        param = {
+          id: data.id, projectId: data.projectId.id, name: data.name, linkUrl: data.linkUrl, scope: data.scope,
+        };
+      } else {
+        param = {
+          id: data.id, name: data.name, linkUrl: data.linkUrl, scope: data.scope,
+        };
+      }
+
+      return (organizationsApiConfig.createQuickLink(param));
+    },
   },
   fields: [{
     type: 'string',
