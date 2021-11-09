@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation, useParams } from 'react-router';
 import classNames from 'classnames';
+import { useQueryString } from '@choerodon/components';
 import { Permission } from '@/components/permission';
 import { PermissionService } from '@/components/permission/interface';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
@@ -23,7 +24,7 @@ const ListItem:React.FC<ListItemProps> = (props) => {
   const location = useLocation();
   const history = useHistory();
 
-  const { organizationId } = useParams<{organizationId:string}>();
+  const { organizationId } = useQueryString();
 
   const {
     pathname,

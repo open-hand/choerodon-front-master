@@ -18,13 +18,9 @@ const MARKET_CONFIG = {
   style: { marginLeft: 2 },
 };
 
-const defaultLists = [
-  WORKBENCH_CONFIG,
-  WORKCALENDAR_CONFIG,
-];
-
 export {
-  defaultLists,
   KNOWLEDGE_CONFIG,
   MARKET_CONFIG,
+  WORKBENCH_CONFIG,
+  WORKCALENDAR_CONFIG,
 };

@@ -29,16 +29,20 @@ function useC7NAuth(autoAuth?:boolean) {
     setTrue();
     try {
       if (accessToken) {
+        // 单点登录界面过来的时候
         setAccessToken(accessToken, tokenType, expiresIn);
         window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
-        HeaderStore.axiosGetRoles();
-        AppState.loadModules();
-        AppState.loadDeployServices();
-        await AppState.loadUserInfo();
       } else if (!getAccessToken()) {
+        // token过期
         authorizeC7n();
         return;
       }
+      // 一进页面就需要请求的接口
+      HeaderStore.axiosGetRoles();
+      AppState.loadModules();
+      AppState.loadDeployServices();
+      await HeaderStore.axiosGetOrgAndPro();
+      await AppState.loadUserInfo();
       setFalse();
     } catch (e) {
       throw new Error(e);

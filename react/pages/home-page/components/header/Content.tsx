@@ -1,24 +1,42 @@
 import React, {
-  useEffect, FC,
+  useEffect,
 } from 'react';
 import { observer } from 'mobx-react-lite';
+import { inject } from 'mobx-react';
+import { useLocation } from 'react-router';
 import { useHeaderStore } from './stores';
-import {} from 'choerodon-ui/pro';
-import {} from '@choerodon/components';
 import HeaderLogo from './components/header-logo';
 import ProjectSelector from './components/project-selector';
 import HeaderMiddleLists from './components/header-middle-lists';
 import OrgSelector from './components/org-selector';
+import HeaderRightLists from './components/header-right-lists';
+import UserEntry from './components/user-entry';
 
-const Header = observer(() => {
+const Header = (props:any) => {
   const {
     mainStore,
     prefixCls,
   } = useHeaderStore();
 
-  useEffect(() => {
+  const {
+    AppState,
+  } = props;
 
+  const location = useLocation();
+
+  useEffect(() => {
+    AppState.setCurrentDropDown(AppState.getStarProject, AppState.getRecentUse);
+  }, [location]);
+
+  useEffect(() => {
+    AppState.getProjects();
   }, []);
+
+  useEffect(() => {
+    if (!location.pathname.includes('unauthorized')) {
+      sessionStorage.setItem('historyPath', location.pathname + location.search);
+    }
+  }, [location.pathname, location.search]);
 
   return (
     <div className={prefixCls}>
@@ -26,10 +44,16 @@ const Header = observer(() => {
       <HeaderLogo />
       {/* 项目选择框 */}
       <ProjectSelector />
+      {/* 头部路由按钮列表 */}
       <HeaderMiddleLists />
+      {/* 组织选择框 */}
       <OrgSelector />
+      {/* 右侧Icon列表 */}
+      <HeaderRightLists />
+      {/* 用户头像 */}
+      <UserEntry />
     </div>
   );
-});
+};
 
-export default Header;
+export default inject('AppState')(observer(Header));

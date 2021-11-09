@@ -15,7 +15,8 @@ import {
 import JSONBig from 'json-bigint';
 import { TimePopover } from '@choerodon/components';
 import WSHandler from '@/components/ws/WSHandler';
-import defaultAvatar from './style/icons/favicon.png';
+import defaultAvatar from '@/assets/images/favicon.png';
+import './index.less';
 
 const { TabPane } = Tabs;
 const PREFIX_CLS = 'c7n';
@@ -46,7 +47,7 @@ class RenderPopoverContentClass extends Component {
       HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, openCleanAllModal, handleSettingReceive, readAllMsg,
     } = this.props;
     const {
-      inboxVisible, getUnreadAll, announcementClosed, getUnreadMsg, getIsTodo, getUnreadOther,
+      inboxVisible, getUnreadMsg, getUnreadOther,
     } = HeaderStore;
     const siderClasses = classNames({
       [`${prefixCls}-sider`]: true,
@@ -113,10 +114,10 @@ class RenderPopoverContentDetailClass extends Component {
 
   render() {
     const {
-      HeaderStore, AppState, inboxData, inboxLoading, renderMessages, handleVisibleChange, cleanAllMsg,
+      HeaderStore, AppState,
     } = this.props;
     const {
-      inboxDetailVisible, getUnreadAll, announcementClosed, getUnreadMsg, getUnreadNotice, inboxDetail,
+      inboxDetailVisible, inboxDetail,
     } = HeaderStore;
     const { systemLogo, systemName } = AppState.getSiteInfo;
     const realSystemLogo = systemLogo || defaultAvatar;
@@ -166,7 +167,7 @@ class RenderPopoverContentDetailClass extends Component {
             <div className="title">
               <span>
                 <Icon type={isMsg ? 'textsms' : 'volume_up'} style={{ marginRight: 10 }} />
-                <a onClick={(e) => { }}>{HeaderStore.inboxDetail.title}</a>
+                <a>{HeaderStore.inboxDetail.title}</a>
               </span>
             </div>
             <div className="info">
@@ -187,13 +188,9 @@ class RenderPopoverContentDetailClass extends Component {
                 )
               }
             </div>
-            {/* <div className="content">
-              <p dangerouslySetInnerHTML={{ __html: `${HeaderStore.inboxDetail.content.replace(reg, '')}` }} />
-            </div> */}
             <div className="content c7n-boot-header-inbox-wrap">
               <div
                 className="c7n-boot-header-inbox-content"
-                // eslint-disable-next-line react/no-danger
                 dangerouslySetInnerHTML={{ __html: `${HeaderStore.inboxDetail.content}` }}
               />
             </div>
@@ -203,6 +200,8 @@ class RenderPopoverContentDetailClass extends Component {
     );
   }
 }
+
+const subPrefix = 'c7ncd-wsbox-btn';
 
 @withRouter
 @inject('HeaderStore', 'AppState')
@@ -234,7 +233,6 @@ export default class Inbox extends Component {
   cleanAllMsg = () => {
     const { AppState, HeaderStore } = this.props;
     HeaderStore.cleanAllMsg(AppState.userInfo.id);
-    // HeaderStore.setInboxVisible(false);
   };
 
   openCleanAllModal = () => {
@@ -330,9 +328,7 @@ export default class Inbox extends Component {
   };
 
   handleMessageTitleClick = (e, data) => {
-    // set as read && go to message detail
     this.cleanMsg(e, data);
-    // window.open(`/#/notify/user-msg?type=site&msgId=${data.id}&msgType=${data.type}`);
     const { HeaderStore } = this.props;
     HeaderStore.setInboxDetailVisible(true);
     HeaderStore.setInboxDetail(data);
@@ -347,7 +343,7 @@ export default class Inbox extends Component {
   };
 
   renderMessages = (inboxData) => {
-    const { AppState, HeaderStore } = this.props;
+    const { HeaderStore } = this.props;
     if (inboxData.length > 0) {
       const org = HeaderStore?.getOrgData?.[0];
       return (
@@ -403,16 +399,9 @@ export default class Inbox extends Component {
                       ) : null}
                     </div>
                     {showPicUrl ? (
-                      // eslint-disable-next-line jsx-a11y/alt-text
                       <img style={{ maxWidth: '100%', marginTop: 10 }} src={showPicUrl.replace(/&amp;/g, '&')} />
                     ) : null}
                   </div>
-                  {/* <div className={`${prefixCls}-sider-content-list-time`}>
-                    <TimeAgo
-                      datetime={sendTime.slice(0, sendTime.length - 3)}
-                      locale="zh_CN"
-                    />
-                  </div> */}
                 </li>
               );
             })
@@ -429,51 +418,24 @@ export default class Inbox extends Component {
 
   render() {
     const {
-      AppState, HeaderStore: {
-        inboxData, inboxLoading, getUnreadMessageCount, getCurrentTheme, notificationKeyList,
+      HeaderStore: {
+        inboxData, inboxLoading, getUnreadMessageCount, notificationKeyList,
       },
     } = this.props;
-    const SelfButton = true ? ButtonPro : Button;
     const popOverContent = { inboxData, inboxLoading };
     return (
-      <div className={classNames({
-        'theme4-badge': true,
-      })}
-      >
+      <>
         <WSHandler
           messageKey="hzero-web"
           onMessage={this.handleMessage}
         >
-          {
-            (data) => (
-              <Badge
-                onClick={this.handleButtonClick}
-                className={
-                  classNames(
-                    [prefixCls],
-                    'ignore-react-onclickoutside',
-                    { 'theme4-inbox-badge': true },
-                  )
-                }
-                count={getUnreadMessageCount}
-              >
-                <SelfButton
-                  className={classNames({
-                    'theme4-inbox': true,
-                  })}
-                  funcType="flat"
-                >
-                  <Icon type={true ? 'notifications_none' : 'notifications'} />
-                </SelfButton>
-              </Badge>
-            )
-          }
-        </WSHandler>
-        <WSHandler
-          messageKey="choerodon-pop-ups"
-          onMessage={this.handleMessagePop}
-        >
-          {() => <></>}
+          <Badge
+            onClick={this.handleButtonClick}
+            count={getUnreadMessageCount}
+            className={subPrefix}
+          >
+            <Icon className={`${subPrefix}-icon`} type="notifications_none" />
+          </Badge>
         </WSHandler>
         <RenderPopoverContentClass
           {...popOverContent}
@@ -494,7 +456,7 @@ export default class Inbox extends Component {
             <Button onClick={this.handleCloseAllNotification}>关闭全部</Button>
           </div>
         ), document.body) : null}
-      </div>
+      </>
     );
   }
 }

@@ -16,7 +16,6 @@ import { mount, get as cherodonGet } from '@choerodon/inject';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '@/components/axios';
-import MasterHeader from '../ui/header';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from './RouteIndex';
@@ -27,7 +26,7 @@ import CommonMenu, { defaultBlackList } from '../ui/menu';
 import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
-// import Header from '@/pages/home-page/components/header';
+import Header from '@/pages/home-page/components/header';
 
 const spinStyle = {
   textAlign: 'center',
@@ -430,8 +429,7 @@ class Masters extends Component {
           style={fullPage ? { display: 'none' } : {}}
         >
           <AnnouncementBannerPro />
-          {/* <Header /> */}
-          <MasterHeader />
+          <Header />
         </div>
         <div className="page-body">
           <div className="content-wrapper">

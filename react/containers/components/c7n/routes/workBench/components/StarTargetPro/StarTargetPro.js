@@ -13,7 +13,7 @@ import { getRandomBackground } from '@/containers/components/c7n/util';
 import handleClickProject from '@/containers/components/util/gotoProject';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
-import { getListIsCurrentOrg } from '../../../../ui/header/components/ProjectSelector';
+import { getListIsCurrentOrg } from '@/pages/home-page/components/header/components/project-selector';
 import { useStarTargetPro } from './stores';
 import { useWorkBenchStore } from '../../stores';
 import emptyImg from '@/assets/images/owner.png';

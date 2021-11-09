@@ -4,7 +4,9 @@ import { fileServer } from '@/utils';
 
 export default class Avatar extends Component {
   render() {
-    const { src, children, className, style, prefixCls, ...props } = this.props;
+    const {
+      src, children, className, style, prefixCls, ...props
+    } = this.props;
     return (
       <div
         className={classNames(`${prefixCls}-avatar`, className)}

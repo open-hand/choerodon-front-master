@@ -1,3 +1,4 @@
+@import "./HeaderTheme4.less";
 :root .c7n-menu-submenu-inline > .c7n-menu-submenu-title:after {
   font-size: 16px;
 }
@@ -17,24 +18,25 @@
   }
 
   .c7n-menu-item-group-title {
-    font-size: .12rem;
-    padding-top: .24rem;
-    padding-bottom: .1rem;
-    color: rgba(0, 0, 0, .54);
-    padding-left: .12rem;
+    font-size: 0.12rem;
+    padding-top: 0.24rem;
+    padding-bottom: 0.1rem;
+    color: rgba(0, 0, 0, 0.54);
+    padding-left: 0.12rem;
   }
 
   @include button-link-masker();
 
   .icon {
-    font-size: .2rem !important;
-    color: rgba(0, 0, 0, .54);
+    font-size: 0.2rem !important;
+    color: rgba(0, 0, 0, 0.54);
   }
 
   .icon + span {
-    transition: opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    margin-left: .03rem;
-    font-size: .14rem;
+    transition: opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+      width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    margin-left: 0.03rem;
+    font-size: 0.14rem;
     // color: #000;
   }
 
@@ -46,7 +48,10 @@
     background-color: #fafafa;
 
     .c7n-menu-inline-collapsed > .c7n-menu-item,
-    .c7n-menu-inline-collapsed > .c7n-menu-item-group > .c7n-menu-item-group-list > .c7n-menu-item,
+    .c7n-menu-inline-collapsed
+      > .c7n-menu-item-group
+      > .c7n-menu-item-group-list
+      > .c7n-menu-item,
     .c7n-menu-inline-collapsed > .c7n-menu-submenu > .c7n-menu-submenu-title {
       padding: 0 0.15rem !important;
     }
@@ -90,7 +95,7 @@
       font-size: 18px;
       align-items: center;
       flex-shrink: 0;
-      color: rgba(0, 0, 0, .65);
+      color: rgba(0, 0, 0, 0.65);
       white-space: nowrap;
 
       // margin-bottom: -15px;
@@ -128,7 +133,6 @@
     }
 
     .c7n-menu .c7n-menu-item {
-
       // color: #000;
       &-selected,
       &-selected:hover {
@@ -196,7 +200,8 @@
 
     &-popup.c7n-menu-submenu-popup {
       .c7n-menu {
-        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.20), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+          0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
         min-width: 130px;
 
         &-item {
@@ -225,14 +230,14 @@
         }
 
         .c7n-menu-item-group-title {
-          padding-left: .12rem;
+          padding-left: 0.12rem;
         }
 
         .c7n-menu-submenu-title {
           text-overflow: clip;
 
           .c7n-menu-submenu-arrow {
-            right: .06rem;
+            right: 0.06rem;
           }
         }
       }

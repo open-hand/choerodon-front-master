@@ -1,4 +1,4 @@
-const SERVICE_KNOWLEDGE = 'knowledge';
+const SERVICE_KNOWLEDGE = 'knowledgebase-service';
 const SERVICE_MARKET = 'market-service';
 
 export {

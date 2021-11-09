@@ -6,7 +6,9 @@ import { get } from '@choerodon/inject';
 import { inject } from 'mobx-react';
 import map from 'lodash/map';
 import { SERVICE_KNOWLEDGE, SERVICE_MARKET } from '@/constants';
-import { defaultLists, KNOWLEDGE_CONFIG, MARKET_CONFIG } from './CONSTANTS';
+import {
+  KNOWLEDGE_CONFIG, MARKET_CONFIG, WORKBENCH_CONFIG, WORKCALENDAR_CONFIG,
+} from './CONSTANTS';
 import {} from 'choerodon-ui/pro';
 import {} from '@choerodon/components';
 
@@ -50,21 +52,22 @@ const HeaderMiddleLists:FC<HeaderMiddleListsProps> = (props) => {
   }, []);
 
   const getLists = useMemo(() => {
-    const tempLists = defaultLists;
+    const tempLists = [
+      WORKBENCH_CONFIG,
+      WORKCALENDAR_CONFIG,
+    ];
     if (serviceCodeLists.includes(SERVICE_KNOWLEDGE)) {
       tempLists.push(KNOWLEDGE_CONFIG);
     }
     if (serviceCodeLists.includes(SERVICE_MARKET) && !isSaas?.[organizationId]) {
       tempLists.push(MARKET_CONFIG);
     }
-    return tempLists;
+    return map(tempLists, (config) => <ListItem {...config} />);
   }, [isSaas, organizationId, serviceCodeLists]);
-
-  const renderLists = () => map(getLists, (config) => <ListItem {...config} />);
 
   return (
     <div className={prefixCls}>
-      {renderLists()}
+      {getLists}
     </div>
   );
 };
