@@ -1,4 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
+import { organizationsApiConfig } from '@/apis';
 
 const linkValidate = (value) => {
   if (!value) {
@@ -14,6 +15,14 @@ const linkValidate = (value) => {
 
 export default (projectIdOptionsDs) => ({
   autoCreate: true,
+  transport: {
+    update: ({ data: [data] }) => {
+      const param = {
+        id: data.id, projectId: data.projectId.id, name: data.name, linkUrl: data.linkUrl, scope: data.scope, objectVersionNumber: data.objectVersionNumber,
+      };
+      return (organizationsApiConfig.editQuickLink(param));
+    },
+  },
   fields: [{
     type: 'string',
     name: 'scope',

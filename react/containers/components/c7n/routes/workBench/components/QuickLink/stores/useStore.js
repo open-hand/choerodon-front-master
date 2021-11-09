@@ -33,8 +33,5 @@ export default function useStore(organizationId, AppState) {
     async axiosDeleteQuickLink(id, activeId, type) {
       await axios.delete(`/iam/choerodon/v1/organizations/${organizationId}/quick_links/${id}`);
     },
-    async axiosEditQuickLink(data, activeId, type) {
-      await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/quick_links/${data.id}`, data);
-    },
   }));
 }
