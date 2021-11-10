@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-
 function handleDisabled({
   dataSet, record, categoryCodes, isSelected, createProjectStore,
 }) {
@@ -43,7 +42,10 @@ function setRequireModule({ dataSet, selected, categoryCodes }) {
   }
 }
 
-export default ({ organizationId, categoryCodes, createProjectStore }) => ({
+// eslint-disable-next-line import/no-anonymous-default-export
+export default ({
+  organizationId, categoryCodes, createProjectStore,
+}) => ({
   autoCreate: false,
   autoQuery: false,
   selection: 'multiple',

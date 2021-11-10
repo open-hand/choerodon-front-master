@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import queryString from 'query-string';
-import { mount } from '@choerodon/inject';
+import { mount, get } from '@choerodon/inject';
 import { Page } from '@/components/c7n-page';
 import { useWorkBenchStore } from '../../stores';
 import WorkBenchHeader from './components/WorkBenchHeader';
@@ -42,16 +42,14 @@ const WorkBench = () => {
       })}
     </Page>
   ) : (
-    !AppState.getUserWizardList && (
-      <Page className={prefixCls}>
-        <WorkBenchHeader />
-        <WorkBenchDashboard
-          dashboardId={viewDs.current?.get('dashboardId')}
-          isEdit={false}
-          onOpenCardModal={redirectToEdit}
-        />
-      </Page>
-    )
+    <Page className={prefixCls}>
+      <WorkBenchHeader />
+      <WorkBenchDashboard
+        dashboardId={viewDs.current?.get('dashboardId')}
+        isEdit={false}
+        onOpenCardModal={redirectToEdit}
+      />
+    </Page>
   );
 };
 
