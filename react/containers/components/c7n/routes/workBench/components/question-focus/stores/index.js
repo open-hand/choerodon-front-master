@@ -2,10 +2,12 @@ import React, {
   createContext, useContext, useMemo, useEffect, useState,
 } from 'react';
 import { inject } from 'mobx-react';
+import { remove } from 'mobx';
 import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
 import { get } from 'lodash';
+import { usePersistFn } from 'ahooks';
 import { useWorkBenchStore } from '../../../stores';
 import QuestionDataSet from './QuestionDataSet';
 import useStore from './useStore';
@@ -31,11 +33,13 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     focusQuestions,
   } = cacheStore;
-
-  const questionStore = useStore(focusQuestions);
+  const handleRemoveCache = usePersistFn((key = undefined) => {
+    key ? remove(focusQuestions, key) : cacheStore.setFocusQuestions({});
+  });
+  const questionStore = useStore(focusQuestions, organizationId, handleRemoveCache);
 
   const {
-    tabKey,
+    tabKey, noticeRefreshValue,
   } = questionStore;
 
   const questionDs = useMemo(() => {
@@ -63,7 +67,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     } else {
       questionDs.query();
     }
-  }, [questionDs]);
+  }, [questionDs, noticeRefreshValue]);
 
   const value = {
     ...props,

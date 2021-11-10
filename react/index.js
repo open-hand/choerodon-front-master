@@ -1,5 +1,3 @@
-export { default as MasterHeader } from './containers/components/c7n/ui/header';
-
 export { default as CommonMenu } from './containers/components/c7n/ui/menu';
 
 export { default as C7NIcon } from '@/components/c7n-icon';
@@ -69,3 +67,5 @@ export * from '@/hoc';
 
 // 面包屑组件
 export { default as Breadcrumb } from '@/components/c7n-breadCrumb';
+
+export * from '@/apis';

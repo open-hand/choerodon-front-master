@@ -2,6 +2,8 @@ declare interface Window {
   _env_: {
     /** 不需要 */
     outward: string
+    SAAS_FEEDBACK:string
+    EXTERNAL_LINK:string
   }
 }
 

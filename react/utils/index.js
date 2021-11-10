@@ -18,6 +18,7 @@ export {
   ACCESS_TOKEN, AUTH_URL, FILE_SERVER, LOCAL, WEBSOCKET_SERVER, STRING_DEVIDER, API_HOST,
 } from './constants';
 export { getMessage, intl } from './intl';
+
 // 生成指定长度的随机字符串
 export function randomString(len = 32) {
   let code = '';
@@ -30,8 +31,6 @@ export function randomString(len = 32) {
 }
 
 export function historyPushMenu(history, path, domain, method = 'push') {
-  // eslint-disable-next-line no-param-reassign
-  method = 'push';
   if (!domain || LOCAL) {
     history[method](path);
   } else if (!path) {

@@ -80,7 +80,7 @@ const PageWrap:React.FC<PageWrapperProps> = (props) => {
   const tabCls = classNames(
     prefixCls,
     {
-      [`${prefixCls}-hasHeader`]: !noHeader?.includes(currentKey),
+      [`${prefixCls}-hasHeader`]: noHeader?.length && !noHeader?.includes(currentKey),
     },
     className,
   );

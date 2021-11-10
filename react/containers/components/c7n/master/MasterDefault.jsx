@@ -16,7 +16,6 @@ import { mount, get as cherodonGet } from '@choerodon/inject';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '@/components/axios';
-import MasterHeader from '../ui/header';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from './RouteIndex';
@@ -27,6 +26,7 @@ import CommonMenu, { defaultBlackList } from '../ui/menu';
 import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
+import Header from '@/pages/home-page/components/header';
 
 const spinStyle = {
   textAlign: 'center',
@@ -264,16 +264,6 @@ class Masters extends Component {
     this.getSaaSUserRestDays();
   }
 
-  isInOutward = (pathname) => {
-    // eslint-disable-next-line no-underscore-dangle
-    const injectOutward = window._env_.outward;
-    if (injectOutward) {
-      const arr = injectOutward.split(',').concat(['/unauthorized']);
-      return arr.some((v) => pathname.startsWith(v));
-    }
-    return false;
-  };
-
   /**
    * @description: 根据返回的themeColor改变全局primaryColor变量
    * @param {*}
@@ -432,13 +422,6 @@ class Masters extends Component {
     } = this.props;
     const search = new URLSearchParams(location.search);
     const fullPage = search.get('fullPage');
-    if (this.isInOutward(this.props.location.pathname)) {
-      return (
-        <div className="page-wrapper">
-          <RouteIndex />
-        </div>
-      );
-    }
     return AppState.isAuth && AppState.currentMenuType ? (
       <div className="page-wrapper">
         <div
@@ -446,7 +429,7 @@ class Masters extends Component {
           style={fullPage ? { display: 'none' } : {}}
         >
           <AnnouncementBannerPro />
-          <MasterHeader />
+          <Header />
         </div>
         <div className="page-body">
           <div className="content-wrapper">
@@ -468,7 +451,7 @@ class Masters extends Component {
             <div id="autoRouter" className="content">
               {AppState.getCanShowRoute
               || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
-                <RouteIndex />
+                <RouteIndex AutoRouter={this.props.AutoRouter} />
                 ) : (
                   <div>
                     <Skeleton />
