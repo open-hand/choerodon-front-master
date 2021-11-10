@@ -23,6 +23,7 @@ const QuickLink = observer(() => {
     AppState: { getUserInfo },
     quickLinkUseStore,
     quickLinkDs,
+    addLinkDs,
   } = useQuickLinkStore();
 
   const {
@@ -50,17 +51,17 @@ const QuickLink = observer(() => {
       },
       children: (
         <AddQuickLink
-          activeId={selectedProjectId}
           type={type}
           AppState={AppState}
           data={data}
           useStore={quickLinkUseStore}
           workBenchUseStore={workBenchUseStore}
           handleRefresh={handleRefresh}
+          addLinkDs={addLinkDs}
         />
       ),
       drawer: true,
-      okText: '添加',
+      okText: data ? '修改' : '添加',
     });
   };
 

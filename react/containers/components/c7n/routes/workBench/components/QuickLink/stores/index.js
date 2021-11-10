@@ -1,11 +1,10 @@
 import React, {
-  createContext, useContext, useMemo, useEffect,
+  createContext, useContext, useMemo,
 } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
 import { useWorkBenchStore } from '@/containers/components/c7n/routes/workBench/stores';
-import { get } from 'lodash';
 import useStore from './useStore';
 import quickLinkDataSet from './quickLinkDataSet';
 
