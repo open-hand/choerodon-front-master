@@ -35,8 +35,6 @@ const WorkBench = () => {
     });
   };
 
-  console.log(get('base-pro:newUserGuidePage'));
-
   return AppState.getUserWizardList ? (
     <Page className={prefixCls}>
       {mount('base-pro:newUserGuidePage', {

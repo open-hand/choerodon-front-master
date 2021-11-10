@@ -39,18 +39,20 @@ export default observer(() => {
   } = useProjectsProStore();
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
-  const [inNewUserGuideStep, setInNewUserGuideStep] = useState(false);
+  const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
 
   useEffect(() => {
     if (
-      Array.isArray(AppState.getUserWizardStatus)
+      AppState.getUserWizardStatus
       && AppState.getUserWizardStatus[0].status === 'uncompleted'
     ) {
-      setInNewUserGuideStep(true);
+      setInNewUserGuideStepOne(true);
       setCreateBtnToolTipHidden(false);
+    } else {
+      setInNewUserGuideStepOne(false);
+      setCreateBtnToolTipHidden(true);
     }
-    console.log(AppState.getUserWizardStatus, 6666);
-  }, []);
+  }, [AppState.getUserWizardStatus]);
 
   const refresh = (projectId) => {
     ProjectsProUseStore.axiosGetProjects();
@@ -71,6 +73,7 @@ export default observer(() => {
           refresh={refresh}
           projectId={currentProjectId}
           categoryCodes={categoryCodes}
+          inNewUserGuideStepOne={inNewUserGuideStepOne}
         />
       ),
       okText: currentProjectId ? '保存' : '创建',
@@ -425,7 +428,7 @@ export default observer(() => {
   };
 
   const getCreatBtnTitle = () => {
-    if (inNewUserGuideStep) {
+    if (inNewUserGuideStepOne) {
       return (
         <div style={{ background: '#6E80F1 !important' }}>
           <div style={{ padding: 8 }}>
@@ -459,6 +462,9 @@ export default observer(() => {
     if (!getCanCreate) {
       setCreateBtnToolTipHidden(hidden);
     }
+    if (inNewUserGuideStepOne && createBtnToolTipHidden === true && !hidden) {
+      setCreateBtnToolTipHidden(hidden);
+    }
   };
 
   const renderTitle = () => {
@@ -488,11 +494,13 @@ export default observer(() => {
             service={['choerodon.code.organization.project.ps.create']}
           >
             <Tooltip
-              popupClassName={inNewUserGuideStep ? 'c7n-pro-popup-projects-create-guide' : ''}
+              popupClassName={
+                inNewUserGuideStepOne ? 'c7n-pro-popup-projects-create-guide' : ''
+              }
               hidden={createBtnToolTipHidden}
               onHiddenBeforeChange={onHiddenBeforeChange}
               title={getCreatBtnTitle}
-              placement={inNewUserGuideStep ? 'bottomRight' : 'bottom'}
+              placement={inNewUserGuideStepOne ? 'bottomRight' : 'bottom'}
             >
               <Button
                 funcType="raised"
