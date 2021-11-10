@@ -25,7 +25,7 @@ function getFirst(str) {
 }
 
 const QuestionNode = observer(({
-  history, record, organizationId, switchCode, isStar,
+  history, record, organizationId, switchCode, isStar, onClickStar,
 }) => {
   const {
     projectVO, typeCode, issueTypeVO, issueNum, summary, priorityVO: customPriorityVO,
@@ -258,7 +258,16 @@ const QuestionNode = observer(({
         <Tooltip title={summary} placement="top">
           <span className={`${prefixCls}-main-description`}>{summary}</span>
         </Tooltip>
-        {isStar && starBeacon && <Icon className={`${prefixCls}-main-star`} type="stars" />}
+        {isStar && starBeacon && (
+        <Icon
+          className={`${prefixCls}-main-star`}
+          type="stars"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClickStar && onClickStar(record);
+          }}
+        />
+        )}
         {getStatus()}
         {(switchCode === 'reportedBug' || (isStar && typeCode !== 'feature')) && getUsers(assignees || [{ id: assigneeId, imageUrl: assigneeImageUrl, realName: assigneeRealName }])}
         {typeCode === 'feature' && getProjects(featureTeams)}

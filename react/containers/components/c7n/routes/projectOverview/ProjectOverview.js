@@ -11,10 +11,8 @@ import {
 import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
-import {
-  Breadcrumb,
-} from '../../../../../index';
-import { Content, Page } from '@/components/c7n-page';
+import { Page, Content } from '@/components/c7n-page';
+import Breadcrumb from '@/components/c7n-breadCrumb';
 import { Permission } from '@/components/permission';
 import ServiceInfo from './components/ServiceInfo';
 import EnvInfo from './components/EnvInfo';

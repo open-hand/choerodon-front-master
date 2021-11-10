@@ -50,14 +50,14 @@ class Outward extends Component {
   }
 
   render() {
-    const { AutoRouter, history, match } = this.props;
+    const { history, match } = this.props;
     if (this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">
           <Suspense fallback={<Loading type="c7n" />}>
             <Switch>
               <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
-              <Route path={match.url} component={AutoRouter} />
+              <Route path={match.url} component={this.props.AutoRouter} />
             </Switch>
           </Suspense>
         </div>

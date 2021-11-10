@@ -4,8 +4,8 @@ import React, {
 import { Spin, Tooltip } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import { clone, find, omit } from 'lodash';
-import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import { Loading } from '@choerodon/components';
+import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import Switch from '@/containers/components/c7n/routes/workBench/components/multiple-switch';
 import { useTodoQuestionStore } from './stores';
@@ -81,7 +81,9 @@ const TodoQuestion = observer(() => {
     questionStore.changeTabKey(key);
     questionStore.setPage(1);
   }, [questionStore]);
-
+  const handleClickStar = useCallback((record) => {
+    questionStore.cancelStar(record?.issueId || record?.id, record?.projectId);
+  }, [questionStore]);
   function getContent() {
     if ((!questionDs || questionDs.status === 'loading') && !btnLoading) {
       return <Loading display />;
@@ -113,6 +115,7 @@ const TodoQuestion = observer(() => {
           treeData={questionStore.getTreeData}
           organizationId={organizationId}
           isStar
+          onClickStar={handleClickStar}
           switchCode={tabKey}
         />
         {questionStore.getHasMore ? component

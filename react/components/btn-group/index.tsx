@@ -14,6 +14,11 @@ import './index.less';
 
 const prefixCls = 'c7ncd-btnGroup';
 
+/**
+ * 按钮分组组件 + 鉴权 + tooltips
+ * @param {CustomBtnGroupProps} props
+ * @return {*}
+ */
 const BtnGroup = (props:CustomBtnGroupProps) => {
   const {
     color = 'default',
