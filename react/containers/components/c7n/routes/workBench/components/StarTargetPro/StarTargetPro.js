@@ -9,7 +9,7 @@ import {
   get, map, forEach, filter,
 } from 'lodash';
 import { useQueryString } from '@choerodon/components';
-import { getRandomBackground } from '@/containers/components/c7n/util';
+import { getRandomBackground } from '@/utils';
 import handleClickProject from '@/utils/gotoProject';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';

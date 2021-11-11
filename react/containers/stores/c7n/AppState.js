@@ -52,7 +52,7 @@ class AppState {
   @observable canShowRoute = false;
 
   getProjects = () => {
-    if (this.currentMenuType.organizationId) {
+    if (this.currentMenuType?.organizationId) {
       const recentProjectPromise = axios.get(
         `/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
         {
@@ -78,7 +78,6 @@ class AppState {
         const tempStarProjectData = starProjectData;
         this.setRecentUse(tempRecentProjectData);
         this.setStarProject(tempStarProjectData);
-
         this.setCurrentDropDown(tempRecentProjectData, tempStarProjectData);
       });
     }

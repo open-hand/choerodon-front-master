@@ -11,7 +11,7 @@ import unfold from '@/assets/images/unfold.svg';
 import bg from '../header/style/icons/bg.svg';
 import './RequireSvgResources';
 import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
-import { historyPushMenu } from '../../util';
+import { historyPushMenu } from '@/utils';
 import './index.less';
 
 const { SubMenu, Item, ItemGroup } = Menu;

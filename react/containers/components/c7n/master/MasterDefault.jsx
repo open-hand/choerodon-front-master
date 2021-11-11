@@ -310,7 +310,6 @@ class Masters extends Component {
     } = props;
     const { pathname, search } = location;
     let isUser = false;
-    let needLoad = false;
     let menuType = parseQueryToMenuType(search);
     if (pathname === '/') {
       const recent = HeaderStore.getRecentItem;
@@ -324,7 +323,6 @@ class Masters extends Component {
           type,
           organizationId,
         };
-        needLoad = true;
       } else {
         menuType = {};
       }
