@@ -1,9 +1,3 @@
-/*
- * @Author: isaac
- * @LastEditors: isaac
- * @Description:
- * i made my own lucky
- */
 import React from 'react';
 import { AxiosError } from 'axios';
 import { notification } from 'choerodon-ui';

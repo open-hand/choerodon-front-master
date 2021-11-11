@@ -312,19 +312,15 @@ class MenuStore {
     if (this.judgeFailedMenuType(menuType)) {
       isLoadMenu = 0;
       AppState.setCanShowRoute(true);
-      // debugger;
       return new Promise((resolve) => {
-        // debugger;
         resolve([]);
       });
     }
     this.setRootBaseOnActiveMenu();
     if (isLoadMenu === 1) {
       if (selfResolve) {
-        // debugger;
         setTimeout(() => this.loadMenuData(menuType, isUser, setData, selfResolve), 500)
       } else {
-        // debugger;
         return new Promise((resolve) => {
           setTimeout(() => this.loadMenuData(menuType, isUser, setData, resolve), 500)
         });
@@ -333,19 +329,13 @@ class MenuStore {
       AppState.setCanShowRoute(false);
       isLoadMenu = 1;
       if (selfResolve) {
-        // debugger;
         mainFunc.call(this, selfResolve);
       } else {
-        // debugger;
         return new Promise((resolve) => {
           mainFunc.call(this, resolve);
         });
       }
     }
-    // return new Promise((resolve) => {
-    //   mainFunc.call(this, resolve);
-    // });
-
 
     async function mainFunc(resolve) {
       try {

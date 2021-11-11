@@ -14,6 +14,11 @@
 .@{prefixCls} {
   display: flex;
   align-items: center;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  &::-webkit-scrollbar {
+    height: 2px;
+  }
   .Loop(@index) when(@index < 7) {
     &-item:nth-child(@{index}) {
       animation-delay: 0.1s * @index;
@@ -27,7 +32,9 @@
     font-weight: 500;
     height: 48px;
     line-height: 48px;
+    min-width: 70px;
     padding: 0 14px;
+    text-overflow: ellipsis;
     cursor: pointer;
     transition: 0.2s;
     position: relative;

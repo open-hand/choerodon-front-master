@@ -10,7 +10,7 @@ import ProjectSelector from './components/project-selector';
 import HeaderMiddleLists from './components/header-middle-lists';
 import OrgSelector from './components/org-selector';
 import HeaderRightLists from './components/header-right-lists';
-import UserEntry from './components/user-entry';
+import UserEntry from './components/user-avatar';
 
 const Header = (props:any) => {
   const {

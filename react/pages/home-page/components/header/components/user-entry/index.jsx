@@ -90,14 +90,14 @@ export default class UserPreferences extends Component {
 
   render() {
     const {
-      AppState, HeaderStore, MenuStore, history,
+      AppState, HeaderStore, history,
     } = this.props;
     const { organizationId } = queryString.parse(history.location.search);
     const {
       imageUrl, realName, email,
     } = AppState.getUserInfo || {};
-    // const realData = MenuStore.menuGroup && MenuStore.menuGroup.user.slice()[0] && MenuStore.menuGroup.user.slice()[0].subMenus.filter(item => !blackList.has(item.code));
     const realData = [this.getUserInfoMenuItem()];
+    debugger
     const AppBarIconRight = (
       <div className={`${prefixCls}-popover-content`}>
         <Avatar

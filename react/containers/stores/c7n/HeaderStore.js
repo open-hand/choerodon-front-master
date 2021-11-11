@@ -222,11 +222,13 @@ class HeaderStore {
     this.inboxVisible = inboxVisible;
   }
 
+  // to delete
   @computed
   get getShowSiteMenu() {
     return this.showSiteMenu;
   }
 
+  // to delete
   @action
   setShowSiteMenu(flag) {
     this.showSiteMenu = flag;
@@ -312,6 +314,7 @@ class HeaderStore {
       });
   }
 
+  // to delete
   axiosShowSiteMenu() {
     return axios({
       url: '/iam/choerodon/v1/menus/site_menu_flag',
