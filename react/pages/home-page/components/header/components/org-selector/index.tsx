@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { useHistory, useLocation } from 'react-router-dom';
 import classnames from 'classnames';
 import { toJS } from 'mobx';
+import { findIndex } from 'lodash';
 import { historyPushMenu } from '@/utils';
 import { OrgSelectorProps } from './interface';
 import { HOMEPAGE_PATH } from '@/constants';
@@ -20,7 +21,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
   const {
     AppState: {
       currentMenuType: {
-        name, organizationId,
+        organizationId,
       },
     },
     AppState,
@@ -37,6 +38,13 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
   } = location;
 
   const currentOrgData = useMemo(() => (getOrgData ? toJS(getOrgData) : []), [getOrgData]);
+
+  // todo
+  const currentSelectedOrg = currentOrgData[findIndex(currentOrgData, (item:any) => String(organizationId) === String(item.tenantId))];
+
+  const {
+    tenantName,
+  } = currentSelectedOrg || {};
 
   // todo...
   const selectState = useCallback((value:Record<string, any>, gotoHome?:boolean) => {
@@ -80,9 +88,9 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
       <div
         className={btnCls}
       >
-        {name && <Icon type="domain" />}
+        {tenantName && <Icon type="domain" />}
         <span>
-          {name || '请选择组织'}
+          {tenantName || '请选择组织'}
         </span>
         {HAS_BASE_PRO && (
           <Icon
@@ -91,7 +99,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
         )}
       </div>
     );
-  }, [name]);
+  }, [tenantName]);
 
   const renderMenu = () => (
     <Menu className={`${prefixCls}-menu`}>

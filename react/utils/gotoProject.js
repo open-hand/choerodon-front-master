@@ -1,8 +1,8 @@
 import { get, has } from '@choerodon/inject';
 import { historyPushMenu } from '@/utils';
-import HeaderStore from '../../stores/c7n/HeaderStore';
-import MenuStore, { getMenuType } from '../../stores/c7n/MenuStore';
-import findFirstLeafMenu from './findFirstLeafMenu';
+import HeaderStore from '../containers/stores/c7n/HeaderStore';
+import MenuStore, { getMenuType } from '../containers/stores/c7n/MenuStore';
+import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 
 export default async function handleClickProject(data, history, AppState) {
   const {

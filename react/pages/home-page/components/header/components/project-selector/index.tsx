@@ -11,16 +11,11 @@ import queryString from 'query-string';
 import { useQueryString } from '@choerodon/components';
 import { withRouter } from 'react-router';
 import { axios, WSHandler } from '@/index';
-import handleClickProject from '@/containers/components/util/gotoProject';
+import handleClickProject from '@/utils/gotoProject';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
 
-import getSearchString from '@/containers/components/c7n/util/gotoSome';
+import getSearchString from '@/utils/gotoSome';
 import './index.less';
-
-let pagination = {
-  page: 0,
-  size: 10,
-};
 
 const getListIsCurrentOrg = (starProject: any, recentProject: any, organizationId: any) => {
   const totalList = [
@@ -45,7 +40,6 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
   const {
     AppState,
     history,
-    HeaderStore,
   } = props;
 
   const [projectFilter, setProjectFilter] = useState('');
@@ -61,12 +55,6 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
   const { run } = useDebounceFn(async (value) => {
     setSpinning(true);
     // 如果新的值 不等于老的过滤值 则更新pagination为初始值
-    if (value !== projectFilter) {
-      pagination = {
-        page: 0,
-        size: 10,
-      };
-    }
     setProjectFilter(value);
   }, {
     wait: 500,

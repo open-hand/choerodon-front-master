@@ -10,7 +10,7 @@ import {
 } from 'lodash';
 import { useQueryString } from '@choerodon/components';
 import { getRandomBackground } from '@/containers/components/c7n/util';
-import handleClickProject from '@/containers/components/util/gotoProject';
+import handleClickProject from '@/utils/gotoProject';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 import { getListIsCurrentOrg } from '@/pages/home-page/components/header/components/project-selector';

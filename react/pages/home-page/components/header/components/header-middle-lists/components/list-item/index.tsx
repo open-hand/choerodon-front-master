@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useQueryString } from '@choerodon/components';
 import { Permission } from '@/components/permission';
 import { PermissionService } from '@/components/permission/interface';
-import getSearchString from '@/containers/components/c7n/util/gotoSome';
+import getSearchString from '@/utils/gotoSome';
 
 type ListItemProps = {
   permissions?:PermissionService

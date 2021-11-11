@@ -13,7 +13,7 @@ import {
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import { mount, get as cherodonGet } from '@choerodon/inject';
-import getSearchString from '@/containers/components/c7n/util/gotoSome';
+import getSearchString from '@/utils/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '@/components/axios';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';

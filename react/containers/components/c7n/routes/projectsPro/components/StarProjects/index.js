@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import {
   Droppable, Draggable, DragDropContext,
 } from 'react-beautiful-dnd';
-import handleClickProject from '@/containers/components/util/gotoProject';
+import handleClickProject from '@/utils/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import ProjectTaskContent from '../projectTaskContent';
 

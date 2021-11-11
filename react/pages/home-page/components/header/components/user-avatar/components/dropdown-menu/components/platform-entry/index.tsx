@@ -23,6 +23,7 @@ const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
   const {
     MenuStore,
   } = props;
+
   const { error, data } = useQuery('platformEntryPermission', () => menusApi.getPlatFormMenuEntryPermission());
   const params = useQueryString();
 

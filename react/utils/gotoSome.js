@@ -1,5 +1,5 @@
 import queryString from 'query-string';
-import HeaderStore from '../../../stores/c7n/HeaderStore';
+import HeaderStore from '../containers/stores/c7n/HeaderStore';
 
 async function getSearchString(type, key, value, extraProps = {}) {
   if (type === 'project') {
