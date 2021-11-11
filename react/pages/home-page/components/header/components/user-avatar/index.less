@@ -11,19 +11,25 @@
       padding: 0;
     }
     &-menu {
-      border-bottom: 1px solid rgba(0, 0, 0, .2);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
       margin-top: 2px;
-      &-item {
+      > div {
         text-align: left;
+        cursor: pointer;
         padding-left: 18px !important;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
         > i {
-          margin-left: 20px;
+          margin-right: 12px;
           color: var(--text-color);
         }
       }
-      .c7n-menu-item-divider {
-        border-bottom: 1px solid rgba(0, 0, 0, .2);
-        background: transparent !important;
+      > div + div {
+        border-top: 1px solid rgba(0, 0, 0, 0.2);
       }
     }
     &-content {

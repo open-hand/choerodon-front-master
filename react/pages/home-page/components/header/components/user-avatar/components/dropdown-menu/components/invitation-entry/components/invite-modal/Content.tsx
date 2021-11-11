@@ -31,20 +31,16 @@ function InvitationModal() {
   useEffect(() => {
     modal.update({ // 更新modal
       cancelText: '取消',
+      okText: isLink ? '复制' : '邀请',
+      onOk: isLink ? handleCopy : handleSubmit,
       footer: (okBtn:any, cancelBtn:any) => {
         const confimBtn = isLink ? (
           <CopyToClipboard
             text={link}
           >
-            <Button onClick={handleCopy}>
-              复制
-            </Button>
+            {okBtn}
           </CopyToClipboard>
-        ) : (
-          <Button onClick={handleSubmit}>
-            邀请
-          </Button>
-        );
+        ) : okBtn;
         return (
           <div>
             {cancelBtn}
