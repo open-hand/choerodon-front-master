@@ -38,11 +38,11 @@ function useC7NAuth(autoAuth?:boolean) {
         return;
       }
       // 一进页面就需要请求的接口
-      HeaderStore.axiosGetRoles();
-      AppState.loadModules();
-      AppState.loadDeployServices();
-      await HeaderStore.axiosGetOrgAndPro();
-      await AppState.loadUserInfo();
+      HeaderStore.axiosGetRoles(); // 请求角色
+      AppState.loadModules(); // 加载所有模块
+      AppState.loadDeployServices(); // 后端部署的所有服务
+      await HeaderStore.axiosGetOrgAndPro(); // 获取所有组织
+      await AppState.loadUserInfo(); // 加载个人信息
       setFalse();
     } catch (e) {
       throw new Error(e);

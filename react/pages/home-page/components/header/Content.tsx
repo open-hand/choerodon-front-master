@@ -11,6 +11,7 @@ import HeaderMiddleLists from './components/header-middle-lists';
 import OrgSelector from './components/org-selector';
 import HeaderRightLists from './components/header-right-lists';
 import UserEntry from './components/user-avatar';
+import useShouldHiddenHead from './hooks/useShouldHiddenHead';
 
 const Header = (props:any) => {
   const {
@@ -24,6 +25,8 @@ const Header = (props:any) => {
 
   const location = useLocation();
 
+  const shouldHiddenHead = useShouldHiddenHead();
+
   useEffect(() => {
     AppState.setCurrentDropDown(AppState.getStarProject, AppState.getRecentUse);
   }, [location]);
@@ -32,21 +35,14 @@ const Header = (props:any) => {
     AppState.getProjects();
   }, []);
 
+  // 这块需要拆出去放到主页面的逻辑里头
   useEffect(() => {
     if (!location.pathname.includes('unauthorized')) {
       sessionStorage.setItem('historyPath', location.pathname + location.search);
     }
   }, [location.pathname, location.search]);
 
-  const shouldHiddenHead = () => {
-    const defaultBlackList = ['/iam/enterprise'];
-    if (defaultBlackList.some((pname) => location.pathname.startsWith(pname))) {
-      return true;
-    }
-    return false;
-  };
-
-  if (shouldHiddenHead()) {
+  if (shouldHiddenHead) {
     return null;
   }
 

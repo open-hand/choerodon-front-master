@@ -56,7 +56,6 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
     const parsed = new URLSearchParams(currentParams);
 
     localStorage.setItem('C7N-ORG-ID', selectId || selectOrgId);
-
     let path;
     if (gotoHome) {
       path = `${HOMEPAGE_PATH}?${parsed.toString()}`;
@@ -68,6 +67,8 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
   }, [AppState, history, pathname]);
 
   // todo
+  // 这是自动选中组织的函数，如果localstorage中存在就去调selectState，不存在就选中当前组织列表第一项
+  // 待优化，选中组织的逻辑可以拆离
   const autoSelect = useCallback(() => {
     const localOrgId = localStorage.getItem('C7N-ORG-ID');
     if (localOrgId && localOrgId !== 'undefined') {

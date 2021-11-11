@@ -13,7 +13,6 @@ import { withRouter } from 'react-router';
 import { axios, WSHandler } from '@/index';
 import handleClickProject from '@/utils/gotoProject';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
-
 import getSearchString from '@/utils/gotoSome';
 import './index.less';
 
@@ -229,7 +228,6 @@ const ProjectSelector = inject('AppState', 'HeaderStore')(observer((props:any) =
         className={prefixCls}
       />
     </>
-
   );
 }));
 
