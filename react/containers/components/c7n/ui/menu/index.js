@@ -232,7 +232,6 @@ export default class CommonMenu extends Component {
         if (AppState.isTypeUser) {
           search.set('type', 'site');
         }
-        search.set('name', name);
         break;
       case 'organization':
       case 'project':
