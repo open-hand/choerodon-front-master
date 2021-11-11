@@ -20,7 +20,7 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
   const {
     AppState: {
       currentMenuType: {
-        id, name, type, category,
+        id, name, category, organizationId,
       },
     },
     MenuStore,
@@ -30,7 +30,7 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
 
   const gotoOrganizationManager = async () => {
     try {
-      const res = await MenuStore.loadMenuData({ type: 'organization', id }, false);
+      const res = await MenuStore.loadMenuData({ type: 'organization', id: organizationId }, false);
       if (res && res?.failed) {
         message.error(res?.message);
         return;
@@ -38,10 +38,10 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
       if (res.length) {
         const { route } = findFirstLeafMenu(res[0]);
         const params:Record<string, any> = {
-          type,
-          id,
+          type: 'organization',
+          id: organizationId,
           name,
-          organizationId: id,
+          organizationId,
         };
         if (category) params.category = category;
         const searchMap = new URLSearchParams(params);
