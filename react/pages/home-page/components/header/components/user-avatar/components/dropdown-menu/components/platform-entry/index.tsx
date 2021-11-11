@@ -27,7 +27,7 @@ const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
   const { error, data } = useQuery('platformEntryPermission', () => menusApi.getPlatFormMenuEntryPermission());
   const params = useQueryString();
 
-  const { name, organizationId } = params;
+  const { organizationId } = params;
 
   const history = useHistory();
 
@@ -35,7 +35,7 @@ const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
     MenuStore.loadMenuData({ type: 'site' }, false).then((menus: string | any[]) => {
       if (menus.length) {
         const { route, domain } = findFirstLeafMenu(menus[0]);
-        const routeWithOrgId = `${route}?organizationId=${organizationId}&name=${name}`;
+        const routeWithOrgId = `${route}?organizationId=${organizationId}`;
         historyPushMenu(history, routeWithOrgId, domain);
       }
     });
