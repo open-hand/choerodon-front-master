@@ -20,7 +20,7 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
   const {
     AppState: {
       currentMenuType: {
-        id, name, category, organizationId,
+        name, category, organizationId,
       },
     },
     MenuStore,

@@ -12,7 +12,7 @@ import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import some from 'lodash/some';
 import { Permission } from '@/components/permission';
-import handleClickProject from '@/containers/components/util/gotoProject';
+import handleClickProject from '@/utils/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import EmptyPage from '../empty-page';

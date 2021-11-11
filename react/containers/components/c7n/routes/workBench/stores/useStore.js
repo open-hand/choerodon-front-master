@@ -2,7 +2,7 @@ import { useLocalStore } from 'mobx-react-lite';
 import { axios } from '@/index';
 import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
-import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
+import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
 
 export default function useStore(history, AppState) {
