@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from '@/components/axios';
 import { getProjectId, getOrganizationId } from '@/utils/getId';
 
@@ -9,7 +9,7 @@ class Api<T> {
     this.isConfig = isConfig;
   }
 
-  request(AxiosConfig: AxiosRequestConfig) {
+  request(AxiosConfig: AxiosRequestConfig):AxiosRequestConfig | Promise<any> {
     if (this.isConfig) {
       return AxiosConfig;
     }
