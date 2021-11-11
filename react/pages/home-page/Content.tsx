@@ -2,24 +2,37 @@ import React, {
   useEffect, FC,
 } from 'react';
 import { observer } from 'mobx-react-lite';
+import { inject } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router';
+import { useQueryString, Loading } from '@choerodon/components';
 import { useHomePageStore } from './stores';
 import Header from './components/header';
 import {} from 'choerodon-ui/pro';
-import {} from '@choerodon/components';
 
-const HomePage = observer(() => {
+const HomePage = (props:any) => {
   const {
     homeStore,
     prefixCls,
   } = useHomePageStore();
 
+  const {
+    AppState: {
+      isAuth,
+      currentMenuType,
+    },
+  } = props;
+
   const history = useHistory();
   const location = useLocation();
+  const params = useQueryString();
 
   useEffect(() => {
 
   }, []);
+
+  if (isAuth && currentMenuType) {
+    return <Loading type="c7n" />;
+  }
 
   return (
     <div className={prefixCls}>
@@ -33,6 +46,6 @@ const HomePage = observer(() => {
       </div>
     </div>
   );
-});
+};
 
-export default HomePage;
+export default inject('AppState')(observer(HomePage));

@@ -6,7 +6,7 @@ import { useEventListener, useLocalStorageState } from 'ahooks';
  * @return {*}
  */
 function useMultiTabsAutoRefresh() {
-  // 用于多relogin的逻辑，多tab之间刷新页面
+  // relogin的逻辑，多tab之间刷新页面
   const [isRelogin, setReloginValue] = useLocalStorageState('relogin', false);
 
   /**

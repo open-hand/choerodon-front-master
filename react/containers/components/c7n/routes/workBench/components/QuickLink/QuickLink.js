@@ -9,7 +9,7 @@ import {
 } from 'choerodon-ui/pro';
 import { get } from 'lodash';
 import Action from '@/components/action';
-import { getRandomBackground } from '@/containers/components/c7n/util';
+import { getRandomBackground } from '@/utils';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import AddQuickLink from './AddQuickLink';
 import { useWorkBenchStore } from '../../stores';

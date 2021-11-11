@@ -52,7 +52,7 @@ class AppState {
   @observable canShowRoute = false;
 
   getProjects = () => {
-    if (this.currentMenuType.organizationId) {
+    if (this.currentMenuType?.organizationId) {
       const recentProjectPromise = axios.get(
         `/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
         {
@@ -69,16 +69,13 @@ class AppState {
       );
       Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
         const [recentProjectData = [], starProjectData = []] = res;
-        // recentProjectData?.splice(0, 3) 这里不清楚当时为什么只要3个 先注释看看问题
         const tempRecentProjectData = recentProjectData?.map((i) => ({
           ...i,
           ...i.projectDTO,
         }));
-        // starProjectData.splice(0, 6)
         const tempStarProjectData = starProjectData;
         this.setRecentUse(tempRecentProjectData);
         this.setStarProject(tempStarProjectData);
-
         this.setCurrentDropDown(tempRecentProjectData, tempStarProjectData);
       });
     }

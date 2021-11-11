@@ -5,7 +5,7 @@ import { Tooltip, Spin } from 'choerodon-ui/pro';
 import ScrollContext from 'react-infinite-scroll-component';
 import moment from 'moment';
 import { TimePopover } from '@choerodon/components';
-import { getRandomBackground } from '@/containers/components/c7n/util';
+import { getRandomBackground } from '@/utils';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Switch from './components/SwitchTabs';
 import EmptyImg from './image/empty.svg';
