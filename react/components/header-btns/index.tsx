@@ -32,8 +32,6 @@ export interface itemsProps extends ButtonProps {
   element?: React.ReactElement,
   preElement?: React.ReactElement,
   groupBtnItems?: GroupBtnItemProps[],
-  // 是否自定义button渲染
-  customButton?: React.ReactElement,
   // groupBtnConfigs
 }
 
@@ -78,7 +76,6 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         element,
         preElement,
         groupBtnItems,
-        customButton,
         ...props
       }, index:number) => {
         let btn:React.ReactNode;
@@ -140,7 +137,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
             </>
           );
         } else {
-          btn = customButton ? customButton : (
+          btn = (
             <>
               <Tooltip {...tooltipsConfig}>
                 <Button
