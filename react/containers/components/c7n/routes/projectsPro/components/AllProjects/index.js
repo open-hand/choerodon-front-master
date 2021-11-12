@@ -63,6 +63,7 @@ export default observer(() => {
   };
 
   const handleAddProject = (currentProjectId) => {
+    setCreateBtnToolTipHidden(true);
     Modal.open({
       key: Modal.key(),
       drawer: true,
