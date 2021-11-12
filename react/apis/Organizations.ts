@@ -10,9 +10,9 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
-  getProjectsIds(userId:any) {
+  getProjectsIds(userId:any, filerData?:string) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging`,
+      url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging?params=${filerData}`,
       method: 'get',
     });
   }

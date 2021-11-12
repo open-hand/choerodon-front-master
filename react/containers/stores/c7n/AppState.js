@@ -94,7 +94,7 @@ class AppState {
         || data2.find((i) => String(i.id) === String(id));
       if (flag) {
         // 最近使用
-        this.setDropDownPro(`项目: ${flag.name}`);
+        this.setDropDownPro(`${flag.name}`);
       } else {
         this.setDropDownPro();
       }
