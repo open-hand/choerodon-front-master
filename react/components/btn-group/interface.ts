@@ -11,10 +11,10 @@ export interface CustomBtnGroupProps {
   icon?: string,
   btnItems?: GroupBtnItemProps[],
   placement?: TooltipPlacement,
+  tooltipsConfig?:ToolTipsConfigType
   trigger?: 'click' | 'hover' | 'focus' | 'contextMenu'
   disabled?: boolean
   renderCustomDropDownPanel?: (visbileSet?:CallableFunction)=> ReactNode,
-  button?: ReactNode
 }
 
 export interface GroupBtnItemProps extends ButtonProps {
