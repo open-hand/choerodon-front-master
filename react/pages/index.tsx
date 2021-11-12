@@ -42,6 +42,7 @@ const MasterIndex = (props:{
   const {
     AutoRouter,
   } = props;
+
   const location = useLocation();
   const history = useHistory();
 
@@ -119,7 +120,7 @@ const MasterIndex = (props:{
     return React.createElement(content, {
       AutoRouter,
     });
-  }, [isInOutward]);
+  }, [AutoRouter, isInOutward]);
 
   if (authStatus && !isInOutward) {
     return (
