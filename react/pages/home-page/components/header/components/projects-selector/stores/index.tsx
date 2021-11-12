@@ -1,12 +1,10 @@
 /* eslint-disable max-len */
 import React, {
-  createContext, useContext, useRef, useEffect,
+  createContext, useContext, useRef,
 } from 'react';
-import { injectIntl } from 'react-intl';
 import { inject } from 'mobx-react';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
-import { useMount } from 'ahooks';
 import { ProjectsSelectorStoreContext, ProviderProps } from '../interface';
 import handleClickProject from '@/utils/gotoProject';
 
@@ -29,11 +27,20 @@ export const StoreProvider = inject('AppState')(observer((props: ProviderProps) 
   const history = useHistory();
   const selectorRef = useRef<any>();
 
+  // 收起select的pop content并且失焦
+  const handleSelectorBlur = () => {
+    selectorRef.current.setPopup(false);
+    selectorRef.current.blur();
+  };
+
+  /**
+   * 点中某个项目的时候去触发这些操作，appstate的操作是需要优化的，todo
+   * @param {Record<string, any>} item
+   */
   const handleSelectProjectCallback = (item:Record<string, any>) => {
     AppState.setDropDownPro(item.name);
     handleClickProject(item, history, AppState);
-    selectorRef.current.setPopup(false);
-    selectorRef.current.blur();
+    handleSelectorBlur();
   };
 
   const value = {
@@ -42,6 +49,7 @@ export const StoreProvider = inject('AppState')(observer((props: ProviderProps) 
     prefixCls,
     intlPrefix,
     handleSelectProjectCallback,
+    handleSelectorBlur,
     selectorRef,
   };
   return (

@@ -2,20 +2,38 @@ import React from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { Icon, Select } from 'choerodon-ui/pro';
+import { useHistory } from 'react-router';
 import RecentUseProjectsLists from './components/recent-use-projects-lists';
 import StarProjectsLists from './components/star-projects-lists';
 
 import { useProjectsSelectorStore } from './stores';
 import FilterProjectsLists from './components/filter-projects-lists';
+import { useQueryString } from '@/hooks';
+import getSearchString from '@/utils/gotoSome';
 
 const ProjectsSelector = (props:any) => {
   const {
     prefixCls,
+    handleSelectorBlur,
     selectorRef,
   } = useProjectsSelectorStore();
+
   const {
     AppState,
   } = props;
+
+  const {
+    organizationId,
+  } = useQueryString();
+
+  const history = useHistory();
+
+  // todo....
+  const handleGoAllProject = async () => {
+    const search = await getSearchString('organization', 'id', organizationId);
+    handleSelectorBlur();
+    history.push(`/projects${search}`);
+  };
 
   const renderSelectorPopupContent = () => (
     <div className={`${prefixCls}-popup`}>
@@ -25,7 +43,11 @@ const ProjectsSelector = (props:any) => {
           <div className={`${prefixCls}-popup-common`}>
             <StarProjectsLists />
             <RecentUseProjectsLists />
-            <div className={`${prefixCls}-moreProjects`}>
+            <div
+              onClick={handleGoAllProject}
+              role="none"
+              className={`${prefixCls}-moreProjects`}
+            >
               <Icon type="multistage_combo_box" />
               <span>查看所有项目</span>
               <Icon type="navigate_next" />

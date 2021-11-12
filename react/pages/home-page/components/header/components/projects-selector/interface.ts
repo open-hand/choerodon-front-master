@@ -6,6 +6,7 @@ export type ProjectsSelectorStoreContext = {
   intlPrefix: 'c7ncd.projects.selector'
   projectId:string
   handleSelectProjectCallback:(item:Record<string, any>)=>void
+  handleSelectorBlur:()=>void,
   selectorRef:React.MutableRefObject<any>
 } & ProviderProps;
 
