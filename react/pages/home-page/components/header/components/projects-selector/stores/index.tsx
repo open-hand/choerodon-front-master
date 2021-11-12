@@ -1,9 +1,14 @@
 /* eslint-disable max-len */
-import React, { createContext, useContext, useMemo } from 'react';
+import React, {
+  createContext, useContext, useRef, useEffect,
+} from 'react';
 import { injectIntl } from 'react-intl';
 import { inject } from 'mobx-react';
-import useStore, { StoreProps } from './useStore';
+import { useHistory } from 'react-router';
+import { observer } from 'mobx-react-lite';
+import { useMount } from 'ahooks';
 import { ProjectsSelectorStoreContext, ProviderProps } from '../interface';
+import handleClickProject from '@/utils/gotoProject';
 
 const Store = createContext({} as ProjectsSelectorStoreContext);
 
@@ -11,25 +16,33 @@ export function useProjectsSelectorStore() {
   return useContext(Store);
 }
 
-export const StoreProvider = injectIntl(inject('AppState')((props: ProviderProps) => {
+export const StoreProvider = inject('AppState')(observer((props: ProviderProps) => {
   const {
     children,
-    intl: { formatMessage },
-    AppState: { currentMenuType: { projectId, organizationId } },
+    AppState: { currentMenuType: { projectId } },
+    AppState,
   } = props;
 
   const prefixCls = 'c7ncd-projects-selector' as const;
   const intlPrefix = 'c7ncd.projects.selector' as const;
 
-  const mainStore = useStore();
+  const history = useHistory();
+  const selectorRef = useRef<any>();
+
+  const handleSelectProjectCallback = (item:Record<string, any>) => {
+    AppState.setDropDownPro(item.name);
+    handleClickProject(item, history, AppState);
+    selectorRef.current.setPopup(false);
+    selectorRef.current.blur();
+  };
 
   const value = {
     ...props,
-    formatMessage,
     projectId,
-    mainStore,
     prefixCls,
     intlPrefix,
+    handleSelectProjectCallback,
+    selectorRef,
   };
   return (
     <Store.Provider value={value}>

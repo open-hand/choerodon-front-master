@@ -9,7 +9,7 @@ class Api<T> {
     this.isConfig = isConfig;
   }
 
-  request(AxiosConfig: AxiosRequestConfig):AxiosRequestConfig | Promise<any> {
+  request(AxiosConfig: AxiosRequestConfig):any {
     if (this.isConfig) {
       return AxiosConfig;
     }

@@ -1,4 +1,62 @@
 @prefixCls: ~"c7ncd-projects-selector";
 
 .@{prefixCls} {
+  margin-left: 30px;
+  margin-right: 16px;
+  width: 240px;
+  background: #f5f6fa;
+  border-radius: 4px !important;
+  border: none !important;
+  &-popup {
+    min-height: fit-content !important;
+  }
+  &-lists {
+    > p {
+      font-size: 12px;
+      font-weight: 400;
+      color: #9eadbe;
+      margin: 8px 12px 6px;
+    }
+    &-content {
+      max-height: 1.5rem;
+      overflow-y: scroll;
+      &::-webkit-scrollbar {
+        width: 2px;
+      }
+      &-empty {
+        padding-top: 5px !important;
+        padding-left: 12px !important;
+        padding-bottom: 6px !important;
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--text-color4);
+      }
+      &-item {
+        cursor: pointer;
+        padding: 5px 12px;
+        font-size: 13px;
+        font-weight: 400;
+        color: #0f1358;
+        &:hover {
+          background: rgba(104, 135, 232, 0.08);
+          color: #5365ea;
+        }
+      }
+    }
+  }
+  &-moreProjects {
+    cursor: pointer;
+    border-top: 1px solid #d9e6f2;
+    padding: 13px 18px 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--primary-color);
+    > span {
+      margin-left: 5px;
+    }
+    i.icon-navigate_next {
+      margin-right: 0;
+      margin-left: auto;
+    }
+  }
 }

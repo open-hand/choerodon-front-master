@@ -6,7 +6,7 @@ import { inject } from 'mobx-react';
 import { useLocation } from 'react-router';
 import { useHeaderStore } from './stores';
 import HeaderLogo from './components/header-logo';
-import ProjectSelector from './components/project-selector';
+import ProjectsSelector from './components/projects-selector';
 import HeaderMiddleLists from './components/header-middle-lists';
 import OrgSelector from './components/org-selector';
 import HeaderRightLists from './components/header-right-lists';
@@ -15,7 +15,6 @@ import useShouldHiddenHead from './hooks/useShouldHiddenHead';
 
 const Header = (props:any) => {
   const {
-    mainStore,
     prefixCls,
   } = useHeaderStore();
 
@@ -35,7 +34,7 @@ const Header = (props:any) => {
     AppState.getProjects();
   }, []);
 
-  // 这块需要拆出去放到主页面的逻辑里头
+  // 这块需要拆出去放到主页面的逻辑里头,等主页面重构完
   useEffect(() => {
     if (!location.pathname.includes('unauthorized')) {
       sessionStorage.setItem('historyPath', location.pathname + location.search);
@@ -51,7 +50,7 @@ const Header = (props:any) => {
       {/* logo */}
       <HeaderLogo />
       {/* 项目选择框 */}
-      <ProjectSelector />
+      <ProjectsSelector />
       {/* 头部路由按钮列表 */}
       <HeaderMiddleLists />
       {/* 组织选择框 */}
