@@ -48,6 +48,21 @@ const Header = (props:any) => {
 
   return (
     <div className={prefixCls}>
+      <ButtonGroup
+        btnItems={
+          [
+            {
+              name: 'tst',
+            },
+          ]
+        }
+        name="hell"
+        tooltipsConfig={
+        {
+          title: 'dasdas',
+        }
+      }
+      />
       {/* logo */}
       <HeaderLogo />
       {/* 项目选择框 */}
