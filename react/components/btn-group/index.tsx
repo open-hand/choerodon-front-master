@@ -104,15 +104,15 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
 
   return (
     <Permission service={flatten(btnItems?.map((item) => item?.permissions || []))}>
-      <Popover
-        visible={popverVisible}
-        content={menu}
-        trigger={trigger}
-        placement={placement}
-        overlayClassName={`${prefixCls}-popver`}
-        onVisibleChange={(visible:boolean) => setVisible(visible)}
-      >
-        <Tooltip {...tooltipsConfig}>
+      <Tooltip {...tooltipsConfig}>
+        <Popover
+          visible={popverVisible}
+          content={menu}
+          trigger={trigger}
+          placement={placement}
+          overlayClassName={`${prefixCls}-popver`}
+          onVisibleChange={(visible:boolean) => setVisible(visible)}
+        >
           <Button
             className={dropdownBtnCls}
             color={color as ButtonColor}
@@ -122,8 +122,8 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
             <span>{name}</span>
             <Icon className={dropDownIconCls} type="expand_more" />
           </Button>
-        </Tooltip>
-      </Popover>
+        </Popover>
+      </Tooltip>
     </Permission>
   );
 };
