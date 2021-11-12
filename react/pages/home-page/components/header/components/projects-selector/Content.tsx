@@ -41,8 +41,11 @@ const ProjectsSelector = (props:any) => {
         // 通过这个途径获取值
         !selectorRef.current?.text ? (
           <div className={`${prefixCls}-popup-common`}>
+            {/* 星标项目 */}
             <StarProjectsLists />
+            {/* 最近使用 */}
             <RecentUseProjectsLists />
+            {/* 查看所有项目的按钮 */}
             <div
               onClick={handleGoAllProject}
               role="none"
@@ -55,6 +58,7 @@ const ProjectsSelector = (props:any) => {
           </div>
         ) : (
           <div className={`${prefixCls}-popup-virsualLists`}>
+            {/* 当用户进行搜索时候渲染这个组件，虚拟滚动的列表组件 */}
             <FilterProjectsLists />
           </div>
         )

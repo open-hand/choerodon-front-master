@@ -30,7 +30,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     name,
     disabled: triggerBtnDisabled = false,
     renderCustomDropDownPanel,
-    button,
+    tooltipsConfig,
   } = props;
 
   const [popverVisible, setVisible] = useState<boolean>(false);
@@ -46,14 +46,14 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
         permissions,
         disabled,
         group,
-        tooltipsConfig,
+        tooltipsConfig: itemToolTipsConfig,
       } = itemProps;
       const Item = (
         <Menu.Item
           disabled={disabled}
           key={`${name}-${itemName}-${index}-${group}`}
         >
-          <Tooltip {...tooltipsConfig}>
+          <Tooltip {...itemToolTipsConfig}>
             <span role="none" onClick={disabled ? () => {} : handler}>
               {itemName}
             </span>
@@ -112,20 +112,17 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
         overlayClassName={`${prefixCls}-popver`}
         onVisibleChange={(visible:boolean) => setVisible(visible)}
       >
-        {
-          button
-        || (
-        <Button
-          className={dropdownBtnCls}
-          color={color as ButtonColor}
-          icon={icon}
-          disabled={triggerBtnDisabled}
-        >
-          <span>{name}</span>
-          <Icon className={dropDownIconCls} type="expand_more" />
-        </Button>
-        )
-}
+        <Tooltip {...tooltipsConfig}>
+          <Button
+            className={dropdownBtnCls}
+            color={color as ButtonColor}
+            icon={icon}
+            disabled={triggerBtnDisabled}
+          >
+            <span>{name}</span>
+            <Icon className={dropDownIconCls} type="expand_more" />
+          </Button>
+        </Tooltip>
       </Popover>
     </Permission>
   );

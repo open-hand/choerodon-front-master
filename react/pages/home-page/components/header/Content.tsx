@@ -12,6 +12,7 @@ import OrgSelector from './components/org-selector';
 import HeaderRightLists from './components/header-right-lists';
 import UserEntry from './components/user-avatar';
 import useShouldHiddenHead from './hooks/useShouldHiddenHead';
+import ButtonGroup from '@/components/btn-group';
 
 const Header = (props:any) => {
   const {
