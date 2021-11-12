@@ -30,6 +30,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     name,
     disabled: triggerBtnDisabled = false,
     renderCustomDropDownPanel,
+    button,
   } = props;
 
   const [popverVisible, setVisible] = useState<boolean>(false);
@@ -111,6 +112,9 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
         overlayClassName={`${prefixCls}-popver`}
         onVisibleChange={(visible:boolean) => setVisible(visible)}
       >
+        {
+          button
+        || (
         <Button
           className={dropdownBtnCls}
           color={color as ButtonColor}
@@ -120,6 +124,8 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
           <span>{name}</span>
           <Icon className={dropDownIconCls} type="expand_more" />
         </Button>
+        )
+}
       </Popover>
     </Permission>
   );
