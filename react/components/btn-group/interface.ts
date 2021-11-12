@@ -14,6 +14,7 @@ export interface CustomBtnGroupProps {
   trigger?: 'click' | 'hover' | 'focus' | 'contextMenu'
   disabled?: boolean
   renderCustomDropDownPanel?: (visbileSet?:CallableFunction)=> ReactNode,
+  button?: ReactNode
 }
 
 export interface GroupBtnItemProps extends ButtonProps {
