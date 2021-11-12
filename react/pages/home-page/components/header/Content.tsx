@@ -12,7 +12,7 @@ import OrgSelector from './components/org-selector';
 import HeaderRightLists from './components/header-right-lists';
 import UserEntry from './components/user-avatar';
 import useShouldHiddenHead from './hooks/useShouldHiddenHead';
-import ButtonGroup from '@/components/btn-group';
+import ExtraButton from './components/extra-button';
 
 const Header = (props:any) => {
   const {
@@ -48,27 +48,14 @@ const Header = (props:any) => {
 
   return (
     <div className={prefixCls}>
-      <ButtonGroup
-        btnItems={
-          [
-            {
-              name: 'tst',
-            },
-          ]
-        }
-        name="hell"
-        tooltipsConfig={
-        {
-          title: 'dasdas',
-        }
-      }
-      />
       {/* logo */}
       <HeaderLogo />
       {/* 项目选择框 */}
       <ProjectsSelector />
       {/* 头部路由按钮列表 */}
       <HeaderMiddleLists />
+      {/* 升级的按钮 */}
+      <ExtraButton />
       {/* 组织选择框 */}
       <OrgSelector />
       {/* 右侧Icon列表 */}
