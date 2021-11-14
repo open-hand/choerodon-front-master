@@ -30,10 +30,12 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     name,
     disabled: triggerBtnDisabled = false,
     renderCustomDropDownPanel,
-    tooltipsConfig,
+    tooltipsConfig: { hidden: mainTooltipHiddenFromProps, onHiddenBeforeChange, ...tooltipsConfigParams },
+    popoverVisibleChange,
   } = props;
 
   const [popverVisible, setVisible] = useState<boolean>(false);
+  const [mainTooltipHidden, setMainTooltipHidden] = useState<boolean>(false);
 
   const renderMenu = useCallback(() => {
     if (!btnItems?.length) {
@@ -102,16 +104,44 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     return null;
   }
 
+  const onVisibleChange = (visible:boolean) => {
+    if (popoverVisibleChange) {
+      const result = popoverVisibleChange(visible);
+      if (result === false) {
+        return;
+      }
+    }
+    setVisible(visible);
+  };
+
+  const getHidden = () => {
+    if (popverVisible) {
+      return true;
+    } if (mainTooltipHiddenFromProps) {
+      return mainTooltipHiddenFromProps;
+    }
+    return mainTooltipHidden;
+  };
+
+  const handleOnHiddenBeforeChange = (hidden:boolean) => {
+    if (onHiddenBeforeChange) {
+      onHiddenBeforeChange(hidden);
+    } else {
+      setMainTooltipHidden(hidden);
+    }
+    return hidden;
+  };
+
   return (
     <Permission service={flatten(btnItems?.map((item) => item?.permissions || []))}>
-      <Tooltip {...tooltipsConfig}>
+      <Tooltip {...tooltipsConfigParams} hidden={getHidden()} onHiddenBeforeChange={handleOnHiddenBeforeChange}>
         <Popover
           visible={popverVisible}
           content={menu}
           trigger={trigger}
           placement={placement}
           overlayClassName={`${prefixCls}-popver`}
-          onVisibleChange={(visible:boolean) => setVisible(visible)}
+          onVisibleChange={onVisibleChange}
         >
           <Button
             className={dropdownBtnCls}
