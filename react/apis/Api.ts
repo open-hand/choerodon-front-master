@@ -1,4 +1,4 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 import axios from '@/components/axios';
 import { getProjectId, getOrganizationId } from '@/utils/getId';
 

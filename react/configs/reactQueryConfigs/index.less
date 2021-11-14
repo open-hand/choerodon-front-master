@@ -1,0 +1,22 @@
+@prefixCls: ~"c7ncd-reactQuery";
+
+.@{prefixCls} {
+  opacity: 0.8;
+  svg {
+    display: none;
+  }
+  &-toggleButton {
+    background-image: url("../../assets/images/favicon.svg") !important;
+    height: 38px !important;
+    width: 38px !important;
+    background-size: cover !important;
+    &:hover {
+      background-image: url("../../assets/images/loading.gif") !important;
+      background-size: 150% !important;
+      background-position: 50% 50% !important;
+    }
+    > svg {
+      display: none;
+    }
+  }
+}
