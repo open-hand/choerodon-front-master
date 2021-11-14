@@ -423,7 +423,7 @@ export default observer(() => {
 
   const toHelpDoc = () => {
     window.open(
-      'https://open.hand-china.com/document-center/doc/product/10177/10419?doc_code=119016&doc_id=124321#%E5%88%9B%E5%BB%BA%E6%95%8F%E6%8D%B7%E7%AE%A1%E7%90%86%E9%A1%B9%E7%9B%AE',
+      `${AppState?.getUserWizardStatus[0]?.helpDocs[0]}`,
       '_blank',
     );
   };
