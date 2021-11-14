@@ -1,4 +1,5 @@
 import React, {
+  FC,
   useCallback, useMemo, useState,
 } from 'react';
 
@@ -19,7 +20,7 @@ const prefixCls = 'c7ncd-btnGroup';
  * @param {CustomBtnGroupProps} props
  * @return {*}
  */
-const BtnGroup = (props:CustomBtnGroupProps) => {
+const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
   const {
     color = 'default',
     icon,
@@ -30,9 +31,15 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     name,
     disabled: triggerBtnDisabled = false,
     renderCustomDropDownPanel,
-    tooltipsConfig: { hidden: mainTooltipHiddenFromProps, onHiddenBeforeChange, ...tooltipsConfigParams },
+    tooltipsConfig,
     popoverVisibleChange,
   } = props;
+
+  const {
+    hidden: tooltipHidden,
+    onHiddenBeforeChange,
+    ...tooltipsConfigRestProps
+  } = tooltipsConfig || {};
 
   const [popverVisible, setVisible] = useState<boolean>(false);
   const [mainTooltipHidden, setMainTooltipHidden] = useState<boolean>(false);
@@ -77,7 +84,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
   }, [btnItems, name]);
 
   const renderContent = useCallback(() => {
-    if (renderCustomDropDownPanel && typeof renderCustomDropDownPanel === 'function') {
+    if (typeof renderCustomDropDownPanel === 'function') {
       return popverVisible && (
         <div className={`${prefixCls}-customPanel`}>
           {renderCustomDropDownPanel((isVisible = false, e:Event) => {
@@ -98,7 +105,10 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
 
   const dropdownBtnCls = classNames(prefixCls);
 
-  const dropDownIconCls = classNames(`${prefixCls}-dropdownIcon`, `${prefixCls}-dropdownIcon-${color}`);
+  const dropDownIconCls = classNames(
+    `${prefixCls}-dropdownIcon`,
+    `${prefixCls}-dropdownIcon-${color}`,
+  );
 
   if (!display) {
     return null;
@@ -114,27 +124,23 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     setVisible(visible);
   };
 
-  const getHidden = () => {
-    if (popverVisible) {
-      return true;
-    } if (mainTooltipHiddenFromProps) {
-      return mainTooltipHiddenFromProps;
-    }
-    return mainTooltipHidden;
-  };
+  const getHidden = () => popverVisible || tooltipHidden || mainTooltipHidden;
 
-  const handleOnHiddenBeforeChange = (hidden:boolean) => {
-    if (onHiddenBeforeChange) {
+  const handleOnHiddenChange = (hidden:boolean) => {
+    if (typeof onHiddenBeforeChange === 'function') {
       onHiddenBeforeChange(hidden);
     } else {
       setMainTooltipHidden(hidden);
     }
-    return hidden;
   };
 
   return (
     <Permission service={flatten(btnItems?.map((item) => item?.permissions || []))}>
-      <Tooltip {...tooltipsConfigParams} hidden={getHidden()} onHiddenBeforeChange={handleOnHiddenBeforeChange}>
+      <Tooltip
+        {...tooltipsConfigRestProps}
+        hidden={getHidden()}
+        onHiddenChange={handleOnHiddenChange}
+      >
         <Popover
           visible={popverVisible}
           content={menu}
