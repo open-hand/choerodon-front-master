@@ -24,7 +24,8 @@ const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
     MenuStore,
   } = props;
 
-  const { error, data } = useQuery('platformEntryPermission', () => menusApi.getPlatFormMenuEntryPermission());
+  const { isError, data, error } = useQuery('platformEntryPermission', () => menusApi.getPlatFormMenuEntryPermission());
+
   const params = useQueryString();
 
   const { organizationId } = params;
@@ -41,7 +42,7 @@ const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
     });
   };
 
-  if (error || !data) {
+  if (isError || !data) {
     return null;
   }
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Tabs, Alert } from 'choerodon-ui';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import {
-  TextField, EmailField, Form, message, Button, Select,
+  TextField, EmailField, Form, message, Select,
 } from 'choerodon-ui/pro';
 import { useQuery } from 'react-query';
 import { useInviteEntryStore } from './stores';
@@ -19,7 +19,10 @@ function InvitationModal() {
   const [tabkey, setTabkey] = useState('link');
 
   // 获取链接
-  const { isLoading, error, data: link } = useQuery('getLink', () => registersInvitationApi.batchInvite());
+  const { isLoading, error, data: link } = useQuery<{
+    invitedUsers: number
+    invitationUrl: string
+  }>('getLink', () => registersInvitationApi.batchInvite());
 
   const handleCopy = () => {
     message.info('复制成功');
@@ -36,7 +39,7 @@ function InvitationModal() {
       footer: (okBtn:any, cancelBtn:any) => {
         const confimBtn = isLink ? (
           <CopyToClipboard
-            text={link}
+            text={link?.invitationUrl}
           >
             {okBtn}
           </CopyToClipboard>
@@ -82,7 +85,7 @@ function InvitationModal() {
           marginLeft: '4px',
         }}
         >
-          {link}
+          {link?.invitationUrl}
         </div>
       </div>
     </div>
