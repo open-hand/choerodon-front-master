@@ -116,10 +116,7 @@ const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
 
   const onVisibleChange = (visible:boolean) => {
     if (popoverVisibleChange) {
-      const result = popoverVisibleChange(visible);
-      if (result === false) {
-        return;
-      }
+      popoverVisibleChange(visible);
     }
     setVisible(visible);
   };
