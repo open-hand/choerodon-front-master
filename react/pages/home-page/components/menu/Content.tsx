@@ -23,7 +23,7 @@ const Menu = () => {
     try {
       const menus = await MenuStore.loadMenuData();
     } catch (error) {
-
+      throw new Error(error);
     }
   };
 
