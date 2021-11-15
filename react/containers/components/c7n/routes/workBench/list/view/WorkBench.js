@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import queryString from 'query-string';
-import { mount, get } from '@choerodon/inject';
+import { mount } from '@choerodon/inject';
 import { Page } from '@/components/c7n-page';
 import { useWorkBenchStore } from '../../stores';
 import WorkBenchHeader from './components/WorkBenchHeader';

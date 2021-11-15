@@ -39,9 +39,7 @@ import { WEBSOCKET_SERVER } from '@/utils';
 /** @type {boolean} 是否安装了敏捷模块 */
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 
-const MasterIndex = (props:{
-  [fields:string]:any
-}) => {
+const MasterIndex = () => {
   const location = useLocation();
   const history = useHistory();
 
