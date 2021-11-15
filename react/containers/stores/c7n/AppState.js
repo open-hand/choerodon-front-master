@@ -3,9 +3,6 @@ import axios from '@/components/axios';
 
 function getDefaultLanguage() {
   let locale;
-  if (typeof window !== 'undefined') {
-    // locale = navigator.language || navigator.userLanguage || navigator.systemLanguage;
-  }
   return locale ? locale.replace('-', '_') : 'zh_CN';
 }
 
@@ -27,10 +24,6 @@ class AppState {
 
   @observable menuType = null; // 一个菜单对象 {id:'',name:'',type:''}
 
-  @observable expanded = false;
-
-  @observable guideExpanded = false;
-
   @observable userInfo = {};
 
   @observable userWizardList = '';
@@ -38,8 +31,6 @@ class AppState {
   @observable userWizardStatus = '';
 
   @observable siteInfo = {};
-
-  @observable debugger = false; // 调试模式
 
   @observable isUser = false;
 
@@ -194,21 +185,6 @@ class AppState {
   }
 
   @computed
-  get getDebugger() {
-    return this.debugger;
-  }
-
-  @action
-  setDebugger(data) {
-    this.debugger = data;
-  }
-
-  @computed
-  get getType() {
-    return this.currentMenuType.type;
-  }
-
-  @computed
   get getUserInfo() {
     return this.userInfo;
   }
@@ -246,26 +222,6 @@ class AppState {
   @computed
   get getSiteInfo() {
     return this.siteInfo;
-  }
-
-  @computed
-  get getMenuExpanded() {
-    return this.expanded;
-  }
-
-  @action
-  setMenuExpanded(data) {
-    this.expanded = data;
-  }
-
-  @computed
-  get getGuideExpanded() {
-    return this.guideExpanded;
-  }
-
-  @action
-  setGuideExpanded(data) {
-    this.guideExpanded = data;
   }
 
   @computed

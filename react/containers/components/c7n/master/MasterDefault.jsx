@@ -332,6 +332,7 @@ class Masters extends Component {
     } else if (!menuType.type) {
       menuType.type = 'site';
     }
+
     async function checkUrl() {
       async function goSafty(data) {
         if (!HeaderStore.getOrgData) {
