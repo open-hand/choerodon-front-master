@@ -6,6 +6,8 @@ import { Loading } from '@choerodon/components';
 import AppState from '../../../../stores/c7n/AppState';
 
 const Unauthorized = React.lazy(() => import('../unauthorized'));
+const AutoRouter = React.lazy(() => import('@/routes'));
+
 @withRouter
 @inject('AppState')
 @observer
@@ -57,7 +59,7 @@ class Outward extends Component {
           <Suspense fallback={<Loading type="c7n" />}>
             <Switch>
               <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
-              <Route path={match.url} component={this.props.AutoRouter} />
+              <Route path={match.url} component={AutoRouter} />
             </Switch>
           </Suspense>
         </div>

@@ -14,7 +14,9 @@ import { OrgSelectorProps } from './interface';
 import { HOMEPAGE_PATH } from '@/constants';
 import './index.less';
 
-const HAS_BASE_PRO = C7NHasModule('@choerodon/base-business');
+// 是否存在base的商业版本
+const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
+
 const prefixCls = 'c7ncd-orgSelector';
 
 const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
@@ -93,7 +95,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
         <span>
           {tenantName || '请选择组织'}
         </span>
-        {HAS_BASE_PRO && (
+        {HAS_BASE_BUSINESS && (
           <Icon
             type="expand_more"
           />
@@ -127,7 +129,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
 
   const renderContent = () => (
     <Dropdown
-      disabled={!HAS_BASE_PRO}
+      disabled={!HAS_BASE_BUSINESS}
       overlay={renderMenu()}
       placement="bottomCenter"
       trigger={['click']}

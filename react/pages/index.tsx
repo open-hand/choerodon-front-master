@@ -14,10 +14,13 @@ import stores from '@/containers/stores';
 import Master from '@/containers/components/c7n/master';
 import Outward from '@/containers/components/c7n/routes/outward';
 
-import '@/containers/components/style';
-
 import { enterprisesApi } from '@/apis';
 import { ENTERPRISE_ADDRESS } from '@/constants';
+
+import '@/containers/components/style';
+
+// injects modules entry
+import './moduleInjects';
 
 import {
   C7NReactQueryContainer,
@@ -39,10 +42,6 @@ const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 const MasterIndex = (props:{
   [fields:string]:any
 }) => {
-  const {
-    AutoRouter,
-  } = props;
-
   const location = useLocation();
   const history = useHistory();
 
@@ -117,10 +116,8 @@ const MasterIndex = (props:{
 
   const getContainer = useMemo(() => {
     const content = isInOutward ? Outward : Master;
-    return React.createElement(content, {
-      AutoRouter,
-    });
-  }, [AutoRouter, isInOutward]);
+    return React.createElement(content);
+  }, [isInOutward]);
 
   if (authStatus && !isInOutward) {
     return (
