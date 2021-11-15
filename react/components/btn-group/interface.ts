@@ -11,7 +11,7 @@ export interface CustomBtnGroupProps {
   icon?: string,
   btnItems?: GroupBtnItemProps[],
   placement?: TooltipPlacement,
-  tooltipsConfig?:any
+  tooltipsConfig?:ToolTipsConfigType
   popoverVisibleChange?:Function,
   trigger?: 'click' | 'hover' | 'focus' | 'contextMenu'
   disabled?: boolean
