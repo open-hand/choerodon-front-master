@@ -14,6 +14,7 @@ function InvitationModal() {
   const {
     formDs,
     modal,
+    prefixCls,
   } = useInviteEntryStore();
 
   const [tabkey, setTabkey] = useState('link');
@@ -34,9 +35,18 @@ function InvitationModal() {
   useEffect(() => {
     modal.update({ // 更新modal
       cancelText: '取消',
+      title:
+  <div className={`${prefixCls}-wrapper`}>
+    <div className={`${prefixCls}-title`}>注册邀请</div>
+    <div className={`${prefixCls}-invitedUsers`}>
+      已邀请：
+      <span className={`${prefixCls}-title`}>{link?.invitedUsers}</span>
+      人
+    </div>
+  </div>,
       okText: isLink ? '复制' : '邀请',
       onOk: isLink ? handleCopy : handleSubmit,
-      footer: (okBtn:any, cancelBtn:any) => {
+      footer: (okBtn: any, cancelBtn: any) => {
         const confimBtn = isLink ? (
           <CopyToClipboard
             text={link?.invitationUrl}
