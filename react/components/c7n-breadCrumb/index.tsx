@@ -62,7 +62,7 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
       default:
         break;
     }
-    return `${currentRoute}${searchMap.toString()}`;
+    return `${currentRoute}?${searchMap.toString()}`;
   }, [category, currentRoute, id, isTypeUser, name, organizationId, type]);
 
   function renderMenus() {
