@@ -44,7 +44,7 @@ function setRequireModule({ dataSet, selected, categoryCodes }) {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({
-  organizationId, categoryCodes, createProjectStore,
+  organizationId, categoryCodes, createProjectStore, inNewUserGuideStepOne,
 }) => ({
   autoCreate: false,
   autoQuery: false,
@@ -64,7 +64,11 @@ export default ({
       });
     },
     unSelect: ({ dataSet, record }) => {
-      record.isSelected = false;
+      if (inNewUserGuideStepOne && record.get('code') === 'N_AGILE') {
+        record.isSelected = true;
+      } else {
+        record.isSelected = false;
+      }
       handleDisabled({
         dataSet, record, categoryCodes, isSelected: false, createProjectStore,
       });
