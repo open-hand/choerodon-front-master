@@ -55,7 +55,7 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
       case 'project':
         searchMap.set('id', id);
         searchMap.set('type', type);
-        searchMap.set('name', encodeURIComponent(name));
+        searchMap.set('name', name);
         searchMap.set('category', category);
         organizationId && searchMap.set('organizationId', organizationId);
         break;
