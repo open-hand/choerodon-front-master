@@ -44,7 +44,7 @@ const FilterProjectsLists:FC<FilterProjectsListsProps> = (props:any) => {
 
   // 防抖
   const { run } = useDebounceFn(refetch, {
-    wait: 800,
+    wait: 500,
     leading: true,
   });
 
