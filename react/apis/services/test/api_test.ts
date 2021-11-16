@@ -44,6 +44,18 @@ class ApiTestApi extends Api<ApiTestApi> {
       method: 'get',
     });
   }
+
+  /**
+   * 执行api测试任务
+   * @param data
+   */
+  executeTask(data: any) {
+    return this.request({
+      url: `${this.prefix}/tasks/execute`,
+      method: 'post',
+      data,
+    })
+  }
 }
 
 const apiTestApi = new ApiTestApi();
