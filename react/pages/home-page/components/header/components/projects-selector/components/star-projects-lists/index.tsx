@@ -13,7 +13,6 @@ import {} from '@choerodon/components';
 
 import './index.less';
 import { useProjectsSelectorStore } from '../../stores';
-import handleClickProject from '@/utils/gotoProject';
 
 export type StarProjectsListsProps = {
   AppState?:any
