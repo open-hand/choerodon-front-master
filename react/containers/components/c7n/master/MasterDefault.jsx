@@ -210,6 +210,15 @@ class Masters extends Component {
       const { HeaderStore } = this.props;
 
       const identity = 'platform_announcement';
+      if (window.localStorage.getItem('announcementModalInfo')) {
+        const announcementId = window.localStorage.getItem('announcementModalInfo').split('+')[0];
+        if (announcementId !== res?.id) {
+          window.localStorage.setItem('announcementModalInfo', `${res?.id}+false`);
+        }
+      } else {
+        window.localStorage.setItem('announcementModalInfo', `${res?.id}+false`);
+      }
+
       if (res && (!localStorage.lastClosedId || localStorage.lastClosedId !== res?.id)) {
         HeaderStore.innsertAnnouncement(identity, {
           data: res,
