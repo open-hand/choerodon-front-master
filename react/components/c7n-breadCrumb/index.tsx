@@ -24,7 +24,9 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
   } = props;
 
   const {
-    currentMenuType: id, name, type, organizationId, category,
+    currentMenuType: {
+      id, name, type, organizationId, category,
+    },
     isTypeUser,
   } = AppState;
 

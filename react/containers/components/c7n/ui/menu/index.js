@@ -76,6 +76,7 @@ export default class CommonMenu extends Component {
         MenuStore.treeReduce({ subMenus: menus }, (menu, parents) => {
           if (menu.route === pathname || pathname.indexOf(`${menu.route}/`) === 0) {
             const activeMenu = menu.type === 'tab' ? parents[parents.length - 1] : menu;
+            // console.log(activeMenu.route);
             if (activeMenu && window.location.href.includes(activeMenu.route)) {
               MenuStore.setActiveMenu(activeMenu);
               MenuStore.setActiveMenuParents(parents);
@@ -89,7 +90,9 @@ export default class CommonMenu extends Component {
         if (MenuStore.activeMenu && MenuStore.activeMenu.route === this.props.location.pathname && this.props.location.pathname !== '/') {
           document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${AppState.menuType.type !== 'site' ? `${AppState.menuType.name} – ` : ''} ${AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle}`;
         } else {
-          document.title = AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle;
+          document.title = AppState.getSiteInfo.systemTitle
+          || window._env_.HEADER_TITLE_NAME
+          || AppState.getSiteInfo.defaultTitle;
         }
       });
     }

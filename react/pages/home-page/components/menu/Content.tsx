@@ -19,9 +19,27 @@ const Menu = () => {
   const location = useLocation();
   const { pathname } = location;
 
+  const {
+    treeReduce,
+    loadMenuData: getMenuDatas,
+  } = MenuStore;
+
   const loadMenuData = async () => {
     try {
-      const menus = await MenuStore.loadMenuData();
+      const menus = await getMenuDatas();
+      treeReduce({ subMenus: menus }, (menu: { route: string; type: string; }, parents: string | any[]) => {
+        if (menu.route === pathname || pathname.indexOf(`${menu.route}/`) === 0) {
+          const activeMenu = menu.type === 'tab' ? parents[parents.length - 1] : menu;
+          if (activeMenu && window.location.href.includes(activeMenu.route)) {
+            MenuStore.setActiveMenu(activeMenu);
+            MenuStore.setActiveMenuParents(parents);
+            MenuStore.setSelected(parents[0]);
+            MenuStore.setRootBaseOnActiveMenu();
+          }
+          return true;
+        }
+        return false;
+      });
     } catch (error) {
       throw new Error(error);
     }
