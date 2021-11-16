@@ -6,7 +6,7 @@ import {} from 'choerodon-ui/pro';
 import { Loading } from '@choerodon/components';
 
 import './index.less';
-import { useMutation } from 'react-query';
+import { useQuery } from 'react-query';
 import { inject } from 'mobx-react';
 import { useVirtualList, useDebounceFn } from 'ahooks';
 import map from 'lodash/map';
@@ -36,14 +36,16 @@ const FilterProjectsLists:FC<FilterProjectsListsProps> = (props:any) => {
       content: [],
     },
     isLoading,
-    mutate,
-  } = useMutation<{
+    isFetching,
+    refetch,
+  } = useQuery<{
     content:any[]
-  }>(getData);
+  }>('c7ncd-projects-filter', getData, { enabled: false });
 
   // 防抖
-  const { run } = useDebounceFn(mutate, {
-    wait: 500,
+  const { run } = useDebounceFn(refetch, {
+    wait: 800,
+    leading: true,
   });
 
   // 使用virtuallists
@@ -73,8 +75,8 @@ const FilterProjectsLists:FC<FilterProjectsListsProps> = (props:any) => {
     searchData && run();
   }, [run, searchData]);
 
-  if (isLoading) {
-    return <Loading display={isLoading} type="c7n" />;
+  if (isLoading || isFetching) {
+    return <Loading display={isLoading || isFetching} type="c7n" />;
   }
 
   if (!list?.length) {
