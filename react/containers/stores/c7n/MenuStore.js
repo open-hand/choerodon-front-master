@@ -500,11 +500,6 @@ class MenuStore {
     return this.menuData();
   }
 
-  @computed
-  get getSiteMenuData() {
-    return this.menuData('site', 0);
-  }
-
   menuData(type = getMenuType(), id = AppState.currentMenuType.id) {
     let data;
     if (type) {

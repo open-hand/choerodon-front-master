@@ -404,9 +404,7 @@ export default class CommonMenu extends Component {
         {
           menuData.map((data) => (
             <div
-              className={classNames('c7ncd-theme4-menuSide-item', {
-                'c7ncd-theme4-menuSide-item-hover': true,
-              })}
+              className={classNames('c7ncd-theme4-menuSide-item', 'c7ncd-theme4-menuSide-item-hover')}
               {
               ...(activeMenuRoot.id === data.id) ? {
                 style: {
