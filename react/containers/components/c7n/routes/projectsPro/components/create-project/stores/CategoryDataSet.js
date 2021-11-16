@@ -68,10 +68,10 @@ export default ({
         record.isSelected = true;
       } else {
         record.isSelected = false;
+        handleDisabled({
+          dataSet, record, categoryCodes, isSelected: false, createProjectStore,
+        });
       }
-      handleDisabled({
-        dataSet, record, categoryCodes, isSelected: false, createProjectStore,
-      });
     },
   },
 });
