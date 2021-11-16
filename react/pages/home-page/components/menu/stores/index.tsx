@@ -15,8 +15,8 @@ export const StoreProvider = injectIntl(inject('AppState', 'MenuStore')((props: 
   const {
     children,
     intl: { formatMessage },
-    AppState: { currentMenuType: { type } },
     MenuStore,
+    AppState,
   } = props;
 
   const prefixCls = 'c7ncd-side-menu' as const;
@@ -29,7 +29,7 @@ export const StoreProvider = injectIntl(inject('AppState', 'MenuStore')((props: 
     formatMessage,
     mainStore,
     prefixCls,
-    type,
+    AppState,
     MenuStore,
     intlPrefix,
   };

@@ -96,8 +96,6 @@ class MenuStore {
 
   @observable activeMenu = null;
 
-  @observable activeMenuParents = [];
-
   @observable selected = null;
 
   @observable leftOpenKeys = [];
@@ -196,11 +194,6 @@ class MenuStore {
   @action
   setActiveMenuRoot(data) {
     this.activeMenuRoot = data;
-  }
-
-  @action
-  setActiveMenuParents(data) {
-    this.activeMenuParents = data;
   }
 
   @action
@@ -524,19 +517,22 @@ class MenuStore {
     return data || [];
   }
 
-  treeReduce(tree, callback, childrenName = 'subMenus', parents = []) {
+  treeReduce(tree, callback, parents = []) {
     if (tree.code) {
       parents.push(tree);
     }
-    return typeof tree[childrenName] === 'object' ? tree[childrenName]?.some((node, index) => {
+    const subMenu = tree?.subMenus;
+    return typeof subMenu === 'object' ? subMenu.some((node, index) => {
       const newParents = parents.slice(0);
-      node.parentName = parents[0] && parents[0].name;
-      if (node[childrenName] && node[childrenName].length > 0) {
-        return this.treeReduce(node, callback, childrenName, newParents);
+      let tempNode = node;
+      tempNode.parentName = parents[0] && parents[0].name;
+      const tempSubMenu = tempNode?.subMenus
+      if (tempSubMenu && tempSubMenu.length > 0) {
+        const traversTree = this.treeReduce(node, callback, newParents);
+        return traversTree;
       }
-      // node.parentName = parents[0].name;
       return callback(node, parents, index);
-    }) : undefined;
+    }) : false;
   }
 }
 

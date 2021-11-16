@@ -17,7 +17,6 @@ const WorkBench = React.lazy(() => import('../routes/workBench/list/view'));
 const WorkBenchEdit = React.lazy(() => import('../routes/workBench/list/edit'));
 const ProjectsPro = React.lazy(() => import('../routes/projectsPro'));
 const ProjectOverview = React.lazy(() => import('../routes/projectOverview'));
-const Tests = React.lazy(() => import('../routes/testapp'));
 const AutoRouter = React.lazy(() => import('@/routes'));
 
 const InnerIndex = ({ match, AppState }) => (
@@ -31,7 +30,6 @@ const InnerIndex = ({ match, AppState }) => (
       <Switch>
         <Route exact path={`${match.url}projects`} component={ProjectsPro} />
         <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
-        <Route exact path={`${match.url}testst`} component={Tests} />
         <PermissionRoute
           exact
           path={`${match.url}workbench`}
