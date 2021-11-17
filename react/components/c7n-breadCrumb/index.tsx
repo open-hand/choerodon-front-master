@@ -9,7 +9,7 @@ import './index.less';
 
 const { Item } = Bread;
 
-const prefixCls = 'page-breadcrumb';
+const prefixCls = 'c7ncd-breadcrumb';
 
 const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
   const {

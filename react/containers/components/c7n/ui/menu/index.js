@@ -74,12 +74,11 @@ export default class CommonMenu extends Component {
     if (type) {
       MenuStore.loadMenuData().then((menus) => {
         MenuStore.treeReduce({ subMenus: menus }, (menu, parents) => {
-          if (menu.route === pathname || pathname.indexOf(`${menu.route}/`) === 0) {
+          // 当当前的路径和menu里头的route值匹配或者是以这个起步，比如pathname: /devops/test/1, menu.rout: /devops/test/，就能匹配到
+          if (pathname.startsWith(menu.route)) {
             const activeMenu = menu.type === 'tab' ? parents[parents.length - 1] : menu;
-            // console.log(activeMenu.route);
             if (activeMenu && window.location.href.includes(activeMenu.route)) {
               MenuStore.setActiveMenu(activeMenu);
-              MenuStore.setActiveMenuParents(parents);
               MenuStore.setSelected(parents[0]);
               MenuStore.setRootBaseOnActiveMenu();
             }
@@ -218,31 +217,6 @@ export default class CommonMenu extends Component {
     });
     return selected;
   }
-
-  handleClick = (e) => {
-    const { MenuStore, AppState } = this.props;
-    const child = MenuStore.getMenuData;
-    const selected = this.findSelectedMenuByCode(child, e.key);
-    const paths = e.keyPath && e.keyPath.reverse()[0]; // 去掉boot的
-    const selectedRoot = paths ? child.find(({ code }) => code === paths) : selected;
-    MenuStore.click(e.key, AppState.menuType.type, e.domEvent.currentTarget.innerText);
-    if (selected) {
-      const { history } = this.props;
-      MenuStore.treeReduce(selectedRoot, (menu, parents, index) => {
-        if (index === 0 && !menu.subMenus) {
-          MenuStore.setActiveMenu(selected);
-          MenuStore.setSelected(selectedRoot);
-          MenuStore.setOpenKeys([selected, ...parents].map(({ code }) => code));
-          return true;
-        }
-        return false;
-      });
-      const { route, domian } = findFirstLeafMenu(selected);
-      const link = this.getMenuLink(route);
-      historyPushMenu(history, link, domian);
-    }
-    this.collapseMenu();
-  };
 
   handleOpenChange = (openKeys) => {
     let rest;
@@ -430,9 +404,7 @@ export default class CommonMenu extends Component {
         {
           menuData.map((data) => (
             <div
-              className={classNames('c7ncd-theme4-menuSide-item', {
-                'c7ncd-theme4-menuSide-item-hover': true,
-              })}
+              className={classNames('c7ncd-theme4-menuSide-item', 'c7ncd-theme4-menuSide-item-hover')}
               {
               ...(activeMenuRoot.id === data.id) ? {
                 style: {
