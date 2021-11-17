@@ -1,0 +1,30 @@
+@prefixCls: ~"c7ncd-header-right-lists";
+
+.@{prefixCls} {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  margin: 0 12px;
+  &-item {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    transition: 0.2s;
+    border-radius: 4px;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(123, 140, 255, 0.08);
+      border-color: rgba(123, 140, 255, 0.08);
+    }
+    > * {
+      display: block !important;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      line-height: 32px !important;
+    }
+  }
+  &-item + &-item {
+    margin-left: 17px;
+  }
+}

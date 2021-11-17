@@ -4,8 +4,8 @@ import { axios } from '@/index';
 import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
 import moment from 'moment';
-import { getRandomBackground } from '@/containers/components/c7n/util';
-import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
+import { getRandomBackground } from '@/utils';
+import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
 import get from 'lodash/get';
 

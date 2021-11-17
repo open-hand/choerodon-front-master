@@ -1,8 +1,12 @@
 import { useLocalStore } from 'mobx-react-lite';
+import { unset } from 'lodash';
+import { axios } from '@/index';
 
-export default function useStore(focusQuestions) {
+export default function useStore(focusQuestions, organizationId, removeCache) {
   return useLocalStore(() => ({
     tabKey: focusQuestions.type || 'myStarBeacon',
+    // 刷新用
+    noticeRefreshValue: 0,
     changeTabKey(value) {
       this.tabKey = value;
     },
@@ -41,6 +45,23 @@ export default function useStore(focusQuestions) {
     },
     setTreeData(data) {
       this.treeData = data;
+    },
+    async cancelStar(instanceId, projectId) {
+      await axios({
+        method: 'post',
+        url: `agile/v1/organizations/${organizationId}/work_bench/star_beacon/unstar`,
+        data: {
+          instanceId,
+          projectId,
+          type: this.tabKey === 'myStarBeacon_backlog' ? 'backlog' : 'issue',
+        },
+      });
+      removeCache('content');
+      this.init();
+      this.noticeRefreshValue += 1;
+      if (isNaN(this.noticeRefreshValue)) {
+        this.noticeRefreshValue = 0;
+      }
     },
   }));
 }

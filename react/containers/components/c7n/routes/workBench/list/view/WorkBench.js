@@ -42,16 +42,14 @@ const WorkBench = () => {
       })}
     </Page>
   ) : (
-    !AppState.getUserWizardList && (
-      <Page className={prefixCls}>
-        <WorkBenchHeader />
-        <WorkBenchDashboard
-          dashboardId={viewDs.current?.get('dashboardId')}
-          isEdit={false}
-          onOpenCardModal={redirectToEdit}
-        />
-      </Page>
-    )
+    <Page className={prefixCls}>
+      <WorkBenchHeader />
+      <WorkBenchDashboard
+        dashboardId={viewDs.current?.get('dashboardId')}
+        isEdit={false}
+        onOpenCardModal={redirectToEdit}
+      />
+    </Page>
   );
 };
 

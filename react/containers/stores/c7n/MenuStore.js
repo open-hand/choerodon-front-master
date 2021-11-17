@@ -25,7 +25,6 @@ const failedMenuType = [];
 
 export function getMenuType(menuType = AppState.currentMenuType, isUser = AppState.isTypeUser) {
   return isUser ? 'user' : menuType.type;
-  // return menuType.type;
 }
 
 function filterEmptyMenus(menuData, parent) {
@@ -96,8 +95,6 @@ class MenuStore {
   @observable collapsed = false;
 
   @observable activeMenu = null;
-
-  @observable activeMenuParents = [];
 
   @observable selected = null;
 
@@ -200,11 +197,6 @@ class MenuStore {
   }
 
   @action
-  setActiveMenuParents(data) {
-    this.activeMenuParents = data;
-  }
-
-  @action
   setCollapsed(collapsed) {
     this.collapsed = collapsed;
   }
@@ -231,21 +223,6 @@ class MenuStore {
     } else {
       this.openKeys = openKeys;
     }
-  }
-
-  @action
-  setType(type) {
-    this.type = type;
-  }
-
-  @action
-  setIsUser(isUser) {
-    this.isUser = isUser;
-  }
-
-  @action
-  setId(id) {
-    this.id = id;
   }
 
   @action
@@ -312,19 +289,15 @@ class MenuStore {
     if (this.judgeFailedMenuType(menuType)) {
       isLoadMenu = 0;
       AppState.setCanShowRoute(true);
-      // debugger;
       return new Promise((resolve) => {
-        // debugger;
         resolve([]);
       });
     }
     this.setRootBaseOnActiveMenu();
     if (isLoadMenu === 1) {
       if (selfResolve) {
-        // debugger;
         setTimeout(() => this.loadMenuData(menuType, isUser, setData, selfResolve), 500)
       } else {
-        // debugger;
         return new Promise((resolve) => {
           setTimeout(() => this.loadMenuData(menuType, isUser, setData, resolve), 500)
         });
@@ -333,19 +306,13 @@ class MenuStore {
       AppState.setCanShowRoute(false);
       isLoadMenu = 1;
       if (selfResolve) {
-        // debugger;
         mainFunc.call(this, selfResolve);
       } else {
-        // debugger;
         return new Promise((resolve) => {
           mainFunc.call(this, resolve);
         });
       }
     }
-    // return new Promise((resolve) => {
-    //   mainFunc.call(this, resolve);
-    // });
-
 
     async function mainFunc(resolve) {
       try {
@@ -358,7 +325,7 @@ class MenuStore {
             }
           }
         }
-        // debugger;
+        
         const { id = 0, organizationId, orgId } = menuType;
         const menu = this.menuData(type, id);
         let hasMenu = () => {
@@ -373,44 +340,41 @@ class MenuStore {
           }
           return false;
         }
-        // debugger;
+        
         if (menu.length || hasMenu()) {
           if (type === 'site') {
             if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-              // debugger;
+              
               await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
-                enabledCancelCache: false,
                 enabledCancelRoute: false,
               });
               const result = await axios.get('/iam/choerodon/v1/switch/site', {
-                enabledCancelCache: false,
                 enabledCancelRoute: false,
               });
-              // debugger;
+              
               if (!result) {
                 this.setHasSitePermission(false);
               }
-              // debugger;
+              
               await AppState.loadUserInfo();
-              // debugger;
+              
             }
           } else if (type === 'organization') {
-            // debugger;
+            
             const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
             if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
-              // debugger;
+              
               await axios({
                 url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
                 method: 'put',
-                enabledCancelCache: false,
                 enabledCancelRoute: false,
               });
-              // debugger;
+              
               AppState.loadUserInfo();
             }
           }
           if (!AppState.currentMenuType.hasChangeCategorys) {
-            // debugger;
+            
             isLoadMenu = 0;
             AppState.setCanShowRoute(true);
             return resolve(menu);
@@ -419,7 +383,6 @@ class MenuStore {
           AppState.setCanShowRoute(true);
         }
         async function getMenu(that) {
-          // debugger;
           const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
           let url = '/iam/choerodon/v1/menu';
           if (type === 'project') {
@@ -435,82 +398,69 @@ class MenuStore {
           const data = await axios({
             url,
             method: 'get',
-            enabledCancelCache: false,
             enabledCancelRoute: false,
           });
           const child = filterEmptyMenus(data || []);
-          // debugger;
+          
           if (type === 'project') {
             changeMenuLevel({ level: 'project', child });
           } else if (type === 'user') {
             changeMenuLevel({ level: 'user', child });
           }
-          // debugger;
+          
           that.setMenuData(child, type, id);
           return child;
         }
         let flag = 0;
         if (type === 'site') {
-          // debugger;
           if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-            // debugger;
             await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
-              enabledCancelCache: false,
               enabledCancelRoute: false,
             });
             const result = await axios.get('/iam/choerodon/v1/switch/site', {
-              enabledCancelCache: false,
               enabledCancelRoute: false,
             });
-            // debugger;
+            
             if (!result) {
               this.setHasSitePermission(false);
             }
           }
         } else if (id && (['project', 'organization'].includes(type))) {
-          // debugger;
           const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
           if (!loadingTenant.includes(orgId)) {
             loadingTenant.push(String(orgId));
             await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
-              enabledCancelCache: false,
               enabledCancelRoute: false,
             });
-            // debugger;
+            
             loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);
           } else {
             flag = 1;
           }
         }
         if (!flag) {
-          // debugger;
           let data;
           const menu = this.menuData(type, id);
-          // debugger;
           if (['organization', 'project'].includes(type)) {
             if (!Object.keys(menuStore.menuGroup[type]).includes(id)) {
               data = await getMenu(this);
-              // debugger;
             }
           } else if (!menu.length && !menu.level) {
             data = await getMenu(this);
-            // debugger;
           }
           if (AppState.userInfo.currentRoleLevel !== type) {
             AppState.userInfo.currentRoleLevel = type;
             AppState.loadUserInfo();
-            // debugger;
           }
           AppState.setCanShowRoute(true);
           AppState.userInfo.currentRoleLevel = type;
           isLoadMenu = 0;
-          // debugger;
+          
           return resolve(data || []);
         }
         isLoadMenu = 0;
         AppState.setCanShowRoute(true);
       } catch (e) {
-        // debugger;
         failedMenuType.push(menuType);
         isLoadMenu = 0;
         AppState.setCanShowRoute(true);
@@ -550,11 +500,6 @@ class MenuStore {
     return this.menuData();
   }
 
-  @computed
-  get getSiteMenuData() {
-    return this.menuData('site', 0);
-  }
-
   menuData(type = getMenuType(), id = AppState.currentMenuType.id) {
     let data;
     if (type) {
@@ -567,19 +512,22 @@ class MenuStore {
     return data || [];
   }
 
-  treeReduce(tree, callback, childrenName = 'subMenus', parents = []) {
+  treeReduce(tree, callback, parents = []) {
     if (tree.code) {
       parents.push(tree);
     }
-    return typeof tree[childrenName] === 'object' ? tree[childrenName]?.some((node, index) => {
+    const subMenu = tree?.subMenus;
+    return typeof subMenu === 'object' ? subMenu.some((node, index) => {
       const newParents = parents.slice(0);
-      node.parentName = parents[0] && parents[0].name;
-      if (node[childrenName] && node[childrenName].length > 0) {
-        return this.treeReduce(node, callback, childrenName, newParents);
+      let tempNode = node;
+      tempNode.parentName = parents[0] && parents[0].name;
+      const tempSubMenu = tempNode?.subMenus
+      if (tempSubMenu && tempSubMenu.length > 0) {
+        const traversTree = this.treeReduce(node, callback, newParents);
+        return traversTree;
       }
-      // node.parentName = parents[0].name;
       return callback(node, parents, index);
-    }) : undefined;
+    }) : false;
   }
 }
 

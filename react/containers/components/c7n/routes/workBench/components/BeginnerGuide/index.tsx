@@ -38,18 +38,6 @@ const guidePopover = (guideContent: GuideVO) => (
                 </span>
               </p>
             </div>
-            {/* <Tooltip title={!item.permitted && '暂无目标页面权限'}>
-              <Button
-                disabled={!item.permitted}
-                onClick={() => {
-                  if (item.pageUrl) {
-                    window.open(`${window.location.origin}/#${item.pageUrl}`);
-                  }
-                }}
-              >
-                去设置
-              </Button>
-            </Tooltip> */}
           </div>
         ))
         }
@@ -70,7 +58,6 @@ function BeginnerGuide() {
       >
         <span className={styles[`${classNamePrefix}-title`]}>{item.title}</span>
       </Popover>
-      {/* <span className={styles[`${classNamePrefix}-subtitle`]}>集群创建成功后，便可创建环境</span> */}
     </li>
   );
 

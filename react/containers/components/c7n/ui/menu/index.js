@@ -10,8 +10,8 @@ import folding from '@/assets/images/folding.svg';
 import unfold from '@/assets/images/unfold.svg';
 import bg from '../header/style/icons/bg.svg';
 import './RequireSvgResources';
-import findFirstLeafMenu from '../../util/findFirstLeafMenu';
-import { historyPushMenu } from '../../util';
+import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
+import { historyPushMenu } from '@/utils';
 import './index.less';
 
 const { SubMenu, Item, ItemGroup } = Menu;
@@ -69,56 +69,29 @@ export default class CommonMenu extends Component {
 
   loadMenu(props) {
     const { location, AppState, MenuStore } = props;
-    const {
-      type: currentType, isUser: currentIsUser, id: currentId, selected, collapsed,
-    } = MenuStore;
     const { pathname } = location;
-    const { type, id } = AppState.currentMenuType;
+    const { type } = AppState.currentMenuType;
     if (type) {
       MenuStore.loadMenuData().then((menus) => {
-        const isUser = AppState.isTypeUser;
-        if (pathname === '/') {
-          MenuStore.setActiveMenu(null);
-          MenuStore.setSelected(selected ? menus.find(({ code }) => code === selected.code) || menus[0] : menus[0]);
-          MenuStore.setType(type);
-          MenuStore.setId(id);
-          MenuStore.setIsUser(isUser);
-          // MenuStore.setOpenKeys([]);
-        } else {
-          MenuStore.treeReduce({ subMenus: menus }, (menu, parents) => {
-            if (menu.route === pathname || pathname.indexOf(`${menu.route}/`) === 0) {
-              const nCode = parents.length && parents[parents.length - 1].code;
-              const oCode = selected && selected.code;
-              if (
-                oCode !== nCode
-                || currentType !== type
-                || isUser !== currentIsUser
-                || currentId !== id
-              ) {
-                // MenuStore.setOpenKeys(collapsed ? [] : [menu, ...parents].map(({ code }) => code));
-                // this.savedOpenKeys = [menu, ...parents].map(({ code }) => code);
-              }
-              const activeMenu = menu.type === 'tab' ? parents[parents.length - 1] : menu;
-              if (activeMenu && window.location.href.includes(activeMenu.route)) {
-                MenuStore.setActiveMenu(activeMenu);
-                MenuStore.setActiveMenuParents(parents);
-                MenuStore.setSelected(parents[0]);
-                MenuStore.setType(type);
-                MenuStore.setId(id);
-                MenuStore.setIsUser(isUser);
-                MenuStore.setRootBaseOnActiveMenu();
-              }
-              return true;
+        MenuStore.treeReduce({ subMenus: menus }, (menu, parents) => {
+          // 当当前的路径和menu里头的route值匹配或者是以这个起步，比如pathname: /devops/test/1, menu.rout: /devops/test/，就能匹配到
+          if (pathname.startsWith(menu.route)) {
+            const activeMenu = menu.type === 'tab' ? parents[parents.length - 1] : menu;
+            if (activeMenu && window.location.href.includes(activeMenu.route)) {
+              MenuStore.setActiveMenu(activeMenu);
+              MenuStore.setSelected(parents[0]);
+              MenuStore.setRootBaseOnActiveMenu();
             }
-            return false;
-          });
-        }
+            return true;
+          }
+          return false;
+        });
         if (MenuStore.activeMenu && MenuStore.activeMenu.route === this.props.location.pathname && this.props.location.pathname !== '/') {
-          // eslint-disable-next-line no-underscore-dangle
-          document.getElementsByTagName('title')[0].innerText = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${AppState.menuType.type !== 'site' ? `${AppState.menuType.name} – ` : ''} ${AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle}`;
+          document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${AppState.menuType.type !== 'site' ? `${AppState.menuType.name} – ` : ''} ${AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle}`;
         } else {
-          // eslint-disable-next-line no-underscore-dangle
-          document.getElementsByTagName('title')[0].innerText = AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle;
+          document.title = AppState.getSiteInfo.systemTitle
+          || window._env_.HEADER_TITLE_NAME
+          || AppState.getSiteInfo.defaultTitle;
         }
       });
     }
@@ -146,9 +119,7 @@ export default class CommonMenu extends Component {
           }}
         >
           <span
-            className={classNames({
-              'theme4-iconwrap': true,
-            })}
+            className="theme4-iconwrap"
             style={{
               marginRight: isThird ? '-3px' : '16px',
             }}
@@ -162,9 +133,7 @@ export default class CommonMenu extends Component {
             }
           </span>
           <span
-            className={classNames({
-              'theme4-iconwrap-text': true,
-            })}
+            className="theme4-iconwrap-text"
           >
             {data.name}
           </span>
@@ -190,17 +159,14 @@ export default class CommonMenu extends Component {
               fontSize: '0.14rem',
             }}
           >
-            <span className={classNames({
-              'theme4-iconwrap': true,
-            })}
-            >
+            <span className="theme4-iconwrap">
               <Icon
                 type={data.icon}
               />
             </span>
             {num === 0 && collapsed ? null : <span>{data.name}</span>}
           </span>
-          )}
+        )}
       >
         {data.subMenus.filter((v) => v.type !== 'tab' && v.code !== 'choerodon.code.project.deploy.app-deployment.pipeline').map(
           (two) => this.getMenuSingle(two, parseInt(num, 10) + 1, collapsed, true),
@@ -209,40 +175,32 @@ export default class CommonMenu extends Component {
     );
   }
 
-  TooltipMenu(reactNode, code) {
-    const { AppState } = this.props;
-    if (AppState.getDebugger) {
-      return (
-        <Tooltip defaultVisible="true" trigger="hover" placement="right">
-          {reactNode}
-        </Tooltip>
-      );
-    }
-    return reactNode;
-  }
-
   getMenuLink(route) {
-    const { AppState, history } = this.props;
+    const { AppState } = this.props;
     const {
       id, name, type, organizationId, category,
     } = AppState.currentMenuType;
-    let search = '';
+    const search = new URLSearchParams();
     switch (type) {
       case 'site':
         if (AppState.isTypeUser) {
-          search = '?type=site';
+          search.set('type', 'site');
         }
         break;
       case 'organization':
       case 'project':
-        search = `?type=${type}&id=${id}${name && `&name=${encodeURIComponent(name)}`}&category=${category}`;
+        search.set('type', type);
+        search.set('id', id);
+        name && search.set('name', name);
+        category && search.set('category', category);
         break;
       case 'user':
-        search = `?type=${type}`;
+        search.set('type', type);
         break;
       default:
     }
-    return `${route}${search}${search === '' ? `?organizationId=${organizationId}` : `&organizationId=${organizationId}`}`;
+    search.set('organizationId', organizationId);
+    return `${route}?${search.toString()}`;
   }
 
   findSelectedMenuByCode(child, code) {
@@ -259,31 +217,6 @@ export default class CommonMenu extends Component {
     });
     return selected;
   }
-
-  handleClick = (e) => {
-    const { MenuStore, AppState } = this.props;
-    const child = MenuStore.getMenuData;
-    const selected = this.findSelectedMenuByCode(child, e.key);
-    const paths = e.keyPath && e.keyPath.reverse()[0]; // 去掉boot的
-    const selectedRoot = paths ? child.find(({ code }) => code === paths) : selected;
-    MenuStore.click(e.key, AppState.menuType.type, e.domEvent.currentTarget.innerText);
-    if (selected) {
-      const { history } = this.props;
-      MenuStore.treeReduce(selectedRoot, (menu, parents, index) => {
-        if (index === 0 && !menu.subMenus) {
-          MenuStore.setActiveMenu(selected);
-          MenuStore.setSelected(selectedRoot);
-          MenuStore.setOpenKeys([selected, ...parents].map(({ code }) => code));
-          return true;
-        }
-        return false;
-      });
-      const { route, domian } = findFirstLeafMenu(selected);
-      const link = this.getMenuLink(route);
-      historyPushMenu(history, link, domian);
-    }
-    this.collapseMenu();
-  };
 
   handleOpenChange = (openKeys) => {
     let rest;
@@ -302,9 +235,8 @@ export default class CommonMenu extends Component {
   };
 
   collapseMenu = () => {
-    const { AppState, MenuStore } = this.props;
+    const { MenuStore } = this.props;
     MenuStore.setLeftOpenKeys([]);
-    AppState.setMenuExpanded(false);
   };
 
   toggleRightMenu = () => {
@@ -343,13 +275,12 @@ export default class CommonMenu extends Component {
 
     return (
       <ItemGroup
-          // onTitleClick={this.handleClick}
         key={item.code}
         className="common-menu-right-popup"
       >
         {
-            item.subMenus.filter((v) => v.type !== 'tab').map((two) => this.getMenuSingle(two, 0, collapsed))
-          }
+          item.subMenus.filter((v) => v.type !== 'tab').map((two) => this.getMenuSingle(two, 0, collapsed))
+        }
       </ItemGroup>
     );
   }
@@ -357,21 +288,13 @@ export default class CommonMenu extends Component {
   renderRightMenu() {
     const { MenuStore, AppState } = this.props;
     const { collapsed, openKeys, activeMenu } = MenuStore;
-    let child;
     const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
-    child = MenuStore.getMenuData.filter((item) => item.id === activeMenuRoot.id);
-    // if (AppState.getCurrentTheme === 'theme4') {
-    //   const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
-    //   child = MenuStore.getMenuData.filter((item) => item.id === activeMenuRoot.id);
-    // } else {
-    //   child = MenuStore.getMenuData;
-    // }
+    const child = MenuStore.getMenuData.filter((item) => item.id === activeMenuRoot.id);
     return (
       <div
         className={
-          classNames('common-menu-right', {
+          classNames('common-menu-right', 'theme4-common-menu', {
             collapsed,
-            'theme4-common-menu': true,
           })
         }
         style={{
@@ -386,41 +309,22 @@ export default class CommonMenu extends Component {
           }}
         >
           <div
-            className={classNames({
-              'theme4-iconToggle': true,
-            })}
+            className="theme4-iconToggle"
           >
-            {
-              true ? (
-                <img
-                  role="none"
-                  style={{
-                    cursor: 'pointer',
-                  }}
-                  src={collapsed ? unfold : folding}
-                  alt=""
-                  onClick={this.toggleRightMenu}
-                />
-              ) : (
-                <Icon
-                  type={(function () {
-                    // if (AppState.getCurrentTheme === 'theme4') {
-                    //   if (collapsed) {
-                    //     return 'keyboard_arrow_right';
-                    //   }
-                    //   return 'keyboard_arrow_left';
-                    // }
-                    return 'menu';
-                  }())}
-                  onClick={this.toggleRightMenu}
-                />
-              )
-            }
+            <img
+              role="none"
+              style={{
+                cursor: 'pointer',
+              }}
+              src={collapsed ? unfold : folding}
+              alt="img"
+              onClick={this.toggleRightMenu}
+            />
           </div>
         </div>
         <div className="common-menu-right-content">
           <Menu
-            className={classNames({ 'theme4-menu-ul': true })}
+            className="theme4-menu-ul"
             mode="inline"
             inlineCollapsed={collapsed}
             selectedKeys={[activeMenu && activeMenu.code]}
@@ -450,16 +354,8 @@ export default class CommonMenu extends Component {
   }
 
   renderMenuSideIconName = (data) => {
-    const { MenuStore, AppState } = this.props;
     const str = iconMap[data.code] || 'xiezuo';
-    const root = MenuStore.getActiveMenuRoot;
-    if (true) {
-      return `${str}new.sprite`;
-    }
-    if (root && data.code === root[AppState.menuType.type]?.code) {
-      return `${str}click.sprite`;
-    }
-    return `${str}.sprite`;
+    return `${str}new.sprite`;
   }
 
   handleClickItemMenuSide = (item) => {
@@ -508,25 +404,17 @@ export default class CommonMenu extends Component {
         {
           menuData.map((data) => (
             <div
-              className={classNames('c7ncd-theme4-menuSide-item', {
-                // 'c7ncd-origin-menuSide': activeMenuRoot.id === data.id && AppState.getCurrentTheme === '',
-                // 'c7ncd-origin-menuSide-item': AppState.getCurrentTheme === '',
-                'c7ncd-theme4-menuSide-item-hover': true,
-              })}
+              className={classNames('c7ncd-theme4-menuSide-item', 'c7ncd-theme4-menuSide-item-hover')}
               {
-                ...(activeMenuRoot.id === data.id) && true ? {
-                  style: {
-                    background: 'rgba(140, 158, 255, 0.35)',
-                  },
-                } : {}
+              ...(activeMenuRoot.id === data.id) ? {
+                style: {
+                  background: 'rgba(140, 158, 255, 0.35)',
+                },
+              } : {}
               }
+              role="none"
               onClick={() => this.handleClickItemMenuSide(data)}
             >
-              {/* { */}
-              {/*  (activeMenuRoot.id === data.id) && AppState.getCurrentTheme === '' && ( */}
-              {/*    <div className="c7ncd-origin-selected-line" /> */}
-              {/*  ) */}
-              {/* } */}
               <div
                 style={{
                   borderRadius: '8px',
@@ -550,7 +438,7 @@ export default class CommonMenu extends Component {
   }
 
   render() {
-    const { MenuStore, location: { pathname }, AppState } = this.props;
+    const { MenuStore, location: { pathname } } = this.props;
     const child = MenuStore.getMenuData;
     if (!(child && child.length > 0) || this.shouldHiddenMenu(pathname) || MenuStore.notFoundSign) {
       return null;

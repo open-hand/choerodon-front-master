@@ -48,10 +48,12 @@ const PlatformAnnouncement = (props:{
 
   const content = get(announcement, 'content');
   const title = get(announcement, 'title');
+  const id = get(announcement, 'id');
 
   const [isFull, setFull] = useState<boolean>(false);
 
   const closeModal = () => {
+    window.localStorage.setItem('announcementModalInfo', `${id}+true`);
     infoModal && infoModal.close();
   };
 
@@ -70,6 +72,13 @@ const PlatformAnnouncement = (props:{
       />
     </div>
   );
+
+  useEffect(() => {
+    const announcementModalShowed = window.localStorage.getItem('announcementModalInfo')?.split('+')[1] !== 'false';
+    if (!announcementModalShowed) {
+      handleInfo();
+    }
+  }, []);
 
   useEffect(() => {
     infoModal && infoModal.update({

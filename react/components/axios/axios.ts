@@ -14,16 +14,6 @@ import {
   routeCancelResponseSuccessInterceptor,
 } from './interceptors/routeCancelHandler';
 
-declare module 'axios' {
-  interface AxiosRequestConfig {
-    noPrompt?: boolean
-    useCache?:boolean
-    enabledCancelRoute?:boolean,
-    cancelCacheKey?: string,
-    application?: 'default' | 'ui',
-  }
-}
-
 type choerodonAxiosProps = {
   type: 'default' | 'ui',
 }
@@ -32,7 +22,7 @@ function choerodonAxios({
   type,
 }:choerodonAxiosProps) {
   // @ts-ignore
-  const instance:AxiosStatic = axios.create({
+  const instance:C7NAxiosRequestConfig = axios.create({
     timeout: 30000,
     baseURL: API_HOST,
   });
@@ -46,6 +36,9 @@ function choerodonAxios({
   instance.defaults.transformResponse = [
     transformJSONBig,
   ];
+
+  // 是否展示全部的axiosResponse数据，默认：成功返回的数据内容
+  instance.defaults.showAllRepsonseConfigData = false;
 
   instance.defaults.paramsSerializer = paramsSerializer;
 

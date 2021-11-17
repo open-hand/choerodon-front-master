@@ -13,19 +13,20 @@ import {
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import { mount, get as cherodonGet } from '@choerodon/inject';
-import getSearchString from '@/containers/components/c7n/util/gotoSome';
+import getSearchString from '@/utils/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '@/components/axios';
-import MasterHeader from '../ui/header';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from './RouteIndex';
+import './index.less';
 import './style';
 import Skeleton from '@/components/skeleton';
 import CommonMenu, { defaultBlackList } from '../ui/menu';
 import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
+import Header from '@/pages/home-page/components/header';
 
 const spinStyle = {
   textAlign: 'center',
@@ -209,6 +210,15 @@ class Masters extends Component {
       const { HeaderStore } = this.props;
 
       const identity = 'platform_announcement';
+      if (window.localStorage.getItem('announcementModalInfo')) {
+        const announcementId = window.localStorage.getItem('announcementModalInfo').split('+')[0];
+        if (announcementId !== res?.id) {
+          window.localStorage.setItem('announcementModalInfo', `${res?.id}+false`);
+        }
+      } else {
+        window.localStorage.setItem('announcementModalInfo', `${res?.id}+false`);
+      }
+
       if (res && (!localStorage.lastClosedId || localStorage.lastClosedId !== res?.id)) {
         HeaderStore.innsertAnnouncement(identity, {
           data: res,
@@ -263,16 +273,6 @@ class Masters extends Component {
     this.getSaaSUserRestDays();
   }
 
-  isInOutward = (pathname) => {
-    // eslint-disable-next-line no-underscore-dangle
-    const injectOutward = window._env_.outward;
-    if (injectOutward) {
-      const arr = injectOutward.split(',').concat(['/unauthorized']);
-      return arr.some((v) => pathname.startsWith(v));
-    }
-    return false;
-  };
-
   /**
    * @description: 根据返回的themeColor改变全局primaryColor变量
    * @param {*}
@@ -319,7 +319,6 @@ class Masters extends Component {
     } = props;
     const { pathname, search } = location;
     let isUser = false;
-    let needLoad = false;
     let menuType = parseQueryToMenuType(search);
     if (pathname === '/') {
       const recent = HeaderStore.getRecentItem;
@@ -333,7 +332,6 @@ class Masters extends Component {
           type,
           organizationId,
         };
-        needLoad = true;
       } else {
         menuType = {};
       }
@@ -343,6 +341,7 @@ class Masters extends Component {
     } else if (!menuType.type) {
       menuType.type = 'site';
     }
+
     async function checkUrl() {
       async function goSafty(data) {
         if (!HeaderStore.getOrgData) {
@@ -427,17 +426,10 @@ class Masters extends Component {
 
   render() {
     const {
-      AutoRouter, AppState, location,
+      AppState, location,
     } = this.props;
     const search = new URLSearchParams(location.search);
     const fullPage = search.get('fullPage');
-    if (this.isInOutward(this.props.location.pathname)) {
-      return (
-        <div className="page-wrapper">
-          <RouteIndex AutoRouter={AutoRouter} />
-        </div>
-      );
-    }
     return AppState.isAuth && AppState.currentMenuType ? (
       <div className="page-wrapper">
         <div
@@ -445,7 +437,7 @@ class Masters extends Component {
           style={fullPage ? { display: 'none' } : {}}
         >
           <AnnouncementBannerPro />
-          <MasterHeader />
+          <Header />
         </div>
         <div className="page-body">
           <div className="content-wrapper">
@@ -467,7 +459,7 @@ class Masters extends Component {
             <div id="autoRouter" className="content">
               {AppState.getCanShowRoute
               || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
-                <RouteIndex AutoRouter={AutoRouter} />
+                <RouteIndex />
                 ) : (
                   <div>
                     <Skeleton />

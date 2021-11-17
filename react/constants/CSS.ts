@@ -1,3 +1,3 @@
-const defaultThemeColor = '#5365EA';
+const defaultThemeColor = '#5365ea';
 
 export { defaultThemeColor };

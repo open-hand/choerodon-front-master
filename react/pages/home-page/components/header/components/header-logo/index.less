@@ -1,0 +1,32 @@
+@prefixCls: c7ncd-header-logo;
+
+.@{prefixCls} {
+  background-color: #fff;
+  height: 45px;
+  line-height: 45px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &-img {
+    width: 30px;
+    height: auto;
+    margin: 0 10px;
+  }
+  &-text {
+    flex-grow: 1;
+    height: 100%;
+    user-select: none;
+    background-repeat: no-repeat;
+    background-size: auto 20px;
+    background-position: 0 center;
+    transition: background-position 0.3s;
+    font-size: 20px;
+    font-family: STHeitiSC-Medium, STHeitiSC, "Monospaced Number",
+      "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue",
+      Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    color: #0f1358 !important;
+  }
+}

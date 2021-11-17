@@ -24,8 +24,9 @@ const nameValidator = (value) => {
   return true;
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default ({
-  organizationId, categoryDs, projectId, categoryCodes,
+  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false,
 }) => {
   const codeValidator = async (value, name, record) => {
     if (record.status !== 'add') {
@@ -65,6 +66,14 @@ export default ({
     }
   };
 
+  let newUserGuideDefaultValue = {};
+  if (inNewUserGuideStepOne) {
+    newUserGuideDefaultValue = {
+      name: '全流程示例项目',
+      code: 'proj-demo',
+    };
+  }
+
   return {
     autoQuery: false,
     selection: false,
@@ -84,7 +93,6 @@ export default ({
         method: 'post',
         data: { ...data, operateType: 'create' },
       }),
-
       update: ({ data: [data] }) => ({
         url: `/iam/choerodon/v1/organizations/${organizationId}/projects/${data.id}`,
         method: 'put',
@@ -93,16 +101,27 @@ export default ({
     },
     fields: [
       {
-        name: 'name', type: 'string', label: '项目名称', required: true, validator: nameValidator,
+        name: 'name',
+        type: 'string',
+        label: '项目名称',
+        required: true,
+        validator: nameValidator,
+        defaultValue: newUserGuideDefaultValue.name,
       },
       {
-        name: 'code', type: 'string', label: '项目编码', required: true, validator: codeValidator,
+        name: 'code',
+        type: 'string',
+        label: '项目编码',
+        required: true,
+        validator: codeValidator,
+        defaultValue: newUserGuideDefaultValue.code,
       },
       {
         name: 'description',
         type: 'string',
         label: '项目描述',
         maxLength: 100,
+        defaultValue: newUserGuideDefaultValue.description,
       },
       { name: 'enabled', type: 'boolean', label: '项目状态' },
       {

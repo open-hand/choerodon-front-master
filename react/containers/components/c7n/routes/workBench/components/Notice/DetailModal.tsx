@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Avatar } from 'choerodon-ui';
 
-import defaultAvatar from '@/containers/components/c7n/ui/header/style/icons/favicon.png';
+import defaultAvatar from '@/assets/images/favicon.png';
 import AppState from '@/containers/stores/c7n/AppState';
 import { NoticeVO } from './model';
 

@@ -223,16 +223,6 @@ class HeaderStore {
   }
 
   @computed
-  get getShowSiteMenu() {
-    return this.showSiteMenu;
-  }
-
-  @action
-  setShowSiteMenu(flag) {
-    this.showSiteMenu = flag;
-  }
-
-  @computed
   get getUnreadMessageCount() {
     return this.unreadMessageCount;
   }
@@ -310,17 +300,6 @@ class HeaderStore {
       .catch(handleResponseError).finally(() => {
         this.inboxLoading = false;
       });
-  }
-
-  axiosShowSiteMenu() {
-    return axios({
-      url: '/iam/choerodon/v1/menus/site_menu_flag',
-      method: 'get',
-    }).then(action((data) => {
-      this.setShowSiteMenu(data);
-    })).catch(() => {
-      this.setShowSiteMenu(false);
-    });
   }
 
   axiosGetUnreadMessageCount() {

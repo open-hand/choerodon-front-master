@@ -100,6 +100,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
           btn = (
             <ButtonGroup
               btnItems={groupBtnItems}
+              tooltipsConfig={tooltipsConfig}
               display={display}
               color={transColor}
               icon={icon}

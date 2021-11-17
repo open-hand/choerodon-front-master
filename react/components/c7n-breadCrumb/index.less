@@ -1,0 +1,68 @@
+@prefixCls: ~"c7ncd-breadcrumb";
+
+.@{prefixCls} {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 24px;
+  padding-right: 24px;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 64px;
+  border-bottom: 1px solid #d9e6f2;
+  background: white;
+  justify-content: unset !important;
+
+  &-menu {
+    font-size: 18px;
+    font-weight: 400;
+    color: #0f1358;
+  }
+
+  &-spliter {
+    width: 1;
+    height: 12;
+    color: rgba(15, 19, 88, 0.65);
+  }
+
+  span:last-child span:first-child {
+    color: var(--text-color) !important;
+  }
+
+  .c7n-breadcrumb-separator {
+    font-size: 20px;
+  }
+
+  .c7n-breadcrumb-link {
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.65);
+    line-height: 28px;
+    max-width: 6.5rem;
+    display: table-cell;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    a {
+      color: rgba(0, 0, 0, 0.65) !important;
+      &:hover {
+        color: rgba(0, 0, 0, 0.87) !important;
+      }
+    }
+  }
+
+  .title {
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.87) !important;
+    line-height: 28px;
+
+    a {
+      color: rgba(0, 0, 0, 0.87) !important;
+    }
+  }
+
+  .icon {
+    margin-top: -0.04rem;
+  }
+}

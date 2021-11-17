@@ -3,7 +3,7 @@ import { Icon } from 'choerodon-ui';
 import queryString from 'query-string';
 import TimeAgo from 'timeago-react';
 import { observer } from 'mobx-react-lite';
-import handleClickProject from '@/containers/components/util/gotoProject';
+import handleClickProject from '@/utils/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import ProjectTaskContent from '../projectTaskContent';

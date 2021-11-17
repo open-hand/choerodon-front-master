@@ -10,9 +10,9 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
-  getProjectsIds(userId:any) {
+  getProjectsIds(userId:any, filerData?:string) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging`,
+      url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging?params=${filerData}`,
       method: 'get',
     });
   }
@@ -30,6 +30,28 @@ class OrganizationsApi extends Api<OrganizationsApi> {
       url: `${this.prefix}/${this.orgId}/quick_links`,
       method: 'post',
       data,
+    });
+  }
+
+  copyInviteLink() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/user_wizard/completed?step=createUser`,
+      method: 'get',
+    });
+  }
+
+  export(res:object) {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}/hand/export/register/tenant`,
+      data: res,
+    });
+  }
+
+  exportHistory(userid:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/hand/upload/${userid}/history`,
     });
   }
 }

@@ -1,6 +1,7 @@
 /* eslint-disable react/static-property-placement */
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import JSONbig from 'json-bigint';
 import { getCookie } from '@/utils';
 import AppState from '../../containers/stores/c7n/AppState';
 
@@ -63,10 +64,10 @@ export default class WSHandler extends Component {
       onMessage, type, dataKey, typeKey,
     } = this.props;
     if (typeof onMessage === 'function') {
-      onMessage(JSON.parse(data)[dataKey]);
+      onMessage(JSONbig.parse(data)[dataKey]);
     }
     if (type) {
-      const jsonData = JSON.parse(data);
+      const jsonData = JSONbig.parse(data);
       if (jsonData[typeKey] === type) {
         this.setState({
           data: jsonData[dataKey],
@@ -74,7 +75,7 @@ export default class WSHandler extends Component {
       }
     } else {
       this.setState({
-        data: JSON.parse(data)[dataKey],
+        data: JSONbig.parse(data)[dataKey],
       });
     }
   };
