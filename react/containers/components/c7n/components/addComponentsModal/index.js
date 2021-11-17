@@ -102,7 +102,7 @@ const AddModal = (props) => {
           <div className={`${subPrefix}-right-item-text`}>
             <span
               style={{
-                color: hasItem && '#5365ea',
+                color: hasItem && 'var(--primary-color)',
               }}
             >
               {item.title}

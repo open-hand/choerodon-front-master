@@ -85,7 +85,7 @@ const Menu = () => {
 
   // shouldHiddenMenu：通过配置的默认路径判断是否展示menu
   // currentTypeMenuDatas: menustore里头获取的当前type的菜单数组
-  // 404界面出现的时候，在MenuStore中设置的
+  // notFoundSign: 404界面出现的时候，在MenuStore中设置的， 这块逻辑也需要独立出来
   if (shouldHiddenMenu || currentTypeMenuDatas?.length || notFoundSign) {
     return null;
   }

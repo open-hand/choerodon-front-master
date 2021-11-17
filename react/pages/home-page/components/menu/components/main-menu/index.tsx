@@ -18,7 +18,15 @@ const intlPrefix = 'c7ncd.main.menu';
 const MainMenu:FC<MainMenuProps> = () => {
   const {
     type,
+    MenuStore,
+    AppState,
   } = useMenuStore();
+
+  // 获取当前层级的menu数据
+  const menuData = MenuStore.getMenuData;
+
+  // 这里是获取全局以及设置到Store里头的选中的父级菜单
+  const activeMenuRoot = MenuStore.getActiveMenuRoot[AppState.menuType?.type] || {};
 
   useEffect(() => {
 

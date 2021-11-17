@@ -8,7 +8,7 @@ import { NoticeVO } from './model';
 
 const ModalTitle = styled.div`
   position: relative;
-  color: #5365ea;
+  color: var(--primary-color);
   font-size: 16px;
   line-height: 22px;
   margin-bottom: .16rem;

@@ -313,7 +313,7 @@ const TodoQuestion = observer(() => {
           <div
             className="c7n-todoQuestion-issueContent-issueItem-main-project-left"
             style={{
-              color: realId ? '#5365EA' : undefined,
+              color: realId ? 'var(--primary-color)' : undefined,
               marginRight: id === 'more' ? 0 : undefined,
               backgroundColor: realId ? '#F0F5FF' : undefined,
               backgroundImage: imageUrl && id ? `url('${imageUrl}')` : getRandomBackground(id),
