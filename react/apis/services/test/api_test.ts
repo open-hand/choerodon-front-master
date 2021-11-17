@@ -6,6 +6,31 @@ class ApiTestApi extends Api<ApiTestApi> {
   }
 
   /**
+   *
+   * 查询测试套件记录的列表 - （左侧树）
+   * @param {string} apiKitId
+   * @return {*}
+   * @memberof ApiTestApi
+   */
+  getKitsRecordTree(apiKitId:string) {
+    return this.request({
+      url: `${this.prefix}/suite_records/${apiKitId}/task_records`,
+      method: 'get',
+    });
+  }
+
+  /**
+   * 查询测试套件记录详情 - （顶部概览）
+   * @memberof ApiTestApi
+   */
+  getKitsRecordOverview(apiKitId:string) {
+    return this.request({
+      url: `${this.prefix}/suite_records/${apiKitId}/preview`,
+      method: 'get',
+    });
+  }
+
+  /**
    * api测试套件概览详情
    * @param {string} apiKitId
    * @return {*}
@@ -54,7 +79,7 @@ class ApiTestApi extends Api<ApiTestApi> {
       url: `${this.prefix}/tasks/execute`,
       method: 'post',
       data,
-    })
+    });
   }
 }
 
