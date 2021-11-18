@@ -88,7 +88,7 @@ const WorkBenchPage: React.FC<WorkBenchPageProps> = (props) => {
         [`${prefixCls}-page-wrapper-view`]: true,
       })}
     >
-      <div className={`${prefixCls}-container`}>
+      <div className={`${prefixCls}-page-container`}>
         {renderContent()}
       </div>
     </div>
