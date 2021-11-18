@@ -7,4 +7,4 @@ export * from './RegistersInvitation';
 export * from './services/devops';
 export * from './services/test';
 export * from './services/market';
-export * from './Iam';
+export * from './Users';

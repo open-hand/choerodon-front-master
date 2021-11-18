@@ -1,6 +1,6 @@
 import Api from './Api';
 
-class IamApi extends Api<IamApi> {
+class UsersApi extends Api<UsersApi> {
   get prefix() {
     return '/iam/choerodon/v1/users';
   }
@@ -16,6 +16,6 @@ class IamApi extends Api<IamApi> {
   }
 }
 
-const iamApi = new IamApi();
-const iamApiConfig = new IamApi(true);
-export { iamApi, iamApiConfig };
+const usersApi = new UsersApi();
+const usersApiConfig = new UsersApi(true);
+export { usersApi, usersApiConfig };
