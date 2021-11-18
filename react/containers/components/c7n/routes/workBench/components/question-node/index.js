@@ -217,7 +217,7 @@ const QuestionNode = observer(({
           <div
             className={`${prefixCls}-main-project-left`}
             style={{
-              color: realId ? '#5365EA' : undefined,
+              color: realId ? 'var(--primary-color)' : undefined,
               marginRight: currentProjectId === 'more' ? 0 : undefined,
               backgroundColor: realId ? '#F0F5FF' : undefined,
               backgroundImage: imageUrl && currentProjectId ? `url('${imageUrl}')` : getRandomBackground(currentProjectId),

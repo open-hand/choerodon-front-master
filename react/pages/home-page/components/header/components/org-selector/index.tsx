@@ -24,6 +24,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
     AppState: {
       currentMenuType: {
         organizationId,
+        name,
       },
     },
     AppState,
@@ -39,13 +40,14 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
     pathname,
   } = location;
 
+  // 这里的currentOrgdata的数据可能不包含当前选中的组织的数据，因为可能从平台组织管理那边跳转的
   const currentOrgData = useMemo(() => (getOrgData ? toJS(getOrgData) : []), [getOrgData]);
 
   // todo
   const currentSelectedOrg = currentOrgData[findIndex(currentOrgData, (item:any) => String(organizationId) === String(item.tenantId))];
 
   const {
-    tenantName,
+    tenantName = name,
   } = currentSelectedOrg || {};
 
   // todo...

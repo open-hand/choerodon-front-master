@@ -446,7 +446,7 @@ export default observer(() => {
             </Button>
             <Button
               onClick={toHelpDoc}
-              style={{ color: '#5365EA', background: '#fff' }}
+              style={{ color: 'var(--primary-color)', background: '#fff' }}
             >
               查看
             </Button>
