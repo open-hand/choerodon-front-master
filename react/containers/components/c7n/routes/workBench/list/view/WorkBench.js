@@ -6,6 +6,7 @@ import { mount } from '@choerodon/inject';
 import { Page } from '@/components/c7n-page';
 import { useWorkBenchStore } from '../../stores';
 import WorkBenchHeader from './components/WorkBenchHeader';
+import WorkBenchPage from '../../components/work-bench-page';
 import WorkBenchDashboard from '../../components/WorkBenchDashboard';
 import './WorkBench.less';
 
@@ -44,11 +45,15 @@ const WorkBench = () => {
   ) : (
     <Page className={prefixCls}>
       <WorkBenchHeader />
-      <WorkBenchDashboard
-        dashboardId={viewDs.current?.get('dashboardId')}
-        isEdit={false}
-        onOpenCardModal={redirectToEdit}
-      />
+      {viewDs.current?.get('fakeFlag')
+        ? <WorkBenchPage dashboardId={viewDs.current?.get('dashboardId')} />
+        : (
+          <WorkBenchDashboard
+            dashboardId={viewDs.current?.get('dashboardId')}
+            isEdit={false}
+            onOpenCardModal={redirectToEdit}
+          />
+        )}
     </Page>
   );
 };
