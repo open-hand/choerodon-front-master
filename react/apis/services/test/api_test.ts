@@ -81,6 +81,13 @@ class ApiTestApi extends Api<ApiTestApi> {
       data,
     });
   }
+
+  getSuitesList() {
+    return this.request({
+      url: `${this.prefix}/suites/paging`,
+      method: 'get',
+    });
+  }
 }
 
 const apiTestApi = new ApiTestApi();
