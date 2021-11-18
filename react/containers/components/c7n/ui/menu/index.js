@@ -8,10 +8,9 @@ import MenuSideIcon from '@/containers/components/c7n/ui/menu/MenuSideIcon';
 import { DEFAULT_THEME_COLOR } from '@/constants';
 import folding from '@/assets/images/folding.svg';
 import unfold from '@/assets/images/unfold.svg';
-import bg from '../header/style/icons/bg.svg';
+import MenuBgImg from '../header/style/icons/MenuBgImg.svg';
 import './RequireSvgResources';
 import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
-import { historyPushMenu } from '@/utils';
 import './index.less';
 
 const { SubMenu, Item, ItemGroup } = Menu;
@@ -369,11 +368,11 @@ export default class CommonMenu extends Component {
   getBackgroundImage = (color, isDefault) => {
     if (color) {
       if (isDefault) {
-        return `url(${bg})`;
+        return `url(${MenuBgImg})`;
       }
       return 'unset';
     }
-    return `url(${bg})`;
+    return `url(${MenuBgImg})`;
   }
 
   getBackgroundColor = (color, isDefault) => {
@@ -406,12 +405,12 @@ export default class CommonMenu extends Component {
             <div
               className={classNames('c7ncd-theme4-menuSide-item', 'c7ncd-theme4-menuSide-item-hover')}
               {
-              ...(activeMenuRoot.id === data.id) ? {
-                style: {
-                  background: 'rgba(140, 158, 255, 0.35)',
-                },
-              } : {}
-              }
+                ...(activeMenuRoot.id === data.id) ? {
+                  style: {
+                    background: 'rgba(140, 158, 255, 0.35)',
+                  },
+                } : {}
+                }
               role="none"
               onClick={() => this.handleClickItemMenuSide(data)}
             >

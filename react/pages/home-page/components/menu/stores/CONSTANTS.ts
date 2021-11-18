@@ -26,7 +26,7 @@ const ICON_MAP = {
   'choerodon.code.site.hzero.manager': 'hzero',
   //  用户层 个人
   'choerodon.code.person.setting': 'shezhi',
-};
+} as const;
 
 export {
   ICON_MAP,

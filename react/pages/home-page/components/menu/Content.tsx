@@ -33,16 +33,6 @@ const Menu = () => {
     getSiteInfo,
   } = AppState;
 
-  const {
-    loadMenuData: getMenuDatas,
-    activeMenu,
-    setActiveMenu,
-    setSelected,
-    setRootBaseOnActiveMenu,
-    getMenuData: currentTypeMenuDatas,
-    notFoundSign,
-  } = MenuStore;
-
   const findCurrentRoute = useCallback(({
     treeNode,
     parents,
@@ -50,18 +40,18 @@ const Menu = () => {
     if (pathname.startsWith(treeNode.route)) {
       const currentActiveMenu = treeNode.type === 'tab' ? parents[parents.length - 1] : treeNode;
       if (currentActiveMenu && window.location.href.includes(currentActiveMenu.route)) {
-        setActiveMenu(currentActiveMenu);
-        setSelected(parents[0]);
-        setRootBaseOnActiveMenu();
+        MenuStore.setActiveMenu(currentActiveMenu);
+        MenuStore.setSelected(parents[0]);
+        MenuStore.setRootBaseOnActiveMenu();
       }
       return true;
     }
     return false;
-  }, [pathname]);
+  }, [MenuStore, pathname]);
 
   const loadMenuData = useCallback(async () => {
     try {
-      const menus = await getMenuDatas();
+      const menus = await MenuStore.loadMenuData();
       const tree = { subMenus: menus };
       treeReduce({
         tree,
@@ -69,15 +59,15 @@ const Menu = () => {
       });
       const displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
       // todo... 这里逻辑可以拆分为一个hook，监听activeMenu变化而变化，这个逻辑是肯定要拆到全局去的
-      if (activeMenu && activeMenu.route === pathname && pathname !== '/') {
-        document.title = `${activeMenu.name || ''} – ${activeMenu.parentName || ''} – ${menuType.type !== 'site' ? `${menuType.name} – ` : ''} ${displayTitle}`;
+      if (MenuStore.activeMenu && MenuStore.activeMenu.route === pathname && pathname !== '/') {
+        document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${menuType.type !== 'site' ? `${menuType.name} – ` : ''} ${displayTitle}`;
       } else {
         document.title = displayTitle;
       }
     } catch (error) {
       throw new Error(error);
     }
-  }, [activeMenu, findCurrentRoute, getSiteInfo, menuType, pathname]);
+  }, [MenuStore, findCurrentRoute, getSiteInfo.defaultTitle, getSiteInfo.systemTitle, menuType.name, menuType.type, pathname]);
 
   useEffect(() => {
     loadMenuData();
@@ -85,8 +75,8 @@ const Menu = () => {
 
   // shouldHiddenMenu：通过配置的默认路径判断是否展示menu
   // currentTypeMenuDatas: menustore里头获取的当前type的菜单数组
-  // notFoundSign: 404界面出现的时候，在MenuStore中设置的， 这块逻辑也需要独立出来
-  if (shouldHiddenMenu || currentTypeMenuDatas?.length || notFoundSign) {
+  // 404界面出现的时候，在MenuStore中设置的
+  if (shouldHiddenMenu || !MenuStore.getMenuData?.length || MenuStore.notFoundSign) {
     return null;
   }
 

@@ -27,6 +27,7 @@ import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
 import Header from '@/pages/home-page/components/header';
+import MenusPro from '@/pages/home-page/components/menu';
 
 const spinStyle = {
   textAlign: 'center',
@@ -441,8 +442,9 @@ class Masters extends Component {
         </div>
         <div className="page-body">
           <div className="content-wrapper">
-            <div id="menu" style={fullPage ? { display: 'none' } : {}}>
+            <div id="menu" style={fullPage ? { display: 'none' } : { }}>
               <CommonMenu />
+              {/* <MenusPro /> */}
             </div>
             {mount('base-pro:Guide', {
               ...this.props,

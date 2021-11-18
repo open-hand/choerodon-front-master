@@ -29,14 +29,6 @@ const AddModal = (props) => {
     organizationId: AppState.currentMenuType?.organizationId,
   });
 
-  useEffect(() => {
-    // console.log(mappings, existTypes);
-    console.log(without(seletedComponents, ...existTypes));
-    const newTypeArr = without(seletedComponents, ...existTypes);
-    const deleteArr = difference(existTypes, seletedComponents);
-    console.log(newTypeArr, deleteArr);
-  }, [seletedComponents]);
-
   function handleClick(key, index) {
     setActiveItem(key);
     setDis(index);

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="54px" height="762px" viewBox="0 0 54 762" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>bg</title>
+    <defs>
+        <linearGradient x1="50%" y1="54.5092958%" x2="49.7488995%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#4F51EC" offset="0%"></stop>
+            <stop stop-color="#537CEA" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="57.8827855%" y1="11.3680561%" x2="42.1172145%" y2="87.2245816%" id="linearGradient-2">
+            <stop stop-color="#868BFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#757CFF" stop-opacity="0.2" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="60.056933%" y1="11.3680561%" x2="39.943067%" y2="87.2245816%" id="linearGradient-3">
+            <stop stop-color="#868BFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#757CFF" stop-opacity="0.2" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="新主题-管理+平台层菜单" transform="translate(0.000000, -50.000000)">
+            <g id="左侧模块菜单" transform="translate(-1.000000, 50.000000)">
+                <g id="bg" transform="translate(1.000000, 0.000000)">
+                    <rect id="矩形" fill="url(#linearGradient-1)" x="0" y="0" width="54" height="762"></rect>
+                    <polygon id="矩形" fill="url(#linearGradient-2)" transform="translate(27.000000, 68.000000) scale(1, -1) translate(-27.000000, -68.000000) " points="54 0 54 15.5 0.0306697407 136 0 117.798672"></polygon>
+                    <polygon id="矩形" fill="url(#linearGradient-3)" transform="translate(18.500000, 162.250000) scale(1, -1) translate(-18.500000, -162.250000) " points="37 121 37 136.5 0.0306697407 203.5 0 185.298672"></polygon>
+                    <polygon id="矩形" fill="url(#linearGradient-2)" transform="translate(27.000000, 538.000000) scale(1, -1) translate(-27.000000, -538.000000) " points="54 470 54 485.5 0.0306697407 606 0 587.798672"></polygon>
+                    <polygon id="矩形" fill="url(#linearGradient-2)" transform="translate(27.000000, 606.000000) scale(1, -1) translate(-27.000000, -606.000000) " points="54 538 54 553.5 0.0306697407 674 0 655.798672"></polygon>
+                    <rect id="矩形" fill-opacity="0.05" fill="#FFFFFF" x="0" y="0" width="54" height="762"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
