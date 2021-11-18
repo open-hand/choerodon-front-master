@@ -52,7 +52,8 @@ export const questionSearchFields = [
       paging: true,
       readAxiosConfig: ({ organizationId }) => ({
         url: `/agile/v1/organizations/${organizationId}/work_bench/status`,
-        method: 'get',
+        method: 'post',
+        data: {},
       }),
       valueField: 'id',
       textField: 'name',
@@ -158,7 +159,8 @@ export const questionSearchFields = [
       paging: true,
       readAxiosConfig: ({ organizationId }) => ({
         url: `/agile/v1/organizations/${organizationId}/work_bench/users`,
-        method: 'get',
+        method: 'post',
+        data: {},
       }),
       valueField: 'id',
       textField: 'realName',
