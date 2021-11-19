@@ -6,6 +6,19 @@ class ApiTestApi extends Api<ApiTestApi> {
   }
 
   /**
+   * 客户端执行
+   * @param taskId
+   * @param data
+   */
+  clientExecute(taskId: string, data: any) {
+    return this.request({
+      url: `${this.prefix}/tasks/${taskId}/client_command`,
+      method: 'post',
+      data,
+    })
+  }
+
+  /**
    *
    * 查询测试套件记录的列表 - （左侧树）
    * @param {string} apiKitId
