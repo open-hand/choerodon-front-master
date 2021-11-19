@@ -54,6 +54,35 @@ class OrganizationsApi extends Api<OrganizationsApi> {
       url: `${this.prefix}/hand/upload/${userid}/history`,
     });
   }
+
+  getLink() {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/${this.orgId}/generate/link`,
+    });
+  }
+
+  // choerodon-iam.choerodon-project-user-pro.refreshLink
+  refreshLink() {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/${this.orgId}/refresh/link`,
+    });
+  }
+
+  invitation() {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}/${this.orgId}/invitation`,
+    });
+  }
+
+  emailSuffix() {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/${this.orgId}email_suffix`,
+    });
+  }
 }
 
 const organizationsApi = new OrganizationsApi();
