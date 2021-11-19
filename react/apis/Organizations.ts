@@ -80,7 +80,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   emailSuffix() {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/${this.orgId}email_suffix`,
+      url: `${this.prefix}/${this.orgId}/email_suffix`,
     });
   }
 }
