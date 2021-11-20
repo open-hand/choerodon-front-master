@@ -2,7 +2,7 @@
 import React, { Suspense } from 'react';
 import { Route } from 'react-router-dom';
 import CacheRoute, { CacheSwitch } from 'react-router-cache-route';
-import nomatch from '@/components/c7n-error-pages/404';
+import NoMacth from '@/components/c7n-error-pages/404';
 import Skeleton from '@/components/skeleton';
 
 // @ts-expect-error
@@ -13,7 +13,7 @@ const AutoRouter = () => {
     <Suspense fallback={<Skeleton />}>
       <CacheSwitch>
         {routes.map(([path, component]) => <Route path={path} component={component} />)}
-        <CacheRoute path="*" component={nomatch} />
+        <CacheRoute path="*" component={NoMacth} />
       </CacheSwitch>
     </Suspense>
   );

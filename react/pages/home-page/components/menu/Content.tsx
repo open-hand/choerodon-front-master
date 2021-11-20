@@ -4,8 +4,6 @@ import React, {
 } from 'react';
 import { useLocation } from 'react-router';
 import { observer } from 'mobx-react-lite';
-import { useBoolean } from 'ahooks';
-import { Loading } from '@choerodon/components';
 import { useMenuStore } from './stores';
 import MainMenu from './components/main-menu';
 import SubMenu from './components/sub-menu';
@@ -29,8 +27,6 @@ const Menu = () => {
 
   // 是否全屏
   const isFullPage = useIsFullPage();
-
-  const [loading, { setFalse, setTrue }] = useBoolean(true);
 
   const { pathname } = location;
 
@@ -58,7 +54,6 @@ const Menu = () => {
   }, [pathname]);
 
   const loadMenuData = useCallback(async () => {
-    setTrue();
     try {
       const menus = await MenuStore.loadMenuData();
       const tree = { subMenus: menus };
@@ -67,7 +62,6 @@ const Menu = () => {
         callback: findCurrentRoute,
       });
       const displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
-      setFalse();
       // todo... 这里逻辑可以拆分为一个hook，监听activeMenu变化而变化，这个逻辑是肯定要拆到全局去的
       if (activeMenu && activeMenu.route === pathname && pathname !== '/') {
         document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${menuType.type !== 'site' ? `${menuType.name} – ` : ''} ${displayTitle}`;
