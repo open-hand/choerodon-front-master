@@ -10,6 +10,7 @@ import { inject } from 'mobx-react';
 import { mount } from '@choerodon/inject';
 import { Loading } from '@choerodon/components';
 import PermissionRoute from '@/components/permission-route';
+import './index.less';
 
 const Unauthorized = React.lazy(() => import('@/containers/components/c7n/routes/unauthorized'));
 const WorkBench = React.lazy(() => import('@/containers/components/c7n/routes/workBench/list/view'));
@@ -24,10 +25,7 @@ const RouteIndex = () => {
   const match = useRouteMatch();
   return (
     <div
-      style={{
-        background: 'white',
-        height: '100%',
-      }}
+      className="c7ncd-routesIndex"
     >
       <Suspense fallback={<Loading type="c7n" />}>
         <Switch>

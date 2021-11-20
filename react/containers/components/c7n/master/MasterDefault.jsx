@@ -418,25 +418,17 @@ class Masters extends Component {
   }
 
   render() {
-    const {
-      location,
-    } = this.props;
-    const search = new URLSearchParams(location.search);
-    const fullPage = search.get('fullPage');
     return (
       <div className="page-wrapper">
         <div
           className="page-header"
-          style={fullPage ? { display: 'none' } : {}}
         >
           <AnnouncementBannerPro />
           <Header />
         </div>
         <div className="page-body">
           <div className="content-wrapper">
-            <div id="menu" style={fullPage ? { display: 'none' } : { display: 'flex' }}>
-              <MenusPro />
-            </div>
+            <MenusPro />
             {mount('base-pro:Guide', {
               ...this.props,
               MasterServices,
