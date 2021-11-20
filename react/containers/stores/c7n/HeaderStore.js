@@ -41,8 +41,6 @@ class HeaderStore {
 
   @observable proData = null;
 
-  @observable selected = null;
-
   @observable recentItem = null;
 
   @observable userPreferenceVisible = false;
@@ -180,16 +178,6 @@ class HeaderStore {
   @action
   setCurrentMsgType(newType) {
     this.currentMsgType = newType;
-  }
-
-  @computed
-  get getSelected() {
-    return this.selected;
-  }
-
-  @action
-  setSelected(data) {
-    this.selected = data;
   }
 
   @computed

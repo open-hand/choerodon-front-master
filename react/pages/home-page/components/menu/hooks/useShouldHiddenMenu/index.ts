@@ -9,7 +9,7 @@ import { HIDDEN_MENU_PATHS_COLLECTION } from '@/constants';
 function useShouldHiddenMenu() {
   const { pathname } = useLocation();
 
-  const shouldHiddenMenu = useMemo(() => HIDDEN_MENU_PATHS_COLLECTION.some((pname) => pathname.startsWith(pname)), [pathname]);
+  const shouldHiddenMenu = useMemo(() => HIDDEN_MENU_PATHS_COLLECTION.some((pname) => pathname.indexOf(pname) !== -1), [pathname]);
 
   return shouldHiddenMenu;
 }

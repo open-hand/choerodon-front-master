@@ -116,16 +116,13 @@ export default function useStore(AppState, history) {
           route = menuRoute;
           domain = menuDomain;
         }
-        // if (route) {
         path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
         if (String(organizationId)) {
           path += `&organizationId=${organizationId}`;
         }
-        // }
         if (path) {
           historyPushMenu(history, path, domain);
         }
-        // AppState.getProjects();
       });
     },
 

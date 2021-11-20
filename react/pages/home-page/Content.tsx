@@ -7,6 +7,7 @@ import { useHistory, useLocation } from 'react-router';
 import { useQueryString, Loading } from '@choerodon/components';
 import { useHomePageStore } from './stores';
 import Header from './components/header';
+import C7NMenu from './components/menu';
 import {} from 'choerodon-ui/pro';
 
 const HomePage = (props:any) => {
@@ -30,7 +31,7 @@ const HomePage = (props:any) => {
 
   }, []);
 
-  if (isAuth && currentMenuType) {
+  if (!isAuth && !currentMenuType) {
     return <Loading type="c7n" />;
   }
 
@@ -41,7 +42,7 @@ const HomePage = (props:any) => {
       </div>
       <div className={`${prefixCls}-container`}>
         <div className={`${prefixCls}-content`}>
-          helloworlx
+          <C7NMenu />
         </div>
       </div>
     </div>

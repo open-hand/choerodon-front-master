@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Breadcrumb as Bread } from 'choerodon-ui';
 import { BreadcrumbProps } from './interface';
 import './index.less';
+import getRoutePath from '@/utils/getRoutePath';
 
 const { Item } = Bread;
 
@@ -19,16 +20,8 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
     extraNode,
 
     // ---to do ---
-    AppState,
     MenuStore,
   } = props;
-
-  const {
-    currentMenuType: {
-      id, name, type, organizationId, category,
-    },
-    isTypeUser,
-  } = AppState;
 
   const currentMenu = MenuStore.activeMenu;
 
@@ -45,25 +38,7 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
     return route;
   }, [route, subMenus]);
 
-  const currentLink = useMemo(() => {
-    const searchMap = new URLSearchParams();
-    switch (type) {
-      case 'site':
-        isTypeUser && searchMap.set('type', type);
-        break;
-      case 'organization':
-      case 'project':
-        searchMap.set('id', id);
-        searchMap.set('type', type);
-        searchMap.set('name', name);
-        searchMap.set('category', category);
-        organizationId && searchMap.set('organizationId', organizationId);
-        break;
-      default:
-        break;
-    }
-    return `${currentRoute}?${searchMap.toString()}`;
-  }, [category, currentRoute, id, isTypeUser, name, organizationId, type]);
+  const currentLink = useMemo(() => getRoutePath(route), [route]);
 
   function renderMenus() {
     if (!currentMenu) return null;
@@ -104,4 +79,4 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
   );
 };
 
-export default inject('AppState', 'MenuStore')(observer(Breadcrumb));
+export default inject('MenuStore')(observer(Breadcrumb));

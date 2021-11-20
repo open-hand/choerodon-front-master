@@ -33,12 +33,7 @@ const InnerIndex = ({ match, AppState }) => (
         <PermissionRoute
           exact
           path={`${match.url}workbench`}
-          component={() => {
-            if (AppState.currentMenuType.organizationId) {
-              return <WorkBench />;
-            }
-            return '';
-          }}
+          component={WorkBench}
         />
         <PermissionRoute
           service={['choerodon.code.project.project.overview.ps.default']}
