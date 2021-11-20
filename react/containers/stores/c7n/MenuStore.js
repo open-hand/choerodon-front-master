@@ -60,11 +60,7 @@ class MenuStore {
 
   @observable type = null;
 
-  @observable isUser = null;
-
   @observable id = null;
-
-  @observable notFoundSign = false;
 
   // 是否具有site平台层权限 用于避免重复切平台层
   @observable hasSitePermission = true;
@@ -104,14 +100,8 @@ class MenuStore {
     this.activeMenu = activeMenu;
   }
 
-  @action
   setOpenKeys(openKeys) {
     this.openKeys = openKeys;
-  }
-
-  @action
-  setNotFoundSignSign(value) {
-    this.notFoundSign = value;
   }
 
   @action setOpenkeysBaseonRoot(root) {

@@ -34,8 +34,8 @@ const SubMenus:FC<SubMenuProps> = () => {
       getMenuData,
       activeMenu,
       openKeys: savedOpenKeys,
-      setOpenKeys,
     },
+    MenuStore,
     AppState: {
       menuType,
     },
@@ -156,7 +156,7 @@ const SubMenus:FC<SubMenuProps> = () => {
   };
 
   const handleOpenChange = (currentOpenKeys:string[]) => {
-    setOpenKeys(currentOpenKeys);
+    MenuStore.setOpenKeys(currentOpenKeys);
   };
 
   if (!currentRootChildrenMenu.length) {
