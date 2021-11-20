@@ -83,10 +83,6 @@ const Menu = () => {
     loadMenuData();
   }, [loadMenuData]);
 
-  if (loading) {
-    return <Loading type="c7n" />;
-  }
-
   // shouldHiddenMenu：通过配置的默认路径判断是否展示menu
   // currentTypeMenuDatas: menustore里头获取的当前type的菜单数组
   // 404界面出现的时候，在MenuStore中设置的
