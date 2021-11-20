@@ -13,6 +13,7 @@ import HeaderRightLists from './components/header-right-lists';
 import UserEntry from './components/user-avatar';
 import useShouldHiddenHead from './hooks/useShouldHiddenHead';
 import ExtraButton from './components/extra-button';
+import useIsFullPage from '../../hooks/useIsFullPage';
 
 const Header = (props:any) => {
   const {
@@ -26,6 +27,7 @@ const Header = (props:any) => {
   const location = useLocation();
 
   const shouldHiddenHead = useShouldHiddenHead();
+  const isFullPage = useIsFullPage();
 
   useEffect(() => {
     AppState.setCurrentDropDown(AppState.getStarProject, AppState.getRecentUse);
@@ -42,7 +44,7 @@ const Header = (props:any) => {
     }
   }, [location.pathname, location.search]);
 
-  if (shouldHiddenHead) {
+  if (shouldHiddenHead || isFullPage) {
     return null;
   }
 

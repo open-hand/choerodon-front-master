@@ -1,5 +1,3 @@
-export { default as CommonMenu } from './containers/components/c7n/ui/menu';
-
 export { default as C7NIcon } from '@/components/c7n-icon';
 
 export { default as axios } from '@/components/axios';

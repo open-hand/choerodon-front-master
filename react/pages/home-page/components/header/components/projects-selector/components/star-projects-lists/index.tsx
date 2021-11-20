@@ -21,11 +21,8 @@ export type StarProjectsListsProps = {
 const StarProjectsLists:FC<StarProjectsListsProps> = (props) => {
   const {
     prefixCls,
-    mainStore,
     handleSelectProjectCallback,
   } = useProjectsSelectorStore();
-
-  const history = useHistory();
 
   const {
     AppState,

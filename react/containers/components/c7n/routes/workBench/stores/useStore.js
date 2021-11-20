@@ -66,7 +66,6 @@ export default function useStore(history, AppState) {
             historyPushMenu(history, path, domain);
           }
         }
-        // AppState.getProjects();
       });
     },
     loadBacklogs({

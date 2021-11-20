@@ -22,12 +22,12 @@ import RouteIndex from './RouteIndex';
 import './index.less';
 import './style';
 import Skeleton from '@/components/skeleton';
-import CommonMenu, { defaultBlackList } from '../ui/menu';
 import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
 import Header from '@/pages/home-page/components/header';
 import MenusPro from '@/pages/home-page/components/menu';
+import { HIDDEN_MENU_PATHS_COLLECTION } from '@/constants';
 
 const spinStyle = {
   textAlign: 'center',
@@ -442,9 +442,8 @@ class Masters extends Component {
         </div>
         <div className="page-body">
           <div className="content-wrapper">
-            <div id="menu" style={fullPage ? { display: 'none' } : { }}>
-              <CommonMenu />
-              {/* <MenusPro /> */}
+            <div id="menu" style={fullPage ? { display: 'none' } : { display: 'flex' }}>
+              <MenusPro />
             </div>
             {mount('base-pro:Guide', {
               ...this.props,
@@ -459,14 +458,13 @@ class Masters extends Component {
               cRef: this.userRef,
             })}
             <div id="autoRouter" className="content">
-              {AppState.getCanShowRoute
-              || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
+              {AppState.getCanShowRoute ? (
                 <RouteIndex />
-                ) : (
-                  <div>
-                    <Skeleton />
-                  </div>
-                )}
+              ) : (
+                <div>
+                  <Skeleton />
+                </div>
+              )}
             </div>
           </div>
         </div>

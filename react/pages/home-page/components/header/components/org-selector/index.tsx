@@ -61,6 +61,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
 
     localStorage.setItem('C7N-ORG-ID', selectId || selectOrgId);
     let path;
+    // true跳转到主页
     if (gotoHome) {
       path = `${HOMEPAGE_PATH}?${parsed.toString()}`;
     } else {

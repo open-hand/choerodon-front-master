@@ -5,14 +5,13 @@ import React, {
 import { useLocation } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import { useMenuStore } from './stores';
-import {} from 'choerodon-ui/pro';
-import {} from '@choerodon/components';
 import MainMenu from './components/main-menu';
 import SubMenu from './components/sub-menu';
 import { treeReduce } from './services';
 import { TreeReduceCallbackProps } from './interface';
 import { HEADERER_TITLE } from '@/constants';
 import useShouldHiddenMenu from './hooks/useShouldHiddenMenu';
+import useIsFullPage from '../../hooks/useIsFullPage';
 
 const Menu = () => {
   const {
@@ -25,6 +24,7 @@ const Menu = () => {
 
   // 是否展示menu
   const shouldHiddenMenu = useShouldHiddenMenu();
+  const isFullPage = useIsFullPage();
 
   const { pathname } = location;
 
@@ -33,21 +33,23 @@ const Menu = () => {
     getSiteInfo,
   } = AppState;
 
+  const {
+    activeMenu,
+  } = MenuStore;
+
   const findCurrentRoute = useCallback(({
     treeNode,
-    parents,
   }:TreeReduceCallbackProps) => {
-    if (pathname.startsWith(treeNode.route)) {
-      const currentActiveMenu = treeNode.type === 'tab' ? parents[parents.length - 1] : treeNode;
+    if (treeNode.route === pathname) {
+      const currentActiveMenu = treeNode;
       if (currentActiveMenu && window.location.href.includes(currentActiveMenu.route)) {
         MenuStore.setActiveMenu(currentActiveMenu);
-        MenuStore.setSelected(parents[0]);
         MenuStore.setRootBaseOnActiveMenu();
       }
       return true;
     }
     return false;
-  }, [MenuStore, pathname]);
+  }, [pathname]);
 
   const loadMenuData = useCallback(async () => {
     try {
@@ -59,7 +61,7 @@ const Menu = () => {
       });
       const displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
       // todo... 这里逻辑可以拆分为一个hook，监听activeMenu变化而变化，这个逻辑是肯定要拆到全局去的
-      if (MenuStore.activeMenu && MenuStore.activeMenu.route === pathname && pathname !== '/') {
+      if (activeMenu && activeMenu.route === pathname && pathname !== '/') {
         document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${menuType.type !== 'site' ? `${menuType.name} – ` : ''} ${displayTitle}`;
       } else {
         document.title = displayTitle;
@@ -67,7 +69,7 @@ const Menu = () => {
     } catch (error) {
       throw new Error(error);
     }
-  }, [MenuStore, findCurrentRoute, getSiteInfo.defaultTitle, getSiteInfo.systemTitle, menuType.name, menuType.type, pathname]);
+  }, [activeMenu, findCurrentRoute, getSiteInfo.defaultTitle, getSiteInfo.systemTitle, menuType.name, menuType.type, pathname]);
 
   useEffect(() => {
     loadMenuData();
@@ -76,7 +78,7 @@ const Menu = () => {
   // shouldHiddenMenu：通过配置的默认路径判断是否展示menu
   // currentTypeMenuDatas: menustore里头获取的当前type的菜单数组
   // 404界面出现的时候，在MenuStore中设置的
-  if (shouldHiddenMenu || !MenuStore.getMenuData?.length || MenuStore.notFoundSign) {
+  if (isFullPage || shouldHiddenMenu || !MenuStore.getMenuData?.length || MenuStore.notFoundSign) {
     return null;
   }
 

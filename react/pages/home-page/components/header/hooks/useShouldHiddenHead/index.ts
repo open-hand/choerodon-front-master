@@ -9,7 +9,7 @@ import { HIDDEN_HEAD_PATHS_COLLECTION } from '@/constants';
 function useShouldHiddenHead() {
   const { pathname } = useLocation();
 
-  const shouldHiddenHead = useMemo(() => HIDDEN_HEAD_PATHS_COLLECTION.some((pname) => pathname.startsWith(pname)), [pathname]);
+  const shouldHiddenHead = useMemo(() => HIDDEN_HEAD_PATHS_COLLECTION.some((pname) => pathname.indexOf(pname) !== -1), [pathname]);
 
   return shouldHiddenHead;
 }

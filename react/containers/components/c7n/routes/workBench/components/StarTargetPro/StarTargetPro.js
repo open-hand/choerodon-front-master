@@ -8,7 +8,6 @@ import moment from 'moment';
 import {
   get, map, forEach, filter,
 } from 'lodash';
-import { useQueryString } from '@choerodon/components';
 import { getRandomBackground } from '@/utils';
 import handleClickProject from '@/utils/gotoProject';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
@@ -25,8 +24,6 @@ const StarTargetPro = observer(() => {
     prefixCls,
     getStarProject,
   } = useStarTargetPro();
-
-  const { organizationId } = useQueryString();
 
   const {
     AppState,

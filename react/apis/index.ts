@@ -9,3 +9,4 @@ export * from './services/devops';
 export * from './services/test';
 export * from './services/market';
 export * from './Users';
+export * from './services/hadm';

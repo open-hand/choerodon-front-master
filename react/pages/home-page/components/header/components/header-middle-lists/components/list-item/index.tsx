@@ -31,7 +31,7 @@ const ListItem:React.FC<ListItemProps> = (props) => {
   } = location;
 
   const itemCls = classNames(prefixCls, {
-    [`${prefixCls}-active`]: pathname.startsWith(path),
+    [`${prefixCls}-active`]: pathname.indexOf(path) !== -1,
   });
 
   async function goto() {
