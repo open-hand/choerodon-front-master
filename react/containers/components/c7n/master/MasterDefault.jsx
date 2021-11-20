@@ -18,16 +18,17 @@ import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '@/components/axios';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
-import RouteIndex from './RouteIndex';
-import './index.less';
-import './style';
+import RouteIndex from '@/routes';
+
 import Skeleton from '@/components/skeleton';
 import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
 import Header from '@/pages/home-page/components/header';
 import MenusPro from '@/pages/home-page/components/menu';
-import { HIDDEN_MENU_PATHS_COLLECTION } from '@/constants';
+
+import './index.less';
+import './style';
 
 const spinStyle = {
   textAlign: 'center',
@@ -427,11 +428,11 @@ class Masters extends Component {
 
   render() {
     const {
-      AppState, location,
+      location,
     } = this.props;
     const search = new URLSearchParams(location.search);
     const fullPage = search.get('fullPage');
-    return AppState.isAuth && AppState.currentMenuType ? (
+    return (
       <div className="page-wrapper">
         <div
           className="page-header"
@@ -458,20 +459,10 @@ class Masters extends Component {
               cRef: this.userRef,
             })}
             <div id="autoRouter" className="content">
-              {AppState.getCanShowRoute ? (
-                <RouteIndex />
-              ) : (
-                <div>
-                  <Skeleton />
-                </div>
-              )}
+              <RouteIndex />
             </div>
           </div>
         </div>
-      </div>
-    ) : (
-      <div style={spinStyle}>
-        <Spin />
       </div>
     );
   }

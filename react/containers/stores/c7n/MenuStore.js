@@ -174,9 +174,6 @@ class MenuStore {
     // 判断当前的菜单是否 再  failedMenuType 这个全局变量中存在
     if (this.judgeFailedMenuType(menuType)) {
       isLoadMenu = 0;
-      // AppState中存在的一个变量，用于判断是否显示route页面
-      // 这里逻辑有误？为什么菜单失效了还要设置一下
-      AppState.setCanShowRoute(true);
       // 如果是存在返回一个空数组
       return new Promise((resolve) => {
         resolve([]);
@@ -192,7 +189,6 @@ class MenuStore {
         });
       }
     } else {
-      AppState.setCanShowRoute(false);
       isLoadMenu = 1;
       if (selfResolve) {
         mainFunc.call(this, selfResolve);
@@ -265,11 +261,9 @@ class MenuStore {
           if (!AppState.currentMenuType.hasChangeCategorys) {
             
             isLoadMenu = 0;
-            AppState.setCanShowRoute(true);
             return resolve(menu);
           }
           delete AppState.menuType.hasChangeCategorys;
-          AppState.setCanShowRoute(true);
         }
         async function getMenu(that) {
           const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
@@ -341,18 +335,15 @@ class MenuStore {
             AppState.userInfo.currentRoleLevel = type;
             AppState.loadUserInfo();
           }
-          AppState.setCanShowRoute(true);
           AppState.userInfo.currentRoleLevel = type;
           isLoadMenu = 0;
           
           return resolve(data || []);
         }
         isLoadMenu = 0;
-        AppState.setCanShowRoute(true);
       } catch (e) {
         failedMenuType.push(menuType);
         isLoadMenu = 0;
-        AppState.setCanShowRoute(true);
       }
     }
   }

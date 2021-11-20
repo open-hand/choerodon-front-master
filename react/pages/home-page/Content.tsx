@@ -8,6 +8,7 @@ import { useQueryString, Loading } from '@choerodon/components';
 import { useHomePageStore } from './stores';
 import Header from './components/header';
 import C7NMenu from './components/menu';
+import C7NRoutes from '@/routes';
 import {} from 'choerodon-ui/pro';
 
 const HomePage = (props:any) => {
@@ -43,6 +44,7 @@ const HomePage = (props:any) => {
       <div className={`${prefixCls}-container`}>
         <div className={`${prefixCls}-content`}>
           <C7NMenu />
+          <C7NRoutes />
         </div>
       </div>
     </div>
