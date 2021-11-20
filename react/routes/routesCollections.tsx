@@ -6,7 +6,7 @@ import nomatch from '@/components/c7n-error-pages/404';
 import Skeleton from '@/components/skeleton';
 
 // @ts-expect-error
-const routes:[string, React.ComponentType][] = __ROUTES__;
+const routes:[string, React.ComponentType][] = __ROUTES__ || [];
 
 const AutoRouter = () => {
   return (

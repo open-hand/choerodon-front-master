@@ -40,8 +40,6 @@ class AppState {
 
   @observable projectCategorys = {};
 
-  @observable canShowRoute = false;
-
   getProjects = () => {
     if (this.currentMenuType?.organizationId) {
       const recentProjectPromise = axios.get(
@@ -137,16 +135,6 @@ class AppState {
 
   @action setRecentUse(data) {
     this.recentUse = data;
-  }
-
-  @computed
-  get getCanShowRoute() {
-    return this.canShowRoute;
-  }
-
-  @action
-  setCanShowRoute(data) {
-    this.canShowRoute = data;
   }
 
   @computed
