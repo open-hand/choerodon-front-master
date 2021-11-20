@@ -9,7 +9,6 @@ import { Modal } from 'choerodon-ui/pro';
 
 import PageEntry from './pages';
 import './utils/iframeStorage';
-import { asyncRouter } from './hoc';
 
 const getConfirmation = (message:string, callback:CallableFunction) => {
   Modal.open({

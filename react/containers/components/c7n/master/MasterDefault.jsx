@@ -3,9 +3,6 @@ import React, {
 } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import {
-  Spin,
-} from 'choerodon-ui';
 import queryString from 'query-string';
 import {
   message,
@@ -20,7 +17,6 @@ import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformA
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from '@/routes';
 
-import Skeleton from '@/components/skeleton';
 import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
@@ -29,11 +25,6 @@ import MenusPro from '@/pages/home-page/components/menu';
 
 import './index.less';
 import './style';
-
-const spinStyle = {
-  textAlign: 'center',
-  paddingTop: 300,
-};
 
 // 这里是没有菜单的界面合集
 // 记录下route和code 为了方便查询该界面的文档地址
