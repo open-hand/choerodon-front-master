@@ -1,22 +1,15 @@
-import React, {
-  useEffect,
-} from 'react';
+import React from 'react';
 import { mount, get } from '@choerodon/inject';
 
-let ele:any = null;
-
 const QuestionBtn = () => {
-  useEffect(() => {
-    if (get('base-pro:headQuestionBtn')) {
-      ele = (
-        <>
-          {mount('base-pro:headQuestionBtn', {})}
-        </>
-      );
-    }
-  }, []);
-
-  return ele;
+  if (get('base-pro:headQuestionBtn')) {
+    return (
+      <div className="c7ncd-header-right-lists-item">
+        {mount('base-pro:headQuestionBtn', {})}
+      </div>
+    );
+  }
+  return null;
 };
 
 export default QuestionBtn;

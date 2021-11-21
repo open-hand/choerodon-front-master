@@ -16,26 +16,16 @@ export type HeaderRightListsProps = {
 const prefixCls = 'c7ncd-header-right-lists';
 const intlPrefix = 'c7ncd.header.right.lists';
 
-const btnGroups = [
-  <OrgEntryBtn />,
-  <QuestionBtn />,
-  <WsboxBtn />,
-];
-
 const HeaderRightLists:FC<HeaderRightListsProps> = (props) => {
-  const {
-
-  } = props;
-
-  const renderLists = () => btnGroups.map((element) => (
-    <div className={`${prefixCls}-item`}>
-      {element}
-    </div>
-  ));
+  const btnGroups = [
+    <OrgEntryBtn />,
+    <QuestionBtn />,
+    <WsboxBtn />,
+  ];
 
   return (
     <div className={prefixCls}>
-      {renderLists()}
+      {btnGroups}
     </div>
   );
 };

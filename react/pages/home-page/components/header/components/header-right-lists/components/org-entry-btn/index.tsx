@@ -56,7 +56,9 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
   };
 
   return (
-    <Icon onClick={gotoOrganizationManager} type="settings-o" className={prefixCls} />
+    <div className="c7ncd-header-right-lists-item">
+      <Icon onClick={gotoOrganizationManager} type="settings-o" className={prefixCls} />
+    </div>
   );
 };
 
