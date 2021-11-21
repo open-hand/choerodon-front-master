@@ -94,7 +94,7 @@ class RenderPopoverContentClass extends Component {
         <RenderPopoverContentDetailClass
           handleVisibleChange={this.handleVisibleChange}
         />
-                   </div>,
+      </div>,
       document.body)
     );
   }
@@ -424,7 +424,7 @@ export default class Inbox extends Component {
     } = this.props;
     const popOverContent = { inboxData, inboxLoading };
     return (
-      <>
+      <div className="c7ncd-header-right-lists-item">
         <WSHandler
           messageKey="hzero-web"
           onMessage={this.handleMessage}
@@ -456,7 +456,7 @@ export default class Inbox extends Component {
             <Button onClick={this.handleCloseAllNotification}>关闭全部</Button>
           </div>
         ), document.body) : null}
-      </>
+      </div>
     );
   }
 }
