@@ -4,6 +4,7 @@ declare interface Window {
     SAAS_FEEDBACK:string
     EXTERNAL_LINK:string
     HEADER_TITLE_NAME:string
+    OPEN_PLATFORM_ADDRESS: string // 开放平台地址
   }
 }
 
