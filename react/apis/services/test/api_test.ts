@@ -101,6 +101,15 @@ class ApiTestApi extends Api<ApiTestApi> {
       method: 'get',
     });
   }
+
+  getTasksByFolder(params?: any, data?: any) {
+    return this.request({
+      url: `${this.prefix}/tasks/paging_by_folder`,
+      method: 'get',
+      params,
+      data,
+    })
+  }
 }
 
 const apiTestApi = new ApiTestApi();
