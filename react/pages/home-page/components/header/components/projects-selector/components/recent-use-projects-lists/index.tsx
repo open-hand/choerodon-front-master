@@ -59,7 +59,7 @@ const RecentUseProjects:FC<RecentUseProjectsPrps> = (props) => {
       messageKey="latest_visit"
       onMessage={(data: any) => {
         // 这里为什么要遍历一遍，是因为后端的数据结构问题，许多信息都写到了projectDTO属性下面
-        AppState.setStarProject(JSONbig.parse(data).map((i: any) => i.projectDTO));
+        AppState.setRecentUse(JSONbig.parse(data).map((i: any) => i.projectDTO));
       }}
     >
       <div className={`${prefixCls}-lists`}>

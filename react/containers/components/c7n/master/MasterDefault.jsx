@@ -3,9 +3,6 @@ import React, {
 } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import {
-  Spin,
-} from 'choerodon-ui';
 import queryString from 'query-string';
 import {
   message,
@@ -18,21 +15,16 @@ import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '@/components/axios';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
-import RouteIndex from './RouteIndex';
-import './index.less';
-import './style';
-import Skeleton from '@/components/skeleton';
-import CommonMenu, { defaultBlackList } from '../ui/menu';
+import RouteIndex from '@/routes';
+
 import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
 import Header from '@/pages/home-page/components/header';
 import MenusPro from '@/pages/home-page/components/menu';
 
-const spinStyle = {
-  textAlign: 'center',
-  paddingTop: 300,
-};
+import './index.less';
+import './style';
 
 // 这里是没有菜单的界面合集
 // 记录下route和code 为了方便查询该界面的文档地址
@@ -426,26 +418,17 @@ class Masters extends Component {
   }
 
   render() {
-    const {
-      AppState, location,
-    } = this.props;
-    const search = new URLSearchParams(location.search);
-    const fullPage = search.get('fullPage');
-    return AppState.isAuth && AppState.currentMenuType ? (
+    return (
       <div className="page-wrapper">
         <div
           className="page-header"
-          style={fullPage ? { display: 'none' } : {}}
         >
           <AnnouncementBannerPro />
           <Header />
         </div>
         <div className="page-body">
           <div className="content-wrapper">
-            <div id="menu" style={fullPage ? { display: 'none' } : { }}>
-              <CommonMenu />
-              {/* <MenusPro /> */}
-            </div>
+            <MenusPro />
             {mount('base-pro:Guide', {
               ...this.props,
               MasterServices,
@@ -459,21 +442,10 @@ class Masters extends Component {
               cRef: this.userRef,
             })}
             <div id="autoRouter" className="content">
-              {AppState.getCanShowRoute
-              || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
-                <RouteIndex />
-                ) : (
-                  <div>
-                    <Skeleton />
-                  </div>
-                )}
+              <RouteIndex />
             </div>
           </div>
         </div>
-      </div>
-    ) : (
-      <div style={spinStyle}>
-        <Spin />
       </div>
     );
   }

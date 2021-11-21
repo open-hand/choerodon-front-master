@@ -1,9 +1,7 @@
 import React, {
-  useEffect, FC, useMemo, CSSProperties,
+  FC, useMemo, CSSProperties,
 } from 'react';
 import { observer } from 'mobx-react-lite';
-import {} from 'choerodon-ui/pro';
-import {} from '@choerodon/components';
 import { map } from 'lodash';
 
 import './index.less';
@@ -24,11 +22,11 @@ const intlPrefix = 'c7ncd.main.menu';
 
 const MainMenu:FC<MainMenuProps> = () => {
   const {
-    type,
     MenuStore: {
       getActiveMenuRoot,
       getMenuData,
     },
+    MenuStore,
     AppState: {
       getSiteInfo,
       menuType,
@@ -55,6 +53,20 @@ const MainMenu:FC<MainMenuProps> = () => {
     };
   }, [personalColor]);
 
+  // todo...
+  const handleMenuLink = (item:{
+    code: keyof typeof ICON_MAP,
+    id: string,
+    name:string
+  }) => {
+    const tempMenuRoot = activeMenuRoot;
+    tempMenuRoot[menuType.type] = item;
+    // 设置默认展开的子menu
+    MenuStore.setOpenkeysBaseonRoot(item);
+    // 设置menu的root
+    MenuStore.setActiveMenuRoot(tempMenuRoot);
+  };
+
   const renderItems = () => map(menuData, (item:{
     code: keyof typeof ICON_MAP,
     id: string,
@@ -75,6 +87,7 @@ const MainMenu:FC<MainMenuProps> = () => {
         role="none"
         className={cls}
         key={menuCode}
+        onClick={() => handleMenuLink(item)}
       >
         <div className={`${prefixCls}-item-icon`}>
           <svg style={{ height: 30 }} aria-hidden="true">

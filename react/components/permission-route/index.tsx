@@ -1,17 +1,14 @@
 import React, { useEffect, useMemo } from 'react';
 import {
-  Route, RouteProps, useLocation,
+  Route, useLocation,
 } from 'react-router-dom';
 import { NoAccess } from '@/index';
 import { Permission } from '@/components/permission';
 import useQueryString from '@/hooks/useQueryString';
 import Skeleton from '@/components/skeleton';
 import { axiosRoutesCancel } from '@/components/axios/instances';
+import { PermissionRouteProps } from './interface';
 
-interface PermissionRouteProps extends RouteProps {
-  service: string[] | ((type: 'project' | 'organization' | 'site') => string[]),
-  enabledRouteChangedAjaxBlock: boolean,
-}
 const isFunction = (something: unknown): something is Function => typeof something === 'function';
 
 const PermissionRoute: React.FC<PermissionRouteProps> = ({ enabledRouteChangedAjaxBlock = true, service, ...rest }) => {

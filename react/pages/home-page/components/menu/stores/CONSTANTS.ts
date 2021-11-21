@@ -28,6 +28,10 @@ const ICON_MAP = {
   'choerodon.code.person.setting': 'shezhi',
 } as const;
 
+// 计数，点击菜单的最大记录数据条数
+const BATCH_SIZE = 30 as const;
+
 export {
   ICON_MAP,
+  BATCH_SIZE,
 };

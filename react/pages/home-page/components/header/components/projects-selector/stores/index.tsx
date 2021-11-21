@@ -34,7 +34,7 @@ export const StoreProvider = inject('AppState')(observer((props: ProviderProps) 
   };
 
   /**
-   * 点中某个项目的时候去触发这些操作，appstate的操作是需要优化的，todo
+   * 点中某个项目的时候去触发这些操作，appstate的操作是需要优化的，todo这块逻辑关联太强了，得优化
    * @param {Record<string, any>} item
    */
   const handleSelectProjectCallback = (item:Record<string, any>) => {

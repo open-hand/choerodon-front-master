@@ -6,7 +6,7 @@ import { Loading } from '@choerodon/components';
 import AppState from '../../../../stores/c7n/AppState';
 
 const Unauthorized = React.lazy(() => import('../unauthorized'));
-const AutoRouter = React.lazy(() => import('@/routes'));
+const AutoRouter = React.lazy(() => import('@/routes/routesCollections'));
 
 @withRouter
 @inject('AppState')

@@ -209,7 +209,7 @@ const WorkBenchTabs = observer(() => {
           >
             {record.get('dashboardName')}
           </span>
-          {canDrag && !record.get('fakeFlag') && <Icon type="delete_forever-o" onClick={() => handleRemoveView(record)} />}
+          {canDrag && <Icon type="delete_forever-o" onClick={() => handleRemoveView(record)} />}
           {canDrag && <Icon type="baseline-drag_indicator" />}
           {(!canDrag && record.get('dashboardType') === 'CUSTOMIZE') && <Icon type="edit-o" onClick={() => redirectToEdit(record)} />}
         </>
