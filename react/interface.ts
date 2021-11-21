@@ -1,10 +1,9 @@
 declare interface Window {
   _env_: {
     outward: string // 不需要登录鉴权的页面
-    SAAS_FEEDBACK:string
+    SAAS_FEEDBACK:string // 开放平台地址
     EXTERNAL_LINK:string
     HEADER_TITLE_NAME:string
-    OPEN_PLATFORM_ADDRESS: string // 开放平台地址
   }
 }
 
