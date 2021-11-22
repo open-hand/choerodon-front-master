@@ -28,7 +28,7 @@ const QuestionSearchSelect = observer(({
     const filterParamKey = filterParamName || 'param';
     const newReadAxiosConfig = { ...readAxiosConfigProps, params: { ...(readAxiosConfigProps.params || {}), ...(paging ? { [filterParamKey]: filter, page } : {}) } };
 
-    return axios({ ...newReadAxiosConfig, enabledCancelCache: 15 });
+    return axios({ ...newReadAxiosConfig });
   }, [data, filterParamName, organizationId, paging, readAxiosConfig]);
   const config = useMemo(() => ({
     paging: !!paging,

@@ -3,9 +3,9 @@ import MasterApis from '@/containers/components/c7n/master/apis';
 
 export default class MasterServices {
   static axiosGetGuide({
-    menuId, orgId, proId, tab_code,
+    menuId, orgId, proId, tabCode,
   }) {
-    return axios.get(MasterApis.getGuideUrl(menuId, orgId, proId, tab_code));
+    return axios.get(MasterApis.getGuideUrl(menuId, orgId, proId, tabCode));
   }
 
   static axiosGetCheckUserCount(tenantId) {
