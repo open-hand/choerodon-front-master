@@ -1,5 +1,4 @@
 import React from 'react';
-import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { Icon, Select } from 'choerodon-ui/pro';
 import { useHistory } from 'react-router';
@@ -11,16 +10,13 @@ import FilterProjectsLists from './components/filter-projects-lists';
 import { useQueryString } from '@/hooks';
 import getSearchString from '@/utils/gotoSome';
 
-const ProjectsSelector = (props:any) => {
+const ProjectsSelector = () => {
   const {
     prefixCls,
     handleSelectorBlur,
     selectorRef,
-  } = useProjectsSelectorStore();
-
-  const {
     AppState,
-  } = props;
+  } = useProjectsSelectorStore();
 
   const {
     organizationId,
@@ -93,4 +89,4 @@ const ProjectsSelector = (props:any) => {
   );
 };
 
-export default inject('AppState')(observer(ProjectsSelector));
+export default observer(ProjectsSelector);

@@ -48,6 +48,7 @@ export const StoreProvider = inject('AppState')(observer((props: ProviderProps) 
     projectId,
     prefixCls,
     intlPrefix,
+    AppState,
     handleSelectProjectCallback,
     handleSelectorBlur,
     selectorRef,

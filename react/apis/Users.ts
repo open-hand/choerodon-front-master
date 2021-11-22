@@ -14,6 +14,18 @@ class UsersApi extends Api<UsersApi> {
       noPrompt: true,
     });
   }
+
+  /**
+   *  获取用户个人信息
+   * @return {*}
+   * @memberof UsersApi
+   */
+  getUserInfo() {
+    return this.request({
+      url: `${this.prefix}/self`,
+      method: 'get',
+    });
+  }
 }
 
 const usersApi = new UsersApi();

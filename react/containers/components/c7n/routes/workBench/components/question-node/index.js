@@ -181,7 +181,6 @@ const QuestionNode = observer(({
     const {
       id: userId,
       imageUrl,
-      loginName,
       name,
       realName,
     } = userInfo;
