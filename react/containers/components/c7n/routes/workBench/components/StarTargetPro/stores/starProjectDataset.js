@@ -8,7 +8,6 @@ export default ({ organizationId, cacheStore }) => ({
     read: ({ data, dataSet }) => ({
       url: `/iam/choerodon/v1/organizations/${organizationId}/star_projects`,
       method: 'get',
-      enabledCancelCache: false,
     }),
   },
 });

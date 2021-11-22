@@ -2,6 +2,7 @@
 import React, { createContext, useContext } from 'react';
 import { injectIntl } from 'react-intl';
 import { inject } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import useStore from './useStore';
 import { UserAvatarStoreContext, ProviderProps } from '../interface';
 
@@ -11,7 +12,7 @@ export function useUserAvatarStore() {
   return useContext(Store);
 }
 
-export const StoreProvider = injectIntl(inject('AppState', 'HeaderStore')((props: ProviderProps) => {
+export const StoreProvider = injectIntl(inject('AppState', 'HeaderStore')(observer((props: ProviderProps) => {
   const {
     children,
     intl: { formatMessage },
@@ -47,4 +48,4 @@ export const StoreProvider = injectIntl(inject('AppState', 'HeaderStore')((props
       {children}
     </Store.Provider>
   );
-}));
+})));
