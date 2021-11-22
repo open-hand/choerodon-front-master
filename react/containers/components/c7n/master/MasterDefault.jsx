@@ -170,26 +170,19 @@ class Masters extends Component {
       if (this.userRef?.current?.getUserCountCheck) {
         this.userRef.current.getUserCountCheck(newParams.get('organizationId'));
       }
-      this.initStarAndRecentProjects(
-        newParams.get('organizationId'),
-        newProps.AppState,
-      );
+      this.initStarAndRecentProjects();
     }
   };
 
   /**
    * 更换组织后在talenntId变化后 主动变更star and recent
    */
-  initStarAndRecentProjects = (newOrgId, appState) => {
-    const talentId = appState.userInfo.tenantId;
+  initStarAndRecentProjects = () => {
     // 如果userInfo的tanantId变化了 则去重查
-    if (String(newOrgId) === String(talentId)) {
-      appState.getProjects();
-    } else {
-      setTimeout(() => {
-        this.initStarAndRecentProjects(newOrgId, this.props.AppState);
-      }, 500);
-    }
+    const { AppState } = this.props;
+    AppState.loadUserInfo().then(() => {
+      AppState.getProjects();
+    });
   };
 
   // 获取系统公告

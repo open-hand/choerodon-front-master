@@ -1,6 +1,4 @@
-import React, {
-  useEffect, FC,
-} from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router';
@@ -9,7 +7,8 @@ import { useHomePageStore } from './stores';
 import Header from './components/header';
 import C7NMenu from './components/menu';
 import C7NRoutes from '@/routes';
-import {} from 'choerodon-ui/pro';
+import { useLoadUserInfo } from '@/hooks/useUserInfo';
+import useCheckPasswordOutdate from './hooks/useCheckPasswordOutdate';
 
 const HomePage = (props:any) => {
   const {
@@ -19,20 +18,20 @@ const HomePage = (props:any) => {
 
   const {
     AppState: {
-      isAuth,
       currentMenuType,
     },
   } = props;
+
+  // 拉取用户的个人信息, 全局有且仅有一个！除非其他特殊的情况，重新拉取个人信息请调用queryClient.invalidateQueries
+  const { data: userInfo, isFetching, isLoading } = useLoadUserInfo();
+
+  useCheckPasswordOutdate();
 
   const history = useHistory();
   const location = useLocation();
   const params = useQueryString();
 
-  useEffect(() => {
-
-  }, []);
-
-  if (!isAuth && !currentMenuType) {
+  if (isLoading || !currentMenuType) {
     return <Loading type="c7n" />;
   }
 

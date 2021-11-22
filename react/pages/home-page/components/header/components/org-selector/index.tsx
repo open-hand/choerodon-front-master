@@ -132,7 +132,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
 
   const renderContent = () => (
     <Dropdown
-      disabled={!HAS_BASE_BUSINESS}
+      // disabled={!HAS_BASE_BUSINESS}
       overlay={renderMenu()}
       placement="bottomCenter"
       trigger={['click']}
