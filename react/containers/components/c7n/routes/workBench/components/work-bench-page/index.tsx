@@ -55,7 +55,7 @@ const WorkBenchPage: React.FC<WorkBenchPageProps> = (props) => {
     dashboardDs.setQueryParameter('dashboardId', props.dashboardId);
     dashboardDs.query();
   };
-
+  const { organizationId } = AppState.currentMenuType || {};
   // useEffect(() => {
   //   if (props.dashboardId) {
   //     loadLayout();
@@ -79,7 +79,7 @@ const WorkBenchPage: React.FC<WorkBenchPageProps> = (props) => {
     if (!Object.keys(ComponentMountMap).includes(dashboardId) || !has(ComponentMountMap[dashboardId as ComponentMountMapKey])) {
       return <EmptyPage image={defaultImg} description={emptyDescription} />;
     }
-    return mount(ComponentMountMap[dashboardId as ComponentMountMapKey], {});
+    return mount(ComponentMountMap[dashboardId as ComponentMountMapKey], { organizationId });
   };
 
   return (
