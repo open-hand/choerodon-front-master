@@ -10,6 +10,13 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  getUserWizardList(organizationId:string) {
+    return this.request({
+      url: `${this.prefix}/${organizationId}/user_wizard/list`,
+      method: 'get',
+    });
+  }
+
   getProjectsIds(userId:any, filerData?:string) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging?params=${filerData}`,

@@ -26,8 +26,6 @@ class AppState {
 
   @observable userInfo = {};
 
-  @observable userWizardList = '';
-
   @observable userWizardStatus = '';
 
   @observable siteInfo = {};
@@ -183,16 +181,6 @@ class AppState {
   }
 
   @computed
-  get getUserWizardList() {
-    return this.userWizardList;
-  }
-
-  @action
-  setUserWizardList(list) {
-    this.userWizardList = list;
-  }
-
-  @computed
   get getUserWizardStatus() {
     return this.userWizardStatus;
   }
@@ -309,23 +297,6 @@ class AppState {
         organizationCode: res?.tenantNum,
       };
       this.setUserInfo(res);
-      return res;
-    });
-
-  loadUserWizard = (organizationId) => axios
-    .get(
-      `/iam/choerodon/v1/organizations/${organizationId}/user_wizard/list`,
-      {
-        enabledCancelCache: false,
-        enabledCancelRoute: false,
-      },
-    )
-    .then((res) => {
-      if (Array.isArray(res)) {
-        this.setUserWizardList(res);
-      } else {
-        this.setUserWizardList('');
-      }
       return res;
     });
 
