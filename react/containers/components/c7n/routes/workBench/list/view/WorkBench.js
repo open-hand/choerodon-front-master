@@ -46,7 +46,7 @@ const WorkBench = () => {
     <Page className={prefixCls}>
       <WorkBenchHeader />
       {viewDs.current?.get('dashboardPageMode')
-        ? <WorkBenchPage dashboardId={viewDs.current?.get('dashboardId')} />
+        ? <WorkBenchPage dashboardId={viewDs.current?.get('dashboardPageCode')} />
         : (
           <WorkBenchDashboard
             dashboardId={viewDs.current?.get('dashboardId')}
