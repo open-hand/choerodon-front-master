@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import queryString from 'query-string';
@@ -15,16 +15,8 @@ const WorkBench = () => {
     prefixCls,
     viewDs,
     history,
-    AppState,
     location: { search },
   } = useWorkBenchStore();
-
-  useEffect(() => {
-    async function loadUserWizard() {
-      await AppState.loadUserWizard(AppState.currentMenuType.organizationId);
-    }
-    loadUserWizard();
-  }, []);
 
   const redirectToEdit = () => {
     const { dashboardId, dashboardName } = viewDs.current.toData();
@@ -36,13 +28,7 @@ const WorkBench = () => {
     });
   };
 
-  return AppState.getUserWizardList ? (
-    <Page className={prefixCls}>
-      {mount('base-pro:newUserGuidePage', {
-        list: AppState.getUserWizardList,
-      })}
-    </Page>
-  ) : (
+  return (
     <Page className={prefixCls}>
       <WorkBenchHeader />
       {viewDs.current?.get('dashboardPageMode')
@@ -54,6 +40,7 @@ const WorkBench = () => {
             onOpenCardModal={redirectToEdit}
           />
         )}
+      {mount('base-pro:newUserGuidePage', {})}
     </Page>
   );
 };
