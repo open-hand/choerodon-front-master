@@ -10,7 +10,7 @@ import {
   cloneDeep,
   get,
   isEmpty,
-  isEqual, isEqualWith, merge, pick, set,
+  isEqual, isEqualWith, merge, omit, pick, set,
 } from 'lodash';
 import classNames from 'classnames';
 import { useDebounceFn } from 'ahooks';
@@ -228,9 +228,10 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
 
   useEffect(() => {
     if (searchData) {
+      searchDs.setState('status', Object.values(omit(searchData, 'contents')).some((item) => !!item));
       handleQuery();
     }
-  }, [handleQuery, searchData, selectedProjectId]);
+  }, [handleQuery, searchData, searchDs, selectedProjectId]);
 
   const { run: handleInputContent } = useDebounceFn((v) => {
     handleChange('contents', v);
@@ -248,7 +249,6 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
     setHidden(true);
   }, []);
   const containerRef = useClickOut(handleClickOut);
-
   return (
     <div className={prefixCls}>
 
