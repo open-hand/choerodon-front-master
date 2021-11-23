@@ -1,4 +1,4 @@
-import { LanguageGroupsProps } from './Language';
+import { LanguageTypes } from './Language';
 
 type UserInfoProps = {
   admin: boolean
@@ -14,7 +14,7 @@ type UserInfoProps = {
   favicon: string
   id: string | number
   imageUrl: string
-  language: LanguageGroupsProps
+  language: LanguageTypes
   languageName: string
   lastPasswordUpdatedAt: string
   ldap: boolean
