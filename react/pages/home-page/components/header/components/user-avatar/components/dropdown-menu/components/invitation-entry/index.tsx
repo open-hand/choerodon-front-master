@@ -1,13 +1,11 @@
 import React, {
   FC,
 } from 'react';
-import { observer } from 'mobx-react-lite';
 import { Icon, Modal } from 'choerodon-ui/pro';
 import {} from '@choerodon/components';
 
-import './index.less';
+import { mount, has } from '@choerodon/inject';
 import { MODAL_WIDTH } from '@/constants';
-import InvitationModal from './components/invite-modal';
 
 export type PlatformEntryProps = {
 
@@ -15,25 +13,27 @@ export type PlatformEntryProps = {
 
 const prefixCls = 'c7ncd-invite-entry';
 
-const PlatformEntry:FC<PlatformEntryProps> = (props) => {
+const ModalContent = ({ modal }:any) => mount('base-pro:trialInviteModal', { modal });
+
+const PlatformEntry:FC<PlatformEntryProps> = () => {
   const handleInviteModalOpen = () => {
     const { MIN } = MODAL_WIDTH;
     Modal.open({
-      title: '注册邀请',
+      title: '邀请试用',
       maskClosable: true,
       destroyOnClose: true,
       drawer: true,
       style: { width: MIN },
-      children: <InvitationModal />,
+      children: <ModalContent />,
     });
   };
 
-  return (
+  return has('base-pro:trialInviteModal') ? (
     <div className={prefixCls} onClick={handleInviteModalOpen} role="none">
       <Icon type="share" />
-      <span>注册邀请</span>
+      <span>邀请试用</span>
     </div>
-  );
+  ) : null;
 };
 
 export default PlatformEntry;
