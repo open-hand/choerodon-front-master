@@ -68,6 +68,22 @@ class ApiTestApi extends Api<ApiTestApi> {
   }
 
   /**
+   * 套件名称的唯一性校验
+   * @param name
+   * @param id
+   */
+  uniqueKitsName(name: string, id?: string) {
+    return this.request({
+      url: `${this.prefix}/suites/check/name_unique`,
+      method: 'get',
+      params: {
+        name,
+        id,
+      }
+    })
+  }
+
+  /**
    * 创建并执行api套件
    * @param data
    */
@@ -104,6 +120,16 @@ class ApiTestApi extends Api<ApiTestApi> {
       url: `${this.prefix}/suites`,
       method: 'get',
     });
+  }
+
+  /**
+   * 套件执行
+   */
+  executeKits(id: string) {
+    return this.request({
+      url: `${this.prefix}/suites/${id}/execute`,
+      method: 'post',
+    })
   }
 
   /**
