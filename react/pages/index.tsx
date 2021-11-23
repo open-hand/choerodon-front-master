@@ -23,7 +23,7 @@ import '@/containers/components/style';
 import './moduleInjects';
 
 import {
-  C7NReactQueryContainer,
+  C7NReactQueryContainer, UIConfigInitContainer,
 } from '@/configs';
 
 import {
@@ -130,15 +130,17 @@ const MasterIndex = () => {
   }
 
   return (
-    <Provider {...stores}>
-      <C7NReactQueryContainer>
-        <PermissionProvider>
-          <WSProvider server={WEBSOCKET_SERVER}>
-            {getContainer}
-          </WSProvider>
-        </PermissionProvider>
-      </C7NReactQueryContainer>
-    </Provider>
+    <UIConfigInitContainer>
+      <Provider {...stores}>
+        <C7NReactQueryContainer>
+          <PermissionProvider>
+            <WSProvider server={WEBSOCKET_SERVER}>
+              {getContainer}
+            </WSProvider>
+          </PermissionProvider>
+        </C7NReactQueryContainer>
+      </Provider>
+    </UIConfigInitContainer>
   );
 };
 

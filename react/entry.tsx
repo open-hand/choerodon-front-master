@@ -9,7 +9,6 @@ import { Modal } from 'choerodon-ui/pro';
 
 import PageEntry from './pages';
 import './utils/iframeStorage';
-import { UIConfigInitContainer } from './configs';
 
 const getConfirmation = (message:string, callback:CallableFunction) => {
   Modal.open({
@@ -27,9 +26,7 @@ const getConfirmation = (message:string, callback:CallableFunction) => {
 
 const App = () => (
   <Router getUserConfirmation={getConfirmation}>
-    <UIConfigInitContainer>
-      <PageEntry />
-    </UIConfigInitContainer>
+    <PageEntry />
   </Router>
 );
 
