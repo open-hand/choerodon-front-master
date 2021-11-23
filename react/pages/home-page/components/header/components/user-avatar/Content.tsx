@@ -4,7 +4,6 @@ import React, {
 import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
 import { Menu, Popover, Icon } from 'choerodon-ui';
-import { Modal } from 'choerodon-ui/pro';
 import { useUserAvatarStore } from './stores';
 
 import {} from '@choerodon/components';

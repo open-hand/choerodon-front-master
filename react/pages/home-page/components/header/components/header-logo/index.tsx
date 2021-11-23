@@ -32,11 +32,11 @@ const HeaderLogo:FC<HeaderLogoProps> = (props) => {
   const getSystemImg = useMemo(() => systemLogo || C7NImg, [systemLogo]);
 
   const goHome = () => {
-    history.push(HOMEPAGE_PATH);
+    // history.push(HOMEPAGE_PATH);
   };
 
   return (
-    <div className={prefixCls} onClick={goHome} role="none">
+    <div className={prefixCls} role="none" onClick={goHome}>
       <img src={getSystemImg} alt="logo" className={`${prefixCls}-img`} />
       <div className={`${prefixCls}-text`}>
         {getSystemName}

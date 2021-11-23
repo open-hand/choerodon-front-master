@@ -200,7 +200,7 @@ class AppState {
 
   @computed
   get currentLanguage() {
-    return this.userInfo.language || getDefaultLanguage();
+    return this.userInfo.language || getDefaultLanguage(this.userInfo.language);
   }
 
   @computed
