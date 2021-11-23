@@ -1,7 +1,6 @@
 const COMMON_EN_US = {
   zh_CN: 'Chinese',
   en_US: 'English(US)',
-
   'boot.new': 'Create',
   'boot.create': 'Create',
   'boot.edit': 'Edit',
