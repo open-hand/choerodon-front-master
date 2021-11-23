@@ -7,17 +7,22 @@ import useInitUiConfig from './useInitUiConfig';
 import { useC7NThemeInit } from '../themeConfigs';
 import { LanguageTypes } from '@/typings';
 
+// @ts-expect-error
+const storeLang:LanguageTypes = localStorage.getItem('language') && JSON.parse(localStorage.getItem('language'));
+
+const language = storeLang || AppState.currentLanguage as LanguageTypes;
+
+const UILocaleProviderAsync = asyncRouter(
+  () => import('choerodon-ui/lib/locale-provider'),
+  { locale: () => import(`choerodon-ui/lib/locale-provider/${language}.js`) },
+);
+
+const IntlProviderAsync = asyncLocaleProvider(language,
+  () => import(`../../locale/${language}`));
+
 const UIConfigInitContainer:React.FC = ({ children }) => {
-  const language = AppState.currentLanguage as LanguageTypes;
   console.info('current language:', language);
 
-  const UILocaleProviderAsync = asyncRouter(
-    () => import('choerodon-ui/lib/locale-provider'),
-    { locale: () => import(`choerodon-ui/lib/locale-provider/${language}.js`) },
-  );
-
-  const IntlProviderAsync = asyncLocaleProvider(language,
-    () => import(`../../locale/${language}`));
   // 初始化UI默认配置
   useInitUiConfig();
   // 初始化注入新UI的版本
