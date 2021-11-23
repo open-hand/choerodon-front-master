@@ -21,6 +21,7 @@ const COMMON_ZH_CN = {
   'boot.appService': '应用服务',
   'boot.components': '模块',
   'boot.filter': '过滤表',
+  'boot.filters': '筛选器',
   'boot.issues': '工作项',
   'boot.gantt': '甘特图',
   'boot.legend': '图例',
