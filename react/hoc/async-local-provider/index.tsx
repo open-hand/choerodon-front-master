@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { IntlProvider } from 'react-intl';
 import { reduce } from 'lodash';
 import { LanguageTypes } from '@/typings';
 import esModule from '../utils/esModule';
 
 export default function asyncLocaleProvider(locale:LanguageTypes, getMessage:CallableFunction):React.ComponentType {
-  return class AsyncLocaleProvider extends Component<any, any> {
+  return class AsyncLocaleProvider extends PureComponent<any, any> {
     constructor(props:any) {
       super(props);
       this.state = {
