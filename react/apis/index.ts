@@ -10,3 +10,4 @@ export * from './services/test';
 export * from './services/market';
 export * from './Users';
 export * from './services/hadm';
+export * from './Hzero_Users';

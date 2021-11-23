@@ -11,7 +11,7 @@ import { logout } from '@/utils';
 import PlatformEntry from './components/platform-entry';
 import InviteEntry from './components/invitation-entry';
 import PersonalEntry from './components/personal-entry';
-import LanguageEntry from './components/language-entry';
+import LanguageToggleEntry from './components/language-toggle';
 
 export type DropdownMenuProps = {
 
@@ -33,7 +33,7 @@ const DropdownMenu:FC<DropdownMenuProps> = () => {
   const menuItems = [
     <PersonalEntry />,
     <PlatformEntry />,
-    <LanguageEntry />,
+    <LanguageToggleEntry />,
     <InviteEntry />,
   ];
 

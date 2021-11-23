@@ -63,6 +63,8 @@ export { default as HeaderButtons } from '@/components/header-btns';
 // 高阶组件导出
 export * from '@/hoc';
 
+export { default as C7NFormat } from '@/components/c7n-formatMessage';
+
 // 面包屑组件
 export { default as Breadcrumb } from '@/components/c7n-breadCrumb';
 
