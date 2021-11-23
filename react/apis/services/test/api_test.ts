@@ -57,6 +57,29 @@ class ApiTestApi extends Api<ApiTestApi> {
   }
 
   /**
+   * 创建api测试套件
+   */
+  createKits(data: any) {
+    return this.request({
+      url: `${this.prefix}/suites`,
+      method: 'post',
+      data,
+    })
+  }
+
+  /**
+   * 创建并执行api套件
+   * @param data
+   */
+  createAndExecuteKits(data: any) {
+    return this.request({
+      url: `${this.prefix}/suites/create_and_execute`,
+      method: 'post',
+      data,
+    })
+  }
+
+  /**
    * api测试套件任务详情
    * @param {string} apiKitId
    * @return {*}
