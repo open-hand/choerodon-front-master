@@ -24,7 +24,6 @@ import './moduleInjects';
 
 import {
   C7NReactQueryContainer,
-  UIConfigInitContainer,
 } from '@/configs';
 
 import {
@@ -131,17 +130,15 @@ const MasterIndex = () => {
   }
 
   return (
-    <UIConfigInitContainer>
+    <Provider {...stores}>
       <C7NReactQueryContainer>
-        <Provider {...stores}>
-          <PermissionProvider>
-            <WSProvider server={WEBSOCKET_SERVER}>
-              {getContainer}
-            </WSProvider>
-          </PermissionProvider>
-        </Provider>
+        <PermissionProvider>
+          <WSProvider server={WEBSOCKET_SERVER}>
+            {getContainer}
+          </WSProvider>
+        </PermissionProvider>
       </C7NReactQueryContainer>
-    </UIConfigInitContainer>
+    </Provider>
   );
 };
 

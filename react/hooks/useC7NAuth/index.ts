@@ -42,7 +42,6 @@ function useC7NAuth(autoAuth?:boolean) {
       AppState.loadModules(); // 加载所有模块
       AppState.loadDeployServices(); // 后端部署的所有服务
       await HeaderStore.axiosGetOrgAndPro(); // 获取所有组织
-      await AppState.loadUserInfo(); // 加载个人信息
       setFalse();
     } catch (e) {
       throw new Error(e);

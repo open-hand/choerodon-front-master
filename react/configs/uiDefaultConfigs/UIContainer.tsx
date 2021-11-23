@@ -1,6 +1,7 @@
 import React from 'react';
 import { ModalProvider } from 'choerodon-ui/pro';
 import { Container } from '@hzero-front-ui/core';
+import { observer } from 'mobx-react-lite';
 import AppState from '@/containers/stores/c7n/AppState';
 import { asyncRouter, asyncLocaleProvider } from '@/hoc';
 import useInitUiConfig from './useInitUiConfig';
@@ -8,8 +9,12 @@ import { useC7NThemeInit } from '../themeConfigs';
 import { LanguageTypes } from '@/typings';
 
 const UIConfigInitContainer:React.FC = ({ children }) => {
+  // 初始化UI默认配置
+  useInitUiConfig();
+  // 初始化注入新UI的版本
+  useC7NThemeInit();
+
   const language = AppState.currentLanguage as LanguageTypes;
-  console.info('current language:', language);
 
   const UILocaleProviderAsync = asyncRouter(
     () => import('choerodon-ui/lib/locale-provider'),
@@ -18,10 +23,8 @@ const UIConfigInitContainer:React.FC = ({ children }) => {
 
   const IntlProviderAsync = asyncLocaleProvider(language,
     () => import(`../../locale/${language}`));
-  // 初始化UI默认配置
-  useInitUiConfig();
-  // 初始化注入新UI的版本
-  useC7NThemeInit();
+
+  console.info('current language:', language);
   return (
     <UILocaleProviderAsync>
       <IntlProviderAsync>
@@ -33,4 +36,4 @@ const UIConfigInitContainer:React.FC = ({ children }) => {
   );
 };
 
-export default UIConfigInitContainer;
+export default observer(UIConfigInitContainer);
