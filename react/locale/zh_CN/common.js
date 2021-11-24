@@ -1,7 +1,7 @@
 const COMMON_ZH_CN = {
   // languages
-  zh_CN: '中文',
-  en_US: '英文',
+  zh_CN: '简体中文',
+  en_US: '英文（美式）',
 
   'boot.new': '新建',
   'boot.create': '创建',

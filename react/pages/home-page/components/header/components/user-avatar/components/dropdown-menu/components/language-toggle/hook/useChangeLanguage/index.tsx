@@ -18,7 +18,7 @@ const useChangeLanguage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      window.location.reload();
+      window.location.reload(true);
     }
   }, [isSuccess]);
 

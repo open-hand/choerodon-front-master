@@ -13,8 +13,6 @@ const UIConfigInitContainer:React.FC = ({ children }) => {
   const [localLanguage] = useLocalStorageState('language');
   const language = localLanguage || AppState.currentLanguage as LanguageTypes;
 
-  console.log('dsadsasda');
-
   const UILocaleProviderAsync = useMemo(() => asyncRouter(
     () => import('choerodon-ui/lib/locale-provider'),
     { locale: () => import(`choerodon-ui/lib/locale-provider/${language}.js`) },
