@@ -6,6 +6,16 @@ class ApiTestApi extends Api<ApiTestApi> {
   }
 
   /**
+   * 套件客户端执行
+   */
+  kitsClientCommand(id: string) {
+    return this.request({
+      url: `${this.prefix}/suites/${id}/client_command`,
+      method: 'post',
+    })
+  }
+
+  /**
    * 客户端执行
    * @param taskId
    * @param data
@@ -15,6 +25,23 @@ class ApiTestApi extends Api<ApiTestApi> {
       url: `${this.prefix}/tasks/${taskId}/client_command`,
       method: 'post',
       data,
+    })
+  }
+
+  /**
+   * 复制套件
+   */
+  cloneKits(id: string) {
+    return this.request({
+      url: `${this.prefix}/suites/${id}/clone`,
+      method: 'post',
+    })
+  }
+
+  deleteKits(id: string) {
+    return this.request({
+      url: `${this.prefix}/suites/${id}`,
+      method: 'delete',
     })
   }
 
