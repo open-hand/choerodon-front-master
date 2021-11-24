@@ -6,4 +6,5 @@ export * from './PATHS';
 export * from './HIDDEN_HEAD_PATHS_COLLECTIONS';
 export * from './HIDDEN_MENU_PATHS_COLLECTIONS';
 export * from './HEADER_TITLE';
+export * from './ENV';
 export * from './LANGUAGES_TYPES';

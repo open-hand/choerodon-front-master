@@ -15,7 +15,7 @@ import Master from '@/containers/components/c7n/master';
 import Outward from '@/containers/components/c7n/routes/outward';
 
 import { enterprisesApi } from '@/apis';
-import { ENTERPRISE_ADDRESS } from '@/constants';
+import { ENTERPRISE_ADDRESS, IS_LOCAL } from '@/constants';
 
 import '@/containers/components/style';
 
@@ -34,6 +34,7 @@ import WSProvider from '@/components/ws/WSProvider';
 import { PermissionProvider } from '@/components/permission';
 
 import { WEBSOCKET_SERVER } from '@/utils';
+import C7NDevTool from '@/components/dev-tools';
 
 /** @type {boolean} 是否安装了敏捷模块 */
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
@@ -140,6 +141,7 @@ const MasterIndex = () => {
           </PermissionProvider>
         </C7NReactQueryContainer>
       </Provider>
+      <C7NDevTool />
     </UIConfigInitContainer>
   );
 };

@@ -1,0 +1,26 @@
+@prefixCls: ~"c7ncd-dev-tool-localeLists";
+
+.@{prefixCls} {
+  &-container {
+    display: flex;
+    margin-top: 10px;
+  }
+  &-list {
+    flex: 1;
+    &-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      > span {
+        font-size: 18px;
+        &:nth-of-type(1){
+          color: var(--primary-color);
+        }
+      }
+    }
+    &-search {
+      width: 95%;
+      margin-bottom: 10px;
+    }
+  }
+}
