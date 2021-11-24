@@ -19,6 +19,29 @@ class ApiTestApi extends Api<ApiTestApi> {
   }
 
   /**
+   * 获取套件详情
+   * @param id
+   */
+  getKitsDetail(id: string) {
+    return this.request({
+      url: `${this.prefix}/suites/${id}`,
+      method: 'get',
+    })
+  }
+
+  /**
+   * 套件创建并执行接口
+   * @param data
+   */
+  kitsClientExecute(data: any) {
+    return this.request({
+      url: `${this.prefix}/suites/create_and_client_execute`,
+      method: 'post',
+      data,
+    })
+  }
+
+  /**
    *
    * 查询测试套件记录的列表 - （左侧树）
    * @param {string} apiKitId
