@@ -67,6 +67,17 @@ export default class CommonMenu extends Component {
     this.loadMenu(nextProps);
   }
 
+  getDodumentTitle(myMenuType) { // 'site'|'user'|'organization'|'project'
+    const { AppState } = this.props;
+    const obj = {
+      site: '',
+      project: AppState.menuType.name,
+      user: AppState.getUserInfo.organizationName,
+      organization: AppState.getUserInfo.organizationName,
+    };
+    return obj[myMenuType];
+  }
+
   loadMenu(props) {
     const { location, AppState, MenuStore } = props;
     const {
@@ -112,7 +123,11 @@ export default class CommonMenu extends Component {
         }
         if (MenuStore.activeMenu && MenuStore.activeMenu.route === this.props.location.pathname && this.props.location.pathname !== '/') {
           // eslint-disable-next-line no-underscore-dangle
-          document.getElementsByTagName('title')[0].innerText = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${AppState.menuType.type !== 'site' ? `${AppState.menuType.name} – ` : ''} ${AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle}`;
+          // document.getElementsByTagName('title')[0].innerText = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${AppState.menuType.type !== 'site' ? `${AppState.menuType.name} – ` : ''} ${AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle}`;
+          // eslint-disable-next-line no-underscore-dangle
+          const displayTitle = AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle;
+          document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} –
+        ${this.getDodumentTitle(AppState.menuType.type)} - ${displayTitle}`;
         } else {
           // eslint-disable-next-line no-underscore-dangle
           document.getElementsByTagName('title')[0].innerText = AppState.getSiteInfo.systemTitle || window._env_.HEADER_TITLE_NAME || AppState.getSiteInfo.defaultTitle;
