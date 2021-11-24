@@ -34,11 +34,13 @@
     line-height: 48px;
     min-width: 70px;
     padding: 0 14px;
-    text-overflow: ellipsis;
     cursor: pointer;
     transition: 0.2s;
     position: relative;
     animation: slideInto 0.6s both;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     &:hover,
     &-active {
       background-color: var(--primary-color-background);

@@ -13,6 +13,7 @@ export default observer(() => {
     history,
     ProjectsProUseStore,
     AppState,
+    formatProject,
   } = useProjectsProStore();
 
   const renderProjects = () => ProjectsProUseStore.getRecentProjects?.map((p) => {
@@ -51,7 +52,7 @@ export default observer(() => {
   return (
     <div className="recentProjects">
       <div className="recentProjects-title-wrap">
-        <p className="recentProjects-title">最近使用</p>
+        <p className="recentProjects-title">{formatProject({ id: 'recentUse' })}</p>
       </div>
       <div className="recentProjects-content-wrap">
         {renderProjects()}

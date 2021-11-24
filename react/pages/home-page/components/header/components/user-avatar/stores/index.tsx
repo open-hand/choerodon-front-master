@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
 import React, { createContext, useContext } from 'react';
-import { injectIntl } from 'react-intl';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import useStore from './useStore';
 import { UserAvatarStoreContext, ProviderProps } from '../interface';
+import { useFormatCommon, useFormatMessage } from '@/hooks';
 
 const Store = createContext({} as UserAvatarStoreContext);
 
@@ -12,10 +12,9 @@ export function useUserAvatarStore() {
   return useContext(Store);
 }
 
-export const StoreProvider = injectIntl(inject('AppState', 'HeaderStore')(observer((props: ProviderProps) => {
+export const StoreProvider = inject('AppState', 'HeaderStore')(observer((props: ProviderProps) => {
   const {
     children,
-    intl: { formatMessage },
     AppState: {
       currentMenuType: { projectId, organizationId },
     },
@@ -31,12 +30,16 @@ export const StoreProvider = injectIntl(inject('AppState', 'HeaderStore')(observ
     imageUrl, realName, email,
   } = AppState.getUserInfo || {};
 
+  const formatCommon = useFormatCommon();
+  const formatUserAvater = useFormatMessage(intlPrefix);
+
   const value = {
     ...props,
+    formatUserAvater,
+    formatCommon,
     imageUrl,
     realName,
     email,
-    formatMessage,
     organizationId,
     projectId,
     mainStore,
@@ -48,4 +51,4 @@ export const StoreProvider = injectIntl(inject('AppState', 'HeaderStore')(observ
       {children}
     </Store.Provider>
   );
-})));
+}));

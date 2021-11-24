@@ -32,6 +32,28 @@ const COMMON_EN_US = {
   'boot.knowledgeBase': 'Knowledge Base',
   'boot.artifactRepository': 'Artifact Repository',
   'boot.documentLibrary': 'Document Library',
+  // 11 24
+  'boot.starProjects': 'Star Projects',
+  'boot.project': 'Project',
+  'boot.personal': 'Personal',
+  'boot.demand': 'Demand',
+  'boot.password': 'Password',
+  'boot.signIn': 'Sign in',
+  'boot.logout': 'Log out',
+  'boot.search': 'Search',
+  'boot.loadMore': 'Load More',
+  'boot.update': 'Update',
+  'boot.accountLogin': 'Account Login',
+  'boot.mobileLogin': 'Mobile Login',
+  'boot.account': 'Login Account',
+  'boot.email': 'Email',
+  'boot.forgetPassword': 'Forgot Password',
+  'boot.note': 'Note',
+  'boot.personalInfo': 'Personal Info',
+  'boot.recentUse': 'Recently Used',
+  'boot.pleaseSearch': 'Please Search',
+  'boot.check': 'Check',
+  'boot.neglect': 'Neglect',
 };
 
 export { COMMON_EN_US };

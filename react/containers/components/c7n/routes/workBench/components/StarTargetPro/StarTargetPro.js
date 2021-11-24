@@ -1,21 +1,19 @@
 import React from 'react';
 import {
-  Button, Tooltip, Modal,
+  Button, Tooltip,
 } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui';
 import moment from 'moment';
 import {
-  get, map, forEach, filter,
+  get,
 } from 'lodash';
 import { getRandomBackground } from '@/utils';
 import handleClickProject from '@/utils/gotoProject';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
-import AddModal from '@/containers/components/c7n/components/addComponentsModal';
 import { useStarTargetPro } from './stores';
 import { useWorkBenchStore } from '../../stores';
 import emptyImg from '@/assets/images/owner.png';
-import mappings from '../../stores/mappings';
 
 import './index.less';
 
@@ -29,15 +27,13 @@ const StarTargetPro = observer(() => {
     AppState,
     workBenchUseStore,
     history,
-    componentsDs,
     location: { search },
     selectedProjectId,
-    allowedModules,
+    formatWorkbench,
+    formatCommon,
   } = useWorkBenchStore();
 
   const {
-    isEdit,
-    setEdit,
     setActiveStarProject,
   } = workBenchUseStore;
 
@@ -54,9 +50,11 @@ const StarTargetPro = observer(() => {
     <div className={`${prefixCls}-content`}>
       <img src={emptyImg} alt="empty" />
       <div className={`${prefixCls}-content-emptyText`}>
-        <p className={`${prefixCls}-content-emptyText-emptyP`}>暂无星标</p>
+        <p className={`${prefixCls}-content-emptyText-emptyP`}>
+          {formatWorkbench({ id: 'noStarProjects' })}
+        </p>
         <p className={`${prefixCls}-content-emptyText-emptySuggest`}>
-          您还没有星标项目，请前往&quot;项目管理&quot;页面进行添加
+          {formatWorkbench({ id: 'noStarProjects.gotoadd' })}
         </p>
         <Button
           onClick={() => {
@@ -68,7 +66,7 @@ const StarTargetPro = observer(() => {
           funcType="raised"
           color="primary"
         >
-          转到项目管理
+          {formatWorkbench({ id: 'gotoProject' })}
         </Button>
       </div>
     </div>
@@ -159,141 +157,14 @@ const StarTargetPro = observer(() => {
     );
   };
 
-  function handleEditable() {
-    setEdit(true);
-  }
-
-  function handleCancel() {
-    componentsDs.loadData(workBenchUseStore.initData);
-    setEdit(false);
-  }
-
-  function addComponent(newTypeArr, deleteArr) {
-    const existData = map(componentsDs.filter((record) => !deleteArr.includes(record.get('i'))), (record) => record.toData());
-    forEach(newTypeArr, (type) => {
-      const {
-        layout,
-      } = mappings[type];
-      const tempCp = {
-        ...layout,
-        x: 0,
-        y: Infinity,
-      };
-      existData.push(tempCp);
-    });
-    componentsDs.loadData(existData);
-  }
-
-  function openAddComponents() {
-    const subPrefix = 'c7ncd-workbench-addModal';
-    const typeArr = map(componentsDs.toData(), (item) => get(item, 'i'));
-    Modal.open({
-      title: '添加卡片',
-      key: Modal.key(),
-      drawer: true,
-      style: {
-        width: '740px',
-      },
-      contentStyle: { padding: 0 },
-      children: <AddModal
-        subPrefix={subPrefix}
-        existTypes={typeArr}
-        addComponent={addComponent}
-        mappings={allowedModules.map((item) => (
-          mappings[item]
-        ))}
-      />,
-      className: `${subPrefix}`,
-    });
-  }
-
-  function hanldeSave() {
-    const tempData = componentsDs.toData();
-    workBenchUseStore.setInitData(tempData);
-    workBenchUseStore.saveConfig(tempData);
-    setEdit(false);
-  }
-
-  function handleResetModal() {
-    Modal.open({
-      title: '重置工作台',
-      children: '确认重置工作台吗？',
-      onOk: handleReset,
-      okProps: {
-        color: 'red',
-      },
-      cancelProps: {
-        color: 'dark',
-      },
-    });
-  }
-
-  function handleReset() {
-    const defaultValues = map(filter(mappings, (item) => item.type !== 'backlogApprove'), (item) => item.layout);
-    componentsDs.loadData(defaultValues);
-  }
-
-  const renderBtns = () => {
-    let btnGroups;
-    if (isEdit) {
-      btnGroups = [
-        <Button
-          key="1"
-          onClick={openAddComponents}
-          icon="settings-o"
-        >
-          卡片配置
-        </Button>,
-        <Button
-          key="2"
-          onClick={hanldeSave}
-        >
-          保存
-        </Button>,
-        <Button
-          key="3"
-          onClick={handleResetModal}
-        >
-          重置
-        </Button>,
-        <Button
-          key="4"
-          onClick={handleCancel}
-          color="primary"
-        >
-          取消
-        </Button>,
-      ];
-    } else {
-      btnGroups = [
-        <Button
-          key="5"
-          onClick={handleEditable}
-          icon="settings-o"
-          color="primary"
-        >
-          工作台配置
-        </Button>,
-      ];
-    }
-    return (
-      <div
-        className={`${prefixCls}-btnGroups`}
-      >
-        {btnGroups}
-      </div>
-    );
-  };
   return (
     <div className={`${prefixCls}`}>
       <Card
-        title="星标项目"
+        title={formatCommon({ id: 'starProjects' })}
         className={`${prefixCls}-name`}
       >
         {renderContent()}
       </Card>
-      {/* <p className={`${prefixCls}-name`}>星标项目</p> */}
-      {/* {renderBtns()} */}
     </div>
   );
 });

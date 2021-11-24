@@ -12,6 +12,7 @@ import {} from '@choerodon/components';
 
 import './index.less';
 import { useProjectsSelectorStore } from '../../stores';
+import { useFormatMessage } from '@/hooks';
 
 export type RecentUseProjectsPrps = {
   AppState?:any
@@ -22,6 +23,8 @@ const RecentUseProjects:FC<RecentUseProjectsPrps> = (props) => {
     prefixCls,
     handleSelectProjectCallback,
   } = useProjectsSelectorStore();
+
+  const formatProject = useFormatMessage('c7ncd.project');
 
   const {
     AppState,
@@ -50,7 +53,7 @@ const RecentUseProjects:FC<RecentUseProjectsPrps> = (props) => {
     </div>
   ) : (
     <div className={`${prefixCls}-lists-content-empty`}>
-      <span>暂无最近使用项目</span>
+      <span>{formatProject({ id: 'recentUse.no.desc' })}</span>
     </div>
   ));
 
@@ -63,7 +66,7 @@ const RecentUseProjects:FC<RecentUseProjectsPrps> = (props) => {
       }}
     >
       <div className={`${prefixCls}-lists`}>
-        <p>最近使用</p>
+        <p>{formatProject({ id: 'recentUse' })}</p>
         {renderLists()}
       </div>
     </WSHandler>

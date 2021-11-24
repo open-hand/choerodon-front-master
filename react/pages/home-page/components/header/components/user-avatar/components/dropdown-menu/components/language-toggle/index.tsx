@@ -8,6 +8,7 @@ import { LANGUAGE_GROUPS } from '@/constants';
 import './index.less';
 import { useCurrentLanguage, useFormatMessage } from '@/hooks';
 import useChangeLanguage from './hook/useChangeLanguage';
+import { useUserAvatarStore } from '../../../../stores';
 
 export type LanguageToggleProps = {
 
@@ -19,8 +20,11 @@ const intlPrefix = 'c7ncd.language.toggle';
 const LanguageToggle:FC<LanguageToggleProps> = (props) => {
   const format = useFormatMessage();
   const currentLang = useCurrentLanguage();
-
   const handleChangeLanguage = useChangeLanguage();
+
+  const {
+    formatUserAvater,
+  } = useUserAvatarStore();
 
   const renderLanguageMenu = () => (
     <div className={`${prefixCls}-menu`}>
@@ -48,7 +52,7 @@ const LanguageToggle:FC<LanguageToggleProps> = (props) => {
     <Popover overlayClassName={`${prefixCls}-overlay`} placement={'left' as any} trigger={['hover'] as any} content={renderLanguageMenu}>
       <div className={prefixCls}>
         <Icon type="language" />
-        <span>语言切换</span>
+        <span>{formatUserAvater({ id: 'languageSwicth' })}</span>
       </div>
     </Popover>
   );

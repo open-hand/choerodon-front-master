@@ -12,6 +12,7 @@ const Check = observer(() => {
     auditDs,
     history,
     AppState: { currentMenuType: { organizationId } },
+    formatWorkbench,
   } = useWorkBenchStore();
 
   function linkToDetail(record) {
@@ -40,8 +41,8 @@ const Check = observer(() => {
   if (!auditDs.length) {
     return (
       <EmptyPage
-        title="暂无待审核任务"
-        describe="暂无需您审核的任务"
+        title={formatWorkbench({ id: 'noToAudit' })}
+        describe={formatWorkbench({ id: 'noToAudit.desc' })}
       />
     );
   }

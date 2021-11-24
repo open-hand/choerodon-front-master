@@ -6,6 +6,7 @@ import { injectIntl } from 'react-intl';
 import useStore from './useStore';
 import ListDataSet from './ListDataSet';
 import CategoryDataSet from './CategoryDataSet';
+import { useFormatMessage, useFormatCommon } from '@/hooks';
 
 const Store = createContext();
 
@@ -42,12 +43,19 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore
     waterfall: 'N_WATERFALL',
   }), []);
 
+  const intlPrefix = 'c7ncd.project';
+
+  const formatProject = useFormatMessage(intlPrefix);
+  const formatCommon = useFormatCommon();
+
   const value = {
     ...props,
-    intlPrefix: 'c7ncd.project',
+    intlPrefix,
     dataSet,
     ProjectsProUseStore,
     categoryCodes,
+    formatProject,
+    formatCommon,
   };
 
   return (

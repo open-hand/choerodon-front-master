@@ -26,9 +26,7 @@ export default observer(() => {
   const {
     ProjectsProUseStore,
     history,
-    dataSet,
     AppState,
-    intl,
     intl: { formatMessage },
     intlPrefix,
     categoryCodes,
@@ -36,6 +34,8 @@ export default observer(() => {
       currentMenuType: { organizationId },
     },
     MenuStore,
+    formatProject,
+    formatCommon,
   } = useProjectsProStore();
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
@@ -442,13 +442,13 @@ export default observer(() => {
               }}
               style={{ color: '#fff', background: '#7E90F1' }}
             >
-              忽略
+              {formatCommon({ id: 'neglect' })}
             </Button>
             <Button
               onClick={toHelpDoc}
               style={{ color: 'var(--primary-color)', background: '#fff' }}
             >
-              查看
+              {formatCommon({ id: 'check' })}
             </Button>
           </div>
         </div>
@@ -479,13 +479,12 @@ export default observer(() => {
     return (
       <>
         <p>
-          {org.name}
-          所有项目
+          {formatProject({ id: 'allProject' }, { name: org.name })}
         </p>
         <div className="allProjects-title-right">
           <TextField
             onBlur={handleBlurProjects}
-            placeholder="请输入搜索条件"
+            placeholder={formatCommon({ id: 'pleaseSearch' })}
             className="allProjects-title-right-textField"
             prefix={
               <Icon style={{ color: 'rgba(202,202,228,1)' }} type="search" />
@@ -513,7 +512,7 @@ export default observer(() => {
                   marginLeft: 16,
                 }}
               >
-                创建项目
+                {formatProject({ id: 'createProject' })}
               </Button>
             </Tooltip>
           </Permission>

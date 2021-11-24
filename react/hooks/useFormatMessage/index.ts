@@ -5,7 +5,9 @@ type MessageFormatPrimitiveValue = string | number | boolean | null | undefined
 
 type FormatterValues = Record<string, MessageFormatPrimitiveValue | React.ReactElement | any>
 
-function useFormatMessage(intlPrefix?:string):(props:MessageDescriptor, values?:FormatterValues)=> string | React.ReactNode
+export type FormatFunctionTypes = (props:MessageDescriptor, values?:FormatterValues)=> string | React.ReactNode
+
+function useFormatMessage(intlPrefix?:string):FormatFunctionTypes
 
 function useFormatMessage(intlPrefix?:string) {
   const {

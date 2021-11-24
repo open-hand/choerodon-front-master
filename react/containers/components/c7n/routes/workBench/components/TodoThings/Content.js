@@ -8,8 +8,13 @@ import { useTodoStore } from './stores';
 import emptyImg from './image/empty.svg';
 
 import './index.less';
+import { useWorkBenchStore } from '../../stores';
 
 const StarTargetPro = observer(() => {
+  const {
+    formatWorkbench,
+  } = useWorkBenchStore();
+
   const {
     auditDs,
     history,
@@ -43,8 +48,8 @@ const StarTargetPro = observer(() => {
     if (!auditDs.length) {
       return (
         <EmptyPage
-          title="暂无待审核任务"
-          describe="暂无需您审核的任务"
+          title={formatWorkbench({ id: 'noToAudit' })}
+          describe={formatWorkbench({ id: 'noToAudit.desc' })}
           img={emptyImg}
         />
       );
@@ -92,7 +97,7 @@ const StarTargetPro = observer(() => {
   return (
     <div className="c7n-workbench-todo">
       <Card
-        title="待审核"
+        title={formatWorkbench({ id: 'review' })}
         showCount
         count={auditDs.length}
         className="c7n-workbench-check"

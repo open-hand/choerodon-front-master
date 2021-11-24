@@ -34,6 +34,29 @@ const COMMON_ZH_CN = {
   'boot.knowledgeBase': '知识库',
   'boot.artifactRepository': '制品库',
   'boot.documentLibrary': '文档库',
+  // 11 24
+  'boot.starProjects': '星标项目',
+  'boot.project': '项目',
+  'boot.personal': '个人',
+  'boot.demand': '需求',
+  'boot.password': '密码',
+  'boot.signIn': '登录',
+  'boot.logout': '退出登录',
+  'boot.search': '搜索',
+  'boot.loadMore': '加载更多',
+  'boot.update': '更新',
+  'boot.accountLogin': '账号密码登录',
+  'boot.mobileLogin': '手机验证登录',
+  'boot.account': '登录名',
+  'boot.email': '邮箱',
+  'boot.forgetPassword': '忘记密码',
+  'boot.note': '备注',
+  'boot.personalInfo': '个人信息',
+  'boot.recentUse': '最近使用',
+  'boot.pleaseSearch': '请输入搜索条件',
+  'boot.check': '查看',
+  'boot.neglect': '忽略',
+
 };
 
 export { COMMON_ZH_CN };

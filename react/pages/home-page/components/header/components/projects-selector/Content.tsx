@@ -7,10 +7,13 @@ import StarProjectsLists from './components/star-projects-lists';
 
 import { useProjectsSelectorStore } from './stores';
 import FilterProjectsLists from './components/filter-projects-lists';
-import { useQueryString } from '@/hooks';
+import { useFormatCommon, useFormatMessage, useQueryString } from '@/hooks';
 import getSearchString from '@/utils/gotoSome';
 
 const ProjectsSelector = () => {
+  const formatCommon = useFormatCommon();
+  const formatProject = useFormatMessage('c7ncd.project');
+
   const {
     prefixCls,
     handleSelectorBlur,
@@ -48,7 +51,7 @@ const ProjectsSelector = () => {
               className={`${prefixCls}-moreProjects`}
             >
               <Icon type="multistage_combo_box" />
-              <span>查看所有项目</span>
+              <span>{formatProject({ id: 'checkAllProjects' })}</span>
               <Icon type="navigate_next" />
             </div>
           </div>
@@ -64,7 +67,7 @@ const ProjectsSelector = () => {
 
   const renderSelectorText = (data: { value: any; text: any; }) => {
     if (data.value) {
-      return `项目: ${data.text}`;
+      return `${formatCommon({ id: 'project' })}: ${data.text}`;
     }
     return '';
   };
@@ -83,7 +86,7 @@ const ProjectsSelector = () => {
       ref={selectorRef}
       value={AppState.getDropDownPro}
       onInput={handleInput}
-      placeholder="请选择项目"
+      placeholder={formatProject({ id: 'choose' }) as string}
       popupContent={renderSelectorPopupContent()}
     />
   );

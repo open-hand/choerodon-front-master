@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { Icon } from 'choerodon-ui';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
   Droppable, Draggable, DragDropContext,
@@ -9,6 +8,7 @@ import { useProjectsProStore } from '../../stores';
 import ProjectTaskContent from '../projectTaskContent';
 
 import './index.less';
+import { useFormatMessage, useFormatCommon } from '@/hooks';
 
 export default observer(() => {
   const {
@@ -16,6 +16,11 @@ export default observer(() => {
     AppState,
     history,
   } = useProjectsProStore();
+
+  const workbenchIntlPrefix = 'workbench';
+
+  const formatWorkbench = useFormatMessage(workbenchIntlPrefix);
+  const formatCommon = useFormatCommon();
 
   const getItemStyle = (isDragging, draggableStyle, enabled) => ({
     // some basic styles to make the items look a bit nicer
@@ -79,11 +84,11 @@ export default observer(() => {
     <div className="starProjects">
       <div className="starProjects-title-wrap">
         <p className="starProjects-title">
-          星标项目
+          {formatCommon({ id: 'starProjects' })}
           <span>
             {
-            ProjectsProUseStore.getStarProjectsList.length || 0
-          }
+              ProjectsProUseStore.getStarProjectsList.length || 0
+            }
           </span>
         </p>
       </div>

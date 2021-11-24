@@ -202,7 +202,6 @@ class MenuStore {
         }
         
         const { id = 0, organizationId, orgId } = menuType;
-        debugger
         const menu = this.menuData(type, id);
         let hasMenu = () => {
           if (type === 'organization') {
