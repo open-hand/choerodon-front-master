@@ -12,6 +12,7 @@ import { inject } from 'mobx-react';
 import { menusApi } from '@/apis';
 import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
+import { useUserAvatarStore } from '../../../../stores';
 
 export type PlatformEntryProps = {
 
@@ -24,7 +25,11 @@ const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
     MenuStore,
   } = props;
 
-  const { isError, data, error } = useQuery('platformEntryPermission', () => menusApi.getPlatFormMenuEntryPermission());
+  const {
+    formatUserAvater,
+  } = useUserAvatarStore();
+
+  const { isError, data } = useQuery('platformEntryPermission', () => menusApi.getPlatFormMenuEntryPermission());
 
   const params = useQueryString();
 
@@ -49,7 +54,7 @@ const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
   return (
     <div className={prefixCls} onClick={getGlobalMenuData} role="none">
       <Icon type="settings-o" />
-      <span>平台管理</span>
+      <span>{formatUserAvater({ id: 'plateEntry' })}</span>
     </div>
   );
 };

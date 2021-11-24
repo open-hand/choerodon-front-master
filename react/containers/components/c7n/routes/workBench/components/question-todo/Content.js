@@ -6,8 +6,8 @@ import { observer } from 'mobx-react-lite';
 import {
   omit,
 } from 'lodash';
-import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import { Loading } from '@choerodon/components';
+import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
@@ -16,8 +16,14 @@ import QuestionTree from '../question-tree';
 import QuestionCount from '../question-count';
 
 import './index.less';
+import { useWorkBenchStore } from '../../stores';
 
 const TodoQuestion = observer(() => {
+  const {
+    formatWorkbench,
+    formatCommon,
+  } = useWorkBenchStore();
+
   const {
     organizationId,
     questionDs,
@@ -50,9 +56,15 @@ const TodoQuestion = observer(() => {
     if (!questionDs.length) {
       return (
         <EmptyPage
-          title="暂无待办问题"
+          title={formatWorkbench({ id: 'noTodo' })}
           img={emptyImg}
-          describe={<span style={{ whiteSpace: 'nowrap' }}>当前迭代暂无待办问题</span>}
+          describe={(
+            <span style={{ whiteSpace: 'nowrap' }}>
+              {
+              formatWorkbench({ id: 'noTodo.desc' })
+            }
+            </span>
+)}
         />
       );
     }
@@ -64,7 +76,7 @@ const TodoQuestion = observer(() => {
           onClick={() => loadMoreData()}
           className={`${prefixCls}-more`}
         >
-          加载更多
+          {formatCommon({ id: 'loadMore' })}
         </div>
       );
     }
@@ -83,7 +95,7 @@ const TodoQuestion = observer(() => {
   const renderTitle = () => (
     <div className={`${prefixCls}-title`}>
       <span>
-        <span>待办事项</span>
+        <span>{formatWorkbench({ id: 'todo' })}</span>
         <QuestionCount count={questionStore.getTotalCount} />
       </span>
       <QuestionSearch onQuery={load} fields={searchField} key={`QuestionSearch-${questionDs.id}`} />

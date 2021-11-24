@@ -15,10 +15,15 @@ import QuestionTree from '../question-tree';
 import QuestionCount from '../question-count';
 
 import './index.less';
+import { useWorkBenchStore } from '../../stores';
 
 const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
 const HAS_AGILEPRO = C7NHasModule('@choerodon/agile-pro');
 const TodoQuestion = observer(() => {
+  const {
+    formatWorkbench,
+    formatCommon,
+  } = useWorkBenchStore();
   const {
     organizationId,
     questionDs,
@@ -65,7 +70,7 @@ const TodoQuestion = observer(() => {
     questionDs.query();
   }
   const emptyPrompt = useMemo(() => {
-    const [title, describe] = tabKey === 'myStarBeacon' ? ['暂无我关注的问题', '您尚未关注任何问题项'] : ['暂无我关注的需求', '您尚未关注任何需求'];
+    const [title, describe] = tabKey === 'myStarBeacon' ? [formatWorkbench({ id: 'noAttentionIssues' }), formatWorkbench({ id: 'noAttentionIssues.desc' })] : ['暂无我关注的需求', '您尚未关注任何需求'];
     return { title, describe };
   }, [tabKey]);
 
@@ -127,7 +132,7 @@ const TodoQuestion = observer(() => {
   const renderTitle = () => (
     <div className={`${prefixCls}-title`}>
       <div className={`${prefixCls}-title-left`}>
-        <span>我的关注</span>
+        <span>{formatWorkbench({ id: 'myAttention' })}</span>
         <QuestionCount count={questionStore.getTotalCount} />
       </div>
       <span className={`${prefixCls}-title-right`}>
@@ -137,8 +142,8 @@ const TodoQuestion = observer(() => {
             defaultValue="myStarBeacon"
             value={tabKey}
             options={[
-              { value: 'myStarBeacon', text: '问题' },
-              { value: 'myStarBeacon_backlog', text: '需求' },
+              { value: 'myStarBeacon', text: formatCommon({ id: 'issue' }) },
+              { value: 'myStarBeacon_backlog', text: formatCommon({ id: 'demand' }) },
             ]}
             onChange={handleTabChange}
           />

@@ -11,12 +11,15 @@ import Switch from './components/SwitchTabs';
 import EmptyImg from './image/empty.svg';
 import './index.less';
 import { useDoc } from './stores';
+import { useWorkBenchStore } from '../../stores';
 
 const Doc = () => {
   const {
+    formatWorkbench,
+  } = useWorkBenchStore();
+  const {
     docStore,
     docDs,
-    history,
     clsPrefix,
   } = useDoc();
 
@@ -26,7 +29,7 @@ const Doc = () => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>文档</span>
+      <span>{formatWorkbench({ id: 'document' })}</span>
       <Switch />
     </div>
   );

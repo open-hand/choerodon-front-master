@@ -1,11 +1,11 @@
 import { HOMEPAGE_PATH } from '@/constants';
 
-const WORKBENCH_CONFIG = { title: '工作台', path: HOMEPAGE_PATH };
+const WORKBENCH_CONFIG = { title: 'workbench', path: HOMEPAGE_PATH };
 
-const WORKCALENDAR_CONFIG = { title: '工作日历', path: '/agile/work-calendar' };
+const WORKCALENDAR_CONFIG = { title: 'workCalendar', path: '/agile/work-calendar' };
 
 const KNOWLEDGE_CONFIG = {
-  title: '知识库',
+  title: 'knowledge',
   path: '/knowledge/organization',
   style: { marginLeft: 4 },
   permissions: [
@@ -15,7 +15,7 @@ const KNOWLEDGE_CONFIG = {
 };
 
 const MARKET_CONFIG = {
-  title: '应用市场',
+  title: 'market',
   path: '/market/app-market',
   style: { marginLeft: 2 },
 };

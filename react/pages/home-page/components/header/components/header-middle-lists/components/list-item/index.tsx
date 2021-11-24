@@ -1,10 +1,11 @@
 import React from 'react';
-import { useHistory, useLocation, useParams } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { useQueryString } from '@choerodon/components';
 import { Permission } from '@/components/permission';
 import { PermissionService } from '@/components/permission/interface';
 import getSearchString from '@/utils/gotoSome';
+import { useFormatMessage } from '@/hooks';
 
 type ListItemProps = {
   permissions?:PermissionService
@@ -13,6 +14,7 @@ type ListItemProps = {
 }
 
 const prefixCls = 'c7ncd-header-middle-lists-item';
+const intlPrefix = 'c7ncd.header.middle.lists.item';
 
 const ListItem:React.FC<ListItemProps> = (props) => {
   const {
@@ -25,6 +27,8 @@ const ListItem:React.FC<ListItemProps> = (props) => {
   const history = useHistory();
 
   const { organizationId } = useQueryString();
+
+  const formatMiddleListsItem = useFormatMessage(intlPrefix);
 
   const {
     pathname,
@@ -41,7 +45,7 @@ const ListItem:React.FC<ListItemProps> = (props) => {
 
   const itemContent = (
     <div className={itemCls} role="none" onClick={goto}>
-      {title}
+      {formatMiddleListsItem({ id: title })}
     </div>
   );
 

@@ -1,18 +1,18 @@
 import React, {
-  useEffect, FC,
+  FC,
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
 import JSONbig from 'json-bigint';
 import map from 'lodash/map';
 import { Tooltip } from 'choerodon-ui/pro';
-import { useHistory } from 'react-router';
 import WSHandler from '@/components/ws/WSHandler';
 
 import {} from '@choerodon/components';
 
 import './index.less';
 import { useProjectsSelectorStore } from '../../stores';
+import { useFormatCommon, useFormatMessage } from '@/hooks';
 
 export type StarProjectsListsProps = {
   AppState?:any
@@ -27,6 +27,9 @@ const StarProjectsLists:FC<StarProjectsListsProps> = (props) => {
   const {
     AppState,
   } = props;
+
+  const formatCommon = useFormatCommon();
+  const formatWorkbench = useFormatMessage('c7ncd.workbench');
 
   const goto = (item:any) => {
     handleSelectProjectCallback(item);
@@ -51,7 +54,7 @@ const StarProjectsLists:FC<StarProjectsListsProps> = (props) => {
     </div>
   ) : (
     <div className={`${prefixCls}-lists-content-empty`}>
-      <span>暂无星标项目</span>
+      <span>{formatWorkbench({ id: 'noStarProjects' })}</span>
     </div>
   ));
 
@@ -63,7 +66,7 @@ const StarProjectsLists:FC<StarProjectsListsProps> = (props) => {
       }}
     >
       <div className={`${prefixCls}-lists`}>
-        <p>星标项目</p>
+        <p>{formatCommon({ id: 'starProjects' })}</p>
         {renderLists()}
       </div>
     </WSHandler>

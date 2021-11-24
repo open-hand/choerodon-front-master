@@ -1,4 +1,11 @@
-const PROJECT_ZH_CN = {
+const project = {
+  'c7ncd.project.choose': '请选择项目',
+  'c7ncd.project.createProject': '创建项目',
+  'c7ncd.project.checkAllProject': '查看所有项目',
+  'c7ncd.project.recentUse': '最近使用项目',
+  'c7ncd.project.recentUse.no.desc': '暂无最近使用项目',
+  'c7ncd.project.allProject': '{name}所有项目',
+  'c7ncd.project.projects': '全部项目',
   // 项目列表页
   'c7ncd.project.failed.create': '创建失败',
   'c7ncd.project.failed.update': '更新失败',
@@ -16,4 +23,6 @@ const PROJECT_ZH_CN = {
   'c7ncd.project.saga.des.success.update': '项目更新成功，进入项目后刷新即可。',
 };
 
-export { PROJECT_ZH_CN };
+export {
+  project,
+};

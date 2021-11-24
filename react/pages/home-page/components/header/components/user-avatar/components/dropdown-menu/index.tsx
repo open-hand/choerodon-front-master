@@ -24,6 +24,8 @@ const DropdownMenu:FC<DropdownMenuProps> = () => {
     email,
     realName,
     mainStore,
+    formatCommon,
+    formatUserAvater,
   } = useUserAvatarStore();
 
   const {
@@ -63,7 +65,7 @@ const DropdownMenu:FC<DropdownMenuProps> = () => {
           onClick={logout}
         >
           <Icon type="exit_to_app" />
-          退出登录
+          {formatCommon({ id: 'logout' })}
         </li>
       </div>
     </div>

@@ -14,10 +14,11 @@ import Store from './stores';
 import List from './List';
 import findFirstLeafMenu from '../../../util/findFirstLeafMenu';
 import FormView from './FormView';
-import { axios } from '../../../../../index';
+import { axios, useFormatMessage } from '../../../../../index';
 import { Content, Page } from '@/components/c7n-page';
 import { Permission } from '@/components/permission';
 import './style/index.less';
+import { useFormatCommon } from '@/hooks';
 
 const { Option } = Select;
 const modalKey = Modal.key();
@@ -34,11 +35,12 @@ const iconStyle = {
 const ListView = observer(() => {
   const context = useContext(Store);
   const cancelCreate = useRef(false);
+  const formatProject = useFormatMessage({ id: 'c7ncd.project' });
+  const formatCommon = useFormatCommon();
   const {
     dataSet, showType, toggleShowType, isNotRecent, toggleRecent, setAuto,
     HeaderStore, MenuStore, history, AppState,
     projectStore,
-    intl: { formatMessage },
   } = context;
   const recents = HeaderStore.getRecentItem;
   const { getCanCreate } = projectStore;
@@ -135,7 +137,7 @@ const ListView = observer(() => {
     Modal.open({
       key: createModalKey,
       drawer: true,
-      title: '创建项目',
+      title: formatProject({ id: 'create' }),
       className: 'c7n-projects-modal-create-project',
       children: <FormView context={context} />,
       onOk: handleOkEdit,
@@ -337,7 +339,7 @@ const ListView = observer(() => {
               disabled={!getCanCreate}
               onClick={handleCreateProject}
             >
-              创建项目
+              {formatProject({ id: 'createProject' })}
             </Button>
           </Tooltip>
         </Permission>
@@ -348,9 +350,9 @@ const ListView = observer(() => {
   function renderTool() {
     return (
       <div className="c7n-projects-tool">
-        <Select labelLayout="float" label="项目" clearButton={false} value={isNotRecent} onChange={handleChangeRecent} style={{ width: 260 }}>
-          {(realData('recent').length > 0 || dataSet.queryDataSet.length > 0) && <Option key="recent" value="recent">最近使用</Option>}
-          <Option key="all" value="all">全部项目</Option>
+        <Select labelLayout="float" label={formatCommon({ id: 'project' })} clearButton={false} value={isNotRecent} onChange={handleChangeRecent} style={{ width: 260 }}>
+          {(realData('recent').length > 0 || dataSet.queryDataSet.length > 0) && <Option key="recent" value="recent">{formatProject({ id: 'recentUse' })}</Option>}
+          <Option key="all" value="all">{formatProject({ id: 'projects' })}</Option>
           {(realData('mine').length > 0 || dataSet.queryDataSet.length > 0) && <Option key="mine" value="mine">我创建的</Option>}
         </Select>
         <div className="c7n-projects-tool-icon-group">

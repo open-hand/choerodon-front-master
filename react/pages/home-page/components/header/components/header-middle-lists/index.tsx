@@ -14,6 +14,7 @@ import {} from '@choerodon/components';
 
 import './index.less';
 import ListItem from './components/list-item';
+import { useFormatMessage } from '@/hooks';
 
 export type HeaderMiddleListsProps = {
   AppState?:any

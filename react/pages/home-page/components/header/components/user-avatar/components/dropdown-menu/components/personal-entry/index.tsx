@@ -9,6 +9,7 @@ import './index.less';
 import { inject } from 'mobx-react';
 import { useHistory } from 'react-router';
 import { USERINFO_PATH } from '@/constants';
+import { useUserAvatarStore } from '../../../../stores';
 
 export type PersonalEntryProps = {
 
@@ -20,6 +21,10 @@ const PersonalEntry:FC<PersonalEntryProps> = (props:any) => {
   const {
     AppState,
   } = props;
+
+  const {
+    formatCommon,
+  } = useUserAvatarStore();
 
   const params = useQueryString();
   const history = useHistory();
@@ -41,7 +46,7 @@ const PersonalEntry:FC<PersonalEntryProps> = (props:any) => {
   return (
     <div className={prefixCls} onClick={goUserPage} role="none">
       <Icon type="account_circle-o" />
-      <span>个人信息</span>
+      <span>{formatCommon({ id: 'personalInfo' })}</span>
     </div>
   );
 };

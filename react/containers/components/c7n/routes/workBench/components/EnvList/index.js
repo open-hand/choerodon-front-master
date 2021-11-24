@@ -12,6 +12,7 @@ const EnvList = observer(() => {
     history,
     AppState: { currentMenuType: { organizationId } },
     selectedProjectId,
+    formatWorkbench,
   } = useWorkBenchStore();
   const [envList, setEnvList] = useState([]);
   useEffect(() => {
@@ -48,11 +49,15 @@ const EnvList = observer(() => {
   return (
     <div className="c7n-envList">
       <div className="c7n-envList-title">
-        <span>环境（最近使用）</span>
+        <span>{formatWorkbench({ id: 'environment' })}</span>
       </div>
       <div className="c7n-serviceList-content">
         {!envList.length ? (
-          <div className="c7n-workbench-empty-span">暂无最近操作的环境</div>
+          <div className="c7n-workbench-empty-span">
+            {
+            formatWorkbench({ id: 'noEnvironmentsTodo' })
+          }
+          </div>
         ) : null}
         {envList.map(({
           name, code, projectName, clickTime, active, connect, id, projectId: realProjectId,

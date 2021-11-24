@@ -29,6 +29,8 @@ const QuickLink = observer(() => {
   const {
     workBenchUseStore,
     selectedProjectId,
+    formatWorkbench,
+    formatCommon,
   } = useWorkBenchStore();
 
   const {
@@ -82,7 +84,7 @@ const QuickLink = observer(() => {
 
   const handelOpenDelete = (l) => {
     Modal.confirm({
-      okText: '删除',
+      okText: formatCommon({ id: 'delete' }),
       title: '删除快速链接',
       children: '确认删除快速链接吗?',
       type: 'warning',
@@ -91,9 +93,6 @@ const QuickLink = observer(() => {
   };
 
   const renderActions = (l) => {
-    const { realName } = getUserInfo || {};
-    const user = get(l, 'user');
-    const linkName = get(user, 'realName');
     const editFlag = get(l, 'editFlag');
 
     const setTop = [
@@ -106,13 +105,13 @@ const QuickLink = observer(() => {
 
     const alter = [
       {
-        text: '修改',
+        text: formatCommon({ id: 'modify' }),
         action: () => {
           handleAdd(l);
         },
       },
       {
-        text: '删除',
+        text: formatCommon({ id: 'delete' }),
         action: () => handelOpenDelete(l),
       },
     ];
@@ -229,7 +228,7 @@ const QuickLink = observer(() => {
           className={type === 'project' && 'c7ncd-classification-checked'}
           role="none"
         >
-          项目
+          {formatCommon({ id: 'project' })}
         </span>
         <i />
         <span
@@ -237,7 +236,7 @@ const QuickLink = observer(() => {
           className={type === 'self' && 'c7ncd-classification-checked'}
           role="none"
         >
-          个人
+          {formatCommon({ id: 'personal' })}
         </span>
       </div>
       <Icon
@@ -251,7 +250,7 @@ const QuickLink = observer(() => {
   return (
     <div className="c7n-quickLink">
       <div className="c7n-quickLink-title">
-        快速链接
+        {formatWorkbench({ id: 'quickLink' })}
         {renderClassification()}
       </div>
       <div className="c7n-quickLink-scroll">
@@ -263,12 +262,20 @@ const QuickLink = observer(() => {
                 onClick={handleLoadMore}
                 role="none"
               >
-                加载更多
+                {formatCommon({ id: 'loadMore' })}
               </a>
             ),
           ]
         ) : (
-          <EmptyPage title="暂无快速链接" describe="暂无快速链接，请创建" img={EmptyImg} />
+          <EmptyPage
+            title={
+            formatWorkbench({ id: 'nolink' })
+          }
+            describe={
+              formatWorkbench({ id: 'nolink.desc' })
+            }
+            img={EmptyImg}
+          />
         )}
       </div>
     </div>
