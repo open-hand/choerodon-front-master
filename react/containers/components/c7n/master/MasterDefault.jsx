@@ -198,11 +198,11 @@ class Masters extends Component {
       const identity = 'platform_announcement';
       if (window.localStorage.getItem('announcementModalInfo')) {
         const announcementId = window.localStorage.getItem('announcementModalInfo').split('+')[0];
-        if (announcementId !== res?.id) {
-          window.localStorage.setItem('announcementModalInfo', `${res?.id}+false`);
+        if (announcementId !== res?.readId) {
+          window.localStorage.setItem('announcementModalInfo', `${res?.readId}+false`);
         }
       } else {
-        window.localStorage.setItem('announcementModalInfo', `${res?.id}+false`);
+        window.localStorage.setItem('announcementModalInfo', `${res?.readId}+false`);
       }
 
       if (res && (!localStorage.lastClosedId || localStorage.lastClosedId !== res?.id)) {
