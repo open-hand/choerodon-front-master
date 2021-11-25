@@ -53,12 +53,19 @@ export const STATUS_EN_US = {
   'boot.pendingcheck': 'Pending review',
   'boot.executing': 'Executing',
   'boot.terminated': 'Terminated',
+  'boot.normal': 'Common',
+  'boot.locked': 'Locked',
 };
 
 const COMMON_EN_US = {
+  ...STATUS_EN_US,
+  ...OPTIONS_EN_US,
   zh_CN: 'Chinese',
   en_US: 'English(US)',
 
+  'boot.yes': '是',
+  'boot.no': '否',
+  'boot.username': 'Username',
   'boot.application': 'APP',
   'boot.permissions': 'Permission Assignment',
   'boot.iknow': 'I know',

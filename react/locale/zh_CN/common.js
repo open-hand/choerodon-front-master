@@ -53,13 +53,20 @@ export const STATUS_ZH_CN = {
   'boot.pendingcheck': '待审核',
   'boot.executing': '执行中',
   'boot.terminated': '已终止',
+  'boot.normal': '正常',
+  'boot.locked': '锁定',
 };
 
 const COMMON_ZH_CN = {
+  ...OPTIONS_ZH_CN,
+  ...STATUS_ZH_CN,
   // languages
   zh_CN: '简体中文',
   en_US: '英文（美式）',
 
+  'boot.yes': '是',
+  'boot.no': '否',
+  'boot.username': '用户名',
   'boot.application': '应用',
   'boot.permissions': '权限分配',
   'boot.iknow': '我知道了',
