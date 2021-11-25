@@ -1,7 +1,7 @@
 const project = {
   'c7ncd.project.choose': '请选择项目',
   'c7ncd.project.createProject': '创建项目',
-  'c7ncd.project.checkAllProject': '查看所有项目',
+  'c7ncd.project.checkAllProjects': '查看所有项目',
   'c7ncd.project.recentUse': '最近使用项目',
   'c7ncd.project.recentUse.no.desc': '暂无最近使用项目',
   'c7ncd.project.allProject': '{name}所有项目',
