@@ -107,6 +107,18 @@ class ApiTestApi extends Api<ApiTestApi> {
   }
 
   /**
+   * 修改api测试套件
+   * @param data
+   */
+  updateKits(data: any) {
+    return this.request({
+      url: `${this.prefix}/suites`,
+      method: 'put',
+      data,
+    })
+  }
+
+  /**
    * 创建api测试套件
    */
   createKits(data: any) {
