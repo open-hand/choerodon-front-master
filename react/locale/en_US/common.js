@@ -63,8 +63,20 @@ const COMMON_EN_US = {
   zh_CN: 'Chinese',
   en_US: 'English(US)',
 
-  'boot.yes': '是',
-  'boot.no': '否',
+  'boot.language': 'Languages',
+  'boot.projectOwner': 'Project Owner',
+  'boot.projectMember': 'Project Member',
+  'boot.mobilephone': 'Tel',
+  'boot.field': 'Field',
+
+  'boot.transaction': 'Transaction',
+  'boot.task': 'Task',
+  'boot.principal': 'Owner',
+  'boot.stage': 'Stage',
+  'boot.client': 'Client',
+
+  'boot.yes': 'Yes',
+  'boot.no': 'No',
   'boot.username': 'Username',
   'boot.application': 'APP',
   'boot.permissions': 'Permission Assignment',

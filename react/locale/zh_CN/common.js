@@ -64,6 +64,19 @@ const COMMON_ZH_CN = {
   zh_CN: '简体中文',
   en_US: '英文（美式）',
 
+  'boot.language': '语言',
+  'boot.projectOwner': '项目所有者',
+  'boot.projectMember': '项目成员',
+  'boot.mobilephone': '手机',
+  'boot.field': '字段',
+
+  'boot.transaction': '事务',
+  'boot.task': '任务',
+  'boot.principal': '负责人',
+  'boot.Teammate': '成员',
+  'boot.stage': '阶段',
+  'boot.client': '客户端',
+
   'boot.yes': '是',
   'boot.no': '否',
   'boot.username': '用户名',
