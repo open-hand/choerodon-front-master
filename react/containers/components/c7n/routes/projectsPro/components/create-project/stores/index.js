@@ -55,10 +55,15 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       categoryDs.query(),
       createProjectStore.checkSenior(organizationId),
     ]);
+    const isSenior = createProjectStore.getIsSenior; // saas高级版
+
+    // 新手指导默认选中值处理
     if (inNewUserGuideStepOne) {
+      const seniorDefaultArr = ['N_AGILE', 'N_REQUIREMENT', 'N_DEVOPS', 'N_OPERATIONS', 'N_TEST'];
+      const otherDefaultArr = ['N_AGILE', 'N_DEVOPS', 'N_TEST'];
+      const currentArr = isSenior ? seniorDefaultArr : otherDefaultArr;
       categoryDs.forEach((record) => {
-        const defaultArr = ['N_AGILE', 'N_REQUIREMENT', 'N_DEVOPS', 'N_OPERATIONS', 'N_TEST'];
-        if (defaultArr.indexOf(record.get('code')) !== -1) {
+        if (currentArr.indexOf(record.get('code')) !== -1) {
           // eslint-disable-next-line no-param-reassign
           record.isSelected = true;
         } else {
@@ -66,7 +71,6 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
         }
       });
     } else {
-      const isSenior = createProjectStore.getIsSenior;
       categoryDs.forEach((eachRecord) => {
         const categoryRecord = eachRecord.get('code');
         if (categoryRecord === categoryCodes.require
