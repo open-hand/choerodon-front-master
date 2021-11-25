@@ -37,7 +37,7 @@ const PlatformAnnouncement = (props:{
   data:{
     content: string,
     title:string
-    id:string
+    readId:string
   },
   onCloseCallback: CallableFunction
 }) => {
@@ -48,12 +48,12 @@ const PlatformAnnouncement = (props:{
 
   const content = get(announcement, 'content');
   const title = get(announcement, 'title');
-  const id = get(announcement, 'id');
+  const readId = get(announcement, 'readId');
 
   const [isFull, setFull] = useState<boolean>(false);
 
   const closeModal = () => {
-    window.localStorage.setItem('announcementModalInfo', `${id}+true`);
+    window.localStorage.setItem('announcementModalInfo', `${readId}+true`);
     infoModal && infoModal.close();
   };
 
@@ -108,7 +108,7 @@ const PlatformAnnouncement = (props:{
         </div>
       ),
       onOk: closeModal,
-      okText: '返回',
+      okText: '关闭',
       okCancel: false,
     });
   };

@@ -1,4 +1,6 @@
-import { ACCESS_TOKEN, AUTH_HOST, AUTH_URL, NO_NEED_HISTORYPATH } from './constants';
+import {
+  ACCESS_TOKEN, AUTH_HOST, AUTH_URL, NO_NEED_HISTORYPATH,
+} from './constants';
 import { getCookieToken, removeAccessToken } from './accessToken';
 
 export function authorize() {
@@ -11,18 +13,21 @@ export function logout() {
   if (token) {
     logoutUrl += `?${ACCESS_TOKEN}=${getCookieToken()}`;
   }
+  const announcementModalInfo = localStorage.getItem('announcementModalInfo');
+
   removeAccessToken();
   localStorage.clear();
   const historyPath = sessionStorage.getItem('historyPath');
   sessionStorage.clear();
   sessionStorage.setItem('historyPath', historyPath);
+  announcementModalInfo && localStorage.setItem('announcementModalInfo', announcementModalInfo);
   window.location = logoutUrl;
 }
 
 export function authorizeC7n() {
   // 为了把这个hash传到oauth里要把#换成%23
   let historyPath = sessionStorage.getItem('historyPath');
-  if (historyPath && NO_NEED_HISTORYPATH.some(item => historyPath.includes(item))) {
+  if (historyPath && NO_NEED_HISTORYPATH.some((item) => historyPath.includes(item))) {
     historyPath = '/';
     sessionStorage.setItem('historyPath', '/');
   }
