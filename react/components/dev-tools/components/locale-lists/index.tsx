@@ -3,7 +3,7 @@ import { Alert } from 'choerodon-ui';
 import CNLists from './cnLists';
 import ENLists from './enLists';
 import './index.less';
-import { link } from './CONSTANTS';
+import { link, docLink } from './CONSTANTS';
 
 const prefixCls = 'c7ncd-dev-tool-localeLists';
 
@@ -20,6 +20,8 @@ const LocaleLists = () => {
       <Alert message="使用useFormatCommon hook来使用公共多语言，不需要再手动传boot值" showIcon />
       {renderContent()}
       <a href={link} target="_blank" rel="noreferrer">多语言改动文档</a>
+      {'   '}
+      <a href={docLink} target="_blank" rel="noreferrer">产品文档</a>
     </div>
   );
 };

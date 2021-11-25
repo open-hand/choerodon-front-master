@@ -31,6 +31,14 @@ export const OPTIONS_EN_US = {
   'boot.search': 'Search',
   'boot.loadMore': 'Load More',
   'boot.update': 'Update',
+  'boot.expandAll': 'Expand',
+  'boot.collapseAll': 'Collapse',
+  'boot.expand': 'Expand',
+  'boot.collapse': 'Collapse',
+  'boot.shrink': 'Shrink',
+  'boot.previous': 'Previous',
+  'boot.next': 'Next',
+  'boot.finish': 'Finish',
 };
 
 export const STATUS_EN_US = {
@@ -55,15 +63,101 @@ export const STATUS_EN_US = {
   'boot.terminated': 'Terminated',
   'boot.normal': 'Common',
   'boot.locked': 'Locked',
+  'boot.notActive': 'Invalid',
+  'boot.expired': 'Expired',
+};
+
+// 操作状态失败
+const OPTIONS_STATUS_FAILED_EN_US = {
+  'boot.execute.failed': 'failed to excute {name}',
+  'boot.refresh.failed': 'failed to refresh',
+  'boot.upgrade.failed': 'failed to upgrade {name}',
+  'boot.change.failed': 'failed to change {name}',
+  'boot.commit.failed': 'failed to commit {name}',
+  'boot.install.failed': 'failed to install {name}',
+  'boot.uninstall.failed': 'failed to uninstall {name}',
+  'boot.cancel.failed': 'failed to cancel {name}',
+  'boot.save.failed': 'failed to save {name}',
+  'boot.reset.failed': 'failed to reset {name}',
+  'boot.stop.failed': 'failed to stop {name}',
+  'boot.new.failed': 'failed to new {name}',
+  'boot.create.failed': 'failed to create {name}',
+  'boot.edit.failed': 'failed to edit {name}',
+  'boot.modify.failed': 'failed to modify {name}',
+  'boot.delete.failed': 'failed to delete {name}',
+  'boot.enable.failed': 'failed to enable {name}',
+  'boot.disable.failed': 'failed to disable {name}',
+  'boot.export.failed': 'failed to export {name}',
+  'boot.import.failed': 'failed to import {name}',
+  'boot.rename.failed': 'failed to rename {name}',
+  'boot.copy.failed': 'failed to cpoy {name}',
+  'boot.check.failed': 'failed to check {name}',
+  'boot.signIn.failed': 'failed to auth',
+  'boot.search.failed': 'failed to search {name}',
+  'boot.loadMore.failed': 'failed to load',
+  'boot.update.failed': 'failed to update {name}',
+};
+
+// 操作状态成功
+const OPTIONS_STATUS_SUCCESS_EN_US = {
+  'boot.execute.success': 'successfully excute {name}',
+  'boot.refresh.success': 'successfully refresh',
+  'boot.upgrade.success': 'successfully upgrade {name}',
+  'boot.change.success': 'successfully change {name}',
+  'boot.commit.success': 'successfully commit {name}',
+  'boot.install.success': 'successfully install {name}',
+  'boot.uninstall.success': 'successfully uninstall {name}',
+  'boot.cancel.success': 'successfully cancel {name}',
+  'boot.save.success': 'successfully save {name}',
+  'boot.reset.success': 'successfully reset {name}',
+  'boot.stop.success': 'successfully stop {name}',
+  'boot.new.success': 'successfully new {name}',
+  'boot.create.success': 'successfully create {name}',
+  'boot.edit.success': 'successfully edit {name}',
+  'boot.modify.success': 'successfully modify {name}',
+  'boot.delete.success': 'successfully delete {name}',
+  'boot.enable.success': 'successfully enable {name}',
+  'boot.disable.success': 'successfully disable {name}',
+  'boot.export.success': 'successfully export {name}',
+  'boot.import.success': 'successfully import {name}',
+  'boot.rename.success': 'successfully rename {name}',
+  'boot.copy.success': 'successfully cpoy {name}',
+  'boot.check.success': 'successfully check {name}',
+  'boot.signIn.success': 'successfully auth',
+  'boot.search.success': 'successfully search {name}',
+  'boot.loadMore.success': 'successfully load',
+  'boot.update.success': 'successfully update {name}',
+};
+
+// 语言
+const LANGUAGES_EN_US = {
+  // languages
+  zh_CN: 'Chinese',
+  en_US: 'English(US)',
+  'boot.language': 'Languages',
+};
+
+// 用户相关
+const USER_EN_US = {
+  'boot.username': 'Username',
+  'boot.personal': 'Personal',
+  'boot.personalInfo': 'Personal Info',
+  'boot.password': 'Password',
+  'boot.accountLogin': 'Account Login',
+  'boot.mobileLogin': 'Mobile Login',
+  'boot.account': 'Login Account',
+  'boot.email': 'Email',
+  'boot.forgetPassword': 'Forgot Password',
 };
 
 const COMMON_EN_US = {
-  ...STATUS_EN_US,
+  ...USER_EN_US,
+  ...LANGUAGES_EN_US,
   ...OPTIONS_EN_US,
-  zh_CN: 'Chinese',
-  en_US: 'English(US)',
+  ...STATUS_EN_US,
+  ...OPTIONS_STATUS_FAILED_EN_US,
+  ...OPTIONS_STATUS_SUCCESS_EN_US,
 
-  'boot.language': 'Languages',
   'boot.projectOwner': 'Project Owner',
   'boot.projectMember': 'Project Member',
   'boot.mobilephone': 'Tel',
@@ -77,7 +171,6 @@ const COMMON_EN_US = {
 
   'boot.yes': 'Yes',
   'boot.no': 'No',
-  'boot.username': 'Username',
   'boot.application': 'APP',
   'boot.permissions': 'Permission Assignment',
   'boot.iknow': 'I know',
@@ -127,16 +220,9 @@ const COMMON_EN_US = {
   'boot.documentLibrary': 'Document Library',
   'boot.starProjects': 'Star Projects',
   'boot.project': 'Project',
-  'boot.personal': 'Personal',
   'boot.demand': 'Demand',
-  'boot.password': 'Password',
-  'boot.accountLogin': 'Account Login',
-  'boot.mobileLogin': 'Mobile Login',
-  'boot.account': 'Login Account',
-  'boot.email': 'Email',
-  'boot.forgetPassword': 'Forgot Password',
+
   'boot.note': 'Note',
-  'boot.personalInfo': 'Personal Info',
   'boot.recentUse': 'Recently Used',
   'boot.pleaseSearch': 'Please Search',
 

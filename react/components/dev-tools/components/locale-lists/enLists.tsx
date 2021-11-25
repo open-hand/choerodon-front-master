@@ -1,7 +1,7 @@
 import { useVirtualList } from 'ahooks';
 import { filter, map } from 'lodash';
 import React, { useMemo, useState } from 'react';
-import { Icon } from 'choerodon-ui';
+import { Icon, Tooltip } from 'choerodon-ui';
 import { TextField } from 'choerodon-ui/pro/lib';
 import { COMMON_EN_US } from '@/locale/en_US/common';
 
@@ -29,9 +29,13 @@ const ENLists = () => {
       }}
       key={key}
     >
-      <span>{key}</span>
+      <Tooltip title={key}>
+        <span>{key}</span>
+      </Tooltip>
       ：
-      <span>{value}</span>
+      <Tooltip title={value}>
+        <span>{value}</span>
+      </Tooltip>
     </div>
   );
 
@@ -46,18 +50,17 @@ const ENLists = () => {
   );
 
   const renderSearchList = () => {
-    const currentLists = filter(list, ({ data: { value, key } }) => value.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) || searchValue.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
+    const currentLists = filter(localeLists, ({ value, key }) => value.includes(searchValue) || searchValue.includes(value));
     if (!currentLists.length) {
       return <p>糟了，没数据...去master加吧</p>;
     }
     return (
       <div style={{
-        overflow: 'scroll',
-
         height: '300px',
+        overflow: 'scroll',
       }}
       >
-        {map(currentLists, ({ data }) => renderItem(data.key, data.value))}
+        {map(currentLists, (data) => renderItem(data.key, data.value))}
       </div>
     );
   };
