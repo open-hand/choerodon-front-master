@@ -1,0 +1,11 @@
+"@hzero-front-ui/themes@4.0.2-alpha.12":
+  version "4.0.2-alpha.12"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/themes/-/themes-4.0.2-alpha.12.tgz#21cecc78d355265ef532bad92d04460e01b61969"
+  integrity sha512-fogH95msJAlvNqLzJeTLYs6b/j0KUhJ4+PSh3WZbuyC621zEVD9n0CQUurhi/tVspK80iP692/tumRvJiOyv9w==
+  dependencies:
+    "@hzero-front-ui/font" "^4.0.2-alpha.1"
+
+"@hzero-front-ui/c7n-ui@4.0.2-alpha.11":
+  version "4.0.2-alpha.11"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/c7n-ui/-/c7n-ui-4.0.2-alpha.11.tgz#c52b37735acd53c80eeb6f02e186ee1505e97027"
+  integrity sha512-iEXMVwh0ToyvIoShbfDDrC1pqUlzG3/u1CZ0vDDsjL3ZlcDtxhOgtoTVD6bnqjnPpPATsChDi+0BFIZYbMDewA==
