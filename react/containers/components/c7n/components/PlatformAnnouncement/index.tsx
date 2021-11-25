@@ -108,7 +108,7 @@ const PlatformAnnouncement = (props:{
         </div>
       ),
       onOk: closeModal,
-      okText: '返回',
+      okText: '关闭',
       okCancel: false,
     });
   };
