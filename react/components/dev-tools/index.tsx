@@ -1,5 +1,5 @@
 import React, {
-  useEffect, FC, useRef,
+  FC,
 } from 'react';
 import { Popover } from 'choerodon-ui';
 import { useBoolean } from 'ahooks';
