@@ -195,7 +195,7 @@ const COMMON_EN_US = {
   'boot.startTime': 'Start Time',
   'boot.createTime': 'Creation Time',
   'boot.operation': 'Operation',
-  'boot.states': 'States',
+  'boot.states': 'Status',
   'boot.source': 'Source',
   'boot.role': 'Role',
   'boot.creator': 'Creator',
