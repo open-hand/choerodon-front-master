@@ -1,11 +1,6 @@
 import React, { useCallback } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
-
-type MessageFormatPrimitiveValue = string | number | boolean | null | undefined
-
-type FormatterValues = Record<string, MessageFormatPrimitiveValue | React.ReactElement | any>
-
-export type FormatFunctionTypes = (props:MessageDescriptor, values?:FormatterValues)=> string | React.ReactNode
+import { FormatFunctionTypes, FormatterValues } from '@/typings';
 
 function useFormatMessage(intlPrefix?:string):FormatFunctionTypes
 
