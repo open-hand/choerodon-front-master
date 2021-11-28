@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
-import { useIntl, IntlFormatters } from 'react-intl';
+import { useIntl } from 'react-intl';
+import { useFormatMessageRetrunTypes } from '@/typings';
 
-function useFormatMessage(intlPrefix?:string):IntlFormatters['formatMessage'] {
+function useFormatMessage<T, R>(intlPrefix?:string):useFormatMessageRetrunTypes<T, R> {
   const {
     formatMessage,
   } = useIntl();
