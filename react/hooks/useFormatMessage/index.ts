@@ -6,8 +6,7 @@ function useFormatMessage(intlPrefix?:string):IntlFormatters['formatMessage'] {
     formatMessage,
   } = useIntl();
 
-  const handleFormat = useCallback((props) => {
-    const [messageOpts, values] = props;
+  const handleFormat = useCallback((messageOpts, values) => {
     const {
       id,
       ...rest
