@@ -1,4 +1,4 @@
-import { FormatFunctionTypes } from '@/hooks';
+import { IntlFormatters } from 'react-intl';
 import { StoreProps } from './stores/useStore';
 
 export type UserAvatarIndexProps = {
@@ -13,8 +13,8 @@ export type UserAvatarStoreContext = {
   imageUrl?:string,
   realName?:string,
   email?:string,
-  formatCommon:FormatFunctionTypes
-  formatUserAvater:FormatFunctionTypes
+  formatCommon:IntlFormatters['formatMessage']
+  formatUserAvater:IntlFormatters['formatMessage']
 } & ProviderProps;
 
 export type ProviderProps = {
