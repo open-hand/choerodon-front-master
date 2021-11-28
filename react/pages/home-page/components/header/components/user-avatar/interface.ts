@@ -1,4 +1,4 @@
-import { IntlFormatters } from 'react-intl';
+import { useFormatMessageRetrunTypes } from '@/typings';
 import { StoreProps } from './stores/useStore';
 
 export type UserAvatarIndexProps = {
@@ -13,8 +13,8 @@ export type UserAvatarStoreContext = {
   imageUrl?:string,
   realName?:string,
   email?:string,
-  formatCommon:IntlFormatters['formatMessage']
-  formatUserAvater:IntlFormatters['formatMessage']
+  formatCommon:useFormatMessageRetrunTypes
+  formatUserAvater:useFormatMessageRetrunTypes
 } & ProviderProps;
 
 export type ProviderProps = {
