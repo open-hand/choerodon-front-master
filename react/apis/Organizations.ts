@@ -90,6 +90,13 @@ class OrganizationsApi extends Api<OrganizationsApi> {
       url: `${this.prefix}/${this.orgId}/email_suffix`,
     });
   }
+
+  loadProjectData(userId:string, selectProjectId:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging?enabled=true${selectProjectId ? `&project_id=${selectProjectId}` : ''}`,
+    });
+  }
 }
 
 const organizationsApi = new OrganizationsApi();

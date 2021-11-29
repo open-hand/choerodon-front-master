@@ -8,6 +8,7 @@ export * from './RegistersInvitation';
 export * from './services/devops';
 export * from './services/test';
 export * from './services/market';
+export * from './services/agile';
 export * from './Users';
 export * from './services/hadm';
 export * from './Hzero_Users';
