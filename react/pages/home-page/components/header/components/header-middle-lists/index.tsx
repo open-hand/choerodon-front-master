@@ -22,6 +22,7 @@ export type HeaderMiddleListsProps = {
 
 const prefixCls = 'c7ncd-header-middle-lists';
 const intlPrefix = 'c7ncd.header.middle.lists';
+const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 
 const HeaderMiddleLists:FC<HeaderMiddleListsProps> = (props) => {
   const {
@@ -55,8 +56,10 @@ const HeaderMiddleLists:FC<HeaderMiddleListsProps> = (props) => {
   const getLists = useMemo(() => {
     const tempLists = [
       WORKBENCH_CONFIG,
-      WORKCALENDAR_CONFIG,
     ];
+    if (HAS_AGILE_PRO) {
+      tempLists.push(WORKCALENDAR_CONFIG);
+    }
     if (serviceCodeLists.includes(SERVICE_KNOWLEDGE)) {
       tempLists.push(KNOWLEDGE_CONFIG);
     }
