@@ -1,15 +1,13 @@
-import React, { useCallback } from 'react';
-import { MessageDescriptor, useIntl } from 'react-intl';
-import { FormatFunctionTypes, FormatterValues } from '@/typings';
+import { useCallback } from 'react';
+import { useIntl } from 'react-intl';
+import { useFormatMessageRetrunTypes } from '@/typings';
 
-function useFormatMessage(intlPrefix?:string):FormatFunctionTypes
-
-function useFormatMessage(intlPrefix?:string) {
+function useFormatMessage<T, R>(intlPrefix?:string):useFormatMessageRetrunTypes<T, R> {
   const {
     formatMessage,
   } = useIntl();
 
-  const handleFormat = useCallback((messageOpts: MessageDescriptor, values?:FormatterValues) => {
+  const handleFormat = useCallback((messageOpts, values) => {
     const {
       id,
       ...rest

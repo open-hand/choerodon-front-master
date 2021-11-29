@@ -41,8 +41,6 @@ export { default as BrowserAdapter } from './components/browser-adapter';
 
 export { logout } from './utils/authorize';
 
-// export * from './commonInterface';
-
 export * as CONSTANTS from './constants';
 
 // 导出Page, Content, Header结构组件
@@ -75,3 +73,6 @@ export * from '@/apis';
 
 // hooks
 export * from '@/hooks';
+
+// typings
+export * from '@/typings';
