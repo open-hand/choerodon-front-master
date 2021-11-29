@@ -1,4 +1,4 @@
-import { FormatFunctionTypes } from '@/hooks';
+// import { FormatFunctionTypes } from '@/hooks';
 import { StoreProps } from './stores/useStore';
 
 export type UserAvatarIndexProps = {
@@ -13,8 +13,8 @@ export type UserAvatarStoreContext = {
   imageUrl?:string,
   realName?:string,
   email?:string,
-  formatCommon:FormatFunctionTypes
-  formatUserAvater:FormatFunctionTypes
+  formatCommon:any
+  formatUserAvater:any
 } & ProviderProps;
 
 export type ProviderProps = {

@@ -45,6 +45,26 @@ class ApiTestApi extends Api<ApiTestApi> {
     })
   }
 
+  updateAndClientExecute(data: any) {
+    return this.request({
+      url: `${this.prefix}/tasks/update_and_client_execute`,
+      method: 'post',
+      data,
+    })
+  }
+
+  /**
+   * 保存并执行
+   * @param data
+   */
+  updateAndExecute(data: any) {
+    return this.request({
+      url: `${this.prefix}/suites/update_and_execute`,
+      method: 'put',
+      data,
+    })
+  }
+
   /**
    * 获取套件详情
    * @param id
