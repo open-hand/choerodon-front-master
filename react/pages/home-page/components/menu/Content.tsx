@@ -42,7 +42,7 @@ const Menu = () => {
   const findCurrentRoute = useCallback(({
     treeNode,
   }:TreeReduceCallbackProps) => {
-    if (treeNode.route === pathname) {
+    if (treeNode.route === pathname || pathname.startsWith(treeNode.route)) {
       const currentActiveMenu = treeNode;
       if (currentActiveMenu && window.location.href.includes(currentActiveMenu.route)) {
         MenuStore.setActiveMenu(currentActiveMenu);
