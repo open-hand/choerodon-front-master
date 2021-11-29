@@ -47,7 +47,7 @@ class ApiTestApi extends Api<ApiTestApi> {
 
   updateAndClientExecute(data: any) {
     return this.request({
-      url: `${this.prefix}/tasks/update_and_client_execute`,
+      url: `${this.prefix}/suites/update_and_client_execute`,
       method: 'post',
       data,
     })
