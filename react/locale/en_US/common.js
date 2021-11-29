@@ -96,6 +96,7 @@ const OPTIONS_STATUS_FAILED_EN_US = {
   'boot.search.failed': 'failed to search {name}',
   'boot.loadMore.failed': 'failed to load',
   'boot.update.failed': 'failed to update {name}',
+  'boot.failed': 'failed',
 };
 
 // 操作状态成功
@@ -127,6 +128,7 @@ const OPTIONS_STATUS_SUCCESS_EN_US = {
   'boot.search.success': 'successfully search {name}',
   'boot.loadMore.success': 'successfully load',
   'boot.update.success': 'successfully update {name}',
+  'boot.success': 'success',
 };
 
 // 语言
@@ -150,6 +152,18 @@ const USER_EN_US = {
   'boot.forgetPassword': 'Forgot Password',
 };
 
+// 单位相关
+const UNIT_ZH_CN = {
+  'boot.unit.people': 'people',
+  'boot.unit.times': '{number} time',
+};
+// 人物
+const CHARACTER_ZH_CN = {
+  'boot.organizationAdmin': 'Organization Administrator',
+  'boot.user': 'User',
+  'boot.projectOwner': 'Project Owner',
+  'boot.projectMember': 'Project Member',
+};
 const COMMON_EN_US = {
   ...USER_EN_US,
   ...LANGUAGES_EN_US,
@@ -157,9 +171,8 @@ const COMMON_EN_US = {
   ...STATUS_EN_US,
   ...OPTIONS_STATUS_FAILED_EN_US,
   ...OPTIONS_STATUS_SUCCESS_EN_US,
-
-  'boot.projectOwner': 'Project Owner',
-  'boot.projectMember': 'Project Member',
+  ...CHARACTER_ZH_CN,
+  ...UNIT_ZH_CN,
   'boot.mobilephone': 'Tel',
   'boot.field': 'Field',
 
@@ -225,7 +238,32 @@ const COMMON_EN_US = {
   'boot.note': 'Note',
   'boot.recentUse': 'Recently Used',
   'boot.pleaseSearch': 'Please Search',
-
+  'boot.peopleNum': 'The number of people',
+  'boot.time': 'Time',
+  'boot.date': 'Date',
+  'boot.allPeople': 'the total number of people',
+  'boot.statistical': ' statistical',
+  'boot.times': 'time',
+  'boot.allTimes': 'total degree',
+  'boot.updateDate': 'update date',
+  'boot.createDate': 'create date',
+  'boot.assignRootPermission': 'assign root permission',
+  'boot.assignPermissions': 'assign permissions',
+  'boot.assignRoles': 'assign poles',
+  'boot.createOrganization': 'create organization',
+  'boot.enableOrganization': 'enable organization',
+  'boot.stopOrganization': 'stop organization',
+  'boot.unlockUser': 'unlock user',
+  'boot.enableUser': 'enable user',
+  'boot.disableUser': 'disable user',
+  'boot.deleteOrganizationAdminRole': 'delete the organization administrator role',
+  'boot.addOrganizationAdminRole': 'add an organization administrator role',
+  'boot.createProject': 'create project',
+  'boot.enableProject': 'enable project',
+  'boot.disableProject': 'disable project',
+  'boot.createUser': 'create user',
+  'boot.approvalRegister': 'approval register',
+  'boot.traffic': 'traffic',
 };
 
 export { COMMON_EN_US };

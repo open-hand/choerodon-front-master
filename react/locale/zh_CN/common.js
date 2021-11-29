@@ -97,6 +97,7 @@ const OPTIONS_STATUS_FAILED_ZH_CN = {
   'boot.search.failed': '搜索{name}失败',
   'boot.loadMore.failed': '加载更多{name}失败',
   'boot.update.failed': '更新{name}失败',
+  'boot.failed': '失败',
 };
 
 // 操作状态成功
@@ -128,6 +129,7 @@ const OPTIONS_STATUS_SUCCESS_ZH_CN = {
   'boot.search.success': '搜索{name}成功',
   'boot.loadMore.success': '加载更多{name}成功',
   'boot.update.success': '更新{name}成功',
+  'boot.success': '成功',
 };
 
 // 语言相关
@@ -136,6 +138,12 @@ const LANGUAGES_ZH_CN = {
   zh_CN: '简体中文',
   en_US: '英文（美式）',
   'boot.language': '语言',
+};
+
+// 单位相关
+const UNIT_ZH_CN = {
+  'boot.unit.people': '人',
+  'boot.unit.times': '{number}次',
 };
 
 // 用户
@@ -151,6 +159,14 @@ const USER_ZH_CN = {
   'boot.mobileLogin': '手机验证登录',
 };
 
+// 人物
+const CHARACTER_ZH_CN = {
+  'boot.organizationAdmin': '组织管理员',
+  'boot.user': '用户',
+  'boot.projectOwner': '项目所有者',
+  'boot.projectMember': '项目成员',
+};
+
 const COMMON_ZH_CN = {
   ...USER_ZH_CN,
   ...LANGUAGES_ZH_CN,
@@ -158,12 +174,10 @@ const COMMON_ZH_CN = {
   ...STATUS_ZH_CN,
   ...OPTIONS_STATUS_FAILED_ZH_CN,
   ...OPTIONS_STATUS_SUCCESS_ZH_CN,
-
-  'boot.projectOwner': '项目所有者',
-  'boot.projectMember': '项目成员',
+  ...UNIT_ZH_CN,
+  ...CHARACTER_ZH_CN,
   'boot.mobilephone': '手机',
   'boot.field': '字段',
-
   'boot.transaction': '事务',
   'boot.task': '任务',
   'boot.principal': '负责人',
@@ -225,6 +239,33 @@ const COMMON_ZH_CN = {
   'boot.note': '备注',
   'boot.recentUse': '最近使用',
   'boot.pleaseSearch': '请输入搜索条件',
+  'boot.peopleNum': '人数',
+  'boot.time': '时间',
+  'boot.date': '日期',
+  'boot.allPeople': '总人数',
+  'boot.statistical': '统计',
+  'boot.times': '次数',
+  'boot.allTimes': '总次数',
+  'boot.updateDate': '更新日期',
+  'boot.createDate': '创建日期',
+  'boot.loadMore': '加载更多',
+  'boot.assignRootPermission': '分配root权限',
+  'boot.assignRPermissions': '分配权限',
+  'boot.assignRoles': '分配角色',
+  'boot.createOrganization': '创建组织',
+  'boot.enableOrganization': '启用组织',
+  'boot.stopOrganization': '停用组织',
+  'boot.unlockUser': '解锁用户',
+  'boot.enableUser': '启用用户',
+  'boot.disableUser': '禁用用户',
+  'boot.deleteOrganizationAdminRole': '删除组织管理员角色',
+  'boot.addOrganizationAdminRole': '添加组织管理员角色',
+  'boot.createProject': '创建项目',
+  'boot.enableProject': '启用项目',
+  'boot.disableProject': '禁用项目',
+  'boot.createUser': '创建用户',
+  'boot.approvalRegister': '审批注册',
+  'boot.traffic': '访问量',
 };
 
 export { COMMON_ZH_CN };
