@@ -19,7 +19,7 @@ const UIConfigInitContainer:React.FC = ({ children }) => {
   ), [language]);
 
   const IntlProviderAsync = useMemo(() => asyncLocaleProvider(language,
-    () => import(`../../locale/${language}`)), [language]);
+    () => import(/* webpackInclude: /\index.(ts|js)$/ */ `../../locale/${language}`)), [language]);
 
   console.info('current language:', language);
 
