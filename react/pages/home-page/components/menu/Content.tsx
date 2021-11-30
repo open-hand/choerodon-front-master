@@ -97,7 +97,7 @@ const Menu = () => {
   }
 
   return (
-    <div className={prefixCls}>
+    <div className={prefixCls} id="menu">
       <MainMenu />
       <SubMenu />
     </div>
