@@ -5,6 +5,7 @@ import { Icon, Modal } from 'choerodon-ui/pro';
 import {} from '@choerodon/components';
 
 import { mount, has } from '@choerodon/inject';
+import { useFormatMessage } from '@/hooks';
 import { MODAL_WIDTH } from '@/constants';
 
 export type PlatformEntryProps = {
@@ -12,14 +13,16 @@ export type PlatformEntryProps = {
 }
 
 const prefixCls = 'c7ncd-invite-entry';
+const intlPrefix = 'c7ncd.user.avatar';
 
 const ModalContent = ({ modal }:any) => mount('base-pro:trialInviteModal', { modal });
 
 const PlatformEntry:FC<PlatformEntryProps> = () => {
+  const formatClient = useFormatMessage(intlPrefix);
   const handleInviteModalOpen = () => {
     const { MIN } = MODAL_WIDTH;
     Modal.open({
-      title: '邀请试用',
+      title: formatClient({ id: 'invitation' }),
       maskClosable: true,
       destroyOnClose: true,
       drawer: true,
@@ -31,7 +34,7 @@ const PlatformEntry:FC<PlatformEntryProps> = () => {
   return has('base-pro:trialInviteModal') ? (
     <div className={prefixCls} onClick={handleInviteModalOpen} role="none">
       <Icon type="share" />
-      <span>邀请试用</span>
+      <span>{formatClient({ id: 'invitation' })}</span>
     </div>
   ) : null;
 };
