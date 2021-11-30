@@ -20,6 +20,13 @@ export type HeaderMiddleListsProps = {
   AppState?:any
 }
 
+interface ItemProps {
+  title: string,
+  path: string,
+  style?: React.CSSProperties,
+  permissions?: string[],
+}
+
 const prefixCls = 'c7ncd-header-middle-lists';
 const intlPrefix = 'c7ncd.header.middle.lists';
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
@@ -54,7 +61,7 @@ const HeaderMiddleLists:FC<HeaderMiddleListsProps> = (props) => {
   }, []);
 
   const getLists = useMemo(() => {
-    const tempLists = [
+    const tempLists: ItemProps[] = [
       WORKBENCH_CONFIG,
     ];
     if (HAS_AGILE_PRO) {
