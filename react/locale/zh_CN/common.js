@@ -46,6 +46,7 @@ export const OPTIONS_ZH_CN = {
 export const STATUS_ZH_CN = {
   'boot.null': '无',
   'boot.running': '运行中',
+  'boot.preparing': '准备中',
   'boot.operating': '处理中',
   'boot.connect': '已连接',
   'boot.disconnect': '未连接',
@@ -61,11 +62,14 @@ export const STATUS_ZH_CN = {
   'boot.creating': '创建中',
   'boot.pendingcheck': '待审核',
   'boot.executing': '执行中',
+  'boot.notExecuted': '未执行',
   'boot.terminated': '已终止',
   'boot.normal': '正常',
   'boot.locked': '锁定',
   'boot.notActive': '未生效',
   'boot.expired': '已过期',
+  'boot.finished': '已完成',
+  'boot.unusual': '异常',
 };
 
 // 操作状态失败
