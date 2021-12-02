@@ -1,12 +1,14 @@
 import React, { useState, memo, useEffect } from 'react';
 import { Button, Icon, Tooltip } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import { useIntl } from 'react-intl';
 import OverviewWrap from '../OverviewWrap';
 import { useServiceChartStore } from './stores';
 
 import './index.less';
 
 const ServiceInfo = () => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-service-info';
   const {
     appServiceDs,
@@ -16,11 +18,11 @@ const ServiceInfo = () => {
     <>
       <div className={`${clsPrefix}-content-group-item`}>
         <span>{appServiceDs.current ? appServiceDs.current.get('up') : 0}</span>
-        <span>启用应用服务</span>
+        <span>{formatMessage({ id: 'agile.projectOverview.enabledApplicationServices' })}</span>
       </div>
       <div className={`${clsPrefix}-content-group-item`}>
         <span>{appServiceDs.current ? appServiceDs.current.get('down') : 0}</span>
-        <span>停用应用服务</span>
+        <span>{formatMessage({ id: 'agile.projectOverview.disabledApplicationServices' })}</span>
       </div>
     </>
   );

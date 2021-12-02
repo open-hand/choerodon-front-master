@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { Tooltip, Icon } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import { useIntl } from 'react-intl';
 import './index.less';
 
 import { AnimationLoading } from '@choerodon/components';
@@ -15,6 +16,7 @@ import { useSprintWaterChartStore } from './stores';
 const clsPrefix = 'c7n-project-overview-sprint-water-wave';
 
 const SprintWaterWave = observer(() => {
+  const { formatMessage } = useIntl();
   const {
     startedRecord,
     startSprintDs,
@@ -34,7 +36,7 @@ const SprintWaterWave = observer(() => {
           <div className={`${clsPrefix}-content-left`}>
             <WaterWave
               height={120}
-              title="剩余时间"
+              title={formatMessage({ id: 'agile.projectOverview.remainingTime' })}
               percent={totalDays && remainingDays > 0 ? (remainingDays / totalDays) * 100 : 0} // "totalDays": remainingDays
               percentRender={() => (
                 <div className={`${clsPrefix}-percent`}>
@@ -46,21 +48,21 @@ const SprintWaterWave = observer(() => {
           </div>
           <ul className={`${clsPrefix}-content-right`}>
             <li>
-              <label>问题数</label>
+              <label>{formatMessage({ id: 'agile.projectOverview.issueCount' })}</label>
               <span>
                 {`${current.get('remainingIssueCount')}/${current.get('totalIssueCount')}`}
                 (个)
               </span>
             </li>
             <li>
-              <label>故事点</label>
+              <label>{formatMessage({ id: 'agile.projectOverview.storyPoints' })}</label>
               <span>
                 {`${current.get('remainingStoryPoints')}/${current.get('totalStoryPoints')}`}
                 (个)
               </span>
             </li>
             <li>
-              <label>剩余工时</label>
+              <label>{formatMessage({ id: 'agile.projectOverview.remainingWorkingHours' })}</label>
               <span>
                 {`${current.get('remainingEstimatedTime')}/${current.get('totalEstimatedTime')}`}
                 (小时)
@@ -80,7 +82,7 @@ const SprintWaterWave = observer(() => {
   }
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>冲刺未完成统计</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.unfinishedWork' })}</span>
       <Tooltip title="统计当前迭代未完成的工作项数量、故事点数量、工时数量，以及当前迭代剩余天数。" placement="top">
         <Icon type="help" className={`${clsPrefix}-icon`} />
       </Tooltip>

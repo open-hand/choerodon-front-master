@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import { AnimationLoading } from '@choerodon/components';
+import { useIntl } from 'react-intl';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
@@ -10,6 +11,7 @@ import './index.less';
 import { usePipelineChartStore } from './stores';
 
 const PipelineChart = () => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-pipeline-chart';
   const {
     startedRecord,
@@ -22,7 +24,7 @@ const PipelineChart = () => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>流水线触发次数</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.pipeline' })}</span>
     </div>
   );
 

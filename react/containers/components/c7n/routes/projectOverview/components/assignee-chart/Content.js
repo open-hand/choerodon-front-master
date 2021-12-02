@@ -6,6 +6,7 @@ import {
 import Echart from 'echarts-for-react';
 import { reduce } from 'lodash';
 import { observer } from 'mobx-react-lite';
+import { useIntl } from 'react-intl';
 import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 
@@ -17,6 +18,7 @@ import { useAssigneeChartStore } from './stores/index.js';
 
 const clsPrefix = 'c7n-project-overview-assignee-chart';
 const SprintCount = observer(() => {
+  const { formatMessage } = useIntl();
   const { startSprintDs, startedRecord } = useProjectOverviewStore();
 
   const {
@@ -25,7 +27,7 @@ const SprintCount = observer(() => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>经办人分布</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.assigneesDistribution' })}</span>
       {/* <Tooltip title="当前迭代各个工作项在不同状态下的数量统计。" placement="top">
         <Icon type="help" className={`${clsPrefix}-icon`} />
       </Tooltip> */}
