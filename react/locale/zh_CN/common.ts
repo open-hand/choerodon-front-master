@@ -1,3 +1,4 @@
+// 状态相关
 export const OPTIONS_ZH_CN = {
   'boot.execute': '执行',
   'boot.return': '返回',
@@ -31,12 +32,21 @@ export const OPTIONS_ZH_CN = {
   'boot.search': '搜索',
   'boot.loadMore': '加载更多',
   'boot.update': '更新',
+  'boot.expandAll': '全部展开',
+  'boot.collapseAll': '全部折叠',
+  'boot.expand': '展开',
+  'boot.collapse': '折叠',
+  'boot.shrink': '收起',
+  'boot.previous': '上一步',
+  'boot.next': '下一步',
+  'boot.finish': '结束',
 } as const;
 
+// 状态相关
 export const STATUS_ZH_CN = {
-  // 状态描述
   'boot.null': '无',
   'boot.running': '运行中',
+  'boot.preparing': '准备中',
   'boot.operating': '处理中',
   'boot.connect': '已连接',
   'boot.disconnect': '未连接',
@@ -52,21 +62,135 @@ export const STATUS_ZH_CN = {
   'boot.creating': '创建中',
   'boot.pendingcheck': '待审核',
   'boot.executing': '执行中',
+  'boot.notExecuted': '未执行',
   'boot.terminated': '已终止',
   'boot.normal': '正常',
   'boot.locked': '锁定',
+  'boot.notActive': '未生效',
+  'boot.expired': '已过期',
+  'boot.finished': '已完成',
+  'boot.unusual': '异常',
 } as const;
 
-const COMMON_ZH_CN = {
-  ...OPTIONS_ZH_CN,
-  ...STATUS_ZH_CN,
+// 操作状态失败
+const OPTIONS_STATUS_FAILED_ZH_CN = {
+  'boot.execute.failed': '执行{name}失败',
+  'boot.refresh.failed': '刷新失败',
+  'boot.upgrade.failed': '升级{name}失败',
+  'boot.change.failed': '变更{name}失败',
+  'boot.commit.failed': '提交{name}失败',
+  'boot.install.failed': '安装{name}失败',
+  'boot.uninstall.failed': '卸载{name}失败',
+  'boot.cancel.failed': '取消失败',
+  'boot.save.failed': '保存失败',
+  'boot.reset.failed': '重置{name}失败',
+  'boot.stop.failed': '停用{name}失败',
+  'boot.new.failed': '新建{name}失败',
+  'boot.create.failed': '创建{name}失败',
+  'boot.edit.failed': '编辑{name}失败',
+  'boot.modify.failed': '修改{name}失败',
+  'boot.delete.failed': '删除{name}失败',
+  'boot.enable.failed': '启用{name}失败',
+  'boot.disable.failed': '禁用{name}失败',
+  'boot.export.failed': '导出{name}失败',
+  'boot.import.failed': '导入{name}失败',
+  'boot.rename.failed': '重命名{name}失败',
+  'boot.copy.failed': '复制{name}失败',
+  'boot.check.failed': '查看{name}失败',
+  'boot.signIn.failed': '登录失败',
+  'boot.search.failed': '搜索{name}失败',
+  'boot.loadMore.failed': '加载更多{name}失败',
+  'boot.update.failed': '更新{name}失败',
+  'boot.failed': '失败',
+} as const;
+
+// 操作状态成功
+const OPTIONS_STATUS_SUCCESS_ZH_CN = {
+  'boot.execute.success': '执行{name}成功',
+  'boot.refresh.success': '刷新成功',
+  'boot.upgrade.success': '升级{name}成功',
+  'boot.change.success': '变更{name}成功',
+  'boot.commit.success': '提交{name}成功',
+  'boot.install.success': '安装{name}成功',
+  'boot.uninstall.success': '卸载{name}成功',
+  'boot.cancel.success': '取消成功',
+  'boot.save.success': '保存成功',
+  'boot.reset.success': '重置{name}成功',
+  'boot.stop.success': '停用{name}成功',
+  'boot.new.success': '新建{name}成功',
+  'boot.create.success': '创建{name}成功',
+  'boot.edit.success': '编辑{name}成功',
+  'boot.modify.success': '修改{name}成功',
+  'boot.delete.success': '删除{name}成功',
+  'boot.enable.success': '启用{name}成功',
+  'boot.disable.success': '禁用{name}成功',
+  'boot.export.success': '导出{name}成功',
+  'boot.import.success': '导入{name}成功',
+  'boot.rename.success': '重命名{name}成功',
+  'boot.copy.success': '复制{name}成功',
+  'boot.check.success': '查看{name}成功',
+  'boot.signIn.success': '登录成功',
+  'boot.search.success': '搜索{name}成功',
+  'boot.loadMore.success': '加载更多{name}成功',
+  'boot.update.success': '更新{name}成功',
+  'boot.success': '成功',
+} as const;
+
+// 语言相关
+const LANGUAGES_ZH_CN = {
   // languages
   zh_CN: '简体中文',
   en_US: '英文（美式）',
+  'boot.language': '语言',
+} as const;
+
+// 单位相关
+const UNIT_ZH_CN = {
+  'boot.unit.people': '人',
+  'boot.unit.times': '{number}次',
+} as const;
+
+// 用户
+const USER_ZH_CN = {
+  'boot.username': '用户名',
+  'boot.personal': '个人',
+  'boot.personalInfo': '个人信息',
+  'boot.account': '登录名',
+  'boot.email': '邮箱',
+  'boot.forgetPassword': '忘记密码',
+  'boot.password': '密码',
+  'boot.accountLogin': '账号密码登录',
+  'boot.mobileLogin': '手机验证登录',
+} as const;
+
+// 人物
+const CHARACTER_ZH_CN = {
+  'boot.organizationAdmin': '组织管理员',
+  'boot.user': '用户',
+  'boot.projectOwner': '项目所有者',
+  'boot.projectMember': '项目成员',
+} as const;
+
+const COMMON_ZH_CN = {
+  ...USER_ZH_CN,
+  ...LANGUAGES_ZH_CN,
+  ...OPTIONS_ZH_CN,
+  ...STATUS_ZH_CN,
+  ...OPTIONS_STATUS_FAILED_ZH_CN,
+  ...OPTIONS_STATUS_SUCCESS_ZH_CN,
+  ...UNIT_ZH_CN,
+  ...CHARACTER_ZH_CN,
+  'boot.mobilephone': '手机',
+  'boot.field': '字段',
+  'boot.transaction': '事务',
+  'boot.task': '任务',
+  'boot.principal': '负责人',
+  'boot.Teammate': '成员',
+  'boot.stage': '阶段',
+  'boot.client': '客户端',
 
   'boot.yes': '是',
   'boot.no': '否',
-  'boot.username': '用户名',
   'boot.application': '应用',
   'boot.permissions': '权限分配',
   'boot.iknow': '我知道了',
@@ -115,18 +239,37 @@ const COMMON_ZH_CN = {
   'boot.documentLibrary': '文档库',
   'boot.starProjects': '星标项目',
   'boot.project': '项目',
-  'boot.personal': '个人',
   'boot.demand': '需求',
-  'boot.password': '密码',
-  'boot.accountLogin': '账号密码登录',
-  'boot.mobileLogin': '手机验证登录',
-  'boot.account': '登录名',
-  'boot.email': '邮箱',
-  'boot.forgetPassword': '忘记密码',
   'boot.note': '备注',
-  'boot.personalInfo': '个人信息',
   'boot.recentUse': '最近使用',
   'boot.pleaseSearch': '请输入搜索条件',
+  'boot.peopleNum': '人数',
+  'boot.time': '时间',
+  'boot.date': '日期',
+  'boot.allPeople': '总人数',
+  'boot.statistical': '统计',
+  'boot.times': '次数',
+  'boot.allTimes': '总次数',
+  'boot.updateDate': '更新日期',
+  'boot.createDate': '创建日期',
+  'boot.loadMore': '加载更多',
+  'boot.assignRootPermission': '分配root权限',
+  'boot.assignRPermissions': '分配权限',
+  'boot.assignRoles': '分配角色',
+  'boot.createOrganization': '创建组织',
+  'boot.enableOrganization': '启用组织',
+  'boot.stopOrganization': '停用组织',
+  'boot.unlockUser': '解锁用户',
+  'boot.enableUser': '启用用户',
+  'boot.disableUser': '禁用用户',
+  'boot.deleteOrganizationAdminRole': '删除组织管理员角色',
+  'boot.addOrganizationAdminRole': '添加组织管理员角色',
+  'boot.createProject': '创建项目',
+  'boot.enableProject': '启用项目',
+  'boot.disableProject': '禁用项目',
+  'boot.createUser': '创建用户',
+  'boot.approvalRegister': '审批注册',
+  'boot.traffic': '访问量',
 } as const;
 
 export { COMMON_ZH_CN };
