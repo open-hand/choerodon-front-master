@@ -45,6 +45,7 @@ export const STATUS_EN_US = {
   // 状态描述
   'boot.null': 'NULL',
   'boot.running': 'Running',
+  'boot.preparing': 'Preparing',
   'boot.operating': 'Operating',
   'boot.connect': 'Connected',
   'boot.disconnect': 'Disconnected',
@@ -60,11 +61,14 @@ export const STATUS_EN_US = {
   'boot.creating': 'Creating',
   'boot.pendingcheck': 'Pending review',
   'boot.executing': 'Executing',
+  'boot.notExecuted': 'Not Executed',
   'boot.terminated': 'Terminated',
   'boot.normal': 'Common',
   'boot.locked': 'Locked',
   'boot.notActive': 'Invalid',
   'boot.expired': 'Expired',
+  'boot.finished': 'Finished',
+  'boot.unusual': 'Unusual',
 };
 
 // 操作状态失败
