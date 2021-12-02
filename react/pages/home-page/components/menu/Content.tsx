@@ -42,7 +42,8 @@ const Menu = () => {
   const findCurrentRoute = useCallback(({
     treeNode,
   }:TreeReduceCallbackProps) => {
-    if (treeNode.route === pathname || pathname.startsWith(treeNode.route)) {
+    // 如果当前是路由全匹配，则进入，或者是匹配到了子路由
+    if (treeNode.route === pathname || pathname.indexOf(`${treeNode.route}/`) === 0) {
       const currentActiveMenu = treeNode;
       if (currentActiveMenu && window.location.href.includes(currentActiveMenu.route)) {
         MenuStore.setActiveMenu(currentActiveMenu);
