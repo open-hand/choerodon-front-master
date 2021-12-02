@@ -7,6 +7,7 @@ import {
   pick,
 } from 'lodash';
 import { LoadingProvider, LoadingHiddenWrap } from '@choerodon/components';
+import { useIntl } from 'react-intl';
 import EmptyPage from '../EmptyPage';
 import OverviewWrap from '../OverviewWrap';
 import issueFieldsMap from './IssueFieldsMap';
@@ -27,6 +28,7 @@ function randomString(len = 32) {
 }
 
 const ProjectDynamic = () => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-projectDynamic';
   const {
     projectDynamicDs,
@@ -124,7 +126,7 @@ const ProjectDynamic = () => {
   return (
     <OverviewWrap>
       <OverviewWrap.Header
-        title="项目动态"
+        title={formatMessage({ id: 'agile.projectOverview.projectLog' })}
         style={{
           margin: '0 0 10px 4px',
         }}

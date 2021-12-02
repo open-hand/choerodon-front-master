@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { DataSet, DatePicker } from 'choerodon-ui/pro';
 import { debounce, includes } from 'lodash';
 import moment from 'moment';
+import { useIntl } from 'react-intl';
 import AppState from '@/containers/stores/c7n/AppState';
 import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 import SelectUser from '../select/select-user';
@@ -13,6 +14,7 @@ import { useProjectDynamicChartStore } from '../../stores';
 
 const IssueTypeCodeArr = ['task', 'story', 'bug', 'sub_task', 'issue_epic', 'feature'];
 const DynamicSearch = () => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-projectDynamic-search';
   const {
     projectDynamicDs,
@@ -127,7 +129,7 @@ const DynamicSearch = () => {
       <SelectUser
         dataSet={projectDynamicSearchDs}
         name="createdByIds"
-        placeholder="按人员查看"
+        placeholder={formatMessage({ id: 'agile.projectOverview.assigneeView' })}
         maxTagCount={2}
         maxTagTextLength={5}
         style={{

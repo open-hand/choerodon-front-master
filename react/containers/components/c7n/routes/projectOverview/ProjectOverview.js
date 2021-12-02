@@ -8,6 +8,7 @@ import ResizeObserver from 'resize-observer-polyfill';
 import {
   get, forEach, map,
 } from 'lodash';
+import { useIntl } from 'react-intl';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
@@ -44,6 +45,7 @@ import CustomChart from './components/custom-chart';
 let observerLayout;
 
 const ProjectOverview = () => {
+  const { formatMessage } = useIntl();
   const {
     AppState: {
       currentMenuType: {
@@ -222,7 +224,7 @@ const ProjectOverview = () => {
           icon="settings-o"
           color="primary"
         >
-          项目概览配置
+          {formatMessage({ id: 'agile.projectOverview.Setting' })}
         </Button>,
       ];
     }

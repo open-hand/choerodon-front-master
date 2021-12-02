@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { AnimationLoading } from '@choerodon/components';
+import { useIntl } from 'react-intl';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
@@ -9,6 +10,7 @@ import { usePriorityChartStore } from './stores';
 import './index.less';
 
 const DeployChart = () => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-priority-chart';
   const {
     startSprintDs,
@@ -21,7 +23,7 @@ const DeployChart = () => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>优先级分布</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.priorityDistribution' })}</span>
     </div>
   );
 

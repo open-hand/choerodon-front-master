@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
-
+import { useIntl } from 'react-intl';
 import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import './index.less';
@@ -11,6 +11,7 @@ import { useProjectOverviewStore } from '../../stores';
 import { useDefectChartStore } from './stores';
 
 const DefectChart = observer(() => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-defect-chart';
   const { startedRecord, startSprintDs } = useProjectOverviewStore();
   const {
@@ -19,7 +20,7 @@ const DefectChart = observer(() => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>缺陷趋势图</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.bugTrend' })}</span>
     </div>
   );
 
@@ -40,10 +41,10 @@ const DefectChart = observer(() => {
         zlevel: 5,
         right: '3.2%',
         data: [{
-          name: '新增缺陷',
+          name: formatMessage({ id: 'agile.projectOverview.newDefects' }),
           icon: 'line',
         }, {
-          name: '修复缺陷',
+          name: formatMessage({ id: 'agile.projectOverview.resolvedDefects' }),
           icon: 'line',
         }],
       },
@@ -119,7 +120,7 @@ const DefectChart = observer(() => {
       },
       series: [
         {
-          name: '新增缺陷',
+          name: formatMessage({ id: 'agile.projectOverview.newDefects' }),
           type: 'line',
           lineStyle: {
             color: 'rgba(244, 133, 144, 1)',
@@ -132,7 +133,7 @@ const DefectChart = observer(() => {
           symbol: 'circle',
         },
         {
-          name: '修复缺陷',
+          name: formatMessage({ id: 'agile.projectOverview.resolvedDefects' }),
           type: 'line',
           lineStyle: {
             // type: 'dotted',

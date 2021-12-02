@@ -7,8 +7,9 @@ import {
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import { get } from 'lodash';
-import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 import { AnimationLoading } from '@choerodon/components';
+import { useIntl } from 'react-intl';
+import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 import { useBurnDownChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
@@ -18,6 +19,7 @@ import EmptyPage from '../EmptyPage';
 
 const { Option } = Select;
 const BurnDownChart = observer(() => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-burn-down-chart';
   const {
     burnDownChartStore,
@@ -59,13 +61,13 @@ const BurnDownChart = observer(() => {
   function renderChartTitle() {
     let result = '';
     if (selectValue === 'remainingEstimatedTime') {
-      result = '剩余时间';
+      result = formatMessage({ id: 'agile.projectOverview.remainingTime' });
     }
     if (selectValue === 'storyPoints') {
-      result = '故事点';
+      result = formatMessage({ id: 'agile.projectOverview.storyPoints' });
     }
     if (selectValue === 'issueCount') {
-      result = '问题计数';
+      result = formatMessage({ id: 'agile.projectOverview.issueCount' });
     }
     return result;
   }
@@ -114,10 +116,10 @@ const BurnDownChart = observer(() => {
         top: 0,
         right: 15,
         data: [{
-          name: '期望值',
+          name: formatMessage({ id: 'agile.projectOverview.guideline' }),
           icon: 'line',
         }, {
-          name: '剩余值',
+          name: formatMessage({ id: 'agile.projectOverview.remainingValues' }),
           icon: 'line',
         }],
       },
@@ -199,7 +201,7 @@ const BurnDownChart = observer(() => {
       series: [
         {
           symbol: 'none',
-          name: '期望值',
+          name: formatMessage({ id: 'agile.projectOverview.guideline' }),
           type: 'line',
           data: exportAxis,
           itemStyle: {
@@ -236,7 +238,7 @@ const BurnDownChart = observer(() => {
         },
         {
           symbol: 'none',
-          name: '剩余值',
+          name: formatMessage({ id: 'agile.projectOverview.remainingValues' }),
           type: 'line',
           itemStyle: {
             color: '#4D90FE',
@@ -263,7 +265,7 @@ const BurnDownChart = observer(() => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>燃尽图</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.burndown' })}</span>
       {startedRecord ? (
         <>
           <Select
@@ -275,9 +277,9 @@ const BurnDownChart = observer(() => {
             value={selectValue}
             onChange={handleSelect}
           >
-            <Option value="remainingEstimatedTime">剩余时间</Option>
-            <Option value="storyPoints">故事点</Option>
-            <Option value="issueCount">问题计数</Option>
+            <Option value="remainingEstimatedTime">{formatMessage({ id: 'agile.projectOverview.remainingTime' })}</Option>
+            <Option value="storyPoints">{formatMessage({ id: 'agile.projectOverview.storyPoints' })}</Option>
+            <Option value="issueCount">{formatMessage({ id: 'agile.projectOverview.issueCount' })}</Option>
           </Select>
           <CheckBox
             style={{ marginLeft: 24 }}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
+import { useIntl } from 'react-intl';
 import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
@@ -10,6 +11,7 @@ import './index.less';
 import { useDeployChartStore } from './stores';
 
 const DeployChart = () => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-deploy-chart';
   const {
     startSprintDs,
@@ -22,7 +24,7 @@ const DeployChart = () => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>迭代部署次数</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.deploymentTimes' })}</span>
     </div>
   );
 
