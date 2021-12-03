@@ -12,7 +12,7 @@ class ApiTestApi extends Api<ApiTestApi> {
     return this.request({
       url: `${this.prefix}/suites/${id}/client_command`,
       method: 'post',
-    })
+    });
   }
 
   /**
@@ -25,7 +25,7 @@ class ApiTestApi extends Api<ApiTestApi> {
       url: `${this.prefix}/tasks/${taskId}/client_command`,
       method: 'post',
       data,
-    })
+    });
   }
 
   /**
@@ -35,14 +35,14 @@ class ApiTestApi extends Api<ApiTestApi> {
     return this.request({
       url: `${this.prefix}/suites/${id}/clone`,
       method: 'post',
-    })
+    });
   }
 
   deleteKits(id: string) {
     return this.request({
       url: `${this.prefix}/suites/${id}`,
       method: 'delete',
-    })
+    });
   }
 
   updateAndClientExecute(data: any) {
@@ -50,7 +50,7 @@ class ApiTestApi extends Api<ApiTestApi> {
       url: `${this.prefix}/suites/update_and_client_execute`,
       method: 'post',
       data,
-    })
+    });
   }
 
   /**
@@ -62,7 +62,7 @@ class ApiTestApi extends Api<ApiTestApi> {
       url: `${this.prefix}/suites/update_and_execute`,
       method: 'put',
       data,
-    })
+    });
   }
 
   /**
@@ -73,7 +73,7 @@ class ApiTestApi extends Api<ApiTestApi> {
     return this.request({
       url: `${this.prefix}/suites/${id}`,
       method: 'get',
-    })
+    });
   }
 
   /**
@@ -85,7 +85,7 @@ class ApiTestApi extends Api<ApiTestApi> {
       url: `${this.prefix}/suites/create_and_client_execute`,
       method: 'post',
       data,
-    })
+    });
   }
 
   /**
@@ -135,7 +135,7 @@ class ApiTestApi extends Api<ApiTestApi> {
       url: `${this.prefix}/suites`,
       method: 'put',
       data,
-    })
+    });
   }
 
   /**
@@ -146,7 +146,7 @@ class ApiTestApi extends Api<ApiTestApi> {
       url: `${this.prefix}/suites`,
       method: 'post',
       data,
-    })
+    });
   }
 
   /**
@@ -161,8 +161,8 @@ class ApiTestApi extends Api<ApiTestApi> {
       params: {
         name,
         id,
-      }
-    })
+      },
+    });
   }
 
   /**
@@ -174,7 +174,7 @@ class ApiTestApi extends Api<ApiTestApi> {
       url: `${this.prefix}/suites/create_and_execute`,
       method: 'post',
       data,
-    })
+    });
   }
 
   /**
@@ -192,7 +192,7 @@ class ApiTestApi extends Api<ApiTestApi> {
 
   getConfigList() {
     return this.request({
-      url: `${this.prefix}/config/list `,
+      url: `${this.prefix}/config/list`,
       method: 'get',
     });
   }
@@ -211,7 +211,7 @@ class ApiTestApi extends Api<ApiTestApi> {
     return this.request({
       url: `${this.prefix}/suites/${id}/execute`,
       method: 'post',
-    })
+    });
   }
 
   /**
@@ -239,7 +239,7 @@ class ApiTestApi extends Api<ApiTestApi> {
       method: 'get',
       params,
       data,
-    })
+    });
   }
 }
 
