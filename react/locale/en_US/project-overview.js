@@ -43,6 +43,7 @@ const projectOverview = {
   'agile.projectOverview.priority': 'Priority',
   'agile.projectOverview.status': 'Status',
   'agile.projectOverview.remain.estimate': 'Remaining Estimate',
+  'agile.projectOverview.empty.current.sprint': 'You haven\'t started a sprint',
 };
 
 export {
