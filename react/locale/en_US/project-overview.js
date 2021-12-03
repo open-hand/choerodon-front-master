@@ -36,6 +36,7 @@ const projectOverview = {
   'agile.projectOverview.guideline': 'Guideline',
   'agile.projectOverview.remainingValues': 'Remaining Values',
   'agile.projectOverview.more': 'More',
+  'agile.projectOverview.collapse': 'Collapse',
   'agile.projectOverview.summary': 'Summary',
   'agile.projectOverview.number': 'Number',
   'agile.projectOverview.issueType': 'IssueType',
