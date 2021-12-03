@@ -178,8 +178,8 @@ const Doc = () => {
               : (docDs.status !== 'loading' && docDs.currentPage === 1
                 && (
                   <EmptyPage
-                    title="暂无文档信息"
-                    describe="暂无最近操作的文档"
+                    title={formatWorkbench({ id: 'noDoc' })}
+                    describe={formatWorkbench({ id: 'noDocOpts' })}
                     img={EmptyImg}
                   />
                 )

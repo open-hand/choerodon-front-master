@@ -70,7 +70,7 @@ const TodoQuestion = observer(() => {
     questionDs.query();
   }
   const emptyPrompt = useMemo(() => {
-    const [title, describe] = tabKey === 'myStarBeacon' ? [formatWorkbench({ id: 'noAttentionIssues' }), formatWorkbench({ id: 'noAttentionIssues.desc' })] : ['暂无我关注的需求', '您尚未关注任何需求'];
+    const [title, describe] = tabKey === 'myStarBeacon' ? [formatWorkbench({ id: 'noAttentionIssues' }), formatWorkbench({ id: 'noAttentionIssues.desc' })] : [formatWorkbench({ id: 'noAttentionIssues' }), formatWorkbench({ id: 'noAttentionIssues.desc' })];
     return { title, describe };
   }, [tabKey]);
 
