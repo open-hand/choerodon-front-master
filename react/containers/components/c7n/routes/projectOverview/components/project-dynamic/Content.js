@@ -97,7 +97,7 @@ const ProjectDynamic = () => {
                   color: '#3f51b5',
                 }}
               >
-                <span>查看更多</span>
+                <span>{formatMessage({ id: 'agile.projectOverview.more' })}</span>
                 <Icon type="baseline-arrow_right icon" style={{ marginRight: 2 }} />
               </Button>
             )
@@ -110,7 +110,7 @@ const ProjectDynamic = () => {
                   color: '#3f51b5',
                 }}
               >
-                <span>收起</span>
+                <span>{formatMessage({ id: 'agile.projectOverview.collapse' })}</span>
                 <Icon type="baseline-arrow_drop_up icon" style={{ marginRight: 2 }} />
               </Button>
             )
