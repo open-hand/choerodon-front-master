@@ -2,24 +2,23 @@ import React, { useMemo } from 'react';
 import { ModalProvider } from 'choerodon-ui/pro';
 import { Container } from '@hzero-front-ui/core';
 import { observer } from 'mobx-react-lite';
-import { useLocalStorageState } from 'ahooks';
-import AppState from '@/containers/stores/c7n/AppState';
-import { asyncRouter, asyncLocaleProvider } from '@/hoc';
-import useInitUiConfig from './useInitUiConfig';
+import { asyncRouter } from '@/hoc';
 import { useC7NThemeInit } from '../themeConfigs';
+import { useCurrentLanguage } from '@/hooks';
+
+import useInitUiConfig from './useInitUiConfig';
+import C7NLocaleProvider from '@/components/c7n-locale-provider';
 import { LanguageTypes } from '@/typings';
 
 const UIConfigInitContainer:React.FC = ({ children }) => {
-  const [localLanguage] = useLocalStorageState('language');
-  const language = localLanguage || AppState.currentLanguage as LanguageTypes;
+  const language = useCurrentLanguage();
 
   const UILocaleProviderAsync = useMemo(() => asyncRouter(
     () => import('choerodon-ui/lib/locale-provider'),
     { locale: () => import(`choerodon-ui/lib/locale-provider/${language}.js`) },
   ), [language]);
 
-  const IntlProviderAsync = useMemo(() => asyncLocaleProvider(language,
-    () => import(/* webpackInclude: /\index.(ts|js)$/ */ `../../locale/${language}`)), [language]);
+  const handleImport = (currentLanguage:LanguageTypes) => import(/* webpackInclude: /\index.(ts|js)$/ */ `../../locale/${currentLanguage}`);
 
   console.info('current language:', language);
 
@@ -30,11 +29,11 @@ const UIConfigInitContainer:React.FC = ({ children }) => {
 
   return (
     <UILocaleProviderAsync>
-      <IntlProviderAsync>
+      <C7NLocaleProvider importer={handleImport}>
         <ModalProvider location={window.location}>
           <Container>{children}</Container>
         </ModalProvider>
-      </IntlProviderAsync>
+      </C7NLocaleProvider>
     </UILocaleProviderAsync>
   );
 };

@@ -6,7 +6,7 @@ import { Popover } from 'choerodon-ui';
 import classNames from 'classnames';
 import { LANGUAGE_GROUPS } from '@/constants';
 import './index.less';
-import { useCurrentLanguage, useFormatMessage } from '@/hooks';
+import { useCurrentLanguage, useFormatCommon, useFormatMessage } from '@/hooks';
 import useChangeLanguage from './hook/useChangeLanguage';
 import { useUserAvatarStore } from '../../../../stores';
 
@@ -18,7 +18,7 @@ const prefixCls = 'c7ncd-language-toggle';
 const intlPrefix = 'c7ncd.language.toggle';
 
 const LanguageToggle:FC<LanguageToggleProps> = (props) => {
-  const format = useFormatMessage();
+  const format = useFormatCommon();
   const currentLang = useCurrentLanguage();
   const handleChangeLanguage = useChangeLanguage();
 

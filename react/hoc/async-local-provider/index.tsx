@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { IntlProvider } from 'react-intl';
 import { reduce } from 'lodash';
 import { LanguageTypes } from '@/typings';
-import esModule from '../utils/esModule';
+import esModule from '../../utils/esModule';
 
 export default function asyncLocaleProvider(locale:LanguageTypes, getMessage:CallableFunction):React.ComponentType {
   return class AsyncLocaleProvider extends PureComponent<any, any> {

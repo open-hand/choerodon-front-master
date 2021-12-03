@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { useFormatMessageRetrunTypes } from '@/typings';
 
-function useFormatMessage<T, R>(intlPrefix?:string):useFormatMessageRetrunTypes<T, R> {
+function useFormatMessage<T, R, P>(intlPrefix?:string):useFormatMessageRetrunTypes<T, R, P> {
   const {
     formatMessage,
   } = useIntl();
@@ -15,12 +15,12 @@ function useFormatMessage<T, R>(intlPrefix?:string):useFormatMessageRetrunTypes<
     return formatMessage.call(null, {
       // 按照规范，一般code都是为`boot.create等等`
       // 例如：这里的intlPrefix：boot, 那么连接create就用“.”链接
-      id: `${intlPrefix}.${id}`,
+      id: intlPrefix ? `${intlPrefix}.${id}` : id,
       ...rest,
     }, values);
   }, []);
 
-  return intlPrefix ? handleFormat : formatMessage;
+  return handleFormat;
 }
 
 export default useFormatMessage;
