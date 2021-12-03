@@ -169,6 +169,7 @@ const CHARACTER_ZH_CN = {
   user: '用户',
   projectOwner: '项目所有者',
   projectMember: '项目成员',
+  organizationOwner: '组织所有者',
 } as const;
 
 const COMMON_ZH_CN = {
@@ -270,6 +271,11 @@ const COMMON_ZH_CN = {
   createUser: '创建用户',
   approvalRegister: '审批注册',
   traffic: '访问量',
+  detail: '详情',
+  complete: '完成',
+  all: '全部',
+  allow: '允许',
+  ban: '禁止',
 } as const;
 
 export { COMMON_ZH_CN };
