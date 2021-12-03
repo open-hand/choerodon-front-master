@@ -64,6 +64,7 @@ export * from '@/hoc';
 // locale
 export { default as C7NFormat } from '@/components/c7n-formatMessage';
 export { default as C7NFormatCommon } from '@/components/c7n-formatCommon';
+export { default as C7NLocaleProvider } from '@/components/c7n-locale-provider';
 
 // 面包屑组件
 export { default as Breadcrumb } from '@/components/c7n-breadCrumb';

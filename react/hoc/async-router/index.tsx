@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import esModule from '../utils/esModule';
+import esModule from '../../utils/esModule';
 
 function transformInjects(inject:any[], getInjects?:getImportsProps | Record<string, any>) {
   if (!getInjects) {
