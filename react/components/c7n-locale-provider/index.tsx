@@ -29,7 +29,7 @@ function C7NLocaleProvider<T extends Record<string, string>>(props:C7NLocaleProv
 
   const [isLoading, { setFalse }] = useBoolean(true);
 
-  const loadCommonLocal = ():Promise<any> => import(`../../locale/${language}/common`);
+  const loadCommonLocal = ():Promise<any> => import(/* webpackInclude: /\.js|.ts$/ */`../../locale/${language}/common`);
 
   const loadData = async () => {
     const [messageData, CommonMessageData] = await Promise.all([

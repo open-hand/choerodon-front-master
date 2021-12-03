@@ -14,7 +14,7 @@ export default function asyncLocaleProvider(locale:LanguageTypes, getMessage:Cal
     }
 
     // 默认导入全局通用的中英文
-    loadCommonLocal = () => import(`../../locale/${locale}/common`);
+    loadCommonLocal = () => import(/* webpackInclude: /\.js|.ts$/ */`../../locale/${locale}/common`);
 
     loadData = async () => {
       const [messageData, CommonMessageData] = await Promise.all([
