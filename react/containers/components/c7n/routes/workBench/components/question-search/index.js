@@ -188,10 +188,9 @@ function useClickOut(onClickOut) {
 
 const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => {
   const prefixCls = 'c7ncd-question-search';
-  const needRenderFields = useMemo(() => fields.filter((i) => i.display), [fields]);
   const hiddenFields = useMemo(() => fields.filter((i) => !i.display), [fields]);
   const [searchData, setSearchData] = useState(undefined);
-  const { selectedProjectId } = useWorkBenchStore();
+  const { selectedProjectId, formatCommon } = useWorkBenchStore();
 
   const searchMode = useMemo(() => {
     const codes = fields.map((i) => i.source).filter(Boolean);
@@ -284,9 +283,9 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
                 }}
                 style={{ marginLeft: '.1rem' }}
               >
-                查询
+                {formatCommon({ id: 'search' })}
               </Button>
-              <Button onClick={handleClear}>重置</Button>
+              <Button onClick={handleClear}>{formatCommon({ id: 'reset' })}</Button>
             </div>
           </div>
         )}
@@ -307,7 +306,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
         className={`${prefixCls}-summary`}
         prefix={<Icon type="search" />}
         onInput={(e) => handleInputContent(e.target.value)}
-        placeholder="请输入搜索内容"
+        placeholder={formatCommon({ id: 'search' })}
         clearButton
         onChange={(v) => handleChange('contents', v)}
       />

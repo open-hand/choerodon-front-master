@@ -20,6 +20,11 @@ const workbench = {
   'c7ncd.workbench.noAttentionIssues': '暂无我关注的问题',
   'c7ncd.workbench.noAttentionIssues.desc': '您尚未关注任何问题项',
   'c7ncd.workbench.noEnvironmentsTodo': '暂无最近操作的环境',
+
+  'c7ncd.workbench.noDoc': '暂无文档信息',
+  'c7ncd.workbench.noDocOpts': '暂无最近操作的文档',
+  'c7ncd.workbench.noMyAttentionDemand': '暂无我关注的需求',
+  'c7ncd.workbench.noMyAttentionDemand.desc': '您尚未关注任何需求',
 };
 
 export {
