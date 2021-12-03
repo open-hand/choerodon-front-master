@@ -1,5 +1,5 @@
 import React, {
-  FC,
+  FC, useMemo,
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon, message } from 'choerodon-ui/pro';
@@ -9,6 +9,8 @@ import './index.less';
 import { useHistory } from 'react-router';
 import { inject } from 'mobx-react';
 import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
+import { toJS } from 'mobx';
+import findIndex from 'lodash/findIndex';
 
 export type OrgEntryBtnProps = {
 
@@ -24,9 +26,18 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
       },
     },
     MenuStore,
+    HeaderStore: {
+      getOrgData,
+    },
   } = props;
 
   const history = useHistory();
+
+  // 这里的currentOrgdata的数据可能不包含当前选中的组织的数据，因为可能从平台组织管理那边跳转的
+  const currentOrgData = useMemo(() => (getOrgData ? toJS(getOrgData) : []), [getOrgData]);
+
+  // todo
+  const currentSelectedOrg = currentOrgData[findIndex(currentOrgData, (item:any) => String(organizationId) === String(item.tenantId))];
 
   const gotoOrganizationManager = async () => {
     try {
@@ -55,6 +66,10 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
     }
   };
 
+  if(!currentSelectedOrg || !currentSelectedOrg?.into){
+    return null
+  }
+
   return (
     <div className="c7ncd-header-right-lists-item">
       <Icon onClick={gotoOrganizationManager} type="settings-o" className={prefixCls} />
@@ -62,4 +77,4 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
   );
 };
 
-export default inject('MenuStore', 'AppState')(observer(OrgEntryBtn));
+export default inject('MenuStore', 'AppState', 'HeaderStore')(observer(OrgEntryBtn));
