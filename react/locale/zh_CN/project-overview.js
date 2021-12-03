@@ -36,6 +36,7 @@ const projectOverview = {
   'agile.projectOverview.guideline': '期望值',
   'agile.projectOverview.remainingValues': '剩余值',
   'agile.projectOverview.more': '加载更多',
+  'agile.projectOverview.collapse': 'Collapse',
   'agile.projectOverview.summary': '概要',
   'agile.projectOverview.number': '工作项编号',
   'agile.projectOverview.issueType': '工作项类型',
