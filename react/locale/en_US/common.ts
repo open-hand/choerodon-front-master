@@ -167,6 +167,7 @@ const CHARACTER_ZH_CN = {
   user: 'User',
   projectOwner: 'Project Owner',
   projectMember: 'Project Member',
+  organizationOwner: 'Organization owner',
 } as const;
 const COMMON_EN_US = {
   ...USER_EN_US,
@@ -268,6 +269,11 @@ const COMMON_EN_US = {
   createUser: 'create user',
   approvalRegister: 'approval register',
   traffic: 'traffic',
+  detail: 'details',
+  complete: 'complete',
+  all: 'all',
+  allow: 'allow',
+  ban: 'ban',
 } as const;
 
 export { COMMON_EN_US };
