@@ -60,6 +60,7 @@ export const STATUS_ZH_CN = {
   'boot.canceled': '已取消',
   'boot.creating': '创建中',
   'boot.pendingcheck': '待审核',
+  'boot.checked': '已审核',
   'boot.executing': '执行中',
   'boot.terminated': '已终止',
   'boot.normal': '正常',
@@ -267,6 +268,11 @@ const COMMON_ZH_CN = {
   'boot.createUser': '创建用户',
   'boot.approvalRegister': '审批注册',
   'boot.traffic': '访问量',
+  'boot.detail': '详情',
+  'boot.complete': '完成',
+  'boot.all': '全部',
+  'boot.allow': '允许',
+  'boot.ban': '禁止',
 };
 
 export { COMMON_ZH_CN };

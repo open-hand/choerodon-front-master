@@ -265,6 +265,11 @@ const COMMON_EN_US = {
   'boot.createUser': 'create user',
   'boot.approvalRegister': 'approval register',
   'boot.traffic': 'traffic',
+  'boot.detail': 'details',
+  'boot.complete': 'complete',
+  'boot.all': 'all',
+  'boot.allow': 'allow',
+  'boot.ban': 'ban',
 };
 
 export { COMMON_EN_US };
