@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { IntlProvider } from 'react-intl';
 import { reduce } from 'lodash';
 import { LanguageTypes } from '@/typings';
-import esModule from '../../utils/esModule';
+import esModule from '@/utils/esModule';
 
 export default function asyncLocaleProvider(locale:LanguageTypes, getMessage:CallableFunction):React.ComponentType {
   return class AsyncLocaleProvider extends PureComponent<any, any> {
@@ -14,7 +14,7 @@ export default function asyncLocaleProvider(locale:LanguageTypes, getMessage:Cal
     }
 
     // 默认导入全局通用的中英文
-    loadCommonLocal = () => import(`../../locale/${locale}/common.js`);
+    loadCommonLocal = () => import(`../../locale/${locale}/common`);
 
     loadData = async () => {
       const [messageData, CommonMessageData] = await Promise.all([
