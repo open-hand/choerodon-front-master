@@ -43,6 +43,7 @@ const projectOverview = {
   'agile.projectOverview.priority': '优先级',
   'agile.projectOverview.status': '状态',
   'agile.projectOverview.remain.estimate': '剩余预估时间',
+  'agile.projectOverview.empty.current.sprint': '当前暂无冲刺',
 };
 
 export {
