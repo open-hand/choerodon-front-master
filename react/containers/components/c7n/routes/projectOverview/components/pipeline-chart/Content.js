@@ -101,7 +101,7 @@ const PipelineChart = () => {
         data: xAxis,
       },
       yAxis: {
-        name: '触发次数',
+        name: formatMessage({ id: 'agile.projectOverview.trigger.times' }),
         min: Math.max(...yAxis) > 3 ? null : 0,
         max: Math.max(...yAxis) > 3 ? null : 4,
         minInterval: 1,
@@ -164,7 +164,7 @@ const PipelineChart = () => {
           },
         },
         {
-          name: '总触发次数',
+          name: formatMessage({ id: 'agile.projectOverview.total.trigger.times' }),
           type: 'line',
           color: 'transparent',
           stack: 'total',

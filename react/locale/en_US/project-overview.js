@@ -49,6 +49,14 @@ const projectOverview = {
   'agile.projectOverview.onlineMember': 'Online Member',
   'agile.projectOverview.completedIssue': 'Complete Issue',
   'agile.projectOverview.inCompletedIssue': 'InComplete Issue',
+  'agile.projectOverview.show.Non-Working.days': 'Show Non-Working Days',
+  'agile.projectOverview.bugs': 'Bugs',
+  'agile.projectOverview.build.times': 'Build times',
+  'agile.projectOverview.total.build.times': 'Total build times',
+  'agile.projectOverview.trigger.times': 'Trigger times',
+  'agile.projectOverview.total.trigger.times': 'Total trigger times',
+  'agile.projectOverview.allIssues': 'All issues',
+  'agile.projectOverview.emptyData': 'The data is empty',
 };
 
 export {

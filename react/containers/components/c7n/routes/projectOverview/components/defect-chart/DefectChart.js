@@ -90,7 +90,7 @@ const DefectChart = observer(() => {
         },
       },
       yAxis: {
-        name: '缺陷数',
+        name: formatMessage({ id: 'agile.projectOverview.bugs' }),
         nameTextStyle: {
           color: '#000',
         },
