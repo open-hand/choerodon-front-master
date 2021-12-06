@@ -274,6 +274,7 @@ const COMMON_EN_US = {
   'boot.all': 'all',
   'boot.allow': 'allow',
   'boot.ban': 'ban',
+  'boot.nodata': 'No Data',
 } as const;
 
 export { COMMON_EN_US };

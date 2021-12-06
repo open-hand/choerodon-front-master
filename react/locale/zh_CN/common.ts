@@ -275,6 +275,7 @@ const COMMON_ZH_CN = {
   'boot.all': '全部',
   'boot.allow': '允许',
   'boot.ban': '禁止',
+  'boot.nodata': '暂无数据',
 } as const;
 
 export { COMMON_ZH_CN };
