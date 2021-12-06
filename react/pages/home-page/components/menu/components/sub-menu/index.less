@@ -51,6 +51,15 @@
     &-link {
       font-size: 0.14rem;
       text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &-collapsed {
+        overflow: visible;
+      }
+      &-name {
+        display: inline !important;
+      }
       &:hover {
         color: var(--primary-color) !important;
       }
@@ -78,6 +87,11 @@
         font-size: 0.14rem;
         display: flex;
         align-items: center;
+        &-name {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
         &-icon {
           font-size: 20px !important;
         }
