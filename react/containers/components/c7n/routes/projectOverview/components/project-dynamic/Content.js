@@ -119,7 +119,7 @@ const ProjectDynamic = () => {
       </div>
     ) : (
       <LoadingHiddenWrap>
-        <EmptyPage content="当前条件下暂无动态" />
+        <EmptyPage content={formatMessage({ id: 'agile.projectOverview.emptyData' })} />
       </LoadingHiddenWrap>
     );
   }

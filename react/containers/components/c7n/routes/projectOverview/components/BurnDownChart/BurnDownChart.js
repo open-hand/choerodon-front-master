@@ -286,7 +286,7 @@ const BurnDownChart = observer(() => {
             checked={checkedValue}
             onChange={handleCheckValueSelect}
           >
-            显示非工作日
+            {formatMessage({ id: 'agile.projectOverview.show.Non-Working.days' })}
           </CheckBox>
         </>
       )

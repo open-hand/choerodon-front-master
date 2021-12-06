@@ -72,7 +72,11 @@ const DeployChart = () => {
     const priorityInfo = priorityChartDs.toData();
     return (
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
-        <h3 className="title">已完成/总计数</h3>
+        <h3 className="title">
+          {formatMessage({ id: 'agile.projectOverview.complete' })}
+          /
+          {formatMessage({ id: 'agile.projectOverview.allIssues' })}
+        </h3>
         <div className="wrapper">
           {priorityInfo.map((priority) => renderList(priority))}
         </div>

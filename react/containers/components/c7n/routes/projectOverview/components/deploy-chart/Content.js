@@ -93,7 +93,7 @@ const DeployChart = () => {
         data: xAxis,
       },
       yAxis: {
-        name: '部署次数',
+        name: formatMessage({ id: 'agile.projectOverview.build.times' }),
         min: Math.max(...yAxis) > 3 ? null : 0,
         max: Math.max(...yAxis) > 3 ? null : 4,
         minInterval: 1,
@@ -136,7 +136,7 @@ const DeployChart = () => {
           stack: 'total',
         },
         {
-          name: '总部署次数',
+          name: formatMessage({ id: 'agile.projectOverview.total.build.times' }),
           type: 'bar',
           color: 'transparent',
           stack: 'total',

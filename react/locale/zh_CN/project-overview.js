@@ -49,6 +49,14 @@ const projectOverview = {
   'agile.projectOverview.onlineMember': '在线成员',
   'agile.projectOverview.completedIssue': '已完成的工作项',
   'agile.projectOverview.inCompletedIssue': '未完成的工作项',
+  'agile.projectOverview.show.Non-Working.days': '显示非工作日',
+  'agile.projectOverview.bugs': '缺陷数',
+  'agile.projectOverview.build.times': '部署次数',
+  'agile.projectOverview.total.build.times': '总部署次数',
+  'agile.projectOverview.trigger.times': '触发次数',
+  'agile.projectOverview.total.trigger.times': '总触发次数',
+  'agile.projectOverview.allIssues': '总计数',
+  'agile.projectOverview.emptyData': '当前条件下暂无动态',
 };
 
 export {
