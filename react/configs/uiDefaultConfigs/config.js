@@ -36,11 +36,11 @@ const useUiConfigs = () => {
    * table select 空界面展示
    * @param {*} cpName
    */
-  const renderTableEmpty = (cpName) => formatCommon({ id: 'nodata' });
+  const renderEmpty = (cpName) => formatCommon({ id: 'nodata' });
 
   return {
     ...uiConfigure,
-    renderTableEmpty,
+    renderEmpty,
     pagination: {
       showSizeChangerLabel: false,
       showTotal: (total, range) => <span className="word">{`显示${range[0]}-${range[1]} 共 ${total}条`}</span>,
@@ -53,7 +53,7 @@ const useUiConfigs = () => {
     labelLayout: 'float',
     queryBar: 'bar',
     queryBarProps: {
-      filterBarPlaceholder: formatCommon({ id: 'filter' }),
+      placeholder: formatCommon({ id: 'filter' }),
     },
     tableBorder: false,
     showLengthInfo: false,

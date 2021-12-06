@@ -21,7 +21,7 @@ function IssueTable({ dataSet, onClickSummary }) {
   return (
     <Table
       dataSet={dataSet}
-      queryBar="none"
+      // queryBar="none"
       className="c7n-project-overview-issue-table-content-table"
     >
       <Column
