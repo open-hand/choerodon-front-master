@@ -97,7 +97,7 @@ export default function EmptyPage({
         <EmptyImg width={100} />
         {/* <div className={`${clsPrefix}-img`} /> */}
         <div className={`${clsPrefix}-text`}>
-          {content || formatMessage('empty.current.sprint')}
+          {content || formatMessage({ id: 'empty.current.sprint' })}
         </div>
       </div>
     </div>
