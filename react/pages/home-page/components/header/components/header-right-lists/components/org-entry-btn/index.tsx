@@ -8,9 +8,9 @@ import {} from '@choerodon/components';
 import './index.less';
 import { useHistory } from 'react-router';
 import { inject } from 'mobx-react';
-import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 import { toJS } from 'mobx';
 import findIndex from 'lodash/findIndex';
+import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 
 export type OrgEntryBtnProps = {
 
