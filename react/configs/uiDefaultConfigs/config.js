@@ -30,7 +30,7 @@ function TableSpin(props) {
 }
 
 const useUiConfigs = () => {
-  const formatCommon = useFormatCommon({ id: 'filter' });
+  const formatCommon = useFormatCommon();
 
   /**
    * table select 空界面展示
