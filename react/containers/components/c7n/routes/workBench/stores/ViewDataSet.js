@@ -3,13 +3,13 @@ import JsonBig from 'json-bigint';
 
 function getDashboardPageData(data) {
   const dashboardPageData = [{
-    dashboardType: 'INTERNAL', dashboardName: '甘特图', dashboardPageCode: 'gantt', dashboardPageMode: true,
+    dashboardType: 'INTERNAL', sourceDashboardName: '甘特图', dashboardPageCode: 'gantt', dashboardPageMode: true,
   },
   {
-    dashboardType: 'INTERNAL', dashboardName: '工时', dashboardPageCode: 'workTime', dashboardPageMode: true,
+    dashboardType: 'INTERNAL', sourceDashboardName: '工时', dashboardPageCode: 'workTime', dashboardPageMode: true,
   },
   ];
-  const dashboardPage = dashboardPageData.find((item) => item.dashboardType === data.dashboardType && item.dashboardName === data.dashboardName) || {};
+  const dashboardPage = dashboardPageData.find((item) => item.dashboardType === data.dashboardType && item.sourceDashboardName === data.sourceDashboardName) || {};
   return { ...dashboardPage };
 }
 /* eslint-disable import/no-anonymous-default-export */
