@@ -24,7 +24,7 @@ const DeployChart = () => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>迭代问题类型分布</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.issueTypeDistribution' })}</span>
     </div>
   );
   const getCategoryAndCategoryCount = useCallback(() => {
