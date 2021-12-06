@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Pagination, Tooltip } from 'choerodon-ui/pro';
+import { useIntl } from 'react-intl';
 import OverviewWrap from '../OverviewWrap';
 import EmptyPage from '../EmptyPage';
 
@@ -8,6 +9,7 @@ import './index.less';
 import { useUserListChartStore } from './stores';
 
 const UserList = () => {
+  const { formatMessage } = useIntl();
   const {
     userListDs,
     mainStore,
@@ -18,7 +20,7 @@ const UserList = () => {
   return (
     <OverviewWrap>
       <OverviewWrap.Header
-        title={`在线成员(${mainStore.totalUser})`}
+        title={`${formatMessage({ id: 'agile.projectOverview.onlineMember' })}(${mainStore.totalUser})`}
         style={{
           margin: '0 0 10px 4px',
         }}

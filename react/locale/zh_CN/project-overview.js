@@ -43,7 +43,12 @@ const projectOverview = {
   'agile.projectOverview.priority': '优先级',
   'agile.projectOverview.status': '状态',
   'agile.projectOverview.remain.estimate': '剩余预估时间',
-  'agile.projectOverview.empty.current.sprint': '当前暂无冲刺',
+  'agile.projectOverview.empty.current.sprint': '当前暂无活跃冲刺',
+  'agile.projectOverview.issueTypeDistribution': '迭代问题类型分布',
+  'agile.projectOverview.sprintSituation': '冲刺详情',
+  'agile.projectOverview.onlineMember': '在线成员',
+  'agile.projectOverview.completedIssue': '已完成的工作项',
+  'agile.projectOverview.inCompletedIssue': '未完成的工作项',
 };
 
 export {
