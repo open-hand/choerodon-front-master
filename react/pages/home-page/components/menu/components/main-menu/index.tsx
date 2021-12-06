@@ -6,6 +6,7 @@ import { map } from 'lodash';
 
 import './index.less';
 import classNames from 'classnames';
+import { Tooltip } from 'choerodon-ui';
 import { useMenuStore } from '../../stores';
 import { DEFAULT_THEME_COLOR } from '@/constants';
 import MenuBgImg from '../../assets/MenuBgImg.svg';
@@ -95,9 +96,11 @@ const MainMenu:FC<MainMenuProps> = () => {
             <use xlinkHref={`#${svgLink}new.sprite`} />
           </svg>
         </div>
-        <span>
-          {menuName}
-        </span>
+        <Tooltip title={menuName} placement="right">
+          <span className={`${prefixCls}-item-name`}>
+            {menuName}
+          </span>
+        </Tooltip>
       </div>
     );
   });

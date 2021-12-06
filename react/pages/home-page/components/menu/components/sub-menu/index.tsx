@@ -2,11 +2,12 @@ import React, {
   FC, CSSProperties,
 } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Icon } from 'choerodon-ui/pro';
+import { Icon, Tooltip } from 'choerodon-ui/pro';
 import { Menu } from 'choerodon-ui';
 import map from 'lodash/map';
 import { Link } from 'react-router-dom';
 import pick from 'lodash/pick';
+import classNames from 'classnames';
 import { useMenuStore } from '../../stores';
 import CollapsedBtn from './components/collapsed-btn';
 import { MenuObjProps } from '../../interface';
@@ -73,40 +74,49 @@ const SubMenus:FC<SubMenuProps> = () => {
       handleStatisticCount(menuCode, level, menuName);
     };
 
-    const renderMenuLink = () => (
-      <Link
-        className={`${prefixCls}-menuItem-link`}
-        to={getCurrentQuerystring()}
-        onClick={handleLink}
-        style={chilMenuCssProperties}
-      >
-        {showIcon ? (
-          <Icon
-            className={`${prefixCls}-menuItem-link-icon`}
-            type={icon}
-          />
-        ) : <span style={{ width: 10 }} />}
-        <span
-          className={`${prefixCls}-menuItem-link-name`}
-        >
-          {menuName}
-        </span>
-      </Link>
-    );
+    const renderMenuLink = () => {
+      const linkCls = classNames(`${prefixCls}-menuItem-link`, {
+        [`${prefixCls}-menuItem-link-collapsed`]: !isExpanded,
+      });
+      return (
+        <Tooltip title={menuName} placement="right">
+          <Link
+            className={linkCls}
+            to={getCurrentQuerystring()}
+            onClick={handleLink}
+            style={chilMenuCssProperties}
+          >
+            {showIcon ? (
+              <Icon
+                className={`${prefixCls}-menuItem-link-icon`}
+                type={icon}
+              />
+            ) : <span style={{ width: 10 }} />}
+            <span
+              className={`${prefixCls}-menuItem-link-name`}
+            >
+              {menuName}
+            </span>
+          </Link>
+        </Tooltip>
+      );
+    };
 
     const renderSubMenuTitle = () => (
-      <div
-        style={chilMenuCssProperties}
-        className={`${prefixCls}-menuItem-sub-title`}
-      >
-        <Icon
-          type={icon}
-          className={`${prefixCls}-menuItem-sub-title-icon`}
-        />
-        <span className={`${prefixCls}-menuItem-sub-title-name`}>
-          {menuName}
-        </span>
-      </div>
+      <Tooltip title={menuName} placement="right">
+        <div
+          style={chilMenuCssProperties}
+          className={`${prefixCls}-menuItem-sub-title`}
+        >
+          <Icon
+            type={icon}
+            className={`${prefixCls}-menuItem-sub-title-icon`}
+          />
+          <span className={`${prefixCls}-menuItem-sub-title-name`}>
+            {menuName}
+          </span>
+        </div>
+      </Tooltip>
     );
 
     const renderSubMenuChildMenus = () => subMenus.map((subMenuItem) => {
