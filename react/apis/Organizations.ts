@@ -10,6 +10,22 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  // 移交组织所有者
+  transferOrg(orgid:string, params:any) {
+    return this.request({
+      url: `${this.prefix}/${orgid}/change_tenant_owner`,
+      method: 'put',
+      params,
+    });
+  }
+
+  transferOrgNotify(orgid:string) {
+    return this.request({
+      url: `${this.prefix}/${orgid}/change_tenant_owner_message`,
+      method: 'get',
+    });
+  }
+
   getUserWizardList(organizationId:string) {
     return this.request({
       url: `${this.prefix}/${organizationId}/user_wizard/list`,
