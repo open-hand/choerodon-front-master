@@ -48,7 +48,7 @@ const projectOverview = {
   'agile.projectOverview.sprintSituation': 'Sprint Situation',
   'agile.projectOverview.onlineMember': 'Online Member',
   'agile.projectOverview.completedIssue': 'Complete Issue',
-  'agile.projectOverview.inCompletedIssue': 'InComplete Issue',
+  'agile.projectOverview.inCompletedIssue': 'Incomplete Issue',
   'agile.projectOverview.show.Non-Working.days': 'Show Non-Working Days',
   'agile.projectOverview.bugs': 'Bugs',
   'agile.projectOverview.build.times': 'Build times',
