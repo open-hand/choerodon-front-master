@@ -18,7 +18,7 @@ function useFormatMessage<T, R, P>(intlPrefix?:string):useFormatMessageRetrunTyp
       id: intlPrefix ? `${intlPrefix}.${id}` : id,
       ...rest,
     }, values);
-  }, []);
+  }, [intlPrefix]);
 
   return handleFormat;
 }

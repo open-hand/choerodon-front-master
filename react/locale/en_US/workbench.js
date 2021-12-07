@@ -20,6 +20,11 @@ const workbench = {
   'c7ncd.workbench.noAttentionIssues': 'There are no issues you are concerned about.',
   'c7ncd.workbench.noAttentionIssues.desc': 'You have not focused on any problem items?',
   'c7ncd.workbench.noEnvironmentsTodo': 'There is no recent operation environment.',
+
+  'c7ncd.workbench.noDoc': 'No document information is available',
+  'c7ncd.workbench.noDocOpts': 'There is no recent operation document',
+  'c7ncd.workbench.noMyAttentionDemand': 'There is no need for my attention',
+  'c7ncd.workbench.noMyAttentionDemand.desc': 'You haven\'t focused on any requirements yet',
 };
 
 export {

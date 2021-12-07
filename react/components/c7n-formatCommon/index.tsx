@@ -11,7 +11,7 @@ const C7NFormatCommon = (props:C7NFormatCommonProps) => {
   const getId = useMemo(() => {
     const currentId:string | number | undefined = `boot.${id}`;
     return currentId;
-  }, []);
+  }, [id]);
 
   return <C7NFormat {...rest} id={getId} />;
 };

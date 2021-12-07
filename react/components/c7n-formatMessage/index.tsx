@@ -15,7 +15,7 @@ const C7NFormat = (props:C7NFormatProps) => {
       currentId = `${intlPrefix}.${id}`;
     }
     return currentId;
-  }, []);
+  }, [id]);
 
   return <FormattedMessage {...rest} id={getId} />;
 };
