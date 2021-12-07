@@ -50,7 +50,7 @@
     "@choerodon/components": "1.2.0",
     "@choerodon/inject": "^0.1.0",
     "@hzero-front-ui/c7n-ui": "4.0.2-alpha.22",
-    "@hzero-front-ui/core": "4.0.1-alpha.3",
+    "@hzero-front-ui/core": "4.0.1-alpha.2",
     "@hzero-front-ui/themes": "4.0.2-alpha.23",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.168",
