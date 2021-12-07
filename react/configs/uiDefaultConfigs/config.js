@@ -37,13 +37,13 @@ const useUiConfigs = () => {
    * @param {*} cpName
    */
   const renderEmpty = (cpName) => {
-    if (cpName === 'Table') {
-      return formatCommon({ id: 'nodata' });
-    }
-    if (cpName === 'Output') {
-      return '';
-    }
-    return '';
+    const cpText = {
+      Table: formatCommon({ id: 'nodata' }),
+      Output: '',
+      Select: formatCommon({ id: 'nodata' }),
+      Attachment: formatCommon({ id: 'nodata' }),
+    };
+    return cpText?.[cpName] || '';
   };
 
   return {
