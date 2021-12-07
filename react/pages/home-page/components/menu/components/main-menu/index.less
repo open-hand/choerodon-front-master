@@ -1,0 +1,40 @@
+@prefixCls: ~"c7ncd-main-menu";
+
+.@{prefixCls} {
+  width: 50px;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+  &-item {
+    color: #fff;
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    font-weight: 400;
+    &-active,
+    &:hover {
+      background-color: rgba(140, 158, 255, 0.35);
+    }
+    &-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    &-name {
+      width: 100%;
+      white-space: nowrap;
+      display: block;
+      overflow: hidden;
+      text-align: center;
+      text-overflow: ellipsis;
+    }
+  }
+}

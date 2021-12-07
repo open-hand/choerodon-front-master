@@ -28,14 +28,17 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     },
     projectId,
     categoryCodes,
+    inNewUserGuideStepOne,
   } = props;
 
   const standardDisable = useMemo(() => [categoryCodes.require, categoryCodes.program, categoryCodes.operations], []);
 
   const createProjectStore = useStore();
-  const categoryDs = useMemo(() => new DataSet(CategoryDataSet({ organizationId, categoryCodes, createProjectStore })), [organizationId]);
+  const categoryDs = useMemo(() => new DataSet(CategoryDataSet({
+    organizationId, categoryCodes, createProjectStore, inNewUserGuideStepOne,
+  })), [organizationId]);
   const formDs = useMemo(() => new DataSet(FormDataSet({
-    organizationId, categoryDs, projectId, categoryCodes,
+    organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne,
   })), [organizationId, projectId]);
 
   useEffect(() => {
@@ -52,14 +55,30 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       categoryDs.query(),
       createProjectStore.checkSenior(organizationId),
     ]);
-    const isSenior = createProjectStore.getIsSenior;
-    categoryDs.forEach((eachRecord) => {
-      const categoryRecord = eachRecord.get('code');
-      if (categoryRecord === categoryCodes.require
-        || (!isSenior && standardDisable.includes(categoryRecord))) {
-        eachRecord.setState('disabled', true);
-      }
-    });
+    const isSenior = createProjectStore.getIsSenior; // saas高级版
+
+    // 新手指导默认选中值处理
+    if (inNewUserGuideStepOne) {
+      const seniorDefaultArr = ['N_AGILE', 'N_REQUIREMENT', 'N_DEVOPS', 'N_OPERATIONS', 'N_TEST'];
+      const otherDefaultArr = ['N_AGILE', 'N_DEVOPS', 'N_TEST'];
+      const currentArr = isSenior ? seniorDefaultArr : otherDefaultArr;
+      categoryDs.forEach((record) => {
+        if (currentArr.indexOf(record.get('code')) !== -1) {
+          // eslint-disable-next-line no-param-reassign
+          record.isSelected = true;
+        } else {
+          record.setState('disabled', true);
+        }
+      });
+    } else {
+      categoryDs.forEach((eachRecord) => {
+        const categoryRecord = eachRecord.get('code');
+        if (categoryRecord === categoryCodes.require
+          || (!isSenior && standardDisable.includes(categoryRecord))) {
+          eachRecord.setState('disabled', true);
+        }
+      });
+    }
   };
 
   const loadData = async () => {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 9</title>
+    <g id="UI优化" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.86">
+        <g id="导航栏，左侧菜单-normal" transform="translate(-12.000000, -512.000000)" fill="#FFFFFF">
+            <g id="focus" transform="translate(-2.000000, 90.000000)">
+                <g id="编组-4" transform="translate(0.920000, 0.000000)">
+                    <g transform="translate(2.580000, 12.000000)">
+                        <g id="编组" transform="translate(10.500000, 410.000000)">
+                            <g id="delete_sweep_black_24dp" transform="translate(7.000000, 8.500000)">
+                                <polygon id="路径" opacity="0.6" points="3.65362319 0 12.2898551 0 12.9543478 1.49492754 2.98913043 1.49492754"></polygon>
+                                <polygon id="路径" opacity="0.8" points="1.66086957 2.49130435 14.2811594 2.49130435 14.9456522 3.98550725 0.996376812 3.98550725"></polygon>
+                                <polygon id="路径" points="15.942029 12.4550725 15.942029 5.48043478 10.9601449 5.48043478 9.96376812 7.47318841 5.97826087 7.47318841 4.98188406 5.48043478 0 5.48043478 0 12.4543478 8.76521739 12.4543478"></polygon>
+                                <polygon id="路径" opacity="0.3" points="5.47971014 6.47681159 10.4652174 6.47681159 9.96521739 7.47318841 5.97463768 7.47318841"></polygon>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

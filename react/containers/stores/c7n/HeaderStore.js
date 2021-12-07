@@ -41,8 +41,6 @@ class HeaderStore {
 
   @observable proData = null;
 
-  @observable selected = null;
-
   @observable recentItem = null;
 
   @observable userPreferenceVisible = false;
@@ -183,16 +181,6 @@ class HeaderStore {
   }
 
   @computed
-  get getSelected() {
-    return this.selected;
-  }
-
-  @action
-  setSelected(data) {
-    this.selected = data;
-  }
-
-  @computed
   get getOrgData() {
     return this.orgData;
   }
@@ -220,16 +208,6 @@ class HeaderStore {
   @action
   setInboxVisible(inboxVisible) {
     this.inboxVisible = inboxVisible;
-  }
-
-  @computed
-  get getShowSiteMenu() {
-    return this.showSiteMenu;
-  }
-
-  @action
-  setShowSiteMenu(flag) {
-    this.showSiteMenu = flag;
   }
 
   @computed
@@ -310,17 +288,6 @@ class HeaderStore {
       .catch(handleResponseError).finally(() => {
         this.inboxLoading = false;
       });
-  }
-
-  axiosShowSiteMenu() {
-    return axios({
-      url: '/iam/choerodon/v1/menus/site_menu_flag',
-      method: 'get',
-    }).then(action((data) => {
-      this.setShowSiteMenu(data);
-    })).catch(() => {
-      this.setShowSiteMenu(false);
-    });
   }
 
   axiosGetUnreadMessageCount() {

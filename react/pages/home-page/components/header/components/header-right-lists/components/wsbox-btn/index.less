@@ -1,0 +1,24 @@
+@import "./inbox.less";
+@prefixCls: c7ncd-wsbox-btn;
+
+.@{prefixCls} {
+  display: flex !important;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  &-icon {
+    font-size: 23px !important;
+    color: var(--text-color3);
+  }
+  > .c7n-badge-count {
+    box-shadow: initial;
+    cursor: pointer;
+    top: -2px;
+    transform: scale(0.8) !important;
+    font-size: 16px;
+    left: 20px;
+    background-color: #f76776 !important;
+    color: white !important;
+    border-color: #f76776 !important;
+  }
+}

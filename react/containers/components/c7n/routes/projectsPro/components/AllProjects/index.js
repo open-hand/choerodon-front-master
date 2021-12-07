@@ -1,12 +1,18 @@
-import React, { useCallback, Fragment } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
-  TextField, Button, Pagination, Tooltip, Modal, Icon, Spin,
+  TextField,
+  Button,
+  Pagination,
+  Tooltip,
+  Modal,
+  Icon,
+  Spin,
 } from 'choerodon-ui/pro';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import some from 'lodash/some';
 import { Permission } from '@/components/permission';
-import handleClickProject from '@/containers/components/util/gotoProject';
+import handleClickProject from '@/utils/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import EmptyPage from '../empty-page';
@@ -20,41 +26,57 @@ export default observer(() => {
   const {
     ProjectsProUseStore,
     history,
-    dataSet,
     AppState,
-    intl,
-    intl: {
-      formatMessage,
-    },
+    intl: { formatMessage },
     intlPrefix,
     categoryCodes,
     AppState: {
-      currentMenuType: {
-        organizationId,
-      },
+      currentMenuType: { organizationId },
     },
     MenuStore,
+    formatProject,
+    formatCommon,
   } = useProjectsProStore();
 
-  function refresh(projectId) {
+  const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
+  const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
+
+  useEffect(() => {
+    if (
+      AppState.getUserWizardStatus
+      && AppState.getUserWizardStatus[0].status === 'uncompleted'
+    ) {
+      setInNewUserGuideStepOne(true);
+      setCreateBtnToolTipHidden(false);
+    } else {
+      setInNewUserGuideStepOne(false);
+      setCreateBtnToolTipHidden(true);
+    }
+  }, [AppState.getUserWizardStatus]);
+
+  const refresh = (projectId) => {
     ProjectsProUseStore.axiosGetProjects();
     ProjectsProUseStore.checkCreate(organizationId);
     if (projectId) {
       MenuStore.menuGroup.project = {};
     }
-  }
+  };
 
   const handleAddProject = (currentProjectId) => {
+    setCreateBtnToolTipHidden(true);
     Modal.open({
       key: Modal.key(),
       drawer: true,
       title: currentProjectId ? '项目设置' : '创建项目',
       className: 'c7n-projects-modal-create-project',
-      children: <CreateProject
-        refresh={refresh}
-        projectId={currentProjectId}
-        categoryCodes={categoryCodes}
-      />,
+      children: (
+        <CreateProject
+          refresh={refresh}
+          projectId={currentProjectId}
+          categoryCodes={categoryCodes}
+          inNewUserGuideStepOne={inNewUserGuideStepOne}
+        />
+      ),
       okText: currentProjectId ? '保存' : '创建',
       style: {
         width: '3.8rem',
@@ -63,7 +85,9 @@ export default observer(() => {
   };
 
   const handleRetry = useCallback(async (projectId, sagaInstanceIds) => {
-    if (await ProjectsProUseStore.retryProjectSaga(projectId, sagaInstanceIds)) {
+    if (
+      await ProjectsProUseStore.retryProjectSaga(projectId, sagaInstanceIds)
+    ) {
       refresh();
     }
   }, []);
@@ -84,7 +108,10 @@ export default observer(() => {
         disabled: true,
         color: 'red',
         style: {
-          width: '100%', border: '1px solid rgba(27,31,35,.2)', height: 36, marginLeft: 0,
+          width: '100%',
+          border: '1px solid rgba(27,31,35,.2)',
+          height: 36,
+          marginLeft: 0,
         },
       };
       const ModalContent = ({ modal: newModal }) => {
@@ -126,14 +153,15 @@ export default observer(() => {
         const content = (
           <div style={{ marginTop: -10 }}>
             {isProgram && (
-              <p style={{
-                marginBottom: 14,
-                background: '#fffbdd',
-                padding: '15px 26px',
-                border: '1px solid rgba(27,31,35,.15)',
-                width: 'calc(100% + 40px)',
-                marginLeft: -20,
-              }}
+              <p
+                style={{
+                  marginBottom: 14,
+                  background: '#fffbdd',
+                  padding: '15px 26px',
+                  border: '1px solid rgba(27,31,35,.15)',
+                  width: 'calc(100% + 40px)',
+                  marginLeft: -20,
+                }}
               >
                 请仔细阅读下列事项！
               </p>
@@ -172,43 +200,57 @@ export default observer(() => {
   }, []);
 
   const handleEnable = useCallback(async (projectId, type) => {
-    if (await ProjectsProUseStore.handleEnable({ organizationId, projectId, type })) {
+    if (
+      await ProjectsProUseStore.handleEnable({
+        organizationId,
+        projectId,
+        type,
+      })
+    ) {
       refresh();
       return true;
     }
     return false;
   }, []);
 
-  const checkOperation = useCallback((data) => data && (data.operateType === 'update' || data.projectStatus === 'success'), []);
+  const checkOperation = useCallback(
+    (data) => data
+      && (data.operateType === 'update' || data.projectStatus === 'success'),
+    [],
+  );
 
   const getActionData = useCallback((data) => {
     const {
       projectStatus, editFlag, enabled, id: currentProjectId,
     } = data;
-    const editData = ({
+    const editData = {
       text: '修改',
       action: () => handleAddProject(data.id),
-    });
-    const disableData = ({
+    };
+    const disableData = {
       text: '停用',
       action: () => openDisableModal(data),
-    });
+    };
     let actionData;
     if (!enabled) {
-      actionData = [{
-        text: '启用',
-        action: () => handleEnable(currentProjectId, 'enable'),
-      }];
+      actionData = [
+        {
+          text: '启用',
+          action: () => handleEnable(currentProjectId, 'enable'),
+        },
+      ];
     }
     switch (projectStatus) {
       case 'success':
         actionData = [editData, disableData];
         break;
       case 'failed':
-        actionData = [{
-          text: '重试',
-          action: () => handleRetry(data.id, data.sagaInstanceIds),
-        }];
+        actionData = [
+          {
+            text: '重试',
+            action: () => handleRetry(data.id, data.sagaInstanceIds),
+          },
+        ];
         if (data.operateType === 'create') {
           actionData.push({
             text: '删除',
@@ -240,75 +282,94 @@ export default observer(() => {
         </div>
       );
     }
-    return projects.length > 0 ? projects.map((p) => (
-      <Tooltip title={p.description} placement="right">
-        <div
-          key={p.id}
-          onClick={() => {
-            if (p.enabled && checkOperation(p)) {
-              handleClickProject(p, history, AppState);
-            }
-          }}
-          className="allProjects-content-item"
-          style={{
-            cursor: p.enabled ? 'pointer' : 'not-allowed',
-          }}
-          role="none"
-        >
+    return projects.length > 0 ? (
+      projects.map((p) => (
+        <Tooltip title={p.description} placement="right">
           <div
-            className="allProjects-content-item-icon"
-            style={{
-              backgroundImage: p.imageUrl ? `url("${p.imageUrl}")` : p.background,
+            key={p.id}
+            onClick={() => {
+              if (p.enabled && checkOperation(p)) {
+                handleClickProject(p, history, AppState);
+              }
             }}
+            className="allProjects-content-item"
+            style={{
+              cursor: p.enabled ? 'pointer' : 'not-allowed',
+            }}
+            role="none"
           >
-            <span>
-              {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
-            </span>
-          </div>
-
-          <div className="allProjects-content-item-right">
-            <div className="allProjects-content-item-right-top">
-              <div className="allProjects-content-item-right-top-left">
-                <span className="allProjects-content-item-right-top-left-code">{p.code && p.code.toUpperCase()}</span>
-                <span className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${!p.projectStatus || p.projectStatus === 'success' ? p.enabled : p.projectStatus}`}>
-                  {/* eslint-disable-next-line no-nested-ternary */}
-                  {!p.projectStatus || p.projectStatus === 'success' ? (p.enabled ? '启用' : '停用') : (
-                    formatMessage({ id: `${intlPrefix}.${p.projectStatus}${p.projectStatus === 'failed' ? `.${p.operateType}` : ''}` })
-                  )}
-                </span>
-              </div>
-              {getActionData(p)}
-              {checkOperation(p) ? (
-                <Icon
-                  type={p.starFlag ? 'stars' : 'star_border'}
-                  style={{
-                    color: p.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
-                    fontSize: '20px',
-                  }}
-                  onClick={(e) => {
-                    if (p.enabled) {
-                      e.stopPropagation();
-                      ProjectsProUseStore.handleStarProject(p).then(() => {
-                        ProjectsProUseStore.handleChangeStarProjects(p);
-                      });
-                    }
-                  }}
-                />
-              ) : null}
+            <div
+              className="allProjects-content-item-icon"
+              style={{
+                backgroundImage: p.imageUrl
+                  ? `url("${p.imageUrl}")`
+                  : p.background,
+              }}
+            >
+              <span>
+                {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
+              </span>
             </div>
-            <div className="allProjects-content-item-right-down">
-              <div className="allProjects-content-item-right-down-pro">
-                <p>
-                  <Tooltip title={p.name} placement="bottomLeft">{p.name}</Tooltip>
-                </p>
+
+            <div className="allProjects-content-item-right">
+              <div className="allProjects-content-item-right-top">
+                <div className="allProjects-content-item-right-top-left">
+                  <span className="allProjects-content-item-right-top-left-code">
+                    {p.code && p.code.toUpperCase()}
+                  </span>
+                  <span
+                    className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${
+                      !p.projectStatus || p.projectStatus === 'success'
+                        ? p.enabled
+                        : p.projectStatus
+                    }`}
+                  >
+                    {/* eslint-disable-next-line no-nested-ternary */}
+                    {!p.projectStatus || p.projectStatus === 'success'
+                      ? p.enabled
+                        ? '启用'
+                        : '停用'
+                      : formatMessage({
+                        id: `${intlPrefix}.${p.projectStatus}${
+                          p.projectStatus === 'failed'
+                            ? `.${p.operateType}`
+                            : ''
+                        }`,
+                      })}
+                  </span>
+                </div>
+                {getActionData(p)}
+                {checkOperation(p) ? (
+                  <Icon
+                    type={p.starFlag ? 'stars' : 'star_border'}
+                    style={{
+                      color: p.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
+                      fontSize: '20px',
+                    }}
+                    onClick={(e) => {
+                      if (p.enabled) {
+                        e.stopPropagation();
+                        ProjectsProUseStore.handleStarProject(p).then(() => {
+                          ProjectsProUseStore.handleChangeStarProjects(p);
+                        });
+                      }
+                    }}
+                  />
+                ) : null}
               </div>
-              <ProjectCategory
-                data={p.categories}
-                className="allProjects-content-item-right-down-text1"
-              />
-              {
-                p.programName
-                && (
+              <div className="allProjects-content-item-right-down">
+                <div className="allProjects-content-item-right-down-pro">
+                  <p>
+                    <Tooltip title={p.name} placement="bottomLeft">
+                      {p.name}
+                    </Tooltip>
+                  </p>
+                </div>
+                <ProjectCategory
+                  data={p.categories}
+                  className="allProjects-content-item-right-down-text1"
+                />
+                {p.programName && (
                   <Tooltip title={p.programName}>
                     <p className="allProjects-content-item-right-down-text2">
                       <>
@@ -319,30 +380,36 @@ export default observer(() => {
                       </>
                     </p>
                   </Tooltip>
-                )
-              }
-              <p className="allProjects-content-item-right-down-time">
-                <Tooltip title={p.createUserName} placement="top">
-                  <span
-                    className="allProjects-content-item-right-down-avatar"
-                    style={{
-                      backgroundImage: p.createUserImageUrl ? `url("${p.createUserImageUrl}")` : 'unset',
-                    }}
-                  >
-                    {!p.createUserImageUrl && p.createUserName && p.createUserName.slice(0, 1)}
-                  </span>
-                </Tooltip>
-                <p>
-                  {p.creationDate.split(' ')[0]}
-                  {' '}
-                  创建
+                )}
+                <p className="allProjects-content-item-right-down-time">
+                  <Tooltip title={p.createUserName} placement="top">
+                    <span
+                      className="allProjects-content-item-right-down-avatar"
+                      style={{
+                        backgroundImage: p.createUserImageUrl
+                          ? `url("${p.createUserImageUrl}")`
+                          : 'unset',
+                      }}
+                    >
+                      {!p.createUserImageUrl
+                        && p.createUserName
+                        && p.createUserName.slice(0, 1)}
+                    </span>
+                  </Tooltip>
+                  <p>
+                    {p.creationDate.split(' ')[0]}
+                    {' '}
+                    创建
+                  </p>
                 </p>
-              </p>
+              </div>
             </div>
           </div>
-        </div>
-      </Tooltip>
-    )) : <EmptyPage title="暂无项目" describe="该组织下暂无项目" />;
+        </Tooltip>
+      ))
+    ) : (
+      <EmptyPage title="暂无项目" describe="该组织下暂无项目" />
+    );
   }, [ProjectsProUseStore.getAllProjects, history]);
 
   const handleBlurProjects = ({ ...e }) => {
@@ -354,27 +421,86 @@ export default observer(() => {
     ProjectsProUseStore.axiosGetProjects();
   };
 
+  const toHelpDoc = () => {
+    window.open(
+      `${AppState?.getUserWizardStatus[0]?.helpDocs[0]}`,
+      '_blank',
+    );
+  };
+
+  const getCreatBtnTitle = () => {
+    if (inNewUserGuideStepOne) {
+      return (
+        <div style={{ background: '#6E80F1 !important' }}>
+          <div style={{ padding: 8 }}>
+            项目主要用来管理项目团队，设置不同的项目类型，邀请团队成员加入一起开展工作，团队成员在项目中可以进行迭代规划、应用开发、应用部署、敏捷化测试等，共同达成项目目标。
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <Button
+              onClick={() => {
+                setCreateBtnToolTipHidden(true);
+              }}
+              style={{ color: '#fff', background: '#7E90F1' }}
+            >
+              {formatCommon({ id: 'neglect' })}
+            </Button>
+            <Button
+              onClick={toHelpDoc}
+              style={{ color: 'var(--primary-color)', background: '#fff' }}
+            >
+              {formatCommon({ id: 'check' })}
+            </Button>
+          </div>
+        </div>
+      );
+    }
+    const { getCanCreate } = ProjectsProUseStore;
+    return getCanCreate ? '' : '项目数量已达上限，无法创建更多项目';
+  };
+
+  const onHiddenBeforeChange = (hidden) => {
+    const { getCanCreate } = ProjectsProUseStore;
+    if (!getCanCreate) {
+      setCreateBtnToolTipHidden(hidden);
+    }
+    if (inNewUserGuideStepOne && createBtnToolTipHidden === true && !hidden) {
+      setCreateBtnToolTipHidden(hidden);
+    }
+  };
+
   const renderTitle = () => {
-    const { organizationId: searchOrgId } = queryString.parse(history.location.search);
-    const org = (HeaderStore.getOrgData || []).find((v) => String(v.id) === searchOrgId) || { name: '' };
+    const { organizationId: searchOrgId } = queryString.parse(
+      history.location.search,
+    );
+    const org = (HeaderStore.getOrgData || []).find(
+      (v) => String(v.id) === searchOrgId,
+    ) || { name: '' };
     const { getCanCreate } = ProjectsProUseStore;
     return (
       <>
         <p>
-          {org.name}
-          所有项目
+          {formatProject({ id: 'allProject' }, { name: org.name })}
         </p>
         <div className="allProjects-title-right">
           <TextField
             onBlur={handleBlurProjects}
-            placeholder="请输入搜索条件"
+            placeholder={formatCommon({ id: 'pleaseSearch' })}
             className="allProjects-title-right-textField"
-            prefix={<Icon style={{ color: 'rgba(202,202,228,1)' }} type="search" />}
+            prefix={
+              <Icon style={{ color: 'rgba(202,202,228,1)' }} type="search" />
+            }
           />
-          <Permission service={['choerodon.code.organization.project.ps.create']}>
+          <Permission
+            service={['choerodon.code.organization.project.ps.create']}
+          >
             <Tooltip
-              title={getCanCreate ? '' : '项目数量已达上限，无法创建更多项目'}
-              placement="bottom"
+              popupClassName={
+                inNewUserGuideStepOne ? 'c7n-pro-popup-projects-create-guide' : ''
+              }
+              hidden={createBtnToolTipHidden}
+              onHiddenBeforeChange={onHiddenBeforeChange}
+              title={getCreatBtnTitle}
+              placement={inNewUserGuideStepOne ? 'bottomRight' : 'bottom'}
             >
               <Button
                 funcType="raised"
@@ -383,9 +509,10 @@ export default observer(() => {
                 onClick={() => handleAddProject()}
                 style={{
                   height: 30,
+                  marginLeft: 16,
                 }}
               >
-                创建项目
+                {formatProject({ id: 'createProject' })}
               </Button>
             </Tooltip>
           </Permission>
@@ -404,9 +531,7 @@ export default observer(() => {
 
   return (
     <div className="allProjects">
-      <div className="allProjects-title">
-        {renderTitle()}
-      </div>
+      <div className="allProjects-title">{renderTitle()}</div>
       <div className="allProjects-content">
         {renderProjects()}
         {ProjectsProUseStore.getAllProjects.length > 0 && (

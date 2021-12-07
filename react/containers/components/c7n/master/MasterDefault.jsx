@@ -3,9 +3,6 @@ import React, {
 } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import {
-  Spin,
-} from 'choerodon-ui';
 import queryString from 'query-string';
 import {
   message,
@@ -13,24 +10,21 @@ import {
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import { mount, get as cherodonGet } from '@choerodon/inject';
-import getSearchString from '@/containers/components/c7n/util/gotoSome';
+import getSearchString from '@/utils/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '@/components/axios';
-import MasterHeader from '../ui/header';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
-import RouteIndex from './RouteIndex';
-import './style';
-import Skeleton from '@/components/skeleton';
-import CommonMenu, { defaultBlackList } from '../ui/menu';
+import RouteIndex from '@/routes';
+
 import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
+import Header from '@/pages/home-page/components/header';
+import MenusPro from '@/pages/home-page/components/menu';
 
-const spinStyle = {
-  textAlign: 'center',
-  paddingTop: 300,
-};
+import './index.less';
+import './style';
 
 // 这里是没有菜单的界面合集
 // 记录下route和code 为了方便查询该界面的文档地址
@@ -176,26 +170,19 @@ class Masters extends Component {
       if (this.userRef?.current?.getUserCountCheck) {
         this.userRef.current.getUserCountCheck(newParams.get('organizationId'));
       }
-      this.initStarAndRecentProjects(
-        newParams.get('organizationId'),
-        newProps.AppState,
-      );
+      this.initStarAndRecentProjects();
     }
   };
 
   /**
    * 更换组织后在talenntId变化后 主动变更star and recent
    */
-  initStarAndRecentProjects = (newOrgId, appState) => {
-    const talentId = appState.userInfo.tenantId;
+  initStarAndRecentProjects = () => {
     // 如果userInfo的tanantId变化了 则去重查
-    if (String(newOrgId) === String(talentId)) {
-      appState.getProjects();
-    } else {
-      setTimeout(() => {
-        this.initStarAndRecentProjects(newOrgId, this.props.AppState);
-      }, 500);
-    }
+    const { AppState } = this.props;
+    AppState.loadUserInfo().then(() => {
+      AppState.getProjects();
+    });
   };
 
   // 获取系统公告
@@ -209,6 +196,15 @@ class Masters extends Component {
       const { HeaderStore } = this.props;
 
       const identity = 'platform_announcement';
+      if (window.localStorage.getItem('announcementModalInfo')) {
+        const announcementId = window.localStorage.getItem('announcementModalInfo').split('+')[0];
+        if (announcementId !== res?.readId) {
+          window.localStorage.setItem('announcementModalInfo', `${res?.readId}+false`);
+        }
+      } else {
+        window.localStorage.setItem('announcementModalInfo', `${res?.readId}+false`);
+      }
+
       if (res && (!localStorage.lastClosedId || localStorage.lastClosedId !== res?.id)) {
         HeaderStore.innsertAnnouncement(identity, {
           data: res,
@@ -263,16 +259,6 @@ class Masters extends Component {
     this.getSaaSUserRestDays();
   }
 
-  isInOutward = (pathname) => {
-    // eslint-disable-next-line no-underscore-dangle
-    const injectOutward = window._env_.outward;
-    if (injectOutward) {
-      const arr = injectOutward.split(',').concat(['/unauthorized']);
-      return arr.some((v) => pathname.startsWith(v));
-    }
-    return false;
-  };
-
   /**
    * @description: 根据返回的themeColor改变全局primaryColor变量
    * @param {*}
@@ -319,7 +305,6 @@ class Masters extends Component {
     } = props;
     const { pathname, search } = location;
     let isUser = false;
-    let needLoad = false;
     let menuType = parseQueryToMenuType(search);
     if (pathname === '/') {
       const recent = HeaderStore.getRecentItem;
@@ -333,7 +318,6 @@ class Masters extends Component {
           type,
           organizationId,
         };
-        needLoad = true;
       } else {
         menuType = {};
       }
@@ -343,6 +327,7 @@ class Masters extends Component {
     } else if (!menuType.type) {
       menuType.type = 'site';
     }
+
     async function checkUrl() {
       async function goSafty(data) {
         if (!HeaderStore.getOrgData) {
@@ -426,32 +411,17 @@ class Masters extends Component {
   }
 
   render() {
-    const {
-      AutoRouter, AppState, location,
-    } = this.props;
-    const search = new URLSearchParams(location.search);
-    const fullPage = search.get('fullPage');
-    if (this.isInOutward(this.props.location.pathname)) {
-      return (
-        <div className="page-wrapper">
-          <RouteIndex AutoRouter={AutoRouter} />
-        </div>
-      );
-    }
-    return AppState.isAuth && AppState.currentMenuType ? (
+    return (
       <div className="page-wrapper">
         <div
           className="page-header"
-          style={fullPage ? { display: 'none' } : {}}
         >
           <AnnouncementBannerPro />
-          <MasterHeader />
+          <Header />
         </div>
         <div className="page-body">
           <div className="content-wrapper">
-            <div id="menu" style={fullPage ? { display: 'none' } : {}}>
-              <CommonMenu />
-            </div>
+            <MenusPro />
             {mount('base-pro:Guide', {
               ...this.props,
               MasterServices,
@@ -465,21 +435,10 @@ class Masters extends Component {
               cRef: this.userRef,
             })}
             <div id="autoRouter" className="content">
-              {AppState.getCanShowRoute
-              || defaultBlackList.some((v) => this.props.location.pathname.startsWith(v)) ? (
-                <RouteIndex AutoRouter={AutoRouter} />
-                ) : (
-                  <div>
-                    <Skeleton />
-                  </div>
-                )}
+              <RouteIndex />
             </div>
           </div>
         </div>
-      </div>
-    ) : (
-      <div style={spinStyle}>
-        <Spin />
       </div>
     );
   }

@@ -23,7 +23,6 @@ export function setAccessToken(token, tokenType, expiresIn) {
   const isHttps = window.location.protocol === 'https:';
   const option = {
     path: '/',
-
   };
   if (isHttps) {
     option.sameSite = 'none';
@@ -60,11 +59,6 @@ export function removeAccessToken() {
   const option = {
     path: '/',
   };
-  // if (!LOCAL && !localReg.test(window.location.host)) {
-  //   console.log(COOKIE_SERVER);
-  //   option.domain = COOKIE_SERVER;
-  // }
-  // console.log(option);
   removeCookie(ACCESS_TOKEN, option);
   removeCookie(TOKEN_TYPE, option);
 }

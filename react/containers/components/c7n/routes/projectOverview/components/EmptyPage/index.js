@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFormatMessage } from '@/hooks';
 import './index.less';
 
 const clsPrefix = 'c7n-project-overview-empty-page';
@@ -89,13 +90,14 @@ function EmptyImg({ height, width }) {
 export default function EmptyPage({
   height, imgHeight, imgWidth, content,
 }) {
+  const formatMessage = useFormatMessage('agile.projectOverview');
   return (
     <div className={clsPrefix} style={{ height }}>
       <div className={`${clsPrefix}-body`}>
         <EmptyImg width={100} />
         {/* <div className={`${clsPrefix}-img`} /> */}
         <div className={`${clsPrefix}-text`}>
-          {content || '当前暂无冲刺'}
+          {content || formatMessage({ id: 'empty.current.sprint' })}
         </div>
       </div>
     </div>

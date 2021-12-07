@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-
 function handleDisabled({
   dataSet, record, categoryCodes, isSelected, createProjectStore,
 }) {
@@ -43,7 +42,10 @@ function setRequireModule({ dataSet, selected, categoryCodes }) {
   }
 }
 
-export default ({ organizationId, categoryCodes, createProjectStore }) => ({
+// eslint-disable-next-line import/no-anonymous-default-export
+export default ({
+  organizationId, categoryCodes, createProjectStore, inNewUserGuideStepOne,
+}) => ({
   autoCreate: false,
   autoQuery: false,
   selection: 'multiple',
@@ -62,10 +64,14 @@ export default ({ organizationId, categoryCodes, createProjectStore }) => ({
       });
     },
     unSelect: ({ dataSet, record }) => {
-      record.isSelected = false;
-      handleDisabled({
-        dataSet, record, categoryCodes, isSelected: false, createProjectStore,
-      });
+      if (inNewUserGuideStepOne && record.get('code') === 'N_AGILE') {
+        record.isSelected = true;
+      } else {
+        record.isSelected = false;
+        handleDisabled({
+          dataSet, record, categoryCodes, isSelected: false, createProjectStore,
+        });
+      }
     },
   },
 });

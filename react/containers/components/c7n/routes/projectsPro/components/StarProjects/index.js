@@ -1,14 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { Icon } from 'choerodon-ui';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
   Droppable, Draggable, DragDropContext,
 } from 'react-beautiful-dnd';
-import handleClickProject from '@/containers/components/util/gotoProject';
+import handleClickProject from '@/utils/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import ProjectTaskContent from '../projectTaskContent';
 
 import './index.less';
+import { useFormatMessage, useFormatCommon } from '@/hooks';
 
 export default observer(() => {
   const {
@@ -17,6 +17,11 @@ export default observer(() => {
     history,
   } = useProjectsProStore();
 
+  const workbenchIntlPrefix = 'workbench';
+
+  const formatWorkbench = useFormatMessage(workbenchIntlPrefix);
+  const formatCommon = useFormatCommon();
+
   const getItemStyle = (isDragging, draggableStyle, enabled) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: 'none',
@@ -24,14 +29,6 @@ export default observer(() => {
     ...draggableStyle,
     cursor: enabled ? 'all-scroll' : 'not-allowed',
   });
-
-  // useEffect(() => {
-  //   const projectSelectStarProjects = AppState.getStarProject.length;
-  //   const selfStarProjects = ProjectsProUseStore.getStarProjectsList.length;
-  //   if (projectSelectStarProjects !== selfStarProjects) {
-  //     AppState.getProjects();
-  //   }
-  // }, [ProjectsProUseStore.getStarProjectsList.length]);
 
   const renderProjects = useCallback(() => ProjectsProUseStore.getStarProjectsList.map((p, index) => (
     <Draggable key={`pre-${p.id}`} draggableId={`pre-${p.id}`} index={index}>
@@ -87,11 +84,11 @@ export default observer(() => {
     <div className="starProjects">
       <div className="starProjects-title-wrap">
         <p className="starProjects-title">
-          星标项目
+          {formatCommon({ id: 'starProjects' })}
           <span>
             {
-            ProjectsProUseStore.getStarProjectsList.length || 0
-          }
+              ProjectsProUseStore.getStarProjectsList.length || 0
+            }
           </span>
         </p>
       </div>

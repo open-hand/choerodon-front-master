@@ -5,6 +5,7 @@ import { Table, Tabs } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { AnimationLoading } from '@choerodon/components';
+import { useIntl } from 'react-intl';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
@@ -159,6 +160,7 @@ function IssueTable({ dataSet, onClickSummary }) {
   );
 }
 const DeployChart = () => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-issue-table';
   const {
     startSprintDs,
@@ -174,7 +176,7 @@ const DeployChart = () => {
   const [activeKey, setActiveKey] = useState('done');
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>冲刺详情</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.sprintSituation' })}</span>
     </div>
   );
   const handleToIssue = ({ issueId, issueNum }) => {
@@ -224,14 +226,14 @@ const DeployChart = () => {
     return (
       <OverviewWrap.Content className={`${clsPrefix}-content`}>
         <Tabs activeKey={activeKey} onChange={handleTabChange}>
-          <TabPane tab="已完成的问题" key="done">
+          <TabPane tab={formatMessage({ id: 'agile.projectOverview.completedIssue' })} key="done">
             {/* <Table dataSet={issueTableDs}>
                   <Column name="summary" />
                 </Table> */}
             <IssueTable dataSet={issueTableDs} onClickSummary={handleToIssue} />
             {/* {this.renderDoneIssues(column)} */}
           </TabPane>
-          <TabPane tab="未完成的问题" key="unfinished">
+          <TabPane tab={formatMessage({ id: 'agile.projectOverview.inCompletedIssue' })} key="unfinished">
             <IssueTable dataSet={issueTableDs} onClickSummary={handleToIssue} />
 
             {/* {this.renderUndoIssues(column)} */}

@@ -32,6 +32,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
   const {
     selectedProjectId,
     cacheStore,
+    formatCommon,
   } = useWorkBenchStore();
 
   const clsPrefix = 'c7n-workbench-doc';
@@ -48,7 +49,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
     organizationId, selectedProjectId, self: getSelfDoc, docStore, cacheStore,
   })), [getSelfDoc, organizationId, selectedProjectId]);
 
-  const opts = useMemo(() => [{ value: false, text: '项目' }, { value: true, text: '个人' }], []);
+  const opts = useMemo(() => [{ value: false, text: formatCommon({ id: 'project' }) }, { value: true, text: formatCommon({ id: 'personal' }) }], []);
 
   useEffect(() => {
     const mainData = cacheDocData;

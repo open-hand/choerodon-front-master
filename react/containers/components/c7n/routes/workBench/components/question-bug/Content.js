@@ -4,8 +4,8 @@ import React, {
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import { omit } from 'lodash';
-import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import { Loading } from '@choerodon/components';
+import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import Switch from '@/containers/components/c7n/routes/workBench/components/multiple-switch';
 import { useTodoQuestionStore } from './stores';
@@ -28,7 +28,7 @@ const TodoQuestion = observer(() => {
   } = useTodoQuestionStore();
 
   const {
-    selectedProjectId,
+    formatWorkbench,
   } = useWorkBenchStore();
   const {
     tabKey,
@@ -50,7 +50,7 @@ const TodoQuestion = observer(() => {
   }
 
   const emptyPrompt = useMemo(() => {
-    const [title, describe] = tabKey === 'reportedBug' ? ['暂无已提缺陷', '当前迭代您尚未提交任何缺陷'] : ['暂无待办问题', '当前迭代暂无待办问题'];
+    const [title, describe] = tabKey === 'reportedBug' ? ['暂无已提缺陷', '当前迭代您尚未提交任何缺陷'] : [formatWorkbench({ id: 'noTodo' }), formatWorkbench({ id: 'noTodo.desc' })];
     return { title, describe };
   }, [tabKey]);
 

@@ -7,6 +7,7 @@ import {
   pick,
 } from 'lodash';
 import { LoadingProvider, LoadingHiddenWrap } from '@choerodon/components';
+import { useIntl } from 'react-intl';
 import EmptyPage from '../EmptyPage';
 import OverviewWrap from '../OverviewWrap';
 import issueFieldsMap from './IssueFieldsMap';
@@ -27,6 +28,7 @@ function randomString(len = 32) {
 }
 
 const ProjectDynamic = () => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-projectDynamic';
   const {
     projectDynamicDs,
@@ -95,7 +97,7 @@ const ProjectDynamic = () => {
                   color: '#3f51b5',
                 }}
               >
-                <span>查看更多</span>
+                <span>{formatMessage({ id: 'agile.projectOverview.more' })}</span>
                 <Icon type="baseline-arrow_right icon" style={{ marginRight: 2 }} />
               </Button>
             )
@@ -108,7 +110,7 @@ const ProjectDynamic = () => {
                   color: '#3f51b5',
                 }}
               >
-                <span>收起</span>
+                <span>{formatMessage({ id: 'agile.projectOverview.collapse' })}</span>
                 <Icon type="baseline-arrow_drop_up icon" style={{ marginRight: 2 }} />
               </Button>
             )
@@ -117,14 +119,14 @@ const ProjectDynamic = () => {
       </div>
     ) : (
       <LoadingHiddenWrap>
-        <EmptyPage content="当前条件下暂无动态" />
+        <EmptyPage content={formatMessage({ id: 'agile.projectOverview.emptyData' })} />
       </LoadingHiddenWrap>
     );
   }
   return (
     <OverviewWrap>
       <OverviewWrap.Header
-        title="项目动态"
+        title={formatMessage({ id: 'agile.projectOverview.projectLog' })}
         style={{
           margin: '0 0 10px 4px',
         }}

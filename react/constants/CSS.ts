@@ -1,3 +1,5 @@
-const defaultThemeColor = '#5365EA';
+// 系统默认的主题色
 
-export { defaultThemeColor };
+const DEFAULT_THEME_COLOR = '#5365ea';
+
+export { DEFAULT_THEME_COLOR };

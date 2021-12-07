@@ -1,12 +1,14 @@
-import { TooltipPlacement } from 'choerodon-ui/lib/tooltip';
+import { TooltipProps } from 'choerodon-ui/pro/lib/tooltip/interface';
 
-export interface ToolTipsConfigType {
-  title?: string,
-  placement?: TooltipPlacement,
-  style?: React.CSSProperties,
+type PickTooltipProps =
+'title'|
+'placement'|
+'style'|
+'arrowPointAtCenter' |
+'onHiddenBeforeChange'|
+'defaultHidden';
+export interface ToolTipsConfigType extends Pick<TooltipProps, PickTooltipProps> {
   overlayStyle?: React.CSSProperties,
-  defaultVisible?: boolean,
-  visible?: boolean,
-  arrowPointAtCenter?: boolean;
   overlayClassName?:string
+  hidden?:boolean
 }

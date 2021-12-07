@@ -13,6 +13,7 @@ import ViewDataSet from './ViewDataSet';
 import DashboardDataset from './DashboardDataset';
 import EditHeaderDataSet from './EditHeaderDataSet';
 import AddCardDataSet from './AddCardDataSet';
+import { useFormatMessage, useFormatCommon } from '@/hooks';
 
 // eslint-disable-next-line no-undef
 const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
@@ -58,9 +59,17 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     // pageDS.dashboardDs = useMemo(() => new DataSet(DashboardDataset({ workBenchUseStore })), [workBenchUseStore]);
   }
 
+  const intlPrefix = 'c7ncd.workbench';
+
+  const formatWorkbench = useFormatMessage(intlPrefix);
+  const formatCommon = useFormatCommon();
+
   const value = {
     ...props,
     prefixCls: 'c7n-workbench',
+    intlPrefix,
+    formatWorkbench,
+    formatCommon,
     dragPrefixcls: 'c7ncd-dragCard',
     cacheStore,
     workBenchUseStore,

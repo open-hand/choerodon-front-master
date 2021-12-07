@@ -294,7 +294,7 @@ const WorkBenchTabs = observer(() => {
             <Button
               onClick={handleSave}
               icon="done"
-              style={{ background: '#5365EA', color: '#fff' }}
+              style={{ background: 'var(--primary-color)', color: '#fff' }}
             />
           </Tooltip>
         </div>

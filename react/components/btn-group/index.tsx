@@ -1,4 +1,5 @@
 import React, {
+  FC,
   useCallback, useMemo, useState,
 } from 'react';
 
@@ -14,7 +15,12 @@ import './index.less';
 
 const prefixCls = 'c7ncd-btnGroup';
 
-const BtnGroup = (props:CustomBtnGroupProps) => {
+/**
+ * 按钮分组组件 + 鉴权 + tooltips
+ * @param {CustomBtnGroupProps} props
+ * @return {*}
+ */
+const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
   const {
     color = 'default',
     icon,
@@ -25,9 +31,18 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
     name,
     disabled: triggerBtnDisabled = false,
     renderCustomDropDownPanel,
+    tooltipsConfig,
+    popoverVisibleChange,
   } = props;
 
+  const {
+    hidden: tooltipHidden,
+    onHiddenBeforeChange,
+    ...tooltipsConfigRestProps
+  } = tooltipsConfig || {};
+
   const [popverVisible, setVisible] = useState<boolean>(false);
+  const [mainTooltipHidden, setMainTooltipHidden] = useState<boolean>(false);
 
   const renderMenu = useCallback(() => {
     if (!btnItems?.length) {
@@ -40,14 +55,14 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
         permissions,
         disabled,
         group,
-        tooltipsConfig,
+        tooltipsConfig: itemToolTipsConfig,
       } = itemProps;
       const Item = (
         <Menu.Item
           disabled={disabled}
           key={`${name}-${itemName}-${index}-${group}`}
         >
-          <Tooltip {...tooltipsConfig}>
+          <Tooltip {...itemToolTipsConfig}>
             <span role="none" onClick={disabled ? () => {} : handler}>
               {itemName}
             </span>
@@ -69,7 +84,7 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
   }, [btnItems, name]);
 
   const renderContent = useCallback(() => {
-    if (renderCustomDropDownPanel && typeof renderCustomDropDownPanel === 'function') {
+    if (typeof renderCustomDropDownPanel === 'function') {
       return popverVisible && (
         <div className={`${prefixCls}-customPanel`}>
           {renderCustomDropDownPanel((isVisible = false, e:Event) => {
@@ -90,32 +105,56 @@ const BtnGroup = (props:CustomBtnGroupProps) => {
 
   const dropdownBtnCls = classNames(prefixCls);
 
-  const dropDownIconCls = classNames(`${prefixCls}-dropdownIcon`, `${prefixCls}-dropdownIcon-${color}`);
+  const dropDownIconCls = classNames(
+    `${prefixCls}-dropdownIcon`,
+    `${prefixCls}-dropdownIcon-${color}`,
+  );
 
   if (!display) {
     return null;
   }
 
+  const onVisibleChange = (visible:boolean) => {
+    popoverVisibleChange?.(visible);
+    setVisible(visible);
+  };
+
+  const getHidden = () => popverVisible || tooltipHidden || mainTooltipHidden;
+
+  const handleOnHiddenChange = (hidden:boolean) => {
+    if (typeof onHiddenBeforeChange === 'function') {
+      onHiddenBeforeChange(hidden);
+    } else {
+      setMainTooltipHidden(hidden);
+    }
+  };
+
   return (
     <Permission service={flatten(btnItems?.map((item) => item?.permissions || []))}>
-      <Popover
-        visible={popverVisible}
-        content={menu}
-        trigger={trigger}
-        placement={placement}
-        overlayClassName={`${prefixCls}-popver`}
-        onVisibleChange={(visible:boolean) => setVisible(visible)}
+      <Tooltip
+        {...tooltipsConfigRestProps}
+        hidden={getHidden()}
+        onHiddenChange={handleOnHiddenChange}
       >
-        <Button
-          className={dropdownBtnCls}
-          color={color as ButtonColor}
-          icon={icon}
-          disabled={triggerBtnDisabled}
+        <Popover
+          visible={popverVisible}
+          content={menu}
+          trigger={trigger}
+          placement={placement}
+          overlayClassName={`${prefixCls}-popver`}
+          onVisibleChange={onVisibleChange}
         >
-          <span>{name}</span>
-          <Icon className={dropDownIconCls} type="expand_more" />
-        </Button>
-      </Popover>
+          <Button
+            className={dropdownBtnCls}
+            color={color as ButtonColor}
+            icon={icon}
+            disabled={triggerBtnDisabled}
+          >
+            <span>{name}</span>
+            <Icon className={dropDownIconCls} type="expand_more" />
+          </Button>
+        </Popover>
+      </Tooltip>
     </Permission>
   );
 };

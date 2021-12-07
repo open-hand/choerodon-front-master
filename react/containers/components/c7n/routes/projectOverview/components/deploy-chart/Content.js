@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
+import { useIntl } from 'react-intl';
 import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
@@ -10,6 +11,7 @@ import './index.less';
 import { useDeployChartStore } from './stores';
 
 const DeployChart = () => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-deploy-chart';
   const {
     startSprintDs,
@@ -22,7 +24,7 @@ const DeployChart = () => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>迭代部署次数</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.deploymentTimes' })}</span>
     </div>
   );
 
@@ -91,7 +93,7 @@ const DeployChart = () => {
         data: xAxis,
       },
       yAxis: {
-        name: '部署次数',
+        name: formatMessage({ id: 'agile.projectOverview.build.times' }),
         min: Math.max(...yAxis) > 3 ? null : 0,
         max: Math.max(...yAxis) > 3 ? null : 4,
         minInterval: 1,
@@ -134,7 +136,7 @@ const DeployChart = () => {
           stack: 'total',
         },
         {
-          name: '总部署次数',
+          name: formatMessage({ id: 'agile.projectOverview.total.build.times' }),
           type: 'bar',
           color: 'transparent',
           stack: 'total',

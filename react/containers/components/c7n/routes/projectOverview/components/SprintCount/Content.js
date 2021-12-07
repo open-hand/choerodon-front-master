@@ -7,8 +7,9 @@ import queryString from 'querystring';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router';
 import classnames from 'classnames';
-import useQueryString from '@/hooks/useQueryString';
+import { useIntl } from 'react-intl';
 import { AnimationLoading } from '@choerodon/components';
+import useQueryString from '@/hooks/useQueryString';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import { useSprintCountChartStore } from './stores';
@@ -19,6 +20,7 @@ import EmptyPage from '../EmptyPage';
 
 const clsPrefix = 'c7n-project-overview-sprint-count';
 const SprintCount = observer(() => {
+  const { formatMessage } = useIntl();
   const { startSprintDs, startedRecord } = useProjectOverviewStore();
   const {
     sprintCountDataSet,
@@ -31,7 +33,7 @@ const SprintCount = observer(() => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>迭代问题统计</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.issueStatus' })}</span>
       <Tooltip title="当前迭代各个工作项在不同状态下的数量统计。" placement="top">
         <Icon type="help" className={`${clsPrefix}-icon`} />
       </Tooltip>

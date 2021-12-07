@@ -5,7 +5,7 @@ import {
   Button, Tooltip, Select, Icon, Form,
 } from 'choerodon-ui/pro';
 import { debounce, toLength } from 'lodash';
-
+import { useIntl } from 'react-intl';
 import { observer } from 'mobx-react-lite';
 import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
@@ -52,6 +52,7 @@ const showIcons = [
 ];
 
 const Workload = observer(() => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-workload';
   const [selectOption, setSelectOption] = useState([]);
   const { workloadStore } = useWorkloadStore();
@@ -118,7 +119,7 @@ const Workload = observer(() => {
   };
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>每人每日工作量</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.workload.per.member.per.day' })}</span>
       <Tooltip placement="topLeft" arrowPointAtCenter title="统计当前迭代内团队成员每天完成的任务数，完成的故事数量及其对应故事点数量，提出的缺陷数量，解决的缺陷数量，当天工作记录的总工时。">
         <Icon type="help" className={`${clsPrefix}-icon`} />
       </Tooltip>
@@ -128,8 +129,8 @@ const Workload = observer(() => {
             <div className="c7n-pro-form-float" style={{ marginLeft: 24 }}>
               <Select
                 multiple
-                label="选择经办人"
-                placeholder="选择经办人"
+                label={formatMessage({ id: 'agile.projectOverview.searchAssignees' })}
+                placeholder={formatMessage({ id: 'agile.projectOverview.searchAssignees' })}
                 clearButton
                 maxTagCount={5}
                 style={{

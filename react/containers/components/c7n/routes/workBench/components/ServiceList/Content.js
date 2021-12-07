@@ -5,12 +5,14 @@ import { Loading, TimePopover } from '@choerodon/components';
 
 import './index.less';
 import { useRecentAppStore } from './stores';
+import { useWorkBenchStore } from '../../stores';
 
 const ServiceList = observer((props) => {
   const {
+    formatWorkbench,
+  } = useWorkBenchStore();
+  const {
     appServiceDs,
-    selectedProjectId,
-    category,
     history,
     organizationId,
   } = useRecentAppStore();
@@ -75,7 +77,11 @@ const ServiceList = observer((props) => {
   ) : (
     <div className="c7n-serviceList-content">
       {!appServiceDs.length ? (
-        <div className="c7n-workbench-empty-span">暂无最近操作的应用服务</div>
+        <div className="c7n-workbench-empty-span">
+          {
+            formatWorkbench({ id: 'noServiceTodeal' })
+          }
+        </div>
       ) : null}
       {renderAppServiceItem()}
     </div>
@@ -84,7 +90,7 @@ const ServiceList = observer((props) => {
   return (
     <div className="c7n-serviceList">
       <div className="c7n-serviceList-title">
-        <span>应用服务（最近使用）</span>
+        <span>{formatWorkbench({ id: 'appService' })}</span>
       </div>
       {getContent()}
     </div>

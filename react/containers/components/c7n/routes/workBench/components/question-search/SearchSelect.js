@@ -6,7 +6,9 @@ import { observer } from 'mobx-react-lite';
 import {
   Icon, TextField, Button, Dropdown, Form, Select, DataSet,
 } from 'choerodon-ui/pro';
-import { debounce, isEmpty, isEqual } from 'lodash';
+import {
+  debounce, isEmpty, isEqual, merge,
+} from 'lodash';
 import useSelect from '@/hooks/useSelect';
 import axios from '@/components/axios';
 import AppState from '@/containers/stores/c7n/AppState';
@@ -26,9 +28,9 @@ const QuestionSearchSelect = observer(({
     }
     const readAxiosConfigProps = typeof (readAxiosConfig) === 'function' ? readAxiosConfig({ organizationId }) : readAxiosConfig;
     const filterParamKey = filterParamName || 'param';
-    const newReadAxiosConfig = { ...readAxiosConfigProps, params: { ...(readAxiosConfigProps.params || {}), ...(paging ? { [filterParamKey]: filter, page } : {}) } };
+    const newReadAxiosConfig = { ...readAxiosConfigProps, params: merge(readAxiosConfigProps.params || {}, paging ? { [filterParamKey]: filter, page } : {}) };
 
-    return axios({ ...newReadAxiosConfig, enabledCancelCache: 15 });
+    return axios({ ...newReadAxiosConfig });
   }, [data, filterParamName, organizationId, paging, readAxiosConfig]);
   const config = useMemo(() => ({
     paging: !!paging,

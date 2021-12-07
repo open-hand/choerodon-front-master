@@ -118,7 +118,7 @@ const Action:React.FC<ActionProps> = (props) => {
         <Button
           size={'small' as Size}
           shape="circle"
-          style={{ color: '#5365EA', ...style }}
+          style={{ color: 'var(--primary-color)', ...style }}
           icon="more_vert"
           onClick={(e) => e && e.stopPropagation()}
           className={cls}

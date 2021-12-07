@@ -5,18 +5,21 @@ import { Tooltip, Spin } from 'choerodon-ui/pro';
 import ScrollContext from 'react-infinite-scroll-component';
 import moment from 'moment';
 import { TimePopover } from '@choerodon/components';
-import { getRandomBackground } from '@/containers/components/c7n/util';
+import { getRandomBackground } from '@/utils';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Switch from './components/SwitchTabs';
 import EmptyImg from './image/empty.svg';
 import './index.less';
 import { useDoc } from './stores';
+import { useWorkBenchStore } from '../../stores';
 
 const Doc = () => {
   const {
+    formatWorkbench,
+  } = useWorkBenchStore();
+  const {
     docStore,
     docDs,
-    history,
     clsPrefix,
   } = useDoc();
 
@@ -26,7 +29,7 @@ const Doc = () => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>文档</span>
+      <span>{formatWorkbench({ id: 'document' })}</span>
       <Switch />
     </div>
   );
@@ -175,8 +178,8 @@ const Doc = () => {
               : (docDs.status !== 'loading' && docDs.currentPage === 1
                 && (
                   <EmptyPage
-                    title="暂无文档信息"
-                    describe="暂无最近操作的文档"
+                    title={formatWorkbench({ id: 'noDoc' })}
+                    describe={formatWorkbench({ id: 'noDocOpts' })}
                     img={EmptyImg}
                   />
                 )

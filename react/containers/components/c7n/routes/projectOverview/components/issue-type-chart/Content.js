@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import { AnimationLoading } from '@choerodon/components';
+import { useIntl } from 'react-intl';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
@@ -10,6 +11,7 @@ import './index.less';
 import { useIssueTypeChartStore } from './stores';
 
 const DeployChart = () => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-deploy-chart';
   const {
     startSprintDs,
@@ -22,7 +24,7 @@ const DeployChart = () => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>迭代问题类型分布</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.issueTypeDistribution' })}</span>
     </div>
   );
   const getCategoryAndCategoryCount = useCallback(() => {
@@ -72,7 +74,7 @@ const DeployChart = () => {
       },
       legend: {
         // orient: 'vertical',
-        data: ['待处理', '处理中', '已完成'],
+        data: [formatMessage({ id: 'agile.projectOverview.pending' }), formatMessage({ id: 'agile.projectOverview.doing' }), formatMessage({ id: 'agile.projectOverview.complete' })],
         itemWidth: 14,
         itemHeight: 14,
         itemGap: 18,
@@ -96,7 +98,7 @@ const DeployChart = () => {
         },
       },
       yAxis: {
-        name: '问题计数',
+        name: formatMessage({ id: 'agile.projectOverview.issueCount' }),
         minInterval: 1,
         nameTextStyle: {
           color: 'rgba(0,0,0,0.64)',
@@ -129,7 +131,7 @@ const DeployChart = () => {
       },
       series: [
         {
-          name: '处理中',
+          name: formatMessage({ id: 'agile.projectOverview.doing' }),
           type: 'bar',
           stack: '计数',
           barCategoryGap: '28px',
@@ -140,7 +142,7 @@ const DeployChart = () => {
           barWidth: 24,
         },
         {
-          name: '待处理',
+          name: formatMessage({ id: 'agile.projectOverview.pending' }),
           type: 'bar',
           stack: '计数',
           data: todoCountArr,
@@ -151,7 +153,7 @@ const DeployChart = () => {
 
         },
         {
-          name: '已完成',
+          name: formatMessage({ id: 'agile.projectOverview.complete' }),
           type: 'bar',
           stack: '计数',
           data: doneCountArr,

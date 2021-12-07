@@ -10,7 +10,7 @@ import {
   cloneDeep,
   get,
   isEmpty,
-  isEqual, isEqualWith, merge, pick, set,
+  isEqual, isEqualWith, merge, omit, pick, set,
 } from 'lodash';
 import classNames from 'classnames';
 import { useDebounceFn } from 'ahooks';
@@ -52,7 +52,8 @@ export const questionSearchFields = [
       paging: true,
       readAxiosConfig: ({ organizationId }) => ({
         url: `/agile/v1/organizations/${organizationId}/work_bench/status`,
-        method: 'get',
+        method: 'post',
+        data: {},
       }),
       valueField: 'id',
       textField: 'name',
@@ -97,8 +98,10 @@ export const questionSearchFields = [
     selectConfig: {
       paging: false,
       readAxiosConfig: ({ organizationId }) => ({
-        url: `/agile/v1/organizations/${organizationId}/priority`,
-        method: 'get',
+        url: `/agile/v1/organizations/${organizationId}/work_bench/priority`,
+        method: 'post',
+        params: { param: '' },
+        data: {},
       }),
       valueField: 'id',
       textField: 'name',
@@ -158,7 +161,8 @@ export const questionSearchFields = [
       paging: true,
       readAxiosConfig: ({ organizationId }) => ({
         url: `/agile/v1/organizations/${organizationId}/work_bench/users`,
-        method: 'get',
+        method: 'post',
+        data: {},
       }),
       valueField: 'id',
       textField: 'realName',
@@ -184,10 +188,9 @@ function useClickOut(onClickOut) {
 
 const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => {
   const prefixCls = 'c7ncd-question-search';
-  const needRenderFields = useMemo(() => fields.filter((i) => i.display), [fields]);
   const hiddenFields = useMemo(() => fields.filter((i) => !i.display), [fields]);
   const [searchData, setSearchData] = useState(undefined);
-  const { selectedProjectId } = useWorkBenchStore();
+  const { selectedProjectId, formatCommon } = useWorkBenchStore();
 
   const searchMode = useMemo(() => {
     const codes = fields.map((i) => i.source).filter(Boolean);
@@ -226,9 +229,10 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
 
   useEffect(() => {
     if (searchData) {
+      searchDs.setState('status', Object.values(omit(searchData, 'contents')).some((item) => !!item));
       handleQuery();
     }
-  }, [handleQuery, searchData, selectedProjectId]);
+  }, [handleQuery, searchData, searchDs, selectedProjectId]);
 
   const { run: handleInputContent } = useDebounceFn((v) => {
     handleChange('contents', v);
@@ -246,7 +250,6 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
     setHidden(true);
   }, []);
   const containerRef = useClickOut(handleClickOut);
-
   return (
     <div className={prefixCls}>
 
@@ -280,9 +283,9 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
                 }}
                 style={{ marginLeft: '.1rem' }}
               >
-                查询
+                {formatCommon({ id: 'search' })}
               </Button>
-              <Button onClick={handleClear}>重置</Button>
+              <Button onClick={handleClear}>{formatCommon({ id: 'reset' })}</Button>
             </div>
           </div>
         )}
@@ -303,7 +306,7 @@ const QuestionSearch = observer(({ fields = questionSearchFields, onQuery }) => 
         className={`${prefixCls}-summary`}
         prefix={<Icon type="search" />}
         onInput={(e) => handleInputContent(e.target.value)}
-        placeholder="请输入搜索内容"
+        placeholder={formatCommon({ id: 'search' })}
         clearButton
         onChange={(v) => handleChange('contents', v)}
       />

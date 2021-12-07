@@ -7,7 +7,7 @@ import {
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { merge, get } from 'lodash';
-import { getRandomBackground } from '@/containers/components/c7n/util';
+import { getRandomBackground } from '@/utils';
 
 import './index.less';
 
@@ -25,7 +25,7 @@ function getFirst(str) {
 }
 
 const QuestionNode = observer(({
-  history, record, organizationId, switchCode, isStar,
+  history, record, organizationId, switchCode, isStar, onClickStar,
 }) => {
   const {
     projectVO, typeCode, issueTypeVO, issueNum, summary, priorityVO: customPriorityVO,
@@ -181,7 +181,6 @@ const QuestionNode = observer(({
     const {
       id: userId,
       imageUrl,
-      loginName,
       name,
       realName,
     } = userInfo;
@@ -217,7 +216,7 @@ const QuestionNode = observer(({
           <div
             className={`${prefixCls}-main-project-left`}
             style={{
-              color: realId ? '#5365EA' : undefined,
+              color: realId ? 'var(--primary-color)' : undefined,
               marginRight: currentProjectId === 'more' ? 0 : undefined,
               backgroundColor: realId ? '#F0F5FF' : undefined,
               backgroundImage: imageUrl && currentProjectId ? `url('${imageUrl}')` : getRandomBackground(currentProjectId),
@@ -258,7 +257,16 @@ const QuestionNode = observer(({
         <Tooltip title={summary} placement="top">
           <span className={`${prefixCls}-main-description`}>{summary}</span>
         </Tooltip>
-        {isStar && starBeacon && <Icon className={`${prefixCls}-main-star`} type="stars" />}
+        {isStar && starBeacon && (
+        <Icon
+          className={`${prefixCls}-main-star`}
+          type="stars"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClickStar && onClickStar(record);
+          }}
+        />
+        )}
         {getStatus()}
         {(switchCode === 'reportedBug' || (isStar && typeCode !== 'feature')) && getUsers(assignees || [{ id: assigneeId, imageUrl: assigneeImageUrl, realName: assigneeRealName }])}
         {typeCode === 'feature' && getProjects(featureTeams)}

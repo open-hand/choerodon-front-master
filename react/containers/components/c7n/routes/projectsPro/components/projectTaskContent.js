@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon } from 'choerodon-ui';
 import { Tooltip } from 'choerodon-ui/pro';
 import { TimePopover } from '@choerodon/components';
-import { getRandomBackground } from '@/containers/components/c7n/util';
+import { getRandomBackground } from '@/utils';
 import { useProjectsProStore } from '../stores';
 
 import './projectTaskContent.less';

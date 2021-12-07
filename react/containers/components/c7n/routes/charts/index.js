@@ -5,7 +5,7 @@ import { mount } from '@choerodon/inject';
 import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Content, Header, Page } from '@/components/c7n-page';
-import Breadcrumb from '@/components/tab-page/Breadcrumb';
+import Breadcrumb from '@/components/c7n-breadCrumb';
 import axios from '@/components/axios';
 
 import './style/index.less';

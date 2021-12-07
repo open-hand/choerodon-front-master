@@ -11,6 +11,8 @@ export interface CustomBtnGroupProps {
   icon?: string,
   btnItems?: GroupBtnItemProps[],
   placement?: TooltipPlacement,
+  tooltipsConfig?:ToolTipsConfigType
+  popoverVisibleChange?:Function,
   trigger?: 'click' | 'hover' | 'focus' | 'contextMenu'
   disabled?: boolean
   renderCustomDropDownPanel?: (visbileSet?:CallableFunction)=> ReactNode,

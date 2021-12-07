@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
+import { useIntl } from 'react-intl';
 import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
@@ -10,6 +11,7 @@ import { useCommitChartStore } from './stores';
 import './index.less';
 
 const CommitChart = () => {
+  const { formatMessage } = useIntl();
   const clsPrefix = 'c7n-project-overview-commit-chart';
   const {
     startSprintDs,
@@ -22,7 +24,7 @@ const CommitChart = () => {
 
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>迭代代码提交次数</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.codeCommit' })}</span>
     </div>
   );
 
@@ -99,7 +101,7 @@ const CommitChart = () => {
         data: xAxis,
       },
       yAxis: {
-        name: '提交次数',
+        name: formatMessage({ id: 'agile.projectOverview.commits' }),
         min: Math.max(...yAxis) > 3 ? null : 0,
         max: Math.max(...yAxis) > 3 ? null : 4,
         minInterval: 1,
@@ -162,7 +164,7 @@ const CommitChart = () => {
           },
         },
         {
-          name: '总提交次数',
+          name: formatMessage({ id: 'agile.projectOverview.totalCommits' }),
           type: 'line',
           color: 'transparent',
           stack: 'total',

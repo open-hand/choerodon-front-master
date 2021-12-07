@@ -1,0 +1,24 @@
+@prefixCls: ~"c7ncd-language-toggle";
+
+.@{prefixCls} {
+  &-overlay {
+    .c7n-popover-inner-content {
+      padding: 0 !important;
+    }
+  }
+  &-menu {
+    padding: 6px 0;
+    &-item {
+      width: 120px;
+      height: 32px;
+      padding: 6px 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      &-selected,
+      &:hover {
+        color: var(--primary-color);
+        background: var(--primary-color-background);
+      }
+    }
+  }
+}

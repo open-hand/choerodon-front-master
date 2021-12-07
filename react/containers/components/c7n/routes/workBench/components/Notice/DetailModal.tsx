@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { Avatar } from 'choerodon-ui';
 
-import defaultAvatar from '@/containers/components/c7n/ui/header/style/icons/favicon.png';
+import defaultAvatar from '@/assets/images/favicon.png';
 import AppState from '@/containers/stores/c7n/AppState';
 import { NoticeVO } from './model';
 
 const ModalTitle = styled.div`
   position: relative;
-  color: #5365ea;
+  color: var(--primary-color);
   font-size: 16px;
   line-height: 22px;
   margin-bottom: .16rem;

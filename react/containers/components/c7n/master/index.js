@@ -1,16 +1,3 @@
-import React from 'react';
-import { WEBSOCKET_SERVER } from '@/utils';
-import Master from './Master';
-import { PermissionProvider } from '@/components/permission';
-import WSProvider from '@/components/ws/WSProvider';
-import './index.less';
+import MasterDefault from './MasterDefault';
 
-const PermissionAndWSProviderIndex = ({ AutoRouter }) => (
-  <PermissionProvider>
-    <WSProvider server={WEBSOCKET_SERVER}>
-      <Master AutoRouter={AutoRouter} />
-    </WSProvider>
-  </PermissionProvider>
-);
-
-export default PermissionAndWSProviderIndex;
+export default MasterDefault;

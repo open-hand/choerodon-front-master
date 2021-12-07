@@ -9,7 +9,7 @@ import { merge } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { Loading } from '@choerodon/components';
-import { getRandomBackground } from '@/containers/components/c7n/util';
+import { getRandomBackground } from '@/utils';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import Switch from '@/containers/components/c7n/routes/workBench/components/multiple-switch';
@@ -17,6 +17,7 @@ import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
 
 import './index.less';
+import { useWorkBenchStore } from '../../stores';
 
 const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
 
@@ -34,6 +35,11 @@ function getFirst(str) {
 }
 
 const TodoQuestion = observer(() => {
+  const {
+    formatWorkbench,
+    formatCommon,
+  } = useWorkBenchStore();
+
   const {
     organizationId,
     questionDs,
@@ -91,8 +97,8 @@ const TodoQuestion = observer(() => {
     backlogCode: 'myStarBeacon',
   });
   const emptyPrompt = useMemo(() => {
-    let title = '暂无待办问题';
-    let describe = '当前迭代暂无待办问题';
+    let title = formatWorkbench({ id: 'noTodo' });
+    let describe = formatWorkbench({ id: 'noTodo.desc' });
     if (switchCode.code === 'reportedBug') {
       title = '暂无已提缺陷';
       describe = '当前迭代您尚未提交任何缺陷';
@@ -313,7 +319,7 @@ const TodoQuestion = observer(() => {
           <div
             className="c7n-todoQuestion-issueContent-issueItem-main-project-left"
             style={{
-              color: realId ? '#5365EA' : undefined,
+              color: realId ? 'var(--primary-color)' : undefined,
               marginRight: id === 'more' ? 0 : undefined,
               backgroundColor: realId ? '#F0F5FF' : undefined,
               backgroundImage: imageUrl && id ? `url('${imageUrl}')` : getRandomBackground(id),
@@ -413,9 +419,9 @@ const TodoQuestion = observer(() => {
   }
   const renderStarMenu = () => (
     <Menu onClick={({ key }) => setSwitchCode({ type: 'change', code: 'myStarBeacon', backlogCode: key })}>
-      <Menu.Item key="myStarBeacon_backlog">需求</Menu.Item>
+      <Menu.Item key="myStarBeacon_backlog">{formatCommon({ id: 'demand' })}</Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="myStarBeacon">问题</Menu.Item>
+      <Menu.Item key="myStarBeacon">{formatCommon({ id: 'issue' })}</Menu.Item>
     </Menu>
   );
   const renderTitle = () => (
@@ -430,7 +436,7 @@ const TodoQuestion = observer(() => {
         options={[{ value: 'all', text: '所有待办' },
           {
             value: 'myStarBeacon',
-            text: (<Dropdown overlay={HAS_BACKLOG ? renderStarMenu() : undefined}><span>我的关注</span></Dropdown>),
+            text: (<Dropdown overlay={HAS_BACKLOG ? renderStarMenu() : undefined}><span>{formatWorkbench({ id: 'myAttention' })}</span></Dropdown>),
           },
           { value: 'reportedBug', text: '已提缺陷' },
           { value: 'myBug', text: '待修复缺陷' }]}

@@ -4,8 +4,8 @@ import { axios } from '@/index';
 import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
 import moment from 'moment';
-import { getRandomBackground } from '@/containers/components/c7n/util';
-import findFirstLeafMenu from '@/containers/components/util/findFirstLeafMenu';
+import { getRandomBackground } from '@/utils';
+import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 import { historyPushMenu } from '@/utils';
 import get from 'lodash/get';
 
@@ -56,7 +56,6 @@ export default function useStore(AppState, history) {
     },
     axiosGetRecentProjects() {
       axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/projects/latest_visit`, {
-        enabledCancelCache: false,
         enabledCancelRoute: false,
       }).then((res) => {
         this.setRecentProjects(res);
@@ -116,16 +115,13 @@ export default function useStore(AppState, history) {
           route = menuRoute;
           domain = menuDomain;
         }
-        // if (route) {
         path = `${route}?type=${type}&id=${id}&name=${encodeURIComponent(name)}${category ? `&category=${category}` : ''}`;
         if (String(organizationId)) {
           path += `&organizationId=${organizationId}`;
         }
-        // }
         if (path) {
           historyPushMenu(history, path, domain);
         }
-        // AppState.getProjects();
       });
     },
 
@@ -184,7 +180,6 @@ export default function useStore(AppState, history) {
       const orgId = AppState.currentMenuType.organizationId;
       if (orgId) {
         axios.get(`/iam/choerodon/v1/organizations/${orgId}/star_projects`, {
-          enabledCancelCache: false,
           enabledCancelRoute: false,
         }).then((res) => {
           this.setStarProjectsList(get(res, 'length') ? res.map((r) => {

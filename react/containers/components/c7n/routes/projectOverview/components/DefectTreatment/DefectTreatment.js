@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import './index.less';
 import { Spin } from 'choerodon-ui';
-
+import { useIntl } from 'react-intl';
 import { AnimationLoading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
@@ -13,7 +13,8 @@ import EmptyPage from '../EmptyPage';
 import { useDefectTreatmentStore } from './stores';
 
 const DefectTreatment = observer(() => {
-  const options = useMemo(() => [{ value: 'created', text: '提出' }, { value: 'completed', text: '解决' }], []);
+  const { formatMessage } = useIntl();
+  const options = useMemo(() => [{ value: 'created', text: formatMessage({ id: 'agile.projectOverview.created' }) }, { value: 'completed', text: formatMessage({ id: 'agile.projectOverview.resolved' }) }], []);
   const clsPrefix = 'c7n-project-overview-defect-treatment';
   const [charOption, setCharOption] = useState('created'); // createdList completedList
   const { startedRecord, startSprintDs } = useProjectOverviewStore();
@@ -77,7 +78,7 @@ const DefectTreatment = observer(() => {
         },
       },
       yAxis: {
-        name: '问题计数',
+        name: formatMessage({ id: 'agile.projectOverview.issueCount' }),
         nameTextStyle: {
           color: '#000',
         },
@@ -107,7 +108,7 @@ const DefectTreatment = observer(() => {
       series: [
         {
           type: 'bar',
-          name: charOption === 'created' ? '提出' : '解决',
+          name: charOption === 'created' ? formatMessage({ id: 'agile.projectOverview.created' }) : formatMessage({ id: 'agile.projectOverview.resolved' }),
           color: charOption === 'created' ? 'rgba(249, 136, 148, 1)' : 'rgba(136, 223, 240, 1)',
           barWidth: 10,
           itemStyle: {
@@ -145,7 +146,7 @@ const DefectTreatment = observer(() => {
   }
   const renderTitle = () => (
     <div className={`${clsPrefix}-title`}>
-      <span>缺陷提出与解决</span>
+      <span>{formatMessage({ id: 'agile.projectOverview.resolvedBug' })}</span>
       {startedRecord && defectTreatDs.length ? <OverviewWrap.Switch defaultValue="created" onChange={setCharOption} options={options} /> : ''}
     </div>
   );
