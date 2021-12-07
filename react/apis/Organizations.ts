@@ -27,10 +27,11 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
-  transferOrgNotify(orgid:string) {
+  transferOrgNotify(orgid:string, params: any) {
     return this.request({
       url: `${this.prefix}/${orgid}/change_tenant_owner_message`,
       method: 'get',
+      params,
     });
   }
 
