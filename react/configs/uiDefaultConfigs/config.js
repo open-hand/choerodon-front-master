@@ -36,7 +36,15 @@ const useUiConfigs = () => {
    * table select 空界面展示
    * @param {*} cpName
    */
-  const renderEmpty = (cpName) => formatCommon({ id: 'nodata' });
+  const renderEmpty = (cpName) => {
+    if (cpName === 'Table') {
+      return formatCommon({ id: 'nodata' });
+    }
+    if (cpName === 'Output') {
+      return '';
+    }
+    return '';
+  };
 
   return {
     ...uiConfigure,
