@@ -1,4 +1,4 @@
-const SAGA_INSTANCE = {
+const SAGA_INSTANCE_BOOT = {
   // 事务实例
   'global.saga-instance.header.title': '事务实例',
   'global.saga-instance.detail': '事务实例详情',
@@ -19,4 +19,4 @@ const SAGA_INSTANCE = {
   'global.saga-instance.waitToBePulledCount': '等待被拉取',
 };
 
-export { SAGA_INSTANCE };
+export { SAGA_INSTANCE_BOOT };

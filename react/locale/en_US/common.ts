@@ -16,7 +16,7 @@ export const OPTIONS_EN_US = {
   'boot.new': 'Create',
   'boot.create': 'Create',
   'boot.edit': 'Edit',
-  'boot.modify': 'Edit',
+  'boot.modify': 'Modify',
   'boot.delete': 'Delete',
   'boot.enable': 'Enable',
   'boot.disable': 'Disable',
@@ -145,13 +145,13 @@ const LANGUAGES_EN_US = {
 
 // 用户相关
 const USER_EN_US = {
-  'boot.username': 'Username',
+  'boot.username': 'User Name',
   'boot.personal': 'Personal',
   'boot.personalInfo': 'Personal Info',
   'boot.password': 'Password',
   'boot.accountLogin': 'Account Login',
   'boot.mobileLogin': 'Mobile Login',
-  'boot.account': 'Login Account',
+  'boot.account': 'Login Name',
   'boot.email': 'Email',
   'boot.forgetPassword': 'Forgot Password',
 } as const;
@@ -178,7 +178,7 @@ const COMMON_EN_US = {
   ...OPTIONS_STATUS_SUCCESS_EN_US,
   ...CHARACTER_ZH_CN,
   ...UNIT_ZH_CN,
-  'boot.mobilephone': 'Tel',
+  'boot.mobilephone': 'Phone Number',
   'boot.field': 'Field',
 
   'boot.transaction': 'Transaction',
