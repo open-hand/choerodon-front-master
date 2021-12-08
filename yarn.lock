@@ -1240,8 +1240,8 @@
 
 "@choerodon/components@1.2.0-alpha.1":
   version "1.2.0-alpha.1"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@choerodon/components/-/components-1.2.0-alpha.1.tgz#879af0c94dc1eed455fa58ff2b457f54a1c7b5be"
-  integrity sha512-mcrfw1Kn6Tp+LkLjPeRAnjfhCaxOCuMU0VphXzdiAUaOdLZ2/CdhlYuyQPBVlDuFAyHYcZL5Y4fOspIom7/L7g==
+  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@choerodon/components/-/components-1.2.0-alpha.1.tgz#1c0fa0d5a957132d307e6c63a1267a5967896bd3"
+  integrity sha512-aO9X5dU3j69kA5slg7oLzvvD0vwMISRc7TQAdJ3Nhlts+zLGX52ZvH+jPAFW4yIS/dkVYOb/XsECXS62by3ctQ==
   dependencies:
     "@ahooksjs/use-url-state" "^2.5.7"
     "@choerodon/ckeditor" "0.1.0"

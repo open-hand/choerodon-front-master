@@ -2,7 +2,7 @@ import React, {
   FC, CSSProperties,
 } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Icon, Tooltip } from 'choerodon-ui/pro';
+import { Icon } from 'choerodon-ui/pro';
 import { OverflowWrap } from '@choerodon/components';
 import { Menu } from 'choerodon-ui';
 import map from 'lodash/map';
