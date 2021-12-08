@@ -145,7 +145,7 @@ class MenuStore {
       if (root) {
         menuRoot[root.level] = root;
         this.setOpenkeysBaseonRoot(root);
-        this.setActiveMenuRoot(JSON.parse(JSON.stringify(menuRoot)));
+        this.setActiveMenuRoot(menuRoot);
       }
     }
   }

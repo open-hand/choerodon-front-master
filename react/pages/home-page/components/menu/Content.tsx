@@ -67,7 +67,7 @@ const Menu = () => {
   const loadMenuData = useCallback(async () => {
     try {
       const menus = await MenuStore.loadMenuData();
-      const tree = { subMenus: menus };
+      const tree = { subMenus: menus.slice() };
       treeReduce({
         tree,
         callback: findCurrentRoute,

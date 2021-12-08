@@ -49,6 +49,8 @@ const SubMenus:FC<SubMenuProps> = () => {
   // 获取全局以及设置到Store里头的选中的父级菜单
   const activeMenuRoot = getActiveMenuRoot[menuType?.type] || {};
 
+  console.log(activeMenuRoot);
+
   // 获取到当前父菜单下的所有子菜单项
   const currentRootChildrenMenu = getMenuData.filter((item: { id: string; }) => item.id === activeMenuRoot.id)?.[0]?.subMenus || [];
 
