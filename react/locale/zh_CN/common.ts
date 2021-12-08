@@ -1,4 +1,4 @@
-// 状态相关
+// 操作
 const OPTIONS_ZH_CN = {
   'boot.execute': '执行',
   'boot.return': '返回',
@@ -40,6 +40,7 @@ const OPTIONS_ZH_CN = {
   'boot.previous': '上一步',
   'boot.next': '下一步',
   'boot.finish': '结束',
+  'boot.close': '关闭',
 } as const;
 
 // 状态相关
