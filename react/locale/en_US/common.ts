@@ -242,7 +242,7 @@ const COMMON_EN_US = {
 
   'boot.note': 'Note',
   'boot.recentUse': 'Recently Used',
-  'boot.pleaseSearch': 'Please Search',
+  'boot.pleaseSearch': ' Please enter your search content',
   'boot.peopleNum': 'The number of people',
   'boot.time': 'Time',
   'boot.date': 'Date',
