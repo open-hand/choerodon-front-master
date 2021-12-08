@@ -84,7 +84,7 @@ const Menu = () => {
     } catch (error) {
       throw new Error(error);
     }
-  }, [activeMenu, findCurrentRoute, getSiteInfo.defaultTitle, getSiteInfo.systemTitle, menuType.name, menuType.type, pathname]);
+  }, [activeMenu, findCurrentRoute]);
 
   useEffect(() => {
     loadMenuData();
