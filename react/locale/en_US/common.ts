@@ -147,6 +147,7 @@ const LANGUAGES_EN_US = {
 // 用户相关
 const USER_EN_US = {
   'boot.username': 'User Name',
+  'boot.usercode': 'User Code',
   'boot.personal': 'Personal',
   'boot.personalInfo': 'Personal Info',
   'boot.password': 'Password',

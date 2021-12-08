@@ -153,6 +153,7 @@ const UNIT_ZH_CN = {
 // 用户
 const USER_ZH_CN = {
   'boot.username': '用户名',
+  'boot.usercode': '用户编码',
   'boot.personal': '个人',
   'boot.personalInfo': '个人信息',
   'boot.account': '登录名',
