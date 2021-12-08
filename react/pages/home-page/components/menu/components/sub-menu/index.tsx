@@ -3,9 +3,10 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon, Tooltip } from 'choerodon-ui/pro';
+import { OverflowWrap } from '@choerodon/components';
 import { Menu } from 'choerodon-ui';
 import map from 'lodash/map';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import pick from 'lodash/pick';
 import classNames from 'classnames';
 import { useMenuStore } from '../../stores';
@@ -52,6 +53,8 @@ const SubMenus:FC<SubMenuProps> = () => {
   // 获取到当前父菜单下的所有子菜单项
   const currentRootChildrenMenu = getMenuData.filter((item: { id: string; }) => item.id === activeMenuRoot.id)?.[0]?.subMenus || [];
 
+  const history = useHistory();
+
   const renderMenuItem = ({
     subMenus = [],
     route,
@@ -72,6 +75,7 @@ const SubMenus:FC<SubMenuProps> = () => {
     // Link click函数
     const handleLink = () => {
       handleStatisticCount(menuCode, level, menuName);
+      history.push(getCurrentQuerystring());
     };
 
     const renderMenuLink = () => {
@@ -79,44 +83,48 @@ const SubMenus:FC<SubMenuProps> = () => {
         [`${prefixCls}-menuItem-link-collapsed`]: !isExpanded,
       });
       return (
-        <Tooltip title={menuName} placement="right">
-          <Link
-            className={linkCls}
-            to={getCurrentQuerystring()}
-            onClick={handleLink}
-            style={chilMenuCssProperties}
+        <div
+          className={linkCls}
+          onClick={handleLink}
+          style={chilMenuCssProperties}
+          role="none"
+        >
+          {showIcon ? (
+            <Icon
+              className={`${prefixCls}-menuItem-link-icon`}
+              type={icon}
+            />
+          ) : <span style={{ width: 10 }} />}
+          <OverflowWrap
+            tooltipsConfig={{
+              placement: 'right',
+            }}
+            className={`${prefixCls}-menuItem-link-name`}
           >
-            {showIcon ? (
-              <Icon
-                className={`${prefixCls}-menuItem-link-icon`}
-                type={icon}
-              />
-            ) : <span style={{ width: 10 }} />}
-            <span
-              className={`${prefixCls}-menuItem-link-name`}
-            >
-              {menuName}
-            </span>
-          </Link>
-        </Tooltip>
+            {menuName}
+          </OverflowWrap>
+        </div>
       );
     };
 
     const renderSubMenuTitle = () => (
-      <Tooltip title={menuName} placement="right">
-        <div
-          style={chilMenuCssProperties}
-          className={`${prefixCls}-menuItem-sub-title`}
+      <div
+        style={chilMenuCssProperties}
+        className={`${prefixCls}-menuItem-sub-title`}
+      >
+        <Icon
+          type={icon}
+          className={`${prefixCls}-menuItem-sub-title-icon`}
+        />
+        <OverflowWrap
+          tooltipsConfig={{
+            placement: 'right',
+          }}
+          className={`${prefixCls}-menuItem-sub-title-name`}
         >
-          <Icon
-            type={icon}
-            className={`${prefixCls}-menuItem-sub-title-icon`}
-          />
-          <span className={`${prefixCls}-menuItem-sub-title-name`}>
-            {menuName}
-          </span>
-        </div>
-      </Tooltip>
+          {menuName}
+        </OverflowWrap>
+      </div>
     );
 
     const renderSubMenuChildMenus = () => subMenus.map((subMenuItem) => {
