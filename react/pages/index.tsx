@@ -7,7 +7,7 @@ import {
 } from 'ahooks';
 import { Provider } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
-import { Loading } from '@choerodon/components';
+import { ErrorBoundar, Loading } from '@choerodon/components';
 
 import stores from '@/containers/stores';
 
@@ -36,6 +36,7 @@ import { PermissionProvider } from '@/components/permission';
 import { WEBSOCKET_SERVER } from '@/utils';
 import C7NDevTool from '@/components/dev-tools';
 import { MasterLocaleContainer } from '@/configs/masterLocaleConfigs';
+import ErrorPage from './components/error-page';
 
 /** @type {boolean} 是否安装了敏捷模块 */
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
@@ -132,20 +133,22 @@ const MasterIndex = () => {
   }
 
   return (
-    <MasterLocaleContainer>
-      <UIConfigInitContainer>
-        <Provider {...stores}>
-          <C7NReactQueryContainer>
-            <PermissionProvider>
-              <WSProvider server={WEBSOCKET_SERVER}>
-                {getContainer}
-              </WSProvider>
-            </PermissionProvider>
-          </C7NReactQueryContainer>
-        </Provider>
-        <C7NDevTool />
-      </UIConfigInitContainer>
-    </MasterLocaleContainer>
+    <ErrorBoundar renderError={(props) => <ErrorPage {...props} />}>
+      <MasterLocaleContainer>
+        <UIConfigInitContainer>
+          <Provider {...stores}>
+            <C7NReactQueryContainer>
+              <PermissionProvider>
+                <WSProvider server={WEBSOCKET_SERVER}>
+                  {getContainer}
+                </WSProvider>
+              </PermissionProvider>
+            </C7NReactQueryContainer>
+          </Provider>
+          <C7NDevTool />
+        </UIConfigInitContainer>
+      </MasterLocaleContainer>
+    </ErrorBoundar>
   );
 };
 
