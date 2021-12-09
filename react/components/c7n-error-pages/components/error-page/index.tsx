@@ -7,6 +7,7 @@ import Logo from '@/assets/images/favicon.svg';
 
 import './index.less';
 import { DEFAUTL_SYSTEM_NAME } from '@/constants';
+import { useFormatCommon, useFormatMessage } from '@/hooks';
 
 export type ErrorPageProps = {
   error?:any

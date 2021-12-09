@@ -7,6 +7,7 @@ import { Breadcrumb as Bread } from 'choerodon-ui';
 import { BreadcrumbProps } from './interface';
 import './index.less';
 import getRoutePath from '@/utils/getRoutePath';
+import useShouldHiddenMenu from '@/hooks/useShouldHiddenMenu';
 
 const { Item } = Bread;
 
@@ -22,6 +23,8 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
     // ---to do ---
     MenuStore,
   } = props;
+
+  const hiddenMenu = useShouldHiddenMenu();
 
   const currentMenu = MenuStore.activeMenu;
 
@@ -41,7 +44,7 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
   const currentLink = useMemo(() => getRoutePath(route), [route]);
 
   function renderMenus() {
-    if (!currentMenu) return null;
+    if (!currentMenu || hiddenMenu) return null;
     return (
       <Item className={`${prefixCls}-menu`}>
         {
