@@ -9,7 +9,7 @@ import { Modal } from 'choerodon-ui/pro';
 
 import PageEntry from './pages';
 import './utils/iframeStorage';
-import { useAutoRefresh } from './hooks';
+import autoRefresh from './utils/autoRefresh';
 
 const getConfirmation = (message:string, callback:CallableFunction) => {
   Modal.open({
@@ -25,14 +25,12 @@ const getConfirmation = (message:string, callback:CallableFunction) => {
   });
 };
 
-const App = () => {
-  useAutoRefresh();
-  return (
-    <Router getUserConfirmation={getConfirmation}>
-      <PageEntry />
-    </Router>
-  );
-};
+autoRefresh();
+const App = () => (
+  <Router getUserConfirmation={getConfirmation}>
+    <PageEntry />
+  </Router>
+);
 
 const rootNode = document.getElementById('app');
 

@@ -177,7 +177,7 @@ const SubMenus:FC<SubMenuProps> = () => {
     MenuStore.setOpenKeys(currentOpenKeys);
   };
 
-  if (!currentRootChildrenMenu.length) {
+  if (!currentRootChildrenMenu?.length) {
     return null;
   }
 

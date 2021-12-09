@@ -66,8 +66,8 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
     }
   };
 
-  if(!currentSelectedOrg || !currentSelectedOrg?.into){
-    return null
+  if (!currentSelectedOrg || !currentSelectedOrg?.into) {
+    return null;
   }
 
   return (
