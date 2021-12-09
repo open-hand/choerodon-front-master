@@ -22,7 +22,7 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
   const {
     AppState: {
       currentMenuType: {
-        name, category, organizationId,
+        name, category, organizationId, id,
       },
     },
     MenuStore,
@@ -37,7 +37,7 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
   const currentOrgData = useMemo(() => (getOrgData ? toJS(getOrgData) : []), [getOrgData]);
 
   // todo
-  const currentSelectedOrg = currentOrgData[findIndex(currentOrgData, (item:any) => String(organizationId) === String(item.tenantId))];
+  const currentSelectedOrg = useMemo(() => currentOrgData.find((v: { id: any; }) => String(v.id) === String(organizationId || id)), [currentOrgData, id, organizationId]);
 
   const gotoOrganizationManager = async () => {
     try {

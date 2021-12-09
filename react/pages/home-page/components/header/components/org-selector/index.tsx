@@ -25,6 +25,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
       currentMenuType: {
         organizationId,
         name,
+        id,
       },
     },
     AppState,
@@ -44,7 +45,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
   const currentOrgData = useMemo(() => (getOrgData ? toJS(getOrgData) : []), [getOrgData]);
 
   // todo
-  const currentSelectedOrg = currentOrgData[findIndex(currentOrgData, (item:any) => String(organizationId) === String(item.tenantId))];
+  const currentSelectedOrg = useMemo(() => currentOrgData.find((v: { id: any; }) => String(v.id) === String(organizationId || id)), [currentOrgData, id, organizationId]);
 
   const {
     tenantName = name,

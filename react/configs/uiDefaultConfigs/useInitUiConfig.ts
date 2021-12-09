@@ -7,8 +7,6 @@ import { useUiConfigs } from './config';
  */
 function useInitUiConfig() {
   const UI_CONFIG = useUiConfigs();
-  console.log(UI_CONFIG);
-
   useEffect(() => {
     configure(UI_CONFIG as any);
   }, [UI_CONFIG]);
