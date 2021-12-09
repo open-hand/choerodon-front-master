@@ -1694,10 +1694,10 @@
   resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha1-tSBSnsIdjllFoYUd/Rwy6U45/0U=
 
-"@hzero-front-ui/c7n-ui@4.0.2-alpha.22":
-  version "4.0.2-alpha.22"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@hzero-front-ui/c7n-ui/-/c7n-ui-4.0.2-alpha.22.tgz#34ab7936dd74acb78f5fb2f3c22b06e503d6cee2"
-  integrity sha512-v4IcNejLMfDKUhiQbC7lPhMd5RXsJceEqacA/9OUlNzznDzgbr629E4V2RUqP23rXVPGccpKEPfCjMigsuYXuQ==
+"@hzero-front-ui/c7n-ui@4.0.2-alpha.23":
+  version "4.0.2-alpha.23"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/c7n-ui/-/c7n-ui-4.0.2-alpha.23.tgz#02ad9061b27834ed3427420da6b4039b0bf300b6"
+  integrity sha512-MyWsI7KqnFQkRJ96mlPMtkgQ/GWDyTaYOnwOEc6Z+c06ByRjxfNkbrHofvBTlBw+fGPdm12xVV+GRDb1jhJ5lA==
 
 "@hzero-front-ui/core@4.0.1-alpha.3":
   version "4.0.1-alpha.3"
@@ -1708,19 +1708,12 @@
     tinycolor2 "^1.4.2"
     vars-singleton "^0.2.0"
 
-"@hzero-front-ui/font@^4.0.2-alpha.3":
-  version "4.0.2-alpha.3"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@hzero-front-ui/font/-/font-4.0.2-alpha.3.tgz#ff8d65e541bb8f307ff5bb32c57b9f58b43bf482"
-  integrity sha512-CVwFRmC+cQG+4L1b3ZR1oAgrO8brUx/ddqM14Ei439gBtSv8mXdhV7OIHVWdOqvX9a5zHCwFILmuPrpimk/Gsw==
+"@hzero-front-ui/themes@4.0.2-alpha.24":
+  version "4.0.2-alpha.24"
+  resolved "http://nexus.saas.hand-china.com/repository/hzero-npm-group/@hzero-front-ui/themes/-/themes-4.0.2-alpha.24.tgz#fcc773d4f504174b4655119f910547cf2bda924f"
+  integrity sha512-klR0qVogf0DCgVz+BLeNmOtOnZW0Y2yNqQh/swcdinQ9sfzMlXIyoHJ2wnuI932L1HoWtvcjGcwNJKXRAxnejQ==
   dependencies:
-    hzero-ued-icon "^0.1.6"
-
-"@hzero-front-ui/themes@4.0.2-alpha.23":
-  version "4.0.2-alpha.23"
-  resolved "https://nexus.choerodon.com.cn/repository/choerodon-npm/@hzero-front-ui/themes/-/themes-4.0.2-alpha.23.tgz#17e84634054404b48e38e1154ab5f1fea1506c6d"
-  integrity sha512-QpDqdyad9ltYd6MfeKK3b5pPtFkZMgz+9S5j0kXyAkGrpVlHjd9F2VFu9Wlbn1uRoWW1amJidkHMjbzZdnxizQ==
-  dependencies:
-    "@hzero-front-ui/font" "^4.0.2-alpha.3"
+    "@hzero-front-ui/font" "^4.0.2-alpha.4"
 
 "@icons/material@^0.2.4":
   version "0.2.4"
