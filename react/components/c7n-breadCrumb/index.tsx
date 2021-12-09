@@ -24,6 +24,7 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
     MenuStore,
   } = props;
 
+  // 如果当前的路由匹配到了需要隐藏菜单的路由页面
   const hiddenMenu = useShouldHiddenMenu();
 
   const currentMenu = MenuStore.activeMenu;
