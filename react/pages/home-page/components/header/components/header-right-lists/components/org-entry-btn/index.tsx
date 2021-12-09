@@ -21,6 +21,9 @@ const prefixCls = 'c7ncd-org-entry-btn';
 const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
   const {
     AppState: {
+      getUserInfo: {
+        admin = false,
+      },
       currentMenuType: {
         name, category, organizationId, id,
       },
@@ -66,15 +69,15 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
     }
   };
 
-  if (!currentSelectedOrg || !currentSelectedOrg?.into) {
-    return null;
+  if ((currentSelectedOrg && currentSelectedOrg?.into) || admin) {
+    return (
+      <div className="c7ncd-header-right-lists-item">
+        <Icon onClick={gotoOrganizationManager} type="settings-o" className={prefixCls} />
+      </div>
+    );
   }
 
-  return (
-    <div className="c7ncd-header-right-lists-item">
-      <Icon onClick={gotoOrganizationManager} type="settings-o" className={prefixCls} />
-    </div>
-  );
+  return null;
 };
 
 export default inject('MenuStore', 'AppState', 'HeaderStore')(observer(OrgEntryBtn));
