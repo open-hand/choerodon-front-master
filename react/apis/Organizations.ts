@@ -1,3 +1,4 @@
+import { omit } from 'lodash';
 import Api from './Api';
 
 class OrganizationsApi extends Api<OrganizationsApi> {
@@ -72,11 +73,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
-  export(res:object) {
+  export(postData:any) {
     return this.request({
       method: 'post',
       url: `${this.prefix}/hand/export/register/tenant`,
-      data: res,
+      data: omit(postData, 'user_id'),
+      params: {
+        user_id: postData.user_id,
+      },
     });
   }
 
