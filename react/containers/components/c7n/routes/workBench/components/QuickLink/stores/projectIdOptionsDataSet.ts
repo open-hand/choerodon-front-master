@@ -1,10 +1,10 @@
 import { organizationsApiConfig } from '@/apis';
 
-export default (userId:string) => ({
+export default (userId: string) => ({
   autoQuery: true,
   paging: true,
   pageSize: 10,
   transport: {
-    read: () => organizationsApiConfig.getProjectsIds(userId),
+    read: ({ data }: { data: any }) => organizationsApiConfig.getProjectsIds(userId, data.key),
   },
 });
