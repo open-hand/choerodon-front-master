@@ -95,6 +95,7 @@ const SubMenus:FC<SubMenuProps> = () => {
               type={icon}
             />
           ) : <span style={{ width: 10 }} />}
+          {isExpanded && (
           <OverflowWrap
             tooltipsConfig={{
               placement: 'right',
@@ -103,6 +104,7 @@ const SubMenus:FC<SubMenuProps> = () => {
           >
             {menuName}
           </OverflowWrap>
+          )}
         </div>
       );
     };
