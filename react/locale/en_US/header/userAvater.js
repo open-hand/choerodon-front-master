@@ -11,7 +11,6 @@ const userAvater = {
   'c7ncd.user.avatar.invitation.websiteAddress': 'WebsiteAddress',
   'c7ncd.user.avatar.invitation.industry': 'Industry',
   'c7ncd.user.avatar.invitation.wants': 'Wants',
-  'c7ncd.user.avatar': '',
 };
 
 export {

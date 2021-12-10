@@ -1,4 +1,4 @@
-import { useLocalStorageState } from 'ahooks';
+import { useLocalStorageState, useUpdateEffect } from 'ahooks';
 import { LanguageTypes } from '@/typings';
 import AppState from '@/containers/stores/c7n/AppState';
 
@@ -7,8 +7,11 @@ import AppState from '@/containers/stores/c7n/AppState';
  * @return {*}
  */
 const useCurrentLanguage = () => {
-  const [localLanguage] = useLocalStorageState('language');
-  const language = localLanguage || AppState.currentLanguage as LanguageTypes;
+  const [localLanguage, setLanguage] = useLocalStorageState('language');
+
+  const stateLanguage = AppState.currentLanguage;
+
+  const language:LanguageTypes = stateLanguage || localLanguage;
 
   return language?.replace('-', '_') as LanguageTypes;
 };

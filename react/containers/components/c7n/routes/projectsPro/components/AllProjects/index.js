@@ -104,23 +104,14 @@ export default observer(() => {
         categories, name: projectName, id: projectId, programName,
       } = projectData || {};
       const isProgram = some(categories, ['code', categoryCodes.program]);
-      const okProps = {
-        disabled: true,
-        color: 'red',
-        style: {
-          width: '100%',
-          border: '1px solid rgba(27,31,35,.2)',
-          height: 36,
-          marginLeft: 0,
-        },
-      };
       const ModalContent = ({ modal: newModal }) => {
         let extraMessage;
         if (isProgram) {
           extraMessage = (
             <>
-              <div>
-                警告：项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
+              <div className="c7n-project-disabled-modal-warning">
+                <Icon type="info" />
+                <span>&nbsp;项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！</span>
               </div>
               <div style={{ marginTop: 10 }}>
                 请输入
@@ -135,7 +126,6 @@ export default observer(() => {
                 onInput={(e) => {
                   newModal.update({
                     okProps: {
-                      ...okProps,
                       disabled: e.target.value !== projectName,
                     },
                   });
@@ -145,24 +135,16 @@ export default observer(() => {
           );
         } else if (programName) {
           extraMessage = (
-            <div>
-              警告：子项目停用后，与项目群相关的冲刺将发生变动，进行中的冲刺会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！
+            <div className="c7n-project-disabled-modal-warning">
+              <Icon type="info" />
+              <span>&nbsp;子项目停用后，与项目群相关的冲刺将发生变动，进行中的冲刺会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！</span>
             </div>
           );
         }
         const content = (
           <div style={{ marginTop: -10 }}>
             {isProgram && (
-              <p
-                style={{
-                  marginBottom: 14,
-                  background: '#fffbdd',
-                  padding: '15px 26px',
-                  border: '1px solid rgba(27,31,35,.15)',
-                  width: 'calc(100% + 40px)',
-                  marginLeft: -20,
-                }}
-              >
+              <p className="c7n-project-disabled-modal-tips">
                 请仔细阅读下列事项！
               </p>
             )}
@@ -181,10 +163,8 @@ export default observer(() => {
           title: '停用项目',
           children: <ModalContent />,
           onOk: () => handleEnable(projectId, 'disable'),
-          okProps,
+          okProps: { disabled: true },
           okText: '我已经知道后果，停用此项目',
-          closable: true,
-          footer: (okBtn) => okBtn,
         });
       } else {
         Modal.open({

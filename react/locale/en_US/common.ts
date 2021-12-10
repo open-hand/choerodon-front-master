@@ -16,7 +16,7 @@ export const OPTIONS_EN_US = {
   'boot.new': 'Create',
   'boot.create': 'Create',
   'boot.edit': 'Edit',
-  'boot.modify': 'Edit',
+  'boot.modify': 'Modify',
   'boot.delete': 'Delete',
   'boot.enable': 'Enable',
   'boot.disable': 'Disable',
@@ -39,6 +39,7 @@ export const OPTIONS_EN_US = {
   'boot.previous': 'Previous',
   'boot.next': 'Next',
   'boot.finish': 'Finish',
+  'boot.close': 'Close',
 } as const;
 
 export const STATUS_EN_US = {
@@ -145,13 +146,14 @@ const LANGUAGES_EN_US = {
 
 // 用户相关
 const USER_EN_US = {
-  'boot.username': 'Username',
+  'boot.username': 'User Name',
+  'boot.usercode': 'User Code',
   'boot.personal': 'Personal',
   'boot.personalInfo': 'Personal Info',
   'boot.password': 'Password',
   'boot.accountLogin': 'Account Login',
   'boot.mobileLogin': 'Mobile Login',
-  'boot.account': 'Login Account',
+  'boot.account': 'Login Name',
   'boot.email': 'Email',
   'boot.forgetPassword': 'Forgot Password',
 } as const;
@@ -178,7 +180,7 @@ const COMMON_EN_US = {
   ...OPTIONS_STATUS_SUCCESS_EN_US,
   ...CHARACTER_ZH_CN,
   ...UNIT_ZH_CN,
-  'boot.mobilephone': 'Tel',
+  'boot.mobilephone': 'Phone Number',
   'boot.field': 'Field',
 
   'boot.transaction': 'Transaction',
@@ -242,7 +244,7 @@ const COMMON_EN_US = {
 
   'boot.note': 'Note',
   'boot.recentUse': 'Recently Used',
-  'boot.pleaseSearch': 'Please Search',
+  'boot.pleaseSearch': ' Please enter your search content',
   'boot.peopleNum': 'The number of people',
   'boot.time': 'Time',
   'boot.date': 'Date',

@@ -11,7 +11,6 @@ const userAvater = {
   'c7ncd.user.avatar.invitation.websiteAddress': '官网地址',
   'c7ncd.user.avatar.invitation.industry': '行业',
   'c7ncd.user.avatar.invitation.wants': '想要使用的功能',
-  'c7ncd.user.avatar': '',
 };
 
 export {

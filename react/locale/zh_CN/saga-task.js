@@ -1,4 +1,4 @@
-const sagaTask = {
+const SAGA_TASK_BOOT = {
   // 事务定义
   'global.saga.header.title': '事务定义',
   'global.saga.code': '编码',
@@ -37,4 +37,4 @@ const sagaTask = {
   'global.saga.task.abort': '强制失败',
 };
 
-export { sagaTask };
+export { SAGA_TASK_BOOT };

@@ -15,10 +15,9 @@ export type PlatformEntryProps = {
 const prefixCls = 'c7ncd-invite-entry';
 const intlPrefix = 'c7ncd.user.avatar';
 
-const ModalContent = ({ modal }:any) => mount('base-pro:trialInviteModal', { modal });
-
 const PlatformEntry:FC<PlatformEntryProps> = () => {
   const formatClient = useFormatMessage(intlPrefix);
+  const ModalContent = ({ modal }:any) => mount('base-pro:trialInviteModal', { modal });
   const handleInviteModalOpen = () => {
     const { MIN } = MODAL_WIDTH;
     Modal.open({

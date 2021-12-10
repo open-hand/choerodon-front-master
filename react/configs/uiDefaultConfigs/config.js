@@ -36,7 +36,15 @@ const useUiConfigs = () => {
    * table select 空界面展示
    * @param {*} cpName
    */
-  const renderEmpty = (cpName) => formatCommon({ id: 'nodata' });
+  const renderEmpty = (cpName) => {
+    const cpText = {
+      Table: formatCommon({ id: 'nodata' }),
+      Output: '',
+      Select: formatCommon({ id: 'nodata' }),
+      Attachment: formatCommon({ id: 'nodata' }),
+    };
+    return cpText?.[cpName] || '';
+  };
 
   return {
     ...uiConfigure,

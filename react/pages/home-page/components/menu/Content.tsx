@@ -10,8 +10,8 @@ import SubMenu from './components/sub-menu';
 import { treeReduce } from './services';
 import { TreeReduceCallbackProps } from './interface';
 import { HEADERER_TITLE } from '@/constants';
-import useShouldHiddenMenu from './hooks/useShouldHiddenMenu';
-import useIsFullPage from '../../hooks/useIsFullPage';
+import useShouldHiddenMenu from '@/hooks/useShouldHiddenMenu';
+import useIsFullPage from '@/hooks/useIsFullPage';
 
 const Menu = () => {
   const {
@@ -67,7 +67,7 @@ const Menu = () => {
   const loadMenuData = useCallback(async () => {
     try {
       const menus = await MenuStore.loadMenuData();
-      const tree = { subMenus: menus };
+      const tree = { subMenus: menus.slice() };
       treeReduce({
         tree,
         callback: findCurrentRoute,
@@ -84,7 +84,7 @@ const Menu = () => {
     } catch (error) {
       throw new Error(error);
     }
-  }, [activeMenu, findCurrentRoute, getSiteInfo.defaultTitle, getSiteInfo.systemTitle, menuType.name, menuType.type, pathname]);
+  }, [activeMenu, findCurrentRoute]);
 
   useEffect(() => {
     loadMenuData();

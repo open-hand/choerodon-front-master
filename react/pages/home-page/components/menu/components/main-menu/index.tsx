@@ -1,12 +1,14 @@
 import React, {
-  FC, useMemo, CSSProperties,
+  FC, useMemo, CSSProperties, useCallback,
 } from 'react';
 import { observer } from 'mobx-react-lite';
+import { runInAction } from 'mobx';
 import { map } from 'lodash';
 
 import './index.less';
 import classNames from 'classnames';
 import { Tooltip } from 'choerodon-ui';
+import { OverflowWrap } from '@choerodon/components';
 import { useMenuStore } from '../../stores';
 import { DEFAULT_THEME_COLOR } from '@/constants';
 import MenuBgImg from '../../assets/MenuBgImg.svg';
@@ -55,55 +57,66 @@ const MainMenu:FC<MainMenuProps> = () => {
   }, [personalColor]);
 
   // todo...
-  const handleMenuLink = (item:{
-    code: keyof typeof ICON_MAP,
-    id: string,
-    name:string
-  }) => {
-    const tempMenuRoot = activeMenuRoot;
-    tempMenuRoot[menuType.type] = item;
-    // 设置默认展开的子menu
-    MenuStore.setOpenkeysBaseonRoot(item);
-    // 设置menu的root
-    MenuStore.setActiveMenuRoot(tempMenuRoot);
-  };
+  const handleMenuLink = useCallback(
+    (item:{
+      code: keyof typeof ICON_MAP,
+      id: string,
+      name:string
+    }) => {
+      const tempMenuRoot = activeMenuRoot;
+      tempMenuRoot[menuType.type] = item;
+      runInAction(() => {
+      // 设置默认展开的子menu
+        MenuStore.setOpenkeysBaseonRoot(item);
+        // 设置menu的root
+        MenuStore.setActiveMenuRoot(tempMenuRoot);
+      });
+    },
+    [activeMenuRoot, menuType.type],
+  );
 
-  const renderItems = () => map(menuData, (item:{
-    code: keyof typeof ICON_MAP,
-    id: string,
-    name:string
-  }, index:number) => {
-    const {
-      id: menuId,
-      name: menuName,
-      code: menuCode,
-    } = item || {};
-    // 通过id判断是否当前选中的menu
-    const isActive = activeMenuRoot.id === menuId;
-    const cls = classNames(`${prefixCls}-item`, { [`${prefixCls}-item-active`]: isActive });
-    // 匹配菜单的svg string
-    const svgLink = ICON_MAP?.[menuCode] || 'xiezuo';
-    return (
-      <div
-        role="none"
-        className={cls}
-        key={menuCode}
-        onClick={() => handleMenuLink(item)}
-      >
-        <div className={`${prefixCls}-item-icon`}>
-          <svg style={{ height: 30 }} aria-hidden="true">
-            {/* 图片这里命名是new匹配new的svg */}
-            <use xlinkHref={`#${svgLink}new.sprite`} />
-          </svg>
-        </div>
-        <Tooltip title={menuName} placement="right">
-          <span className={`${prefixCls}-item-name`}>
+  const renderItems = useCallback(
+    () => map(menuData, (item:{
+      code: keyof typeof ICON_MAP,
+      id: string,
+      name:string
+    }, index:number) => {
+      const {
+        id: menuId,
+        name: menuName,
+        code: menuCode,
+      } = item || {};
+      // 通过id判断是否当前选中的menu
+      const isActive = activeMenuRoot.id === menuId;
+      const cls = classNames(`${prefixCls}-item`, { [`${prefixCls}-item-active`]: isActive });
+      // 匹配菜单的svg string
+      const svgLink = ICON_MAP?.[menuCode] || 'xiezuo';
+      return (
+        <div
+          role="none"
+          className={cls}
+          key={menuCode}
+          onClick={() => handleMenuLink(item)}
+        >
+          <div className={`${prefixCls}-item-icon`}>
+            <svg style={{ height: 30 }} aria-hidden="true">
+              {/* 图片这里命名是new匹配new的svg */}
+              <use xlinkHref={`#${svgLink}new.sprite`} />
+            </svg>
+          </div>
+          <OverflowWrap
+            className={`${prefixCls}-item-name`}
+            tooltipsConfig={{
+              placement: 'right',
+            }}
+          >
             {menuName}
-          </span>
-        </Tooltip>
-      </div>
-    );
-  });
+          </OverflowWrap>
+        </div>
+      );
+    }),
+    [activeMenuRoot.id, handleMenuLink],
+  );
 
   return (
     <div className={prefixCls} style={getMainMenuStyles}>

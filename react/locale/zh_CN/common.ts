@@ -1,4 +1,4 @@
-// 状态相关
+// 操作
 const OPTIONS_ZH_CN = {
   'boot.execute': '执行',
   'boot.return': '返回',
@@ -40,6 +40,7 @@ const OPTIONS_ZH_CN = {
   'boot.previous': '上一步',
   'boot.next': '下一步',
   'boot.finish': '结束',
+  'boot.close': '关闭',
 } as const;
 
 // 状态相关
@@ -152,6 +153,7 @@ const UNIT_ZH_CN = {
 // 用户
 const USER_ZH_CN = {
   'boot.username': '用户名',
+  'boot.usercode': '用户编码',
   'boot.personal': '个人',
   'boot.personalInfo': '个人信息',
   'boot.account': '登录名',

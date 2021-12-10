@@ -11,9 +11,9 @@ import HeaderMiddleLists from './components/header-middle-lists';
 import OrgSelector from './components/org-selector';
 import HeaderRightLists from './components/header-right-lists';
 import UserEntry from './components/user-avatar';
-import useShouldHiddenHead from './hooks/useShouldHiddenHead';
+import useShouldHiddenHead from '@/hooks/useShouldHiddenHead';
 import ExtraButton from './components/extra-button';
-import useIsFullPage from '../../hooks/useIsFullPage';
+import useIsFullPage from '@/hooks/useIsFullPage';
 
 const Header = (props:any) => {
   const {

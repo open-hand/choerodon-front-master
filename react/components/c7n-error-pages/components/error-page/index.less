@@ -1,0 +1,65 @@
+@prefixCls: ~"c7ncd-error-page";
+
+.@{prefixCls} {
+  width: 100vw;
+  height: 100vh;
+  background: #f5f6fa !important;
+  display: flex;
+  align-items: center;
+  &-container {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 55px;
+    border-radius: 7px;
+    width: 80vw;
+  }
+  &-header {
+    display: flex;
+    align-items: center;
+    img[alt="logo"] {
+      width: 40px;
+      height: 40px;
+    }
+    > span {
+      flex-grow: 1;
+      margin-left: 5px;
+      background-repeat: no-repeat;
+      background-size: auto 20px;
+      background-position: 0 center;
+      transition: background-position 0.3s;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-color) !important;
+    }
+  }
+  &-left,
+  &-right {
+    flex: 1;
+  }
+  &-left {
+    max-width: 60%;
+    main {
+      height: 50vh;
+      overflow: scroll;
+      background-color: rgba(206, 17, 38, 0.05);
+      color: red;
+      padding: 5px;
+    }
+    > p {
+      color: var(--text-color2);
+      font-size: 15px;
+      margin-top: 12px;
+    }
+  }
+  &-right {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &-btngroups {
+    margin-top: 20px;
+  }
+}

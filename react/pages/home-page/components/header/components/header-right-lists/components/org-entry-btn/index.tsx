@@ -21,8 +21,11 @@ const prefixCls = 'c7ncd-org-entry-btn';
 const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
   const {
     AppState: {
+      getUserInfo: {
+        admin = false,
+      },
       currentMenuType: {
-        name, category, organizationId,
+        name, category, organizationId, id,
       },
     },
     MenuStore,
@@ -37,7 +40,7 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
   const currentOrgData = useMemo(() => (getOrgData ? toJS(getOrgData) : []), [getOrgData]);
 
   // todo
-  const currentSelectedOrg = currentOrgData[findIndex(currentOrgData, (item:any) => String(organizationId) === String(item.tenantId))];
+  const currentSelectedOrg = useMemo(() => currentOrgData.find((v: { id: any; }) => String(v.id) === String(organizationId || id)), [currentOrgData, id, organizationId]);
 
   const gotoOrganizationManager = async () => {
     try {
@@ -66,15 +69,15 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
     }
   };
 
-  if(!currentSelectedOrg || !currentSelectedOrg?.into){
-    return null
+  if ((currentSelectedOrg && currentSelectedOrg?.into) || admin) {
+    return (
+      <div className="c7ncd-header-right-lists-item">
+        <Icon onClick={gotoOrganizationManager} type="settings-o" className={prefixCls} />
+      </div>
+    );
   }
 
-  return (
-    <div className="c7ncd-header-right-lists-item">
-      <Icon onClick={gotoOrganizationManager} type="settings-o" className={prefixCls} />
-    </div>
-  );
+  return null;
 };
 
 export default inject('MenuStore', 'AppState', 'HeaderStore')(observer(OrgEntryBtn));
