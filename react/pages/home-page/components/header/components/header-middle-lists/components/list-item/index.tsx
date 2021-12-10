@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { Tooltip } from 'choerodon-ui/pro';
-import { useQueryString } from '@choerodon/components';
+import { OverflowWrap, useQueryString } from '@choerodon/components';
 import { Permission } from '@/components/permission';
 import { PermissionService } from '@/components/permission/interface';
 import getSearchString from '@/utils/gotoSome';
@@ -46,11 +46,11 @@ const ListItem:React.FC<ListItemProps> = (props) => {
   }
 
   const itemContent = (
-    <Tooltip title={itemName}>
-      <div className={itemCls} role="none" onClick={goto}>
+    <div className={itemCls} role="none" onClick={goto}>
+      <OverflowWrap width="auto">
         {itemName}
-      </div>
-    </Tooltip>
+      </OverflowWrap>
+    </div>
   );
 
   if (permissions?.length) {
