@@ -130,7 +130,7 @@ const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
   };
 
   return (
-    <Permission service={flatten(btnItems?.map((item) => item?.permissions || []))}>
+    <Permission service={btnItems?.every((item) => item?.permissions?.length) ? flatten(btnItems?.map((item) => item?.permissions || [])) : []}>
       <Tooltip
         {...tooltipsConfigRestProps}
         hidden={getHidden()}
