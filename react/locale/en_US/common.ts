@@ -71,7 +71,7 @@ export const STATUS_EN_US = {
   'boot.finished': 'Finished',
   'boot.unusual': 'Unusual',
   'boot.checked': 'Checked',
-
+  'boot.ready': 'Ready',
 } as const;
 
 // 操作状态失败

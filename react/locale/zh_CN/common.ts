@@ -72,6 +72,7 @@ const STATUS_ZH_CN = {
   'boot.finished': '已完成',
   'boot.unusual': '异常',
   'boot.checked': '已审核',
+  'boot.ready': '待执行',
 } as const;
 
 // 操作状态失败
