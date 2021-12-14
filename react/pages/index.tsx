@@ -53,8 +53,8 @@ const MasterIndex = () => {
   // c7n登录hook
   const [authStatus, auth] = useC7NAuth();
 
-  // 监听storage，作用在于如果有其他重新登录了，就触发刷新事件
-  const [, setReloginValue] = useMultiTabsAutoRefresh();
+  // // 监听storage，作用在于如果有其他重新登录了，就触发刷新事件
+  // const [, setReloginValue] = useMultiTabsAutoRefresh();
 
   // 注入Notification授权
   useC7NNotification();
@@ -108,7 +108,7 @@ const MasterIndex = () => {
         if (pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !HAS_AGILE_PRO) {
           checkEnterprise();
         }
-        setReloginValue(true);
+        // setReloginValue(true);
       }
     }
   }, [pathname, authStatus, isInOutward]);
