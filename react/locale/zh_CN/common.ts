@@ -58,6 +58,7 @@ const STATUS_ZH_CN = {
   'boot.pending': '部署中',
   'boot.stopped': '已停止',
   'boot.failed': '失败',
+  'boot.success': '成功',
   'boot.deleted': '已删除',
   'boot.canceled': '已取消',
   'boot.creating': '创建中',
