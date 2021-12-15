@@ -1,6 +1,6 @@
 const workbench = {
   'c7ncd.workbench.quickLink': 'Quick Links',
-  'c7ncd.workbench.todo': 'Todo',
+  'c7ncd.workbench.todo': 'Backlog',
   'c7ncd.workbench.review': 'Review',
   'c7ncd.workbench.appService': 'Application Services',
   'c7ncd.workbench.document': 'Document',
