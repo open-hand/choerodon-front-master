@@ -1,3 +1,5 @@
+import COMMON_COMPONENT_ZH_CN from './commonComponent';
+
 export const OPTIONS_EN_US = {
   'boot.execute': 'Execute',
   'boot.return': 'Back',
@@ -180,6 +182,7 @@ const COMMON_EN_US = {
   ...OPTIONS_STATUS_SUCCESS_EN_US,
   ...CHARACTER_ZH_CN,
   ...UNIT_ZH_CN,
+  ...COMMON_COMPONENT_ZH_CN,
   'boot.mobilephone': 'Phone Number',
   'boot.field': 'Field',
 
