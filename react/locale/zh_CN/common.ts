@@ -1,5 +1,3 @@
-import COMMON_COMPONENT_ZH_CN from './commonComponent';
-
 // 操作
 const OPTIONS_ZH_CN = {
   'boot.execute': '执行',
@@ -184,7 +182,6 @@ const COMMON_ZH_CN = {
   ...OPTIONS_STATUS_SUCCESS_ZH_CN,
   ...UNIT_ZH_CN,
   ...CHARACTER_ZH_CN,
-  ...COMMON_COMPONENT_ZH_CN,
   'boot.mobilephone': '手机',
   'boot.field': '字段',
   'boot.transaction': '事务',
