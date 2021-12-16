@@ -1,7 +1,6 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 import classNames from 'classnames';
-import { Tooltip } from 'choerodon-ui/pro';
 import { OverflowWrap, useQueryString } from '@choerodon/components';
 import { Permission } from '@/components/permission';
 import { PermissionService } from '@/components/permission/interface';
@@ -54,9 +53,11 @@ const ListItem:React.FC<ListItemProps> = (props) => {
   );
 
   if (permissions?.length) {
-    <Permission type="organization" service={permissions}>
-      {itemContent}
-    </Permission>;
+    return (
+      <Permission type="organization" service={permissions}>
+        {itemContent}
+      </Permission>
+    );
   }
 
   return itemContent;

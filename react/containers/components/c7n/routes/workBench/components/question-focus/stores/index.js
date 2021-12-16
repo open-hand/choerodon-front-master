@@ -54,6 +54,11 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     const tempArr = get(mainData, 'content');
     const currentId = get(mainData, 'selectedProjectId');
     const tempType = get(mainData, 'type');
+    const preOrganizationId = get(mainData, 'organizationId');
+    if (preOrganizationId !== organizationId) {
+      questionDs.query();
+      return;
+    }
     if (selectedProjectId !== currentId || tempType !== tabKey) {
       questionDs.query();
       return;
