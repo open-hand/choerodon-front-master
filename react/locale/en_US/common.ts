@@ -188,7 +188,7 @@ const COMMON_EN_US = {
   'boot.principal': 'Owner',
   'boot.stage': 'Stage',
   'boot.client': 'Client',
-
+  'boot.success': 'Passed',
   'boot.yes': 'Yes',
   'boot.no': 'No',
   'boot.application': 'APP',
