@@ -40,6 +40,7 @@ export default (({
             content: newData,
             isSelf: self,
             selectedProjectId,
+            organizationId,
           };
           cacheStore.setCacheDocData(cacheData);
           return newData;
