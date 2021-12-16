@@ -6,6 +6,7 @@ import filter from 'lodash/filter';
 import PageTab from '../PageTab';
 import './index.less';
 import { PageWrapperProps } from '../../interface';
+import { useSafeState } from 'ahooks';
 
 const { TabPane } = Tabs;
 
@@ -46,7 +47,7 @@ const PageWrap:React.FC<PageWrapperProps> = (props) => {
     };
   });
 
-  const [currentKey, setCurrentKey] = useState<string>('');
+  const [currentKey, setCurrentKey] = useSafeState<string>('');
 
   const keyArr:string[] = React.Children.map(children, (child) => child.props.tabKey);
 
@@ -70,6 +71,7 @@ const PageWrap:React.FC<PageWrapperProps> = (props) => {
       const realTabNode = keyShowArr.find((v) => v.tabKey === key);
       if (!!realTabNode && realTabNode.route) {
         history.push(`${realTabNode.route}${location.search}`);
+        setCurrentKey(key);
       }
     }
     if (typeof onChange === 'function') {
