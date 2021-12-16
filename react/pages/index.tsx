@@ -57,7 +57,7 @@ const MasterIndex = () => {
   const [, setReloginValue] = useMultiTabsAutoRefresh();
 
   // 注入Notification授权
-  useC7NNotification();
+  // useC7NNotification();
 
   // 为safari浏览器做适配
   useSafariAdapter();
