@@ -53,9 +53,11 @@ const ListItem:React.FC<ListItemProps> = (props) => {
   );
 
   if (permissions?.length) {
-    <Permission type="organization" permission={permissions}>
-      {itemContent}
-    </Permission>;
+    return (
+      <Permission type="organization" service={permissions}>
+        {itemContent}
+      </Permission>
+    );
   }
 
   return itemContent;
