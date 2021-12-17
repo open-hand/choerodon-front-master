@@ -5,7 +5,7 @@ const inviteBtn = {
 } as const;
 
 const trialInvite = {
-  'boot.commonComponent.trialInvite': 'Invitation',
+  'boot.commonComponent.trialInvite.invitation': 'Invitation',
   'boot.commonComponent.trialInvite.link.desc': 'Share your exclusive promotion link with your friends, invite friends to share the page for trial registration, and become the recommender to receive physical gifts',
   'boot.commonComponent.trialInvite.link.link': 'Invite Link',
   'boot.commonComponent.trialInvite.invitation.desc': "Fill in your friend's information, share your exclusive invitation to your friends, invite your friends to register for trial on the sharing page, and become a recommended person to receive physical gifts",
