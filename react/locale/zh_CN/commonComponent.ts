@@ -2,6 +2,9 @@ const inviteBtn = {
   'boot.commonComponent.inviteBtn.inviteteammate': '邀请成员',
   'boot.commonComponent.inviteBtn.invitEmail': '邮件邀请成员',
   'boot.commonComponent.inviteBtn.invitLink': '链接邀请成员',
+  'boot.commonComponent.inviteBtn.inviteteammateOrg': '邀请用户',
+  'boot.commonComponent.inviteBtn.invitEmailOrg': '邮件邀请用户',
+  'boot.commonComponent.inviteBtn.invitLinkOrg': '链接邀请用户',
 } as const;
 
 // 邀请试用

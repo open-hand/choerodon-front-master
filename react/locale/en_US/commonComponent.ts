@@ -2,6 +2,9 @@ const inviteBtn = {
   'boot.commonComponent.inviteBtn.inviteteammate': 'Invitation',
   'boot.commonComponent.inviteBtn.invitEmail': 'Invite email',
   'boot.commonComponent.inviteBtn.invitLink': 'Invite Link',
+  'boot.commonComponent.inviteBtn.inviteteammateOrg': 'Invitation',
+  'boot.commonComponent.inviteBtn.invitEmailOrg': 'Invite email',
+  'boot.commonComponent.inviteBtn.invitLinkOrg': 'Invite Link',
 } as const;
 
 const trialInvite = {
