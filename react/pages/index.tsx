@@ -23,19 +23,17 @@ import '@/containers/components/style';
 import './moduleInjects';
 
 import {
-  C7NReactQueryContainer, UIConfigInitContainer,
+  C7NReactQueryContainer,
 } from '@/configs';
 
 import {
-  useC7NAuth, useC7NNotification, useMultiTabsAutoRefresh, useSafariAdapter, useSetHistoryPath,
+  useC7NAuth, useMultiTabsAutoRefresh, useSafariAdapter, useSetHistoryPath,
 } from '@/hooks';
 
 import WSProvider from '@/components/ws/WSProvider';
 import { PermissionProvider } from '@/components/permission';
 
 import { WEBSOCKET_SERVER } from '@/utils';
-import C7NDevTool from '@/components/dev-tools';
-import { MasterLocaleContainer } from '@/configs/masterLocaleConfigs';
 
 /** @type {boolean} 是否安装了敏捷模块 */
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
@@ -132,20 +130,15 @@ const MasterIndex = () => {
   }
 
   return (
-    <MasterLocaleContainer>
-      <UIConfigInitContainer>
-        <Provider {...stores}>
-          <C7NReactQueryContainer>
-            <PermissionProvider>
-              <WSProvider server={WEBSOCKET_SERVER}>
-                {getContainer}
-              </WSProvider>
-            </PermissionProvider>
-          </C7NReactQueryContainer>
-        </Provider>
-        <C7NDevTool />
-      </UIConfigInitContainer>
-    </MasterLocaleContainer>
+    <Provider {...stores}>
+      <C7NReactQueryContainer>
+        <PermissionProvider>
+          <WSProvider server={WEBSOCKET_SERVER}>
+            {getContainer}
+          </WSProvider>
+        </PermissionProvider>
+      </C7NReactQueryContainer>
+    </Provider>
   );
 };
 

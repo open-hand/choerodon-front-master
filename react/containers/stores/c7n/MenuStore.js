@@ -259,9 +259,6 @@ class MenuStore {
           const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
           let url = '/iam/choerodon/v1/menu';
           if (type === 'project') {
-            if(id === currentOrgId){
-              return [];
-            }
             url += `?projectId=${id}&tenantId=${currentOrgId}`;
           } else if (type === 'organization') {
             url += `?labels=TENANT_MENU&tenantId=${currentOrgId}`;
