@@ -23,7 +23,7 @@ import '@/containers/components/style';
 import './moduleInjects';
 
 import {
-  C7NReactQueryContainer,
+  C7NReactQueryContainer, UIConfigInitContainer,
 } from '@/configs';
 
 import {
@@ -34,6 +34,7 @@ import WSProvider from '@/components/ws/WSProvider';
 import { PermissionProvider } from '@/components/permission';
 
 import { WEBSOCKET_SERVER } from '@/utils';
+import { MasterLocaleContainer } from '@/configs/masterLocaleConfigs';
 
 /** @type {boolean} 是否安装了敏捷模块 */
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
@@ -130,15 +131,19 @@ const MasterIndex = () => {
   }
 
   return (
-    <Provider {...stores}>
-      <C7NReactQueryContainer>
-        <PermissionProvider>
-          <WSProvider server={WEBSOCKET_SERVER}>
-            {getContainer}
-          </WSProvider>
-        </PermissionProvider>
-      </C7NReactQueryContainer>
-    </Provider>
+    <MasterLocaleContainer>
+      <UIConfigInitContainer>
+        <Provider {...stores}>
+          <C7NReactQueryContainer>
+            <PermissionProvider>
+              <WSProvider server={WEBSOCKET_SERVER}>
+                {getContainer}
+              </WSProvider>
+            </PermissionProvider>
+          </C7NReactQueryContainer>
+        </Provider>
+      </UIConfigInitContainer>
+    </MasterLocaleContainer>
   );
 };
 

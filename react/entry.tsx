@@ -11,8 +11,6 @@ import PageEntry from './pages';
 import './utils/iframeStorage';
 import autoRefresh from './utils/autoRefresh';
 import ErrorPage from './components/c7n-error-pages/components/error-page';
-import { UIConfigInitContainer } from './configs';
-import { MasterLocaleContainer } from './configs/masterLocaleConfigs';
 import C7NDevTool from '@/components/dev-tools';
 
 const getConfirmation = (message:string, callback:CallableFunction) => {
@@ -33,14 +31,10 @@ autoRefresh();
 
 const App = () => (
   <Router getUserConfirmation={getConfirmation}>
-    <MasterLocaleContainer>
-      <UIConfigInitContainer>
-        <ErrorBoundar renderError={(props) => <ErrorPage {...props} />}>
-          <PageEntry />
-        </ErrorBoundar>
-        <C7NDevTool />
-      </UIConfigInitContainer>
-    </MasterLocaleContainer>
+    <ErrorBoundar renderError={(props) => <ErrorPage {...props} />}>
+      <PageEntry />
+    </ErrorBoundar>
+    <C7NDevTool />
   </Router>
 );
 
