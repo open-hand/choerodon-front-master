@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import { Button, Modal } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import { has as injectHas, mount as injectMount } from '@choerodon/inject';
 import ResponsiveReactGridLayout from 'react-grid-layout';
 import ResizeObserver from 'resize-observer-polyfill';
 import {
@@ -43,7 +44,10 @@ import Workload from './components/Workload';
 import CustomChart from './components/custom-chart';
 
 let observerLayout;
-
+const ComponentMountMap = {
+  featureProgress: 'agile:featureProgress',
+  issueProgress: 'agile:issueProgress',
+};
 const ProjectOverview = () => {
   const { formatMessage } = useIntl();
   const {
@@ -255,6 +259,15 @@ const ProjectOverview = () => {
     const hasType = allCode.includes(type) || projectOverviewStore.getCustomChart(type);
     if (hasOwnProperty && hasType) {
       tempComponent = tempComponent || ComponetsObjs[type];
+    } else if (Object.keys(ComponentMountMap).includes(type)) {
+      tempComponent = injectHas(ComponentMountMap[type]) ? injectMount(ComponentMountMap[type]) : (
+        <EmptyCard
+          title={title}
+          emptyTitle="安装部署【敏捷模块】模块后，才能使用此卡片"
+          index={type}
+          sizeObserver={['appService', 'env'].includes(type)}
+        />
+      );
     } else {
       const chartConfig = mappings[type] || projectOverviewStore.getCustomChart(type);
       tempComponent = (
