@@ -7,7 +7,7 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
    * @return {*}
    */
   get prefix() {
-    return '/devops/choerodon/v1/organizations';
+    return '/devops/v1/organizations';
   }
 
   //  组织层流水线模板
