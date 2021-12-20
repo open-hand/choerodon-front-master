@@ -11,6 +11,33 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  //  组织层流水线模板
+  getOrgPinelineTemplate(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_pipeline`,
+      method: 'get',
+      params,
+    });
+  }
+
+  //  组织层任务模板
+  getOrgTasksTemplate(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_job/page`,
+      method: 'get',
+      params,
+    });
+  }
+
+  //  组织层步骤模板
+  getOrgStepsTemplate(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_step`,
+      method: 'get',
+      params,
+    });
+  }
+
   // 移交组织所有者
   transferOrg(orgid:string, params:any) {
     return this.request({
