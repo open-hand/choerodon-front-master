@@ -1,7 +1,7 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "1.2.0-alpha.2",
+  "version": "1.2.0",
   "description": "A package of Master for Choerodon platform.",
   "main": "./lib/index.js",
   "files": [
@@ -61,7 +61,7 @@
     "@types/react-router-dom": "^5.1.5",
     "ahooks": "^2.10.5",
     "axios": "^0.16.2",
-    "choerodon-ui": "1.5.0-alpha.5",
+    "choerodon-ui": "1.5.0",
     "classnames": "^2.2.5",
     "core-js": "^3.6.5",
     "echarts": "^4.8.0",
