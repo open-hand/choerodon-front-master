@@ -27,14 +27,13 @@ import {
 } from '@/configs';
 
 import {
-  useC7NAuth, useC7NNotification, useMultiTabsAutoRefresh, useSafariAdapter, useSetHistoryPath,
+  useC7NAuth, useMultiTabsAutoRefresh, useSafariAdapter, useSetHistoryPath,
 } from '@/hooks';
 
 import WSProvider from '@/components/ws/WSProvider';
 import { PermissionProvider } from '@/components/permission';
 
 import { WEBSOCKET_SERVER } from '@/utils';
-import C7NDevTool from '@/components/dev-tools';
 import { MasterLocaleContainer } from '@/configs/masterLocaleConfigs';
 
 /** @type {boolean} 是否安装了敏捷模块 */
@@ -53,11 +52,11 @@ const MasterIndex = () => {
   // c7n登录hook
   const [authStatus, auth] = useC7NAuth();
 
-  // 监听storage，作用在于如果有其他重新登录了，就触发刷新事件
+  // // 监听storage，作用在于如果有其他重新登录了，就触发刷新事件
   const [, setReloginValue] = useMultiTabsAutoRefresh();
 
   // 注入Notification授权
-  useC7NNotification();
+  // useC7NNotification();
 
   // 为safari浏览器做适配
   useSafariAdapter();
@@ -143,7 +142,6 @@ const MasterIndex = () => {
             </PermissionProvider>
           </C7NReactQueryContainer>
         </Provider>
-        <C7NDevTool />
       </UIConfigInitContainer>
     </MasterLocaleContainer>
   );

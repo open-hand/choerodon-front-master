@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { IntlConfig, IntlProvider } from 'react-intl';
 import { Loading } from '@choerodon/components';
 import { reduce, assign } from 'lodash';

@@ -1,6 +1,6 @@
 const workbench = {
   'c7ncd.workbench.quickLink': '快速链接',
-  'c7ncd.workbench.todo': '代办事项',
+  'c7ncd.workbench.todo': '待办事项',
   'c7ncd.workbench.review': '待审核',
   'c7ncd.workbench.appService': '应用服务（最近使用）',
   'c7ncd.workbench.document': '文档',

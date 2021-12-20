@@ -1,3 +1,4 @@
+import COMMON_COMPONENT_ZH_CN from './commonComponent';
 // 操作
 const OPTIONS_ZH_CN = {
   'boot.execute': '执行',
@@ -58,6 +59,7 @@ const STATUS_ZH_CN = {
   'boot.pending': '部署中',
   'boot.stopped': '已停止',
   'boot.failed': '失败',
+  'boot.success': '成功',
   'boot.deleted': '已删除',
   'boot.canceled': '已取消',
   'boot.creating': '创建中',
@@ -72,6 +74,7 @@ const STATUS_ZH_CN = {
   'boot.finished': '已完成',
   'boot.unusual': '异常',
   'boot.checked': '已审核',
+  'boot.ready': '待执行',
 } as const;
 
 // 操作状态失败
@@ -182,6 +185,7 @@ const COMMON_ZH_CN = {
   ...OPTIONS_STATUS_SUCCESS_ZH_CN,
   ...UNIT_ZH_CN,
   ...CHARACTER_ZH_CN,
+  ...COMMON_COMPONENT_ZH_CN,
   'boot.mobilephone': '手机',
   'boot.field': '字段',
   'boot.transaction': '事务',

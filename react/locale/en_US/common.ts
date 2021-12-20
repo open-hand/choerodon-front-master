@@ -1,3 +1,5 @@
+import COMMON_COMPONENT_ZH_CN from './commonComponent';
+
 export const OPTIONS_EN_US = {
   'boot.execute': 'Execute',
   'boot.return': 'Back',
@@ -71,7 +73,7 @@ export const STATUS_EN_US = {
   'boot.finished': 'Finished',
   'boot.unusual': 'Unusual',
   'boot.checked': 'Checked',
-
+  'boot.ready': 'Ready',
 } as const;
 
 // 操作状态失败
@@ -180,6 +182,7 @@ const COMMON_EN_US = {
   ...OPTIONS_STATUS_SUCCESS_EN_US,
   ...CHARACTER_ZH_CN,
   ...UNIT_ZH_CN,
+  ...COMMON_COMPONENT_ZH_CN,
   'boot.mobilephone': 'Phone Number',
   'boot.field': 'Field',
 
@@ -188,7 +191,7 @@ const COMMON_EN_US = {
   'boot.principal': 'Owner',
   'boot.stage': 'Stage',
   'boot.client': 'Client',
-
+  'boot.success': 'Passed',
   'boot.yes': 'Yes',
   'boot.no': 'No',
   'boot.application': 'APP',
@@ -244,7 +247,7 @@ const COMMON_EN_US = {
 
   'boot.note': 'Note',
   'boot.recentUse': 'Recently Used',
-  'boot.pleaseSearch': ' Please enter your search content',
+  'boot.pleaseSearch': 'Search',
   'boot.peopleNum': 'The number of people',
   'boot.time': 'Time',
   'boot.date': 'Date',

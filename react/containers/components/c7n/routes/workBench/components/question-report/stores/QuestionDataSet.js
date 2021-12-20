@@ -44,6 +44,7 @@ export default (({
             content: tempArr || [],
             selectedProjectId,
             searchData: data.searchDataId,
+            organizationId,
           };
           cacheStore.setReportQuestions(tempObj);
           return tempArr;

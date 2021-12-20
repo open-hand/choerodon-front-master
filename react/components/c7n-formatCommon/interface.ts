@@ -5,6 +5,7 @@ type FormattedMessageProps = MessageDescriptor &
 {
   values?: object,
   tagName?: string | any,
+  intlPrefix?: string,
   children?: (chunks: ReactElement) => ReactElement,
 }
 

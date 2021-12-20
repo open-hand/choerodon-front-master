@@ -31,7 +31,6 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     todoQuestions,
   } = cacheStore;
-
   const questionStore = useStore();
 
   const questionDs = useMemo(() => {
@@ -48,6 +47,11 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     const currentId = get(mainData, 'selectedProjectId');
     const searchDataId = get(mainData, 'searchDataId');
     const searchData = get(mainData, 'searchData');
+    const preOrganizationId = get(mainData, 'organizationId');
+    if (preOrganizationId !== organizationId) {
+      questionDs.query();
+      return;
+    }
     if (selectedProjectId !== currentId) {
       searchDataId || questionDs.query();
       return;

@@ -14,7 +14,6 @@ import {} from '@choerodon/components';
 
 import './index.less';
 import ListItem from './components/list-item';
-import { useFormatMessage } from '@/hooks';
 
 export type HeaderMiddleListsProps = {
   AppState?:any
@@ -67,6 +66,7 @@ const HeaderMiddleLists:FC<HeaderMiddleListsProps> = (props) => {
     if (HAS_AGILE_PRO) {
       tempLists.push(WORKCALENDAR_CONFIG);
     }
+    // 知识库按钮
     if (serviceCodeLists.includes(SERVICE_KNOWLEDGE)) {
       tempLists.push(KNOWLEDGE_CONFIG);
     }

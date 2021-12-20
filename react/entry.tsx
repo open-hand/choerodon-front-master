@@ -11,6 +11,7 @@ import PageEntry from './pages';
 import './utils/iframeStorage';
 import autoRefresh from './utils/autoRefresh';
 import ErrorPage from './components/c7n-error-pages/components/error-page';
+import C7NDevTool from '@/components/dev-tools';
 
 const getConfirmation = (message:string, callback:CallableFunction) => {
   Modal.open({
@@ -27,12 +28,14 @@ const getConfirmation = (message:string, callback:CallableFunction) => {
 };
 
 autoRefresh();
+
 const App = () => (
-  <ErrorBoundar renderError={(props) => <ErrorPage {...props} />}>
-    <Router getUserConfirmation={getConfirmation}>
+  <Router getUserConfirmation={getConfirmation}>
+    <ErrorBoundar renderError={(props) => <ErrorPage {...props} />}>
       <PageEntry />
-    </Router>
-  </ErrorBoundar>
+    </ErrorBoundar>
+    <C7NDevTool />
+  </Router>
 );
 
 const rootNode = document.getElementById('app');

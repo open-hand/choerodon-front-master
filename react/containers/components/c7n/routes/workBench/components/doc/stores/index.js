@@ -55,6 +55,11 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
     const mainData = cacheDocData;
     const tempArr = get(mainData, 'content');
     const isSelf = get(mainData, 'isSelf');
+    const preOrganizationId = get(mainData, 'organizationId');
+    if (preOrganizationId !== organizationId) {
+      docDs.query();
+      return;
+    }
     if (getSelfDoc !== isSelf || selectedProjectId !== get(mainData, 'selectedProjectId')) {
       docDs.query();
       return;
