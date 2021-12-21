@@ -6,6 +6,7 @@ export * from './Organizations';
 export * from './Menus';
 export * from './RegistersInvitation';
 export * from './alien/devops';
+export * from './alien/rdupm';
 export * from './services/devops';
 export * from './services/test';
 export * from './services/market';
