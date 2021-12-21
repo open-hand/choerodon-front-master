@@ -19,6 +19,14 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  getOrgPinelineCategory(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_category`,
+      method: 'get',
+      params,
+    });
+  }
+
   //  组织层任务模板
   getOrgTasksTemplate(params:any) {
     return this.request({
@@ -28,10 +36,26 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  getOrgTasksCategory(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_job_group`,
+      method: 'get',
+      params,
+    });
+  }
+
   //  组织层步骤模板
   getOrgStepsTemplate(params:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_step`,
+      method: 'get',
+      params,
+    });
+  }
+
+  getOrgStepsCategory(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_step_category`,
       method: 'get',
       params,
     });
