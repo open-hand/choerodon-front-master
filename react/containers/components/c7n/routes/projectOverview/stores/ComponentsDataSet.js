@@ -4,6 +4,8 @@ import {
 import JsonBig from 'json-bigint';
 import mappings from './mappings';
 
+const HAS_AGILEPRO = C7NHasModule('@choerodon/agile-pro');
+
 /* eslint-disable import/no-anonymous-default-export */
 export default ({ projectId, availableServiceList, projectOverviewStore }) => ({
   paging: false,
@@ -13,7 +15,12 @@ export default ({ projectId, availableServiceList, projectOverviewStore }) => ({
       url: `iam/choerodon/v1/projects/${projectId}/project_overview_config`,
       method: 'get',
       transformResponse: (value) => {
-        const defaultValues = map(filter(mappings, (item) => (includes(availableServiceList, 'agilePro') ? includes(availableServiceList, item.groupId) : true)), (item) => item.layout);
+        const defaultValues = map(filter(mappings, (item) => {
+          if (!HAS_AGILEPRO) {
+            return item.injectGroupId !== 'agilePro';
+          }
+          return (includes(availableServiceList, 'agilePro') ? String(item.groupId).includes('agilePro') : true);
+        }), (item) => item.layout);
         try {
           let res;
           if (value) {
