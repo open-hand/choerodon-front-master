@@ -334,6 +334,7 @@ class MenuStore {
       } catch (e) {
         failedMenuType.push(menuType);
         isLoadMenu = 0;
+        throw new Error(e);
       }
     }
   }

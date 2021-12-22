@@ -134,7 +134,7 @@ const StarTargetPro = observer(() => {
                 style={{ background: isActive ? '#ECF0FC' : 'rgba(104, 135, 232, 0.12)' }}
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleClickProject(s, history, AppState);
+                  handleClickProject(s, history);
                 }}
               >
                 <span

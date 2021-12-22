@@ -2,9 +2,10 @@ import { get, has } from '@choerodon/inject';
 import { historyPushMenu } from '@/utils';
 import HeaderStore from '../containers/stores/c7n/HeaderStore';
 import MenuStore, { getMenuType } from '../containers/stores/c7n/MenuStore';
+import AppState from '../containers/stores/c7n/AppState';
 import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 
-export default async function handleClickProject(data, history, AppState) {
+export default async function handleClickProject(data, history) {
   const {
     id, name, organizationId, category,
   } = data;
@@ -52,17 +53,14 @@ export default async function handleClickProject(data, history, AppState) {
       if (String(organizationId)) {
         path += `&organizationId=${organizationId}`;
       }
-      if (path) {
-        // @ts-ignore
-        const t = getMenuType({ type, id }, false) || 'site';
-        if (t !== 'user') {
-          AppState.currentMenuType.type = t;
-          if (id) {
-            AppState.currentMenuType.id = id;
-          }
+      const t = getMenuType({ type, id }, false) || 'site';
+      if (t !== 'user') {
+        AppState.currentMenuType.type = t;
+        if (id) {
+          AppState.currentMenuType.id = id;
         }
-        historyPushMenu(history, path, domain);
       }
+      historyPushMenu(history, path, domain);
     });
   }
 }
