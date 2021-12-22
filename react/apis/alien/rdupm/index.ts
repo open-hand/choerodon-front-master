@@ -5,9 +5,9 @@ class RdupmAlienApi extends Api<RdupmAlienApi> {
     return '/rdupm';
   }
 
-  getnexusMavenRepoIds() {
+  getnexusMavenRepoIds(type?: string) {
     return this.request({
-      url: `${this.prefix}/v1/nexus-repositorys/${this.orgId}/project/${this.projectId}/ci/repo/list?repoType=MAVEN`,
+      url: `${this.prefix}/v1/nexus-repositorys/${this.orgId}/project/${this.projectId}/ci/repo/list?repoType=MAVEN${type ? `&type=${type}` : ''}`,
       method: 'get',
     });
   }
