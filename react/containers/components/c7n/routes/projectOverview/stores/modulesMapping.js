@@ -11,6 +11,10 @@ const modulesMapping = {
     'sprintNotDone', 'sprintCount', 'burnDownChart', 'defectTreatment',
     'defectChart', 'assigneeChart', 'priorityChart', 'issueTypeChart',
     'issueTable', 'projectDynamic', 'personalWorkload', 'workLoad',
+    'issueProgress', 'featureProgress',
+  ],
+  N_PROGRAM: [
+    'issueProgress', 'featureProgress',
   ],
 };
 

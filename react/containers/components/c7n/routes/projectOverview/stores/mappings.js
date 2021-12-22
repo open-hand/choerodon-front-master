@@ -369,7 +369,8 @@ const componentsObj = {
     },
     name: 'featureProgress',
     type: 'featureProgress',
-    groupId: 'agilePro',
+    groupId: 'agile',
+    injectGroupId: 'agilePro',
     title: '特性进度统计',
     describe:
       '此模块按问题计数、工时数2种维度统计当前迭代各个团队成员任务总量、完成量和剩余量。',
@@ -387,7 +388,8 @@ const componentsObj = {
     },
     name: 'issueProgress',
     type: 'issueProgress',
-    groupId: 'agilePro',
+    groupId: 'agile',
+    injectGroupId: 'agilePro',
     title: '工作项进度统计',
     describe:
       '此模块按问题计数、工时数2种维度统计当前迭代各个团队成员任务总量、完成量和剩余量。',
