@@ -13,7 +13,8 @@
     "compile": "compiler compile",
     "watch": "compiler compile --watch",
     "postinstall": "node ./postInstall.js",
-    "clean-install": "rm -rf node_modules && rm package-lock.json && npm i --registry https://nexus.choerodon.com.cn/repository/choerodon-npm && chmod -R u+x node_modules"
+    "clean-install": "rm -rf node_modules && rm -fr package-lock.json && npm i --registry https://nexus.choerodon.com.cn/repository/choerodon-npm && chmod -R u+x node_modules",
+    "publish": "npm publish --registry https://nexus.choerodon.com.cn/repository/private-npm/"
   },
   "keywords": [
     "choerodon",
