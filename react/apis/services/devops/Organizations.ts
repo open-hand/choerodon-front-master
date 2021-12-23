@@ -19,6 +19,14 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  createOrgPinelineTemplate(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_pipeline`,
+      method: 'post',
+      data,
+    });
+  }
+
   enableOrgPinelineTemplate(params:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_pipeline/enable`,
@@ -52,6 +60,14 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  createOrgTasksTemplate(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_job`,
+      method: 'post',
+      data,
+    });
+  }
+
   getOrgTasksCategory(params:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_job_group`,
@@ -73,6 +89,14 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
       url: `${this.prefix}/${this.orgId}/ci_template_step`,
       method: 'get',
       params,
+    });
+  }
+
+  createOrgStepsTemplate(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_step`,
+      method: 'post',
+      data,
     });
   }
 
