@@ -12,7 +12,6 @@ export default observer(() => {
   const {
     history,
     ProjectsProUseStore,
-    AppState,
     formatProject,
   } = useProjectsProStore();
 
@@ -27,7 +26,7 @@ export default observer(() => {
         key={p.projectId}
         onClick={() => {
           if (r.enabled) {
-            handleClickProject(r, history, AppState);
+            handleClickProject(r, history);
           }
         }}
         className="recentProjects-content"
