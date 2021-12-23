@@ -19,7 +19,8 @@ export default ({ projectId, availableServiceList, projectOverviewStore }) => ({
           if (!HAS_AGILEPRO) {
             return item.injectGroupId !== 'agilePro';
           }
-          return (includes(availableServiceList, 'agilePro') ? String(item.groupId).includes('agilePro') : true);
+          return (includes(availableServiceList, 'agilePro') ? includes(availableServiceList, item.groupId)
+            || (item.injectGroupId && includes(availableServiceList, item.injectGroupId)) : true);
         }), (item) => item.layout);
         try {
           let res;

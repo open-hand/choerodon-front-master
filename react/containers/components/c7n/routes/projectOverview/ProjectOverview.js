@@ -7,7 +7,7 @@ import { has as injectHas, mount as injectMount } from '@choerodon/inject';
 import ResponsiveReactGridLayout from 'react-grid-layout';
 import ResizeObserver from 'resize-observer-polyfill';
 import {
-  get, forEach, map,
+  get, forEach, map, includes, filter,
 } from 'lodash';
 import { useIntl } from 'react-intl';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
@@ -182,7 +182,9 @@ const ProjectOverview = () => {
   }
 
   function handleReset() {
-    const defaultValues = map(mappings, (item) => item.layout);
+    const defaultValues = filter(mappings, (item) => (includes(availableServiceList, 'agilePro')
+      ? includes(availableServiceList, item.groupId)
+      || (item.injectGroupId && includes(availableServiceList, item.injectGroupId)) : true)).map((item) => item.layout);
     componentsDs.loadData(defaultValues);
   }
 
