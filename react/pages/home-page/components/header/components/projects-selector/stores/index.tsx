@@ -39,7 +39,7 @@ export const StoreProvider = inject('AppState')(observer((props: ProviderProps) 
    */
   const handleSelectProjectCallback = (item:Record<string, any>) => {
     AppState.setDropDownPro(item.name);
-    handleClickProject(item, history, AppState);
+    handleClickProject(item, history);
     handleSelectorBlur();
   };
 

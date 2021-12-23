@@ -1,4 +1,5 @@
 /* eslint-disable */
+
 /**
  * Created by jaywoods on 2017/6/24.
  */
@@ -152,7 +153,7 @@ class MenuStore {
 
   judgeFailedMenuType(menuType) {
     const { type, id } = menuType;
-    const flag = failedMenuType.find(i => (i.type === type) && i.id === id);
+    const flag = failedMenuType.find((i) => (i.type === type) && i.id === id);
     if (flag) {
       return true;
     }
@@ -172,11 +173,9 @@ class MenuStore {
     this.setRootBaseOnActiveMenu();
     if (isLoadMenu === 1) {
       if (selfResolve) {
-        setTimeout(() => this.loadMenuData(menuType, isUser, setData, selfResolve), 500)
+        this.loadMenuData(menuType, isUser, setData, selfResolve);
       } else {
-        return new Promise((resolve) => {
-          setTimeout(() => this.loadMenuData(menuType, isUser, setData, resolve), 500)
-        });
+        return this.loadMenuData(menuType, isUser, setData);
       }
     } else {
       isLoadMenu = 1;
@@ -196,26 +195,26 @@ class MenuStore {
           if (type !== 'user') {
             AppState.currentMenuType.type = type;
             if (menuType?.id) {
-              AppState.currentMenuType.id = menuType?.id
+              AppState.currentMenuType.id = menuType?.id;
             }
           }
         }
-        
+
         const { id = 0, organizationId, orgId } = menuType;
         const menu = this.menuData(type, id);
-        let hasMenu = () => {
+        const hasMenu = () => {
           if (type === 'organization') {
-            return (orgId && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(orgId)))
-          } else if (type === 'site') {
+            return (orgId && Object.keys(menuStore.menuGroup[type]).map((i) => String(i)).includes(String(orgId)));
+          } if (type === 'site') {
             if (this.getRequestedSiteMenu) {
               return true;
             }
           } else {
-            return (id && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(id)))
+            return (id && Object.keys(menuStore.menuGroup[type]).map((i) => String(i)).includes(String(id)));
           }
           return false;
-        }
-        
+        };
+
         if (menu.length || hasMenu()) {
           // 如果当前type是site
           if (type === 'site') {
@@ -235,23 +234,20 @@ class MenuStore {
               await AppState.loadUserInfo();
             }
           } else if (type === 'organization') {
-            
             const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
             if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
-              
               await axios({
                 url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
                 method: 'put',
                 enabledCancelRoute: false,
               });
-              
+
               AppState.loadUserInfo();
             }
           }
           if (!AppState.currentMenuType.hasChangeCategorys) {
-            
             isLoadMenu = 0;
-            return resolve(menu);
+            resolve(menu);
           }
           delete AppState.menuType.hasChangeCategorys;
         }
@@ -274,13 +270,13 @@ class MenuStore {
             enabledCancelRoute: false,
           });
           const child = filterEmptyMenus(data || []);
-          
+
           if (type === 'project') {
             changeMenuLevel({ level: 'project', child });
           } else if (type === 'user') {
             changeMenuLevel({ level: 'user', child });
           }
-          
+
           that.setMenuData(child, type, id);
           return child;
         }
@@ -293,7 +289,7 @@ class MenuStore {
             const result = await axios.get('/iam/choerodon/v1/switch/site', {
               enabledCancelRoute: false,
             });
-            
+
             if (!result) {
               this.setHasSitePermission(false);
             }
@@ -305,7 +301,7 @@ class MenuStore {
             await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
               enabledCancelRoute: false,
             });
-            
+
             loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);
           } else {
             flag = 1;
@@ -327,13 +323,13 @@ class MenuStore {
           }
           AppState.userInfo.currentRoleLevel = type;
           isLoadMenu = 0;
-          
-          return resolve(data || []);
+          resolve(data || []);
         }
         isLoadMenu = 0;
       } catch (e) {
         failedMenuType.push(menuType);
         isLoadMenu = 0;
+        throw new Error(e);
       }
     }
   }
@@ -362,7 +358,7 @@ class MenuStore {
     } else {
       set(this.menuGroup, childType, data);
     }
-    localStorage.setItem('menuGroup', JSON.stringify(this.menuGroup));
+    localStorage.setItem('menuGroup', JSON.stringify(this.menuGroup.slice()));
   }
 
   @computed

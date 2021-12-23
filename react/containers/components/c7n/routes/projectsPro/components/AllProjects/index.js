@@ -502,8 +502,13 @@ export default observer(() => {
   };
 
   const handleChangePagination = (page, pageSize) => {
+    let newPage = page;
+    const { size } = ProjectsProUseStore.getPagination;
+    if (size !== pageSize) {
+      newPage = 1;
+    }
     ProjectsProUseStore.setPagination({
-      page,
+      page: newPage,
       size: pageSize,
     });
     ProjectsProUseStore.axiosGetProjects();
