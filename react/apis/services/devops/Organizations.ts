@@ -19,6 +19,22 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  enableOrgPinelineTemplate(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_pipeline/enable`,
+      method: 'put',
+      params,
+    });
+  }
+
+  invalidOrgPinelineTemplate(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_pipeline/invalid`,
+      method: 'put',
+      params,
+    });
+  }
+
   getOrgPinelineCategory(params:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_category`,
@@ -44,6 +60,13 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  deleteOrgTasksTemplate(temId:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_job${temId}`,
+      method: 'delete',
+    });
+  }
+
   //  组织层步骤模板
   getOrgStepsTemplate(params:any) {
     return this.request({
@@ -58,6 +81,13 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
       url: `${this.prefix}/${this.orgId}/ci_template_step_category`,
       method: 'get',
       params,
+    });
+  }
+
+  deleteOrgStepsTemplate(temId:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_job/${temId}`,
+      method: 'delete',
     });
   }
 }
