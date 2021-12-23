@@ -358,7 +358,7 @@ class MenuStore {
     } else {
       set(this.menuGroup, childType, data);
     }
-    localStorage.setItem('menuGroup', JSON.stringify(this.menuGroup.slice()));
+    localStorage.setItem('menuGroup', JSON.stringify(this.menuGroup));
   }
 
   @computed
