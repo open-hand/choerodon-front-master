@@ -3,10 +3,11 @@ import React, {
 } from 'react';
 import { Button, Modal } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import { has as injectHas, mount as injectMount } from '@choerodon/inject';
 import ResponsiveReactGridLayout from 'react-grid-layout';
 import ResizeObserver from 'resize-observer-polyfill';
 import {
-  get, forEach, map,
+  get, forEach, map, includes, filter,
 } from 'lodash';
 import { useIntl } from 'react-intl';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
@@ -43,7 +44,10 @@ import Workload from './components/Workload';
 import CustomChart from './components/custom-chart';
 
 let observerLayout;
-
+const ComponentMountMap = {
+  featureProgress: 'agilePro:featureProgress',
+  issueProgress: 'agilePro:issueProgress',
+};
 const ProjectOverview = () => {
   const { formatMessage } = useIntl();
   const {
@@ -111,6 +115,12 @@ const ProjectOverview = () => {
     }
     return <CustomChart customChartConfig={chartConfig} />;
   }, [customChartAvailableList, projectOverviewStore]);
+  const renderInjectComponent = useCallback((type) => {
+    if (!Object.keys(ComponentMountMap).includes(type) || !injectHas(ComponentMountMap[type])) {
+      return undefined;
+    }
+    return injectMount(ComponentMountMap[type]);
+  }, []);
 
   const renderBg = useCallback(() => <GridBg rowHeight={(layOutWidth - 11 * 18) / 10} selector={`.${prefixCls}-container`} cols={10} style={{ padding: '0' }} />, [layOutWidth]);
 
@@ -172,7 +182,9 @@ const ProjectOverview = () => {
   }
 
   function handleReset() {
-    const defaultValues = map(mappings, (item) => item.layout);
+    const defaultValues = filter(mappings, (item) => (includes(availableServiceList, 'agilePro')
+      ? includes(availableServiceList, item.groupId)
+      || (item.injectGroupId && includes(availableServiceList, item.injectGroupId)) : true)).map((item) => item.layout);
     componentsDs.loadData(defaultValues);
   }
 
@@ -240,7 +252,21 @@ const ProjectOverview = () => {
   function onLayoutChange(layout, layouts) {
     componentsDs.loadData(layout);
   }
-  function renderEmptyTitle(groupId, customFlag) {
+  function renderEmptyTitle({
+    groupId, type, injectGroupId, layout: { customFlag },
+  }) {
+    if (injectGroupId && !injectHas(ComponentMountMap[type])) {
+      switch (injectGroupId) {
+        case 'agilePro':
+          return '安装部署【敏捷模块】模块后，才能使用此卡片';
+        default:
+          break;
+      }
+    }
+    // 特殊处理
+    if (['featureProgress', 'issueProgress'].includes(type)) {
+      return '未选择【敏捷管理】或【敏捷项目群】项目类型，卡片暂不可用';
+    }
     if (!availableServiceList.includes(groupId)) {
       return groupId === 'devops' ? '未选择【DevOps流程】项目类型，卡片暂不可用' : '未选择【敏捷管理】项目类型，卡片暂不可用';
     }
@@ -250,17 +276,17 @@ const ProjectOverview = () => {
     return '卡片暂不可用';
   }
   const SwitchComponents = (type, title) => {
-    let tempComponent = renderCustomChart(type);
+    let tempComponent = renderCustomChart(type) || renderInjectComponent(type);
     const hasOwnProperty = tempComponent || Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
     const hasType = allCode.includes(type) || projectOverviewStore.getCustomChart(type);
     if (hasOwnProperty && hasType) {
       tempComponent = tempComponent || ComponetsObjs[type];
     } else {
-      const chartConfig = mappings[type] || projectOverviewStore.getCustomChart(type);
+      const componentConfig = mappings[type] || projectOverviewStore.getCustomChart(type) || { layout: {} };
       tempComponent = (
         <EmptyCard
           title={title}
-          emptyTitle={renderEmptyTitle(get(chartConfig, 'groupId'), get(chartConfig, 'layout.customFlag'))}
+          emptyTitle={renderEmptyTitle(componentConfig)}
           index={type}
           sizeObserver={['appService', 'env'].includes(type)}
         />
