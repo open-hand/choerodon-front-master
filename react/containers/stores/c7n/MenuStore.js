@@ -323,7 +323,6 @@ class MenuStore {
           }
           AppState.userInfo.currentRoleLevel = type;
           isLoadMenu = 0;
-
           resolve(data || []);
         }
         isLoadMenu = 0;
@@ -359,7 +358,7 @@ class MenuStore {
     } else {
       set(this.menuGroup, childType, data);
     }
-    localStorage.setItem('menuGroup', JSON.stringify(this.menuGroup));
+    localStorage.setItem('menuGroup', JSON.stringify(this.menuGroup.slice()));
   }
 
   @computed
