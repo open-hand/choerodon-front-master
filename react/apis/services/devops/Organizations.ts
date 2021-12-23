@@ -78,7 +78,7 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
 
   deleteOrgTasksTemplate(temId:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/ci_template_job${temId}`,
+      url: `${this.prefix}/${this.orgId}/ci_template_job/${temId}`,
       method: 'delete',
     });
   }
