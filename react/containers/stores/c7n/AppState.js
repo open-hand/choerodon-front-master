@@ -366,7 +366,7 @@ class AppState {
     const key = 'base-business:loadWatermarkInfo';
     if (hasInject(key)) {
       const organizationId = orgId ?? this.menuType?.organizationId;
-      const res = await getInject(key)?.org(organizationId)?.();
+      const res = await getInject(key)(organizationId);
       this.setWatermarkInfo(res);
     } else {
       this.setWatermarkInfo(null);
