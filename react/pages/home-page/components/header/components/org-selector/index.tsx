@@ -13,6 +13,7 @@ import { historyPushMenu } from '@/utils';
 import { OrgSelectorProps } from './interface';
 import { HOMEPAGE_PATH } from '@/constants';
 import './index.less';
+import appState from "@/containers/stores/c7n/AppState";
 
 // 是否存在base的商业版本
 const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
@@ -145,6 +146,9 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
   useEffect(() => {
     if (!organizationId) {
       autoSelect();
+    } else {
+      // 请求组织水印信息
+      appState.loadWatermarkInfo(organizationId);
     }
   }, [autoSelect, organizationId]);
 
