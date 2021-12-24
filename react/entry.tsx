@@ -31,9 +31,9 @@ autoRefresh();
 
 const App = () => (
   <Router getUserConfirmation={getConfirmation}>
-    <ErrorBoundar renderError={(props) => <ErrorPage {...props} />}>
-      <PageEntry />
-    </ErrorBoundar>
+    {/* <ErrorBoundar renderError={(props) => <ErrorPage {...props} />}> */}
+    <PageEntry />
+    {/* </ErrorBoundar> */}
     <C7NDevTool />
   </Router>
 );
