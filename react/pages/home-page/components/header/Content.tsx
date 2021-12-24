@@ -37,6 +37,12 @@ const Header = (props:any) => {
     AppState.getProjects();
   }, []);
 
+  // TODO 使用useLoadWatermakInfo
+  useEffect(() => {
+    // 请求组织水印信息
+    AppState.loadWatermarkInfo();
+  }, [AppState?.currentMenuType?.organizationId]);
+
   // 这块需要拆出去放到主页面的逻辑里头,等主页面重构完
   useEffect(() => {
     if (!location.pathname.includes('unauthorized')) {
