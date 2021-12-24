@@ -67,7 +67,7 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
-  getOrgTasksTemplateByGroupId(id:any) {
+  getOrgTasksTemplateListByGroupId(id:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_job`,
       method: 'get',
@@ -80,6 +80,13 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
   getOrgTasksTemplateGroup() {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_job_group`,
+      method: 'get',
+    });
+  }
+
+  getOrgTasksTemplateGroupList() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_job_group/list`,
       method: 'get',
     });
   }
