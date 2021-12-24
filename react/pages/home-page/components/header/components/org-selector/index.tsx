@@ -144,9 +144,6 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
   useEffect(() => {
     if (!organizationId) {
       autoSelect();
-    } else {
-      // 请求组织水印信息
-      AppState.loadWatermarkInfo(organizationId);
     }
   }, [autoSelect, organizationId]);
 
