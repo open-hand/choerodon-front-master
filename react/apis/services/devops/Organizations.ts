@@ -67,11 +67,10 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
-  getOrgTasksTemplateList(params:any) {
+  getOrgTasksTemplateList() {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_job/list`,
       method: 'get',
-      params,
     });
   }
 
