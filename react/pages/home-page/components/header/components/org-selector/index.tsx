@@ -8,7 +8,6 @@ import { observer } from 'mobx-react-lite';
 import { useHistory, useLocation } from 'react-router-dom';
 import classnames from 'classnames';
 import { toJS } from 'mobx';
-import { findIndex } from 'lodash';
 import { historyPushMenu } from '@/utils';
 import { OrgSelectorProps } from './interface';
 import { HOMEPAGE_PATH } from '@/constants';
@@ -145,6 +144,9 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
   useEffect(() => {
     if (!organizationId) {
       autoSelect();
+    } else {
+      // 请求组织水印信息
+      AppState.loadWatermarkInfo(organizationId);
     }
   }, [autoSelect, organizationId]);
 
