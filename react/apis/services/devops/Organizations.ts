@@ -19,6 +19,13 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  getOrgPinelineTemplateById(id:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_pipeline/${id}`,
+      method: 'get',
+    });
+  }
+
   createOrgPinelineTemplate(data:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_pipeline`,
@@ -57,6 +64,13 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
       url: `${this.prefix}/${this.orgId}/ci_template_job/page`,
       method: 'get',
       params,
+    });
+  }
+
+  getOrgTasksTemplateList() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_job/list`,
+      method: 'get',
     });
   }
 
