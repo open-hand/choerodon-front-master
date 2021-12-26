@@ -41,6 +41,7 @@ export const OPTIONS_EN_US = {
   'boot.previous': 'Previous',
   'boot.next': 'Next',
   'boot.finish': 'Finish',
+  'boot.completed': 'Finish',
   'boot.close': 'Close',
 } as const;
 

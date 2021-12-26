@@ -72,6 +72,7 @@ const STATUS_ZH_CN = {
   'boot.notActive': '未生效',
   'boot.expired': '已过期',
   'boot.finished': '已完成',
+  'boot.completed': '已完成',
   'boot.unusual': '异常',
   'boot.checked': '已审核',
   'boot.ready': '待执行',
