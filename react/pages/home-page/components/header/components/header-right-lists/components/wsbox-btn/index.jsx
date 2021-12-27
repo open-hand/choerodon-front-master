@@ -437,6 +437,12 @@ export default class Inbox extends Component {
             <Icon className={`${subPrefix}-icon`} type="notifications_none" />
           </Badge>
         </WSHandler>
+        <WSHandler
+          messageKey="choerodon-pop-ups"
+          onMessage={this.handleMessagePop}
+        >
+          {() => <></>}
+        </WSHandler>
         <RenderPopoverContentClass
           {...popOverContent}
           cleanAllMsg={this.cleanAllMsg}
