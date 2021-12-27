@@ -7,7 +7,7 @@ import AppState from '@/containers/stores/c7n/AppState';
  * @return {*}
  */
 const useCurrentLanguage = () => {
-  const [localLanguage, setLanguage] = useLocalStorageState('language');
+  const [localLanguage] = useLocalStorageState('language');
 
   const stateLanguage = AppState.currentLanguage;
 

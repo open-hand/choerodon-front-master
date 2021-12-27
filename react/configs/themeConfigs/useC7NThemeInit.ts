@@ -1,4 +1,4 @@
-import { useLayoutEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { initTheme } from '@hzero-front-ui/core';
 import { theme4Configs } from './config';
 
@@ -11,9 +11,7 @@ function useC7NThemeInit() {
     initTheme(theme4Configs);
   }, []);
 
-  useLayoutEffect(() => {
-    handleInitTheme();
-  }, []);
+  handleInitTheme();
 }
 
 export default useC7NThemeInit;
