@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ModalProvider, localeContext } from 'choerodon-ui/pro';
 import { Container } from '@hzero-front-ui/core';
 import { observer } from 'mobx-react-lite';
 import zhCN from 'choerodon-ui/pro/lib/locale-context/zh_CN';
 import enUS from 'choerodon-ui/pro/lib/locale-context/en_US';
-import { useMount } from 'ahooks';
 import { useC7NThemeInit } from '../themeConfigs';
 import { useCurrentLanguage } from '@/hooks';
 import { LanguageTypes } from '@/typings';
@@ -25,9 +24,9 @@ const UIConfigInitContainer:React.FC = ({ children }) => {
   // 初始化注入新UI的版本
   useC7NThemeInit();
 
-  useMount(() => {
+  useEffect(() => {
     localeContext.setLocale(localeObj[language]);
-  });
+  }, [language]);
 
   return (
     <Container>
