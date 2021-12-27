@@ -65,7 +65,7 @@ const STATUS_ZH_CN = {
   'boot.creating': '创建中',
   'boot.pendingcheck': '待审核',
   'boot.executing': '执行中',
-  'boot.notExecuted': '未执行',
+  'boot.notExecuted': '待执行',
   'boot.terminated': '已终止',
   'boot.normal': '正常',
   'boot.locked': '锁定',
