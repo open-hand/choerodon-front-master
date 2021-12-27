@@ -58,10 +58,18 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
-  getOrgPinelineVariable(tempId: any) {
+  getOrgPinelineVariableById(tempId: any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_variable/ci_pipeline_template/${tempId}`,
       method: 'get',
+    });
+  }
+
+  checkOrgPinelineName(params: any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_pipeline/check/name/unique`,
+      method: 'get',
+      params,
     });
   }
 
