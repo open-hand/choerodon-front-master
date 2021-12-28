@@ -109,11 +109,70 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
     });
   }
 
+  // 创建流水线模板中，校验基本信息名称的唯一性
+  checkCreatePipelineName(sourceId:string, name:string) {
+    return this.request({
+      url: `${this.prefix}/${sourceId}/ci_pipeline_template/check/name/unique?name=${name}`,
+      method: 'get',
+    });
+  }
+
   // 获取任务分组列表
   getTaskGroupList(sourceId:String) {
     return this.request({
-      url: `${this.prefix}/${sourceId}/ci_template_job_group`,
+      url: `${this.prefix}/0/ci_template_job_group/list`,
       method: 'get',
+    });
+  }
+
+  // 获取任务id查询job列表
+  getTasksTemplateListByGroupId(groupId:String) {
+    return this.request({
+      url: `${this.prefix}/0/ci_template_job?ci_template_job_group_id=${groupId}`,
+      method: 'get',
+    });
+  }
+
+  // 获取变量
+  getVariableById(id:String) {
+    return this.request({
+      url: `${this.prefix}/0/ci_template_variable/ci_pipeline_template/${id}`,
+      method: 'get',
+    });
+  }
+
+  // 获取流水线模板
+  getPinelineTemplateById(id:String) {
+    return this.request({
+      url: `${this.prefix}/0/ci_pipeline_template/${id}`,
+      method: 'get',
+    });
+  }
+
+  // 创建流水线模板
+  createPinelineTemplate(data:object) {
+    return this.request({
+      url: `${this.prefix}/0/ci_pipeline_template`,
+      method: 'post',
+      data,
+    });
+  }
+
+  // 修改流水线模板
+  editPinelineTemplate(data:object) {
+    return this.request({
+      url: `${this.prefix}/0/ci_pipeline_template`,
+      method: 'put',
+      data,
+    });
+  }
+
+  // 获取流水线分类
+  getSitePinelineCategory(params:any) {
+    return this.request({
+      url: `${this.prefix}/0/ci_template_category`,
+      method: 'get',
+      params,
     });
   }
 }
