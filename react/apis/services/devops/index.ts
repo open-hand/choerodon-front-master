@@ -7,3 +7,4 @@ export * from './pipelineTemplate';
 export * from './ci-template-job-group';
 export * from './ci-template-step-category';
 export * from './ci-template-job';
+export * from './site-pipeline-template';
