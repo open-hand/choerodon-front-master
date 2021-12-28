@@ -131,9 +131,9 @@ const MasterIndex = () => {
   }
 
   return (
-    <MasterLocaleContainer>
-      <UIConfigInitContainer>
-        <Provider {...stores}>
+    <Provider {...stores}>
+      <MasterLocaleContainer>
+        <UIConfigInitContainer>
           <C7NReactQueryContainer>
             <PermissionProvider>
               <WSProvider server={WEBSOCKET_SERVER}>
@@ -141,9 +141,9 @@ const MasterIndex = () => {
               </WSProvider>
             </PermissionProvider>
           </C7NReactQueryContainer>
-        </Provider>
-      </UIConfigInitContainer>
-    </MasterLocaleContainer>
+        </UIConfigInitContainer>
+      </MasterLocaleContainer>
+    </Provider>
   );
 };
 
