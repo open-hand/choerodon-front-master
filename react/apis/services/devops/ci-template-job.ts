@@ -14,6 +14,16 @@ class CiTemplateJobApi extends Api<CiTemplateJobApi> {
       },
     });
   }
+
+  checkStepName(name: string) {
+    return this.request({
+      url: `${this.orgPrefix}/check/name/unique`,
+      method: 'get',
+      params: {
+        name,
+      },
+    });
+  }
 }
 
 const ciTemplateJobApi = new CiTemplateJobApi();
