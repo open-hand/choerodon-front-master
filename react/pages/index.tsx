@@ -97,6 +97,7 @@ const MasterIndex = () => {
   }
 
   useMount(() => {
+    document.body.setAttribute('data-theme', 'theme4');
     // 不是就校验去登录
     !isInOutward && auth();
   });
