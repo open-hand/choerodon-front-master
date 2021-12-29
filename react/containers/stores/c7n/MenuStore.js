@@ -171,7 +171,7 @@ class MenuStore {
     async function mainFunc(resolve) {
       const type = getMenuType(menuType, isUser) || 'site';
       if (setData) {
-        if (type !== 'user') {
+        if (type !== 'user' && typeof AppState.currentMenuType === 'object') {
           AppState.currentMenuType.type = type;
           if (menuType?.id) {
             AppState.currentMenuType.id = menuType?.id
