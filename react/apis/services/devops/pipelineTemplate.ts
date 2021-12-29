@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import Api from '../../Api';
 
 class PipelineTemplateApi extends Api<PipelineTemplateApi> {
@@ -86,33 +87,33 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
   }
 
   // 添加步骤分类中，校验步骤分类名称的唯一性
-  checkStepClassName(sourceId:string, name:string) {
+  checkStepClassName(sourceId:string, name:string, id:string) {
     return this.request({
-      url: `${this.prefix}/${sourceId}/ci_template_step_category/check/name/unique?name=${name}`,
+      url: id ? `${this.prefix}/${sourceId}/ci_template_step_category/check/name/unique?name=${name}&ci_template_step_id=${id}` : `${this.prefix}/${sourceId}/ci_template_step_category/check/name/unique?name=${name}`,
       method: 'get',
     });
   }
 
   // 添加流水线分类中，校验流水线分类名称的唯一性
-  checkPipelineClassName(sourceId:string, name:string) {
+  checkPipelineClassName(sourceId:string, name:string, id:string) {
     return this.request({
-      url: `${this.prefix}/${sourceId}/ci_template_category/check/name/unique?name=${name}`,
+      url: id ? `${this.prefix}/${sourceId}/ci_template_category/check/name/unique?name=${name}&ci_template_category_id=${id}` : `${this.prefix}/${sourceId}/ci_template_category/check/name/unique?name=${name}`,
       method: 'get',
     });
   }
 
   // 添加任务分组中，校验任务分组名称的唯一性
-  checkTaskGroupName(sourceId:string, name:string) {
+  checkTaskGroupName(sourceId:string, name:string, id:string) {
     return this.request({
-      url: `${this.prefix}/${sourceId}/ci_template_job_group/check/name/unique?name=${name}`,
+      url: id ? `${this.prefix}/${sourceId}/ci_template_job_group/check/name/unique?name=${name}&template_job_id=${id}` : `${this.prefix}/${sourceId}/ci_template_job_group/check/name/unique?name=${name}`,
       method: 'get',
     });
   }
 
   // 创建流水线模板中，校验基本信息名称的唯一性
-  checkCreatePipelineName(sourceId:string, name:string) {
+  checkCreatePipelineName({ name, ci_pipeline_template_id }:any) {
     return this.request({
-      url: `${this.prefix}/${sourceId}/ci_pipeline_template/check/name/unique?name=${name}`,
+      url: `${this.prefix}/0/ci_pipeline_template/check/name/unique?name=${name}&ci_template_id=${ci_pipeline_template_id}`,
       method: 'get',
     });
   }
@@ -120,7 +121,7 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
   // 获取任务分组列表
   getTaskGroupList(sourceId:String) {
     return this.request({
-      url: `${this.prefix}/0/ci_template_job_group/list`,
+      url: `${this.prefix}/0/ci_template_job_group`,
       method: 'get',
     });
   }
