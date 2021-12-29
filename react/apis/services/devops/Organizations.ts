@@ -125,6 +125,19 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_job`,
       method: 'post',
+      data: {
+        ...data,
+        builtIn: false,
+        sourceId: this.orgId,
+        sourceType: 'organization',
+      },
+    });
+  }
+
+  modifyOrgTasksTemplate(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_job`,
+      method: 'put',
       data,
     });
   }
@@ -134,6 +147,13 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
       url: `${this.prefix}/${this.orgId}/ci_template_job_group`,
       method: 'get',
       params,
+    });
+  }
+
+  checkIfCanDelOrgTasksTemplate(temId:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_job/${temId}/check/delete`,
+      method: 'get',
     });
   }
 
@@ -161,11 +181,26 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  modifyOrgStepsTemplate(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_step`,
+      method: 'put',
+      data,
+    });
+  }
+
   getOrgStepsCategory(params:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_step_category`,
       method: 'get',
       params,
+    });
+  }
+
+  checkIfCanDelOrgStepsTemplate(temId:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_step/${temId}/check/delete`,
+      method: 'get',
     });
   }
 
