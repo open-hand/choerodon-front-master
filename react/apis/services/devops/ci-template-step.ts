@@ -19,6 +19,16 @@ class CiTemplateStepApi extends Api<CiTemplateStepApi> {
     });
   }
 
+  checkOrgStepName(name: string) {
+    return this.request({
+      url: `${this.orgPrefix}/check/name/unique`,
+      method: 'get',
+      params: {
+        name,
+      },
+    });
+  }
+
   getSiteSteps() {
     return this.request({
       url: `${this.sitePrefix}/list/with/category`,
