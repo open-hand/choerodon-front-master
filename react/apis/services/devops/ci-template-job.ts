@@ -9,22 +9,24 @@ class CiTemplateJobApi extends Api<CiTemplateJobApi> {
     return '/devops/v1/site/0/ci_template_job';
   }
 
-  checkJobName(name: string) {
+  checkJobName(name: string, id?: any) {
     return this.request({
       url: `${this.sitePrefix}/check_name`,
       method: 'get',
       params: {
         name,
+        job_id: id,
       },
     });
   }
 
-  checkName(name: string) {
+  checkName(name: string, id?: any) {
     return this.request({
       url: `${this.orgPrefix}/check_name`,
       method: 'get',
       params: {
         name,
+        job_id: id,
       },
     });
   }
