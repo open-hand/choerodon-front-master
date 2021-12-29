@@ -334,7 +334,7 @@ const componentsObj = {
     groupId: 'agile',
     title: '每人每日工作量',
     describe:
-        '此模块展示此项目下每人每日工作量。',
+      '此模块展示此项目下每人每日工作量。',
     img: workLoad,
   },
   // 项目动态
@@ -355,6 +355,45 @@ const componentsObj = {
     describe:
       '此模块按问题计数、工时数2种维度统计当前迭代各个团队成员任务总量、完成量和剩余量。',
     img: personalWorkload,
+  },
+  // 特性进度统计
+  featureProgress: {
+    layout: {
+      h: 7,
+      i: 'featureProgress',
+      minH: 7,
+      minW: 10,
+      w: 10,
+      x: 0,
+      y: 33,
+    },
+    name: 'featureProgress',
+    type: 'featureProgress',
+    groupId: 'agile',
+    injectGroupId: 'agilePro',
+    title: '特性进度统计',
+    describe:
+      '此模块按问题计数、工时数2种维度统计当前迭代各个团队成员任务总量、完成量和剩余量。',
+    img: sprintCount,
+  },
+  issueProgress: {
+    layout: {
+      h: 7,
+      i: 'issueProgress',
+      minH: 7,
+      minW: 10,
+      w: 10,
+      x: 0,
+      y: 33,
+    },
+    name: 'issueProgress',
+    type: 'issueProgress',
+    groupId: 'agile',
+    injectGroupId: 'agilePro',
+    title: '工作项进度统计',
+    describe:
+      '此模块按问题计数、工时数2种维度统计当前迭代各个团队成员任务总量、完成量和剩余量。',
+    img: sprintCount,
   },
 };
 
