@@ -90,6 +90,13 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  getOrgTasksTemplateDetail(id:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_job/${id}`,
+      method: 'get',
+    });
+  }
+
   getOrgTasksTemplateListByGroupId(id:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_job`,
@@ -177,7 +184,12 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_step`,
       method: 'post',
-      data,
+      data: {
+        ...data,
+        builtIn: false,
+        sourceId: this.orgId,
+        sourceType: 'organization',
+      },
     });
   }
 
