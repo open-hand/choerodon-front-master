@@ -89,7 +89,7 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
   // 添加步骤分类中，校验步骤分类名称的唯一性
   checkStepClassName(sourceId:string, name:string, id:string) {
     return this.request({
-      url: id ? `${this.prefix}/${sourceId}/ci_template_step_category/check/name/unique?name=${name}&ci_template_step_id=${id}` : `${this.prefix}/${sourceId}/ci_template_step_category/check/name/unique?name=${name}`,
+      url: id ? `${this.prefix}/${sourceId}/ci_template_step_category/check/name/unique?name=${name}&ci_template_category_id=${id}` : `${this.prefix}/${sourceId}/ci_template_step_category/check/name/unique?name=${name}`,
       method: 'get',
     });
   }
