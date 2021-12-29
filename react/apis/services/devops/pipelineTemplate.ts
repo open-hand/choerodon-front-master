@@ -175,6 +175,42 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
       params,
     });
   }
+
+  // 创建任务模板
+  createTaskTemplate(data:any) {
+    return this.request({
+      url: `${this.prefix}/0/ci_template_job`,
+      method: 'post',
+      data,
+    });
+  }
+
+  // 修改任务模板
+  editTaskTemplate(data:any) {
+    return this.request({
+      url: `${this.prefix}/0/ci_template_job`,
+      method: 'put',
+      data,
+    });
+  }
+
+  // 创建步骤模板
+  createStepTemplate(data:any) {
+    return this.request({
+      url: `${this.prefix}/0/ci_template_step`,
+      method: 'post',
+      data,
+    });
+  }
+
+  // 修改步骤模板
+  editStepTemplate(data:any) {
+    return this.request({
+      url: `${this.prefix}/0/ci_template_step`,
+      method: 'put',
+      data,
+    });
+  }
 }
 
 const pipelineTemplateApi = new PipelineTemplateApi();
