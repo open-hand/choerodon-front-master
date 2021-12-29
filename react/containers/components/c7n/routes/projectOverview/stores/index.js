@@ -60,8 +60,8 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
     return [];
   }, []);
   useEffect(() => {
-    projectOverviewStore.loadAgileCustomData();
-  }, [projectOverviewStore]);
+    projectId && projectOverviewStore.loadAgileCustomData();
+  }, [projectOverviewStore, projectId]);
   const value = {
     ...props,
     projectOverviewStore,

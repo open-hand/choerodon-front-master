@@ -11,8 +11,8 @@ class CICDPipelineApi extends Api<CICDPipelineApi> {
       method: 'post',
       params: {
         include_default,
-      }
-    })
+      },
+    });
   }
 }
 
