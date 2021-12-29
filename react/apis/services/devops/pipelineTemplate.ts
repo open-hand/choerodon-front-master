@@ -111,9 +111,9 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
   }
 
   // 创建流水线模板中，校验基本信息名称的唯一性
-  checkCreatePipelineName({ name, ci_pipeline_template_id }:any) {
+  checkCreatePipelineName({ name, id }:any) {
     return this.request({
-      url: `${this.prefix}/0/ci_pipeline_template/check/name/unique?name=${name}&ci_template_id=${ci_pipeline_template_id}`,
+      url: id ? `${this.prefix}/0/ci_pipeline_template/check/name/unique?name=${name}&ci_template_id=${id}` : `${this.prefix}/0/ci_pipeline_template/check/name/unique?name=${name}`,
       method: 'get',
     });
   }
@@ -121,7 +121,7 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
   // 获取任务分组列表
   getTaskGroupList(sourceId:String) {
     return this.request({
-      url: `${this.prefix}/0/ci_template_job_group`,
+      url: `${this.prefix}/0/ci_template_job_group/list`,
       method: 'get',
     });
   }
