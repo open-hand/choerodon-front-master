@@ -9,22 +9,24 @@ class CiTemplateStepApi extends Api<CiTemplateStepApi> {
     return `/devops/v1/organizations/${this.orgId}/ci_template_step`;
   }
 
-  checkStepName(name: string) {
+  checkStepName(name: string, id?: any) {
     return this.request({
       url: `${this.sitePrefix}/check/name/unique`,
       method: 'get',
       params: {
         name,
+        template_step_id: id,
       },
     });
   }
 
-  checkOrgStepName(name: string) {
+  checkOrgStepName(name: string, id?: any) {
     return this.request({
       url: `${this.orgPrefix}/check/name/unique`,
       method: 'get',
       params: {
         name,
+        template_step_id: id,
       },
     });
   }
