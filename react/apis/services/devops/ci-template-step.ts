@@ -21,14 +21,14 @@ class CiTemplateStepApi extends Api<CiTemplateStepApi> {
 
   getSiteSteps() {
     return this.request({
-      url: `${this.sitePrefix}`,
+      url: `${this.sitePrefix}/list/with/category`,
       method: 'get',
     });
   }
 
   getOrgSteps() {
     return this.request({
-      url: `${this.orgPrefix}`,
+      url: `${this.orgPrefix}/list/with/category`,
       method: 'get',
     });
   }
