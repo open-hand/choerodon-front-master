@@ -34,6 +34,14 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  modifyOrgPinelineTemplate(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_pipeline`,
+      method: 'put',
+      data,
+    });
+  }
+
   enableOrgPinelineTemplate(params:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_pipeline/enable`,
