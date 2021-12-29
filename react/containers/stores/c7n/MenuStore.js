@@ -1,4 +1,5 @@
 /* eslint-disable */
+
 /**
  * Created by jaywoods on 2017/6/24.
  */
@@ -152,11 +153,9 @@ class MenuStore {
     this.setRootBaseOnActiveMenu();
     if (isLoadMenu === 1) {
       if (selfResolve) {
-        setTimeout(() => this.loadMenuData(menuType, isUser, setData, selfResolve), 500)
+        this.loadMenuData(menuType, isUser, setData, selfResolve);
       } else {
-        return new Promise((resolve) => {
-          setTimeout(() => this.loadMenuData(menuType, isUser, setData, resolve), 500)
-        });
+        return this.loadMenuData(menuType, isUser, setData);
       }
     } else {
       isLoadMenu = 1;
