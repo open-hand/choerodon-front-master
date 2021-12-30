@@ -81,6 +81,13 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  deleteOrgPinelineTemplate(temId:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_pipeline/${temId}`,
+      method: 'delete',
+    });
+  }
+
   //  组织层任务模板
   getOrgTasksTemplate(params:any) {
     return this.request({
