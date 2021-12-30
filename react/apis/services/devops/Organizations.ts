@@ -30,7 +30,10 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_pipeline`,
       method: 'post',
-      data,
+      data: {
+        ...data,
+        sourceId: this.orgId,
+      },
     });
   }
 
@@ -38,7 +41,10 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_pipeline`,
       method: 'put',
-      data,
+      data: {
+        ...data,
+        sourceId: this.orgId,
+      },
     });
   }
 
