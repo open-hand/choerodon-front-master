@@ -51,11 +51,6 @@ const ComponentMountMap = {
 const ProjectOverview = () => {
   const { formatMessage } = useIntl();
   const {
-    AppState: {
-      currentMenuType: {
-        category,
-      },
-    },
     prefixCls,
     projectOverviewStore,
     componentsDs,
@@ -357,7 +352,7 @@ const ProjectOverview = () => {
         <div className={`${prefixCls}-container`}>
           {isEdit && renderBg()}
           {
-            category && renderGridLayouts()
+            availableServiceList.length ? renderGridLayouts() : null
           }
         </div>
       </Content>
