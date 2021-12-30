@@ -118,10 +118,18 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
     });
   }
 
-  // 获取任务分组列表
+  // 创建流水线模板 不分页获取任务分组列表
   getTaskGroupList(sourceId:String) {
     return this.request({
       url: `${this.prefix}/0/ci_template_job_group/list`,
+      method: 'get',
+    });
+  }
+
+  // 分页获取任务分组列表
+  getTaskTemplateGroupList(sourceId:String) {
+    return this.request({
+      url: `${this.prefix}/0/ci_template_job_group`,
       method: 'get',
     });
   }
@@ -210,6 +218,14 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
       url: `${this.prefix}/0/ci_template_step`,
       method: 'put',
       data,
+    });
+  }
+
+  // 根据id查询job详情
+  getJobDetailById(id:string) {
+    return this.request({
+      url: `${this.prefix}/0/ci_template_job/${id}`,
+      method: 'get',
     });
   }
 }
