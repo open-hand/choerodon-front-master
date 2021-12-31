@@ -156,10 +156,10 @@ class Masters extends Component {
 
   setDocUrl = async (params) => {
     if (JSON.stringify(params) !== '{}') {
-      const result = await MasterServices.axiosGetHelpDoc(params);
-      if (result) {
-        this.props.AppState.setDocUrl(result);
-      }
+      // const result = await MasterServices.axiosGetHelpDoc(params);
+      // if (result) {
+      this.props.AppState.setDocUrl('https://open.hand-china.com/document-center/doc/product/10177/10608?doc_id=168204&doc_code=118818');
+      // }
     }
   };
 
