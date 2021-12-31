@@ -15,6 +15,13 @@ class ApiTestApi extends Api<ApiTestApi> {
     });
   }
 
+  deleteConfigValidate(configId: string) {
+    return this.request({
+      url: `${this.prefix}/config/${configId}/reference`,
+      method: 'get',
+    });
+  }
+
   /**
    * 客户端执行
    * @param taskId

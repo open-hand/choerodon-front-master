@@ -1,4 +1,5 @@
 import { action, computed, observable } from 'mobx';
+import { get as getInject, has as hasInject } from '@choerodon/inject';
 import axios from '@/components/axios';
 
 function getDefaultLanguage() {
@@ -37,6 +38,8 @@ class AppState {
   @observable deployServices = []; // 后端已部署的服务
 
   @observable projectCategorys = {};
+
+  @observable watermarkInfo = null; // 组织水印配置信息；
 
   getProjects = () => {
     if (this.currentMenuType?.organizationId) {
@@ -347,6 +350,28 @@ class AppState {
       //
     }
   };
+
+  @action
+  setWatermarkInfo(data) {
+    this.watermarkInfo = data;
+  }
+
+  @computed
+  get getWatermarkInfo() {
+    return this.watermarkInfo;
+  }
+
+  // 请求组织水印信息
+  loadWatermarkInfo = async (orgId) => {
+    const key = 'base-business:loadWatermarkInfo';
+    const organizationId = orgId ?? this.menuType?.organizationId;
+    if (hasInject(key) && organizationId) {
+      const res = await getInject(key)(organizationId);
+      this.setWatermarkInfo(res);
+    } else {
+      this.setWatermarkInfo(null);
+    }
+  }
 }
 
 const appState = new AppState();

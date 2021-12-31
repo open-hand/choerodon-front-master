@@ -26,9 +26,9 @@ const QuestionSearchSelect = observer(({
     if (!readAxiosConfig) {
       return [];
     }
-    const readAxiosConfigProps = typeof (readAxiosConfig) === 'function' ? readAxiosConfig({ organizationId }) : readAxiosConfig;
     const filterParamKey = filterParamName || 'param';
-    const newReadAxiosConfig = { ...readAxiosConfigProps, params: merge(readAxiosConfigProps.params || {}, paging ? { [filterParamKey]: filter, page } : {}) };
+    const readAxiosConfigProps = typeof (readAxiosConfig) === 'function' ? readAxiosConfig({ organizationId, [filterParamKey]: filter || '' }) : readAxiosConfig;
+    const newReadAxiosConfig = { ...readAxiosConfigProps, params: merge(readAxiosConfigProps.params || {}, paging ? { [filterParamKey]: filter || '', page } : {}) };
 
     return axios({ ...newReadAxiosConfig });
   }, [data, filterParamName, organizationId, paging, readAxiosConfig]);
