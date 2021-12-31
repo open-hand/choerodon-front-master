@@ -158,7 +158,7 @@ class Masters extends Component {
     if (JSON.stringify(params) !== '{}') {
       // const result = await MasterServices.axiosGetHelpDoc(params);
       // if (result) {
-      this.props.AppState.setDocUrl('https://open.hand-china.com/document-center/doc/product/10177/10419?doc_code=118818&doc_id=124273#1%E3%80%81%E6%B7%B7%E5%90%88%E4%BA%91%E7%9A%84%E5%AE%B9%E5%99%A8%E5%B9%B3%E5%8F%B0');
+      this.props.AppState.setDocUrl('https://open.hand-china.com/document-center/doc/product/10177/10608?doc_id=168204&doc_code=118818');
       // }
     }
   };
