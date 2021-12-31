@@ -50,10 +50,10 @@ export const questionSearchFields = [
     name: '状态',
     selectConfig: {
       paging: true,
-      readAxiosConfig: ({ organizationId }) => ({
+      readAxiosConfig: ({ organizationId, param }) => ({
         url: `/agile/v1/organizations/${organizationId}/work_bench/status`,
         method: 'post',
-        data: {},
+        data: { param },
       }),
       valueField: 'id',
       textField: 'name',
@@ -159,10 +159,10 @@ export const questionSearchFields = [
     name: '经办人',
     selectConfig: {
       paging: true,
-      readAxiosConfig: ({ organizationId }) => ({
+      readAxiosConfig: ({ organizationId, ignoredUserIds, param }) => ({
         url: `/agile/v1/organizations/${organizationId}/work_bench/users`,
         method: 'post',
-        data: {},
+        data: { ignoredUserIds, param },
       }),
       valueField: 'id',
       textField: 'realName',
