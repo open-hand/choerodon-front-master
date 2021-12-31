@@ -11,6 +11,7 @@ import stackedBarThumbnail from '../img/stackedBar.svg';
 
 export default function useStore(projectId) {
   return useLocalStore(() => ({
+    projectId,
     initData: [],
     setInitData(value) {
       this.initData = value;
@@ -67,8 +68,9 @@ export default function useStore(projectId) {
       stackedBar: { src: stackedBarThumbnail, style: { padding: 12 } },
     },
 
-    loadAgileCustomData() {
-      axios.get(`agile/v1/projects/${projectId}/custom_chart`).then((res) => this.setCustomData(res?.map((item) => {
+    loadAgileCustomData(currentProjectId) {
+      this.projectId = currentProjectId || this.projectId;
+      axios.get(`agile/v1/projects/${this.projectId}/custom_chart`).then((res) => this.setCustomData(res?.map((item) => {
         const layout = {
           h: 4, i: item.id, minH: 3, minW: 4, w: 5, x: 0, y: 33, customFlag: 'agile',
         };
@@ -98,7 +100,7 @@ export default function useStore(projectId) {
         temp.layout = merge(temp.layout, item);
         return temp;
       });
-      axios.post(`iam/choerodon/v1/projects/${projectId}/project_overview_config`, JSON.stringify({
+      axios.post(`iam/choerodon/v1/projects/${this.projectId}/project_overview_config`, JSON.stringify({
         data: JSON.stringify(tempObj),
       }));
     },
