@@ -32,8 +32,15 @@ class AppServiceApi extends Api<AppServiceApi> {
       data,
     });
   }
-}
 
+  // 获取应用服务-创建网络应用服务名称下拉列表
+  getAppServiceList(envId:string) {
+    return this.request({
+      url: `${this.prefix}/list_all?env_id=${envId}`,
+      method: 'get',
+    });
+  }
+}
 const appServiceApi = new AppServiceApi();
 const appServiceApiConfig = new AppServiceApi(true);
 export { appServiceApi, appServiceApiConfig };
