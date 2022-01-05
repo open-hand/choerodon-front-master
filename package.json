@@ -62,7 +62,7 @@
     "@types/react-router-dom": "^5.1.5",
     "ahooks": "^2.10.5",
     "axios": "^0.16.2",
-    "choerodon-ui": "1.5.1-alpha.20",
+    "choerodon-ui": "1.5.1-alpha.22",
     "classnames": "^2.2.5",
     "core-js": "^3.6.5",
     "echarts": "^4.8.0",
