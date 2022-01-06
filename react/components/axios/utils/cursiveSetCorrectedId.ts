@@ -8,7 +8,7 @@ export default function cursiveSetCorrectId(source: any[], correctId: any, flag:
       tempCorrectedId = source[i]?.id;
       tempFlag = 1;
     }
-    if (source[i].subMenus && source[i].subMenus.length > 0) {
+    if (source[i]?.subMenus && source[i]?.subMenus.length > 0) {
       tempCorrectedId = cursiveSetCorrectId(
         source[i].subMenus,
         tempCorrectedId,
