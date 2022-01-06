@@ -12,15 +12,18 @@ import AppState from './AppState';
 import jsonStringifySafty from '@/utils/jsonStringifySafty'
 
 let isLoadMenu = [];
+// 这里记录了查询菜单失败的menuType 下次进来直接返回空 避免失败一次 就不在查询菜单的问题
+const failedMenuType = [];
+
 
 const loadingTenant = [];
 
 // 获取当前Menu的type
-export function getMenuType(menuType = AppState.currentMenuType, isUser = AppState.isTypeUser) {
+export function getMenuType (menuType = AppState.currentMenuType, isUser = AppState.isTypeUser) {
   return isUser ? 'user' : menuType.type;
 }
 
-function filterEmptyMenus(menuData, parent) {
+function filterEmptyMenus (menuData, parent) {
   const newMenuData = menuData.filter((item) => {
     const { name, type, subMenus } = item;
     return name !== null && (type === 'menu' || (subMenus && filterEmptyMenus(subMenus, item).length > 0) || item.modelCode);
@@ -31,7 +34,7 @@ function filterEmptyMenus(menuData, parent) {
   return newMenuData;
 }
 
-function changeMenuLevel({ level, child }) {
+function changeMenuLevel ({ level, child }) {
   child.forEach((item) => {
     item.level = level;
     if (item.subMenus) {
@@ -65,47 +68,47 @@ class MenuStore {
   @observable hasSitePermission = true;
 
   @computed
-  get getHasSitePermission() {
+  get getHasSitePermission () {
     return this.hasSitePermission;
   }
 
   @action
-  setHasSitePermission(data) {
+  setHasSitePermission (data) {
     this.hasSitePermission = data;
   }
 
   @computed
-  get getRequestedSiteMenu() {
+  get getRequestedSiteMenu () {
     return this.requestedSiteMenu;
   }
 
   @action
-  setRequestedSiteMenu(data) {
+  setRequestedSiteMenu (data) {
     this.requestedSiteMenu = data;
   }
 
   @computed
-  get getActiveMenuRoot() {
+  get getActiveMenuRoot () {
     return this.activeMenuRoot;
   }
 
   @action
-  setActiveMenuRoot(data) {
+  setActiveMenuRoot (data) {
     this.activeMenuRoot = data;
   }
 
   @action
-  setActiveMenu(activeMenu) {
+  setActiveMenu (activeMenu) {
     this.activeMenu = activeMenu;
   }
 
-  setOpenKeys(openKeys) {
+  setOpenKeys (openKeys) {
     this.openKeys = openKeys;
   }
 
-  @action setOpenkeysBaseonRoot(root) {
+  @action setOpenkeysBaseonRoot (root) {
     const keys = [];
-    function cursive(data, array) {
+    function cursive (data, array) {
       if (data.subMenus && data.subMenus.length > 0) {
         array.push(data.code);
         data.subMenus.forEach((rootItem) => {
@@ -121,7 +124,7 @@ class MenuStore {
   }
 
   @action
-  clearMenuGroupByLevel(level) {
+  clearMenuGroupByLevel (level) {
     if (['site', 'user', 'organization', 'project'].includes(level)) {
       if (['site', 'user'].includes(level)) {
         this.menuGroup[level] = [];
@@ -131,7 +134,7 @@ class MenuStore {
     }
   }
 
-  @action setRootBaseOnActiveMenu() {
+  @action setRootBaseOnActiveMenu () {
     let flag = this.activeMenu;
     // 如果当前存在activeMenu并且有
     if (this.activeMenu && this.getMenuData && this.getMenuData.length > 0) {
@@ -149,8 +152,27 @@ class MenuStore {
     }
   }
 
+  judgeFailedMenuType (menuType) {
+    const { type, id } = menuType;
+    const flag = failedMenuType.find(i => (i.type === type) && i.id === id);
+    if (flag) {
+      return true;
+    }
+    return false;
+  }
+
+
   @action
-  loadMenuData(menuType = AppState.currentMenuType, isUser, setData = true, selfResolve) {
+  loadMenuData (menuType = AppState.currentMenuType, isUser, setData = true, selfResolve) {
+    // 判断当前的菜单是否 再  failedMenuType 这个全局变量中存在
+    if (this.judgeFailedMenuType(menuType)) {
+      isLoadMenu = 0;
+      // 如果是存在返回一个空数组
+      return new Promise((resolve) => {
+        resolve([]);
+      });
+    }
+
     this.setRootBaseOnActiveMenu();
     if (isLoadMenu === 1) {
       if (selfResolve) {
@@ -169,152 +191,158 @@ class MenuStore {
       }
     }
 
-    async function mainFunc(resolve) {
-      const type = getMenuType(menuType, isUser) || 'site';
-      if (setData) {
-        if (type !== 'user' && typeof AppState.currentMenuType === 'object') {
-          AppState.currentMenuType.type = type;
-          if (menuType?.id) {
-            AppState.currentMenuType.id = menuType?.id
+    async function mainFunc (resolve) {
+      try {
+        const type = getMenuType(menuType, isUser) || 'site';
+        if (setData) {
+          if (type !== 'user' && typeof AppState.currentMenuType === 'object') {
+            AppState.currentMenuType.type = type;
+            if (menuType?.id) {
+              AppState.currentMenuType.id = menuType?.id
+            }
           }
         }
-      }
-      
-      const { id = 0, organizationId, orgId } = menuType;
-      const menu = this.menuData(type, id);
-      let hasMenu = () => {
-        if (type === 'organization') {
-          return (orgId && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(orgId)))
-        } else if (type === 'site') {
-          if (this.getRequestedSiteMenu) {
-            return true;
+
+        const { id = 0, organizationId, orgId } = menuType;
+        const menu = this.menuData(type, id);
+        let hasMenu = () => {
+          if (type === 'organization') {
+            return (orgId && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(orgId)))
+          } else if (type === 'site') {
+            if (this.getRequestedSiteMenu) {
+              return true;
+            }
+          } else {
+            return (id && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(id)))
           }
-        } else {
-          return (id && Object.keys(menuStore.menuGroup[type]).map(i => String(i)).includes(String(id)))
+          return false;
         }
-        return false;
-      }
-      
-      if (menu.length || hasMenu()) {
-        // 如果当前type是site
+
+        if (menu.length || hasMenu()) {
+          // 如果当前type是site
+          if (type === 'site') {
+            // 当前user不是site角色，而且有site的权限
+            if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
+              await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
+                enabledCancelRoute: false,
+              });
+              // 组织层切换到平台层需要调用的接口
+              const result = await axios.get('/iam/choerodon/v1/switch/site', {
+                enabledCancelRoute: false,
+              });
+              // 返回值为false或者不存在则设置平台层访问权限false
+              if (!result) {
+                this.setHasSitePermission(false);
+              }
+              await AppState.loadUserInfo();
+            }
+          } else if (type === 'organization') {
+            const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
+            if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
+
+              await axios({
+                url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
+                method: 'put',
+                enabledCancelRoute: false,
+              });
+
+              AppState.loadUserInfo();
+            }
+          }
+          if (!AppState.currentMenuType.hasChangeCategorys) {
+            isLoadMenu = 0;
+            return resolve(menu);
+          }
+          delete AppState.menuType.hasChangeCategorys;
+        }
+        async function getMenu (that) {
+          const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
+          let url = '/iam/choerodon/v1/menu';
+          if (type === 'project') {
+            url += `?projectId=${id}&tenantId=${currentOrgId}`;
+          } else if (type === 'organization') {
+            url += `?labels=TENANT_MENU&tenantId=${currentOrgId}`;
+          } else if (type === 'user') {
+            url += '?labels=USER_MENU';
+          } else {
+            url += '?labels=SITE_MENU&tenantId=0';
+            that.setRequestedSiteMenu(true);
+          }
+          const data = await axios({
+            url,
+            method: 'get',
+            enabledCancelRoute: false,
+          });
+          const child = filterEmptyMenus(data || []);
+
+          if (type === 'project') {
+            changeMenuLevel({ level: 'project', child });
+          } else if (type === 'user') {
+            changeMenuLevel({ level: 'user', child });
+          }
+
+          that.setMenuData(child, type, id);
+          return child;
+        }
+        let flag = 0;
         if (type === 'site') {
-          // 当前user不是site角色，而且有site的权限
           if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
             await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
               enabledCancelRoute: false,
             });
-            // 组织层切换到平台层需要调用的接口
             const result = await axios.get('/iam/choerodon/v1/switch/site', {
               enabledCancelRoute: false,
             });
-            // 返回值为false或者不存在则设置平台层访问权限false
+
             if (!result) {
               this.setHasSitePermission(false);
             }
-            await AppState.loadUserInfo();
           }
-        } else if (type === 'organization') {
+        } else if (id && (['project', 'organization'].includes(type))) {
           const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
-          if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
-            
-            await axios({
-              url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
-              method: 'put',
+          if (!loadingTenant.includes(orgId)) {
+            loadingTenant.push(String(orgId));
+            await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
               enabledCancelRoute: false,
             });
-            
-            AppState.loadUserInfo();
+
+            loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);
+          } else {
+            flag = 1;
           }
         }
-        if (!AppState.currentMenuType.hasChangeCategorys) {
-          isLoadMenu = 0;
-          return resolve(menu);
-        }
-        delete AppState.menuType.hasChangeCategorys;
-      }
-      async function getMenu(that) {
-        const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
-        let url = '/iam/choerodon/v1/menu';
-        if (type === 'project') {
-          url += `?projectId=${id}&tenantId=${currentOrgId}`;
-        } else if (type === 'organization') {
-          url += `?labels=TENANT_MENU&tenantId=${currentOrgId}`;
-        } else if (type === 'user') {
-          url += '?labels=USER_MENU';
-        } else {
-          url += '?labels=SITE_MENU&tenantId=0';
-          that.setRequestedSiteMenu(true);
-        }
-        const data = await axios({
-          url,
-          method: 'get',
-          enabledCancelRoute: false,
-        });
-        const child = filterEmptyMenus(data || []);
-        
-        if (type === 'project') {
-          changeMenuLevel({ level: 'project', child });
-        } else if (type === 'user') {
-          changeMenuLevel({ level: 'user', child });
-        }
-        
-        that.setMenuData(child, type, id);
-        return child;
-      }
-      let flag = 0;
-      if (type === 'site') {
-        if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-          await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
-            enabledCancelRoute: false,
-          });
-          const result = await axios.get('/iam/choerodon/v1/switch/site', {
-            enabledCancelRoute: false,
-          });
-          
-          if (!result) {
-            this.setHasSitePermission(false);
-          }
-        }
-      } else if (id && (['project', 'organization'].includes(type))) {
-        const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
-        if (!loadingTenant.includes(orgId)) {
-          loadingTenant.push(String(orgId));
-          await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
-            enabledCancelRoute: false,
-          });
-          
-          loadingTenant.splice(loadingTenant.indexOf(loadingTenant), 1);
-        } else {
-          flag = 1;
-        }
-      }
-      if (!flag) {
-        let data;
-        const menu = this.menuData(type, id);
-        if (['organization', 'project'].includes(type)) {
-          if (!Object.keys(menuStore.menuGroup[type]).includes(id)) {
+        if (!flag) {
+          let data;
+          const menu = this.menuData(type, id);
+          if (['organization', 'project'].includes(type)) {
+            if (!Object.keys(menuStore.menuGroup[type]).includes(id)) {
+              data = await getMenu(this);
+            }
+          } else if (!menu.length && !menu.level) {
             data = await getMenu(this);
           }
-        } else if (!menu.length && !menu.level) {
-          data = await getMenu(this);
-        }
-        if (AppState.userInfo.currentRoleLevel !== type) {
+          if (AppState.userInfo.currentRoleLevel !== type) {
+            AppState.userInfo.currentRoleLevel = type;
+            AppState.loadUserInfo();
+          }
           AppState.userInfo.currentRoleLevel = type;
-          AppState.loadUserInfo();
+          isLoadMenu = 0;
+
+          return resolve(data || []);
         }
-        AppState.userInfo.currentRoleLevel = type;
         isLoadMenu = 0;
-        
-        return resolve(data || []);
+      } catch (error) {
+        failedMenuType.push(menuType);
+        isLoadMenu = 0;
+        throw new Error(e);
       }
-      isLoadMenu = 0;
     }
   }
 
   /**
    * 递归设置rootId
    */
-  cursiveSetRootId(params, rootId) {
+  cursiveSetRootId (params, rootId) {
     let newRootId = rootId;
     if (!newRootId) {
       newRootId = params.id;
@@ -327,7 +355,7 @@ class MenuStore {
   }
 
   @action
-  setMenuData(child, childType, id = AppState.currentMenuType.id) {
+  setMenuData (child, childType, id = AppState.currentMenuType.id) {
     const data = filterEmptyMenus(child).map((item) => this.cursiveSetRootId(item, undefined));
     this.setRootBaseOnActiveMenu();
     if (String(id) && !['user', 'site'].includes(childType)) {
@@ -339,11 +367,11 @@ class MenuStore {
   }
 
   @computed
-  get getMenuData() {
+  get getMenuData () {
     return this.menuData();
   }
 
-  menuData(type = getMenuType(), id = AppState.currentMenuType.id) {
+  menuData (type = getMenuType(), id = AppState.currentMenuType.id) {
     let data;
     if (type) {
       if (id && !['site', 'user'].includes(type)) {

@@ -65,24 +65,20 @@ const Menu = () => {
   };
 
   const loadMenuData = useCallback(async () => {
-    try {
-      const menus = await MenuStore.loadMenuData();
-      const tree = { subMenus: menus.slice() };
-      treeReduce({
-        tree,
-        callback: findCurrentRoute,
-      });
-      const displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
-      // todo... 这里逻辑可以拆分为一个hook，监听activeMenu变化而变化，这个逻辑是肯定要拆到全局去的
-      if (activeMenu && activeMenu.route === pathname && pathname !== '/') {
-        // document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${menuType.type !== 'site' ? `${menuType.name} – ` : ''} ${displayTitle}`;
-        document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} –
+    const menus = await MenuStore.loadMenuData();
+    const tree = { subMenus: menus.slice() };
+    treeReduce({
+      tree,
+      callback: findCurrentRoute,
+    });
+    const displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
+    // todo... 这里逻辑可以拆分为一个hook，监听activeMenu变化而变化，这个逻辑是肯定要拆到全局去的
+    if (activeMenu && activeMenu.route === pathname && pathname !== '/') {
+      // document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${menuType.type !== 'site' ? `${menuType.name} – ` : ''} ${displayTitle}`;
+      document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} –
         ${getDodumentTitle(menuType.type)} - ${displayTitle}`;
-      } else {
-        document.title = displayTitle;
-      }
-    } catch (error) {
-      throw new Error(error);
+    } else {
+      document.title = displayTitle;
     }
   }, [activeMenu, findCurrentRoute]);
 
