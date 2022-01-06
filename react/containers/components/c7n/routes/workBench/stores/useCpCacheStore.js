@@ -40,6 +40,10 @@ export default function useStore(history) {
     setMyHandlerIssues(value) {
       this.myHandlerIssues = value;
     },
-
+    clear() {
+      ['cacheDocData', 'todoThingsData', 'todoQuestions', 'focusQuestions', 'bugQuestions', 'reportQuestions', 'myExecutionQuestions', 'myHandlerIssues'].forEach((key) => {
+        this[key] = {};
+      });
+    },
   }));
 }
