@@ -6,6 +6,7 @@ import pick from 'lodash/pick';
 import queryString from 'query-string';
 import { handleResponseError } from '@/utils';
 import store from '../../components/c7n/tools/store';
+import jsonStringifySafty from '@/utils/jsonStringifySafty';
 import axios from '@/components/axios';
 
 const ORGANIZATION_TYPE = 'organization';
@@ -441,7 +442,7 @@ class HeaderStore {
       );
       if (index !== -1) {
         recentItem.splice(index, 1, recent);
-        localStorage.recentItem = JSON.stringify(recentItem);
+        localStorage.recentItem = jsonStringifySafty(recentItem);
         this.recentItem = recentItem;
       }
     }
@@ -454,7 +455,7 @@ class HeaderStore {
         this.getRecentItem,
         omit(recent, 'children'), 10,
       );
-      localStorage.recentItem = JSON.stringify(recentItem);
+      localStorage.recentItem = jsonStringifySafty(recentItem);
       this.recentItem = recentItem;
     }
   }

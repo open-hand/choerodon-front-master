@@ -1,6 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import { get as getInject, has as hasInject } from '@choerodon/inject';
 import axios from '@/components/axios';
+import jsonStringifySafty from '@/utils/jsonStringifySafty';
 
 function getDefaultLanguage() {
   let locale;
@@ -239,8 +240,8 @@ class AppState {
       if (data?.categories) {
         if (this.projectCategorys[(data?.projectId)]) {
           if (
-            JSON.stringify(data.categories)
-            !== JSON.stringify(this.projectCategorys[(data?.projectId)])
+            jsonStringifySafty(data.categories)
+            !== jsonStringifySafty(this.projectCategorys[(data?.projectId)])
           ) {
             newData.hasChangeCategorys = true;
           }
@@ -254,8 +255,8 @@ class AppState {
   @action
   changeMenuType(type, func) {
     const newType = this.setProjectMenuTypeCategorys(type);
-    sessionStorage.menType = JSON.stringify(newType);
-    sessionStorage.selectData = JSON.stringify(newType);
+    sessionStorage.menType = jsonStringifySafty(newType);
+    sessionStorage.selectData = jsonStringifySafty(newType);
     sessionStorage.type = newType.type;
     sessionStorage.category = newType.category;
     this.menuType = newType;
