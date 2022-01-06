@@ -9,6 +9,7 @@ import {
 import _ from 'lodash';
 import axios from '@/components/axios';
 import AppState from './AppState';
+import jsonStringifySafty from '@/utils/jsonStringifySafty'
 
 let isLoadMenu = [];
 
@@ -334,7 +335,7 @@ class MenuStore {
     } else {
       set(this.menuGroup, childType, data);
     }
-    localStorage.setItem('menuGroup', JSON.stringify(this.menuGroup));
+    localStorage.setItem('menuGroup', jsonStringifySafty(this.menuGroup));
   }
 
   @computed
