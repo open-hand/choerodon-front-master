@@ -67,7 +67,7 @@ export const questionSearchFields = [
     selectConfig: {
       paging: true,
       readAxiosConfig: ({ organizationId }) => ({
-        url: `/agile/v1/organizations/${organizationId}/backlog/statistics/status`,
+        url: `/agile/v1/organizations/${organizationId}/backlog/work_bench/status`,
         method: 'get',
         params: { apply_type: 'backlog' },
       }),
