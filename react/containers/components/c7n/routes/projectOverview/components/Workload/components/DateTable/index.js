@@ -34,7 +34,7 @@ const DateTable = observer(({
   render,
   quickMapData,
   filterRowIndex, // 过滤行的序列号 对应着rowIndx数组的index
-  sumArr = undefined,
+  sumArr: sumData = undefined,
   isSum = true,
   headerSplit = false,
 }) => {
@@ -42,7 +42,6 @@ const DateTable = observer(({
   const clsPrefix = 'c7n-project-overview-date-table';
   const [columnSize, setColumnSize] = useState(columnLength);
   const [currentPosition, setCurrentPosition] = useState(current);
-  const [sumData, setData] = useState(sumArr);
   const [dateList, setDateList] = useState([]);
   const [rowMap, setRowMap] = useState();
   // 对列进行处理

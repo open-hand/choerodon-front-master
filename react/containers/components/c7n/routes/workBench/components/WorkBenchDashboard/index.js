@@ -77,6 +77,7 @@ const WorkBenchDashboard = (props) => {
   const {
     prefixCls,
     dashboardDs,
+    cacheStore,
     allowedModules,
     AppState,
     addCardDs,
@@ -85,14 +86,18 @@ const WorkBenchDashboard = (props) => {
   const [containerWidth, setContainerWidth] = useState(1280);
 
   const { isEdit = false, onOpenCardModal = noop } = props;
-
-  const loadLayout = () => {
+  const currentDashboardId = props.dashboardId;
+  const mountedComponentFromDashboardId = useRef();
+  const loadLayout = async () => {
+    mountedComponentFromDashboardId.current = props.dashboardId;
     dashboardDs.setQueryParameter('dashboardId', props.dashboardId);
-    dashboardDs.query();
+    await dashboardDs.deleteAll(false);
+    await dashboardDs.query();
   };
 
   useEffect(() => {
     if (props.dashboardId) {
+      cacheStore.clear();
       loadLayout();
     }
   }, [props.dashboardId]);
@@ -215,7 +220,7 @@ const WorkBenchDashboard = (props) => {
   };
 
   const renderContent = () => {
-    if (dashboardDs.status === 'loading' || addCardDs.status === 'loading') {
+    if (dashboardDs.status === 'loading' || addCardDs.status === 'loading' || mountedComponentFromDashboardId.current !== currentDashboardId) {
       return (
         <div style={{ marginTop: '10%' }}>
           <Loading display />
