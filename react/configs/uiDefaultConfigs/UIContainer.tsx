@@ -9,6 +9,7 @@ import { useCurrentLanguage } from '@/hooks';
 import { LanguageTypes } from '@/typings';
 
 import useInitUiConfig from './useInitUiConfig';
+import { asyncRouter } from '@/hoc';
 
 const UIConfigInitContainer:React.FC = ({ children }) => {
   const language = useCurrentLanguage();
@@ -18,6 +19,11 @@ const UIConfigInitContainer:React.FC = ({ children }) => {
     en_US: enUS,
   }), []);
 
+  const UILocaleProviderAsync = useMemo(() => asyncRouter(
+    () => import('choerodon-ui/lib/locale-provider'),
+    { locale: () => import(`choerodon-ui/lib/locale-provider/${language}.js`) },
+  ), [language]);
+
   // 初始化UI默认配置
   useInitUiConfig();
 
@@ -26,14 +32,16 @@ const UIConfigInitContainer:React.FC = ({ children }) => {
 
   useEffect(() => {
     localeContext.setLocale(localeObj[language]);
-  }, [language]);
+  }, [language, localeObj]);
 
   return (
-    <Container>
-      <ModalProvider location={window.location}>
-        {children}
-      </ModalProvider>
-    </Container>
+    <UILocaleProviderAsync>
+      <Container>
+        <ModalProvider location={window.location}>
+          {children}
+        </ModalProvider>
+      </Container>
+    </UILocaleProviderAsync>
   );
 };
 
