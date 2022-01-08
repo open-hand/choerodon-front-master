@@ -66,7 +66,7 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
 
   getOrgPinelineCategory(params:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/ci_template_category`,
+      url: `${this.prefix}/${this.orgId}/ci_template_category/list`,
       method: 'get',
       params,
     });
