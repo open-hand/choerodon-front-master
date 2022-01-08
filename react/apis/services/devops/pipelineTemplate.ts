@@ -179,7 +179,7 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
   // 获取流水线分类
   getSitePinelineCategory(params:any) {
     return this.request({
-      url: `${this.prefix}/0/ci_template_category`,
+      url: `${this.prefix}/0/ci_template_category/list`,
       method: 'get',
       params,
     });
