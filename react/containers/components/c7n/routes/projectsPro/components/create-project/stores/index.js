@@ -90,7 +90,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       ]);
       const isSenior = createProjectStore.getIsSenior;
       if (projectData && projectData.categories && projectData.categories.length) {
-        const isBeforeProgram = (projectData.beforeCategory || '').includes(categoryCodes.program);
+        const isBeforeProgram = (projectData.beforeCategory || '')?.split(',')?.includes(categoryCodes.program);
         const isBeforeAgile = (projectData.beforeCategory || '').includes(categoryCodes.agile);
         let isProgram = false;
         let isProgramProject = false;
@@ -114,6 +114,13 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
               break;
           }
         });
+        categoryDs.setState({
+          isEdit: true,
+          isBeforeAgile,
+          isBeforeProgram,
+          isCurrentAgile: isAgile,
+          isCurrentProgram: isProgram,
+        });
         categoryDs.forEach(async (categoryRecord) => {
           const currentCode = categoryRecord.get('code');
           if (some(projectData.categories, ['code', currentCode])) {
@@ -121,15 +128,18 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           }
           switch (currentCode) {
             case categoryCodes.program:
-              categoryRecord.setState('isProgram', isBeforeProgram);
-              if (!isSenior || isBeforeAgile || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))) {
+              categoryRecord.setState({
+                isProgram: isBeforeProgram,
+                isCurrentProgram: isProgram,
+              });
+              if (!isSenior || (isBeforeAgile && !isBeforeProgram) || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))) {
                 categoryRecord.setState('disabled', true);
               }
               break;
             case categoryCodes.agile:
               categoryRecord.setState({
                 isAgile: isBeforeAgile,
-                disabled: isBeforeProgram || isProgramProject,
+                disabled: isProgramProject || (isBeforeProgram && !isProgram),
               });
               break;
             case categoryCodes.require:
