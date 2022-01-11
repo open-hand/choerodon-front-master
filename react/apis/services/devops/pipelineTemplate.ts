@@ -185,6 +185,22 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
     });
   }
 
+  // 获取任务分类
+  getSiteJobCategory() {
+    return this.request({
+      url: `${this.prefix}/0/ci_template_job_group/list`,
+      method: 'get',
+    });
+  }
+
+  // 获取步骤分类
+  getSiteStepCategory() {
+    return this.request({
+      url: `${this.prefix}/0/ci_template_step_category`,
+      method: 'get',
+    });
+  }
+
   // 创建任务模板
   createTaskTemplate(data:any) {
     return this.request({
