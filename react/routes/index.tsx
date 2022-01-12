@@ -47,6 +47,9 @@ const RouteIndex = () => {
           </Route>
           <Route path={`${match.url}workbench/edit`} component={WorkBenchEdit} />
           <Route path={match.url} component={AutoRouter} />
+          <Route exact path="/access_token">
+            <Redirect to="/" />
+          </Route>
         </Switch>
       </Suspense>
       {mount('base-pro:newUserGuideStep', {})}
