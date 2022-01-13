@@ -13,7 +13,7 @@ function handleDisabled({
     setRequireModule({ dataSet, selected: isSelected, categoryCodes });
   }
   if (record.get('code') === categoryCodes.program) {
-    if (dataSet.getState('isEdit') && dataSet.getState('isCurrentProgram')) {
+    if (dataSet.getState('isEdit') && dataSet.getState('isBeforeProgram')) {
       const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.agile);
       findRecord && findRecord.setState('disabled', !isSelected);
       if (!isSelected && findRecord?.isSelected) {
