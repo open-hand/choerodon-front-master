@@ -42,7 +42,10 @@ class AppState {
 
   @observable watermarkInfo = null; // 组织水印配置信息；
 
+  @observable isProjectsLoading = false;
+
   getProjects = () => {
+    this.isProjectsLoading = true;
     if (this.currentMenuType?.organizationId) {
       const recentProjectPromise = axios.get(
         `/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
@@ -66,6 +69,7 @@ class AppState {
         this.setRecentUse(tempRecentProjectData);
         this.setStarProject(tempStarProjectData);
         this.setCurrentDropDown(tempRecentProjectData, tempStarProjectData);
+        this.isProjectsLoading = false;
       });
     }
   };
