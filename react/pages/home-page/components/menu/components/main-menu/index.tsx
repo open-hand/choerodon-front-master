@@ -72,7 +72,7 @@ const MainMenu:FC<MainMenuProps> = () => {
         MenuStore.setActiveMenuRoot(tempMenuRoot);
       });
     },
-    [activeMenuRoot, menuType.type],
+    [MenuStore, activeMenuRoot, menuType.type],
   );
 
   const renderItems = useCallback(

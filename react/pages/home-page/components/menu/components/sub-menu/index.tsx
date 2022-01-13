@@ -1,5 +1,5 @@
 import React, {
-  FC, CSSProperties,
+  FC, CSSProperties, useMemo, useCallback,
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui/pro';
@@ -15,6 +15,7 @@ import { MenuObjProps } from '../../interface';
 import getRoutePath from '@/utils/getRoutePath';
 
 import './index.less';
+import { difference } from 'lodash';
 
 export type SubMenuProps = {
 
@@ -51,11 +52,11 @@ const SubMenus:FC<SubMenuProps> = () => {
   const activeMenuRoot = getActiveMenuRoot[menuType?.type] || {};
 
   // 获取到当前父菜单下的所有子菜单项
-  const currentRootChildrenMenu = getMenuData.filter((item: { id: string; }) => item.id === activeMenuRoot.id)?.[0]?.subMenus || [];
+  const currentRootChildrenMenu = useMemo(() => getMenuData.filter((item: { id: string; }) => item.id === activeMenuRoot.id)?.[0]?.subMenus || [], [activeMenuRoot.id, getMenuData]);
 
   const history = useHistory();
 
-  const renderMenuItem = ({
+  const renderMenuItem = useCallback(({
     subMenus = [],
     route,
     level,
@@ -95,7 +96,6 @@ const SubMenus:FC<SubMenuProps> = () => {
               type={icon}
             />
           ) : <span style={{ width: 10 }} />}
-          {isExpanded && (
           <OverflowWrap
             tooltipsConfig={{
               placement: 'right',
@@ -104,7 +104,6 @@ const SubMenus:FC<SubMenuProps> = () => {
           >
             {menuName}
           </OverflowWrap>
-          )}
         </div>
       );
     };
@@ -162,9 +161,9 @@ const SubMenus:FC<SubMenuProps> = () => {
         {renderSubMenuChildMenus()}
       </SubMenu>
     );
-  };
+  }, []);
 
-  const renderContent = () => {
+  const renderContent = useMemo(() => {
     const content = (
       map(currentRootChildrenMenu, (item:any) => {
         const pickItemProps = pick(item, ['subMenus', 'route', 'icon', 'name', 'code', 'level']);
@@ -173,9 +172,17 @@ const SubMenus:FC<SubMenuProps> = () => {
       })
     );
     return content;
-  };
+  }, [currentRootChildrenMenu, renderMenuItem]);
 
   const handleOpenChange = (currentOpenKeys:string[]) => {
+    let rest;
+    if (currentOpenKeys.length < MenuStore.openKeys.length) {
+      rest = difference(JSON.parse(JSON.stringify(MenuStore.openKeys)), currentOpenKeys);
+      MenuStore.setClosedKeys(rest);
+    } else {
+      rest = difference(currentOpenKeys, JSON.parse(JSON.stringify(MenuStore.openKeys)));
+      MenuStore.setClosedKeys(rest, true);
+    }
     MenuStore.setOpenKeys(currentOpenKeys);
   };
 
@@ -197,11 +204,11 @@ const SubMenus:FC<SubMenuProps> = () => {
         subMenuCloseDelay={0.1}
         subMenuOpenDelay={0.1}
         selectedKeys={[activeMenu?.code].filter(String)}
-        openKeys={isExpanded ? savedOpenKeys : []}
+        openKeys={savedOpenKeys}
         mode="inline"
         onOpenChange={handleOpenChange}
       >
-        {renderContent()}
+        {renderContent}
       </Menu>
     </div>
   );
