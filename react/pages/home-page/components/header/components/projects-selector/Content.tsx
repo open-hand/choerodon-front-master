@@ -36,9 +36,8 @@ const ProjectsSelector = () => {
   };
 
   const renderSelectorPopupContent = () => (
-    <Loading display={AppState.isProjectsLoading}>
-      <div className={`${prefixCls}-popup`}>
-        {
+    <Loading className={`${prefixCls}-popup`} display={AppState.isProjectsLoading}>
+      {
         // 通过这个途径获取值
         !selectorRef.current?.text ? (
           <div className={`${prefixCls}-popup-common`}>
@@ -64,7 +63,6 @@ const ProjectsSelector = () => {
           </div>
         )
       }
-      </div>
     </Loading>
   );
 
