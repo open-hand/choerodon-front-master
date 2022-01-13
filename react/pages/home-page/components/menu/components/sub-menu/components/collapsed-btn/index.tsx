@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useMenuStore } from '../../../../stores';
 import UnfoldImg from './assets/unfold.svg';
@@ -9,7 +9,13 @@ const prefixCls = 'c7ncd-subMenu-collapseBtn';
 function CollapsedBtn() {
   const {
     mainStore,
+    MenuStore: {
+      openKeys,
+    },
+    MenuStore,
   } = useMenuStore();
+
+  const [savedOpenkeys, setSavedKeys] = useState();
 
   const {
     isExpanded,
@@ -18,7 +24,17 @@ function CollapsedBtn() {
 
   const toggleMenuExpand = () => {
     setIsExpanded(!isExpanded);
+    MenuStore.setOpenKeys([]);
+    if (!isExpanded) {
+      setIsExpanded(true);
+      MenuStore.setOpenKeys(savedOpenkeys);
+    } else {
+      setSavedKeys(openKeys);
+      MenuStore.setCollapsed(false);
+      MenuStore.setOpenKeys([]);
+    }
   };
+
   return (
     <div
       role="none"

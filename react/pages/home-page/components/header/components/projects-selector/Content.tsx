@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon, Select } from 'choerodon-ui/pro';
 import { useHistory } from 'react-router';
+import { Loading } from '@choerodon/components';
 import RecentUseProjectsLists from './components/recent-use-projects-lists';
 import StarProjectsLists from './components/star-projects-lists';
 
@@ -35,7 +36,7 @@ const ProjectsSelector = () => {
   };
 
   const renderSelectorPopupContent = () => (
-    <div className={`${prefixCls}-popup`}>
+    <Loading className={`${prefixCls}-popup`} display={AppState.isProjectsLoading}>
       {
         // 通过这个途径获取值
         !selectorRef.current?.text ? (
@@ -62,7 +63,7 @@ const ProjectsSelector = () => {
           </div>
         )
       }
-    </div>
+    </Loading>
   );
 
   const renderSelectorText = (data: { value: any; text: any; }) => {

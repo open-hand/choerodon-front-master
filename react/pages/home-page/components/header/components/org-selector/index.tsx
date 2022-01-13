@@ -55,6 +55,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
     const {
       id: selectId, organizationId: selectOrgId,
     } = value;
+    AppState.isProjectsLoading = true;
 
     const currentParams = pick(value, ['id', 'name', 'type', 'organizationId', 'category']);
     const parsed = new URLSearchParams(currentParams);

@@ -60,6 +60,8 @@ class MenuStore {
 
   @observable openKeys = [];
 
+  @observable closedKeys = [];
+
   @observable type = null;
 
   @observable id = null;
@@ -92,6 +94,21 @@ class MenuStore {
     return this.activeMenuRoot;
   }
 
+  @computed
+  get getClosedKeys() {
+    return this.closedKeys;
+  }
+
+  @action
+  setClosedKeys(data, isDelete = false) {
+    if (!isDelete) {
+      this.closedKeys = Array.from(new Set([...this.closedKeys, ...data]));
+    } else {
+      this.closedKeys = _.difference(this.closedKeys, data);
+    }
+  }
+
+
   @action
   setActiveMenuRoot (data) {
     this.activeMenuRoot = data;
@@ -102,9 +119,15 @@ class MenuStore {
     this.activeMenu = activeMenu;
   }
 
-  setOpenKeys (openKeys) {
-    this.openKeys = openKeys;
+  @action
+  setOpenKeys(openKeys) {
+    if (openKeys && openKeys.length > 0) {
+      this.openKeys = _.difference(Array.from(new Set([...openKeys])), this.closedKeys);
+    } else {
+      this.openKeys = openKeys;
+    }
   }
+
 
   @action setOpenkeysBaseonRoot (root) {
     const keys = [];
