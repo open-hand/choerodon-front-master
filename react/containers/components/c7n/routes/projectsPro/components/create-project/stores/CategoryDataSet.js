@@ -10,10 +10,6 @@ function handleDisabled({
   // 修改项目时项目群可以加上敏捷，敏捷不能加上项目群
   // 原项目是加过项目群后不能改成单独一个敏捷的类型
   if (record.get('code') === categoryCodes.agile) {
-    if (dataSet.getState('isEdit') && dataSet.getState('isAgile') && !dataSet.getState('isBeforeProgram')) {
-      const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.program);
-      findRecord && findRecord.setState('disabled', false);
-    }
     setRequireModule({ dataSet, selected: isSelected, categoryCodes });
   }
   if (record.get('code') === categoryCodes.program) {
