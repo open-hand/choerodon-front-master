@@ -21,7 +21,6 @@ const AddModal = (props) => {
   } = props;
 
   const subPrefix = 'c7ncd-workbench-addModal';
-
   const [activeItem, setActiveItem] = useState(groupMappings(mappings)[0]);
   const [dis, setDis] = useState(0);
   const [seletedComponents, setSelectedComponents] = useState(existTypes);

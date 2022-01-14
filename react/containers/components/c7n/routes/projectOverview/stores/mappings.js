@@ -16,6 +16,7 @@ import issueTable from '../img/15.png';
 import projectDynamic from '../img/16.svg';
 import workLoad from '../img/17.svg';
 import personalWorkload from '../img/18.svg';
+import requestChartImage from '../img/requestChart.svg';
 
 const componentsObj = {
   // 冲刺未完成统计
@@ -169,24 +170,43 @@ const componentsObj = {
       '此模块显示该项目下当前迭代应用流水线每天的触发情况以及总的触发次数。',
     img: pipelineChart,
   },
-  assigneeChart: {
+  // 待审核合并请求
+  requestChart: {
     layout: {
       h: 4,
-      i: 'assigneeChart',
+      i: 'requestChart',
       minH: 3,
       minW: 4,
       w: 5,
       x: 0,
       y: 19,
     },
-    name: 'assigneeChart',
-    type: 'assigneeChart',
-    groupId: 'agile',
-    title: '经办人分布',
+    name: 'requestChart',
+    type: 'requestChart',
+    groupId: 'devops',
+    title: '待审核合并请求',
     describe:
-      '此模块以问题的经办人为维度， 统计冲刺下各个经办人所经办的问题数量与所占百分比。',
-    img: assigneeChart,
+      '此模块展示了本项目所有应用服务中待审核的合并请求详情。添加该卡片后，只有项目所有者可以在项目概览中查看到该卡片内容。',
+    img: requestChartImage,
   },
+  // assigneeChart: {
+  //   layout: {
+  //     h: 4,
+  //     i: 'assigneeChart',
+  //     minH: 3,
+  //     minW: 4,
+  //     w: 5,
+  //     x: 0,
+  //     y: 19,
+  //   },
+  //   name: 'assigneeChart',
+  //   type: 'assigneeChart',
+  //   groupId: 'agile',
+  //   title: '经办人分布',
+  //   describe:
+  //     '此模块以问题的经办人为维度， 统计冲刺下各个经办人所经办的问题数量与所占百分比。',
+  //   img: assigneeChart,
+  // },
   priorityChart: {
     layout: {
       h: 4,

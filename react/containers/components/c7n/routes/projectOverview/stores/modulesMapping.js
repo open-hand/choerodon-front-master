@@ -3,6 +3,7 @@ const modulesMapping = {
   N_DEVOPS: [
     'appService',
     'env',
+    'requestChart',
     'pipelineChart',
     'commitChart',
     'deployChart',

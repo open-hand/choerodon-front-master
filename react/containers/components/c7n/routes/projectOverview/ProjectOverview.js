@@ -42,6 +42,7 @@ import ProjectDynamic from './components/project-dynamic';
 import PersonalWorkload from './components/personal-workload';
 import Workload from './components/Workload';
 import CustomChart from './components/custom-chart';
+import RequestChart from './components/request-chart';
 
 let observerLayout;
 const ComponentMountMap = {
@@ -93,7 +94,8 @@ const ProjectOverview = () => {
     commitChart: <CommitChart />,
     deployChart: <DeployChart />,
     onlineMember: <UserList />,
-    assigneeChart: <AssigneeChart />,
+    // assigneeChart: <AssigneeChart />,
+    requestChart: <RequestChart />,
     priorityChart: <PriorityChart />,
     issueTypeChart: <IssueTypeChart />,
     issueTable: <IssueTable />,
