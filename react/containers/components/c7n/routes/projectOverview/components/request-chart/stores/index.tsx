@@ -1,10 +1,12 @@
 /* eslint-disable max-len */
 import React, { createContext, useContext, useMemo } from 'react';
-import { injectIntl } from 'react-intl';
 import { inject } from 'mobx-react';
-import useStore, { StoreProps } from './useStore';
+import { DataSet } from 'choerodon-ui/pro';
+import { DataSetProps } from 'choerodon-ui/dataset/data-set/DataSet';
+import useStore from './useStore';
 import { RequestChartStoreContext, ProviderProps } from '../interface';
-// import { useFormatCommon, useFormatMessage } from '@choerodon/master';
+import RequestChartDataSet from './requestChartDataSet';
+import AppServiceDataSet from './appServiceDataSet';
 
 const Store = createContext({} as RequestChartStoreContext);
 
@@ -19,19 +21,17 @@ export const StoreProvider = inject('AppState')((props: ProviderProps) => {
 
   const prefixCls = 'c7ncd-request-chart' as const;
   const intlPrefix = 'c7ncd.request.chart' as const;
-
-  // const formatCommon = useFormatCommon();
-  // const formatRequestChart = useFormatMessage(intlPrefix);
-
   const mainStore = useStore();
+  const requestListDs = useMemo(() => new DataSet(RequestChartDataSet({ mainStore }) as DataSetProps), []);
+  const AppServiceDs = useMemo(() => new DataSet(AppServiceDataSet() as DataSetProps), []);
 
   const value = {
     ...props,
     mainStore,
     prefixCls,
     intlPrefix,
-    // formatRequestChart,
-    // formatCommon,
+    requestListDs,
+    AppServiceDs,
   };
   return (
     <Store.Provider value={value}>

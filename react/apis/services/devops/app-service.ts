@@ -40,6 +40,17 @@ class AppServiceApi extends Api<AppServiceApi> {
       method: 'get',
     });
   }
+
+  // 获取项目概览待审核合并请求应用服务名称下拉列表
+  getRequestChartAppService(data?:{
+    params: [],
+  }) {
+    return this.request({
+      url: `${this.prefix}/page_internal_by_options`,
+      method: 'post',
+      data,
+    });
+  }
 }
 const appServiceApi = new AppServiceApi();
 const appServiceApiConfig = new AppServiceApi(true);
