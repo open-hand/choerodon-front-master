@@ -71,7 +71,7 @@ const PageWrap:React.FC<PageWrapperProps> = (props) => {
       const realTabNode = keyShowArr.find((v) => v.tabKey === key);
       if (!!realTabNode && realTabNode.route) {
         history.push(`${realTabNode.route}${location.search}`);
-        setCurrentKey(key);
+        location.pathname === realTabNode.route && setCurrentKey(key);
       }
     }
     if (typeof onChange === 'function') {
