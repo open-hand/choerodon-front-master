@@ -1,33 +1,35 @@
-include: https://api.choerodon.com.cn/devops/v1/projects/1529/ci_contents/pipelines/9519d119-a915-4991-9669-26287c49e3f5/content.yaml
+include: https://api.choerodon.com.cn/devops/v1/projects/261899051275677696/ci_contents/pipelines/fb9ba823-2936-488e-b4f5-dffa2a13f34c/content.yaml
 
-#image: registry.cn-shanghai.aliyuncs.com/c7n/cibase:0.11.0
+#include: https://api.choerodon.com.cn/devops/v1/projects/1529/ci_contents/pipelines/9519d119-a915-4991-9669-26287c49e3f5/content.yaml
 #
-#stages:
-#  - release
-#
-#release:
-#  stage: release
-#  script:
-#    - yarn install --registry ${NPM_REPO} --sass-binary-site=http://npm.taobao.org/mirrors/node-sass --ignore-engines
-#    - chmod -R 755 node_modules
-#    - npm run compile
-#    - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>.npmrc
-#    - npm publish --registry ${NPM_PUBLISH_REGISTRY}
-#    - curl -sX POST -F token=${FRONT_REPOSITORY_TOKEN} -F ref=${REF_NAME} https://code.choerodon.com.cn/api/v4/projects/7909/trigger/pipeline
-#  only:
-#    refs:
-#      - master
-#      - tags
-#      - /^release-.*$/
-#      - /^hotfix-.*$/
-#
-#.auto_devops: &auto_devops |
-#  http_status_code=`curl -o .auto_devops.sh -s -m 10 --connect-timeout 10 -w %{http_code} "${CHOERODON_URL}/devops/ci?token=${Token}&type=front"`
-#  if [ "$http_status_code" != "200" ]; then
-#    cat .auto_devops.sh
-#    exit 1
-#  fi
-#  source .auto_devops.sh
-#
-#before_script:
-#  - *auto_devops
+##image: registry.cn-shanghai.aliyuncs.com/c7n/cibase:0.11.0
+##
+##stages:
+##  - release
+##
+##release:
+##  stage: release
+##  script:
+##    - yarn install --registry ${NPM_REPO} --sass-binary-site=http://npm.taobao.org/mirrors/node-sass --ignore-engines
+##    - chmod -R 755 node_modules
+##    - npm run compile
+##    - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>.npmrc
+##    - npm publish --registry ${NPM_PUBLISH_REGISTRY}
+##    - curl -sX POST -F token=${FRONT_REPOSITORY_TOKEN} -F ref=${REF_NAME} https://code.choerodon.com.cn/api/v4/projects/7909/trigger/pipeline
+##  only:
+##    refs:
+##      - master
+##      - tags
+##      - /^release-.*$/
+##      - /^hotfix-.*$/
+##
+##.auto_devops: &auto_devops |
+##  http_status_code=`curl -o .auto_devops.sh -s -m 10 --connect-timeout 10 -w %{http_code} "${CHOERODON_URL}/devops/ci?token=${Token}&type=front"`
+##  if [ "$http_status_code" != "200" ]; then
+##    cat .auto_devops.sh
+##    exit 1
+##  fi
+##  source .auto_devops.sh
+##
+##before_script:
+##  - *auto_devops
