@@ -7,6 +7,7 @@ import queryString from 'query-string';
 import {
   message,
   Modal,
+  Spin,
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import { mount, get as cherodonGet } from '@choerodon/inject';
@@ -408,35 +409,38 @@ class Masters extends Component {
   }
 
   render() {
+    const { AppState } = this.props;
     return (
-      <div className="page-wrapper">
-        <div
-          className="page-header"
-        >
-          <AnnouncementBannerPro />
-          <Header />
-        </div>
-        <div className="page-body">
-          <div className="content-wrapper">
-            <MenusPro />
-            {mount('base-pro:Guide', {
-              ...this.props,
-              MasterServices,
-              popoverHead,
-              cRef: this.cRef,
-            })}
-            {mount('base-pro:UserCheck', {
-              ...this.props,
-              MasterServices,
-              MasterApis,
-              cRef: this.userRef,
-            })}
-            <div id="autoRouter" className="content">
-              <RouteIndex />
+      <Spin spinning={AppState.getIsLoadMenu}>
+        <div className="page-wrapper">
+          <div
+            className="page-header"
+          >
+            <AnnouncementBannerPro />
+            <Header />
+          </div>
+          <div className="page-body">
+            <div className="content-wrapper">
+              <MenusPro />
+              {mount('base-pro:Guide', {
+                ...this.props,
+                MasterServices,
+                popoverHead,
+                cRef: this.cRef,
+              })}
+              {mount('base-pro:UserCheck', {
+                ...this.props,
+                MasterServices,
+                MasterApis,
+                cRef: this.userRef,
+              })}
+              <div id="autoRouter" className="content">
+                <RouteIndex />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Spin>
     );
   }
 }

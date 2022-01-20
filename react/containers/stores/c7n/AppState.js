@@ -44,6 +44,17 @@ class AppState {
 
   @observable isProjectsLoading = false;
 
+  @observable isLoadMenu = false;
+
+  @action setIsLoadMenu(value) {
+    this.isLoadMenu = value;
+  }
+
+  @computed
+  get getIsLoadMenu() {
+    return this.isLoadMenu;
+  }
+
   getProjects = () => {
     this.isProjectsLoading = true;
     if (this.currentMenuType?.organizationId) {
