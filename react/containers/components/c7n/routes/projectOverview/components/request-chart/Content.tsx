@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Select, Tooltip, Pagination } from 'choerodon-ui/pro';
-import { UserInfo } from '@choerodon/components';
+import { UserInfo, TimePopover } from '@choerodon/components';
 import { map } from 'lodash';
 import { useRequestChartStore } from './stores';
 import OverviewWrap from '../OverviewWrap';
@@ -83,7 +83,7 @@ const RequestChart = () => {
           <div className={`${prefixCls}-request-list-container`}>
             {requestListDs.map((record:any) => {
               const {
-                appServiceName, iamAssignee, iamAuthor, title, createdAt, gitlabMergeRequestId,
+                appServiceName, iamAssignee, iamAuthor, title, createdAt, gitlabMergeRequestId, gitlabUrl,
               } = record.toData();
               return (
                 <div className={`${prefixCls}-request-list-header`}>
@@ -94,7 +94,7 @@ const RequestChart = () => {
                     </span>
                   </div>
                   <div className={`${prefixCls}-request-list-header-item`}>
-                    <Tooltip title={title}><span className={`${prefixCls}-request-list-header-item-content`}><a href="#">{title}</a></span></Tooltip>
+                    <Tooltip title={title}><span className={`${prefixCls}-request-list-header-item-content`}><a href={gitlabUrl}>{title}</a></span></Tooltip>
                     <div>
                       !
                       {gitlabMergeRequestId}
@@ -114,7 +114,9 @@ const RequestChart = () => {
                             />
 
                           </div>
-                          <div>{createdAt}</div>
+                          <div>
+                            <TimePopover content={createdAt} />
+                          </div>
                         </Tooltip>
                       ) : ''}
 
