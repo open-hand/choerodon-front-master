@@ -6,7 +6,7 @@ import Echart from 'echarts-for-react';
 import './index.less';
 import { Spin } from 'choerodon-ui';
 import { useIntl } from 'react-intl';
-import { AnimationLoading } from '@choerodon/components';
+import { Loading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
@@ -152,7 +152,7 @@ const DefectTreatment = observer(() => {
   );
   function render() {
     if (defectTreatDs.status === 'loading') {
-      return <AnimationLoading display />;
+      return <Loading display type="c7n" />;
     }
     if (startedRecord) {
       return (
@@ -168,7 +168,7 @@ const DefectTreatment = observer(() => {
     if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;// 暂无活跃的冲刺"
     }
-    return <AnimationLoading display />;
+    return <Loading display type="c7n" />;
   }
   return (
     <OverviewWrap style={{

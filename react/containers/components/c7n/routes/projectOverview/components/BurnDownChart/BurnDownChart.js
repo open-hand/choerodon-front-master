@@ -7,7 +7,7 @@ import {
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import { get } from 'lodash';
-import { AnimationLoading } from '@choerodon/components';
+import { Loading } from '@choerodon/components';
 import { useIntl } from 'react-intl';
 import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 import { useBurnDownChartStore } from './stores';
@@ -252,7 +252,7 @@ const BurnDownChart = observer(() => {
 
   function render() {
     if (!chartDs.status === 'loading' || startSprintDs.status === 'loading') {
-      return <AnimationLoading display />;
+      return <Loading display type="c7n" />;
     }
     if (startedRecord) {
       return <Echart option={getOption()} style={{ height: '100%' }} />;

@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router';
 import classnames from 'classnames';
 import { useIntl } from 'react-intl';
-import { AnimationLoading } from '@choerodon/components';
+import { Loading } from '@choerodon/components';
 import useQueryString from '@/hooks/useQueryString';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
@@ -102,7 +102,7 @@ const SprintCount = observer(() => {
 
   function render() {
     if (startSprintDs.status === 'loading' || sprintCountDataSet.status === 'loading') {
-      return <AnimationLoading display />;
+      return <Loading display type="c7n" />;
     }
     if (startedRecord) {
       return (
