@@ -3,7 +3,7 @@ import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import { useIntl } from 'react-intl';
-import { AnimationLoading } from '@choerodon/components';
+import { Loading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import './index.less';
 import EmptyPage from '../EmptyPage';
@@ -151,7 +151,7 @@ const DefectChart = observer(() => {
   }
   function render() {
     if (defectCountDs.status === 'loading' || startSprintDs.status === 'loading') {
-      return <AnimationLoading display />;
+      return <Loading display type="c7n" />;
     }
     if (startedRecord) {
       return (
@@ -163,7 +163,7 @@ const DefectChart = observer(() => {
     if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;// 暂无活跃的冲刺"
     }
-    return <AnimationLoading display />;
+    return <Loading display type="c7n" />;
   }
   return (
     <OverviewWrap>

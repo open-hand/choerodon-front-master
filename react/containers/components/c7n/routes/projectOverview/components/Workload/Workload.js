@@ -7,7 +7,7 @@ import {
 import { debounce, toLength } from 'lodash';
 import { useIntl } from 'react-intl';
 import { observer } from 'mobx-react-lite';
-import { AnimationLoading } from '@choerodon/components';
+import { Loading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import DateTable from './components/DateTable';
 import { useWorkloadStore } from './stores';
@@ -190,7 +190,7 @@ const Workload = observer(() => {
             ) : <EmptyPage content="暂无数据" />
         );
       }
-      return <AnimationLoading display />;
+      return <Loading display type="c7n" />;
     } if (startSprintDs.status !== 'loading') {
       return <EmptyPage />; // content="暂无活跃的冲刺"
     }

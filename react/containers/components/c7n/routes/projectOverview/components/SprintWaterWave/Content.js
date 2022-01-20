@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { useIntl } from 'react-intl';
 import './index.less';
 
-import { AnimationLoading } from '@choerodon/components';
+import { Loading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import WaterWave from './components/WaterWave';
 import { useProjectOverviewStore } from '../../stores';
@@ -73,7 +73,7 @@ const SprintWaterWave = observer(() => {
       );
     }
     if (startedRecord) {
-      return <AnimationLoading display />;
+      return <Loading display type="c7n" />;
     }
     if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;

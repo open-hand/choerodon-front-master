@@ -12,7 +12,7 @@ import './index.less';
 import OverviewWrap from '../OverviewWrap';
 // E:\hand\agile615\agile-service\react\routes\ReportHost\custom-report\components\ChartSearch\index.ts
 import EmptyPage from '../EmptyPage';
-import { AnimationLoading } from '@choerodon/components';
+import { Loading } from '@choerodon/components';
 
 // const ChartSearch =
 // console.log('ChartSearch...', ChartSearch);
@@ -32,7 +32,7 @@ const CustomChart = observer(() => {
 
   function render() {
     if (loading) {
-      return <AnimationLoading display />;
+      return <Loading display type="c7n" />;
     }
     if (!optionConfig && !isHasData) {
       return <EmptyPage content="当前暂无数据" />;
