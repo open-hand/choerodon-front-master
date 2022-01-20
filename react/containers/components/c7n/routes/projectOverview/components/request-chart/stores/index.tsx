@@ -7,6 +7,7 @@ import useStore from './useStore';
 import { RequestChartStoreContext, ProviderProps } from '../interface';
 import RequestChartDataSet from './requestChartDataSet';
 import AppServiceDataSet from './appServiceDataSet';
+import AppServiceOptionsDataSet from './appServiceOptionsDataSet';
 
 const Store = createContext({} as RequestChartStoreContext);
 
@@ -22,8 +23,9 @@ export const StoreProvider = inject('AppState')((props: ProviderProps) => {
   const prefixCls = 'c7ncd-request-chart' as const;
   const intlPrefix = 'c7ncd.request.chart' as const;
   const mainStore = useStore();
+  const AppServiceOptionDs = useMemo(() => new DataSet(AppServiceOptionsDataSet() as DataSetProps), []);
   const requestListDs = useMemo(() => new DataSet(RequestChartDataSet({ mainStore }) as DataSetProps), []);
-  const AppServiceDs = useMemo(() => new DataSet(AppServiceDataSet() as DataSetProps), []);
+  const AppServiceDs = useMemo(() => new DataSet(AppServiceDataSet({ AppServiceOptionDs }) as DataSetProps), []);
 
   const value = {
     ...props,
