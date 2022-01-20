@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Select, Tooltip, Pagination } from 'choerodon-ui/pro';
-import { UserInfo, TimePopover } from '@choerodon/components';
+import { UserInfo, TimePopover, Loading } from '@choerodon/components';
 import { map } from 'lodash';
 import { useRequestChartStore } from './stores';
 import OverviewWrap from '../OverviewWrap';
@@ -50,6 +50,9 @@ const RequestChart = () => {
     requestListDs.setQueryParameter('app_service_ids', ids.join());
     requestListDs.query();
   };
+  if (requestListDs.status === 'loading') {
+    return <Loading display type="c7n" />;
+  }
   return (
     <OverviewWrap>
       <Header
@@ -79,7 +82,7 @@ const RequestChart = () => {
         <div className={`${prefixCls}-list-header-item`}>审核人</div>
       </div>
       {requestListDs.length ? (
-        <>
+        <div className={`${prefixCls}-content`}>
           <div className={`${prefixCls}-request-list-container`}>
             {requestListDs.map((record:any) => {
               const {
@@ -148,7 +151,7 @@ const RequestChart = () => {
               className={`${prefixCls}-pagination`}
             />
           )}
-        </>
+        </div>
       ) : <EmptyPage content="当前暂无待审核合并请求" />}
 
     </OverviewWrap>
