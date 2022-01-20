@@ -94,7 +94,7 @@ const ProjectOverview = () => {
     commitChart: <CommitChart />,
     deployChart: <DeployChart />,
     onlineMember: <UserList />,
-    // assigneeChart: <AssigneeChart />,
+    assigneeChart: <AssigneeChart />,
     requestChart: <RequestChart />,
     priorityChart: <PriorityChart />,
     issueTypeChart: <IssueTypeChart />,
