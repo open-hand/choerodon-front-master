@@ -194,32 +194,37 @@ const ProjectOverview = () => {
     });
   }
 
+  const handleRefresh = () => {
+    componentsDs.loadData([]);
+    componentsDs.query();
+  };
+
   const renderBtns = () => {
     let btnGroups;
     if (isEdit) {
       btnGroups = [
         <Button
           onClick={openAddComponents}
-          key="5"
+          key="6"
           icon="settings-o"
         >
           卡片配置
         </Button>,
         <Button
           onClick={hanldeSave}
-          key="4"
+          key="5"
         >
           保存
         </Button>,
         <Button
           onClick={handleResetModal}
-          key="3"
+          key="4"
         >
           重置
         </Button>,
         <Button
           onClick={handleCancel}
-          key="2"
+          key="3"
           color="primary"
         >
           取消
@@ -229,7 +234,7 @@ const ProjectOverview = () => {
       btnGroups = [
         <Button
           onClick={handleEditable}
-          key="1"
+          key="2"
           icon="settings-o"
           color="primary"
         >
@@ -237,6 +242,11 @@ const ProjectOverview = () => {
         </Button>,
       ];
     }
+    btnGroups.unshift(<Button
+      onClick={() => handleRefresh()}
+      key="1"
+      icon="refresh"
+    />);
     return (
       <div
         className={`${prefixCls}-btnGroups`}
@@ -330,7 +340,6 @@ const ProjectOverview = () => {
       isDraggable: isEdit,
       isResizable: isEdit,
     };
-
     return (
       <ResponsiveReactGridLayout
         {...tempObj}
@@ -348,6 +357,7 @@ const ProjectOverview = () => {
     <Page className={prefixCls}>
       <Breadcrumb />
       <Permission service={['choerodon.code.project.project.overview.edit']}>
+
         {renderBtns()}
       </Permission>
       <Content className={`${prefixCls}-content`}>
