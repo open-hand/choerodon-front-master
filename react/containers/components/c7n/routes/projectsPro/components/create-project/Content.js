@@ -213,7 +213,7 @@ const CreateProject = observer(() => {
       if (code === categoryCodes.program && !some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.agile)) {
         return '原项目曾经为【敏捷管理】项目，不支持调整为【敏捷项目群】类型';
       }
-      if (code === categoryCodes.agile && !some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.program)) {
+      if (code === categoryCodes.agile) {
         return '原项目曾经为【敏捷项目群】项目，不支持调整为【敏捷管理】类型';
       }
       return '不可同时选择【敏捷管理】与【规模化敏捷项目群】项目类型';
