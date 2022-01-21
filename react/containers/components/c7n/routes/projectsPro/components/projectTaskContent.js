@@ -89,7 +89,7 @@ export default ({ data, alltrue }) => {
                     color: 'rgba(58,52,95,0.65)',
                   }}
                 >
-                  <TimePopover content={data.creationDate} />创建
+                  <TimePopover style={{ display: 'inline' }} content={data.creationDate} />创建
                 </p>
               </div>
             </div>
