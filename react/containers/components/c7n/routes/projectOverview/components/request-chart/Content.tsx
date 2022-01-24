@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Select, Tooltip, Pagination } from 'choerodon-ui/pro';
-import { UserInfo, TimePopover, Loading } from '@choerodon/components';
+import { UserInfo, TimePopover } from '@choerodon/components';
 import { map } from 'lodash';
 import { useRequestChartStore } from './stores';
 import OverviewWrap from '../OverviewWrap';
@@ -50,9 +50,6 @@ const RequestChart = () => {
     requestListDs.setQueryParameter('app_service_ids', ids.join());
     requestListDs.query();
   };
-  if (requestListDs.status === 'loading') {
-    return <Loading display type="c7n" />;
-  }
   return (
     <OverviewWrap>
       <Header
@@ -72,7 +69,7 @@ const RequestChart = () => {
           placeholder="应用服务"
           onOption={renderOptionProperty}
           searchable
-          searchMatcher="params"
+          searchMatcher="key"
         />
       </Header>
       <div className={`${prefixCls}-list-header`}>
