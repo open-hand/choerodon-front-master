@@ -62,13 +62,15 @@ export default ({ data, alltrue }) => {
             />
           </div>
           <div className="starProjects-second">
-            <div style={{ display: 'flex', alignItems: 'center', marginTop: 5 }}>
-              <Tooltip title={data.code && data.code.toUpperCase()}>
-                <p className="starProjects-items-content-center-code">{data.code && data.code.toUpperCase()}</p>
-              </Tooltip>
-              <p className={`starProjects-items-content-center-status starProjects-items-content-center-status-${data.enabled}`}>
-                {data.enabled ? '启用' : '停用'}
-              </p>
+            <div style={{ display: 'flex', alignItems: 'center', marginTop: 5, justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Tooltip title={data.code && data.code.toUpperCase()}>
+                  <p className="starProjects-items-content-center-code">{data.code && data.code.toUpperCase()}</p>
+                </Tooltip>
+                <p className={`starProjects-items-content-center-status starProjects-items-content-center-status-${data.enabled}`}>
+                  {data.enabled ? '启用' : '停用'}
+                </p>
+              </div>
               <div className="starProjects-items-content-right-down">
                 <Tooltip title={data.createUserName} placement="top">
                   <div
