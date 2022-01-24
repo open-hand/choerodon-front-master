@@ -5,7 +5,7 @@ export default () => ({
   autoQuery: true,
   pageSize: 10,
   transport: {
-    read: ({ params }:any) => (appServiceApiConfig.getRequestChartAppService(params.params ? { params: [params.params] } : {} as any)),
+    read: ({ data }:any) => (appServiceApiConfig.getRequestChartAppService(data.key ? { params: [data.key] } : {} as any)),
   },
   fields: [
   ],
