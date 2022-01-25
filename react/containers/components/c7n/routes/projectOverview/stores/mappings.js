@@ -17,7 +17,7 @@ import projectDynamic from '../img/16.svg';
 import workLoad from '../img/17.svg';
 import personalWorkload from '../img/18.svg';
 import requestChartImage from '../img/requestChart.svg';
-
+/**  layout 是默认所有的组件都显示时布局 */
 const componentsObj = {
   // 工作项进度
   issueProgress: {
@@ -330,7 +330,7 @@ const componentsObj = {
       minW: 10,
       w: 10,
       x: 0,
-      y: 12,
+      y: 16,
     },
     name: 'projectDynamic',
     type: 'projectDynamic',
@@ -349,7 +349,7 @@ const componentsObj = {
       minW: 10,
       w: 10,
       x: 0,
-      y: 12,
+      y: 21,
     },
     name: 'workLoad',
     type: 'workLoad',

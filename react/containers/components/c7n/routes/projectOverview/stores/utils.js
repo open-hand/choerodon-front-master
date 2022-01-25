@@ -14,21 +14,37 @@ function getInitProjectOverviewLayout(availableServiceList) {
     return [];
   }
   const isHasProService = includes(availableServiceList, 'agilePro');
+  const withoutDevops = !includes(availableServiceList, 'devops');
+  const defaultHasProLayoutMap = {
+    issueProgress: {
+      x: 0,
+      y: 1,
+    },
+    featureProgress: {
+      x: 0,
+      y: 0,
+    },
+  };
+  const defaultLayoutMapWithoutDevops = {
+    priorityChart: {
+      h: 3,
+      w: 4,
+      x: 7,
+      y: 11,
+    },
+  };
+  const defaultLayoutMap = {
+    ...withoutDevops ? defaultLayoutMapWithoutDevops : {},
+    ...isHasProService ? defaultHasProLayoutMap : {},
+  };
+  const getDefaultLayout = ((layout) => ({ ...layout, ...(defaultLayoutMap[layout.i]) }));
   const defaultValues = map(filter(mappings, (item) => {
     if (!HAS_AGILEPRO) {
       return item.injectGroupId !== 'agilePro';
     }
     return (isHasProService ? includes(availableServiceList, item.groupId)
-            || (item.injectGroupId && includes(availableServiceList, item.injectGroupId)) : true);
-  }), (item) => {
-    if (isHasProService && item.layout.i === 'featureProgress') {
-      return {
-        ...item.layout,
-        y: 0,
-      };
-    }
-    return item.layout;
-  });
+      || (item.injectGroupId && includes(availableServiceList, item.injectGroupId)) : true);
+  }), (item) => getDefaultLayout(item.layout));
   return defaultValues;
 }
 const memoizeGetInitProjectOverviewLayout = memoize(getInitProjectOverviewLayout);
