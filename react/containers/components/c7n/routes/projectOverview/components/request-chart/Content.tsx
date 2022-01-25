@@ -79,7 +79,7 @@ const RequestChart = () => {
         <div className={`${prefixCls}-list-header-item`}>审核人</div>
       </div>
       {requestListDs.length ? (
-        <div className={`${prefixCls}-content`}>
+        <>
           <div className={`${prefixCls}-request-list-container`}>
             {requestListDs.map((record:any) => {
               const {
@@ -148,7 +148,7 @@ const RequestChart = () => {
               className={`${prefixCls}-pagination`}
             />
           )}
-        </div>
+        </>
       ) : <EmptyPage content="当前暂无待审核合并请求" />}
 
     </OverviewWrap>

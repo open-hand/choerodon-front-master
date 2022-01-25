@@ -18,7 +18,7 @@
     }
   }
   &-request-list-container {
-    height:100%;
+    height: calc(100% - 106px);
     overflow-y: auto;
   }
   &-request-list-header {
@@ -51,7 +51,20 @@
     width: 420px;
   }
   &-pagination{
-    position:absolute;
-    top:670px;
+    margin-top: 0.2rem;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+    .c7n-pro-pagination-page-info {
+      margin: 0 0.1rem;
+    }
+    span.c7n-pro-select-wrapper .c7n-pro-select-suffix-button .c7n-pro-select-not-editable {
+      width: 0.5rem !important;
+    }
+  
+    .c7n-pro-btn +.c7n-pro-btn {
+      margin-left: .06rem;
+    }
   }
 }
