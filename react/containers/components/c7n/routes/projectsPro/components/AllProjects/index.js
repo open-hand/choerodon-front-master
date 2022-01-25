@@ -8,6 +8,7 @@ import {
   Icon,
   Spin,
 } from 'choerodon-ui/pro';
+import { throttle } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import some from 'lodash/some';
@@ -253,6 +254,14 @@ export default observer(() => {
     ) : null;
   }, []);
 
+  const handleStarClick = throttle((p) => {
+    if (p.enabled) {
+      ProjectsProUseStore.handleStarProject(p).then(() => {
+        ProjectsProUseStore.handleChangeStarProjects(p);
+      });
+    }
+  }, 2000);
+
   const renderProjects = useCallback(() => {
     const projects = ProjectsProUseStore.getAllProjects;
     if (ProjectsProUseStore.getProjectLoading) {
@@ -326,14 +335,7 @@ export default observer(() => {
                       color: p.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
                       fontSize: '20px',
                     }}
-                    onClick={(e) => {
-                      if (p.enabled) {
-                        e.stopPropagation();
-                        ProjectsProUseStore.handleStarProject(p).then(() => {
-                          ProjectsProUseStore.handleChangeStarProjects(p);
-                        });
-                      }
-                    }}
+                    onClick={(e) => { e.stopPropagation(); handleStarClick(p); }}
                   />
                 ) : null}
               </div>
