@@ -39,7 +39,7 @@ const ServiceList = observer((props) => {
           <header>
             <Icon type="date_range-o" />
             <span className="c7n-serviceList-content-item-date">
-              <TimePopover content={lastUpdateDate} />
+              <TimePopover style={{ display: 'inline-block' }} content={lastUpdateDate} />
               &nbsp;操作
             </span>
           </header>
