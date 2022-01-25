@@ -31,7 +31,7 @@ import PipelineChart from './components/pipeline-chart';
 import AssigneeChart from './components/assignee-chart';
 import mappings from './stores/mappings';
 import { useProjectOverviewStore } from './stores';
-
+import { getInitProjectOverviewLayout } from './stores/utils';
 import './ProjectOverview.less';
 import UserConfirmation from '../../components/UserConfirm';
 import EmptyCard from '../../components/EmptyCard';
@@ -179,9 +179,7 @@ const ProjectOverview = () => {
   }
 
   function handleReset() {
-    const defaultValues = filter(mappings, (item) => (includes(availableServiceList, 'agilePro')
-      ? includes(availableServiceList, item.groupId)
-      || (item.injectGroupId && includes(availableServiceList, item.injectGroupId)) : true)).map((item) => item.layout);
+    const defaultValues = getInitProjectOverviewLayout(availableServiceList);
     componentsDs.loadData(defaultValues);
   }
 
