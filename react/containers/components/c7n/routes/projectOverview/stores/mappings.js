@@ -206,7 +206,7 @@ const componentsObj = {
     groupId: 'devops',
     title: '待审核合并请求',
     describe:
-      '此模块展示了本项目所有应用服务中待审核的合并请求详情。添加该卡片后，只有项目所有者可以在项目概览中查看到该卡片内容。',
+      '此模块展示了本项目所有应用服务中待审核的合并请求详情。',
     img: requestChartImage,
   },
   assigneeChart: {

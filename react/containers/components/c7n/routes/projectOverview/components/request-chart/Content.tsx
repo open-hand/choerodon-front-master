@@ -94,7 +94,7 @@ const RequestChart = () => {
                     </span>
                   </div>
                   <div className={`${prefixCls}-request-list-header-item`}>
-                    <Tooltip title={title}><span className={`${prefixCls}-request-list-header-item-content`}><a href={gitlabUrl}>{title}</a></span></Tooltip>
+                    <Tooltip title={title}><span className={`${prefixCls}-request-list-header-item-content`}><a href={gitlabUrl} target="_blank" rel="noreferrer">{title}</a></span></Tooltip>
                     <div>
                       !
                       {gitlabMergeRequestId}
@@ -109,7 +109,7 @@ const RequestChart = () => {
                               avatar={iamAuthor?.imageUrl}
                               realName={iamAuthor?.realName}
                               loginName={iamAuthor?.loginName}
-                              showTooltip
+                              showTooltip={false}
                               className={`${prefixCls}-request-list-user`}
                             />
 
@@ -129,6 +129,7 @@ const RequestChart = () => {
                             avatar={iamAssignee?.imageUrl}
                             realName={iamAssignee?.realName}
                             loginName={iamAssignee?.loginName}
+                            showTooltip={false}
                             className={`${prefixCls}-request-list-user`}
                           />
 
