@@ -4,7 +4,7 @@ const cardsMappings = (mappings, needUpgrade = true) => {
   const getArr = (type) => {
     let res = [];
     if (mappings) {
-      res = filter(mappings, (item) => item.groupId === type);
+      res = filter(mappings, (item) => item?.groupId === type);
     }
     return res;
   };

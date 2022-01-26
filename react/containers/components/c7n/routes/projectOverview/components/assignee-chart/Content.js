@@ -7,7 +7,7 @@ import Echart from 'echarts-for-react';
 import { reduce } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { useIntl } from 'react-intl';
-import { AnimationLoading } from '@choerodon/components';
+import { Loading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 
 import { useProjectOverviewStore } from '../../stores';
@@ -77,7 +77,7 @@ const SprintCount = observer(() => {
   }
   function render() {
     if (assigneeChartDs.status === 'loading' || startSprintDs.status === 'loading') {
-      return <AnimationLoading display />;
+      return <Loading display type="c7n" />;
     }
     if (startedRecord) {
       return (
@@ -89,7 +89,7 @@ const SprintCount = observer(() => {
     if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;
     }
-    return <AnimationLoading display />;
+    return <Loading display type="c7n" />;
   }
 
   return (

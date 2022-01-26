@@ -9,3 +9,4 @@ export * from './ci-template-step-category';
 export * from './ci-template-job';
 export * from './site-pipeline-template';
 export * from './ci-template-step';
+export * from './request-chart';

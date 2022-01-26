@@ -31,7 +31,7 @@ import PipelineChart from './components/pipeline-chart';
 import AssigneeChart from './components/assignee-chart';
 import mappings from './stores/mappings';
 import { useProjectOverviewStore } from './stores';
-
+import { getInitProjectOverviewLayout } from './stores/utils';
 import './ProjectOverview.less';
 import UserConfirmation from '../../components/UserConfirm';
 import EmptyCard from '../../components/EmptyCard';
@@ -42,6 +42,7 @@ import ProjectDynamic from './components/project-dynamic';
 import PersonalWorkload from './components/personal-workload';
 import Workload from './components/Workload';
 import CustomChart from './components/custom-chart';
+import RequestChart from './components/request-chart';
 
 let observerLayout;
 const ComponentMountMap = {
@@ -94,6 +95,7 @@ const ProjectOverview = () => {
     deployChart: <DeployChart />,
     onlineMember: <UserList />,
     assigneeChart: <AssigneeChart />,
+    requestChart: <RequestChart />,
     priorityChart: <PriorityChart />,
     issueTypeChart: <IssueTypeChart />,
     issueTable: <IssueTable />,
@@ -177,9 +179,7 @@ const ProjectOverview = () => {
   }
 
   function handleReset() {
-    const defaultValues = filter(mappings, (item) => (includes(availableServiceList, 'agilePro')
-      ? includes(availableServiceList, item.groupId)
-      || (item.injectGroupId && includes(availableServiceList, item.injectGroupId)) : true)).map((item) => item.layout);
+    const defaultValues = getInitProjectOverviewLayout(availableServiceList);
     componentsDs.loadData(defaultValues);
   }
 
@@ -192,32 +192,37 @@ const ProjectOverview = () => {
     });
   }
 
+  const handleRefresh = () => {
+    componentsDs.loadData([]);
+    componentsDs.query();
+  };
+
   const renderBtns = () => {
     let btnGroups;
     if (isEdit) {
       btnGroups = [
         <Button
           onClick={openAddComponents}
-          key="5"
+          key="6"
           icon="settings-o"
         >
           卡片配置
         </Button>,
         <Button
           onClick={hanldeSave}
-          key="4"
+          key="5"
         >
           保存
         </Button>,
         <Button
           onClick={handleResetModal}
-          key="3"
+          key="4"
         >
           重置
         </Button>,
         <Button
           onClick={handleCancel}
-          key="2"
+          key="3"
           color="primary"
         >
           取消
@@ -227,7 +232,7 @@ const ProjectOverview = () => {
       btnGroups = [
         <Button
           onClick={handleEditable}
-          key="1"
+          key="2"
           icon="settings-o"
           color="primary"
         >
@@ -235,6 +240,11 @@ const ProjectOverview = () => {
         </Button>,
       ];
     }
+    btnGroups.unshift(<Button
+      onClick={() => handleRefresh()}
+      key="1"
+      icon="refresh"
+    />);
     return (
       <div
         className={`${prefixCls}-btnGroups`}
@@ -328,7 +338,6 @@ const ProjectOverview = () => {
       isDraggable: isEdit,
       isResizable: isEdit,
     };
-
     return (
       <ResponsiveReactGridLayout
         {...tempObj}
@@ -346,6 +355,7 @@ const ProjectOverview = () => {
     <Page className={prefixCls}>
       <Breadcrumb />
       <Permission service={['choerodon.code.project.project.overview.edit']}>
+
         {renderBtns()}
       </Permission>
       <Content className={`${prefixCls}-content`}>

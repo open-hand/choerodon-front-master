@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { AnimationLoading, useLoading } from '@choerodon/components';
+import { Loading, useLoading } from '@choerodon/components';
 import { uniqueId } from 'lodash';
 import { uiAxiosInstance } from '@/components/axios';
 import useFormatCommon from '@/hooks/useFormatCommon';
@@ -9,7 +9,7 @@ export const UI_CONFIGURE = `${process.env.UI_CONFIGURE}`;
 
 const uiConfigure = UI_CONFIGURE || {};
 
-function TableSpin (props) {
+function TableSpin(props) {
   const { className } = props;
   const {
     registerChildren, isHasProvider, cancelRegisterChildren, change,
@@ -26,7 +26,7 @@ function TableSpin (props) {
     };
   }, [cancelRegisterChildren, change, loadId, registerChildren]);
   //  无统一Loading管理 则使用table表格内部loading状态判断
-  return <AnimationLoading className={className} display={loading} style={{ display: !isHasProvider || loading ? 'inline-block' : 'none' }} />;
+  return <Loading type="c7n" className={className} display={loading} style={{ display: !isHasProvider || loading ? 'inline-block' : 'none' }} />;
 }
 
 const useUiConfigs = () => {
@@ -76,6 +76,7 @@ const useUiConfigs = () => {
     drawerOkFirst: false,
     buttonFuncType: 'raised',
     tableVirtualCell: false,
+    tableColumnResizeTrigger: 'hover',
     lovQueryUrl: (code) => `/iam/choerodon/v1/lov/code?code=${code}`,
     generatePageQuery: ({
       page, pageSize, sortName, sortOrder, sort,

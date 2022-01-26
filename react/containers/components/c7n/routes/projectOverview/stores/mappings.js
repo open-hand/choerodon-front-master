@@ -16,8 +16,29 @@ import issueTable from '../img/15.png';
 import projectDynamic from '../img/16.svg';
 import workLoad from '../img/17.svg';
 import personalWorkload from '../img/18.svg';
-
+import requestChartImage from '../img/requestChart.svg';
+/**  layout 是默认所有的组件都显示时布局 */
 const componentsObj = {
+  // 工作项进度
+  issueProgress: {
+    layout: {
+      h: 7,
+      i: 'issueProgress',
+      minH: 7,
+      minW: 10,
+      w: 10,
+      x: 0,
+      y: 0,
+    },
+    name: 'issueProgress',
+    type: 'issueProgress',
+    groupId: 'agile',
+    injectGroupId: 'agilePro',
+    title: '工作项进度统计',
+    describe:
+      '此模块按问题计数、工时数2种维度统计当前迭代各个团队成员任务总量、完成量和剩余量。',
+    img: sprintCount,
+  },
   // 冲刺未完成统计
   sprintNotDone: {
     layout: {
@@ -27,7 +48,7 @@ const componentsObj = {
       minW: 4,
       w: 4,
       x: 8,
-      y: 0,
+      y: 8,
     },
     name: 'sprintNotDone',
     type: 'sprintNotDone',
@@ -40,7 +61,7 @@ const componentsObj = {
   sprintCount: {
     layout: {
       x: 8,
-      y: 2,
+      y: 10,
       h: 2,
       w: 4,
       minH: 2,
@@ -59,7 +80,7 @@ const componentsObj = {
   burnDownChart: {
     layout: {
       x: 0,
-      y: 1,
+      y: 9,
       h: 3,
       w: 6,
       minH: 3,
@@ -83,7 +104,7 @@ const componentsObj = {
       minW: 4,
       w: 6,
       x: 0,
-      y: 4,
+      y: 12,
     },
     name: 'defectTreatment',
     type: 'defectTreatment',
@@ -101,7 +122,7 @@ const componentsObj = {
       minW: 4,
       w: 5,
       x: 0,
-      y: 14,
+      y: 22,
     },
     name: 'defectChart',
     type: 'defectChart',
@@ -120,7 +141,7 @@ const componentsObj = {
       minW: 3,
       w: 3,
       x: 0,
-      y: 0,
+      y: 8,
     },
     name: 'appService',
     type: 'appService',
@@ -139,7 +160,7 @@ const componentsObj = {
       minW: 3,
       w: 3,
       x: 3,
-      y: 0,
+      y: 8,
     },
     name: 'env',
     type: 'env',
@@ -159,7 +180,7 @@ const componentsObj = {
       minW: 4,
       w: 5,
       x: 7,
-      y: 18,
+      y: 26,
     },
     name: 'pipelineChart',
     type: 'pipelineChart',
@@ -169,6 +190,25 @@ const componentsObj = {
       '此模块显示该项目下当前迭代应用流水线每天的触发情况以及总的触发次数。',
     img: pipelineChart,
   },
+  // 待审核合并请求
+  requestChart: {
+    layout: {
+      h: 4,
+      i: 'requestChart',
+      minH: 3,
+      minW: 4,
+      w: 5,
+      x: 0,
+      y: 27,
+    },
+    name: 'requestChart',
+    type: 'requestChart',
+    groupId: 'devops',
+    title: '待审核合并请求',
+    describe:
+      '此模块展示了本项目所有应用服务中待审核的合并请求详情。',
+    img: requestChartImage,
+  },
   assigneeChart: {
     layout: {
       h: 4,
@@ -176,8 +216,8 @@ const componentsObj = {
       minH: 3,
       minW: 4,
       w: 5,
-      x: 0,
-      y: 19,
+      x: 7,
+      y: 27,
     },
     name: 'assigneeChart',
     type: 'assigneeChart',
@@ -187,24 +227,6 @@ const componentsObj = {
       '此模块以问题的经办人为维度， 统计冲刺下各个经办人所经办的问题数量与所占百分比。',
     img: assigneeChart,
   },
-  priorityChart: {
-    layout: {
-      h: 4,
-      i: 'priorityChart',
-      minH: 3,
-      minW: 4,
-      w: 5,
-      x: 7,
-      y: 19,
-    },
-    name: 'priorityChart',
-    type: 'priorityChart',
-    groupId: 'agile',
-    title: '优先级分布',
-    describe:
-      '此模块以问题的优先级（高、中、低）为维度，统计冲刺下问题已完成和总计数的数量。',
-    img: priorityChart,
-  },
   issueTypeChart: {
     layout: {
       h: 5,
@@ -213,7 +235,7 @@ const componentsObj = {
       minW: 4,
       w: 10,
       x: 0,
-      y: 23,
+      y: 31,
     },
     name: 'issueTypeChart',
     type: 'issueTypeChart',
@@ -231,7 +253,7 @@ const componentsObj = {
       minW: 10,
       w: 10,
       x: 0,
-      y: 28,
+      y: 36,
     },
     name: 'issueTable',
     type: 'issueTable',
@@ -250,7 +272,7 @@ const componentsObj = {
       minW: 4,
       w: 5,
       x: 0,
-      y: 14,
+      y: 22,
     },
     name: 'commitChart',
     type: 'commitChart',
@@ -269,7 +291,7 @@ const componentsObj = {
       minW: 4,
       w: 5,
       x: 7,
-      y: 14,
+      y: 22,
     },
     name: 'deployChart',
     type: 'deployChart',
@@ -284,7 +306,7 @@ const componentsObj = {
   onlineMember: {
     layout: {
       x: 8,
-      y: 4,
+      y: 9,
       h: 4,
       w: 4,
       minH: 2,
@@ -308,7 +330,7 @@ const componentsObj = {
       minW: 10,
       w: 10,
       x: 0,
-      y: 8,
+      y: 16,
     },
     name: 'projectDynamic',
     type: 'projectDynamic',
@@ -327,7 +349,7 @@ const componentsObj = {
       minW: 10,
       w: 10,
       x: 0,
-      y: 8,
+      y: 21,
     },
     name: 'workLoad',
     type: 'workLoad',
@@ -344,9 +366,9 @@ const componentsObj = {
       i: 'personalWorkload',
       minH: 4,
       minW: 4,
-      w: 6,
+      w: 5,
       x: 0,
-      y: 33,
+      y: 41,
     },
     name: 'personalWorkload',
     type: 'personalWorkload',
@@ -355,6 +377,24 @@ const componentsObj = {
     describe:
       '此模块按问题计数、工时数2种维度统计当前迭代各个团队成员任务总量、完成量和剩余量。',
     img: personalWorkload,
+  },
+  priorityChart: {
+    layout: {
+      h: 4,
+      i: 'priorityChart',
+      minH: 3,
+      minW: 4,
+      w: 5,
+      x: 7,
+      y: 38,
+    },
+    name: 'priorityChart',
+    type: 'priorityChart',
+    groupId: 'agile',
+    title: '优先级分布',
+    describe:
+      '此模块以问题的优先级（高、中、低）为维度，统计冲刺下问题已完成和总计数的数量。',
+    img: priorityChart,
   },
   // 特性进度统计
   featureProgress: {
@@ -365,32 +405,13 @@ const componentsObj = {
       minW: 10,
       w: 10,
       x: 0,
-      y: 33,
+      y: 41,
     },
     name: 'featureProgress',
     type: 'featureProgress',
     groupId: 'agile',
     injectGroupId: 'agilePro',
     title: '特性进度统计',
-    describe:
-      '此模块按问题计数、工时数2种维度统计当前迭代各个团队成员任务总量、完成量和剩余量。',
-    img: sprintCount,
-  },
-  issueProgress: {
-    layout: {
-      h: 7,
-      i: 'issueProgress',
-      minH: 7,
-      minW: 10,
-      w: 10,
-      x: 0,
-      y: 33,
-    },
-    name: 'issueProgress',
-    type: 'issueProgress',
-    groupId: 'agile',
-    injectGroupId: 'agilePro',
-    title: '工作项进度统计',
     describe:
       '此模块按问题计数、工时数2种维度统计当前迭代各个团队成员任务总量、完成量和剩余量。',
     img: sprintCount,

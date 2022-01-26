@@ -6,17 +6,19 @@ function handleDisabled({
   if (!isSenior) {
     return;
   }
+  // 创建项目时可以同时选择项目群和敏捷管理
+  // 修改项目时项目群可以加上敏捷，敏捷不能加上项目群
+  // 原项目是加过项目群后不能改成单独一个敏捷的类型
   if (record.get('code') === categoryCodes.agile) {
-    if (!record.getState('isAgile')) {
-      const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.program);
-      findRecord && findRecord.setState('disabled', isSelected);
-    }
     setRequireModule({ dataSet, selected: isSelected, categoryCodes });
   }
   if (record.get('code') === categoryCodes.program) {
-    if (!record.getState('isProgram')) {
+    if (dataSet.getState('isEdit') && dataSet.getState('isBeforeProgram')) {
       const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.agile);
-      findRecord && findRecord.setState('disabled', isSelected);
+      findRecord && findRecord.setState('disabled', !isSelected);
+      if (!isSelected && findRecord?.isSelected) {
+        findRecord.isSelected = false;
+      }
     }
     setRequireModule({ dataSet, selected: isSelected, categoryCodes });
   }

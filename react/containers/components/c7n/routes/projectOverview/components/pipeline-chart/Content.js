@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
-import { AnimationLoading } from '@choerodon/components';
+import { Loading } from '@choerodon/components';
 import { useIntl } from 'react-intl';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
@@ -175,7 +175,7 @@ const PipelineChart = () => {
 
   function getContent() {
     if (startSprintDs === 'loading') {
-      return <AnimationLoading display />;
+      return <Loading display type="c7n" />;
     }
     if (!startedRecord) {
       return <EmptyPage />;

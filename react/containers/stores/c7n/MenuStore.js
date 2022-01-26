@@ -184,12 +184,21 @@ class MenuStore {
     return false;
   }
 
+  setCurrentIsLoadMenu(num) {
+    if (num === 0) {
+      AppState.setIsLoadMenu(false)
+    } else {
+      AppState.setIsLoadMenu(true)
+    }
+    isLoadMenu = num;
+  }
+
 
   @action
   loadMenuData (menuType = AppState.currentMenuType, isUser, setData = true, selfResolve) {
     // 判断当前的菜单是否 再  failedMenuType 这个全局变量中存在
     if (this.judgeFailedMenuType(menuType)) {
-      isLoadMenu = 0;
+      this.setCurrentIsLoadMenu(0);
       // 如果是存在返回一个空数组
       return new Promise((resolve) => {
         resolve([]);
@@ -204,7 +213,7 @@ class MenuStore {
         return this.loadMenuData(menuType, isUser, setData);
       }
     } else {
-      isLoadMenu = 1;
+      this.setCurrentIsLoadMenu(1);
       if (selfResolve) {
         mainFunc.call(this, selfResolve);
       } else {
@@ -273,7 +282,7 @@ class MenuStore {
             }
           }
           if (!AppState.currentMenuType.hasChangeCategorys) {
-            isLoadMenu = 0;
+            this.setCurrentIsLoadMenu(0);
             return resolve(menu);
           }
           delete AppState.menuType.hasChangeCategorys;
@@ -349,14 +358,14 @@ class MenuStore {
             AppState.loadUserInfo();
           }
           AppState.userInfo.currentRoleLevel = type;
-          isLoadMenu = 0;
+          this.setCurrentIsLoadMenu(0);
 
           return resolve(data || []);
         }
-        isLoadMenu = 0;
+        this.setCurrentIsLoadMenu(0);
       } catch (error) {
         failedMenuType.push(menuType);
-        isLoadMenu = 0;
+        this.setCurrentIsLoadMenu(0);
         throw new Error(e);
       }
     }

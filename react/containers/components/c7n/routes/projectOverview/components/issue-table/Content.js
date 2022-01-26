@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash';
 import { Table, Tabs } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
-import { AnimationLoading } from '@choerodon/components';
+import { Loading } from '@choerodon/components';
 import { useIntl } from 'react-intl';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
@@ -218,7 +218,7 @@ const DeployChart = () => {
   };
   function getContent() {
     if (startSprintDs.status === 'loading') {
-      return <AnimationLoading display />;
+      return <Loading display type="c7n" />;
     }
     if (!startedRecord) {
       return <EmptyPage />;

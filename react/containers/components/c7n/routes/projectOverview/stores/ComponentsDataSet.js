@@ -3,6 +3,7 @@ import {
 } from 'lodash';
 import JsonBig from 'json-bigint';
 import mappings from './mappings';
+import { getInitProjectOverviewLayout } from './utils';
 
 const HAS_AGILEPRO = C7NHasModule('@choerodon/agile-pro');
 
@@ -15,13 +16,7 @@ export default ({ projectId, availableServiceList, projectOverviewStore }) => ({
       url: `iam/choerodon/v1/projects/${projectId}/project_overview_config`,
       method: 'get',
       transformResponse: (value) => {
-        const defaultValues = map(filter(mappings, (item) => {
-          if (!HAS_AGILEPRO) {
-            return item.injectGroupId !== 'agilePro';
-          }
-          return (includes(availableServiceList, 'agilePro') ? includes(availableServiceList, item.groupId)
-            || (item.injectGroupId && includes(availableServiceList, item.injectGroupId)) : true);
-        }), (item) => item.layout);
+        const defaultValues = getInitProjectOverviewLayout(availableServiceList);
         try {
           let res;
           if (value) {

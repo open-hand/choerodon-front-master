@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120px" height="66px" viewBox="0 0 120 66" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 34</title>
+    <g id="工作台&amp;项目" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="项目概览-添加卡片" transform="translate(-878.000000, -1335.000000)">
+            <g id="编组-37" transform="translate(699.052632, 0.000000)">
+                <g id="编组-33" transform="translate(168.947368, 100.000000)">
+                    <g id="编组-35" transform="translate(0.000000, 1235.000000)">
+                        <g id="编组-34" transform="translate(10.000000, 0.000000)">
+                            <rect id="矩形" fill="#FFFFFF" x="0" y="0" width="120" height="66" rx="4"></rect>
+                            <rect id="矩形" fill-opacity="0.16" fill="#0E1D80" x="18" y="10" width="30" height="6" rx="2"></rect>
+                            <rect id="矩形" fill-opacity="0.24" fill="#FAAD14" x="18" y="22" width="84" height="8" rx="2"></rect>
+                            <rect id="矩形" fill-opacity="0.24" fill="#FAAD14" x="18" y="35" width="84" height="8" rx="2"></rect>
+                            <rect id="矩形" fill-opacity="0.24" fill="#FAAD14" x="18" y="48" width="84" height="8" rx="2"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

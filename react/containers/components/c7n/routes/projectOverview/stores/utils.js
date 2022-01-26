@@ -1,0 +1,51 @@
+import {
+  map, get, filter, includes, memoize,
+} from 'lodash';
+import mappings from './mappings';
+
+const HAS_AGILEPRO = true || C7NHasModule('@choerodon/agile-pro');
+/**
+ * 获取初始时项目概览数据
+ * @param {*} availableServiceList
+ * @returns
+ */
+function getInitProjectOverviewLayout(availableServiceList) {
+  if (!Array.isArray(availableServiceList) || !availableServiceList.length) {
+    return [];
+  }
+  const isHasProService = includes(availableServiceList, 'agilePro');
+  const withoutDevops = !includes(availableServiceList, 'devops');
+  const defaultHasProLayoutMap = {
+    issueProgress: {
+      x: 0,
+      y: 1,
+    },
+    featureProgress: {
+      x: 0,
+      y: 0,
+    },
+  };
+  const defaultLayoutMapWithoutDevops = {
+    priorityChart: {
+      h: 3,
+      w: 4,
+      x: 7,
+      y: 11,
+    },
+  };
+  const defaultLayoutMap = {
+    ...withoutDevops ? defaultLayoutMapWithoutDevops : {},
+    ...isHasProService ? defaultHasProLayoutMap : {},
+  };
+  const getDefaultLayout = ((layout) => ({ ...layout, ...(defaultLayoutMap[layout.i]) }));
+  const defaultValues = map(filter(mappings, (item) => {
+    if (!HAS_AGILEPRO) {
+      return item.injectGroupId !== 'agilePro';
+    }
+    return (isHasProService ? includes(availableServiceList, item.groupId)
+      || (item.injectGroupId && includes(availableServiceList, item.injectGroupId)) : true);
+  }), (item) => getDefaultLayout(item.layout));
+  return defaultValues;
+}
+const memoizeGetInitProjectOverviewLayout = memoize(getInitProjectOverviewLayout);
+export { memoizeGetInitProjectOverviewLayout as getInitProjectOverviewLayout };
