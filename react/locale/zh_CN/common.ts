@@ -2,6 +2,7 @@ import COMMON_COMPONENT_ZH_CN from './commonComponent';
 // 操作
 const OPTIONS_ZH_CN = {
   'boot.execute': '执行',
+  'boot.clientExecution': '客户端执行',
   'boot.return': '返回',
   'boot.confirm': '确认',
   'boot.refresh': '刷新',

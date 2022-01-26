@@ -20,16 +20,28 @@
   }
 }
 
+@media only screen and (max-width: 1439px) {
+  .c7n-starTargetPro-proContainer-items-project {
+    height: 18px;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .c7n-starTargetPro-proContainer-items-project {
+    height: 36px;
+  }
+}
+
 .c7n-starTargetPro {
   display: flex;
   flex-direction: column;
   background-color: rgba(245, 246, 250, 1);
   position: relative;
   &-name {
-    overflow: auto;
-   .c7n-workbench-card-content {
-    overflow-y: visible;
-   }
+    //overflow: auto;
+   //.c7n-workbench-card-content {
+   // overflow-y: visible;
+   //}
   }
 
   &-proContainer {
@@ -132,7 +144,6 @@
       }
 
     &-project {
-        height: 36px;
         margin-top: 14px;
         font-size: 13px;
         font-weight: 400;
@@ -140,8 +151,8 @@
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
         -webkit-box-orient: vertical;
       }
 
