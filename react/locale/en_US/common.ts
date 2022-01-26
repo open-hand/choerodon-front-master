@@ -2,6 +2,7 @@ import COMMON_COMPONENT_ZH_CN from './commonComponent';
 
 export const OPTIONS_EN_US = {
   'boot.execute': 'Execute',
+  'boot.clientExecution': 'Client Execution',
   'boot.return': 'Back',
   'boot.confirm': 'Confirm',
   'boot.refresh': 'Refresh',
