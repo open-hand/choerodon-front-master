@@ -103,21 +103,23 @@ const RequestChart = () => {
                   <div className={`${prefixCls}-request-list-header-item`}>
                     {iamAuthor
                       ? (
-                        <Tooltip title={iamAuthor.ldap ? `${iamAuthor.realName}(${iamAuthor.loginName})` : `${iamAuthor.realName}(${iamAuthor.email})`}>
-                          <div>
-                            <UserInfo
-                              avatar={iamAuthor?.imageUrl}
-                              realName={iamAuthor?.realName}
-                              loginName={iamAuthor?.loginName}
-                              showTooltip={false}
-                              className={`${prefixCls}-request-list-user`}
-                            />
+                        <>
+                          <Tooltip title={iamAuthor.ldap ? `${iamAuthor.realName}(${iamAuthor.loginName})` : `${iamAuthor.realName}(${iamAuthor.email})`}>
+                            <div>
+                              <UserInfo
+                                avatar={iamAuthor?.imageUrl}
+                                realName={iamAuthor?.realName}
+                                loginName={iamAuthor?.loginName}
+                                showTooltip={false}
+                                className={`${prefixCls}-request-list-user`}
+                              />
 
-                          </div>
+                            </div>
+                          </Tooltip>
                           <div>
                             <TimePopover content={createdAt} />
                           </div>
-                        </Tooltip>
+                        </>
                       ) : ''}
 
                   </div>
