@@ -210,8 +210,8 @@ const CreateProject = observer(() => {
         return '敏捷管理项目已加入项目群，无法移除此项目类型';
       }
     } else {
-      if (code === categoryCodes.program && !some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.agile)) {
-        return '原项目曾经为【敏捷管理】项目，不支持调整为【敏捷项目群】类型';
+      if (code === categoryCodes.program) {
+        return '已添加或添加过【敏捷管理】项目类型，不可添加【敏捷项目群】项目类型';
       }
       if (code === categoryCodes.agile) {
         return '原项目曾经为【敏捷项目群】项目，不支持调整为【敏捷管理】类型';
