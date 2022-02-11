@@ -14,7 +14,7 @@ const isFunction = (something: unknown): something is Function => typeof somethi
 const PermissionRoute: React.FC<PermissionRouteProps> = ({ enabledRouteChangedAjaxBlock = true, service, ...rest }) => {
   const { type } = useQueryString();
   const location = useLocation();
-  const codes = useMemo(() => (isFunction(service) ? service(type) : (service || [])), [service, type]);
+  const codes = useMemo(() => (isFunction(service) ? service(type as any) : (service || [])), [service, type]);
   const route = (
     <Route
       {...rest}
