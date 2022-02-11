@@ -27,7 +27,7 @@ class AppServiceApi extends Api<AppServiceApi> {
     }
   }) {
     return this.request({
-      url: `${this.prefix}/${appServiceId}/git/page_branch_by_options`,
+      url: `${this.prefix}/${appServiceId}/git/page_branch_basic_info_by_options`,
       method: 'post',
       data,
     });
