@@ -84,12 +84,12 @@ const CreateProject = observer(() => {
         id: selectedRecord.get('id'),
         code: selectedRecord.get('code'),
       }));
-      if (find(selectedRecords, (item) => item.get('code') === 'N_WATERFALL' !== -1)) {
-        formDs.current.getState('openSprint') ? formDs.current.set('openSprint', true)
-          : formDs.current.set('openSprint', false);
-      } else {
-        formDs.current.set('openSprint', false);
-      }
+      // if (find(selectedRecords, (item) => item.get('code') === 'N_WATERFALL' !== -1)) {
+      //   formDs.current.getState('openSprint') ? formDs.current.set('openSprint', true)
+      //     : formDs.current.set('openSprint', false);
+      // } else {
+      //   formDs.current.set('openSprint', false);
+      // }
       record.set('categories', categories);
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
@@ -248,7 +248,7 @@ const CreateProject = observer(() => {
   }
 
   const sprintCheckboxOnChange = (value) => {
-    formDs?.current?.set('openSprint', value);
+    formDs?.current?.set('agileWaterfall', value);
   };
 
   const selectedRecords = categoryDs.selected;
@@ -295,7 +295,7 @@ const CreateProject = observer(() => {
               >
                 是否同时启用冲刺
                 {' '}
-                <CheckBox checked={record?.get('name') === 'ajmtest'} onChange={sprintCheckboxOnChange} />
+                <CheckBox checked={record?.get('agileWaterfall')} onChange={sprintCheckboxOnChange} />
                 <NewTips
                   helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等 功能"
                   style={{

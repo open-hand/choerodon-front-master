@@ -140,10 +140,10 @@ export default ({
         },
       },
       {
-        name: 'openSprint',
+        name: 'agileWaterfall',
         type: 'boolean',
         label: '是否同时启用冲刺',
-        value: true,
+        defaultValue: false,
       },
       {
         name: 'description',
