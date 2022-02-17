@@ -11,3 +11,4 @@ export * from './site-pipeline-template';
 export * from './ci-template-step';
 export * from './request-chart';
 export * from './hosts';
+export * from './deploy';
