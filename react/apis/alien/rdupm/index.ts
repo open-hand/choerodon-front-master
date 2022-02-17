@@ -21,6 +21,17 @@ class RdupmAlienApi extends Api<RdupmAlienApi> {
       },
     });
   }
+
+  getImageHarbor(repoId: string, repoType: string) {
+    return this.request({
+      url: `${this.prefix}/v1/harbor-choerodon-repos/listHarborImage`,
+      method: 'get',
+      params: {
+        repoId,
+        repoType,
+      },
+    });
+  }
 }
 
 const rdupmAlienApi = new RdupmAlienApi();
