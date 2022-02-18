@@ -1,6 +1,7 @@
 import moment from 'moment';
 import forEach from 'lodash/forEach';
 import some from 'lodash/some';
+import { DataSet } from 'choerodon-ui/pro';
 import axios from '@/components/axios';
 
 // 项目编码只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"  /^[a-z](([a-z0-9]|-(?!-))*[a-z0-9])*$/
@@ -117,6 +118,34 @@ export default ({
         defaultValue: newUserGuideDefaultValue.code,
       },
       {
+        name: 'status',
+        type: 'object',
+        label: '项目状态',
+        options: new DataSet({
+          autoQuery: true,
+          paging: true,
+          pageSize: 10,
+          data: [
+            {
+              id: '1',
+              text: '状态1',
+              value: '123',
+            },
+          ],
+        }),
+        textField: 'text',
+        valueField: 'value',
+        dynamicProps: {
+          required: ({ record }) => record?.status !== 'add',
+        },
+      },
+      {
+        name: 'agileWaterfall',
+        type: 'boolean',
+        label: '是否同时启用冲刺',
+        defaultValue: false,
+      },
+      {
         name: 'description',
         type: 'string',
         label: '项目描述',
@@ -129,30 +158,30 @@ export default ({
       },
       { name: 'createUserName', type: 'string', label: '创建人' },
       { name: 'imageUrl', type: 'string' },
-      {
-        name: 'startTime',
-        type: 'date',
-        label: '立项时间',
-        dynamicProps: {
-          required: ({ record }) => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall),
-          max: ({ record }) => {
-            const endDate = record.get('endTime');
-            return endDate ? moment(endDate, 'YYYY-MM-DD').subtract(1, 'day') : undefined;
-          },
-        },
-      },
-      {
-        name: 'endTime',
-        type: 'date',
-        label: '结项时间',
-        dynamicProps: {
-          required: ({ record }) => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall),
-          min: ({ record }) => {
-            const startDate = record.get('startTime');
-            return startDate ? moment.max(moment(startDate, 'YYYY-MM-DD').add(1, 'day'), moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')) : moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD');
-          },
-        },
-      },
+      // {
+      //   name: 'startTime',
+      //   type: 'date',
+      //   label: '立项时间',
+      //   dynamicProps: {
+      //     required: ({ record }) => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall),
+      //     max: ({ record }) => {
+      //       const endDate = record.get('endTime');
+      //       return endDate ? moment(endDate, 'YYYY-MM-DD').subtract(1, 'day') : undefined;
+      //     },
+      //   },
+      // },
+      // {
+      //   name: 'endTime',
+      //   type: 'date',
+      //   label: '结项时间',
+      //   dynamicProps: {
+      //     required: ({ record }) => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall),
+      //     min: ({ record }) => {
+      //       const startDate = record.get('startTime');
+      //       return startDate ? moment.max(moment(startDate, 'YYYY-MM-DD').add(1, 'day'), moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')) : moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD');
+      //     },
+      //   },
+      // },
       { name: 'creationDate', type: 'date', label: '创建时间' },
       { name: 'useTemplate', defaultValue: true },
     ],

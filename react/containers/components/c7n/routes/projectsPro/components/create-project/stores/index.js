@@ -89,6 +89,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
         createProjectStore.checkSenior(organizationId),
       ]);
       const isSenior = createProjectStore.getIsSenior;
+      console.log(projectData);
       if (projectData && projectData.categories && projectData.categories.length) {
         const isBeforeProgram = (projectData.beforeCategory || '')?.split(',')?.includes(categoryCodes.program);
         const isBeforeAgile = (projectData.beforeCategory || '').includes(categoryCodes.agile);
@@ -96,8 +97,12 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
         let isProgramProject = false;
         let isRequire = false;
         let isAgile = false;
+        let isWaterfall = false;
         forEach(projectData.categories, async ({ code: categoryCode }) => {
           switch (categoryCode) {
+            case categoryCodes.waterfall:
+              isWaterfall = true;
+              break;
             case categoryCodes.program:
               isProgram = true;
               break;
@@ -118,8 +123,9 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           isEdit: true,
           isBeforeAgile,
           isBeforeProgram,
-          isCurrentAgile: isAgile,
-          isCurrentProgram: isProgram,
+          isAgile,
+          isProgram,
+          isWaterfall,
         });
         categoryDs.forEach(async (categoryRecord) => {
           const currentCode = categoryRecord.get('code');
@@ -130,7 +136,6 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
             case categoryCodes.program:
               categoryRecord.setState({
                 isProgram: isBeforeProgram,
-                isCurrentProgram: isProgram,
               });
               if (!isSenior || (isBeforeAgile && !isBeforeProgram) || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))) {
                 categoryRecord.setState('disabled', true);

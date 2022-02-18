@@ -5,11 +5,12 @@ import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
 import { notification, message } from 'choerodon-ui';
 import {
-  Form, TextField, Tooltip, DatePicker, Spin, Icon, Button, TextArea, CheckBox,
+  Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select,
 } from 'choerodon-ui/pro';
 import {
-  includes, map, some, get,
+  includes, map, get, find,
 } from 'lodash';
+import { NewTips } from '@choerodon/components';
 import { get as getInject } from '@choerodon/inject';
 import { fileServer, prompt } from '@/utils';
 import axios from '@/components/axios';
@@ -39,7 +40,6 @@ const CreateProject = observer(() => {
 
   const record = useMemo(() => formDs.current, [formDs.current]);
   const isModify = useMemo(() => record && record.status !== 'add', [record]);
-  const hasWaterfall = useMemo(() => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall), [categoryDs.selected]);
 
   useEffect(() => {
     modal.update({
@@ -84,6 +84,12 @@ const CreateProject = observer(() => {
         id: selectedRecord.get('id'),
         code: selectedRecord.get('code'),
       }));
+      // if (find(selectedRecords, (item) => item.get('code') === 'N_WATERFALL' !== -1)) {
+      //   formDs.current.getState('openSprint') ? formDs.current.set('openSprint', true)
+      //     : formDs.current.set('openSprint', false);
+      // } else {
+      //   formDs.current.set('openSprint', false);
+      // }
       record.set('categories', categories);
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
@@ -203,23 +209,35 @@ const CreateProject = observer(() => {
       return '请先选择【敏捷管理】或【敏捷项目群】项目类型';
     }
     if (categoryRecord.isSelected) {
-      if (code === categoryCodes.program) {
+      if (code === categoryCodes.program && isModify) {
         return '项目群中存在子项目，无法移除此项目类型';
       }
-      if (code === categoryCodes.agile) {
+      if (code === categoryCodes.agile && isModify) {
         return '敏捷管理项目已加入项目群，无法移除此项目类型';
       }
     } else {
-      if (code === categoryCodes.program) {
+      if (code === categoryCodes.agile && isModify && categoryDs.getState('isWaterfall')) {
+        return '已添加或添加过【瀑布管理】项目类型，不可添加【敏捷管理】项目类型';
+      }
+      if (code === categoryCodes.program && isModify && categoryDs.getState('isWaterfall')) {
+        return '已添加或添加过【瀑布管理】项目类型，不可添加【敏捷项目群】项目类型';
+      }
+      if (code === categoryCodes.waterfall && isModify && categoryDs.getState('isAgile') || categoryDs.getState('isProgram')) {
+        return '已添加或添加过【敏捷管理】/【敏捷项目群】项目类型，不可添加【瀑布管理】项目类型';
+      }
+      if (code === categoryCodes.program && isModify) {
         return '已添加或添加过【敏捷管理】项目类型，不可添加【敏捷项目群】项目类型';
       }
-      if (code === categoryCodes.agile) {
+      if (code === categoryCodes.agile && isModify) {
         return '原项目曾经为【敏捷项目群】项目，不支持调整为【敏捷管理】类型';
+      }
+      if ([categoryCodes.program, categoryCodes.waterfall, categoryCodes.agile].indexOf(code) !== -1) {
+        return '不可同时选择敏捷管理/敏捷项目群与瀑布管理项目类型';
       }
       return '不可同时选择【敏捷管理】与【规模化敏捷项目群】项目类型';
     }
     return '';
-  }, [createProjectStore.getIsSenior]);
+  }, [createProjectStore.getIsSenior, isModify]);
 
   const handleOpenTemplate = useCallback(() => {
     getInject('agile:openTemplate')({});
@@ -228,6 +246,10 @@ const CreateProject = observer(() => {
   if (!record) {
     return <Spin spinning />;
   }
+
+  const sprintCheckboxOnChange = (value) => {
+    formDs?.current?.set('agileWaterfall', value);
+  };
 
   const selectedRecords = categoryDs.selected;
   const selectedCategoryCodes = map(selectedRecords, (selectedRecord) => selectedRecord.get('code'));
@@ -238,35 +260,52 @@ const CreateProject = observer(() => {
       <Form record={record} className={`${prefixCls}-form`} labelLayout="float">
         <TextField name="name" />
         <TextField name="code" disabled={isModify} />
+        {
+          isModify && <Select name="status" />
+        }
+
         <TextArea name="description" resize="vertical" />
         {
           isModify && [
             <TextField name="creationDate" disabled />,
             <TextField name="createUserName" disabled />,
-            (record.get('category') === 'WATERFALL' ? ([
-              <DatePicker name="startTime" />,
-              <DatePicker name="endTime" />,
-            ]) : null),
           ]
         }
-        {!isModify && hasWaterfall ? ([
-          <DatePicker name="startTime" />,
-          <DatePicker name="endTime" />,
-        ]) : null}
       </Form>
       <div className={`${prefixCls}-category-label`}>项目类型</div>
       <div className={`${prefixCls}-category`}>
         {categoryDs.map((categoryRecord) => (
-          <Tooltip title={getTooltipContent(categoryRecord)} key={categoryRecord.get('code')}>
-            <div
-              className={getCategoryClassNames(categoryRecord)}
-              onClick={() => handleCategoryClick(categoryRecord)}
-              role="none"
-            >
-              <div className={`${prefixCls}-category-item-icon ${prefixCls}-category-item-icon-${categoryRecord.get('code')}`} />
-              <span>{categoryRecord.get('name')}</span>
-            </div>
-          </Tooltip>
+          <div>
+            <Tooltip title={getTooltipContent(categoryRecord)} key={categoryRecord.get('code')}>
+              <div
+                className={getCategoryClassNames(categoryRecord)}
+                onClick={() => handleCategoryClick(categoryRecord)}
+                role="none"
+              >
+                <div className={`${prefixCls}-category-item-icon ${prefixCls}-category-item-icon-${categoryRecord.get('code')}`} />
+                <span>{categoryRecord.get('name')}</span>
+              </div>
+            </Tooltip>
+            {categoryRecord.get('code') === 'N_WATERFALL'
+              && categoryRecord.isSelected && (
+              <div
+                role="none"
+                className={`${prefixCls}-category-exception`}
+                onClick={(e) => { e.stopPropagation(); }}
+              >
+                是否同时启用冲刺
+                {' '}
+                <CheckBox checked={record?.get('agileWaterfall')} onChange={sprintCheckboxOnChange} />
+                <NewTips
+                  helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等 功能"
+                  style={{
+                    marginLeft: 6,
+                    position: 'relative',
+                  }}
+                />
+              </div>
+            )}
+          </div>
         ))}
       </div>
       <div className={`${prefixCls}-template`}>
