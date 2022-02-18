@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { inject } from 'mobx-react';
 import { DataSet } from 'choerodon-ui/pro';
+// @ts-ignore
 import { DataSetProps } from 'choerodon-ui/dataset/data-set/DataSet';
 import useStore from './useStore';
 import { RequestChartStoreContext, ProviderProps } from '../interface';
