@@ -39,6 +39,7 @@ const CreateProject = observer(() => {
   const [hasConfiged, setHasConfiged] = useState(false);
 
   const record = useMemo(() => formDs.current, [formDs.current]);
+
   const isModify = useMemo(() => record && record.status !== 'add', [record]);
 
   useEffect(() => {
@@ -84,12 +85,6 @@ const CreateProject = observer(() => {
         id: selectedRecord.get('id'),
         code: selectedRecord.get('code'),
       }));
-      // if (find(selectedRecords, (item) => item.get('code') === 'N_WATERFALL' !== -1)) {
-      //   formDs.current.getState('openSprint') ? formDs.current.set('openSprint', true)
-      //     : formDs.current.set('openSprint', false);
-      // } else {
-      //   formDs.current.set('openSprint', false);
-      // }
       record.set('categories', categories);
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
@@ -261,7 +256,7 @@ const CreateProject = observer(() => {
         <TextField name="name" />
         <TextField name="code" disabled={isModify} />
         {
-          isModify && <Select name="status" />
+          isModify && <Select name="statusId" />
         }
 
         <TextArea name="description" resize="vertical" />

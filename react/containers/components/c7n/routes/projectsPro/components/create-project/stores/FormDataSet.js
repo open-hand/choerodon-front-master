@@ -1,7 +1,3 @@
-import moment from 'moment';
-import forEach from 'lodash/forEach';
-import some from 'lodash/some';
-import { DataSet } from 'choerodon-ui/pro';
 import axios from '@/components/axios';
 
 // 项目编码只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"  /^[a-z](([a-z0-9]|-(?!-))*[a-z0-9])*$/
@@ -27,7 +23,7 @@ const nameValidator = (value) => {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({
-  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false,
+  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs,
 }) => {
   const codeValidator = async (value, name, record) => {
     if (record.status !== 'add') {
@@ -85,10 +81,10 @@ export default ({
       submitSuccess() { },
     },
     transport: {
-      read: {
+      read: () => ({
         url: `/iam/choerodon/v1/projects/${projectId}`,
         method: 'get',
-      },
+      }),
       create: ({ data: [data] }) => ({
         url: `/iam/choerodon/v1/organizations/${organizationId}/projects`,
         method: 'post',
@@ -118,25 +114,15 @@ export default ({
         defaultValue: newUserGuideDefaultValue.code,
       },
       {
-        name: 'status',
+        name: 'statusId',
         type: 'object',
         label: '项目状态',
-        options: new DataSet({
-          autoQuery: true,
-          paging: true,
-          pageSize: 10,
-          data: [
-            {
-              id: '1',
-              text: '状态1',
-              value: '123',
-            },
-          ],
-        }),
-        textField: 'text',
-        valueField: 'value',
+        textField: 'name',
+        valueField: 'id',
+        options: statusDs,
         dynamicProps: {
-          required: ({ record }) => record?.status !== 'add',
+          required: ({ record }) => record?.status !== 'add'
+          ,
         },
       },
       {

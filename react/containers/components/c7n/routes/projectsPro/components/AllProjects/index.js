@@ -271,6 +271,21 @@ export default observer(() => {
         </div>
       );
     }
+
+    const getName = (p) => (
+      // eslint-disable-next-line no-nested-ternary
+      !p.projectStatus || p.projectStatus === 'success'
+        ? p.enabled
+          ? '启用'
+          : '停用'
+        : formatMessage({
+          id: `${intlPrefix}.${p.projectStatus}${
+            p.projectStatus === 'failed'
+              ? `.${p.operateType}`
+              : ''
+          }`,
+        }));
+
     return projects.length > 0 ? (
       projects.map((p) => (
         <Tooltip title={p.description} placement="right">
@@ -308,23 +323,13 @@ export default observer(() => {
                   </span>
                   <span
                     className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${
-                      !p.projectStatus || p.projectStatus === 'success'
+                      !p.projectStatus || p.projectStatus === 'success' || p.statusName
                         ? p.enabled
                         : p.projectStatus
                     }`}
                   >
-                    {/* eslint-disable-next-line no-nested-ternary */}
-                    {!p.projectStatus || p.projectStatus === 'success'
-                      ? p.enabled
-                        ? '启用'
-                        : '停用'
-                      : formatMessage({
-                        id: `${intlPrefix}.${p.projectStatus}${
-                          p.projectStatus === 'failed'
-                            ? `.${p.operateType}`
-                            : ''
-                        }`,
-                      })}
+                    {p.statusName && p.statusName}
+                    {!p.statusName && getName(p)}
                   </span>
                 </div>
                 {getActionData(p)}

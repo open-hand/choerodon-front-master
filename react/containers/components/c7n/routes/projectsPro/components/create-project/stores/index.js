@@ -8,6 +8,7 @@ import forEach from 'lodash/forEach';
 import some from 'lodash/some';
 import { injectIntl } from 'react-intl';
 import FormDataSet from './FormDataSet';
+import StatusDataSet from './StatusDataSet';
 import CategoryDataSet from './CategoryDataSet';
 import axios from '@/components/axios';
 import useStore from './useStore';
@@ -37,9 +38,14 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   const categoryDs = useMemo(() => new DataSet(CategoryDataSet({
     organizationId, categoryCodes, createProjectStore, inNewUserGuideStepOne,
   })), [organizationId]);
+
+  const statusDs = useMemo(() => new DataSet(StatusDataSet({
+    organizationId, projectId,
+  })), [projectId]);
+
   const formDs = useMemo(() => new DataSet(FormDataSet({
-    organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne,
-  })), [organizationId, projectId]);
+    organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne, statusDs,
+  })), [organizationId, projectId, statusDs, inNewUserGuideStepOne]);
 
   useEffect(() => {
     if (projectId) {
@@ -83,13 +89,24 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
 
   const loadData = async () => {
     try {
-      const [, projectData] = await axios.all([
-        categoryDs.query(),
-        formDs.query(),
-        createProjectStore.checkSenior(organizationId),
-      ]);
+      // const res = await axios.all([
+      //   categoryDs.query(),
+      //   formDs.query(),
+      //   createProjectStore.checkSenior(organizationId),
+      // ]);
+      // console.log(res);
+      // const [, projectData] = await axios.all([
+      //   categoryDs.query(),
+      //   formDs.query(),
+      //   createProjectStore.checkSenior(organizationId),
+      // ]);
+
+      await statusDs.query();
+      await categoryDs.query();
+      const projectData = await formDs.query();
+      await createProjectStore.checkSenior(organizationId);
+
       const isSenior = createProjectStore.getIsSenior;
-      console.log(projectData);
       if (projectData && projectData.categories && projectData.categories.length) {
         const isBeforeProgram = (projectData.beforeCategory || '')?.split(',')?.includes(categoryCodes.program);
         const isBeforeAgile = (projectData.beforeCategory || '').includes(categoryCodes.agile);
