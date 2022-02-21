@@ -85,6 +85,9 @@ const CreateProject = observer(() => {
         id: selectedRecord.get('id'),
         code: selectedRecord.get('code'),
       }));
+      if (typeof formDs?.current?.get('statusId') === 'object') {
+        formDs?.current?.set('statusId', formDs?.current?.get('statusId')?.id);
+      }
       record.set('categories', categories);
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
@@ -292,7 +295,7 @@ const CreateProject = observer(() => {
                 {' '}
                 <CheckBox checked={record?.get('agileWaterfall')} onChange={sprintCheckboxOnChange} />
                 <NewTips
-                  helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等 功能"
+                  helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等功能"
                   style={{
                     marginLeft: 6,
                     position: 'relative',
