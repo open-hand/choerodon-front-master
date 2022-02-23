@@ -114,6 +114,18 @@ export default ({
         defaultValue: newUserGuideDefaultValue.code,
       },
       {
+        name: 'aaa',
+        type: 'string',
+        label: '项目类型',
+        required: true,
+      },
+      {
+        name: 'bbb',
+        type: 'string',
+        label: '产品',
+        required: true,
+      },
+      {
         name: 'statusId',
         type: 'object',
         label: '项目状态',
@@ -144,30 +156,6 @@ export default ({
       },
       { name: 'createUserName', type: 'string', label: '创建人' },
       { name: 'imageUrl', type: 'string' },
-      // {
-      //   name: 'startTime',
-      //   type: 'date',
-      //   label: '立项时间',
-      //   dynamicProps: {
-      //     required: ({ record }) => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall),
-      //     max: ({ record }) => {
-      //       const endDate = record.get('endTime');
-      //       return endDate ? moment(endDate, 'YYYY-MM-DD').subtract(1, 'day') : undefined;
-      //     },
-      //   },
-      // },
-      // {
-      //   name: 'endTime',
-      //   type: 'date',
-      //   label: '结项时间',
-      //   dynamicProps: {
-      //     required: ({ record }) => some(categoryDs.selected || [], (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall),
-      //     min: ({ record }) => {
-      //       const startDate = record.get('startTime');
-      //       return startDate ? moment.max(moment(startDate, 'YYYY-MM-DD').add(1, 'day'), moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD')) : moment(moment().add(1, 'day').format('YYYY-MM-DD'), 'YYYY-MM-DD');
-      //     },
-      //   },
-      // },
       { name: 'creationDate', type: 'date', label: '创建时间' },
       { name: 'useTemplate', defaultValue: true },
     ],

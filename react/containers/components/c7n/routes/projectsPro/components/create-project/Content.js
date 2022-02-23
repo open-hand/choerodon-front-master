@@ -8,7 +8,7 @@ import {
   Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select,
 } from 'choerodon-ui/pro';
 import {
-  includes, map, get, find,
+  includes, map, get,
 } from 'lodash';
 import { NewTips } from '@choerodon/components';
 import { get as getInject } from '@choerodon/inject';
@@ -19,6 +19,8 @@ import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
 
 import './index.less';
+
+const { Option } = Select;
 
 const CreateProject = observer(() => {
   const {
@@ -249,6 +251,15 @@ const CreateProject = observer(() => {
     formDs?.current?.set('agileWaterfall', value);
   };
 
+  const renderStatus = ({ record: hereRecord, value, text }) => {
+    const arr = hereRecord?.getField('statusId')?.options?.toData();
+    const index = arr.findIndex((item) => item.id === hereRecord?.get('statusId')?.id);
+    if (index === -1) {
+      return hereRecord?.get('statusName');
+    }
+    return text;
+  };
+
   const selectedRecords = categoryDs.selected;
   const selectedCategoryCodes = map(selectedRecords, (selectedRecord) => selectedRecord.get('code'));
 
@@ -258,8 +269,18 @@ const CreateProject = observer(() => {
       <Form record={record} className={`${prefixCls}-form`} labelLayout="float">
         <TextField name="name" />
         <TextField name="code" disabled={isModify} />
+        <Select name="aaa">
+          <Option value="jack">新品</Option>
+          <Option value="jack1">包装升级</Option>
+        </Select>
+        <Select name="bbb">
+          <Option value="jack">柔润修护润唇膏屈臣氏陈列版本</Option>
+          <Option value="jack">舒缓保湿氨基酸洁面泡沫</Option>
+          <Option value="jack">敏肌修护镜湖水</Option>
+          <Option value="jack">清痘调理水</Option>
+        </Select>
         {
-          isModify && <Select name="statusId" />
+          isModify && <Select name="statusId" renderer={renderStatus} />
         }
 
         <TextArea name="description" resize="vertical" />
