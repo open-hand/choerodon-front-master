@@ -354,6 +354,7 @@ export default observer(() => {
                 </div>
                 <ProjectCategory
                   data={p.categories}
+                  agileWaterfall={p.agileWaterfall}
                   className="allProjects-content-item-right-down-text1"
                 />
                 {p.programName && (
