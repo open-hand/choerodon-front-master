@@ -269,7 +269,7 @@ const CreateProject = observer(() => {
       <Form record={record} className={`${prefixCls}-form`} labelLayout="float">
         <TextField name="name" />
         <TextField name="code" disabled={isModify} />
-        <Select name="aaa">
+        {/* <Select name="aaa">
           <Option value="jack">新品</Option>
           <Option value="jack1">包装升级</Option>
         </Select>
@@ -278,7 +278,7 @@ const CreateProject = observer(() => {
           <Option value="jack">舒缓保湿氨基酸洁面泡沫</Option>
           <Option value="jack">敏肌修护镜湖水</Option>
           <Option value="jack">清痘调理水</Option>
-        </Select>
+        </Select> */}
         {
           isModify && <Select name="statusId" renderer={renderStatus} />
         }
