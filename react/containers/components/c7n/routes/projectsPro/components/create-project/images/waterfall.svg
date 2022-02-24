@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="31px" height="32px" viewBox="0 0 31 32" version="1.1">
-  <title>瀑布类型</title>
-  <g id="项目列表" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-    <g id="创建项目-瀑布项目" transform="translate(-1113.000000, -640.000000)" fill-rule="nonzero">
-      <g id="反馈/Drawer抽屉/默认" transform="translate(702.000000, -1.000000)">
-        <g id="编组-2备份-6" transform="translate(388.000000, 626.000000)">
-          <g id="瀑布类型" transform="translate(23.000000, 15.000000)">
-            <polygon id="路径" fill="#3FD1F5" points="9.21882353 5.50588235 14.2188235 5.50588235 14.2188235 18.3058824 9.21882353 18.3058824"></polygon>
-            <polygon id="路径" fill="#686FFF" points="16.0541176 0 21.0541176 0 21.0541176 15.4 16.0541176 15.4"></polygon>
-            <polygon id="路径" fill="#4C36B5" points="16.0541176 0 21.0541176 0 21.0541176 3 16.0541176 3"></polygon>
-            <polygon id="路径" fill="#3FD1F5" points="22.8894118 0 27.8894118 0 27.8894118 25.2 22.8894118 25.2"></polygon>
-            <polygon id="路径" fill="#686FFF" points="2.38352941 5.50588235 7.38352941 5.50588235 7.38352941 25.5058824 2.38352941 25.5058824"></polygon>
-            <polygon id="路径" fill="#4C36B5" points="2.38352941 22.5058824 7.38352941 22.5058824 7.38352941 25.5058824 2.38352941 25.5058824"></polygon>
-            <polygon id="路径" fill="#4C36B5" points="0 30.1393464 31 30.1393464 31 31.8615686 5.06131085e-16 31.8615686"></polygon>
-          </g>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>瀑布类型备份</title>
+    <g id="项目列表" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="瀑布类型备份">
+            <rect id="矩形" x="0" y="0" width="40" height="40"></rect>
+            <g id="编组-4" transform="translate(5.000000, 4.000000)" fill-rule="nonzero">
+                <polygon id="路径" fill="#3FD1F5" points="9.21836966 5.50561128 14.2181235 5.50561128 14.2181235 18.3049811 9.21836966 18.3049811"></polygon>
+                <polygon id="路径" fill="#686FFF" points="16.0533273 0 21.0530811 0 21.0530811 15.3992418 16.0533273 15.3992418"></polygon>
+                <polygon id="路径" fill="#4C36B5" points="16.0533273 0 21.0530811 0 21.0530811 2.9998523 16.0533273 2.9998523"></polygon>
+                <polygon id="路径" fill="#3FD1F5" points="22.8882849 0 27.8880387 0 27.8880387 25.1987593 22.8882849 25.1987593"></polygon>
+                <polygon id="路径" fill="#686FFF" points="2.38341206 5.50561128 7.3831659 5.50561128 7.3831659 25.5046266 2.38341206 25.5046266"></polygon>
+                <polygon id="路径" fill="#4C36B5" points="2.38341206 22.5047743 7.3831659 22.5047743 7.3831659 25.5046266 2.38341206 25.5046266"></polygon>
+                <polygon id="路径" fill="#4C36B5" points="0 30.1378626 30.96 30.1378626 30.96 31.8578626 5.05478012e-16 31.8578626"></polygon>
+            </g>
         </g>
-      </g>
     </g>
-  </g>
 </svg>

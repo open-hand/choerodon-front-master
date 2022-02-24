@@ -312,7 +312,7 @@ const CreateProject = observer(() => {
                 className={`${prefixCls}-category-exception`}
                 onClick={(e) => { e.stopPropagation(); }}
               >
-                是否同时启用冲刺
+                同时启用冲刺
                 {' '}
                 <CheckBox checked={record?.get('agileWaterfall')} onChange={sprintCheckboxOnChange} />
                 <NewTips
