@@ -18,6 +18,13 @@ class DevopsHostsApi extends Api<DevopsHostsApi> {
       method: 'put',
     });
   }
+
+  stopDocker(hostId: any, instanceId: any) {
+    return this.request({
+      url: `${this.prefix}/${hostId}/docker_process/${instanceId}/stop`,
+      method: 'put',
+    });
+  }
 }
 
 const devopsHostsApi = new DevopsHostsApi();
