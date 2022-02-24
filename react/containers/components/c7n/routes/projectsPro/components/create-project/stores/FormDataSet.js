@@ -113,18 +113,18 @@ export default ({
         validator: codeValidator,
         defaultValue: newUserGuideDefaultValue.code,
       },
-      {
-        name: 'aaa',
-        type: 'string',
-        label: '项目类型',
-        required: true,
-      },
-      {
-        name: 'bbb',
-        type: 'string',
-        label: '产品',
-        required: true,
-      },
+      // {
+      //   name: 'aaa',
+      //   type: 'string',
+      //   label: '项目类型',
+      //   required: true,
+      // },
+      // {
+      //   name: 'bbb',
+      //   type: 'string',
+      //   label: '产品',
+      //   required: true,
+      // },
       {
         name: 'statusId',
         type: 'object',
