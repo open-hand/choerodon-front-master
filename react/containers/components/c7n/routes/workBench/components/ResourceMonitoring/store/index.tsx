@@ -28,7 +28,7 @@ export function StoreProvider({ children }:{children:React.ReactNode}) {
         }),
       },
       fields: [
-        { name: 'name', label: '主机名' },
+        { name: 'name', label: '集群名称' },
         { name: 'status', label: '运行状态' },
         { name: 'creationDate', label: '创建时间' },
       ],
