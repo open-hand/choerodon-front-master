@@ -8,6 +8,7 @@ import forEach from 'lodash/forEach';
 import some from 'lodash/some';
 import { injectIntl } from 'react-intl';
 import FormDataSet from './FormDataSet';
+import StatusDataSet from './StatusDataSet';
 import CategoryDataSet from './CategoryDataSet';
 import axios from '@/components/axios';
 import useStore from './useStore';
@@ -37,9 +38,14 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   const categoryDs = useMemo(() => new DataSet(CategoryDataSet({
     organizationId, categoryCodes, createProjectStore, inNewUserGuideStepOne,
   })), [organizationId]);
+
+  const statusDs = useMemo(() => new DataSet(StatusDataSet({
+    organizationId, projectId,
+  })), [projectId]);
+
   const formDs = useMemo(() => new DataSet(FormDataSet({
-    organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne,
-  })), [organizationId, projectId]);
+    organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne, statusDs,
+  })), [organizationId, projectId, statusDs, inNewUserGuideStepOne]);
 
   useEffect(() => {
     if (projectId) {
@@ -83,11 +89,23 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
 
   const loadData = async () => {
     try {
-      const [, projectData] = await axios.all([
-        categoryDs.query(),
-        formDs.query(),
-        createProjectStore.checkSenior(organizationId),
-      ]);
+      // const res = await axios.all([
+      //   categoryDs.query(),
+      //   formDs.query(),
+      //   createProjectStore.checkSenior(organizationId),
+      // ]);
+      // console.log(res);
+      // const [, projectData] = await axios.all([
+      //   categoryDs.query(),
+      //   formDs.query(),
+      //   createProjectStore.checkSenior(organizationId),
+      // ]);
+
+      await statusDs.query();
+      await categoryDs.query();
+      const projectData = await formDs.query();
+      await createProjectStore.checkSenior(organizationId);
+
       const isSenior = createProjectStore.getIsSenior;
       if (projectData && projectData.categories && projectData.categories.length) {
         const isBeforeProgram = (projectData.beforeCategory || '')?.split(',')?.includes(categoryCodes.program);
@@ -96,8 +114,12 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
         let isProgramProject = false;
         let isRequire = false;
         let isAgile = false;
+        let isWaterfall = false;
         forEach(projectData.categories, async ({ code: categoryCode }) => {
           switch (categoryCode) {
+            case categoryCodes.waterfall:
+              isWaterfall = true;
+              break;
             case categoryCodes.program:
               isProgram = true;
               break;
@@ -118,8 +140,9 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           isEdit: true,
           isBeforeAgile,
           isBeforeProgram,
-          isCurrentAgile: isAgile,
-          isCurrentProgram: isProgram,
+          isAgile,
+          isProgram,
+          isWaterfall,
         });
         categoryDs.forEach(async (categoryRecord) => {
           const currentCode = categoryRecord.get('code');
@@ -130,7 +153,6 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
             case categoryCodes.program:
               categoryRecord.setState({
                 isProgram: isBeforeProgram,
-                isCurrentProgram: isProgram,
               });
               if (!isSenior || (isBeforeAgile && !isBeforeProgram) || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))) {
                 categoryRecord.setState('disabled', true);
@@ -145,7 +167,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
             case categoryCodes.require:
               categoryRecord.setState({
                 isRequire,
-                disabled: !isSenior || (!isProgram && !isAgile),
+                disabled: !isSenior || (!isProgram && !isAgile && !isWaterfall),
               });
               break;
             case categoryCodes.operations:
