@@ -19,6 +19,7 @@ function handleDisabled({
       categoryCodes.waterfall,
     ].indexOf(record.get('code')) !== -1
   ) {
+    setRequireModule({ dataSet, selected: isSelected, categoryCodes });
     const agileRecord = dataSet.find(
       (eachRecord) => eachRecord.get('code') === categoryCodes.agile,
     );
@@ -84,10 +85,11 @@ function setRequireModule({ dataSet, selected, categoryCodes }) {
       dataSet.select(findRecord);
     }
   } else {
-    const codeArr = [categoryCodes.agile, categoryCodes.program];
+    const codeArr = [categoryCodes.agile, categoryCodes.program, categoryCodes.waterfall];
     const hasSelected = dataSet.some(
       (eachRecord) => codeArr.includes(eachRecord.get('code')) && eachRecord.isSelected,
     );
+    console.log(hasSelected);
     if (!hasSelected) {
       dataSet.unSelect(findRecord);
     }
