@@ -42,6 +42,14 @@ class RdupmAlienApi extends Api<RdupmAlienApi> {
       },
     });
   }
+
+  createNexus(data: any) {
+    return this.request({
+      url: `${this.prefix}/v1/site/nexus-server-configs`,
+      method: 'post',
+      data,
+    });
+  }
 }
 
 const rdupmAlienApi = new RdupmAlienApi();
