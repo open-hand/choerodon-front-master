@@ -50,6 +50,13 @@ class RdupmAlienApi extends Api<RdupmAlienApi> {
       data,
     });
   }
+
+  getNexusList() {
+    return this.request({
+      url: `${this.prefix}/v1/site/nexus-server-configs/list`,
+      method: 'get',
+    })
+  }
 }
 
 const rdupmAlienApi = new RdupmAlienApi();
