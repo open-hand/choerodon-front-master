@@ -54,8 +54,9 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   }
 
   // 项目协作-项目-状态名称校验
-  cooperationProjStatusNameCheck(id:any, name:any) {
-    const url = id ? `${this.prefix}/${this.orgId}/project_status/check_name?project_status_id=${id}&name=${name}` : `${this.prefix}/${this.orgId}/project_status/check_name?name=${name}`;
+  cooperationProjStatusNameCheck(id:string, name:string, process:string) {
+    let url = id ? `${this.prefix}/${this.orgId}/project_status/check_name?project_status_id=${id}&name=${name}` : `${this.prefix}/${this.orgId}/project_status/check_name?name=${name}`;
+    url += `&process=${process}`;
     return this.request({
       url,
       method: 'get',
