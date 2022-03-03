@@ -51,11 +51,19 @@ class RdupmAlienApi extends Api<RdupmAlienApi> {
     });
   }
 
+  updateNexus(id: any, data: any) {
+    return this.request({
+      url: `${this.prefix}/v1/site/nexus-server-configs/${id}`,
+      method: 'put',
+      data,
+    });
+  }
+
   getNexusList() {
     return this.request({
       url: `${this.prefix}/v1/site/nexus-server-configs/list`,
       method: 'get',
-    })
+    });
   }
 }
 
