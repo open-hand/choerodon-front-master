@@ -140,7 +140,7 @@ export default ({
       {
         name: 'agileWaterfall',
         type: 'boolean',
-        label: '同时启用冲刺',
+        label: '启用冲刺',
         defaultValue: false,
       },
       {

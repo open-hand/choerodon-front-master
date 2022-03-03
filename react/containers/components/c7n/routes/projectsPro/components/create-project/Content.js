@@ -312,13 +312,12 @@ const CreateProject = observer(() => {
                 className={`${prefixCls}-category-exception`}
                 onClick={(e) => { e.stopPropagation(); }}
               >
-                同时启用冲刺
-                {' '}
                 <CheckBox checked={record?.get('agileWaterfall')} onChange={sprintCheckboxOnChange} />
+                <span style={{ marginLeft: 3 }}>启用冲刺</span>
                 <NewTips
                   helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等功能"
                   style={{
-                    marginLeft: 6,
+                    marginLeft: 3,
                     position: 'relative',
                   }}
                 />
