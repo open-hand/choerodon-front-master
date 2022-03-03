@@ -49,6 +49,7 @@ const ComponentMountMap = {
   featureProgress: 'agilePro:featureProgress',
   issueProgress: 'agilePro:issueProgress',
   overviewCard: 'waterfall:overviewCard',
+  milestoneCard: 'waterfall:milestoneCard',
 };
 
 const ProjectOverview = () => {
@@ -276,7 +277,7 @@ const ProjectOverview = () => {
     if (['featureProgress', 'issueProgress'].includes(type)) {
       return '未选择【敏捷管理】或【敏捷项目群】项目类型，卡片暂不可用';
     }
-    if (['overviewCard'].includes(type)) {
+    if (['overviewCard', 'milestoneCard'].includes(type)) {
       return '未选择【瀑布管理】项目类型，卡片暂不可用';
     }
     if (!availableServiceList.includes(groupId)) {

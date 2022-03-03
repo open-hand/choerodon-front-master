@@ -42,7 +42,7 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
   // 返回 "N_DEVOPS", "N_TEST", "N_AGILE", "N_REQUIREMENT"--> 'devops' 'test' 'agile' 'backlog'
   const availableServiceList = useMemo(() => {
     const maps = {
-      N_DEVOPS: 'devops', N_TEST: 'test', N_AGILE: 'agile', N_REQUIREMENT: 'backlog', N_PROGRAM: 'agilePro',
+      N_DEVOPS: 'devops', N_TEST: 'test', N_AGILE: 'agile', N_REQUIREMENT: 'backlog', N_PROGRAM: 'agilePro', N_WATERFALL: 'waterfallPro',
     };
     return categories?.map((i) => maps[i.code] || i.code) || [];
   }, [categories]);

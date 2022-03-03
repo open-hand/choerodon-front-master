@@ -431,8 +431,28 @@ const componentsObj = {
     name: 'overviewCard',
     type: 'overviewCard',
     groupId: 'waterfall',
-    injectGroupId: 'waterfall',
+    injectGroupId: 'waterfallPro',
     title: '项目总体情况',
+    describe:
+      '实时了解项目工作的进度、工时耗费情况、交付物提交情况以及项目下各个阶段的进度。有助于对对项目的全局把控，及时消除风险。',
+    img: overviewCardImage,
+  },
+  // 里程碑进度报表
+  milestoneCard: {
+    layout: {
+      h: 2,
+      i: 'milestoneCard',
+      minH: 2,
+      minW: 10,
+      w: 10,
+      x: 0,
+      y: 53,
+    },
+    name: 'milestoneCard',
+    type: 'milestoneCard',
+    groupId: 'waterfall',
+    injectGroupId: 'waterfallPro',
+    title: '里程碑',
     describe:
       '实时了解项目工作的进度、工时耗费情况、交付物提交情况以及项目下各个阶段的进度。有助于对对项目的全局把控，及时消除风险。',
     img: overviewCardImage,

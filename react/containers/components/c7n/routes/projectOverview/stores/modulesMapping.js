@@ -18,7 +18,7 @@ const modulesMapping = {
     'issueProgress', 'featureProgress',
   ],
   N_WATERFALL: [
-    'overviewCard',
+    'overviewCard', 'milestoneCard',
   ],
 };
 
