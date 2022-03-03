@@ -65,6 +65,13 @@ class RdupmAlienApi extends Api<RdupmAlienApi> {
       method: 'get',
     });
   }
+
+  setDefaultServer(id: any) {
+    return this.request({
+      url: `${this.prefix}/v1/site/nexus-server-configs/${id}/default`,
+      method: 'put',
+    });
+  }
 }
 
 const rdupmAlienApi = new RdupmAlienApi();
