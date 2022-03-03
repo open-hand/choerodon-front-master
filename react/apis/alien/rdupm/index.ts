@@ -72,6 +72,14 @@ class RdupmAlienApi extends Api<RdupmAlienApi> {
       method: 'put',
     });
   }
+
+  checkNexusName(params: any) {
+    return this.request({
+      url: `${this.prefix}/v1/site/nexus-server-configs/check_name`,
+      params,
+      method: 'get',
+    });
+  }
 }
 
 const rdupmAlienApi = new RdupmAlienApi();
