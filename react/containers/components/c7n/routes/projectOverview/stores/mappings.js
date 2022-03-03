@@ -17,6 +17,7 @@ import projectDynamic from '../img/16.svg';
 import workLoad from '../img/17.svg';
 import personalWorkload from '../img/18.svg';
 import requestChartImage from '../img/requestChart.svg';
+import overviewCardImage from '../img/overviewCard.svg';
 /**  layout 是默认所有的组件都显示时布局 */
 const componentsObj = {
   // 工作项进度
@@ -415,6 +416,26 @@ const componentsObj = {
     describe:
       '此模块按问题计数、工时数2种维度统计当前迭代各个团队成员任务总量、完成量和剩余量。',
     img: sprintCount,
+  },
+  // 项目总体情况报表
+  overviewCard: {
+    layout: {
+      h: 2,
+      i: 'overviewCard',
+      minH: 2,
+      minW: 10,
+      w: 10,
+      x: 0,
+      y: 50,
+    },
+    name: 'overviewCard',
+    type: 'overviewCard',
+    groupId: 'waterfall',
+    injectGroupId: 'waterfall',
+    title: '项目总体情况',
+    describe:
+      '实时了解项目工作的进度、工时耗费情况、交付物提交情况以及项目下各个阶段的进度。有助于对对项目的全局把控，及时消除风险。',
+    img: overviewCardImage,
   },
 };
 
