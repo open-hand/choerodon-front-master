@@ -313,11 +313,16 @@ const CreateProject = observer(() => {
                 onClick={(e) => { e.stopPropagation(); }}
               >
                 <CheckBox checked={record?.get('agileWaterfall')} onChange={sprintCheckboxOnChange} />
-                <span style={{ marginLeft: 3 }}>启用冲刺</span>
+                <span style={{
+                  marginLeft: 4.25, fontSize: 12, position: 'relative', top: -1,
+                }}
+                >
+                  启用冲刺
+                </span>
                 <NewTips
                   helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等功能"
                   style={{
-                    marginLeft: 3,
+                    marginLeft: 3.17,
                     position: 'relative',
                   }}
                 />
