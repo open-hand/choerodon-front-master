@@ -440,9 +440,9 @@ const componentsObj = {
   // 里程碑进度报表
   milestoneCard: {
     layout: {
-      h: 4,
+      h: 3,
       i: 'milestoneCard',
-      minH: 4,
+      minH: 3,
       minW: 10,
       w: 10,
       x: 0,
