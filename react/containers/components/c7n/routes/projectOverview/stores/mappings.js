@@ -420,9 +420,9 @@ const componentsObj = {
   // 项目总体情况报表
   overviewCard: {
     layout: {
-      h: 2,
+      h: 4,
       i: 'overviewCard',
-      minH: 2,
+      minH: 4,
       minW: 10,
       w: 10,
       x: 0,
@@ -440,9 +440,9 @@ const componentsObj = {
   // 里程碑进度报表
   milestoneCard: {
     layout: {
-      h: 2,
+      h: 4,
       i: 'milestoneCard',
-      minH: 2,
+      minH: 4,
       minW: 10,
       w: 10,
       x: 0,
