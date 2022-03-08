@@ -5,6 +5,6 @@ export default (userId: string) => ({
   paging: true,
   pageSize: 10,
   transport: {
-    read: ({ data }: { data: any }) => organizationsApiConfig.getProjectsIds(userId, data.key),
+    read: ({ data }: { data: any }) => organizationsApiConfig.getProjectsIds(userId, data?.key || ''),
   },
 });
