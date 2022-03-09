@@ -18,6 +18,7 @@ import workLoad from '../img/17.svg';
 import personalWorkload from '../img/18.svg';
 import requestChartImage from '../img/requestChart.svg';
 import overviewCardImage from '../img/overviewCard.svg';
+import milestoneCardImage from '../img/milestone.svg';
 /**  layout 是默认所有的组件都显示时布局 */
 const componentsObj = {
   // 工作项进度
@@ -420,9 +421,9 @@ const componentsObj = {
   // 项目总体情况报表
   overviewCard: {
     layout: {
-      h: 4,
+      h: 3.5,
       i: 'overviewCard',
-      minH: 4,
+      minH: 3.5,
       minW: 10,
       w: 10,
       x: 0,
@@ -455,7 +456,7 @@ const componentsObj = {
     title: '里程碑',
     describe:
       '实时了解项目工作的进度、工时耗费情况、交付物提交情况以及项目下各个阶段的进度。有助于对对项目的全局把控，及时消除风险。',
-    img: overviewCardImage,
+    img: milestoneCardImage,
   },
 };
 
