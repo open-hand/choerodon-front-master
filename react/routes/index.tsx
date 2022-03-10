@@ -49,7 +49,7 @@ const RouteIndex = () => {
           <Route path={match.url} component={AutoRouter} />
         </Switch>
       </Suspense>
-      {mount('base-pro:newUserGuideStep', {})}
+      {/* {mount('base-pro:newUserGuideStep', {})} */}
       <ModalContainer />
     </div>
   );
