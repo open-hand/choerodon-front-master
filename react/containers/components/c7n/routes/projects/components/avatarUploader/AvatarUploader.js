@@ -63,7 +63,7 @@ export default class AvatarUploader extends Component {
       startY: round(startY * scale),
       endX: round(size * scale),
       endY: round(size * scale),
-      bucketName: 'hzero-iam',
+      bucketName: 'iam-service',
     });
     const data = new FormData();
     const { AppState: { currentMenuType: { organizationId } } } = this.props;

@@ -48,7 +48,10 @@ let observerLayout;
 const ComponentMountMap = {
   featureProgress: 'agilePro:featureProgress',
   issueProgress: 'agilePro:issueProgress',
+  overviewCard: 'waterfall:overviewCard',
+  milestoneCard: 'waterfall:milestoneCard',
 };
+
 const ProjectOverview = () => {
   const { formatMessage } = useIntl();
   const {
@@ -264,6 +267,8 @@ const ProjectOverview = () => {
       switch (injectGroupId) {
         case 'agilePro':
           return '安装部署【敏捷模块】模块后，才能使用此卡片';
+        case 'waterfall':
+          return '安装部署【瀑布管理】模块后，才能使用此卡片';
         default:
           break;
       }
@@ -271,6 +276,9 @@ const ProjectOverview = () => {
     // 特殊处理
     if (['featureProgress', 'issueProgress'].includes(type)) {
       return '未选择【敏捷管理】或【敏捷项目群】项目类型，卡片暂不可用';
+    }
+    if (['overviewCard', 'milestoneCard'].includes(type)) {
+      return '未选择【瀑布管理】项目类型，卡片暂不可用';
     }
     if (!availableServiceList.includes(groupId)) {
       return groupId === 'devops' ? '未选择【DevOps流程】项目类型，卡片暂不可用' : '未选择【敏捷管理】项目类型，卡片暂不可用';

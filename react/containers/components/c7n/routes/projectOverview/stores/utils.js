@@ -14,6 +14,7 @@ function getInitProjectOverviewLayout(availableServiceList) {
     return [];
   }
   const isHasProService = includes(availableServiceList, 'agilePro');
+  const isHasWaterfall = includes(availableServiceList, 'waterfallPro');
   const withoutDevops = !includes(availableServiceList, 'devops');
   const defaultHasProLayoutMap = {
     issueProgress: {
@@ -21,6 +22,16 @@ function getInitProjectOverviewLayout(availableServiceList) {
       y: 1,
     },
     featureProgress: {
+      x: 0,
+      y: 0,
+    },
+  };
+  const defaultWaterfallMap = {
+    milestoneCard: {
+      x: 0,
+      y: 1,
+    },
+    overviewCard: {
       x: 0,
       y: 0,
     },
@@ -36,13 +47,14 @@ function getInitProjectOverviewLayout(availableServiceList) {
   const defaultLayoutMap = {
     ...withoutDevops ? defaultLayoutMapWithoutDevops : {},
     ...isHasProService ? defaultHasProLayoutMap : {},
+    ...isHasWaterfall ? defaultWaterfallMap : {},
   };
   const getDefaultLayout = ((layout) => ({ ...layout, ...(defaultLayoutMap[layout.i]) }));
   const defaultValues = map(filter(mappings, (item) => {
     if (!HAS_AGILEPRO) {
       return item.injectGroupId !== 'agilePro';
     }
-    return (isHasProService ? includes(availableServiceList, item.groupId)
+    return ((isHasProService || isHasWaterfall) ? includes(availableServiceList, item.groupId)
       || (item.injectGroupId && includes(availableServiceList, item.injectGroupId)) : true);
   }), (item) => getDefaultLayout(item.layout));
   return defaultValues;

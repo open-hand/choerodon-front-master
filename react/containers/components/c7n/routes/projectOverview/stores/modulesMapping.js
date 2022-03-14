@@ -17,6 +17,9 @@ const modulesMapping = {
   N_PROGRAM: [
     'issueProgress', 'featureProgress',
   ],
+  N_WATERFALL: [
+    'overviewCard', 'milestoneCard',
+  ],
 };
 
 export default modulesMapping;

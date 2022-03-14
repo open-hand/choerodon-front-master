@@ -76,7 +76,7 @@ const RequestChart = () => {
         <div className={`${prefixCls}-list-header-item`}>应用服务</div>
         <div className={`${prefixCls}-list-header-item`}>合并请求</div>
         <div className={`${prefixCls}-list-header-item`}>创建</div>
-        <div className={`${prefixCls}-list-header-item`}>审核人</div>
+        <div className={`${prefixCls}-list-header-item`} style={{ width: '15%' }}>审核人</div>
       </div>
       {requestListDs.length ? (
         <>
@@ -123,7 +123,7 @@ const RequestChart = () => {
                       ) : ''}
 
                   </div>
-                  <div className={`${prefixCls}-request-list-header-item`}>
+                  <div className={`${prefixCls}-request-list-header-item`} style={{ width: '15%' }}>
                     {iamAssignee ? (
                       <Tooltip title={iamAssignee.ldap ? `${iamAssignee.realName}(${iamAssignee.loginName})` : `${iamAssignee.realName}(${iamAssignee.email})`}>
                         <div>

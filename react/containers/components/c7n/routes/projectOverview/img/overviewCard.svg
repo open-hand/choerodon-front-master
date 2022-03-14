@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 79" class="design-iconfont">
+  <defs>
+    <filter x="-5.4%" y="-7.8%" width="110.8%" height="118.5%" filterUnits="objectBoundingBox" id="ns61pljsya">
+      <feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+      <feColorMatrix values="0 0 0 0 0.0549019608 0 0 0 0 0.11372549 0 0 0 0 0.501960784 0 0 0 0.16 0" in="shadowBlurOuter1"/>
+    </filter>
+    <rect id="90v4fsv6mb" x="0" y="0" width="120" height="70.41" rx="4"/>
+  </defs>
+  <g transform="translate(4 3)" fill="none" fill-rule="evenodd">
+    <use fill="#000" filter="url(#ns61pljsya)" xlink:href="#90v4fsv6mb"/>
+    <use fill="#FFF" xlink:href="#90v4fsv6mb"/>
+    <g transform="translate(82 20)" fill="#5365EA" fill-opacity=".24">
+      <rect width="20" height="4" rx="1"/>
+      <path d="M1,0 L9,0 L9,0 L9,4 L1,4 C0.44771525,4 6.76353751e-17,3.55228475 0,3 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 Z"/>
+    </g>
+    <g transform="translate(82 28)" fill="#5365EA" fill-opacity=".24">
+      <rect width="20" height="4" rx="1"/>
+      <path d="M1,0 L12,0 L12,0 L12,4 L1,4 C0.44771525,4 6.76353751e-17,3.55228475 0,3 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 Z"/>
+    </g>
+    <path stroke="#1FC2BB" stroke-width="4" fill="#FFF" d="M64 18A8 8 0 1 0 64 34A8 8 0 1 0 64 18Z"/>
+    <path d="M64,18 C59.581722,18 56,21.581722 56,26 C56,28.0483211 56.7698071,29.9168442 58.035892,31.33204" stroke="#F9B24B" stroke-width="4"/>
+    <path d="M40,30 C40,23.9248678 35.0751322,19 29,19 C22.9248678,19 18,23.9248678 18,30" stroke="#F1F3F2" stroke-width="4" fill="#FFF"/>
+    <rect fill-opacity=".06" fill="#0E1D80" x="15" y="42" width="28" height="3" rx="1.5"/>
+    <rect fill-opacity=".06" fill="#0E1D80" x="49" y="42" width="28" height="3" rx="1.5"/>
+    <rect fill-opacity=".06" fill="#0E1D80" x="81" y="42" width="21" height="3" rx="1.5"/>
+    <rect fill-opacity=".06" fill="#0E1D80" x="15" y="47" width="28" height="3" rx="1.5"/>
+    <rect fill-opacity=".06" fill="#0E1D80" x="49" y="47" width="28" height="3" rx="1.5"/>
+    <rect fill-opacity=".06" fill="#0E1D80" x="81" y="47" width="21" height="3" rx="1.5"/>
+    <rect fill-opacity=".06" fill="#0E1D80" x="15" y="37" width="28" height="3" rx="1.5"/>
+    <path d="M33.9707279,20.1845107 C32.4777721,19.4269535 30.7887462,19 29,19 C22.9248678,19 18,23.9248678 18,30" stroke="#1FC2BB" stroke-width="4"/>
+  </g>
+</svg>

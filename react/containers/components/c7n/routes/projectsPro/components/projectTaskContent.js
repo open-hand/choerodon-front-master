@@ -101,6 +101,7 @@ export default ({ data, alltrue }) => {
       <div className="starProjects-items-down">
         <ProjectCategory
           data={data.categories}
+          agileWaterfall={data.agileWaterfall}
           className="allProjects-content-item-right-down-text1"
         />
         {data.programName && (

@@ -6,14 +6,20 @@ import { Popover } from 'choerodon-ui';
 import './index.less';
 
 const ProjectCategory = ({
-  data = [], maxTag = 1, className, showIcon = true, style,
+  data = [], maxTag = 1, className, showIcon = true, style, agileWaterfall,
 }) => {
   const prefixCls = useMemo(() => 'c7ncd-project-categories', []);
-  const getCategory = useCallback((category) => (
+  const getCategory = useCallback((category) => ((agileWaterfall && category?.code === 'N_WATERFALL') ? (
+    <Tooltip title="瀑布管理 (启用冲刺)">
+      <span className={`${prefixCls}-tag`}>
+        瀑布管理 (启用冲刺)
+      </span>
+    </Tooltip>
+  ) : (
     <Tooltip title={category?.name}>
       <span className={`${prefixCls}-tag`}>{category?.name}</span>
     </Tooltip>
-  ));
+  )));
 
   const getCategories = useMemo(() => map(data, (category) => {
     if (category?.code !== 'N_PROGRAM_PROJECT') {

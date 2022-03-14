@@ -1,10 +1,56 @@
 /* eslint-disable no-param-reassign */
 function handleDisabled({
-  dataSet, record, categoryCodes, isSelected, createProjectStore,
+  dataSet,
+  record,
+  categoryCodes,
+  isSelected,
+  createProjectStore,
 }) {
   const isSenior = createProjectStore.getIsSenior;
+
   if (!isSenior) {
     return;
+  }
+
+  if (
+    [
+      categoryCodes.program,
+      categoryCodes.agile,
+      categoryCodes.waterfall,
+    ].indexOf(record.get('code')) !== -1
+  ) {
+    setRequireModule({ dataSet, selected: isSelected, categoryCodes });
+    const agileRecord = dataSet.find(
+      (eachRecord) => eachRecord.get('code') === categoryCodes.agile,
+    );
+    const programRecord = dataSet.find(
+      (eachRecord) => eachRecord.get('code') === categoryCodes.program,
+    );
+    const waterfallRecord = dataSet.find(
+      (eachRecord) => eachRecord.get('code') === categoryCodes.waterfall,
+    );
+    if (record === agileRecord || record === programRecord) {
+      const agileOrProgramSelectedNum = agileRecord.isSelected + programRecord.isSelected;
+      if (!isSelected && agileOrProgramSelectedNum === 1) {
+        return;
+      }
+      waterfallRecord.setState('disabled', isSelected);
+    }
+    // 修改项目之前是 敏捷或项目群 不能选瀑布
+    // 修改项目之前是瀑布 不能再选敏捷和项目群
+    if (record === waterfallRecord) {
+      agileRecord.setState('disabled', isSelected);
+      programRecord.setState('disabled', isSelected);
+    }
+    const bool = dataSet.getState('isAgile') || dataSet.getState('isProgram');
+    const isEdit = dataSet.getState('isEdit');
+    if (isEdit && bool) {
+      waterfallRecord.setState('disabled', true);
+    }
+    if (isEdit && record === waterfallRecord) {
+      agileRecord.setState('disabled', true);
+      programRecord.setState('disabled', true);
+    }
   }
   // 创建项目时可以同时选择项目群和敏捷管理
   // 修改项目时项目群可以加上敏捷，敏捷不能加上项目群
@@ -14,7 +60,9 @@ function handleDisabled({
   }
   if (record.get('code') === categoryCodes.program) {
     if (dataSet.getState('isEdit') && dataSet.getState('isBeforeProgram')) {
-      const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.agile);
+      const findRecord = dataSet.find(
+        (eachRecord) => eachRecord.get('code') === categoryCodes.agile,
+      );
       findRecord && findRecord.setState('disabled', !isSelected);
       if (!isSelected && findRecord?.isSelected) {
         findRecord.isSelected = false;
@@ -25,7 +73,9 @@ function handleDisabled({
 }
 
 function setRequireModule({ dataSet, selected, categoryCodes }) {
-  const findRecord = dataSet.find((eachRecord) => eachRecord.get('code') === categoryCodes.require);
+  const findRecord = dataSet.find(
+    (eachRecord) => eachRecord.get('code') === categoryCodes.require,
+  );
   if (!findRecord) {
     return;
   }
@@ -35,8 +85,11 @@ function setRequireModule({ dataSet, selected, categoryCodes }) {
       dataSet.select(findRecord);
     }
   } else {
-    const codeArr = [categoryCodes.agile, categoryCodes.program];
-    const hasSelected = dataSet.some((eachRecord) => (codeArr.includes(eachRecord.get('code')) && eachRecord.isSelected));
+    const codeArr = [categoryCodes.agile, categoryCodes.program, categoryCodes.waterfall];
+    const hasSelected = dataSet.some(
+      (eachRecord) => codeArr.includes(eachRecord.get('code')) && eachRecord.isSelected,
+    );
+    console.log(hasSelected);
     if (!hasSelected) {
       dataSet.unSelect(findRecord);
     }
@@ -46,7 +99,10 @@ function setRequireModule({ dataSet, selected, categoryCodes }) {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({
-  organizationId, categoryCodes, createProjectStore, inNewUserGuideStepOne,
+  organizationId,
+  categoryCodes,
+  createProjectStore,
+  inNewUserGuideStepOne,
 }) => ({
   autoCreate: false,
   autoQuery: false,
@@ -54,7 +110,9 @@ export default ({
   paging: false,
   transport: {
     read: {
-      url: organizationId ? `iam/v1/organizations/${organizationId}/project_categories` : '',
+      url: organizationId
+        ? `iam/v1/organizations/${organizationId}/project_categories`
+        : '',
       method: 'get',
     },
   },
@@ -62,7 +120,11 @@ export default ({
     select: ({ dataSet, record }) => {
       record.isSelected = true;
       handleDisabled({
-        dataSet, record, categoryCodes, isSelected: true, createProjectStore,
+        dataSet,
+        record,
+        categoryCodes,
+        isSelected: true,
+        createProjectStore,
       });
     },
     unSelect: ({ dataSet, record }) => {
@@ -71,7 +133,11 @@ export default ({
       } else {
         record.isSelected = false;
         handleDisabled({
-          dataSet, record, categoryCodes, isSelected: false, createProjectStore,
+          dataSet,
+          record,
+          categoryCodes,
+          isSelected: false,
+          createProjectStore,
         });
       }
     },

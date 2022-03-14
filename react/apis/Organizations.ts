@@ -11,6 +11,74 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  // 项目协作-项目-状态列表
+  cooperationProjStatusList() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/project_status/paging`,
+      method: 'get',
+    });
+  }
+
+  // 项目协作-项目-状态创建
+  cooperationProjStatusCreate(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/project_status`,
+      method: 'post',
+      data,
+    });
+  }
+
+  // 项目协作-项目-状态编辑
+  cooperationProjStatusEdit(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/project_status`,
+      method: 'put',
+      data,
+    });
+  }
+
+  // 项目协作-项目-状态删除
+  cooperationProjStatusDelete(id:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/project_status?project_status_id=${id}`,
+      method: 'delete',
+    });
+  }
+
+  // 项目协作-项目-状态删除校验
+  cooperationProjStatusDeleteCheck(id:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/project_status/check_delete?project_status_id=${id}`,
+      method: 'get',
+    });
+  }
+
+  // 项目协作-项目-状态名称校验
+  cooperationProjStatusNameCheck(id:string, name:string, process:string) {
+    let url = id ? `${this.prefix}/${this.orgId}/project_status/check_name?project_status_id=${id}&name=${name}` : `${this.prefix}/${this.orgId}/project_status/check_name?name=${name}`;
+    url += `&process=${process}`;
+    return this.request({
+      url,
+      method: 'get',
+    });
+  }
+
+  // 项目协作-项目-状态停用
+  cooperationProjStatusDisable(id:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/project_status/disable?project_status_id=${id}`,
+      method: 'put',
+    });
+  }
+
+  // 项目协作-项目-状态启用
+  cooperationProjStatusEnable(id:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/project_status/enable?project_status_id=${id}`,
+      method: 'put',
+    });
+  }
+
   // 移交组织所有者
   transferOrg(orgid:string, params:any) {
     return this.request({

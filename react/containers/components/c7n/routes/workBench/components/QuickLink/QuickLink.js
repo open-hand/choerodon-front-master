@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useCallback } from 'react';
+import React, {
+  useCallback, useRef, useEffect, useLayoutEffect,
+} from 'react';
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import {
@@ -38,6 +40,23 @@ const QuickLink = observer(() => {
     setType,
     listHasMore,
   } = quickLinkUseStore;
+
+  const target = useRef();
+
+  useLayoutEffect(() => {
+    if (target?.current) {
+      target?.current.addEventListener('scroll', (event) => {
+        const {
+          clientHeight, scrollHeight, scrollTop,
+        } = event.target;
+        const isBottom = scrollTop + clientHeight + 20 > scrollHeight;
+        if (isBottom && quickLinkDs.status === 'ready' && quickLinkUseStore.getListHasMore) {
+          console.log('yes');
+          handleLoadMore();
+        }
+      });
+    }
+  }, []);
 
   const handleRefresh = async () => {
     quickLinkDs.setQueryParameter('forceUpdate', true);
@@ -130,92 +149,125 @@ const QuickLink = observer(() => {
     );
   };
 
-  const renderLinks = () => quickLinkDs.toData().map((l, index) => {
-    const user = get(l, 'user');
-    // const lastUpdateDate = get(l, 'lastUpdateDate');
-    const projectName = get(l, 'projectName');
-    const scope = get(l, 'scope');
-    const top = get(l, 'top');
-
-    const realName = get(user, 'realName');
-    const loginName = get(user, 'loginName');
-
-    const imageUrl = get(user, 'imageUrl');
-    const email = get(user, 'email');
-    const ldap = get(user, 'ldap');
-    // const id = get(user, 'id');
-    return (
-      (
-        <div className="c7n-quickLink-linkItem">
-          <div className="c7n-quickLink-linkItem-right">
-            <div className="c7n-quickLink-linkItem-circle" />
-            <Tooltip title={ldap ? `${realName}(${loginName})` : `${realName}(${email})`}>
+  const renderLinks = () => quickLinkDs.toData().map((l, index) => (
+    (
+      <div
+        className="c7n-quickLink-newItem"
+        style={{
+          marginTop: index !== 0 ? '20px' : 0,
+        }}
+      >
+        <div className="c7n-quickLink-newItem-title">
+          <div
+            className="c7n-quickLink-newItem-projectImg"
+            style={{
+              backgroundImage: l?.imageUrl ? l.imageUrl : l.background,
+            }}
+          >
+            {!l?.imageUrl && l?.projectName.slice(0, 1).toUpperCase()}
+          </div>
+          <p className="c7n-quickLink-newItem-projectP">
+            {l.projectName}
+          </p>
+        </div>
+        {
+          l.children.map((child) => (
+            <div className="c7n-quickLink-newItem-items">
               <div
-                className="c7n-quickLink-linkItem-right-profile"
+                className="c7n-quickLink-newItem-items-image"
                 style={{
-                  backgroundImage: imageUrl
-                    ? `url(${imageUrl})`
-                    : getRandomBackground(index),
+                  backgroundImage: `url(${child?.user?.imageUrl})`,
                 }}
+              />
+              <div
+                className="c7n-quickLink-newItem-items-content"
               >
-                {!imageUrl && realName && realName.slice(0, 1)}
-              </div>
-            </Tooltip>
-            <div className="c7n-quickLink-linkItem-right-content">
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Tooltip title={projectName}>
-                  <p className="c7n-quickLink-linkItem-right-content-scope">
-                    {scope === 'project' ? projectName : '仅自己可见'}
-                  </p>
-                </Tooltip>
-                <span
-                  className="c7n-quickLink-linkItem-right-content-top"
-                  style={{ display: top ? 'block' : 'none' }}
+                <p
+                  className="c7n-quickLink-newItem-items-content-name"
                 >
-                  置顶
-                </span>
+                  {child?.name}
+                </p>
+                <a href={child?.linkUrl}>
+                  <Icon type="link2" />
+                  {`${child?.linkUrl}`}
+                </a>
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <Tooltip placement="top" title={l.name}>
-                  <p className="c7n-quickLink-linkItem-right-content-name">
-                    {l.name}
-                  </p>
-                </Tooltip>
-                <Tooltip placement="top" title={l.linkUrl}>
-                  <p
-                    onClick={() => window.open(l.linkUrl)}
-                    className="c7n-quickLink-linkItem-right-content-linkName"
-                    role="none"
-                  >
-                    <Icon style={{ color: '#5266D4' }} type="link2" />
-                    <span>{l.linkUrl}</span>
-                  </p>
-                </Tooltip>
-              </div>
-            </div>
-            <div
-              style={{
-                display: l.editFlag ? 'block' : 'none',
-                flex: '0 0 0.24rem',
-              }}
-            >
               {
-                renderActions(l)
+                renderActions(child)
               }
             </div>
-          </div>
-        </div>
-      )
-    );
-  });
+          ))
+        }
+      </div>
+    // <div className="c7n-quickLink-linkItem">
+    //   <div className="c7n-quickLink-linkItem-right">
+    //     <div className="c7n-quickLink-linkItem-circle" />
+    //     <Tooltip title={ldap ? `${realName}(${loginName})` : `${realName}(${email})`}>
+    //       <div
+    //         className="c7n-quickLink-linkItem-right-profile"
+    //         style={{
+    //           backgroundImage: imageUrl
+    //             ? `url(${imageUrl})`
+    //             : getRandomBackground(index),
+    //         }}
+    //       >
+    //         {!imageUrl && realName && realName.slice(0, 1)}
+    //       </div>
+    //     </Tooltip>
+    //     <div className="c7n-quickLink-linkItem-right-content">
+    //       <div style={{ display: 'flex', alignItems: 'center' }}>
+    //         <Tooltip title={projectName}>
+    //           <p className="c7n-quickLink-linkItem-right-content-scope">
+    //             {scope === 'project' ? projectName : '仅自己可见'}
+    //           </p>
+    //         </Tooltip>
+    //         <span
+    //           className="c7n-quickLink-linkItem-right-content-top"
+    //           style={{ display: top ? 'block' : 'none' }}
+    //         >
+    //           置顶
+    //         </span>
+    //       </div>
+    //       <div
+    //         style={{
+    //           display: 'flex',
+    //           alignItems: 'center',
+    //         }}
+    //       >
+    //         <Tooltip placement="top" title={l.name}>
+    //           <p className="c7n-quickLink-linkItem-right-content-name">
+    //             {l.name}
+    //           </p>
+    //         </Tooltip>
+    //         <Tooltip placement="top" title={l.linkUrl}>
+    //           <p
+    //             onClick={() => window.open(l.linkUrl)}
+    //             className="c7n-quickLink-linkItem-right-content-linkName"
+    //             role="none"
+    //           >
+    //             <Icon style={{ color: '#5266D4' }} type="link2" />
+    //             <span>{l.linkUrl}</span>
+    //           </p>
+    //         </Tooltip>
+    //       </div>
+    //     </div>
+    //     <div
+    //       style={{
+    //         display: l.editFlag ? 'block' : 'none',
+    //         flex: '0 0 0.24rem',
+    //       }}
+    //     >
+    //       {
+    //         renderActions(l)
+    //       }
+    //     </div>
+    //   </div>
+    // </div>
+    )
+  ));
 
   const handleLoadMore = () => {
-    quickLinkDs.query(quickLinkDs.currentPage + 1);
+    quickLinkDs.queryMore(quickLinkDs.currentPage + 1);
   };
 
   const handleChangeType = useCallback((tempType) => setType(tempType), [setType]);
@@ -253,18 +305,18 @@ const QuickLink = observer(() => {
         {formatWorkbench({ id: 'quickLink' })}
         {renderClassification()}
       </div>
-      <div className="c7n-quickLink-scroll">
+      <div ref={target} className="c7n-quickLink-scroll">
         {quickLinkDs.length > 0 ? (
           [
             renderLinks(),
-            listHasMore && (
-              <a
-                onClick={handleLoadMore}
-                role="none"
-              >
-                {formatCommon({ id: 'loadMore' })}
-              </a>
-            ),
+            // listHasMore && (
+            //   <a
+            //     onClick={handleLoadMore}
+            //     role="none"
+            //   >
+            //     {formatCommon({ id: 'loadMore' })}
+            //   </a>
+            // ),
           ]
         ) : (
           <EmptyPage
