@@ -161,10 +161,10 @@ const QuickLink = observer(() => {
           <div
             className="c7n-quickLink-newItem-projectImg"
             style={{
-              backgroundImage: l?.imageUrl ? l.imageUrl : l.background,
+              backgroundImage: l?.projectImage ? `url(${l.projectImage})` : l.background,
             }}
           >
-            {!l?.imageUrl && l?.projectName.slice(0, 1).toUpperCase()}
+            {!l?.projectImage && l?.projectName.slice(0, 1).toUpperCase()}
           </div>
           <p className="c7n-quickLink-newItem-projectP">
             {l.projectName}

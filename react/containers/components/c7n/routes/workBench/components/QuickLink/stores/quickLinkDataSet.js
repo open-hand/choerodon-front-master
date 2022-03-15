@@ -34,6 +34,7 @@ export default ({
               projectNames.push(item?.projectName);
               newRes.push({
                 projectName: item?.projectName,
+                projectImage: item?.projectImage,
                 background: getRandomBackground(unix.substring(unix.length - 3)),
                 children: [{
                   ...item,
