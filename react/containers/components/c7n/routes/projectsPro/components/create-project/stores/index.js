@@ -63,6 +63,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     ]);
     const isSenior = createProjectStore.getIsSenior; // saas高级版
 
+    // agile: 敏捷管理，program：敏捷项目群，waterfall：瀑布管理 ，require： 需求管理，devops： DevOps ， programProject：项目群子项目 ，test： 测试管理，
+
     // 新手指导默认选中值处理
     if (inNewUserGuideStepOne) {
       const seniorDefaultArr = ['N_AGILE', 'N_REQUIREMENT', 'N_DEVOPS', 'N_OPERATIONS', 'N_TEST'];
@@ -110,6 +112,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       if (projectData && projectData.categories && projectData.categories.length) {
         const isBeforeProgram = (projectData.beforeCategory || '')?.split(',')?.includes(categoryCodes.program);
         const isBeforeAgile = (projectData.beforeCategory || '').includes(categoryCodes.agile);
+        const isBeforeWaterfall = (projectData.beforeCategory || '').includes(categoryCodes.waterfall);
         let isProgram = false;
         let isProgramProject = false;
         let isRequire = false;
@@ -140,6 +143,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           isEdit: true,
           isBeforeAgile,
           isBeforeProgram,
+          isBeforeWaterfall,
           isAgile,
           isProgram,
           isWaterfall,
@@ -154,14 +158,14 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
               categoryRecord.setState({
                 isProgram: isBeforeProgram,
               });
-              if (!isSenior || (isBeforeAgile && !isBeforeProgram) || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId))) {
+              if (!isSenior || (isBeforeAgile && !isBeforeProgram) || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId)) || isBeforeWaterfall) {
                 categoryRecord.setState('disabled', true);
               }
               break;
             case categoryCodes.agile:
               categoryRecord.setState({
                 isAgile: isBeforeAgile,
-                disabled: isProgramProject || (isBeforeProgram && !isProgram),
+                disabled: isProgramProject || (isBeforeProgram && !isProgram) || isBeforeWaterfall,
               });
               break;
             case categoryCodes.require:
@@ -172,6 +176,14 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
               break;
             case categoryCodes.operations:
               categoryRecord.setState('disabled', !isSenior);
+              break;
+              // 项目之前是 敏捷或项目群 不能选瀑布
+              // 项目之前是瀑布 不能再选敏捷和项目群
+            case categoryCodes.waterfall:
+              categoryRecord.setState({
+                disabled: isBeforeProgram || isBeforeAgile,
+              });
+              break;
             default:
               break;
           }
