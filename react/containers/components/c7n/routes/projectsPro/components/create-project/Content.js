@@ -8,7 +8,7 @@ import {
   Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select,
 } from 'choerodon-ui/pro';
 import {
-  includes, map, get,
+  includes, map, get, some,
 } from 'lodash';
 import { NewTips } from '@choerodon/components';
 import { get as getInject } from '@choerodon/inject';
@@ -91,6 +91,9 @@ const CreateProject = observer(() => {
         formDs?.current?.set('statusId', formDs?.current?.get('statusId')?.id);
       }
       record.set('categories', categories);
+      if (some(categories, ['code', 'N_WATERFALL'])) {
+        record.set('useTemplate', false);
+      }
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
         const projectId = get(res.list[0], 'id');
