@@ -187,7 +187,7 @@ const QuickLink = observer(() => {
                 >
                   {child?.name}
                 </p>
-                <a href={child?.linkUrl}>
+                <a target="_blank" href={child?.linkUrl} rel="noreferrer">
                   <Icon type="link2" />
                   {`${child?.linkUrl}`}
                 </a>
