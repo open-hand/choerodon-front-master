@@ -421,9 +421,9 @@ const componentsObj = {
   // 项目总体情况报表
   overviewCard: {
     layout: {
-      h: 3.5,
+      h: 4,
       i: 'overviewCard',
-      minH: 3.5,
+      minH: 4,
       minW: 10,
       w: 10,
       x: 0,
