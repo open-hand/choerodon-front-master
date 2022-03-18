@@ -157,19 +157,23 @@ const QuickLink = observer(() => {
           marginTop: index !== 0 ? '20px' : 0,
         }}
       >
-        <div className="c7n-quickLink-newItem-title">
-          <div
-            className="c7n-quickLink-newItem-projectImg"
-            style={{
-              backgroundImage: l?.projectImage ? `url(${l.projectImage})` : l.background,
-            }}
-          >
-            {!l?.projectImage && l?.projectName.slice(0, 1).toUpperCase()}
-          </div>
-          <p className="c7n-quickLink-newItem-projectP">
-            {l.projectName}
-          </p>
-        </div>
+        {
+          l?.projectName ? (
+            <div className="c7n-quickLink-newItem-title">
+              <div
+                className="c7n-quickLink-newItem-projectImg"
+                style={{
+                  backgroundImage: l?.projectImage ? `url(${l.projectImage})` : l.background,
+                }}
+              >
+                {!l?.projectImage && l?.projectName?.slice(0, 1).toUpperCase()}
+              </div>
+              <p className="c7n-quickLink-newItem-projectP">
+                {l.projectName}
+              </p>
+            </div>
+          ) : ''
+        }
         {
           l.children.map((child) => (
             <div className="c7n-quickLink-newItem-items">

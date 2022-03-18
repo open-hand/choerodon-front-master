@@ -28,7 +28,7 @@ export default ({
           }
           mainData?.content.forEach((item) => {
             const indexProjectName = projectNames.indexOf(item?.projectName);
-            const unix = String(moment(item.creationDate).unix());
+            const unix = String(moment(item.projectCreationDate).unix());
 
             if (indexProjectName === -1) {
               projectNames.push(item?.projectName);
