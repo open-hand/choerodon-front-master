@@ -102,7 +102,7 @@ const QuickLink = observer(() => {
   };
 
   const handelOpenDelete = (l) => {
-    Modal.confirm({
+    Modal.open({
       okText: formatCommon({ id: 'delete' }),
       title: '删除快速链接',
       children: '确认删除快速链接吗?',
