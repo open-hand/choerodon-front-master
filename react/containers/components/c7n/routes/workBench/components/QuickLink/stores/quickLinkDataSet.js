@@ -28,12 +28,13 @@ export default ({
           }
           mainData?.content.forEach((item) => {
             const indexProjectName = projectNames.indexOf(item?.projectName);
-            const unix = String(moment(item.creationDate).unix());
+            const unix = String(moment(item.projectCreationDate).unix());
 
             if (indexProjectName === -1) {
               projectNames.push(item?.projectName);
               newRes.push({
                 projectName: item?.projectName,
+                projectImage: item?.projectImage,
                 background: getRandomBackground(unix.substring(unix.length - 3)),
                 children: [{
                   ...item,

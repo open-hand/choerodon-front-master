@@ -34,8 +34,9 @@
 
   &-issue {
     // max-width: .6rem;
+    flex:1;
     flex-basis: .54rem;
-
+   
     &-name {
       font-size: .12rem;
       font-weight: 400;
@@ -56,10 +57,12 @@
       }
     }
 
+    // &-issue
+
     &-progress {
       position: relative;
       height: 4px;
-      width: 100%;
+      width:.54rem;
       border-radius: 1rem;
       &-inner {
         position: absolute;
@@ -81,5 +84,8 @@
       }
 
     );
+  }
+  &-issue +&-issue{
+    padding-left: .2rem;
   }
 }

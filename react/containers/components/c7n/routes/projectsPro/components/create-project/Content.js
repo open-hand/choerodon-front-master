@@ -8,7 +8,7 @@ import {
   Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select,
 } from 'choerodon-ui/pro';
 import {
-  includes, map, get,
+  includes, map, get, some,
 } from 'lodash';
 import { NewTips } from '@choerodon/components';
 import { get as getInject } from '@choerodon/inject';
@@ -91,6 +91,9 @@ const CreateProject = observer(() => {
         formDs?.current?.set('statusId', formDs?.current?.get('statusId')?.id);
       }
       record.set('categories', categories);
+      if (some(categories, ['code', 'N_WATERFALL'])) {
+        record.set('useTemplate', false);
+      }
       const res = await formDs.submit();
       if (res && !res.failed && res.list && res.list.length) {
         const projectId = get(res.list[0], 'id');
@@ -208,28 +211,24 @@ const CreateProject = observer(() => {
     if (code === categoryCodes.require) {
       return '请先选择【敏捷管理】或【敏捷项目群】或【瀑布管理】项目类型';
     }
-    if (categoryRecord.isSelected) {
-      if (code === categoryCodes.program && isModify) {
+    if (categoryRecord.isSelected && isModify) {
+      if (code === categoryCodes.program) {
         return '项目群中存在子项目，无法移除此项目类型';
       }
-      if (code === categoryCodes.agile && isModify) {
+      if (code === categoryCodes.agile) {
         return '敏捷管理项目已加入项目群，无法移除此项目类型';
       }
     } else {
-      if (code === categoryCodes.agile && isModify && categoryDs.getState('isWaterfall')) {
-        return '已添加或添加过【瀑布管理】项目类型，不可添加【敏捷管理】项目类型';
-      }
-      if (code === categoryCodes.program && isModify && categoryDs.getState('isWaterfall')) {
-        return '已添加或添加过【瀑布管理】项目类型，不可添加【敏捷项目群】项目类型';
-      }
-      if (code === categoryCodes.waterfall && isModify && categoryDs.getState('isAgile') || categoryDs.getState('isProgram')) {
-        return '已添加或添加过【敏捷管理】/【敏捷项目群】项目类型，不可添加【瀑布管理】项目类型';
-      }
-      if (code === categoryCodes.program && isModify) {
-        return '已添加或添加过【敏捷管理】项目类型，不可添加【敏捷项目群】项目类型';
-      }
-      if (code === categoryCodes.agile && isModify) {
-        return '原项目曾经为【敏捷项目群】项目，不支持调整为【敏捷管理】类型';
+      if (isModify) {
+        if (code === categoryCodes.waterfall && (categoryDs.getState('isBeforeAgile') || categoryDs.getState('isBeforeProgram'))) {
+          return '已添加或添加过【敏捷管理】/【敏捷项目群】项目类型，不可添加【瀑布管理】项目类型';
+        }
+        if (code === categoryCodes.program && ((categoryDs.getState('isBeforeAgile') && !categoryDs.getState('isBeforeProgram')) || categoryDs.getState('isBeforeWaterfall'))) {
+          return '已添加或添加过【敏捷管理】/ 【瀑布管理】项目类型，不可添加【敏捷项目群】项目类型';
+        }
+        if (code === categoryCodes.agile && ((categoryDs.getState('isBeforeProgram') && !categoryDs.getState('isProgram')) || categoryDs.getState('isBeforeWaterfall'))) {
+          return '已添加或添加过【敏捷项目群】/ 【瀑布管理】项目类型，不可添加【敏捷管理】项目类型';
+        }
       }
       if ([categoryCodes.program, categoryCodes.waterfall, categoryCodes.agile].indexOf(code) !== -1) {
         return '不可同时选择敏捷管理/敏捷项目群与瀑布管理项目类型';

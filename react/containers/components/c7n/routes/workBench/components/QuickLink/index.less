@@ -193,13 +193,16 @@
       &-content {
         flex: 1;
         overflow: hidden;
-        margin-left: 2px;
+        margin-left: 6px;
         &-name {
           font-size: 13px;
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 400;
           color: var(--text-color);
           margin-bottom: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         a {
           white-space: nowrap;
@@ -223,6 +226,7 @@
       color: white;
       font-size: 13px;
       text-align: center;
+      background-size: 100% 100%;
     }
   }
 }
@@ -249,6 +253,18 @@
     color: var(--text-color3);
     padding: 4px 10px;
     cursor: pointer;
+  }
+  span:first-child {
+    position: relative;
+  }
+  span:first-child::after {
+    position: absolute;
+    margin: 0 0.06rem;
+    font-size: 0.16rem;
+    color: #797e9a;
+    content: "|";
+    left: 42px;
+    top: 0px;
   }
 }
 

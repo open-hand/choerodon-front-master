@@ -36,18 +36,21 @@ function handleDisabled({
       }
       waterfallRecord.setState('disabled', isSelected);
     }
-    // 修改项目之前是 敏捷或项目群 不能选瀑布
-    // 修改项目之前是瀑布 不能再选敏捷和项目群
+    // 项目是 敏捷或项目群 不能选瀑布
+    // 项目是瀑布 不能再选敏捷和项目群
     if (record === waterfallRecord) {
       agileRecord.setState('disabled', isSelected);
       programRecord.setState('disabled', isSelected);
     }
-    const bool = dataSet.getState('isAgile') || dataSet.getState('isProgram');
+
+    const bool = dataSet.getState('isBeforeAgile') || dataSet.getState('isBeforeProgram');
+    const bool2 = dataSet.getState('isBeforeWaterfall');
+
     const isEdit = dataSet.getState('isEdit');
     if (isEdit && bool) {
       waterfallRecord.setState('disabled', true);
     }
-    if (isEdit && record === waterfallRecord) {
+    if (isEdit && bool2) {
       agileRecord.setState('disabled', true);
       programRecord.setState('disabled', true);
     }
