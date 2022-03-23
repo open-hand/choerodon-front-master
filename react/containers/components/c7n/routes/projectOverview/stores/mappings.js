@@ -455,7 +455,7 @@ const componentsObj = {
     injectGroupId: 'waterfallPro',
     title: '里程碑',
     describe:
-      '实时了解项目工作的进度、工时耗费情况、交付物提交情况以及项目下各个阶段的进度。有助于对对项目的全局把控，及时消除风险。',
+      '展示项目里程碑及里程碑完成情况。',
     img: milestoneCardImage,
   },
 };
