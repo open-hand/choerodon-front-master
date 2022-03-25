@@ -11,6 +11,77 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  thirdPartyAppList() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/list`,
+      method: 'get',
+    });
+  }
+
+  thirdPartyAppDetail(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/details`,
+      method: 'get',
+      params,
+    });
+  }
+
+  thirdPartyAppCreate(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app`,
+      method: 'post',
+      data,
+    });
+  }
+
+  thirdPartyAppEdit(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app`,
+      method: 'put',
+      data,
+    });
+  }
+
+  thirdPartyAppDisable(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/disable`,
+      method: 'put',
+      params,
+    });
+  }
+
+  thirdPartyAppEnable(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/enable`,
+      method: 'put',
+      params,
+    });
+  }
+
+  thirdPartyAppEditSyncSetting(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/sync_setting`,
+      method: 'put',
+      data,
+    });
+  }
+
+  thirdPartyAppHMSync(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/sync_user`,
+      method: 'get',
+      params,
+    });
+  }
+
+  thirdPartyAppTestConnection(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/test_connection`,
+      method: 'post',
+      data,
+    });
+  }
+
   // 项目协作-项目-状态列表
   cooperationProjStatusList() {
     return this.request({
