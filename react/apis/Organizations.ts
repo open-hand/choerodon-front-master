@@ -11,6 +11,28 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  thirdPartyAppErrorUsers(historyId:string, data?:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/error-users/${historyId}`,
+      method: 'get',
+      data,
+    });
+  }
+
+  thirdPartyAppHistory(openAppId:string) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/histories/${openAppId}`,
+      method: 'get',
+    });
+  }
+
+  thirdPartyAppLatestHistory(openAppId:string) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/latest_history/${openAppId}`,
+      method: 'get',
+    });
+  }
+
   thirdPartyAppList() {
     return this.request({
       url: `${this.prefix}/${this.orgId}/open_app/list`,
