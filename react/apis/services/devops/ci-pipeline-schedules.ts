@@ -14,6 +14,45 @@ class CiPipelineSchedules extends Api<CiPipelineSchedules> {
       data,
     });
   }
+
+  getPlanList({
+    appServiceId,
+  }: any) {
+    return this.request({
+      url: this.prefix,
+      method: 'get',
+      params: {
+        app_service_id: appServiceId,
+      },
+    });
+  }
+
+  disabledPlan({
+    id,
+  }: any) {
+    return this.request({
+      url: `${this.prefix}/${id}/disable`,
+      method: 'put',
+    });
+  }
+
+  enablePlan({
+    id,
+  }: any) {
+    return this.request({
+      url: `${this.prefix}/${id}/enable`,
+      method: 'put',
+    });
+  }
+
+  deletePlan({
+    id,
+  }: any) {
+    return this.request({
+      url: `${this.prefix}/${id}`,
+      method: 'delete',
+    });
+  }
 }
 const ciPipelineSchedulesApi = new CiPipelineSchedules();
 const ciPipelineSchedulesApiConfig = new CiPipelineSchedules(true);
