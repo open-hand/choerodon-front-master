@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "start": "choerodon-front-boot start --config ./react/config.js",
-    "compile": "choerodon-front-boot compile",
+    "compile":"compiler compile",
     "randomCompile": "choerodon-front-boot compile -t",
     "watch": "compiler compile --watch",
     "postinstall": "node ./postInstall.js",
