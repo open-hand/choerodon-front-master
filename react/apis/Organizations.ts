@@ -11,6 +11,29 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  thirdPartyAppSyncUsers(openAppId: string) {
+    return this.request({
+      url: `/agile/v1/organizations/${this.orgId}/issue_open_sync/list_assign_users`,
+      method: 'get',
+      params: {
+        open_app_id: openAppId,
+      },
+    });
+  }
+
+  thirdPartyAppSyncRetry(recordIds: Array<string>, type: string) {
+    return this.request({
+      url: `/agile/v1/organizations/${this.orgId}/issue_open_sync/batch_retry`,
+      method: 'post',
+      params: {
+        open_app_type: type,
+      },
+      data: {
+        recordIds,
+      },
+    });
+  }
+
   thirdPartyAppErrorUsers(historyId:string, data?:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/open_app/error-users/${historyId}`,
