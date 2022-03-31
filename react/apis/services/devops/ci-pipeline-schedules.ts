@@ -15,6 +15,17 @@ class CiPipelineSchedules extends Api<CiPipelineSchedules> {
     });
   }
 
+  editPlan({
+    id,
+    data,
+  }: any) {
+    return this.request({
+      url: `${this.prefix}/${id}`,
+      method: 'put',
+      data,
+    });
+  }
+
   getPlanList({
     appServiceId,
   }: any) {
