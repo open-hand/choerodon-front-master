@@ -28,9 +28,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
       params: {
         open_app_type: type,
       },
-      data: {
-        recordIds,
-      },
+      data: [...recordIds],
     });
   }
 
