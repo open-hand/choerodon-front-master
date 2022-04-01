@@ -13,11 +13,8 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppSyncUsers(openAppId: string) {
     return this.request({
-      url: `/agile/v1/organizations/${this.orgId}/issue_open_sync/list_assign_users`,
+      url: `/agile/v1/organizations/${this.orgId}/issue_open_sync/list_assign_users?open_app_id=${openAppId}`,
       method: 'get',
-      params: {
-        open_app_id: openAppId,
-      },
     });
   }
 
