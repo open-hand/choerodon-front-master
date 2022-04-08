@@ -289,9 +289,10 @@ class MenuStore {
         }
         async function getMenu (that) {
           const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
+          const newId = menuType?.id || id;
           let url = '/iam/choerodon/v1/menu';
           if (type === 'project') {
-            url += `?projectId=${id}&tenantId=${currentOrgId}`;
+            url += `?projectId=${newId}&tenantId=${currentOrgId}`;
           } else if (type === 'organization') {
             url += `?labels=TENANT_MENU&tenantId=${currentOrgId}`;
           } else if (type === 'user') {
