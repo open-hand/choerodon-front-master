@@ -2,7 +2,7 @@ import Api from '../../Api';
 
 class DevopsDockerComposeApi extends Api<DevopsDockerComposeApi> {
   get prefix() {
-    return `/devops/v1/projects/${this.projectId}/docker_compose`;
+    return `/devops/v1/projects/${this.projectId}/docker_composes`;
   }
 
   createDockerCompose(data: any) {
