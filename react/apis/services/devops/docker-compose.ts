@@ -12,6 +12,13 @@ class DevopsDockerComposeApi extends Api<DevopsDockerComposeApi> {
       data,
     });
   }
+
+  getContainerList(id: any) {
+    return this.request({
+      url: `${this.prefix}/${id}/containers`,
+      method: 'get',
+    });
+  }
 }
 
 const devopsDockerComposeApi = new DevopsDockerComposeApi();
