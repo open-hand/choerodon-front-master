@@ -40,6 +40,13 @@ class DevopsDockerComposeApi extends Api<DevopsDockerComposeApi> {
       method: 'put',
     });
   }
+
+  getValuesRecordsList(id: any) {
+    return this.request({
+      url: `${this.prefix}/${id}/value_records`,
+      method: 'get',
+    });
+  }
 }
 const devopsDockerComposeApi = new DevopsDockerComposeApi();
 const devopsDockerComposeApiConfig = new DevopsDockerComposeApi(true);
