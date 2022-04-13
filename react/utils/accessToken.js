@@ -20,6 +20,7 @@ export function getCookieToken() {
  * 前端存储cookie token
  */
 export function setAccessToken(token, tokenType, expiresIn) {
+  console.log(token, tokenType, expiresIn);
   const isHttps = window.location.protocol === 'https:';
   const option = {
     path: '/',
