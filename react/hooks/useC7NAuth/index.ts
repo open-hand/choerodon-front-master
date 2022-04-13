@@ -24,7 +24,6 @@ function useC7NAuth(autoAuth?:boolean) {
     token_type: tokenType,
     expires_in: expiresIn,
   } = params;
-  console.log(accessToken);
 
   if (!accessToken && window.location.href.indexOf('access_token') !== -1) {
     console.log(window.location.href);
@@ -47,6 +46,8 @@ function useC7NAuth(autoAuth?:boolean) {
     tokenType = paramsObj.token_type;
     expiresIn = paramsObj.expires_in;
   }
+
+  console.log(accessToken, tokenType, expiresIn);
 
   const handleAuth = useCallback(async () => {
     setTrue();
