@@ -30,7 +30,9 @@ function useC7NAuth(autoAuth?:boolean) {
 
   const handleAuth = useCallback(async () => {
     setTrue();
+    window.alert('1');
     try {
+      window.alert(accessToken);
       if (accessToken) {
         // 单点登录界面过来的时候
         setAccessToken(accessToken, tokenType, expiresIn);
