@@ -24,10 +24,17 @@ function useC7NAuth(autoAuth?:boolean) {
     token_type: tokenType,
     expires_in: expiresIn,
   } = params;
+  console.log(accessToken);
 
   if (!accessToken && window.location.href.indexOf('access_token') !== -1) {
     console.log(window.location.href);
-    const arr = window.location.href.split('/#');
+    let splitStr = '';
+    if (window.location.href.indexOf('/#/') !== -1) {
+      splitStr = '/#/';
+    } else {
+      splitStr = '/#';
+    }
+    const arr = window.location.href.split(splitStr);
     console.log(arr);
     const paramsObj: any = {};
     if (arr[1]) {
