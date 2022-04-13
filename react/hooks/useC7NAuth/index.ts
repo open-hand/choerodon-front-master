@@ -1,9 +1,6 @@
 import { useQueryString } from '@choerodon/components';
 import { useCallback, useEffect } from 'react';
 import { useBoolean } from 'ahooks';
-import * as dd from 'dingtalk-jsapi';
-import openLink from 'dingtalk-jsapi/api/biz/util/openLink';
-import close from 'dingtalk-jsapi/api/biz/navigation/close';
 import { authorizeC7n, getAccessToken, setAccessToken } from '@/utils';
 
 import AppState from '@/containers/stores/c7n/AppState';
@@ -29,8 +26,6 @@ function useC7NAuth(autoAuth?:boolean) {
   } = params;
 
   const handleAuth = useCallback(async () => {
-    // eslint-disable-next-line no-debugger
-    debugger;
     setTrue();
     try {
       if (accessToken) {
