@@ -27,7 +27,13 @@ function useC7NAuth(autoAuth?:boolean) {
 
   if (!accessToken && window.location.href.indexOf('access_token') !== -1) {
     console.log(window.location.href);
-    const arr = window.location.href.split('/#');
+    let splitStr = '';
+    if (window.location.href.indexOf('/#/') !== -1) {
+      splitStr = '/#/';
+    } else {
+      splitStr = '/#';
+    }
+    const arr = window.location.href.split(splitStr);
     console.log(arr);
     const paramsObj: any = {};
     if (arr[1]) {
@@ -40,6 +46,8 @@ function useC7NAuth(autoAuth?:boolean) {
     tokenType = paramsObj.token_type;
     expiresIn = paramsObj.expires_in;
   }
+
+  console.log(accessToken, tokenType, expiresIn);
 
   const handleAuth = useCallback(async () => {
     setTrue();
