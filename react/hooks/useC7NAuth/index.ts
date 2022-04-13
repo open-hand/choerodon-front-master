@@ -29,20 +29,20 @@ function useC7NAuth(autoAuth?:boolean) {
   } = params;
 
   const handleAuth = useCallback(async () => {
+    // eslint-disable-next-line no-debugger
+    debugger;
     setTrue();
-    window.alert('1');
     try {
-      window.alert(accessToken);
       if (accessToken) {
         // 单点登录界面过来的时候
         setAccessToken(accessToken, tokenType, expiresIn);
 
         window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
-        try {
-          openLink({ url: window.location.href.replace(/[&?]redirectFlag.*/g, '') }).then(() => close({}));
-        } catch (error) {
-          console.log(error);
-        }
+        // try {
+        //   openLink({ url: window.location.href.replace(/[&?]redirectFlag.*/g, '') }).then(() => close({}));
+        // } catch (error) {
+        //   console.log(error);
+        // }
       } else if (!getAccessToken()) {
         // token过期
         authorizeC7n();
@@ -56,7 +56,6 @@ function useC7NAuth(autoAuth?:boolean) {
       await AppState.loadUserInfo();
       setFalse();
     } catch (e) {
-      window.alert(e);
       throw new Error(e);
     }
   }, [accessToken, expiresIn, setFalse, setTrue, tokenType]);
