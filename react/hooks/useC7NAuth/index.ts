@@ -19,11 +19,27 @@ function useC7NAuth(autoAuth?:boolean) {
   // 获取url的params
   const params = useQueryString();
 
-  const {
+  let {
     access_token: accessToken,
     token_type: tokenType,
     expires_in: expiresIn,
   } = params;
+
+  if (!accessToken && window.location.href.indexOf('access_token') !== -1) {
+    console.log(window.location.href);
+    const arr = window.location.href.split('/#');
+    console.log(arr);
+    const paramsObj: any = {};
+    if (arr[1]) {
+      // @ts-ignore
+      arr[1].replace(/([^=&]+)=([^&]*)/g, (m, key, value) => {
+        paramsObj[decodeURIComponent(key)] = decodeURIComponent(value);
+      });
+    }
+    accessToken = paramsObj.access_token;
+    tokenType = paramsObj.token_type;
+    expiresIn = paramsObj.expires_in;
+  }
 
   const handleAuth = useCallback(async () => {
     setTrue();
