@@ -62,6 +62,13 @@ class DevopsDockerComposeApi extends Api<DevopsDockerComposeApi> {
       method: 'get',
     });
   }
+
+  restartContainer(id: any, instanceId: any) {
+    return this.request({
+      url: `${this.prefix}/${id}/containers/${instanceId}/restart`,
+      method: 'put',
+    });
+  }
 }
 const devopsDockerComposeApi = new DevopsDockerComposeApi();
 const devopsDockerComposeApiConfig = new DevopsDockerComposeApi(true);
