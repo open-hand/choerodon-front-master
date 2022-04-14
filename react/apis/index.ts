@@ -1,5 +1,6 @@
 export * from './BlackList';
 export * from './SiteOpen';
+export * from './Relevance';
 export * from './Enterprises';
 export * from './Permissions';
 export * from './Organizations';
