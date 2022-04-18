@@ -9,7 +9,7 @@ const modulesMapping = {
     'resourceMonitoring',
   ],
   agile: [
-    'todoQustions', 'myStar', 'myDefect', 'myReport', 'myExecution', 'myhandler', 'userIssue',
+    'todoQustions', 'myStar', 'myDefect', 'myReport', 'myExecution', 'myhandler', 'userIssue', 'projectProgress',
   ],
   backlog: [
     'backlogApprove',

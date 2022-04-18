@@ -36,6 +36,7 @@ import './index.less';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const UserIssue = () => (hasInject('agilePro:workbenchUserIssue') ? mount('agilePro:workbenchUserIssue', {}) : <></>);
+const ProjectProgress = () => (hasInject('agilePro:workbenchProjectStatistics') ? mount('agilePro:workbenchProjectStatistics', {}) : <></>);
 
 const ComponetsObjs = {
   starTarget: <StarTargetPro />,
@@ -57,6 +58,7 @@ const ComponetsObjs = {
   beginnerGuide: <BeginnerGuide />,
   notice: <Notice />,
   userIssue: <UserIssue />,
+  projectProgress: <ProjectProgress />,
 };
 
 let observerLayout;
