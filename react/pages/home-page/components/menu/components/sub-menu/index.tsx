@@ -194,7 +194,7 @@ const SubMenus:FC<SubMenuProps> = () => {
     <div
       className={prefixCls}
       style={{
-        width: isExpanded ? 200 : 50,
+        width: isExpanded ? 210 : 50,
       }}
     >
       <CollapsedBtn />
