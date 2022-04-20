@@ -9,11 +9,12 @@ import './index.less';
 
 export interface Iprops {
     list: Array<string>
+    maxTagNum?: number
 }
 
 // @ts-ignore
 const Index:React.FC<Iprops> = (props) => {
-  const { list } = props;
+  const { list, maxTagNum = 3 } = props;
 
   const handleMouseEnter = (e:any, title:string) => {
     const { currentTarget } = e;
@@ -32,7 +33,7 @@ const Index:React.FC<Iprops> = (props) => {
   };
 
   const getTag = (item:string, index:number, labelList: Array<string>) => {
-    if (index <= 1) {
+    if (labelList.length <= maxTagNum || index + 1 < maxTagNum) {
       return (
         <Tag
         // @ts-ignore
@@ -49,7 +50,7 @@ const Index:React.FC<Iprops> = (props) => {
         </Tag>
       );
     }
-    if (index === 2) {
+    if (labelList.length >= maxTagNum && index + 1 === maxTagNum) {
       let str = '';
       labelList.forEach((i:string) => {
         str = `${str + i} ,`;
@@ -66,7 +67,7 @@ const Index:React.FC<Iprops> = (props) => {
             color="#E6F7FF"
           >
             +
-            {labelList.length - 2}
+            {labelList.length - maxTagNum + 1}
             ...
           </Tag>
         </Tooltip>
