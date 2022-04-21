@@ -10,11 +10,12 @@ import './index.less';
 export interface Iprops {
     list: Array<string>
     maxTagNum?: number
+    className?: string
 }
 
 // @ts-ignore
 const Index:React.FC<Iprops> = (props) => {
-  const { list, maxTagNum = 3 } = props;
+  const { list, maxTagNum = 3, className } = props;
 
   const handleMouseEnter = (e:any, title:string) => {
     const { currentTarget } = e;
@@ -77,7 +78,7 @@ const Index:React.FC<Iprops> = (props) => {
   };
 
   return (
-    <div className="c7ncd-userLabels">
+    <div className={`c7ncd-userLabels ${className}`}>
       {list.map((item, index) => getTag(item, index, list))}
     </div>
   );
