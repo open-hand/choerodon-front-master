@@ -14,6 +14,7 @@ function getInitProjectOverviewLayout(availableServiceList) {
     return [];
   }
   const isHasProService = includes(availableServiceList, 'agilePro');
+  const isHasAgile = includes(availableServiceList, 'agile');
   const isHasWaterfall = includes(availableServiceList, 'waterfallPro');
   const withoutDevops = !includes(availableServiceList, 'devops');
   const defaultHasProLayoutMap = {
@@ -54,10 +55,11 @@ function getInitProjectOverviewLayout(availableServiceList) {
     if (!HAS_AGILEPRO) {
       return item.injectGroupId !== 'agilePro';
     }
-    return ((isHasProService || isHasWaterfall) ? includes(availableServiceList, item.groupId)
+    return ((isHasProService || isHasWaterfall || isHasAgile) ? includes(availableServiceList, item.groupId)
       || (item.injectGroupId && includes(availableServiceList, item.injectGroupId)) : true);
   }), (item) => getDefaultLayout(item.layout));
   return defaultValues;
 }
+
 const memoizeGetInitProjectOverviewLayout = memoize(getInitProjectOverviewLayout);
 export { memoizeGetInitProjectOverviewLayout as getInitProjectOverviewLayout };
