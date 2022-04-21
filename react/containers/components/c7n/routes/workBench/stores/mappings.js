@@ -362,6 +362,42 @@ const componentsObj = {
     describe: '公告',
     img: notice,
   },
+  // 人员工作项情况
+  userIssue: {
+    layout: {
+      x: 0,
+      y: 28,
+      h: 5,
+      w: 12,
+      minH: 5,
+      minW: 12,
+      i: 'notice',
+    },
+    name: 'userIssue',
+    type: 'userIssue',
+    groupId: 'agile',
+    title: '人员工作项统计',
+    describe: '人员工作项统计',
+    img: todoQuestions,
+  },
+  // 人员工作项情况
+  projectProgress: {
+    layout: {
+      x: 0,
+      y: 33,
+      h: 5,
+      w: 12,
+      minH: 5,
+      minW: 12,
+      i: 'notice',
+    },
+    name: 'projectProgress',
+    type: 'projectProgress',
+    groupId: 'agile',
+    title: '项目情况统计',
+    describe: '项目情况统计',
+    img: todoQuestions,
+  },
   // #endregion 资源概览
 };
 

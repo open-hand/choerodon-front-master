@@ -878,6 +878,45 @@ const fieldsMap = [
       },
     },
   }],
+  ['progress', {
+    name: '进度',
+  }],
+  ['copingStrategy', {
+    name: '应对策略',
+    create: {
+      hidden: true,
+    },
+    update: {
+      hidden: true,
+    },
+    delete: {
+      hidden: true,
+    },
+  }],
+  ['riskCategory', {
+    name: '风险分类',
+  }],
+  ['riskInfluence', {
+    name: '影响度',
+  }],
+  ['riskProbability', {
+    name: '发生概率',
+  }],
+  ['riskProximity', {
+    name: '临近度',
+  }],
+  ['estimatedResolutionDate', {
+    name: '预计解决日期',
+  }],
+  ['actualResolutionDate', {
+    name: '实际解决日期',
+  }],
+  ['relatedParties', {
+    name: '相关人',
+  }],
+  ['discoveryDate', {
+    name: '发现日期',
+  }],
 ];
 
 export default fieldsMap;

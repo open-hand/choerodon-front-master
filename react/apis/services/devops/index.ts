@@ -13,3 +13,5 @@ export * from './request-chart';
 export * from './hosts';
 export * from './deploy';
 export * from './docker-auth-configs';
+export * from './ci-pipeline-schedules';
+export * from './docker-compose';

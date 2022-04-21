@@ -77,6 +77,7 @@ const useUiConfigs = () => {
     buttonFuncType: 'raised',
     tableVirtualCell: false,
     tableColumnResizeTrigger: 'hover',
+    tooltipPlacement: (target) => (target === 'table-cell' ? 'top' : undefined),
     lovQueryUrl: (code) => `/iam/choerodon/v1/lov/code?code=${code}`,
     generatePageQuery: ({
       page, pageSize, sortName, sortOrder, sort,
