@@ -26,7 +26,7 @@ function TableSpin(props) {
     };
   }, [cancelRegisterChildren, change, loadId, registerChildren]);
   //  无统一Loading管理 则使用table表格内部loading状态判断
-  return <Loading type="c7n" className={className} display={loading} style={{ display: !isHasProvider || loading ? 'inline-block' : 'none' }} />;
+  return <Loading type="c7n" className={className} display={!isHasProvider || loading} style={{ display: !isHasProvider || loading ? 'inline-block' : 'none' }} />;
 }
 
 const useUiConfigs = () => {
