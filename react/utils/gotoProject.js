@@ -5,7 +5,7 @@ import MenuStore, { getMenuType } from '../containers/stores/c7n/MenuStore';
 import AppState from '../containers/stores/c7n/AppState';
 import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 
-export default async function handleClickProject(data, history) {
+export default async function handleClickProject(data, history, historyPush) {
   const {
     id, name, organizationId, category,
   } = data;
@@ -60,7 +60,11 @@ export default async function handleClickProject(data, history) {
           AppState.currentMenuType.id = id;
         }
       }
-      historyPushMenu(history, path, domain);
+      if (historyPush && typeof historyPush === 'function') {
+        historyPush(path, domain);
+      } else {
+        historyPushMenu(history, path, domain);
+      }
     });
   }
 }
