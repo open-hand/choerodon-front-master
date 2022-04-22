@@ -16,7 +16,7 @@ const cardsMappings = (mappings, needUpgrade = true) => {
       opts: [...getArr('agile'), ...getArr('devops'), ...(getArr('backlog')?.length && !needUpgrade ? getArr('backlog') : []), ...(getArr('resourceManagement')?.length ? getArr('resourceManagement') : []), ...getArr('common')],
     },
     {
-      name: '敏捷管理',
+      name: '协作管理',
       key: 'agile',
       opts: getArr('agile'),
     },
