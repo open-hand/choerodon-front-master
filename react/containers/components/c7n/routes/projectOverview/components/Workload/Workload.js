@@ -130,7 +130,7 @@ const Workload = observer(() => {
               <Select
                 multiple
                 label={formatMessage({ id: 'agile.projectOverview.searchAssignees' })}
-                placeholder={formatMessage({ id: 'agile.projectOverview.searchAssignees' })}
+                // placeholder={formatMessage({ id: 'agile.projectOverview.searchAssignees' })}
                 clearButton
                 maxTagCount={5}
                 style={{
