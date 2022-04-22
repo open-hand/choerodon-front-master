@@ -78,9 +78,13 @@ const Index:React.FC<Iprops> = (props) => {
   };
 
   return (
-    <div className={`c7ncd-userLabels ${className}`}>
-      {list.map((item, index) => getTag(item, index, list))}
-    </div>
+    list.length
+      ? (
+        <div className={`c7ncd-userLabels ${className || ''}`}>
+          {list.map((item, index) => getTag(item, index, list))}
+        </div>
+      )
+      : ''
   );
 };
 
