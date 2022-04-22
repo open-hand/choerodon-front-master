@@ -34,14 +34,16 @@ const cardsMappings = (mappings, needUpgrade = true) => {
       emptyTitle: '暂无对应项目类型',
       emptyDesc: '该项目未选择【敏捷管理】项目类型，暂不可用',
     },
-    {
+  ];
+  if (getArr('waterfall')?.length) {
+    groupArr.push({
       name: '瀑布管理',
       key: 'waterfall',
       opts: getArr('waterfall'),
       emptyTitle: '暂无对应项目类型',
       emptyDesc: '该项目未选择【瀑布管理】项目类型，暂不可用',
-    },
-  ];
+    });
+  }
 
   if (getArr('backlog')?.length && !needUpgrade) {
     groupArr.splice(groupArr.length - 1, 0, {

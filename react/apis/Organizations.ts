@@ -11,6 +11,117 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  thirdPartyAppSyncUsers(openAppId: string) {
+    return this.request({
+      url: `/agile/v1/organizations/${this.orgId}/issue_open_sync/list_assign_users?open_app_id=${openAppId}`,
+      method: 'get',
+    });
+  }
+
+  thirdPartyAppSyncRetry(recordIds: Array<string>, type: string) {
+    return this.request({
+      url: `/agile/v1/organizations/${this.orgId}/issue_open_sync/batch_retry`,
+      method: 'post',
+      params: {
+        open_app_type: type,
+      },
+      data: [...recordIds],
+    });
+  }
+
+  thirdPartyAppErrorUsers(historyId:string, data?:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/error-users/${historyId}`,
+      method: 'get',
+      data,
+    });
+  }
+
+  thirdPartyAppHistory(openAppId:string) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/histories/${openAppId}`,
+      method: 'get',
+    });
+  }
+
+  thirdPartyAppLatestHistory(openAppId:string) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/latest_history/${openAppId}`,
+      method: 'get',
+    });
+  }
+
+  thirdPartyAppList() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/list`,
+      method: 'get',
+    });
+  }
+
+  thirdPartyAppDetail(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/details`,
+      method: 'get',
+      params,
+    });
+  }
+
+  thirdPartyAppCreate(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app`,
+      method: 'post',
+      data,
+    });
+  }
+
+  thirdPartyAppEdit(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app`,
+      method: 'put',
+      data,
+    });
+  }
+
+  thirdPartyAppDisable(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/disable`,
+      method: 'put',
+      params,
+    });
+  }
+
+  thirdPartyAppEnable(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/enable`,
+      method: 'put',
+      params,
+    });
+  }
+
+  thirdPartyAppEditSyncSetting(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/sync_setting`,
+      method: 'put',
+      data,
+    });
+  }
+
+  thirdPartyAppHMSync(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/sync_user`,
+      method: 'get',
+      params,
+    });
+  }
+
+  thirdPartyAppTestConnection(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/test_connection`,
+      method: 'post',
+      data,
+    });
+  }
+
   // 项目协作-项目-状态列表
   cooperationProjStatusList() {
     return this.request({

@@ -60,5 +60,6 @@ function getInitProjectOverviewLayout(availableServiceList) {
   }), (item) => getDefaultLayout(item.layout));
   return defaultValues;
 }
+
 const memoizeGetInitProjectOverviewLayout = memoize(getInitProjectOverviewLayout);
 export { memoizeGetInitProjectOverviewLayout as getInitProjectOverviewLayout };

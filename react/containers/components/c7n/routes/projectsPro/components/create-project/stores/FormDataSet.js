@@ -147,7 +147,7 @@ export default ({
         name: 'description',
         type: 'string',
         label: '项目描述',
-        maxLength: 100,
+        maxLength: 1000,
         defaultValue: newUserGuideDefaultValue.description,
       },
       { name: 'enabled', type: 'boolean', label: '项目状态' },

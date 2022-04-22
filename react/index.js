@@ -55,6 +55,8 @@ export * from '@/components/permission';
 // Action
 export { default as Action } from '@/components/action';
 
+export { default as UserLabels } from '@/components/userLabels';
+
 // 头部按钮组件
 export { default as HeaderButtons } from '@/components/header-btns';
 

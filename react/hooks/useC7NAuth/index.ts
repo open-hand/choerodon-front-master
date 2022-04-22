@@ -31,7 +31,13 @@ function useC7NAuth(autoAuth?:boolean) {
       if (accessToken) {
         // 单点登录界面过来的时候
         setAccessToken(accessToken, tokenType, expiresIn);
+
         window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
+        // try {
+        //   openLink({ url: window.location.href.replace(/[&?]redirectFlag.*/g, '') }).then(() => close({}));
+        // } catch (error) {
+        //   console.log(error);
+        // }
       } else if (!getAccessToken()) {
         // token过期
         authorizeC7n();

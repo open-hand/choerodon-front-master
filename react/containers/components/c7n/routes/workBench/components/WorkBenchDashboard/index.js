@@ -3,6 +3,7 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { get, noop } from 'lodash';
+import { has as hasInject, mount } from '@choerodon/inject';
 
 import { Loading } from '@choerodon/components';
 import DragCard from '@/containers/components/c7n/components/dragCard';
@@ -34,6 +35,9 @@ import './index.less';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
+const UserIssue = () => (hasInject('agilePro:workbenchUserIssue') ? mount('agilePro:workbenchUserIssue', {}) : <></>);
+const ProjectProgress = () => (hasInject('agilePro:workbenchProjectStatistics') ? mount('agilePro:workbenchProjectStatistics', {}) : <></>);
+
 const ComponetsObjs = {
   starTarget: <StarTargetPro />,
   selfInfo: <SelfIntro />,
@@ -53,6 +57,8 @@ const ComponetsObjs = {
   resourceMonitoring: <ResourceMonitoring />,
   beginnerGuide: <BeginnerGuide />,
   notice: <Notice />,
+  userIssue: <UserIssue />,
+  projectProgress: <ProjectProgress />,
 };
 
 let observerLayout;
