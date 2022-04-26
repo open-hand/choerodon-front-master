@@ -302,7 +302,7 @@ class AppState {
     return this.deployServices.slice();
   }
 
-  loadUserInfo = () => axios
+  loadUserInfo = (setUserId = true) => axios
     .get('iam/choerodon/v1/users/self', {
       enabledCancelRoute: false,
     })
@@ -313,6 +313,9 @@ class AppState {
         organizationCode: res?.tenantNum,
       };
       this.setUserInfo(res);
+      if (setUserId) {
+        sessionStorage.setItem('userId', res.id);
+      }
       return res;
     });
 

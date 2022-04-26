@@ -32,6 +32,12 @@ function useC7NAuth(autoAuth?:boolean) {
         // 单点登录界面过来的时候
         setAccessToken(accessToken, tokenType, expiresIn);
 
+        const res = await AppState.loadUserInfo(false);
+        if (res.id !== sessionStorage.getItem('userId')) {
+          window.location.href = `${window.location.href.replace(/[&?]redirectFlag.*/g, '').split('/#/')[0]}/#/workbench?`
+          + `id=${res.tenantId}&name=${res.tenantName}&organizationId=${res.tenantId}&type=organization`;
+        }
+
         window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
         // try {
         //   openLink({ url: window.location.href.replace(/[&?]redirectFlag.*/g, '') }).then(() => close({}));
