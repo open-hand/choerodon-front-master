@@ -286,13 +286,13 @@ class Masters extends Component {
       link.rel = 'shortcut icon';
       link.href = get(data, 'favicon') || 'favicon.ico';
       document.head.appendChild(link);
-      if (data) {
-        data.defaultTitle = document.getElementsByTagName('title')[0].innerText;
-        document.getElementsByTagName('title')[0].innerText = get(
-          data,
-          'systemTitle',
-        );
-      }
+      // if (data) {
+      //   data.defaultTitle = document.getElementsByTagName('title')[0].innerText;
+      //   document.getElementsByTagName('title')[0].innerText = get(
+      //     data,
+      //     'systemTitle',
+      //   );
+      // }
       AppState.setSiteInfo(data);
     });
   }
