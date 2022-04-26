@@ -26,6 +26,7 @@ import MenusPro from '@/pages/home-page/components/menu';
 
 import './index.less';
 import './style';
+import headerStore from '@/containers/stores/c7n/HeaderStore';
 
 // 这里是没有菜单的界面合集
 // 记录下route和code 为了方便查询该界面的文档地址
@@ -133,9 +134,19 @@ class Masters extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.saaSUserRestDaysAnewReq(nextProps, this.props);
     this.judgeIfGetUserCountCheck(nextProps, this.props);
     this.initMenuType(nextProps);
     this.getGuideContentByLocationChange(nextProps, this.props);
+  }
+
+  saaSUserRestDaysAnewReq=(newProps, oldProps) => {
+    const newParams = new URLSearchParams(newProps.location.search);
+    const oldParams = new URLSearchParams(oldProps.location.search);
+    if (newParams.get('organizationId') !== oldParams.get('organizationId')) {
+      headerStore.deleteAnnouncement('saas_restdays_announcement');
+      this.getSaaSUserRestDays(newParams.get('organizationId'));
+    }
   }
 
   getGuideContentByLocationChange = (newProps, oldProps) => {
@@ -218,15 +229,16 @@ class Masters extends Component {
   }
 
   // 获取SaaS 新用户的免费使用天数提醒
-  getSaaSUserRestDays = async () => {
+  getSaaSUserRestDays = async (orgId) => {
     const {
       organizationId,
     } = this.props.AppState.currentMenuType || {};
+    const reqOrgId = orgId || organizationId;
     if (window._env_.BUSINESS || !organizationId) {
       return;
     }
     try {
-      const res = await getSaaSUserAvilableDays(organizationId);
+      const res = await getSaaSUserAvilableDays(reqOrgId);
       if (res && res.failed) {
         message.error(res?.message);
         return;
