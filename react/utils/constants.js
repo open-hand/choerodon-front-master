@@ -37,4 +37,4 @@ export const OUTWARD = `${process.env.OUTWARD || 'undefined'}`;
 export const EXTERNAL_LINK = get('EXTERNAL_LINK', process.env.EXTERNAL_LINK);
 export const SAAS_FEEDBACK = get('SAAS_FEEDBACK', process.env.SAAS_FEEDBACK);
 // 不需要设置的历史路径 为了避免登录后 重定向到这个地址
-export const NO_NEED_HISTORYPATH = ['access_token', 'unauthorized', 'invite-user', 'register-saas', 'register-organization'];
+export const NO_NEED_HISTORYPATH = ['access_token', 'unauthorized', 'invite-user', 'register-saas', 'register-organization', 'ding-talk-loading'];
