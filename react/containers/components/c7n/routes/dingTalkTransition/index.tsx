@@ -26,7 +26,7 @@ const Index = () => {
     }, [])
 
 
-    return <Loading />
+    return <Loading type="c7n"/>
 };
 
 export default Index;
