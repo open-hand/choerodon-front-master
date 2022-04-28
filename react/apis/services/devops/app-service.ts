@@ -5,6 +5,13 @@ class AppServiceApi extends Api<AppServiceApi> {
     return `/devops/v1/projects/${this.projectId}/app_service`;
   }
 
+  getDockerRepoConfig(id: any) {
+    return this.request({
+      url: `${this.prefix}/${id}/docker_repo_config`,
+      method: 'get',
+    });
+  }
+
   // 获取应用流水线创建时候的下拉列表应用
   getAppListsService(data:{
     param: [],
