@@ -12,6 +12,13 @@ class RdupmAlienApi extends Api<RdupmAlienApi> {
     });
   }
 
+  getProjectRepos() {
+    return this.request({
+      url: `${this.prefix}/v1/harbor-project/${this.projectId}/project_repos`,
+      method: 'get',
+    });
+  }
+
   getImageRepoList() {
     return this.request({
       url: `${this.prefix}/v1/harbor-choerodon-repos/listImageRepo`,
