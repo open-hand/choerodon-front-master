@@ -18,8 +18,10 @@ export function logout() {
   removeAccessToken();
   localStorage.clear();
   const historyPath = sessionStorage.getItem('historyPath');
+  const userId = sessionStorage.getItem('userId');
   sessionStorage.clear();
   sessionStorage.setItem('historyPath', historyPath);
+  sessionStorage.setItem('userId', userId);
   announcementModalInfo && localStorage.setItem('announcementModalInfo', announcementModalInfo);
   window.location = logoutUrl;
 }
