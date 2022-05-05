@@ -48,7 +48,8 @@
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "@types/react": "16.14.21",
-    "@types/react-dom": "16.9.14"
+    "@types/react-dom": "16.9.14",
+    "@hzero-front-ui/font": "4.0.4-hzerojs.1"
   },
   "dependencies": {
     "@choerodon/components": "1.4.0",
