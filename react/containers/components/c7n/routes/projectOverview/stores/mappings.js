@@ -461,9 +461,9 @@ const componentsObj = {
   // 需求交付周期
   backlogDeliveryCycle: {
     layout: {
-      h: 6,
+      h: 9,
       i: 'backlogDeliveryCycle',
-      minH: 5,
+      minH: 6,
       minW: 10,
       w: 10,
       x: 0,
