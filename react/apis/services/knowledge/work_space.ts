@@ -9,6 +9,9 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
     return this.request({
       url: `${this.prefix}/folder/${id}`,
       method: 'get',
+      params: {
+        organizationId: this.orgId,
+      },
     });
   }
 }
