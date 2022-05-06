@@ -186,11 +186,13 @@ const QuickLink = observer(() => {
               <div
                 className="c7n-quickLink-newItem-items-content"
               >
-                <p
-                  className="c7n-quickLink-newItem-items-content-name"
-                >
-                  {child?.name}
-                </p>
+                <Tooltip title={child?.name}>
+                  <p
+                    className="c7n-quickLink-newItem-items-content-name"
+                  >
+                    {child?.name}
+                  </p>
+                </Tooltip>
                 <a target="_blank" href={child?.linkUrl} rel="noreferrer">
                   <Icon type="link2" />
                   {`${child?.linkUrl}`}

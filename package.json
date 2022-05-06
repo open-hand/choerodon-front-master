@@ -54,6 +54,7 @@
     "@hzero-front-ui/c7n-ui": "4.0.5-alpha.2",
     "@hzero-front-ui/core": "4.0.4-alpha.2",
     "@hzero-front-ui/themes": "4.0.5-alpha.2",
+    "@hzero-front-ui/font": "4.0.4",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.168",
     "@types/query-string": "^6.3.0",
