@@ -79,3 +79,5 @@ export * from '@/hooks';
 
 // typings
 export * from '@/typings';
+
+export { default as openCreateNotification } from '@/components/notification';

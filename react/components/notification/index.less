@@ -1,0 +1,72 @@
+@import '~choerodon-ui/lib/style/themes/default';
+@success: #00bf96;
+@failed: #f44336;
+@running: #4d90fe;
+
+.notification {
+  position: relative;
+
+  :global {
+    .@{c7n-prefix}-notification-notice-message {
+      display: none;
+    }
+
+    .@{c7n-prefix}-notification-notice-description {
+      position: inherit;
+      margin: 0 !important;
+      padding: 0.12rem !important;
+    }
+  }
+
+  .content {
+    position: relative;
+    margin: 0 0 .1rem .48rem;
+
+    :global {
+      .@{c7n-prefix}-notification-notice-message {
+        display: block;
+        margin: 0 !important;
+      }
+    }
+  }
+
+  .title {
+    //margin-bottom: .06rem;
+  }
+
+  .des {
+    font-size: .12rem;
+    color: rgba(15, 19, 88, 0.65);
+    line-height: .2rem;
+  }
+
+  .progress {
+    position: absolute;
+    height: 100%;
+    background: #eff9fe;
+    top: 0;
+    left: 0;
+
+    &_line {
+      position: absolute;
+      height: 2px;
+      background: #37b1ec;
+      bottom: 15px;
+      left: 0;
+    }
+  }
+
+  .icon {
+
+    &_success {
+      color: @success;
+    }
+    &_failed {
+      color: @failed;
+    }
+    &_doing {
+      color: @running;
+    }
+
+  }
+}
