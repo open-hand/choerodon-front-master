@@ -14,12 +14,11 @@ const Index = () => {
   const history = useHistory();
 
   useEffect(() => {
-    history.push(sessionStorage.getItem('historyPath') || '/workbench');
     if (dd.env.platform === 'notInDingTalk' && corpId) {
       window.location.href = `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${code}&state=STATE&way=web`;
     } else if (corpId) {
       if (cookies.get('access_token')) {
-        history.push(sessionStorage.getItem('historyPath') || '/workbench');
+        history.push('/workbench');
       } else {
         dd.ready(() => {
           dd.runtime.permission.requestAuthCode({
