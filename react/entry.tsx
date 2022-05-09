@@ -6,12 +6,9 @@ import {
   HashRouter as Router,
 } from 'react-router-dom';
 import { Modal } from 'choerodon-ui/pro';
-import { ErrorBoundar } from '@choerodon/components';
 import PageEntry from './pages';
 import './utils/iframeStorage';
 import autoRefresh from './utils/autoRefresh';
-import ErrorPage from './components/c7n-error-pages/components/error-page';
-import C7NDevTool from '@/components/dev-tools';
 
 const getConfirmation = (message:string, callback:CallableFunction) => {
   Modal.open({
@@ -35,7 +32,7 @@ const App = () => (
     {/* <ErrorBoundar renderError={(props) => <ErrorPage {...props} />}> */}
     <PageEntry />
     {/* </ErrorBoundar> */}
-    <C7NDevTool />
+    {/* <C7NDevTool /> */}
   </Router>
 );
 
