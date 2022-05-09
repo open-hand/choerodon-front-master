@@ -17,9 +17,13 @@ const Index = () => {
     if (dd.env.platform === 'notInDingTalk' && corpId) {
       window.location.href = `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${code}&state=STATE&way=web`;
     } else if (corpId) {
+      console.log(corpId);
+      console.log(cookies.get('access_token'));
       if (cookies.get('access_token')) {
+        console.log(1);
         history.push('/workbench');
       } else {
+        console.log(2);
         dd.ready(() => {
           dd.runtime.permission.requestAuthCode({
             corpId, // 企业id
