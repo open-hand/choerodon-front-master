@@ -16,7 +16,9 @@ function useSetHistoryPath() {
 
   useMount(() => {
     // 如果不存在历史地址则设置当前地址为跳转地址
-    !historyPath && sessionStorage.setItem('historyPath', pathname + search);
+    if (pathname !== '/dingTalkTransition') { // out 都不该作为historypath ?
+      !historyPath && sessionStorage.setItem('historyPath', pathname + search);
+    }
   });
 
   //   // 这块需要加上header那块的判断逻辑

@@ -6,6 +6,7 @@ import React, {
 import { Menu, Popover, Icon } from 'choerodon-ui';
 import { Button, Tooltip } from 'choerodon-ui/pro';
 import { flatten, map } from 'lodash';
+import _ from 'lodash';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
 import classNames from 'classnames';
 import { Permission } from '@/components/permission';
@@ -48,7 +49,7 @@ const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
     if (!btnItems?.length) {
       return null;
     }
-    return map(btnItems, (itemProps:GroupBtnItemProps, index:number) => {
+    return map(btnItems.filter((i: any) => i?.display || _.isNull(i?.display) || _.isUndefined(i?.display)), (itemProps:any, index:number) => {
       const {
         name: itemName,
         handler,
