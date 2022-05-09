@@ -41,6 +41,7 @@ export default class AvatarUploader extends Component {
     intlPrefix: PropTypes.string, // 多语言的前缀
     onVisibleChange: PropTypes.func, // 模态框关闭时的回调
     onUploadOk: PropTypes.func, // 成功上传时的回调
+    organizationId: PropTypes.string, // 组织id
   };
 
   state = {
@@ -57,6 +58,7 @@ export default class AvatarUploader extends Component {
     const {
       x, y, size, rotate, file, imageStyle: { width, height }, img: { naturalWidth, naturalHeight },
     } = this.state;
+    const { organizationId, bucketName } = this.props;
     const flag = rotateFlag(rotate);
     const scale = naturalWidth / width;
     const startX = flag ? x - ((width - height) / 2) : x;
@@ -67,13 +69,12 @@ export default class AvatarUploader extends Component {
       startY: round(startY * scale),
       endX: round(size * scale),
       endY: round(size * scale),
-      bucketName: 'iam-service',
+      bucketName: bucketName || 'iam-service',
     });
     const data = new FormData();
-    const { AppState: { currentMenuType: { organizationId } } } = this.props;
     data.append('file', file);
     this.setState({ submitting: true });
-    axios.post(`/hfle/choerodon/v1/${organizationId}/cut_image?${qs}`, data)
+    axios.post(`/hfle/choerodon/v1/${organizationId ?? AppState?.currentMenuType?.organizationId}/cut_image?${qs}`, data)
       .then((res) => {
         if (res.failed) {
           prompt(res.message);

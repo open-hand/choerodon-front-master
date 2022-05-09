@@ -6,11 +6,13 @@ class UsersApi extends Api<UsersApi> {
   }
 
   // 看手机存不存在(自己的手机校验不成功)
-  checkPhoneExitNoSelf(data: object) {
+  checkPhoneExitNoSelf(email:string) {
     return this.request({
-      method: 'post',
-      url: `${this.prefix}/check`,
-      data,
+      method: 'get',
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/users/check/email`,
+      params: {
+        email,
+      },
       noPrompt: true,
     });
   }

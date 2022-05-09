@@ -14,6 +14,7 @@ const modulesMapping = {
     'issueTable', 'projectDynamic', 'personalWorkload', 'workLoad',
     'issueProgress', 'featureProgress',
   ],
+  N_REQUIREMENT: ['backlogDeliveryCycle'],
   N_PROGRAM: [
     'issueProgress', 'featureProgress',
   ],

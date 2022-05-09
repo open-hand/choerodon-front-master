@@ -50,6 +50,7 @@ const ComponentMountMap = {
   issueProgress: 'agilePro:issueProgress',
   overviewCard: 'waterfall:overviewCard',
   milestoneCard: 'waterfall:milestoneCard',
+  backlogDeliveryCycle: 'backlog:backlogDeliveryCycle',
 };
 
 const ProjectOverview = () => {
@@ -269,6 +270,8 @@ const ProjectOverview = () => {
           return '安装部署【敏捷模块】模块后，才能使用此卡片';
         case 'waterfall':
           return '安装部署【瀑布管理】模块后，才能使用此卡片';
+        case 'backlog':
+          return '安装部署【需求管理】模块后，才能使用此卡片';
         default:
           break;
       }

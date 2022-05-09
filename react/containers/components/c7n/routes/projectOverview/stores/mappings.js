@@ -458,6 +458,26 @@ const componentsObj = {
       '展示项目里程碑及里程碑完成情况。',
     img: milestoneCardImage,
   },
+  // 需求交付周期
+  backlogDeliveryCycle: {
+    layout: {
+      h: 9,
+      i: 'backlogDeliveryCycle',
+      minH: 6,
+      minW: 10,
+      w: 10,
+      x: 0,
+      y: 55,
+    },
+    name: 'backlogDeliveryCycle',
+    type: 'backlogDeliveryCycle',
+    groupId: 'backlog',
+    injectGroupId: 'backlog',
+    title: '需求交付周期表',
+    describe:
+        '该模板展示了需求从开始到结束的周期时长，反映了团队对客户问题和业务机会的响应速度。',
+    img: milestoneCardImage,
+  },
 };
 
 export default componentsObj;
