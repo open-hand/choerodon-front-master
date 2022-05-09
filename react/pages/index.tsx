@@ -9,6 +9,7 @@ import { Provider } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { Loading } from '@choerodon/components';
 
+import Cookies from 'universal-cookie';
 import stores from '@/containers/stores';
 
 import Master from '@/containers/components/c7n/master';
@@ -38,6 +39,8 @@ import { MasterLocaleContainer } from '@/configs/masterLocaleConfigs';
 
 /** @type {boolean} 是否安装了敏捷模块 */
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
+
+const cookies = new Cookies();
 
 const MasterIndex = () => {
   const location = useLocation();
@@ -98,6 +101,9 @@ const MasterIndex = () => {
 
   useMount(() => {
     document.body.setAttribute('data-theme', 'theme4');
+    if (pathname === '/dingTalkTransition' && cookies.get('access_token')) {
+      auth(); // auth() 没有异步抛出结果-- 在这里请求
+    }
     // 不是就校验去登录
     !isInOutward && auth();
   });
