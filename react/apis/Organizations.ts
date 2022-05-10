@@ -44,9 +44,9 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
-  thirdPartyAppLatestHistory(openAppId:string) {
+  thirdPartyAppLatestHistory(openAppId:string, type:string) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/latest_history/${openAppId}`,
+      url: `${this.prefix}/${this.orgId}/open_app/latest_history/${openAppId}?type=${type}`,
       method: 'get',
     });
   }
@@ -109,6 +109,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   thirdPartyAppHMSync(params:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/open_app/sync_user`,
+      method: 'get',
+      params,
+    });
+  }
+
+  thirdPartyAppWorkGroupHMSync(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/sync_work_group`,
       method: 'get',
       params,
     });
