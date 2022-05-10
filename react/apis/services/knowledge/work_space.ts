@@ -14,6 +14,16 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
       },
     });
   }
+
+  getFileData(id: any) {
+    return this.request({
+      url: `${this.prefix}/${id}`,
+      method: 'get',
+      params: {
+        organization_id: this.orgId,
+      },
+    });
+  }
 }
 
 const workSpaceApi = new WorkSpaceApi();
