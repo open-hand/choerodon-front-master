@@ -24,6 +24,16 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
       },
     });
   }
+
+  rename(id: any, name: any) {
+    return this.request({
+      url: `${this.prefix}/rename/${id}`,
+      method: 'put',
+      params: {
+        new_name: name,
+      },
+    });
+  }
 }
 
 const workSpaceApi = new WorkSpaceApi();
