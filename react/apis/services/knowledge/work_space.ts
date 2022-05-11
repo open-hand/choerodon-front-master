@@ -31,6 +31,7 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
       method: 'put',
       params: {
         new_name: name,
+        organization_id: this.orgId,
       },
     });
   }
