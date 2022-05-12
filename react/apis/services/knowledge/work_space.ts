@@ -5,12 +5,14 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
     return `/knowledge/v1/projects/${this.projectId}/work_space`;
   }
 
-  getFolderContent(id: any) {
+  getFolderContent(id: any, page: any, size: any) {
     return this.request({
       url: `${this.prefix}/folder/${id}`,
       method: 'get',
       params: {
         organization_id: this.orgId,
+        page,
+        size,
       },
     });
   }
