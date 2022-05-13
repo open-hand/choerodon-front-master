@@ -22,7 +22,7 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
       url: `${this.prefix}/${id}`,
       method: 'get',
       params: {
-        organization_id: this.orgId,
+        organizationId: this.orgId,
       },
     });
   }
