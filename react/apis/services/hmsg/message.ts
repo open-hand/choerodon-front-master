@@ -7,14 +7,14 @@ class MessageApi extends Api<MessageApi> {
 
   getMsgList() {
     return this.request({
-      url: `${this.prefix}/hmsg/choerodon/v1/mails/records/ding_talk/${this.orgId}`,
+      url: `/hmsg/choerodon/v1/mails/records/ding_talk/${this.orgId}`,
       method: 'post',
     });
   }
 
   reSendMsg(id:string) {
     return this.request({
-      url: `${this.prefix}/resend?transactionId=${id}`,
+      url: `/hmsg/v1/${this.orgId}/messages/resend?transactionId=${id}`,
       method: 'post',
     });
   }
