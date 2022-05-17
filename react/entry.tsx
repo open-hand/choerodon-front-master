@@ -11,8 +11,9 @@ import './utils/iframeStorage';
 import autoRefresh from './utils/autoRefresh';
 
 const getConfirmation = (message:string, callback:CallableFunction) => {
-  const restFunction = (m: any) => {
+  const restFunction = (m: any, func: any) => {
     m?.close();
+    func(true);
   };
   const modal = Modal.open({
     className: 'c7n-iam-confirm-modal',
@@ -20,10 +21,7 @@ const getConfirmation = (message:string, callback:CallableFunction) => {
     children: message.split('__@.@__')[1],
     key: Modal.key(),
     onOk() {
-      callback(true);
-      setTimeout(() => {
-        restFunction(modal);
-      }, 500);
+      restFunction(modal, callback);
     },
     onCancel() {
       callback(false);
