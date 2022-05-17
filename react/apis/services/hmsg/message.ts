@@ -5,7 +5,7 @@ class MessageApi extends Api<MessageApi> {
     return '/hmsg/v1/messages';
   }
 
-  reSendMsg(id:string) {
+  reSendMsg() {
     return this.request({
       url: `${this.prefix}/resend?transactionId=${this.orgId}`,
       method: 'post',
