@@ -5,9 +5,16 @@ class MessageApi extends Api<MessageApi> {
     return '/hmsg/v1/messages';
   }
 
-  reSendMsg() {
+  getMsgList() {
     return this.request({
-      url: `${this.prefix}/resend?transactionId=${this.orgId}`,
+      url: `${this.prefix}/hmsg/choerodon/v1/mails/records/ding_talk/${this.orgId}`,
+      method: 'post',
+    });
+  }
+
+  reSendMsg(id:string) {
+    return this.request({
+      url: `${this.prefix}/resend?transactionId=${id}`,
       method: 'post',
     });
   }
