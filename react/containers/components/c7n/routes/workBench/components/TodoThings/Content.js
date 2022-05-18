@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Tooltip, Icon } from 'choerodon-ui';
+import { Tooltip, Icon, Alert } from 'choerodon-ui';
 import { Loading } from '@choerodon/components';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '../card';
@@ -102,6 +102,22 @@ const StarTargetPro = observer(() => {
         count={auditDs.length}
         className="c7n-workbench-check"
       >
+        <Alert
+          style={{
+            marginBottom: 16,
+          }}
+          type="info"
+          showIcon
+          message={(
+            <div
+              className="c7n-workbench-check-message"
+            >
+              <p>该卡片中将展示出:</p>
+              <p>1.【流水线-待我审核】的人工卡点任务</p>
+              <p>2.【代码管理-合并请求-待我审核】的合并请求</p>
+            </div>
+          )}
+        />
         {renderContent()}
       </Card>
     </div>
