@@ -5,6 +5,17 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
     return `/knowledge/v1/projects/${this.projectId}/work_space`;
   }
 
+  get orgPrefix() {
+    return `/knowledge/v1/organizations/${this.orgId}/work_space`;
+  }
+
+  getOrgFolderContent(id: any) {
+    return this.request({
+      url: `${this.orgPrefix}/folder/${id}`,
+      method: 'get',
+    });
+  }
+
   getFolderContent(id: any, page: any, size: any) {
     return this.request({
       url: `${this.prefix}/folder/${id}`,
