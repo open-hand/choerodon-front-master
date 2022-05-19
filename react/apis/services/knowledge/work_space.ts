@@ -28,6 +28,16 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
     });
   }
 
+  getOrgFiledData(id: any) {
+    return this.request({
+      url: `${this.orgPrefix}/${id}`,
+      method: 'get',
+      params: {
+        organizationId: this.orgId,
+      },
+    });
+  }
+
   getFileData(id: any) {
     return this.request({
       url: `${this.prefix}/${id}`,
