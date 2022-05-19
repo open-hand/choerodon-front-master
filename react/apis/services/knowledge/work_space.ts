@@ -58,6 +58,17 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
       },
     });
   }
+
+  renameOrg(id: any, name: any) {
+    return this.request({
+      url: `${this.orgPrefix}/rename/${id}`,
+      method: 'put',
+      params: {
+        new_name: name,
+        organization_id: this.orgId,
+      },
+    });
+  }
 }
 
 const workSpaceApi = new WorkSpaceApi();
