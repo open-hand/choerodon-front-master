@@ -289,10 +289,15 @@ export default observer(() => {
     return projects.length > 0 ? (
       projects.map((p) => (
         <Tooltip
-          placement="right"
-          title={(
-            <p className="allProjects-content-item-right-down-pro-tooltip">{p.description}</p>
-      )}>
+          placement="left"
+          arrowPointAtCenter
+          title={
+            p.description
+              ? (
+                <p className="allProjects-content-item-right-down-pro-tooltip">{p.description}</p>
+              ) : ''
+}
+        >
           <div
             key={p.id}
             onClick={() => {
