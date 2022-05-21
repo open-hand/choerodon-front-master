@@ -13,6 +13,7 @@ export * from './services/test';
 export * from './services/market';
 export * from './services/agile';
 export * from './services/knowledge';
+export * from './services/hmsg';
 export * from './Users';
 export * from './services/hadm';
 export * from './Hzero_Users';

@@ -1,10 +1,31 @@
 .c7ncd-userLabels {
-  display: flex;
-  align-items: center;
+  display: inline-block;
   .c7n-tag {
-    max-width: 50px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    background: #f0f5ff !important;
+    border-radius: 4px !important;
+    color: #5365ea !important;
+    margin-right: 4px !important;
+    font-size: 10px !important;
   }
+  .c7n-tag:last-child {
+    margin-right: 0 !important;
+  }
+}
+
+.c7ncd-userLabels-agile {
+  display: inline-block;
+  .c7n-tag {
+    background: #F0F5FF !important;
+    border-radius: 4px !important;
+    color: #5365EA !important;
+    margin-right: 6px !important;
+    font-size: 12px !important;
+  }
+  .c7n-tag:last-child {
+    margin-right: 0 !important;
+  }
+}
+
+.c7ncd-userLabels-content {
+  text-align: left;
 }

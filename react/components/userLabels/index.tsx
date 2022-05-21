@@ -9,13 +9,16 @@ import './index.less';
 
 export interface Iprops {
     list: Array<string>
-    maxTagNum?: number
     className?: string
+    labelContainerWidth? :number
+    agile: boolean
 }
 
 // @ts-ignore
 const Index:React.FC<Iprops> = (props) => {
-  const { list, maxTagNum = 3, className } = props;
+  const {
+    list, labelContainerWidth, className, agile,
+  } = props;
 
   const handleMouseEnter = (e:any, title:string) => {
     const { currentTarget } = e;
@@ -33,11 +36,61 @@ const Index:React.FC<Iprops> = (props) => {
     Tooltip.hide();
   };
 
-  const getTag = (item:string, index:number, labelList: Array<string>) => {
-    if (labelList.length <= maxTagNum || index + 1 < maxTagNum) {
-      return (
+  const numTag = (maxTagNum:number) => {
+    let str = '';
+    list.forEach((i:string) => {
+      str = `${str + i} ,`;
+    });
+    str = str.substring(0, str.length - 1);
+    return (
+      <Tooltip title={str}>
         <Tag
-        // @ts-ignore
+          style={{
+            color: '#4D90FE',
+            position: 'relative',
+            marginRight: 2,
+          }}
+          color="#E6F7FF"
+        >
+          +
+          {list.length - maxTagNum + 1}
+          ...
+        </Tag>
+      </Tooltip>
+    );
+  };
+
+  const getContent = () => {
+    const containerWidth = labelContainerWidth || 100;
+    let totalWidth = 0;
+    const totalMarginWidth = 6 * (list.length - 1);
+    let maxTagNum = 0;
+
+    list.forEach((item, index) => {
+      totalWidth += 16 + item.length * 12; // 12 按汉字算
+      const currentTotalMarginWidth = index * 6;
+      if (totalWidth <= containerWidth - currentTotalMarginWidth - 40) { // 40 超出...tag宽度
+        maxTagNum = index + 2;
+      }
+    });
+    if (totalWidth <= containerWidth - totalMarginWidth) {
+      maxTagNum = list.length;
+    }
+    if (maxTagNum === 0) {
+      return numTag(1);
+    }
+    return (
+      <div className="c7ncd-userLabels-content" style={{ width: labelContainerWidth || 100 }}>
+        {list.map((item, index) => getTag(item, index, maxTagNum))}
+      </div>
+    );
+  };
+
+  const getTag = (item:string, index:number, maxTagNum:number) => {
+    if (list.length <= maxTagNum || index + 1 < maxTagNum) {
+      const ele = (
+        <Tag
+      // @ts-ignore
           onMouseEnter={(e) => { handleMouseEnter(e, item); }}
           onMouseLeave={handleMouseLeave}
           style={{
@@ -50,29 +103,10 @@ const Index:React.FC<Iprops> = (props) => {
           {item}
         </Tag>
       );
+      return ele;
     }
-    if (labelList.length >= maxTagNum && index + 1 === maxTagNum) {
-      let str = '';
-      labelList.forEach((i:string) => {
-        str = `${str + i} ,`;
-      });
-      str = str.substring(0, str.length - 1);
-      return (
-        <Tooltip title={str}>
-          <Tag
-            style={{
-              color: '#4D90FE',
-              position: 'relative',
-              marginRight: 2,
-            }}
-            color="#E6F7FF"
-          >
-            +
-            {labelList.length - maxTagNum + 1}
-            ...
-          </Tag>
-        </Tooltip>
-      );
+    if (list.length >= maxTagNum && index + 1 === maxTagNum) {
+      return numTag(maxTagNum);
     }
     return '';
   };
@@ -80,8 +114,10 @@ const Index:React.FC<Iprops> = (props) => {
   return (
     list.length
       ? (
-        <div className={`c7ncd-userLabels ${className || ''}`}>
-          {list.map((item, index) => getTag(item, index, list))}
+        <div className={`c7ncd-userLabels ${className || ''}${agile ? 'c7ncd-userLabels-agile' : ''}`}>
+          {
+            getContent()
+          }
         </div>
       )
       : ''
