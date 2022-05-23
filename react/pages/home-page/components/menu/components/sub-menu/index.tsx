@@ -37,6 +37,7 @@ const SubMenus:FC<SubMenuProps> = () => {
       getMenuData,
       activeMenu,
       openKeys: savedOpenKeys,
+      collapsed,
     },
     MenuStore,
     AppState: {
@@ -204,7 +205,7 @@ const SubMenus:FC<SubMenuProps> = () => {
         subMenuCloseDelay={0.1}
         subMenuOpenDelay={0.1}
         selectedKeys={[activeMenu?.code].filter(String)}
-        openKeys={savedOpenKeys}
+        openKeys={!isExpanded ? [] : savedOpenKeys}
         mode="inline"
         onOpenChange={handleOpenChange}
       >

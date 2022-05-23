@@ -56,6 +56,8 @@ class MenuStore {
 
   @observable activeMenuRoot = {};
 
+  @observable collapsed = false;
+
   @observable activeMenu = null;
 
   @observable openKeys = [];
@@ -68,6 +70,12 @@ class MenuStore {
 
   // 是否具有site平台层权限 用于避免重复切平台层
   @observable hasSitePermission = true;
+
+  @action
+  setCollapsed(collapsed) {
+    this.collapsed = collapsed;
+  }
+
 
   @computed
   get getHasSitePermission () {
@@ -169,7 +177,9 @@ class MenuStore {
       const root = this.getMenuData.find((i) => i.id === flag.rootId);
       if (root) {
         menuRoot[root.level] = root;
-        this.setOpenkeysBaseonRoot(root);
+        if (!this.collapsed) {
+          this.setOpenkeysBaseonRoot(root);
+        }
         this.setActiveMenuRoot(menuRoot);
       }
     }
