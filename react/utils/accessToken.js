@@ -26,6 +26,7 @@ export function setAccessToken(token, tokenType, expiresIn) {
     // 开发环境下测试，待删除
     sameSite: 'none',
     secure: true,
+    httpOnly: false,
   };
   if (isHttps) {
     option.sameSite = 'none';
