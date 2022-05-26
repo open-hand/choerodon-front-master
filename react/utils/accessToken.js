@@ -23,10 +23,6 @@ export function setAccessToken(token, tokenType, expiresIn) {
   const isHttps = window.location.protocol === 'https:';
   const option = {
     path: '/',
-    // 开发环境下测试，待删除
-    sameSite: 'none',
-    secure: true,
-    httpOnly: false,
   };
   if (isHttps) {
     option.sameSite = 'none';
