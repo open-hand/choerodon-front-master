@@ -3,14 +3,15 @@ import {
   getAccessToken,
 } from '@/utils';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
+import AppState from '@/containers/stores/c7n/AppState';
 import cursiveSetCorrectId from '../utils/cursiveSetCorrectedId';
 
 export default function addCustomHeader(config: AxiosRequestConfig) {
   const newConfig = config;
   const str = window.location.hash.split('?')[1];
   const urlSearchParam = new URLSearchParams(str);
-  const type = urlSearchParam.get('type');
-  const orgId = urlSearchParam.get('organizationId');
+  const type = urlSearchParam.get('type') || AppState.currentMenuType?.type;
+  const orgId = urlSearchParam.get('organizationId') || AppState.currentMenuType?.organizationId;
   const id = !type || type === 'site' ? 0 : orgId || 0;
 
   newConfig.headers['Content-Type'] = 'application/json';
