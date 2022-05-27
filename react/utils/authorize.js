@@ -29,10 +29,12 @@ export function logout() {
 export function authorizeC7n() {
   // 为了把这个hash传到oauth里要把#换成%23
   let historyPath = sessionStorage.getItem('historyPath');
-  if (historyPath && NO_NEED_HISTORYPATH.some((item) => historyPath.includes(item))) {
+  const Reg = /=(.+?)==/gi;
+  if (historyPath && (NO_NEED_HISTORYPATH.some((item) => historyPath.includes(item)) || Reg.test(historyPath))) {
     historyPath = '/';
     sessionStorage.setItem('historyPath', '/');
   }
+
   let uri = `${window.location.origin}/#${historyPath || '/'}`;
   if (uri.indexOf('?') > 0) {
     uri += '&redirectFlag';
