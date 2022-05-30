@@ -17,17 +17,62 @@ class UsersApi extends Api<UsersApi> {
     });
   }
 
-  /**
+  yqcloudBind(data:any) {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}/bind_yqcloud`,
+      data,
+    });
+  }
+
+  //
+  yqcloudBindStatus(data:any) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/yqcloud_bind_status`,
+      data,
+    });
+  }
+
+  yqcloudUnBind(data:any) {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}/unbind_yqcloud`,
+      data,
+    });
+  }
+
+  // 燕千云绑定获取验证码
+
+   yqcloudBindGetCaptchaByEmail = (email:string) => this.request({
+     method: 'post',
+     url: `${this.prefix}/get_yqcloud_verify_code`,
+     data: {
+       verifyType: 'EMAIL',
+       email,
+     },
+   })
+
+   yqcloudBindGetCaptchaByPhone=(phone:string) => this.request({
+     method: 'post',
+     url: `${this.prefix}/get_yqcloud_verify_code`,
+     data: {
+       verifyType: 'PHONE',
+       phone,
+     },
+   })
+
+   /**
    *  获取用户个人信息
    * @return {*}
    * @memberof UsersApi
    */
-  getUserInfo() {
-    return this.request({
-      url: `${this.prefix}/self`,
-      method: 'get',
-    });
-  }
+   getUserInfo() {
+     return this.request({
+       url: `${this.prefix}/self`,
+       method: 'get',
+     });
+   }
 }
 
 const usersApi = new UsersApi();
