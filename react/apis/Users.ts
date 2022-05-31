@@ -17,6 +17,37 @@ class UsersApi extends Api<UsersApi> {
     });
   }
 
+  // 获取第三方应用可以绑定的组织
+
+  openAppGetCanBindOrgs(type:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/list_tenants_with_open_app?open_app_type=${type}`,
+    });
+  }
+
+  // 获取第三方应用已经绑定的组织
+  openAppGetBindOrgs(type:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/list_organizations_bound_up_with_open_app?open_app_type=${type}`,
+    });
+  }
+
+  yqcloudCheckPhoneExist(email:string, orgId:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/check_yqcloud_email_or_phone_exist?verify_type=EMAIL&email=${email}&organization_id=${orgId}`,
+    });
+  }
+
+  yqcloudCheckEmailExist(phone:string, orgId:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/check_yqcloud_email_or_phone_exist?verify_type=PHONE&phone=${phone}&organization_id=${orgId}`,
+    });
+  }
+
   yqcloudBind(data:any) {
     return this.request({
       method: 'post',
@@ -34,31 +65,32 @@ class UsersApi extends Api<UsersApi> {
     });
   }
 
-  yqcloudUnBind(data:any) {
+  yqcloudUnBind(orgId:string) {
     return this.request({
       method: 'post',
-      url: `${this.prefix}/unbind_yqcloud`,
-      data,
+      url: `${this.prefix}/unbind_yqcloud?organization_id=${orgId}`,
     });
   }
 
   // 燕千云绑定获取验证码
 
-   yqcloudBindGetCaptchaByEmail = (email:string) => this.request({
+   yqcloudBindGetCaptchaByEmail = (email:string, params:any) => this.request({
      method: 'post',
      url: `${this.prefix}/get_yqcloud_verify_code`,
      data: {
        verifyType: 'EMAIL',
        email,
+       ...params,
      },
    })
 
-   yqcloudBindGetCaptchaByPhone=(phone:string) => this.request({
+   yqcloudBindGetCaptchaByPhone=(phone:string, params:any) => this.request({
      method: 'post',
      url: `${this.prefix}/get_yqcloud_verify_code`,
      data: {
        verifyType: 'PHONE',
        phone,
+       ...params,
      },
    })
 
