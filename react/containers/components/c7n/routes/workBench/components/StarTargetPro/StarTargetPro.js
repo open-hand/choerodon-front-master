@@ -90,13 +90,13 @@ const StarTargetPro = observer(() => {
               }`}
               onClick={() => handleClickItem(s)}
             >
-              {isActive && (
+              {/* {isActive && (
                 <div className={`${prefixCls}-proContainer-items-correct`}>
                   <i
                     className={`${prefixCls}-proContainer-items-correct-icon`}
                   />
                 </div>
-              )}
+              )} */}
               <div className={`${prefixCls}-proContainer-items-header`}>
                 <div
                   className={`${prefixCls}-proContainer-items-header-icon`}
