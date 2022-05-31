@@ -34,17 +34,17 @@ class UsersApi extends Api<UsersApi> {
     });
   }
 
-  yqcloudCheckPhoneExist(email:string, orgId:string) {
-    return this.request({
-      method: 'get',
-      url: `${this.prefix}/check_yqcloud_email_or_phone_exist?verify_type=EMAIL&email=${email}&organization_id=${orgId}`,
-    });
-  }
-
-  yqcloudCheckEmailExist(phone:string, orgId:string) {
+  yqcloudCheckPhoneExist(phone:string, orgId:string) {
     return this.request({
       method: 'get',
       url: `${this.prefix}/check_yqcloud_email_or_phone_exist?verify_type=PHONE&phone=${phone}&organization_id=${orgId}`,
+    });
+  }
+
+  yqcloudCheckEmailExist(email:string, orgId:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/check_yqcloud_email_or_phone_exist?verify_type=EMAIL&email=${email}&organization_id=${orgId}`,
     });
   }
 
