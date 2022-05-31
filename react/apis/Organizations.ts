@@ -130,6 +130,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
+  thirdPartyAppTestConnectionYq(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/check_yqcloud_config`,
+      method: 'post',
+      data,
+    });
+  }
+
   // 项目协作-项目-状态列表
   cooperationProjStatusList() {
     return this.request({
