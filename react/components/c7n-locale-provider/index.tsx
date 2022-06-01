@@ -65,9 +65,10 @@ function C7NLocaleProvider<T extends Record<string, string>>(props:C7NLocaleProv
   //     />
   //   );
   // }
-  if (!isLoading) {
-    closeLoading();
+  if (isLoading) {
+    return (<div />);
   }
+  closeLoading();
 
   return (
     <LocaleStore.Provider value={contextValue}>
