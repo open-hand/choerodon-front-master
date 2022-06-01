@@ -3,6 +3,7 @@ import { IntlConfig, IntlProvider } from 'react-intl';
 import { Loading } from '@choerodon/components';
 import { reduce, assign } from 'lodash';
 import { useBoolean, useMount } from 'ahooks';
+import closeLoading from '@/utils/closeLoading';
 import { useCurrentLanguage } from '@/hooks';
 import { LanguageTypes } from '@/typings';
 
@@ -54,15 +55,18 @@ function C7NLocaleProvider<T extends Record<string, string>>(props:C7NLocaleProv
     loadData();
   });
 
-  if (isLoading) {
-    return (
-      <Loading
-        type="c7n"
-        style={{
-          height: '100vh',
-        }}
-      />
-    );
+  // if (isLoading) {
+  //   return (
+  //     <Loading
+  //       type="c7n"
+  //       style={{
+  //         height: '100vh',
+  //       }}
+  //     />
+  //   );
+  // }
+  if (!isLoading) {
+    closeLoading();
   }
 
   return (
