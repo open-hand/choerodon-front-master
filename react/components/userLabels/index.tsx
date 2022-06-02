@@ -63,21 +63,31 @@ const Index:React.FC<Iprops> = (props) => {
   const getContent = () => {
     const containerWidth = labelContainerWidth || 100;
     let totalWidth = 0;
-    const totalMarginWidth = 6 * (list.length - 1);
     let maxTagNum = 0;
 
+    if (list[0] && 8 + list[0].length * 12 > containerWidth) {
+      return numTag(1);
+    }
+
     list.forEach((item, index) => {
-      totalWidth += 16 + item.length * 12; // 12 按汉字算
-      const currentTotalMarginWidth = index * 6;
-      if (totalWidth <= containerWidth - currentTotalMarginWidth - 40) { // 40 超出...tag宽度
-        maxTagNum = index + 2;
+      totalWidth += 8 + item.length * 12; // 12 按汉字算
+      const nextItem = list[index + 1];
+
+      if (nextItem) {
+        if (totalWidth + 6 + 40 > containerWidth) { // 40 超出...tag宽度
+          maxTagNum = index + 1;
+          return;
+        }
+        const nextTotalWidth = totalWidth + 6 + 8 + nextItem.length * 12;
+        if (nextTotalWidth > containerWidth) {
+          maxTagNum = index + 2;
+          return;
+        }
+        totalWidth += 6;
       }
     });
-    if (totalWidth <= containerWidth - totalMarginWidth) {
+    if (totalWidth <= containerWidth) {
       maxTagNum = list.length;
-    }
-    if (maxTagNum === 0) {
-      return numTag(1);
     }
     return (
       <div className="c7ncd-userLabels-content" style={{ width: labelContainerWidth || 100 }}>
@@ -87,7 +97,7 @@ const Index:React.FC<Iprops> = (props) => {
   };
 
   const getTag = (item:string, index:number, maxTagNum:number) => {
-    if (list.length <= maxTagNum || index + 1 < maxTagNum) {
+    if (index + 1 < maxTagNum) {
       const ele = (
         <Tag
       // @ts-ignore
@@ -105,7 +115,7 @@ const Index:React.FC<Iprops> = (props) => {
       );
       return ele;
     }
-    if (list.length >= maxTagNum && index + 1 === maxTagNum) {
+    if (index + 1 === maxTagNum) {
       return numTag(maxTagNum);
     }
     return '';
@@ -114,7 +124,7 @@ const Index:React.FC<Iprops> = (props) => {
   return (
     list.length
       ? (
-        <div className={`c7ncd-userLabels ${className || ''}${agile ? 'c7ncd-userLabels-agile' : ''}`}>
+        <div className={`c7ncd-userLabels ${className || ''} ${agile ? 'c7ncd-userLabels-agile' : ''}`}>
           {
             getContent()
           }
