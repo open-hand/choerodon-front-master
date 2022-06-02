@@ -9,8 +9,8 @@ import './index.less';
 
 export interface Iprops {
     list: Array<string>
-    className?: string
-    labelContainerWidth? :number
+    className: string
+    labelContainerWidth :number
     agile: boolean
 }
 
