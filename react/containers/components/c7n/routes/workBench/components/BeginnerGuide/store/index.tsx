@@ -2,7 +2,7 @@ import React, {
   useEffect, createContext, useContext, useState,
 } from 'react';
 
-import { axios } from '@/index';
+import axios from '@/components/axios';
 import AppState from '@/containers/stores/c7n/AppState';
 import { Response, GuideDTO } from '../model';
 
