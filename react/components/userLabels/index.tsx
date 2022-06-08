@@ -69,54 +69,63 @@ const Index:React.FC<Iprops> = (props) => {
       return numTag(1);
     }
 
-    list.forEach((item, index) => {
-      totalWidth += 8 + item.length * 12; // 12 按汉字算
+    let overflow = false;
+
+    // eslint-disable-next-line no-plusplus
+    for (let index = 0; index < list.length; index++) {
+      totalWidth += 10 + list[index].length * 12; // 12 按汉字算
       const nextItem = list[index + 1];
 
       if (nextItem) {
         if (totalWidth + 6 + 40 > containerWidth) { // 40 超出...tag宽度
           maxTagNum = index + 1;
-          return;
+          overflow = true;
+          break;
         }
-        const nextTotalWidth = totalWidth + 6 + 8 + nextItem.length * 12;
+        const nextTotalWidth = totalWidth + 6 + 10 + nextItem.length * 12;
         if (nextTotalWidth > containerWidth) {
           maxTagNum = index + 2;
-          return;
+          overflow = true;
+          break;
         }
         totalWidth += 6;
       }
-    });
-    if (totalWidth <= containerWidth) {
+    }
+
+    if (totalWidth <= containerWidth && !overflow) {
       maxTagNum = list.length;
     }
     return (
       <div className="c7ncd-userLabels-content" style={{ width: labelContainerWidth || 100 }}>
-        {list.map((item, index) => getTag(item, index, maxTagNum))}
+        {list.map((item, index) => getTag(item, index, maxTagNum, overflow))}
       </div>
     );
   };
 
-  const getTag = (item:string, index:number, maxTagNum:number) => {
+  const getTag = (item:string, index:number, maxTagNum:number, overflow:boolean) => {
+    const ele = (
+      <Tag
+    // @ts-ignore
+        onMouseEnter={(e) => { handleMouseEnter(e, item); }}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          color: '#4D90FE',
+          position: 'relative',
+          marginRight: 2,
+        }}
+        color="#E6F7FF"
+      >
+        {item}
+      </Tag>
+    );
     if (index + 1 < maxTagNum) {
-      const ele = (
-        <Tag
-      // @ts-ignore
-          onMouseEnter={(e) => { handleMouseEnter(e, item); }}
-          onMouseLeave={handleMouseLeave}
-          style={{
-            color: '#4D90FE',
-            position: 'relative',
-            marginRight: 2,
-          }}
-          color="#E6F7FF"
-        >
-          {item}
-        </Tag>
-      );
       return ele;
     }
     if (index + 1 === maxTagNum) {
-      return numTag(maxTagNum);
+      if (overflow) {
+        return numTag(maxTagNum);
+      }
+      return ele;
     }
     return '';
   };
