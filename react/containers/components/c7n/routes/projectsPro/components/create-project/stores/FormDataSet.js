@@ -205,6 +205,11 @@ export default ({
       { name: 'useTemplate', defaultValue: true },
     ],
     events: {
+      load: ({ dataSet }) => {
+        if (dataSet && dataSet?.current?.get('devopsComponentCode')) {
+          dataSet?.current?.getField('devopsComponentCode').set('disabled', true);
+        }
+      },
       update: ({
         dataSet, record, name, value, oldValue,
       }) => {

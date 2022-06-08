@@ -293,7 +293,7 @@ const CreateProject = observer(() => {
           isModify && <Select name="statusId" renderer={renderStatus} />
         }
 
-        <TextArea colSpan={3} name="description" resize="vertical" />
+        <TextArea newLine colSpan={3} name="description" resize="vertical" />
         {
           isModify && [
             <TextField name="creationDate" disabled />,
