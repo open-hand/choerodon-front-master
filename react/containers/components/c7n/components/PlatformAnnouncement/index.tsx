@@ -53,6 +53,7 @@ const PlatformAnnouncement = (props:{
   const [isFull, setFull] = useState<boolean>(false);
 
   const closeModal = () => {
+    console.log(infoModal, 'infoModal');
     window.localStorage.setItem('announcementModalInfo', `${readId}+true`);
     infoModal && infoModal.close();
   };
