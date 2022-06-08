@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
-import { notification, message } from 'choerodon-ui';
+import { notification, message, Alert } from 'choerodon-ui';
 import {
   Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select,
 } from 'choerodon-ui/pro';
@@ -39,6 +39,7 @@ const CreateProject = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [templateTabsKey, setTemplateTabsKey] = useState([]);
   const [hasConfiged, setHasConfiged] = useState(false);
+  const [showDevopsAdvanced, setShowDevopsAdvanced] = useState(false);
 
   const record = useMemo(() => formDs.current, [formDs.current]);
 
@@ -156,6 +157,16 @@ const CreateProject = observer(() => {
     }
   }, []);
 
+  useEffect(() => {
+    const values = ['N_DEVOPS', 'N_OPERATIONS'];
+    const flag = categoryDs.selected.some((categoryRecord) => values.includes(categoryRecord.get('code')));
+    if (flag) {
+      setShowDevopsAdvanced(true);
+    } else {
+      setShowDevopsAdvanced(false);
+    }
+  }, [categoryDs.selected, showDevopsAdvanced]);
+
   const renderAvatar = useCallback(() => {
     const name = record.get('name');
     const imageUrl = record.get('imageUrl');
@@ -265,9 +276,9 @@ const CreateProject = observer(() => {
   return (
     <>
       {renderAvatar()}
-      <Form record={record} className={`${prefixCls}-form`} labelLayout="float">
-        <TextField name="name" />
-        <TextField name="code" disabled={isModify} />
+      <Form columns={3} record={record} className={`${prefixCls}-form`} labelLayout="float">
+        <TextField colSpan={2} name="name" />
+        <TextField colSpan={1} name="code" disabled={isModify} />
         {/* <Select name="aaa">
           <Option value="jack">新品</Option>
           <Option value="jack1">包装升级</Option>
@@ -282,7 +293,7 @@ const CreateProject = observer(() => {
           isModify && <Select name="statusId" renderer={renderStatus} />
         }
 
-        <TextArea name="description" resize="vertical" />
+        <TextArea colSpan={3} name="description" resize="vertical" />
         {
           isModify && [
             <TextField name="creationDate" disabled />,
@@ -346,6 +357,30 @@ const CreateProject = observer(() => {
           )
         }
       </div>
+      {
+        showDevopsAdvanced && (
+        <div className={`${prefixCls}-advanced`}>
+          <div className={`${prefixCls}-advanced-divided`} />
+          <p className={`${prefixCls}-advanced-title`}>
+            高级设置
+            <Icon type="expand_less" />
+          </p>
+          <Alert
+            message="DevOps组件编码将用于GitLab Group中的URL片段，Harbor Project的名称片段，SonarQube projectKey前缀，
+          以及Helm仓库编码。"
+            type="info"
+            showIcon
+          />
+          <Form style={{ marginTop: 10 }} columns={3} record={record}>
+            <TextField
+              name="devopsComponentCode"
+              colSpan={2}
+              addonAfter={<NewTips helpText="" />}
+            />
+          </Form>
+        </div>
+        )
+      }
     </>
   );
 });
