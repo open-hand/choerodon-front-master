@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { axios } from '@/index';
+import axios from '@/components/axios';
 import AppState from '@/containers/stores/c7n/AppState';
 import {
   RescoreDTO, RescoreTotalName, RescoreGroupName, RescoreName, Card,

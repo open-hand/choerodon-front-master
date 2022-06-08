@@ -21,7 +21,13 @@ import CreateProject from '../create-project';
 import ProjectCategory from '../project-category';
 import Action from '@/components/action';
 
+import {
+  MODAL_WIDTH,
+} from '@/constants/MODAL';
+
 import './index.less';
+
+const { MIDDLE } = MODAL_WIDTH;
 
 export default observer(() => {
   const {
@@ -80,7 +86,7 @@ export default observer(() => {
       ),
       okText: currentProjectId ? '保存' : '创建',
       style: {
-        width: '3.8rem',
+        width: MIDDLE,
       },
     });
   };
