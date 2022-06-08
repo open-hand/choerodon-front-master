@@ -11,6 +11,15 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  // 第三方配置唯一校验
+  thirdPartyAppOnlyVerify(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/check_config_create`,
+      method: 'post',
+      data,
+    });
+  }
+
   thirdPartyAppSyncUsers(openAppId: string) {
     return this.request({
       url: `/agile/v1/organizations/${this.orgId}/issue_open_sync/list_assign_users?open_app_id=${openAppId}`,
