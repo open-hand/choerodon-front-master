@@ -62,7 +62,7 @@ const PlatformAnnouncement = (props:{
     <div className={`${prefixCls}-modal-title`}>
       <span>
         {title}
-        123
+        123456
       </span>
       <Icon
         style={{
@@ -109,7 +109,11 @@ const PlatformAnnouncement = (props:{
           />
         </div>
       ),
-      onOk: closeModal,
+      onOk: () => {
+        window.localStorage.setItem('announcementModalInfo', `${readId}+true`);
+        console.log('go');
+        return true;
+      },
       okText: '关闭',
       okCancel: false,
     });
