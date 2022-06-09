@@ -16,6 +16,11 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
 
   const finalResult = shouldShowAllResponseData ? response : resData;
 
+  if (resData?.failed && resData?.code === 'error.key-encrypt.decrypt.abnormal_content') { // 主键加密过期
+    window.location.href = `${window.location.href.split('/#/')[0]}/#/workbench`;
+    return resData;
+  }
+
   if (resData?.failed) {
     if (config.application === AXIOS_TYPE_DEFAULT && !config?.noPrompt) {
       prompt(resData?.message, 'error');
