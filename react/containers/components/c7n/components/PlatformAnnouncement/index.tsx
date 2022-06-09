@@ -62,6 +62,7 @@ const PlatformAnnouncement = (props:{
     <div className={`${prefixCls}-modal-title`}>
       <span>
         {title}
+        123
       </span>
       <Icon
         style={{
