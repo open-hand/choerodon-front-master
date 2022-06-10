@@ -11,6 +11,28 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  roleList() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/roles`,
+      method: 'get',
+    });
+  }
+
+  batchUpdate(data: any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/users/batch_update`,
+      method: 'put',
+      data,
+    });
+  }
+
+  userLabelList() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/list_user_labels`,
+      method: 'get',
+    });
+  }
+
   // 第三方配置唯一校验
   thirdPartyAppOnlyVerify(data:any) {
     return this.request({
