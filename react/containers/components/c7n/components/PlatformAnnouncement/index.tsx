@@ -93,7 +93,7 @@ const PlatformAnnouncement = (props:{
     }
   }, []);
 
-  const InfoContent = (infoProps:any) => {
+  const InfoContent = observer((infoProps:any) => {
     const { modal } = infoProps;
 
     const handleOk = () => {
@@ -117,7 +117,7 @@ const PlatformAnnouncement = (props:{
         />
       </div>
     );
-  };
+  });
 
   const handleInfo = () => {
     infoModal = Modal.open({
