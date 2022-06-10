@@ -18,6 +18,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
+  batchUpdate(data: any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/users/batch_update`,
+      method: 'put',
+      data,
+    });
+  }
+
   userLabelList() {
     return this.request({
       url: `${this.prefix}/${this.orgId}/list_user_labels`,
