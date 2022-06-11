@@ -80,12 +80,12 @@ const PlatformAnnouncement = (props:{
     }
   }, []);
 
-  useEffect(() => {
-    infoModal && infoModal.update({
-      fullScreen: isFull,
-      title: renderAnnounceTitle(),
-    });
-  }, [isFull]);
+  // useEffect(() => {
+  //   infoModal && infoModal.update({
+  //     fullScreen: isFull,
+  //     title: renderAnnounceTitle(),
+  //   });
+  // }, [isFull]);
 
   const handleInfo = () => {
     console.log('handleInfo');
