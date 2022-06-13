@@ -92,7 +92,7 @@ const PlatformAnnouncement = (props:{
     }
     infoModal = Modal.open({
       key: infoModalKey,
-      title: renderAnnounceTitle(true),
+      title: renderAnnounceTitle(false),
       style: modalStyle,
       movable: false,
       fullScreen: false,
