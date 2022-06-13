@@ -352,6 +352,30 @@ class OrganizationsApi extends Api<OrganizationsApi> {
       url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging?enabled=true${selectProjectId ? `&project_id=${selectProjectId}` : ''}`,
     });
   }
+
+  // 查询原所属组织
+  loadOrganization(id:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/bus/${id}`,
+    });
+  }
+
+  // 查询目标所属组织
+  loadTargetOrganization() {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/${this.orgId}/tenant/page?`,
+    });
+  }
+
+  // 修改所属组织
+  updateOrganization({ uid, targetId }:any) {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}/${this.orgId}/user/tenant/update?user_id=${uid}&target_tenant_id=${targetId}?`,
+    });
+  }
 }
 
 const organizationsApi = new OrganizationsApi();
