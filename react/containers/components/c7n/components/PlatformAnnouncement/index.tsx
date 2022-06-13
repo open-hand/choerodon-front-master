@@ -88,6 +88,7 @@ const PlatformAnnouncement = (props:{
 
   const handleInfo = () => {
     if (infoModal) {
+      infoModal.open();
       return;
     }
     infoModal = Modal.open({
