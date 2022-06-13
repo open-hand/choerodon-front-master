@@ -57,7 +57,7 @@ const PlatformAnnouncement = (props:{
     infoModal && infoModal.close();
   };
 
-  const renderAnnounceTitle = (test:any) => (
+  const renderAnnounceTitle = (full:any) => (
     <div className={`${prefixCls}-modal-title`}>
       <span>
         {title}
@@ -67,12 +67,12 @@ const PlatformAnnouncement = (props:{
           cursor: 'pointer',
           float: 'right',
         }}
-        type={test ? 'fullscreen_exit' : 'fullscreen'}
+        type={full ? 'fullscreen_exit' : 'fullscreen'}
         onClick={() => {
-          setFull(!test);
+          setFull(!full);
           infoModal && infoModal.update({
-            fullScreen: !test,
-            title: renderAnnounceTitle(!test),
+            fullScreen: !full,
+            title: renderAnnounceTitle(!full),
           });
         }}
       />
@@ -86,15 +86,7 @@ const PlatformAnnouncement = (props:{
     }
   }, []);
 
-  // useEffect(() => {
-  //   infoModal && infoModal.update({
-  //     fullScreen: isFull,
-  //     title: renderAnnounceTitle(),
-  //   });
-  // }, [isFull]);
-
   const handleInfo = () => {
-    console.log('handleInfo');
     infoModal = Modal.open({
       key: infoModalKey,
       title: renderAnnounceTitle(isFull),
