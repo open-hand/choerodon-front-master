@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Icon } from 'choerodon-ui';
 import { Modal } from 'choerodon-ui/pro';
 import get from 'lodash/get';
-import { observer } from 'mobx-react-lite';
 import './index.less';
 import axios from '@/components/axios';
 
@@ -54,37 +53,31 @@ const PlatformAnnouncement = (props:{
   const [isFull, setFull] = useState<boolean>(false);
 
   const closeModal = () => {
-    console.log(infoModal, 'infoModal');
     window.localStorage.setItem('announcementModalInfo', `${readId}+true`);
     infoModal && infoModal.close();
   };
 
-  const renderAnnounceTitle = useCallback(() => (
+  const renderAnnounceTitle = (full:any) => (
     <div className={`${prefixCls}-modal-title`}>
       <span>
         {title}
-        qw
       </span>
       <Icon
         style={{
           cursor: 'pointer',
           float: 'right',
         }}
-        type={isFull ? 'fullscreen_exit' : 'fullscreen'}
+        type={full ? 'fullscreen_exit' : 'fullscreen'}
         onClick={() => {
-          console.log(isFull);
-          setFull(!isFull);
+          setFull(!full);
+          infoModal && infoModal.update({
+            fullScreen: !full,
+            title: renderAnnounceTitle(!full),
+          });
         }}
       />
     </div>
-  ), [isFull]);
-
-  useEffect(() => {
-    infoModal && infoModal.update({
-      fullScreen: isFull,
-      title: renderAnnounceTitle(),
-    });
-  }, [isFull]);
+  );
 
   useEffect(() => {
     const announcementModalShowed = window.localStorage.getItem('announcementModalInfo')?.split('+')[1] !== 'false';
@@ -93,43 +86,27 @@ const PlatformAnnouncement = (props:{
     }
   }, []);
 
-  const InfoContent = observer((infoProps:any) => {
-    const { modal } = infoProps;
-
-    const handleOk = () => {
-      window.localStorage.setItem('announcementModalInfo', `${readId}+true`);
-      console.log('gogo');
-      return true;
-    };
-
-    modal.handleOk(handleOk);
-
-    return (
-      <div
-        className="c7n-boot-header-inbox-wrap"
-        style={{
-          maxHeight: '47vh',
-        }}
-      >
-        <div
-          className="c7n-boot-header-inbox-content"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
-      </div>
-    );
-  });
-
   const handleInfo = () => {
     infoModal = Modal.open({
       key: infoModalKey,
-      title: renderAnnounceTitle(),
+      title: renderAnnounceTitle(isFull),
       style: modalStyle,
       movable: false,
       fullScreen: false,
-      children: <InfoContent full={isFull} />,
-      // onOk: () => {
-
-      // },
+      children: (
+        <div
+          className="c7n-boot-header-inbox-wrap"
+          style={{
+            maxHeight: '47vh',
+          }}
+        >
+          <div
+            className="c7n-boot-header-inbox-content"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        </div>
+      ),
+      onOk: closeModal,
       okText: '关闭',
       okCancel: false,
     });
@@ -146,4 +123,4 @@ const PlatformAnnouncement = (props:{
   );
 };
 
-export default observer(PlatformAnnouncement);
+export default PlatformAnnouncement;
