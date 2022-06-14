@@ -114,6 +114,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
+  thirdPartyAppSyncBindUser(params:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/sync_bind_user`,
+      method: 'get',
+      params,
+    });
+  }
+
   thirdPartyAppWorkGroupHMSync(params:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/open_app/sync_work_group`,
