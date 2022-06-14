@@ -357,7 +357,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   loadOrganization(id:string) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/bus/${id}`,
+      url: `${this.prefix}/bus/pro/${id}`,
     });
   }
 
