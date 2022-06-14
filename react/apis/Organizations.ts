@@ -221,6 +221,16 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
+  enableUsersPage(name: any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/enableUsers/page`,
+      params: {
+        user_name: name,
+      },
+      method: 'get',
+    });
+  }
+
   // 项目协作-项目-状态停用
   cooperationProjStatusDisable(id:any) {
     return this.request({

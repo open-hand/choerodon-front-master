@@ -4,6 +4,7 @@ export * from './Relevance';
 export * from './Enterprises';
 export * from './Permissions';
 export * from './Organizations';
+export * from './Projects';
 export * from './Menus';
 export * from './RegistersInvitation';
 export * from './alien/devops';
