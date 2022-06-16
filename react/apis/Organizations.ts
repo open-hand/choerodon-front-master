@@ -386,6 +386,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
       url: `${this.prefix}/${this.orgId}/user/tenant/update?user_id=${uid}&target_tenant_id=${targetId}?`,
     });
   }
+
+  // 项目层查询组织能否钉钉发送
+  getDingdingDisable() {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/${this.orgId}/open_app/is_message_enabled?type=ding_talk`,
+    });
+  }
 }
 
 const organizationsApi = new OrganizationsApi();
