@@ -65,7 +65,7 @@ export default function useStore(AppState, history) {
       this.projectLoading = true;
       const hasOrgId = queryString.parse(history.location.search).organizationId;
       const func = () => {
-        axios.get(hasOrgId ? `/iam/choerodon/v1/organizations/${hasOrgId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
+        axios.post(hasOrgId ? `/iam/choerodon/v1/organizations/${hasOrgId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
           const tempContent = get(res, 'content') ? res.content.map((r) => {
             const unix = String(moment(r.creationDate).unix());
             r.background = getRandomBackground(unix.substring(unix.length - 3));

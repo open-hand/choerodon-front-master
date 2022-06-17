@@ -124,18 +124,9 @@ const MasterIndex = () => {
     return React.createElement(content);
   }, [isInOutward]);
 
-  // if (loading && !isInOutward) {
-  //   return (
-  //     <Loading
-  //       style={{
-  //         position: 'fixed',
-  //         margin: 'auto',
-  //         inset: 0,
-  //       }}
-  //       type="c7n"
-  //     />
-  //   );
-  // }
+  if (loading && !isInOutward) {
+    return (<div />);
+  }
 
   return (
     <Provider {...stores}>
