@@ -5,15 +5,18 @@ export function downloadFile(url: string, name: string, callbackFunc: Function) 
   xhr.responseType = 'blob';
   // 资源完成下载
   // 增加的代码
-  xhr.onprogress = function (e) {
-    if (e.lengthComputable) {
-      const { total, loaded } = e;
-      const percentage = ((loaded / total) * 100).toFixed(0);
-      callbackFunc && callbackFunc(+percentage);
-      // @ts-ignore
-    } else if (e?.target?.response) {
-      callbackFunc && callbackFunc(100);
-    }
+  // xhr.onprogress = function (e) {
+  //   if (e.lengthComputable) {
+  //     const { total, loaded } = e;
+  //     const percentage = ((loaded / total) * 100).toFixed(0);
+  //     callbackFunc && callbackFunc(+percentage);
+  //     // @ts-ignore
+  //   } else if (e?.target?.response) {
+  //     callbackFunc && callbackFunc(100);
+  //   }
+  // };
+  xhr.onloadend = function () {
+    callbackFunc && callbackFunc(100);
   };
   xhr.onload = function () {
     // 获取响应的blob对象
