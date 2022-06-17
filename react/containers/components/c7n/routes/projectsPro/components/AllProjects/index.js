@@ -623,8 +623,8 @@ export default observer(() => {
           },
         ]}
         />
-        <AllProjectTable />
-        {/* {renderProjects()}
+        {/* <AllProjectTable /> */}
+        {renderProjects()}
         {ProjectsProUseStore.getAllProjects.length > 0 && (
           <Pagination
             showSizeChangerLabel={false}
@@ -640,7 +640,7 @@ export default observer(() => {
               marginTop: 15,
             }}
           />
-        )} */}
+        )}
       </div>
     </div>
   );
