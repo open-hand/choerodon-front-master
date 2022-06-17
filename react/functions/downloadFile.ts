@@ -9,7 +9,7 @@ export function downloadFile(url: string, name: string, callbackFunc: Function) 
     if (e.lengthComputable) {
       const { total, loaded } = e;
       const percentage = ((loaded / total) * 100).toFixed(0);
-      callbackFunc && callbackFunc(percentage);
+      callbackFunc && callbackFunc(+percentage);
       // @ts-ignore
     } else if (e?.target?.response) {
       callbackFunc && callbackFunc(100);
