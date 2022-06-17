@@ -6,12 +6,14 @@ export function downloadFile(url: string, name: string, callbackFunc: Function) 
   // 资源完成下载
   // 增加的代码
   xhr.onprogress = function (e) {
-    // @ts-ignore
-    if (e?.target?.response) {
+    if (e.lengthComputable) {
+      const { total, loaded } = e;
+      const percentage = ((loaded / total) * 100).toFixed(0);
+      callbackFunc && callbackFunc(percentage);
+      // @ts-ignore
+    } else if (e?.target?.response) {
       callbackFunc && callbackFunc(100);
     }
-    // const { total, loaded } = e;
-    // const percentage = ((loaded / total) * 100).toFixed(0);
   };
   xhr.onload = function () {
     // 获取响应的blob对象
