@@ -87,9 +87,13 @@ const PlatformAnnouncement = (props:{
   }, []);
 
   const handleInfo = () => {
+    if (infoModal) {
+      infoModal.open();
+      return;
+    }
     infoModal = Modal.open({
       key: infoModalKey,
-      title: renderAnnounceTitle(isFull),
+      title: renderAnnounceTitle(false),
       style: modalStyle,
       movable: false,
       fullScreen: false,

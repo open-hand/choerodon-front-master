@@ -99,7 +99,7 @@ const MainMenu:FC<MainMenuProps> = () => {
           onClick={() => handleMenuLink(item)}
         >
           <div className={`${prefixCls}-item-icon`}>
-            <svg style={{ height: 30 }} aria-hidden="true">
+            <svg style={{ height: 30, width: 30 }} aria-hidden="true">
               {/* 图片这里命名是new匹配new的svg */}
               <use xlinkHref={`#${svgLink}new.sprite`} />
             </svg>
