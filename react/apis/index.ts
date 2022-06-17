@@ -22,4 +22,4 @@ export * from './All';
 export * from './RegisterSaas';
 export * from './System';
 export * from './hand';
-export * from './wps';
+export * from './iam';

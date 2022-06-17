@@ -95,7 +95,7 @@ const CreateProject = observer(() => {
       if (some(categories, ['code', 'N_WATERFALL'])) {
         record.set('useTemplate', false);
       }
-      const res = await formDs.submit();
+      const res = await formDs.forceSubmit();
       if (res && !res.failed && res.list && res.list.length) {
         const projectId = get(res.list[0], 'id');
         if (projectId) {
