@@ -157,10 +157,30 @@ const StarTargetPro = observer(() => {
     );
   };
 
+  const toAllProjects = () => {
+    history.push({
+      pathname: '/projects',
+      search,
+    });
+  };
+
+  const renderTitle = () => {
+    const starProjects = getStarProject.slice();
+    return starProjects.length ? (
+      <div className="title-container">
+        <span>{formatCommon({ id: 'starProjects' })}</span>
+        <span className="right-text" role="none" onClick={toAllProjects}>
+          所有项目
+          <Icon type="arrow_forward" />
+        </span>
+      </div>
+    ) : formatCommon({ id: 'starProjects' });
+  };
+
   return (
     <div className={`${prefixCls}`}>
       <Card
-        title={formatCommon({ id: 'starProjects' })}
+        title={renderTitle()}
         className={`${prefixCls}-name`}
       >
         {renderContent()}

@@ -20,6 +20,9 @@ import EmptyPage from '../empty-page';
 import CreateProject from '../create-project';
 import ProjectCategory from '../project-category';
 import Action from '@/components/action';
+import { organizationsApiConfig } from '@/apis';
+import Test from './a';
+import AllProjectTable from './table.tsx';
 
 import {
   MODAL_WIDTH,
@@ -488,14 +491,14 @@ export default observer(() => {
           {formatProject({ id: 'allProject' }, { name: org.name })}
         </p>
         <div className="allProjects-title-right">
-          <TextField
+          {/* <TextField
             onBlur={handleBlurProjects}
             placeholder={formatCommon({ id: 'pleaseSearch' })}
             className="allProjects-title-right-textField"
             prefix={
               <Icon style={{ color: 'rgba(202,202,228,1)' }} type="search" />
             }
-          />
+          /> */}
           <Permission
             service={['choerodon.code.organization.project.ps.create']}
           >
@@ -544,7 +547,84 @@ export default observer(() => {
     <div className="allProjects">
       <div className="allProjects-title">{renderTitle()}</div>
       <div className="allProjects-content">
-        {renderProjects()}
+        <Test searchFieldsConfig={[
+          {
+            name: 'a',
+            type: 'Select',
+            fieldProps: {
+              placeholder: '项目状态',
+            },
+            onChange: (value) => { console.log(value); },
+            initial: true,
+            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
+            optionsTextField: 'name',
+            optionsValueField: 'id',
+          },
+          {
+            name: 'b',
+            type: 'Select',
+            fieldProps: {
+              placeholder: '工作组',
+            },
+            onChange: (value) => { console.log(value); },
+            initial: true,
+            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
+            optionsTextField: 'name',
+            optionsValueField: 'id',
+          },
+          {
+            name: 'c',
+            type: 'Select',
+            fieldProps: {
+              placeholder: '项目分类',
+            },
+            onChange: (value) => { console.log(value); },
+            initial: true,
+            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
+            optionsTextField: 'name',
+            optionsValueField: 'id',
+          },
+          {
+            name: 'd',
+            type: 'Select',
+            fieldProps: {
+              placeholder: '冲刺',
+            },
+            onChange: (value) => { console.log(value); },
+            initial: true,
+            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
+            optionsTextField: 'name',
+            optionsValueField: 'id',
+          },
+          {
+            name: 'e',
+            type: 'Select',
+            fieldProps: {
+              placeholder: '所属项目群',
+            },
+            width: 110,
+            onChange: (value) => { console.log(value); },
+            initial: true,
+            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
+            optionsTextField: 'name',
+            optionsValueField: 'id',
+          },
+          {
+            name: 'f',
+            type: 'Select',
+            fieldProps: {
+              placeholder: '项目类型',
+            },
+            onChange: (value) => { console.log(value); },
+            initial: true,
+            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
+            optionsTextField: 'name',
+            optionsValueField: 'id',
+          },
+        ]}
+        />
+        <AllProjectTable />
+        {/* {renderProjects()}
         {ProjectsProUseStore.getAllProjects.length > 0 && (
           <Pagination
             showSizeChangerLabel={false}
@@ -560,7 +640,7 @@ export default observer(() => {
               marginTop: 15,
             }}
           />
-        )}
+        )} */}
       </div>
     </div>
   );

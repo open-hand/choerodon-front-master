@@ -29,7 +29,7 @@ export default () => {
     <div className="projectsPro">
       <StarProjects />
       <AllProjects />
-      <RecentProjects />
+      {/* <RecentProjects /> */}
     </div>
   );
 };
