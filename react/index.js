@@ -74,6 +74,8 @@ export { default as Breadcrumb } from '@/components/c7n-breadCrumb';
 // apis
 export * from '@/apis';
 
+export * from '@/functions';
+
 // hooks
 export * from '@/hooks';
 
