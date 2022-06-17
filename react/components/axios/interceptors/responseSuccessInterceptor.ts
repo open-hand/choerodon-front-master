@@ -16,7 +16,9 @@ export default function handleResponseInterceptor(response:AxiosResponse) {
 
   const finalResult = shouldShowAllResponseData ? response : resData;
 
-  if (resData?.failed && resData?.code === 'error.key-encrypt.decrypt.abnormal_content') { // 主键加密过期
+  if (resData?.failed
+    && (resData?.code === 'error.key-encrypt.decrypt.abnormal_content' || resData?.message === 'gateway helper error happened: io.choerodon.core.exception.CommonException: error.key-encrypt.decrypt.abnormal_content')
+  ) { // 主键加密过期
     window.location.href = `${window.location.href.split('/#/')[0]}/#/workbench`;
     return resData;
   }

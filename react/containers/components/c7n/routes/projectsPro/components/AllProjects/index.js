@@ -22,7 +22,7 @@ import ProjectCategory from '../project-category';
 import Action from '@/components/action';
 import { organizationsApiConfig } from '@/apis';
 import Test from './a';
-import AllProjectTable from './table.tsx';
+import AllProjectTable from './table';
 
 import {
   MODAL_WIDTH,
