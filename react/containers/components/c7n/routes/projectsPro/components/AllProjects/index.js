@@ -337,7 +337,7 @@ export default observer(() => {
               <div className="allProjects-content-item-right-top">
                 <div className="allProjects-content-item-right-top-left">
                   <span className="allProjects-content-item-right-top-left-code">
-                    {p.code && p.code.toUpperCase()}
+                    {p.code}
                   </span>
                   <span
                     className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${
