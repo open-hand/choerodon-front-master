@@ -25,7 +25,7 @@ function trimSpecial(string) {
   let newString;
   // 替换字符串中的所有特殊字符（包含空格）
   if (string !== '') {
-    const pattern = /[`%~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g;
+    const pattern = /[`%~!@#$^&*()=|{}':;',\\\[\]\.<>\/?~_！@#￥……&*（）——|{}【】'；：""'。，、？\s]/g;
     newString = string.replace(pattern, '');
   }
   return newString;
@@ -217,7 +217,10 @@ export default ({
           const devopsCode = trimSpecial(value);
           const lowerCode = devopsCode?.toLowerCase();
           const finalCode = lowerCode.replace(/^(\s|[0-9]+.{0,1}[0-9]{0,2})/g, '');
-          record?.set('devopsComponentCode', finalCode);
+          const reg = /[\u4e00-\u9fa5]/g;
+          const removeChinese = finalCode.replace(reg, '');
+
+          record?.set('devopsComponentCode', removeChinese);
         }
       },
     },
