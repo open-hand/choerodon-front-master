@@ -32,6 +32,7 @@ function useC7NAuth(autoAuth?:boolean) {
       [propName: string]: any
     } = {};
     const str = window.location.href.split('/#/')[1];
+    console.log(window.location.href,'window.location.href')
     // @ts-ignore
     str.replace(/([^=&]+)=([^&]*)/g, (m, key, value) => {
       paramsObj[decodeURIComponent(key)] = decodeURIComponent(value);
@@ -40,6 +41,7 @@ function useC7NAuth(autoAuth?:boolean) {
     accessToken = paramsObj.access_token;
     tokenType = paramsObj.token_type;
     expiresIn = paramsObj.expires_in;
+    console.log(accessToken, 'accessToken');
   }
 
   const handleAuth = useCallback(async () => {
