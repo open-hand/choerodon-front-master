@@ -58,6 +58,7 @@ const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
         group,
         tooltipsConfig: itemToolTipsConfig,
         icon: itemIcon,
+        img,
       } = itemProps;
       const Item = (
         <Menu.Item
@@ -69,6 +70,20 @@ const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
               {
                 itemIcon ? (
                   <Icon type={itemIcon} />
+                ) : ''
+              }
+              {
+                img ? (
+                  <img
+                    style={{
+                      width: '18px',
+                      marginRight: 6,
+                      position: 'relative',
+                      bottom: 1,
+                    }}
+                    src={img}
+                    alt=""
+                  />
                 ) : ''
               }
               {itemName}
