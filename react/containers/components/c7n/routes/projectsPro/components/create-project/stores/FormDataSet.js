@@ -121,6 +121,7 @@ export default ({
         label: '项目编码',
         required: true,
         validator: codeValidator,
+        maxLength: 40,
         defaultValue: newUserGuideDefaultValue.code,
       },
       {
