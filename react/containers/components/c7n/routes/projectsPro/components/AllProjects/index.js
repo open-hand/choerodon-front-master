@@ -594,6 +594,8 @@ export default observer(() => {
                 dropdownMatchSelectWidth: false,
                 maxTagCount: 3,
                 searchable: true,
+                flat: true,
+                isFlat: true,
               },
               initial: true,
               optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),

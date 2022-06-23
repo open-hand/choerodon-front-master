@@ -15,8 +15,8 @@ export interface IProps {
 }
 
 const grid = 0;
-
-const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDraggingStyle | undefined) => ({
+// DraggingStyle | NotDraggingStyle | undefined
+const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
   userSelect: 'none',
   margin: `${grid}px 0 `,
   ...draggableStyle,
@@ -71,7 +71,8 @@ const Index:React.FC<IProps> = (props) => {
     return ds;
   }, []);
 
-  const onDragEnd = usePersistFn((result:DropResult) => {
+  // DropResult
+  const onDragEnd = usePersistFn((result:any) => {
     console.log(result, 'result');
     if (result.source && result.destination) {
       const { source: { index: sourceIndex }, destination: { index: destinationIndex } } = result;
