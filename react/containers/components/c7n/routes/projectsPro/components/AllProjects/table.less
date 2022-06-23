@@ -23,14 +23,20 @@
       display: none;
       margin-left: 8px;
     }
-  }
-  &-field-name:hover {
-    .icon-stars {
+    .project-name {
       display: inline-block;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .c7n-pro-table-row:hover {
+    .icon-stars {
+      display: inline-block !important;
     }
     .icon-star_border {
-      display: none;
-      margin-left: 8px;
+      display: inline-block !important;
     }
   }
 }

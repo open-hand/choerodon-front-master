@@ -1,12 +1,12 @@
 import {
-  DataSet, Icon, Modal, Table, TextField,
+  Icon, Modal, Table, TextField, Tooltip,
 } from 'choerodon-ui/pro';
-import { Tag } from 'choerodon-ui';
-import React, { useCallback, useMemo } from 'react';
-import { inject, observer } from 'mobx-react';
+import React, { useCallback } from 'react';
+import { observer } from 'mobx-react';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { StatusTag } from '@choerodon/components';
 import { some, throttle } from 'lodash';
+import isOverflow from 'choerodon-ui/pro/lib/overflow-tip/util';
 import moment from 'moment';
 import { getRandomBackground } from '@/utils';
 import { useProjectsProStore } from '../../stores';
@@ -25,6 +25,12 @@ const { MIDDLE } = MODAL_WIDTH;
 const modalkey1 = Modal.key();
 const modalkey2 = Modal.key();
 
+const colorMap = new Map([
+  ['failed', 'failed'],
+  ['creating', 'operating'],
+  ['updating', 'operating'],
+]);
+
 export interface IProps {
 
 }
@@ -38,6 +44,8 @@ const Index:React.FC<IProps> = (props) => {
     AppState,
     AppState: { getUserId, currentMenuType: { organizationId } },
     projectListDataSet,
+    intl: { formatMessage },
+    ProjectsProUseStore,
   } = useProjectsProStore();
 
   const checkOperation = useCallback(
@@ -183,11 +191,10 @@ const Index:React.FC<IProps> = (props) => {
   };
 
   const startProjChange = async (pid:string, enable:boolean) => {
-    let res;
     enable ? await axios.post(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`, {
       projectId: pid,
     }) : await axios.delete(`/iam/choerodon/v1/organizations/${organizationId}/star_projects?project_id=${pid}`);
-    return res;
+    ProjectsProUseStore.axiosGetStarProjects();
   };
 
   const handleProjClick = async (data:any) => {
@@ -203,6 +210,20 @@ const Index:React.FC<IProps> = (props) => {
       refresh();
     }
   }, 2000);
+
+  const handleMouseEnter = (e: any, title:string) => {
+    const { currentTarget } = e;
+    if (isOverflow(currentTarget)) {
+      Tooltip.show(currentTarget, {
+        title,
+        placement: 'bottom',
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    Tooltip.hide();
+  };
 
   const renderName = ({ record }: { record: Record }) => {
     const projData:any = record?.toData();
@@ -228,6 +249,9 @@ const Index:React.FC<IProps> = (props) => {
             cursor: projData.enabled ? 'pointer' : 'not-allowed',
           }}
           role="none"
+          className="project-name"
+          onMouseEnter={(e) => { handleMouseEnter(e, record.get('name')); }}
+          onMouseLeave={handleMouseLeave}
           onClick={() => { handleProjClick(projData); }}
         >
           {record.get('name')}
@@ -251,7 +275,7 @@ const Index:React.FC<IProps> = (props) => {
   const renderAction = ({ record }: { record: Record }) => {
     const data = record.toData();
     const {
-      projectStatus, editFlag, enabled, id: currentProjectId, starFlag,
+      projectStatus, editFlag, enabled, id: currentProjectId,
     } = record.toData();
     const editData = {
       text: '修改',
@@ -296,16 +320,6 @@ const Index:React.FC<IProps> = (props) => {
       default:
         break;
     }
-    checkOperation(data) && !starFlag && actionData.push({
-      text: '取消星标',
-      action: () => startProjChange(currentProjectId, true),
-    });
-    checkOperation(data) && starFlag && actionData.push(
-      {
-        text: '取消星标',
-        action: () => startProjChange(currentProjectId, false),
-      },
-    );
     return editFlag && actionData ? (
       <Action
         data={actionData}
@@ -313,10 +327,40 @@ const Index:React.FC<IProps> = (props) => {
     ) : null;
   };
 
-  const renderEnabled = ({ value }: { value: boolean }) => (
+  const getStatusName = (record:Record) => {
+    const pData = record.toData();
+    if (pData.statusName) {
+      return pData.statusName;
+    }
+    const getName = (p:any) => (
+      // eslint-disable-next-line no-nested-ternary
+      !p.projectStatus || p.projectStatus === 'success'
+        ? p.enabled
+          ? '启用'
+          : '停用'
+        : formatMessage({
+          id: `c7ncd.project.${p.projectStatus}${
+            p.projectStatus === 'failed'
+              ? `.${p.operateType}`
+              : ''
+          }`,
+        }));
+    return getName(pData);
+  };
+
+  const getStatusColorCode = (record:Record) => {
+    const p = record.toData();
+    if (!p.projectStatus || p.projectStatus === 'success' || p.statusName) {
+      return p.enabled ? 'success' : 'failed';
+    }
+    return colorMap.get(p.projectStatus);
+  };
+
+  const renderEnabled = ({ value, record }: { value: boolean, record:Record }) => (
     <StatusTag
-      colorCode={value ? 'success' : 'lost'}
-      name={value ? '启用' : '停用'}
+    // @ts-ignore
+      colorCode={getStatusColorCode(record)}
+      name={getStatusName(record)}
     />
   );
 
@@ -329,7 +373,7 @@ const Index:React.FC<IProps> = (props) => {
 
   return (
     <Table columnResizable dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table">
-      <Column renderer={renderName} name="name" width={230} tooltip={'overflow' as any} />
+      <Column renderer={renderName} name="name" width={230} />
       <Column renderer={renderAction} width={60} />
       <Column name="code" tooltip={'overflow' as any} />
       <Column renderer={renderEnabled} name="enabled" />
