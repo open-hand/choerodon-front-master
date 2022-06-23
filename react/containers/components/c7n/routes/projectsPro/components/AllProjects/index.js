@@ -8,10 +8,12 @@ import {
   Icon,
   Spin,
 } from 'choerodon-ui/pro';
-import { throttle } from 'lodash';
+import { forIn } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import some from 'lodash/some';
+import JSONBig from 'json-bigint';
+import { UserInfo } from '@choerodon/components';
 import { Permission } from '@/components/permission';
 import handleClickProject from '@/utils/gotoProject';
 import { useProjectsProStore } from '../../stores';
@@ -21,7 +23,7 @@ import CreateProject from '../create-project';
 import ProjectCategory from '../project-category';
 import Action from '@/components/action';
 import { organizationsApiConfig } from '@/apis';
-import Test from './a';
+import TableAddFilter from './tableAddFilter';
 import AllProjectTable from './table';
 
 import {
@@ -46,6 +48,7 @@ export default observer(() => {
     MenuStore,
     formatProject,
     formatCommon,
+    projectListDataSet,
   } = useProjectsProStore();
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
@@ -65,11 +68,65 @@ export default observer(() => {
   }, [AppState.getUserWizardStatus]);
 
   const refresh = (projectId) => {
-    ProjectsProUseStore.axiosGetProjects();
+    // ProjectsProUseStore.axiosGetProjects();
+    projectListDataSet.query();
     ProjectsProUseStore.checkCreate(organizationId);
     if (projectId) {
       MenuStore.menuGroup.project = {};
     }
+  };
+
+  const renderTitle = () => {
+    const { organizationId: searchOrgId } = queryString.parse(
+      history.location.search,
+    );
+    const org = (HeaderStore.getOrgData || []).find(
+      (v) => String(v.id) === searchOrgId,
+    ) || { name: '' };
+    const { getCanCreate } = ProjectsProUseStore;
+    return (
+      <>
+        <p>
+          {formatProject({ id: 'allProject' }, { name: org.name })}
+        </p>
+        <div className="allProjects-title-right">
+          {/* <TextField
+            onBlur={handleBlurProjects}
+            placeholder={formatCommon({ id: 'pleaseSearch' })}
+            className="allProjects-title-right-textField"
+            prefix={
+              <Icon style={{ color: 'rgba(202,202,228,1)' }} type="search" />
+            }
+          /> */}
+          <Permission
+            service={['choerodon.code.organization.project.ps.create']}
+          >
+            <Tooltip
+              popupClassName={
+                inNewUserGuideStepOne ? 'c7n-pro-popup-projects-create-guide' : ''
+              }
+              hidden={createBtnToolTipHidden}
+              onHiddenBeforeChange={onHiddenBeforeChange}
+              title={getCreatBtnTitle}
+              placement={inNewUserGuideStepOne ? 'bottomRight' : 'bottom'}
+            >
+              <Button
+                funcType="raised"
+                color="primary"
+                disabled={!getCanCreate}
+                onClick={() => handleAddProject()}
+                style={{
+                  height: 30,
+                  marginLeft: 16,
+                }}
+              >
+                {formatProject({ id: 'createProject' })}
+              </Button>
+            </Tooltip>
+          </Permission>
+        </div>
+      </>
+    );
   };
 
   const handleAddProject = (currentProjectId) => {
@@ -94,332 +151,332 @@ export default observer(() => {
     });
   };
 
-  const handleRetry = useCallback(async (projectId, sagaInstanceIds) => {
-    if (
-      await ProjectsProUseStore.retryProjectSaga(projectId, sagaInstanceIds)
-    ) {
-      refresh();
-    }
-  }, []);
+  // const handleRetry = useCallback(async (projectId, sagaInstanceIds) => {
+  //   if (
+  //     await ProjectsProUseStore.retryProjectSaga(projectId, sagaInstanceIds)
+  //   ) {
+  //     refresh();
+  //   }
+  // }, []);
 
-  const handleDelete = useCallback(async (projectId) => {
-    if (await ProjectsProUseStore.deleteProject(projectId)) {
-      refresh();
-    }
-  }, []);
+  // const handleDelete = useCallback(async (projectId) => {
+  //   if (await ProjectsProUseStore.deleteProject(projectId)) {
+  //     refresh();
+  //   }
+  // }, []);
 
-  const openDisableModal = useCallback((projectData) => {
-    try {
-      const {
-        categories, name: projectName, id: projectId, programName,
-      } = projectData || {};
-      const isProgram = some(categories, ['code', categoryCodes.program]);
-      const ModalContent = ({ modal: newModal }) => {
-        let extraMessage;
-        if (isProgram) {
-          extraMessage = (
-            <>
-              <div className="c7n-project-disabled-modal-warning">
-                <Icon type="info" />
-                <span>&nbsp;项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！</span>
-              </div>
-              <div style={{ marginTop: 10 }}>
-                请输入
-                {' '}
-                <span style={{ fontWeight: 600 }}>{projectName}</span>
-                {' '}
-                来确认停用。
-              </div>
-              <TextField
-                style={{ width: '100%', marginTop: 10 }}
-                autoFocus
-                onInput={(e) => {
-                  newModal.update({
-                    okProps: {
-                      disabled: e.target.value !== projectName,
-                    },
-                  });
-                }}
-              />
-            </>
-          );
-        } else if (programName) {
-          extraMessage = (
-            <div className="c7n-project-disabled-modal-warning">
-              <Icon type="info" />
-              <span>&nbsp;子项目停用后，与项目群相关的冲刺将发生变动，进行中的冲刺会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！</span>
-            </div>
-          );
-        }
-        const content = (
-          <div style={{ marginTop: -10 }}>
-            {isProgram && (
-              <p className="c7n-project-disabled-modal-tips">
-                请仔细阅读下列事项！
-              </p>
-            )}
-            <span>
-              确定要停用项目“
-              {projectName}
-              ”吗？停用后，您和项目下其他成员将无法进入此项目。
-            </span>
-            {extraMessage}
-          </div>
-        );
-        return content;
-      };
-      if (isProgram) {
-        Modal.open({
-          title: '停用项目',
-          children: <ModalContent />,
-          onOk: () => handleEnable(projectId, 'disable'),
-          okProps: { disabled: true },
-          okText: '我已经知道后果，停用此项目',
-        });
-      } else {
-        Modal.open({
-          title: '停用项目',
-          children: <ModalContent />,
-          onOk: () => handleEnable(projectId, 'disable'),
-        });
-      }
-    } catch (e) {
-      return false;
-    }
-    return false;
-  }, []);
+  // const openDisableModal = useCallback((projectData) => {
+  //   try {
+  //     const {
+  //       categories, name: projectName, id: projectId, programName,
+  //     } = projectData || {};
+  //     const isProgram = some(categories, ['code', categoryCodes.program]);
+  //     const ModalContent = ({ modal: newModal }) => {
+  //       let extraMessage;
+  //       if (isProgram) {
+  //         extraMessage = (
+  //           <>
+  //             <div className="c7n-project-disabled-modal-warning">
+  //               <Icon type="info" />
+  //               <span>&nbsp;项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！</span>
+  //             </div>
+  //             <div style={{ marginTop: 10 }}>
+  //               请输入
+  //               {' '}
+  //               <span style={{ fontWeight: 600 }}>{projectName}</span>
+  //               {' '}
+  //               来确认停用。
+  //             </div>
+  //             <TextField
+  //               style={{ width: '100%', marginTop: 10 }}
+  //               autoFocus
+  //               onInput={(e) => {
+  //                 newModal.update({
+  //                   okProps: {
+  //                     disabled: e.target.value !== projectName,
+  //                   },
+  //                 });
+  //               }}
+  //             />
+  //           </>
+  //         );
+  //       } else if (programName) {
+  //         extraMessage = (
+  //           <div className="c7n-project-disabled-modal-warning">
+  //             <Icon type="info" />
+  //             <span>&nbsp;子项目停用后，与项目群相关的冲刺将发生变动，进行中的冲刺会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！</span>
+  //           </div>
+  //         );
+  //       }
+  //       const content = (
+  //         <div style={{ marginTop: -10 }}>
+  //           {isProgram && (
+  //             <p className="c7n-project-disabled-modal-tips">
+  //               请仔细阅读下列事项！
+  //             </p>
+  //           )}
+  //           <span>
+  //             确定要停用项目“
+  //             {projectName}
+  //             ”吗？停用后，您和项目下其他成员将无法进入此项目。
+  //           </span>
+  //           {extraMessage}
+  //         </div>
+  //       );
+  //       return content;
+  //     };
+  //     if (isProgram) {
+  //       Modal.open({
+  //         title: '停用项目',
+  //         children: <ModalContent />,
+  //         onOk: () => handleEnable(projectId, 'disable'),
+  //         okProps: { disabled: true },
+  //         okText: '我已经知道后果，停用此项目',
+  //       });
+  //     } else {
+  //       Modal.open({
+  //         title: '停用项目',
+  //         children: <ModalContent />,
+  //         onOk: () => handleEnable(projectId, 'disable'),
+  //       });
+  //     }
+  //   } catch (e) {
+  //     return false;
+  //   }
+  //   return false;
+  // }, []);
 
-  const handleEnable = useCallback(async (projectId, type) => {
-    if (
-      await ProjectsProUseStore.handleEnable({
-        organizationId,
-        projectId,
-        type,
-      })
-    ) {
-      refresh();
-      return true;
-    }
-    return false;
-  }, []);
+  // const handleEnable = useCallback(async (projectId, type) => {
+  //   if (
+  //     await ProjectsProUseStore.handleEnable({
+  //       organizationId,
+  //       projectId,
+  //       type,
+  //     })
+  //   ) {
+  //     refresh();
+  //     return true;
+  //   }
+  //   return false;
+  // }, []);
 
-  const checkOperation = useCallback(
-    (data) => data
-      && (data.operateType === 'update' || data.projectStatus === 'success'),
-    [],
-  );
+  // const checkOperation = useCallback(
+  //   (data) => data
+  //     && (data.operateType === 'update' || data.projectStatus === 'success'),
+  //   [],
+  // );
 
-  const getActionData = useCallback((data) => {
-    const {
-      projectStatus, editFlag, enabled, id: currentProjectId,
-    } = data;
-    const editData = {
-      text: '修改',
-      action: () => handleAddProject(data.id),
-    };
-    const disableData = {
-      text: '停用',
-      action: () => openDisableModal(data),
-    };
-    let actionData;
-    if (!enabled) {
-      actionData = [
-        {
-          text: '启用',
-          action: () => handleEnable(currentProjectId, 'enable'),
-        },
-      ];
-    }
-    switch (projectStatus) {
-      case 'success':
-        actionData = [editData, disableData];
-        break;
-      case 'failed':
-        actionData = [
-          {
-            text: '重试',
-            action: () => handleRetry(data.id, data.sagaInstanceIds),
-          },
-        ];
-        if (data.operateType === 'create') {
-          actionData.push({
-            text: '删除',
-            action: () => handleDelete(data.id),
-          });
-        } else {
-          actionData.unshift(editData);
-          actionData.push(disableData);
-        }
-        break;
-      default:
-        break;
-    }
-    return editFlag && actionData ? (
-      <Action
-        data={actionData}
-        onClick={(e) => e.stopPropagation()}
-        className="allProjects-content-item-right-top-edit"
-      />
-    ) : null;
-  }, []);
+  // const getActionData = useCallback((data) => {
+  //   const {
+  //     projectStatus, editFlag, enabled, id: currentProjectId,
+  //   } = data;
+  //   const editData = {
+  //     text: '修改',
+  //     action: () => handleAddProject(data.id),
+  //   };
+  //   const disableData = {
+  //     text: '停用',
+  //     action: () => openDisableModal(data),
+  //   };
+  //   let actionData;
+  //   if (!enabled) {
+  //     actionData = [
+  //       {
+  //         text: '启用',
+  //         action: () => handleEnable(currentProjectId, 'enable'),
+  //       },
+  //     ];
+  //   }
+  //   switch (projectStatus) {
+  //     case 'success':
+  //       actionData = [editData, disableData];
+  //       break;
+  //     case 'failed':
+  //       actionData = [
+  //         {
+  //           text: '重试',
+  //           action: () => handleRetry(data.id, data.sagaInstanceIds),
+  //         },
+  //       ];
+  //       if (data.operateType === 'create') {
+  //         actionData.push({
+  //           text: '删除',
+  //           action: () => handleDelete(data.id),
+  //         });
+  //       } else {
+  //         actionData.unshift(editData);
+  //         actionData.push(disableData);
+  //       }
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   return editFlag && actionData ? (
+  //     <Action
+  //       data={actionData}
+  //       onClick={(e) => e.stopPropagation()}
+  //       className="allProjects-content-item-right-top-edit"
+  //     />
+  //   ) : null;
+  // }, []);
 
-  const handleStarClick = throttle((p) => {
-    if (p.enabled) {
-      ProjectsProUseStore.handleStarProject(p).then(() => {
-        ProjectsProUseStore.handleChangeStarProjects(p);
-      });
-    }
-  }, 2000);
+  // const handleStarClick = throttle((p) => {
+  //   if (p.enabled) {
+  //     ProjectsProUseStore.handleStarProject(p).then(() => {
+  //       ProjectsProUseStore.handleChangeStarProjects(p);
+  //     });
+  //   }
+  // }, 2000);
 
-  const renderProjects = useCallback(() => {
-    const projects = ProjectsProUseStore.getAllProjects;
-    if (ProjectsProUseStore.getProjectLoading) {
-      return (
-        <div className="allProjects-content-spin" style={{ width: '100%' }}>
-          <Spin spinning />
-        </div>
-      );
-    }
+  //   const renderProjects = useCallback(() => {
+  //     const projects = ProjectsProUseStore.getAllProjects;
+  //     if (ProjectsProUseStore.getProjectLoading) {
+  //       return (
+  //         <div className="allProjects-content-spin" style={{ width: '100%' }}>
+  //           <Spin spinning />
+  //         </div>
+  //       );
+  //     }
 
-    const getName = (p) => (
-      // eslint-disable-next-line no-nested-ternary
-      !p.projectStatus || p.projectStatus === 'success'
-        ? p.enabled
-          ? '启用'
-          : '停用'
-        : formatMessage({
-          id: `${intlPrefix}.${p.projectStatus}${
-            p.projectStatus === 'failed'
-              ? `.${p.operateType}`
-              : ''
-          }`,
-        }));
+  //     const getName = (p) => (
+  //       // eslint-disable-next-line no-nested-ternary
+  //       !p.projectStatus || p.projectStatus === 'success'
+  //         ? p.enabled
+  //           ? '启用'
+  //           : '停用'
+  //         : formatMessage({
+  //           id: `${intlPrefix}.${p.projectStatus}${
+  //             p.projectStatus === 'failed'
+  //               ? `.${p.operateType}`
+  //               : ''
+  //           }`,
+  //         }));
 
-    return projects.length > 0 ? (
-      projects.map((p) => (
-        <Tooltip
-          placement="left"
-          arrowPointAtCenter
-          title={
-            p.description
-              ? (
-                <p className="allProjects-content-item-right-down-pro-tooltip">{p.description}</p>
-              ) : ''
-}
-        >
-          <div
-            key={p.id}
-            onClick={() => {
-              if (p.enabled && checkOperation(p)) {
-                handleClickProject(p, history, AppState);
-              }
-            }}
-            className="allProjects-content-item"
-            style={{
-              cursor: p.enabled ? 'pointer' : 'not-allowed',
-            }}
-            role="none"
-          >
-            <div
-              className="allProjects-content-item-icon"
-              style={{
-                backgroundImage: p.imageUrl
-                  ? `url("${p.imageUrl}")`
-                  : p.background,
-              }}
-            >
-              <span>
-                {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
-              </span>
-            </div>
+  //     return projects.length > 0 ? (
+  //       projects.map((p) => (
+  //         <Tooltip
+  //           placement="left"
+  //           arrowPointAtCenter
+  //           title={
+  //             p.description
+  //               ? (
+  //                 <p className="allProjects-content-item-right-down-pro-tooltip">{p.description}</p>
+  //               ) : ''
+  // }
+  //         >
+  //           <div
+  //             key={p.id}
+  //             onClick={() => {
+  //               if (p.enabled && checkOperation(p)) {
+  //                 handleClickProject(p, history, AppState);
+  //               }
+  //             }}
+  //             className="allProjects-content-item"
+  //             style={{
+  //               cursor: p.enabled ? 'pointer' : 'not-allowed',
+  //             }}
+  //             role="none"
+  //           >
+  //             <div
+  //               className="allProjects-content-item-icon"
+  //               style={{
+  //                 backgroundImage: p.imageUrl
+  //                   ? `url("${p.imageUrl}")`
+  //                   : p.background,
+  //               }}
+  //             >
+  //               <span>
+  //                 {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
+  //               </span>
+  //             </div>
 
-            <div className="allProjects-content-item-right">
-              <div className="allProjects-content-item-right-top">
-                <div className="allProjects-content-item-right-top-left">
-                  <span className="allProjects-content-item-right-top-left-code">
-                    {p.code}
-                  </span>
-                  <span
-                    className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${
-                      !p.projectStatus || p.projectStatus === 'success' || p.statusName
-                        ? p.enabled
-                        : p.projectStatus
-                    }`}
-                  >
-                    {p.statusName && p.statusName}
-                    {!p.statusName && getName(p)}
-                  </span>
-                </div>
-                {getActionData(p)}
-                {checkOperation(p) ? (
-                  <Icon
-                    type={p.starFlag ? 'stars' : 'star_border'}
-                    style={{
-                      color: p.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
-                      fontSize: '20px',
-                    }}
-                    onClick={(e) => { e.stopPropagation(); handleStarClick(p); }}
-                  />
-                ) : null}
-              </div>
-              <div className="allProjects-content-item-right-down">
-                <div className="allProjects-content-item-right-down-pro">
-                  <p>
-                    <Tooltip
-                      title={p.name}
-                      placement="bottomLeft"
-                    >
-                      {p.name}
-                    </Tooltip>
-                  </p>
-                </div>
-                <ProjectCategory
-                  data={p.categories}
-                  agileWaterfall={p.agileWaterfall}
-                  className="allProjects-content-item-right-down-text1"
-                />
-                {p.programName && (
-                  <Tooltip title={p.programName}>
-                    <p className="allProjects-content-item-right-down-text2">
-                      <>
-                        <span>
-                          <Icon type="project_group" />
-                        </span>
-                        <p>{p.programName}</p>
-                      </>
-                    </p>
-                  </Tooltip>
-                )}
-                <p className="allProjects-content-item-right-down-time">
-                  <Tooltip title={p.createUserName} placement="top">
-                    <span
-                      className="allProjects-content-item-right-down-avatar"
-                      style={{
-                        backgroundImage: p.createUserImageUrl
-                          ? `url("${p.createUserImageUrl}")`
-                          : 'unset',
-                      }}
-                    >
-                      {!p.createUserImageUrl
-                        && p.createUserName
-                        && p.createUserName.slice(0, 1)}
-                    </span>
-                  </Tooltip>
-                  <p>
-                    {p.creationDate.split(' ')[0]}
-                    {' '}
-                    创建
-                  </p>
-                </p>
-              </div>
-            </div>
-          </div>
-        </Tooltip>
-      ))
-    ) : (
-      <EmptyPage title="暂无项目" describe="该组织下暂无项目" />
-    );
-  }, [ProjectsProUseStore.getAllProjects, history]);
+  //             <div className="allProjects-content-item-right">
+  //               <div className="allProjects-content-item-right-top">
+  //                 <div className="allProjects-content-item-right-top-left">
+  //                   <span className="allProjects-content-item-right-top-left-code">
+  //                     {p.code}
+  //                   </span>
+  //                   <span
+  //                     className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${
+  //                       !p.projectStatus || p.projectStatus === 'success' || p.statusName
+  //                         ? p.enabled
+  //                         : p.projectStatus
+  //                     }`}
+  //                   >
+  //                     {p.statusName && p.statusName}
+  //                     {!p.statusName && getName(p)}
+  //                   </span>
+  //                 </div>
+  //                 {getActionData(p)}
+  //                 {checkOperation(p) ? (
+  //                   <Icon
+  //                     type={p.starFlag ? 'stars' : 'star_border'}
+  //                     style={{
+  //                       color: p.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
+  //                       fontSize: '20px',
+  //                     }}
+  //                     onClick={(e) => { e.stopPropagation(); handleStarClick(p); }}
+  //                   />
+  //                 ) : null}
+  //               </div>
+  //               <div className="allProjects-content-item-right-down">
+  //                 <div className="allProjects-content-item-right-down-pro">
+  //                   <p>
+  //                     <Tooltip
+  //                       title={p.name}
+  //                       placement="bottomLeft"
+  //                     >
+  //                       {p.name}
+  //                     </Tooltip>
+  //                   </p>
+  //                 </div>
+  //                 <ProjectCategory
+  //                   data={p.categories}
+  //                   agileWaterfall={p.agileWaterfall}
+  //                   className="allProjects-content-item-right-down-text1"
+  //                 />
+  //                 {p.programName && (
+  //                   <Tooltip title={p.programName}>
+  //                     <p className="allProjects-content-item-right-down-text2">
+  //                       <>
+  //                         <span>
+  //                           <Icon type="project_group" />
+  //                         </span>
+  //                         <p>{p.programName}</p>
+  //                       </>
+  //                     </p>
+  //                   </Tooltip>
+  //                 )}
+  //                 <p className="allProjects-content-item-right-down-time">
+  //                   <Tooltip title={p.createUserName} placement="top">
+  //                     <span
+  //                       className="allProjects-content-item-right-down-avatar"
+  //                       style={{
+  //                         backgroundImage: p.createUserImageUrl
+  //                           ? `url("${p.createUserImageUrl}")`
+  //                           : 'unset',
+  //                       }}
+  //                     >
+  //                       {!p.createUserImageUrl
+  //                         && p.createUserName
+  //                         && p.createUserName.slice(0, 1)}
+  //                     </span>
+  //                   </Tooltip>
+  //                   <p>
+  //                     {p.creationDate.split(' ')[0]}
+  //                     {' '}
+  //                     创建
+  //                   </p>
+  //                 </p>
+  //               </div>
+  //             </div>
+  //           </div>
+  //         </Tooltip>
+  //       ))
+  //     ) : (
+  //       <EmptyPage title="暂无项目" describe="该组织下暂无项目" />
+  //     );
+  //   }, [ProjectsProUseStore.getAllProjects, history]);
 
   const handleBlurProjects = ({ ...e }) => {
     ProjectsProUseStore.setAllProjectsParams(e.target.value);
@@ -477,59 +534,6 @@ export default observer(() => {
     }
   };
 
-  const renderTitle = () => {
-    const { organizationId: searchOrgId } = queryString.parse(
-      history.location.search,
-    );
-    const org = (HeaderStore.getOrgData || []).find(
-      (v) => String(v.id) === searchOrgId,
-    ) || { name: '' };
-    const { getCanCreate } = ProjectsProUseStore;
-    return (
-      <>
-        <p>
-          {formatProject({ id: 'allProject' }, { name: org.name })}
-        </p>
-        <div className="allProjects-title-right">
-          {/* <TextField
-            onBlur={handleBlurProjects}
-            placeholder={formatCommon({ id: 'pleaseSearch' })}
-            className="allProjects-title-right-textField"
-            prefix={
-              <Icon style={{ color: 'rgba(202,202,228,1)' }} type="search" />
-            }
-          /> */}
-          <Permission
-            service={['choerodon.code.organization.project.ps.create']}
-          >
-            <Tooltip
-              popupClassName={
-                inNewUserGuideStepOne ? 'c7n-pro-popup-projects-create-guide' : ''
-              }
-              hidden={createBtnToolTipHidden}
-              onHiddenBeforeChange={onHiddenBeforeChange}
-              title={getCreatBtnTitle}
-              placement={inNewUserGuideStepOne ? 'bottomRight' : 'bottom'}
-            >
-              <Button
-                funcType="raised"
-                color="primary"
-                disabled={!getCanCreate}
-                onClick={() => handleAddProject()}
-                style={{
-                  height: 30,
-                  marginLeft: 16,
-                }}
-              >
-                {formatProject({ id: 'createProject' })}
-              </Button>
-            </Tooltip>
-          </Permission>
-        </div>
-      </>
-    );
-  };
-
   const handleChangePagination = (page, pageSize) => {
     let newPage = page;
     const { size } = ProjectsProUseStore.getPagination;
@@ -543,88 +547,199 @@ export default observer(() => {
     ProjectsProUseStore.axiosGetProjects();
   };
 
+  const tableAddFilterChange = async (value) => {
+    function cycleFilterValuesObj(forEmpty) {
+      forIn(value, (itemValue, key) => {
+        if (value) {
+          if (key === 'updateTime' && itemValue) {
+            projectListDataSet.setQueryParameter('lastUpdateDateStart', forEmpty ? null : itemValue[0]);
+            projectListDataSet.setQueryParameter('lastUpdateDateEnd', forEmpty ? null : itemValue[1]);
+          } else if (key === 'createTime') {
+            projectListDataSet.setQueryParameter('creationDateStart', forEmpty ? null : itemValue[0]);
+            projectListDataSet.setQueryParameter('creationDateEnd', forEmpty ? null : itemValue[1]);
+          } else {
+            projectListDataSet.setQueryParameter(key, forEmpty ? null : itemValue);
+          }
+        }
+      });
+    }
+    cycleFilterValuesObj();
+    await projectListDataSet.query();
+    cycleFilterValuesObj(true);
+  };
+
+  const userOptionRender = ({ record, text, value }) => (
+    <UserInfo
+      className="c7ncd-waterfall-deliverables-table-search-line-userinfo"
+      loginName={record?.get('ldap') ? record?.get('loginName') : record?.get('email')}
+      realName={record?.get('realName')}
+      avatar={record?.get('imageUrl')}
+    />
+  );
+
   return (
     <div className="allProjects">
       <div className="allProjects-title">{renderTitle()}</div>
       <div className="allProjects-content">
-        <Test searchFieldsConfig={[
-          {
-            name: 'a',
-            type: 'Select',
-            fieldProps: {
-              placeholder: '项目状态',
+        <TableAddFilter
+          searchFieldsConfig={[
+            {
+              name: 'statusIds',
+              type: 'Select',
+              width: 100,
+              fieldProps: {
+                placeholder: '项目状态',
+                optionTooltip: 'overflow',
+                multiple: true,
+                dropdownMatchSelectWidth: false,
+                maxTagCount: 3,
+                searchable: true,
+              },
+              initial: true,
+              optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
             },
-            onChange: (value) => { console.log(value); },
-            initial: true,
-            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
-            optionsTextField: 'name',
-            optionsValueField: 'id',
-          },
-          {
-            name: 'b',
-            type: 'Select',
-            fieldProps: {
-              placeholder: '工作组',
+            {
+              name: 'workGroupIds',
+              type: 'Select',
+              width: 100,
+              fieldProps: {
+                placeholder: '工作组',
+                optionTooltip: 'overflow',
+                multiple: true,
+                dropdownMatchSelectWidth: false,
+                maxTagCount: 3,
+                searchable: true,
+              },
+              initial: true,
+              optionQueryConfig: {
+                ...organizationsApiConfig.getprojWorkGroup(),
+                transformResponse: (res) => {
+                  let newRes = res;
+                  newRes = JSONBig.parse(newRes);
+                  return newRes.workGroupVOS;
+                },
+              },
             },
-            onChange: (value) => { console.log(value); },
-            initial: true,
-            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
-            optionsTextField: 'name',
-            optionsValueField: 'id',
-          },
-          {
-            name: 'c',
-            type: 'Select',
-            fieldProps: {
-              placeholder: '项目分类',
+            {
+              name: 'projectClassficationIds',
+              type: 'Select',
+              width: 100,
+              fieldProps: {
+                placeholder: '项目分类',
+                optionTooltip: 'overflow',
+                multiple: true,
+                dropdownMatchSelectWidth: false,
+                maxTagCount: 3,
+              },
+              initial: true,
+              optionQueryConfig: {
+                ...organizationsApiConfig.getprojClassification(),
+                transformResponse: (res) => {
+                  let newRes = res;
+                  newRes = JSONBig.parse(newRes);
+                  return newRes.treeProjectClassfication;
+                },
+              },
             },
-            onChange: (value) => { console.log(value); },
-            initial: true,
-            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
-            optionsTextField: 'name',
-            optionsValueField: 'id',
-          },
-          {
-            name: 'd',
-            type: 'Select',
-            fieldProps: {
-              placeholder: '冲刺',
+            {
+              name: 'programIds',
+              type: 'Select',
+              width: 110,
+              fieldProps: {
+                placeholder: '所属项目群',
+                optionTooltip: 'overflow',
+                multiple: true,
+                dropdownMatchSelectWidth: false,
+                maxTagCount: 3,
+              },
+              initial: true,
+              optionQueryConfig: organizationsApiConfig.getprojPrograms(),
             },
-            onChange: (value) => { console.log(value); },
-            initial: true,
-            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
-            optionsTextField: 'name',
-            optionsValueField: 'id',
-          },
-          {
-            name: 'e',
-            type: 'Select',
-            fieldProps: {
-              placeholder: '所属项目群',
+            {
+              name: 'categoryIds',
+              type: 'Select',
+              width: 100,
+              fieldProps: {
+                placeholder: '项目类型',
+                optionTooltip: 'overflow',
+                multiple: true,
+                dropdownMatchSelectWidth: false,
+                maxTagCount: 3,
+              },
+              initial: true,
+              optionQueryConfig: organizationsApiConfig.getprojType(),
             },
-            width: 110,
-            onChange: (value) => { console.log(value); },
-            initial: true,
-            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
-            optionsTextField: 'name',
-            optionsValueField: 'id',
-          },
-          {
-            name: 'f',
-            type: 'Select',
-            fieldProps: {
-              placeholder: '项目类型',
+          ]}
+          filterFieldsConfig={[
+            {
+              initial: false,
+              checked: false,
+              checkboxLabel: '创建人',
+              name: 'createdBys',
+              show: true,
+              type: 'Select',
+              fieldProps: {
+                placeholder: '创建人',
+                optionRenderer: userOptionRender,
+                multiple: true,
+                clearButton: true,
+                searchable: true,
+                dropdownMatchSelectWidth: false,
+                maxTagCount: 3,
+              },
+              optionQueryConfig: organizationsApiConfig.getprojUsers(),
+              optionsTextField: 'realName',
             },
-            onChange: (value) => { console.log(value); },
-            initial: true,
-            optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
-            optionsTextField: 'name',
-            optionsValueField: 'id',
-          },
-        ]}
+            {
+              initial: false,
+              checked: false,
+              checkboxLabel: '创建时间',
+              name: 'createTime',
+              show: true,
+              type: 'DateTimePicker',
+              fieldProps: {
+                placeholder: ['创建时间从', '至'],
+                isFlat: true,
+                range: true,
+              },
+            },
+            {
+              initial: false,
+              checked: false,
+              checkboxLabel: '更新人',
+              name: 'lastUpdatedBys',
+              show: true,
+              type: 'Select',
+              fieldProps: {
+                placeholder: '更新人',
+                optionRenderer: userOptionRender,
+                multiple: true,
+                clearButton: true,
+                searchable: true,
+                dropdownMatchSelectWidth: false,
+                maxTagCount: 3,
+              },
+              optionQueryConfig: organizationsApiConfig.getprojUsers(),
+              optionsTextField: 'realName',
+            },
+            {
+              initial: false,
+              checked: false,
+              checkboxLabel: '更新时间',
+              name: 'updateTime',
+              show: true,
+              type: 'DateTimePicker',
+              fieldProps: {
+                placeholder: ['更新时间从', '至'],
+                isFlat: true,
+                range: true,
+              },
+            },
+          ]}
+          onChange={tableAddFilterChange}
         />
-        {/* <AllProjectTable /> */}
-        {renderProjects()}
+        <AllProjectTable />
+        {/* {renderProjects()}
         {ProjectsProUseStore.getAllProjects.length > 0 && (
           <Pagination
             showSizeChangerLabel={false}
@@ -640,7 +755,7 @@ export default observer(() => {
               marginTop: 15,
             }}
           />
-        )}
+        )} */}
       </div>
     </div>
   );

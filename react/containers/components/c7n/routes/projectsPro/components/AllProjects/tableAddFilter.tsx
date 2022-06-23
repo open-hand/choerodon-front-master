@@ -2,18 +2,23 @@ import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
 import {
-  Button, TextField, Icon, Select, DataSet, Tooltip,
+  Button, TextField, Icon, Select, DataSet, Tooltip, Modal, DateTimePicker,
 } from 'choerodon-ui/pro';
+import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import {
   cloneDeep, forIn, isNil, omit, remove,
 } from 'lodash';
 import { observer } from 'mobx-react-lite';
-import { organizationsApiConfig } from '@/apis';
 import ChooseFieldsBtn, { ICheckBoxFields } from './chooseFieldsBtn';
-import './a.less';
+import TableColumnSet from './tableColumnSet';
+import './tableAddFilter.less';
+
+const modalKey1 = Modal.key();
 
 export interface IProps {
     searchFieldsConfig: ISearchFields[]
+    filterFieldsConfig: ICheckBoxFields[]
+    onChange: (value:any)=>void
 }
 
 export interface ISearchFields {
@@ -22,7 +27,6 @@ export interface ISearchFields {
     fieldProps: any
     prefixIcon?: string
     width?: number
-    onChange: (value: string) => void
     initial: boolean
     optionQueryConfig?: () => void
     optionsTextField?: string
@@ -33,11 +37,12 @@ const fieldsMap = new Map(
   [
     ['TextField', TextField],
     ['Select', Select],
+    ['DateTimePicker', DateTimePicker],
   ],
 );
 
 const Index: React.FC<IProps> = (props: any) => {
-  const { searchFieldsConfig } = props;
+  const { searchFieldsConfig, filterFieldsConfig, onChange } = props;
   const [initialFieldNum, setInitialFieldNum] = useState<number>(0);
   const [expandBtnVisible, setExpandBtnVisible] = useState<boolean>(false);
   const [expandBtnType, setExpandBtnType] = useState<'expand_less' | 'expand_more'>('expand_less');
@@ -54,7 +59,7 @@ const Index: React.FC<IProps> = (props: any) => {
       if (!item.optionQueryConfig) {
         dsFieldAdd(item.name);
       } else {
-        dsOptionFieldAdd(item.name, item.optionsTextField, item.optionsValueField, item.optionQueryConfig);
+        dsOptionFieldAdd(item.name, item.optionsTextField || 'name', item.optionsValueField || 'id', item.optionQueryConfig);
       }
     });
     setInitialFieldNum(getInitialFieldNum(searchFieldsConfig));
@@ -65,6 +70,11 @@ const Index: React.FC<IProps> = (props: any) => {
       autoCreate: true,
       autoQuery: false,
       fields: [],
+      events: {
+        update: ({ record, name, value }:{record:Record, name:string, value:any}) => {
+          onChange(omit(record.toData(), '__dirty'));
+        },
+      },
     });
     return ds;
   }, []);
@@ -128,12 +138,12 @@ const Index: React.FC<IProps> = (props: any) => {
     return item.initial ? (
       <div className="searchField-item">
         {/*  @ts-ignore */}
-        <Ele style={{ width: item.width || 100 }} {...item.fieldProps} dataSet={compDataSet} name={item.name} prefix={item.prefixIcon ? <Icon type={item.prefixIcon} /> : null} />
+        <Ele style={{ width: item.width || 'auto' }} {...item.fieldProps} dataSet={compDataSet} name={item.name} prefix={item.prefixIcon ? <Icon type={item.prefixIcon} /> : null} />
       </div>
     ) : (
       <div className="searchField-item searchField-item-deletable">
         {/*  @ts-ignore */}
-        <Ele style={{ width: item.width || 100 }} {...item.fieldProps} dataSet={compDataSet} name={item.name} prefix={item.prefixIcon ? <Icon type={item.prefixIcon} /> : null} />
+        <Ele style={{ width: item.width || 'auto' }} {...item.fieldProps} dataSet={compDataSet} name={item.name} prefix={item.prefixIcon ? <Icon type={item.prefixIcon} /> : null} />
         <div
           className="deletable-div"
           role="none"
@@ -155,7 +165,7 @@ const Index: React.FC<IProps> = (props: any) => {
       if (!i.optionQueryConfig) {
         dsFieldAdd(i.name);
       } else {
-        dsOptionFieldAdd(i.name, i.optionsTextField, i.optionsValueField, i.optionQueryConfig);
+        dsOptionFieldAdd(i.name, i.optionsTextField || 'name', i.optionsValueField || 'id', i.optionQueryConfig);
       }
     });
     setSearchFields(cloneSearchFields);
@@ -180,10 +190,11 @@ const Index: React.FC<IProps> = (props: any) => {
 
   const handleReset = () => {
     setSearchFields(cloneDeep(searchFieldsOrigin));
-    compDataSet.reset();
+    compDataSet.reset(); // 没有触发dataset update事件 手动触发一下
+    onChange({});
+    childRef?.current?.init();
     setExpandBtnVisible(false);
     setExpandBtnType('expand_less');
-    // 再去请求数据
   };
 
   const getIfValue = () => {
@@ -211,12 +222,27 @@ const Index: React.FC<IProps> = (props: any) => {
     setExpandBtnType('expand_less');
   };
 
+  const openEditColumnModal = () => {
+    Modal.open({
+      key: modalKey1,
+      title: '列表显示设置',
+      drawer: true,
+      style: {
+        width: 380,
+      },
+      children: <TableColumnSet />,
+      bodyStyle: {
+        paddingTop: 10,
+      },
+    });
+  };
+
   return (
     <>
       <div className="searchField-container">
         <div className="searchField-container-left">
           <div className="searchField-item">
-            <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={compDataSet} name="a" />
+            <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={compDataSet} name="searchContent" />
           </div>
           <div className="searchField-container-left-block1">
             <div className="searchField-container-left-block1-inner">
@@ -225,131 +251,7 @@ const Index: React.FC<IProps> = (props: any) => {
             }
               <div className="searchField-item">
                 <ChooseFieldsBtn
-                  fields={[
-                    {
-                      initial: false,
-                      checked: false,
-                      checkboxLabel: '标签1',
-                      name: 'label',
-                      show: true,
-                      type: 'Select',
-                      fieldProps: {
-                        placeholder: '标签1',
-                      },
-                      onChange: () => {},
-                      optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
-                      optionsTextField: 'name',
-                      optionsValueField: 'id',
-                    },
-                    {
-                      initial: false,
-                      checked: false,
-                      checkboxLabel: '标签2',
-                      name: 'label2',
-                      show: true,
-                      type: 'TextField',
-                      fieldProps: {
-                        placeholder: '标签2',
-                      },
-                      onChange: () => {},
-                    },
-                    {
-                      initial: false,
-                      checked: false,
-                      checkboxLabel: '标签3',
-                      name: 'label2',
-                      show: true,
-                      type: 'TextField',
-                      fieldProps: {
-                        placeholder: '标签3',
-                      },
-                      onChange: () => {},
-                    },
-                    {
-                      initial: false,
-                      checked: false,
-                      checkboxLabel: '标签4',
-                      name: 'label2',
-                      show: true,
-                      type: 'TextField',
-                      fieldProps: {
-                        placeholder: '标签4',
-                      },
-                      onChange: () => {},
-                    },
-                    {
-                      initial: false,
-                      checked: false,
-                      checkboxLabel: '标签5',
-                      name: 'label2',
-                      show: true,
-                      type: 'TextField',
-                      fieldProps: {
-                        placeholder: '标签5',
-                      },
-                      onChange: () => {},
-                    },
-                    {
-                      initial: false,
-                      checked: false,
-                      checkboxLabel: '标签6',
-                      name: 'label2',
-                      show: true,
-                      type: 'TextField',
-                      fieldProps: {
-                        placeholder: '标签6',
-                      },
-                      onChange: () => {},
-                    },
-                    {
-                      initial: false,
-                      checked: false,
-                      checkboxLabel: '标签7',
-                      name: 'label2',
-                      show: true,
-                      type: 'TextField',
-                      fieldProps: {
-                        placeholder: '标签7',
-                      },
-                      onChange: () => {},
-                    },
-                    {
-                      initial: false,
-                      checked: false,
-                      checkboxLabel: '标签8',
-                      name: 'label2',
-                      show: true,
-                      type: 'TextField',
-                      fieldProps: {
-                        placeholder: '标签8',
-                      },
-                      onChange: () => {},
-                    },
-                    {
-                      initial: false,
-                      checked: false,
-                      checkboxLabel: '标签9',
-                      name: 'label2',
-                      show: true,
-                      type: 'TextField',
-                      fieldProps: {
-                        placeholder: '标签9',
-                      },
-                      onChange: () => {},
-                    },
-                    {
-                      initial: false,
-                      checked: false,
-                      checkboxLabel: '标签10',
-                      name: 'label2',
-                      show: true,
-                      type: 'TextField',
-                      fieldProps: {
-                        placeholder: '标签10',
-                      },
-                      onChange: () => {},
-                    },
-                  ]}
+                  fields={filterFieldsConfig}
                   onChange={chooseFieldsChange}
                   cRef={childRef}
                   reset={handleReset}
@@ -372,7 +274,7 @@ const Index: React.FC<IProps> = (props: any) => {
           </div>
         </div>
         <div className="searchField-container-right">
-          <Button icon="view_column" />
+          <Button icon="view_column" onClick={openEditColumnModal} />
         </div>
       </div>
     </>

@@ -40,13 +40,14 @@
       text-overflow: ellipsis;
     }
     &-code {
-      width: 50px;
+      max-width: 50px;
       font-size: 12px;
       font-weight: 400;
       color: rgba(58, 52, 95, 0.65);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-right: 4px;
     }
     &-status {
       flex-shrink: 0;
@@ -71,6 +72,15 @@
     &-down {
       display: flex;
       align-items: center;
+      .time-div {
+        color: rgba(58, 52, 95, 0.65);
+        font-size: 12px;
+        time {
+          color: rgba(58, 52, 95, 0.65);
+          font-size: 12px;
+        }
+      }
+
       &-avatur {
         width: 16px;
         height: 16px;
@@ -93,11 +103,17 @@
 .starProjects-items-down {
   margin-top: 16px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   font-size: 12px;
   font-weight: 400;
   color: rgba(58, 52, 95, 1);
+  .item-label {
+    display: inline-block;
+    color: rgba(58, 52, 95, 0.65);
+    font-size: 12px;
+    margin-right: 4px;
+  }
   div {
     display: flex;
     text-overflow: ellipsis;
