@@ -95,18 +95,22 @@ const CreateProject = observer(() => {
       if (some(categories, ['code', 'N_WATERFALL'])) {
         record.set('useTemplate', false);
       }
-      const res = await formDs.forceSubmit();
-      if (res && !res.failed && res.list && res.list.length) {
-        const projectId = get(res.list[0], 'id');
-        if (projectId) {
-          openNotification({ projectId, operateType: isModify ? 'update' : 'create' });
+      const flag = await formDs.validate();
+      if (flag) {
+        const res = await formDs.forceSubmit();
+        if (res && !res.failed && res.list && res.list.length) {
+          const projectId = get(res.list[0], 'id');
+          if (projectId) {
+            openNotification({ projectId, operateType: isModify ? 'update' : 'create' });
+          }
+          refresh(projectId);
+          return true;
+        } if (res.failed) {
+          message.error(res.message);
         }
-        refresh(projectId);
-        return true;
-      } if (res.failed) {
-        message.error(res.message);
+        setIsLoading(false);
+        return false;
       }
-      setIsLoading(false);
       return false;
     } catch (e) {
       setIsLoading(false);
