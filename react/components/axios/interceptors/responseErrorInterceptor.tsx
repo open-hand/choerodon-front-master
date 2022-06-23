@@ -65,6 +65,7 @@ export default function handelResponseError(error: AxiosError) {
       case 500: {
         if (response?.data?.message === 'gateway helper error happened: io.choerodon.core.exception.CommonException: error.key-encrypt.decrypt.abnormal_content') { // 主键加密过期
           window.location.href = `${window.location.href.split('/#/')[0]}/#/workbench`;
+          window.location.reload();
         }
         break;
       }
