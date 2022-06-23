@@ -9,7 +9,7 @@ import React, {
 import {
   usePersistFn, useSafeState, useInViewport,
 } from 'ahooks';
-import { ISearchFields } from './a';
+import { ISearchFields } from './tableAddFilter';
 
 export interface IProps {
   fields: Array<ICheckBoxFields>
@@ -28,6 +28,7 @@ const Index:React.FC<IProps> = (props) => {
   const {
     onChange, fields, cRef, reset,
   } = props;
+
   const [hidden, setHidden] = useSafeState(true);
   const [searchValue, setSearchValue] = useState('');
   const [indeterminate, setindeterminate] = useState(false);
@@ -41,6 +42,7 @@ const Index:React.FC<IProps> = (props) => {
       initCheckboxAll(cloneArr);
       setCheckBoxFields(cloneArr);
     },
+    init,
   }));
 
   function useClickOut(onClickOut: (e?: any) => void) {
@@ -72,7 +74,7 @@ const Index:React.FC<IProps> = (props) => {
     }
   };
 
-  useEffect(() => {
+  const init = () => {
     const cloneArr = cloneDeep(fields);
     cloneArr.forEach((item) => {
       item.show = true;
@@ -80,6 +82,10 @@ const Index:React.FC<IProps> = (props) => {
     setCheckBoxFields(cloneArr);
 
     initCheckboxAll(fields);
+  };
+
+  useEffect(() => {
+    init();
   }, []);
 
   const handleAllChange = (value: boolean) => {
@@ -198,6 +204,7 @@ const Index:React.FC<IProps> = (props) => {
   useEffect(() => {
     !inViewPort && setHidden(true);
   }, [inViewPort, setHidden]);
+
   return (
     <div ref={buttonRef}>
       <Dropdown

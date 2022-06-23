@@ -402,6 +402,46 @@ class OrganizationsApi extends Api<OrganizationsApi> {
       url: `${this.prefix}/${this.orgId}/open_app/is_message_enabled?type=ding_talk`,
     });
   }
+
+  // 获取项目工作组
+  getprojWorkGroup() {
+    return this.request({
+      method: 'get',
+      url: `/agile/v1/organizations/${this.orgId}/work_bench/work_group/query_tree`,
+    });
+  }
+
+  // 获取项目分类
+  getprojClassification() {
+    return this.request({
+      method: 'get',
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/classfication/tree`,
+    });
+  }
+
+  // 获取项目群
+  getprojPrograms() {
+    return this.request({
+      method: 'get',
+      url: `/iam//choerodon/v1/organizations/${this.orgId}/projects/programs`,
+    });
+  }
+
+  // 获取项目类型
+  getprojType() {
+    return this.request({
+      method: 'get',
+      url: `/iam/v1/organizations/${this.orgId}/project_categories`,
+    });
+  }
+
+  // 项目创建人和更新人
+  getprojUsers() {
+    return this.request({
+      method: 'get',
+      url: `iam/choerodon/v1/organizations/${this.orgId}/users/search`,
+    });
+  }
 }
 
 const organizationsApi = new OrganizationsApi();

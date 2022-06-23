@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     AppState.getProjects();
-    ProjectsProUseStore.axiosGetProjects();
+    // ProjectsProUseStore.axiosGetProjects();
     ProjectsProUseStore.checkCreate(organizationId);
     ProjectsProUseStore.axiosGetStarProjects();
     ProjectsProUseStore.axiosGetRecentProjects();
@@ -27,9 +27,11 @@ export default () => {
 
   return (
     <div className="projectsPro">
-      <StarProjects />
+      <div className="projectsPro-left">
+        <StarProjects />
+        <RecentProjects />
+      </div>
       <AllProjects />
-      {/* <RecentProjects /> */}
     </div>
   );
 };
