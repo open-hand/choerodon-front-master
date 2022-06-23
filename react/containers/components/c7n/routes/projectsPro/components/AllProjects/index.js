@@ -586,7 +586,6 @@ export default observer(() => {
             {
               name: 'statusIds',
               type: 'Select',
-              width: 100,
               fieldProps: {
                 placeholder: '项目状态',
                 optionTooltip: 'overflow',
@@ -603,7 +602,6 @@ export default observer(() => {
             {
               name: 'workGroupIds',
               type: 'Select',
-              width: 100,
               fieldProps: {
                 placeholder: '工作组',
                 optionTooltip: 'overflow',
@@ -625,7 +623,6 @@ export default observer(() => {
             {
               name: 'projectClassficationIds',
               type: 'Select',
-              width: 100,
               fieldProps: {
                 placeholder: '项目分类',
                 optionTooltip: 'overflow',
@@ -646,7 +643,6 @@ export default observer(() => {
             {
               name: 'programIds',
               type: 'Select',
-              width: 110,
               fieldProps: {
                 placeholder: '所属项目群',
                 optionTooltip: 'overflow',
@@ -660,7 +656,6 @@ export default observer(() => {
             {
               name: 'categoryIds',
               type: 'Select',
-              width: 100,
               fieldProps: {
                 placeholder: '项目类型',
                 optionTooltip: 'overflow',

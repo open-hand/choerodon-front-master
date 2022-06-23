@@ -1,8 +1,9 @@
 import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
+import { FlatSelect } from '@choerodon/components';
 import {
-  Button, TextField, Icon, Select, DataSet, Tooltip, Modal, DateTimePicker,
+  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import {
@@ -36,7 +37,7 @@ export interface ISearchFields {
 const fieldsMap = new Map(
   [
     ['TextField', TextField],
-    ['Select', Select],
+    ['Select', FlatSelect],
     ['DateTimePicker', DateTimePicker],
   ],
 );
