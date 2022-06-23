@@ -129,27 +129,32 @@ export default ({
         type: 'string',
         label: 'DevOps组件编码',
         validator: async (value, name, record) => {
-          if (value.length > 40) {
-            return '编码长度不能超过40！';
-          }
-          const reg = /^[a-z](?!.*--)[a-z0-9-]*[^-]$/g;
-          if (!reg.test(value)) {
-            return '只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"';
-          }
-          try {
-            const flag = await axios({
-              url: `/iam/choerodon/v1/organizations/${organizationId}/projects/check_devops_code_exist`,
-              params: {
-                devops_component_code: value,
-              },
-            });
-            if (flag) {
-              return true;
+          const values = ['N_DEVOPS', 'N_OPERATIONS'];
+          const flag1 = categoryDs.selected.some((categoryRecord) => values.includes(categoryRecord.get('code')));
+          if (flag1) {
+            if (value.length > 40) {
+              return '编码长度不能超过40！';
             }
-            return 'DevOps组件编码已存在';
-          } catch (err) {
-            return '编码已存在或编码重名校验失败，请稍后再试';
+            const reg = /^[a-z](?!.*--)[a-z0-9-]*[^-]$/g;
+            if (!reg.test(value)) {
+              return '只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"';
+            }
+            try {
+              const flag = await axios({
+                url: `/iam/choerodon/v1/organizations/${organizationId}/projects/check_devops_code_exist`,
+                params: {
+                  devops_component_code: value,
+                },
+              });
+              if (flag) {
+                return true;
+              }
+              return 'DevOps组件编码已存在';
+            } catch (err) {
+              return '编码已存在或编码重名校验失败，请稍后再试';
+            }
           }
+          return true;
         },
         dynamicProps: {
           required: ({ record }) => {
