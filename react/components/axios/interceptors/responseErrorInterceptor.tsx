@@ -18,6 +18,13 @@ export default function handelResponseError(error: AxiosError) {
   if (response) {
     const { status } = response;
     switch (status) {
+      case 500: {
+        if (response?.data?.message === 'gateway helper error happened: io.choerodon.core.exception.CommonException: error.key-encrypt.decrypt.abnormal_content') { // 主键加密过期
+          window.location.href = `${window.location.href.split('/#/')[0]}/#/workbench`;
+          window.location.reload();
+        }
+        break;
+      }
       case 401: {
         if (!window.location.href.includes('?')) {
           authorizeC7n();
@@ -59,13 +66,6 @@ export default function handelResponseError(error: AxiosError) {
         if (regTokenExpired.test(response.data)) {
           removeAccessToken();
           authorizeUrl();
-        }
-        break;
-      }
-      case 500: {
-        if (response?.data?.message === 'gateway helper error happened: io.choerodon.core.exception.CommonException: error.key-encrypt.decrypt.abnormal_content') { // 主键加密过期
-          window.location.href = `${window.location.href.split('/#/')[0]}/#/workbench`;
-          window.location.reload();
         }
         break;
       }
