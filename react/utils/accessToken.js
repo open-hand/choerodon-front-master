@@ -32,9 +32,7 @@ export function setAccessToken(token, tokenType, expiresIn) {
     const expires = 30 * 24 * 60 * 60 * 1000;
     option.expires = new Date(Date.now() + expires);
   }
-  console.log(ACCESS_TOKEN, token, option);
   setCookie(ACCESS_TOKEN, token, option);
-  console.log(document.cookie);
   setCookie(TOKEN_TYPE, tokenType, option);
   cachedToken = token;
 }

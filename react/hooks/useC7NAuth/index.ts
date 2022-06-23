@@ -25,14 +25,11 @@ function useC7NAuth(autoAuth?:boolean) {
     expires_in: expiresIn,
   } = params;
 
-  console.log(params, 'params');
-
   if (window.location.href.indexOf('access_token') !== -1 && !accessToken) {
     const paramsObj: {
       [propName: string]: any
     } = {};
     const str = window.location.href.split('/#/')[1];
-    console.log(window.location.href,'window.location.href')
     // @ts-ignore
     str.replace(/([^=&]+)=([^&]*)/g, (m, key, value) => {
       paramsObj[decodeURIComponent(key)] = decodeURIComponent(value);
@@ -41,26 +38,20 @@ function useC7NAuth(autoAuth?:boolean) {
     accessToken = paramsObj.access_token;
     tokenType = paramsObj.token_type;
     expiresIn = paramsObj.expires_in;
-    console.log(accessToken, 'accessToken');
   }
 
   const handleAuth = useCallback(async () => {
     setTrue();
     try {
       if (accessToken) {
-        console.log(1);
         // 单点登录界面过来的时候
         setAccessToken(accessToken, tokenType, expiresIn);
-        console.log(2);
 
         const res = await AppState.loadUserInfo(false);
-        console.log(3);
         if (res.id !== sessionStorage.getItem('userId')) {
-          console.log(4);
           window.location.href = `${window.location.href.replace(/[&?]redirectFlag.*/g, '').split('/#/')[0]}/#/workbench?`
           + `id=${res.tenantId}&name=${res.tenantName}&organizationId=${res.tenantId}&type=organization`;
         }
-        console.log(5);
 
         window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
         // try {
@@ -69,7 +60,6 @@ function useC7NAuth(autoAuth?:boolean) {
         //   console.log(error);
         // }
       } else if (!getAccessToken()) {
-        console.log(6);
         // token过期
         authorizeC7n();
         return;
