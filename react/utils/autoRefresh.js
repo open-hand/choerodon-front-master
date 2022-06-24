@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { message } from 'choerodon-ui/pro';
 
 function autoRefresh() {
   register();
@@ -6,7 +7,11 @@ function autoRefresh() {
 
 function register() {
   window.addEventListener('error', (e) => {
+    // TODO 待删
+    message.error(e);
     if ((findJs(e) || findCss(e)) && timeLimit()) {
+      // TODO 待删
+      message.error('走入刷新逻辑');
       if ('Notification' in window && Notification.permission === 'granted') {
         const notification = new Notification('监测到网站已更新，已自动刷新');
       }
