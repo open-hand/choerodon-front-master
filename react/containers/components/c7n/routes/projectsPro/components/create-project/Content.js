@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
 import { notification, message, Alert } from 'choerodon-ui';
 import {
-  Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select,
+  Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select, SelectBox,
 } from 'choerodon-ui/pro';
 import {
   includes, map, get, some,
@@ -283,19 +283,12 @@ const CreateProject = observer(() => {
       <Form columns={3} record={record} className={`${prefixCls}-form`} labelLayout="float">
         <TextField colSpan={2} name="name" />
         <TextField colSpan={1} name="code" disabled={isModify} />
-        {/* <Select name="aaa">
-          <Option value="jack">新品</Option>
-          <Option value="jack1">包装升级</Option>
-        </Select>
-        <Select name="bbb">
-          <Option value="jack">柔润修护润唇膏屈臣氏陈列版本</Option>
-          <Option value="jack">舒缓保湿氨基酸洁面泡沫</Option>
-          <Option value="jack">敏肌修护镜湖水</Option>
-          <Option value="jack">清痘调理水</Option>
-        </Select> */}
+
         {
-          isModify && <Select name="statusId" renderer={renderStatus} />
+          isModify && <Select name="statusId" renderer={renderStatus} colSpan={1} />
         }
+        <Select name="workGroupId" colSpan={1} />
+        <Select name="projectClassficationId" colSpan={1} />
 
         <TextArea newLine colSpan={3} name="description" resize="vertical" />
         {
