@@ -1,8 +1,9 @@
 /* eslint-disable */
 import React from 'react';
-import { Icon } from 'choerodon-ui';
+import { Icon,Tag } from 'choerodon-ui';
 import { Tooltip } from 'choerodon-ui/pro';
 import { TimePopover } from '@choerodon/components';
+import TimeAgo from 'timeago-react';
 import { getRandomBackground } from '@/utils';
 import { useProjectsProStore } from '../stores';
 
@@ -10,7 +11,33 @@ import './projectTaskContent.less';
 import moment from "moment";
 import ProjectCategory from "./project-category";
 
-export default ({ data, alltrue }) => {
+export const renderCategoriesTags = (arr)=>(
+   arr.map((item,index)=>{
+    if(index<=1) {
+      return <Tag key={item.name} className="categories-tag" color="rgba(15, 19, 88, 0.06)">{item.name}</Tag>
+    }else if (index===2) {
+      return (
+        <Tooltip title={getText(arr)}>
+        <span style={{cursor:'pointer'}}>...</span>
+        </Tooltip>
+      )
+    }
+  })
+)
+
+const getText = (arr)=>{
+  let str = ''
+  arr.map((item,index)=>{
+    if(index!==arr.length-1) {
+      str+=item.name+','
+    } else {
+      str+=item.name
+    }
+  })
+  return str
+}
+
+export default ({ data, alltrue, lastVisitTime }) => {
   const {
     ProjectsProUseStore,
   } = useProjectsProStore();
@@ -71,7 +98,16 @@ export default ({ data, alltrue }) => {
                   {data.enabled ? '启用' : '停用'}
                 </p>
               </div>
-              <div className="starProjects-items-content-right-down">
+              <div className='starProjects-items-content-right-down'>
+                {lastVisitTime && 
+                <div className='time-div'>
+                <TimeAgo datetime={lastVisitTime} locale="zh_CN" />
+                <span>使用</span>
+                </div>
+                }
+                
+              </div>
+              {/* <div className="starProjects-items-content-right-down">
                 <Tooltip title={data.createUserName} placement="top">
                   <div
                     className="starProjects-items-content-right-down-avatur"
@@ -93,35 +129,16 @@ export default ({ data, alltrue }) => {
                 >
                   <TimePopover style={{ display: 'inline' }} content={data.creationDate} />创建
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </div>
       <div className="starProjects-items-down">
-        <ProjectCategory
-          data={data.categories}
-          agileWaterfall={data.agileWaterfall}
-          className="allProjects-content-item-right-down-text1"
-        />
-        {data.programName && (
-          <Tooltip title={data.programName}>
-            <div>
-              <span>
-                <Icon style={{ color: 'rgba(104,135,232,1)' }} type="project_group" />
-              </span>
-              <p
-                style={{
-                  display: 'inline-block',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {data.programName}
-              </p>
-            </div>
-          </Tooltip>
-        )}
+        <span className='items-label'>项目类型：</span>
+        {
+           renderCategoriesTags(data?.categories || [])
+        }
 
       </div>
     </div>

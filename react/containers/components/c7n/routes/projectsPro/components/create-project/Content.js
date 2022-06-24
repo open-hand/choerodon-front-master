@@ -3,9 +3,9 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
-import { notification, message } from 'choerodon-ui';
+import { notification, message, Alert } from 'choerodon-ui';
 import {
-  Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select,
+  Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select, SelectBox,
 } from 'choerodon-ui/pro';
 import {
   includes, map, get, some,
@@ -39,6 +39,7 @@ const CreateProject = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [templateTabsKey, setTemplateTabsKey] = useState([]);
   const [hasConfiged, setHasConfiged] = useState(false);
+  const [showDevopsAdvanced, setShowDevopsAdvanced] = useState(false);
 
   const record = useMemo(() => formDs.current, [formDs.current]);
 
@@ -94,18 +95,22 @@ const CreateProject = observer(() => {
       if (some(categories, ['code', 'N_WATERFALL'])) {
         record.set('useTemplate', false);
       }
-      const res = await formDs.submit();
-      if (res && !res.failed && res.list && res.list.length) {
-        const projectId = get(res.list[0], 'id');
-        if (projectId) {
-          openNotification({ projectId, operateType: isModify ? 'update' : 'create' });
+      const flag = await formDs.validate();
+      if (flag) {
+        const res = await formDs.forceSubmit();
+        if (res && !res.failed && res.list && res.list.length) {
+          const projectId = get(res.list[0], 'id');
+          if (projectId) {
+            openNotification({ projectId, operateType: isModify ? 'update' : 'create' });
+          }
+          refresh(projectId);
+          return true;
+        } if (res.failed) {
+          message.error(res.message);
         }
-        refresh(projectId);
-        return true;
-      } if (res.failed) {
-        message.error(res.message);
+        setIsLoading(false);
+        return false;
       }
-      setIsLoading(false);
       return false;
     } catch (e) {
       setIsLoading(false);
@@ -155,6 +160,16 @@ const CreateProject = observer(() => {
       categoryDs.select(categoryRecord);
     }
   }, []);
+
+  useEffect(() => {
+    const values = ['N_DEVOPS', 'N_OPERATIONS'];
+    const flag = categoryDs.selected.some((categoryRecord) => values.includes(categoryRecord.get('code')));
+    if (flag) {
+      setShowDevopsAdvanced(true);
+    } else {
+      setShowDevopsAdvanced(false);
+    }
+  }, [categoryDs.selected, showDevopsAdvanced]);
 
   const renderAvatar = useCallback(() => {
     const name = record.get('name');
@@ -265,24 +280,17 @@ const CreateProject = observer(() => {
   return (
     <>
       {renderAvatar()}
-      <Form record={record} className={`${prefixCls}-form`} labelLayout="float">
-        <TextField name="name" />
-        <TextField name="code" disabled={isModify} />
-        {/* <Select name="aaa">
-          <Option value="jack">新品</Option>
-          <Option value="jack1">包装升级</Option>
-        </Select>
-        <Select name="bbb">
-          <Option value="jack">柔润修护润唇膏屈臣氏陈列版本</Option>
-          <Option value="jack">舒缓保湿氨基酸洁面泡沫</Option>
-          <Option value="jack">敏肌修护镜湖水</Option>
-          <Option value="jack">清痘调理水</Option>
-        </Select> */}
-        {
-          isModify && <Select name="statusId" renderer={renderStatus} />
-        }
+      <Form columns={3} record={record} className={`${prefixCls}-form`} labelLayout="float">
+        <TextField colSpan={2} name="name" />
+        <TextField colSpan={1} name="code" disabled={isModify} />
 
-        <TextArea name="description" resize="vertical" />
+        {
+          isModify && <Select name="statusId" renderer={renderStatus} colSpan={1} />
+        }
+        <Select name="workGroupId" colSpan={1} />
+        <Select name="projectClassficationId" colSpan={1} />
+
+        <TextArea newLine colSpan={3} name="description" resize="vertical" />
         {
           isModify && [
             <TextField name="creationDate" disabled />,
@@ -346,6 +354,30 @@ const CreateProject = observer(() => {
           )
         }
       </div>
+      {
+        showDevopsAdvanced && (
+        <div className={`${prefixCls}-advanced`}>
+          <div className={`${prefixCls}-advanced-divided`} />
+          <p className={`${prefixCls}-advanced-title`}>
+            高级设置
+            <Icon type="expand_less" />
+          </p>
+          <Alert
+            message="DevOps组件编码将用于GitLab Group中的URL片段，Harbor Project的名称片段，SonarQube projectKey前缀，
+          以及Helm仓库编码。"
+            type="info"
+            showIcon
+          />
+          <Form style={{ marginTop: 10 }} columns={3} record={record}>
+            <TextField
+              name="devopsComponentCode"
+              colSpan={2}
+              addonAfter={<NewTips helpText="" />}
+            />
+          </Form>
+        </div>
+        )
+      }
     </>
   );
 });

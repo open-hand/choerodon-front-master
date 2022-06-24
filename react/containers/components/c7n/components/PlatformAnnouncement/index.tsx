@@ -69,7 +69,7 @@ const PlatformAnnouncement = (props:{
         }}
         type={full ? 'fullscreen_exit' : 'fullscreen'}
         onClick={() => {
-          // setFull(!full);
+          setFull(!full);
           infoModal && infoModal.update({
             fullScreen: !full,
             title: renderAnnounceTitle(!full),

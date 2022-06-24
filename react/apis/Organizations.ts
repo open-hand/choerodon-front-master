@@ -11,6 +11,37 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  roleList() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/roles`,
+      method: 'get',
+    });
+  }
+
+  batchUpdate(data: any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/users/batch_update`,
+      method: 'put',
+      data,
+    });
+  }
+
+  userLabelList() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/list_user_labels`,
+      method: 'get',
+    });
+  }
+
+  // 第三方配置唯一校验
+  thirdPartyAppOnlyVerify(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/open_app/check_config_create`,
+      method: 'post',
+      data,
+    });
+  }
+
   thirdPartyAppSyncUsers(openAppId: string) {
     return this.request({
       url: `/agile/v1/organizations/${this.orgId}/issue_open_sync/list_assign_users?open_app_id=${openAppId}`,
@@ -198,6 +229,16 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
+  enableUsersPage(name: any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/enableUsers/page`,
+      params: {
+        user_name: name,
+      },
+      method: 'get',
+    });
+  }
+
   // 项目协作-项目-状态停用
   cooperationProjStatusDisable(id:any) {
     return this.request({
@@ -327,6 +368,78 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return this.request({
       method: 'get',
       url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging?enabled=true${selectProjectId ? `&project_id=${selectProjectId}` : ''}`,
+    });
+  }
+
+  // 查询原所属组织
+  loadOrganization(id:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/bus/pro/${id}`,
+    });
+  }
+
+  // 查询目标所属组织
+  loadTargetOrganization() {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/${this.orgId}/tenant/page?`,
+    });
+  }
+
+  // 修改所属组织
+  updateOrganization({ uid, targetId }:any) {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}/${this.orgId}/user/tenant/update?user_id=${uid}&target_tenant_id=${targetId}?`,
+    });
+  }
+
+  // 项目层查询组织能否钉钉发送
+  getDingdingDisable() {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/${this.orgId}/open_app/is_message_enabled?type=ding_talk`,
+    });
+  }
+
+  // 获取项目工作组
+  getprojWorkGroup() {
+    return this.request({
+      method: 'get',
+      url: `/agile/v1/organizations/${this.orgId}/work_bench/work_group/query_tree`,
+    });
+  }
+
+  // 获取项目分类
+  getprojClassification() {
+    return this.request({
+      method: 'get',
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/classfication/tree`,
+    });
+  }
+
+  // 获取项目群
+  getprojPrograms() {
+    return this.request({
+      method: 'get',
+      url: `/iam//choerodon/v1/organizations/${this.orgId}/projects/programs`,
+    });
+  }
+
+  // 获取项目类型
+  getprojType() {
+    return this.request({
+      method: 'get',
+      url: `/iam/v1/organizations/${this.orgId}/project_categories`,
+    });
+  }
+
+  // 项目创建人和更新人
+  getprojUsers() {
+    return this.request({
+      method: 'get',
+      url: `iam/choerodon/v1/organizations/${this.orgId}/users/search`,
     });
   }
 }

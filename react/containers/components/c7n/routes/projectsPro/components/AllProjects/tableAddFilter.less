@@ -1,0 +1,122 @@
+.c7n-agile-choose-field-list {
+  width: 3rem;
+  max-height: 410px;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  box-shadow: 0 1px 8px 0 var(--divider), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 2px 1px -2px rgba(0, 0, 0, 0.2);
+
+  &-search {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0 15px;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    height: 40px;
+    border-bottom: 1px solid var(--divider);
+    padding: 0 15px;
+  }
+
+  &-content {
+    flex: 1;
+    overflow: auto;
+    padding: 0 15px 15px;
+  }
+
+  &-title {
+    color: var(--text-color3);
+    margin-bottom: 5px;
+    margin-top: 10px;
+  }
+
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+    &-search {
+      .c7n-pro-input-wrapper {
+        width: 100%;
+      }
+    }
+  }
+
+  &-item {
+    width: 50%;
+    margin: 6px 0;
+    label {
+      width: 100%;
+      .c7n-pro-checkbox-label {
+        width: 100%;
+        display: inline-block;
+        overflow: hidden;
+        line-height: 1.5;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+.searchField-container {
+  display: flex;
+  justify-content: flex-start;
+  .searchField-container-left {
+    display: flex;
+    justify-content: flex-start;
+    width: calc(100% - 73px);
+    .searchField-container-left-block1 {
+        flex: 1;
+    }
+    .searchField-container-left-block1-only1line {
+        height: 32px;
+        overflow: hidden;
+    }
+    .searchField-container-left-block1-inner {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    .searchField-container-left-block2 {
+        height: 32px;
+        display: flex;
+        align-items: center;
+    }
+  }
+  .searchField-container-right {
+    width: 73px;
+    height: 32px;
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+  }
+
+  .searchField-item {
+    margin-right: 10px;
+  }
+  .searchField-item-deletable {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .deletable-div {
+      cursor: pointer;
+      border-radius: 50%;
+      width: 14px;
+      height: 14px;
+      line-height: 11px;
+      background: rgba(0, 0, 0, 0.16);
+      color: white;
+      text-align: center;
+      margin-left: 5px;
+      .icon {
+        font-size: 10px;
+      }
+    }
+  }
+}
