@@ -1,3 +1,6 @@
+import { DataSet } from 'choerodon-ui/pro';
+import JSONBig from 'json-bigint';
+import { organizationsApiConfig } from '@/apis';
 import axios from '@/components/axios';
 
 // 项目编码只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"  /^[a-z](([a-z0-9]|-(?!-))*[a-z0-9])*$/
@@ -125,6 +128,61 @@ export default ({
         defaultValue: newUserGuideDefaultValue.code,
       },
       {
+        name: 'statusId',
+        label: '项目状态',
+        textField: 'name',
+        valueField: 'id',
+        options: statusDs,
+        dynamicProps: {
+          required: ({ record }) => record?.status !== 'add'
+          ,
+        },
+      },
+      {
+        name: 'workGroupId',
+        type: 'string',
+        label: '工作组',
+        textField: 'name',
+        valueField: 'id',
+        options: new DataSet({
+          autoCreate: true,
+          autoQuery: true,
+          transport: {
+            read: ({ data }) => ({
+              method: 'get',
+              url: organizationsApiConfig.getprojWorkGroup().url,
+              transformResponse: (res) => {
+                let newRes = res;
+                newRes = JSONBig.parse(newRes);
+                return newRes.workGroupVOS;
+              },
+            }),
+          },
+        }),
+      },
+      {
+        name: 'projectClassficationId',
+        type: 'string',
+        label: '项目分类',
+        textField: 'name',
+        valueField: 'id',
+        options: new DataSet({
+          autoCreate: true,
+          autoQuery: true,
+          transport: {
+            read: ({ data }) => ({
+              method: 'get',
+              url: organizationsApiConfig.getprojClassification().url,
+              transformResponse: (res) => {
+                let newRes = res;
+                newRes = JSONBig.parse(newRes);
+                return newRes.treeProjectClassfication;
+              },
+            }),
+          },
+        }),
+      },
+      {
         name: 'devopsComponentCode',
         type: 'string',
         label: 'DevOps组件编码',
@@ -162,30 +220,6 @@ export default ({
             const flag = categoryDs.selected.some((categoryRecord) => values.includes(categoryRecord.get('code')));
             return flag;
           },
-        },
-      },
-      // {
-      //   name: 'aaa',
-      //   type: 'string',
-      //   label: '项目类型',
-      //   required: true,
-      // },
-      // {
-      //   name: 'bbb',
-      //   type: 'string',
-      //   label: '产品',
-      //   required: true,
-      // },
-      {
-        name: 'statusId',
-        type: 'object',
-        label: '项目状态',
-        textField: 'name',
-        valueField: 'id',
-        options: statusDs,
-        dynamicProps: {
-          required: ({ record }) => record?.status !== 'add'
-          ,
         },
       },
       {
