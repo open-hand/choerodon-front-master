@@ -47,9 +47,7 @@ function useC7NAuth(autoAuth?:boolean) {
       }
     }
     localStorage.setItem('accessToken', accessToken);
-    window.addEventListener('storage', handleStorageChange, {
-      once: true,
-    });
+    window.addEventListener('storage', handleStorageChange);
   }, []);
 
   const handleAuth = useCallback(async () => {
