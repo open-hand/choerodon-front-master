@@ -38,6 +38,7 @@ export default function addCustomHeader(config: AxiosRequestConfig) {
 
   newConfig.headers['H-Menu-Id'] = correctId || 0;
   const accessToken = getAccessToken();
+  console.log(accessToken, 'axios accessToken');
   if (accessToken) {
     newConfig.headers.Authorization = accessToken;
   }

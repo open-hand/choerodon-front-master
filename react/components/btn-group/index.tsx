@@ -5,8 +5,8 @@ import React, {
 
 import { Menu, Popover, Icon } from 'choerodon-ui';
 import { Button, Tooltip } from 'choerodon-ui/pro';
-import { flatten, map } from 'lodash';
-import _ from 'lodash';
+import _, { flatten, map } from 'lodash';
+
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
 import classNames from 'classnames';
 import { Permission } from '@/components/permission';
@@ -57,6 +57,8 @@ const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
         disabled,
         group,
         tooltipsConfig: itemToolTipsConfig,
+        icon: itemIcon,
+        img,
       } = itemProps;
       const Item = (
         <Menu.Item
@@ -65,6 +67,25 @@ const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
         >
           <Tooltip {...itemToolTipsConfig}>
             <span role="none" onClick={disabled ? () => {} : handler}>
+              {
+                itemIcon ? (
+                  <Icon type={itemIcon} />
+                ) : ''
+              }
+              {
+                img ? (
+                  <img
+                    style={{
+                      width: '18px',
+                      marginRight: 6,
+                      position: 'relative',
+                      bottom: 1,
+                    }}
+                    src={img}
+                    alt=""
+                  />
+                ) : ''
+              }
               {itemName}
             </span>
           </Tooltip>

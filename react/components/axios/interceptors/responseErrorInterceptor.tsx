@@ -14,9 +14,17 @@ const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTo
 
 export default function handelResponseError(error: AxiosError) {
   const { response } = error;
+  console.log(error, 'error');
   if (response) {
     const { status } = response;
     switch (status) {
+      case 500: {
+        if (response?.data?.message === 'gateway helper error happened: io.choerodon.core.exception.CommonException: error.key-encrypt.decrypt.abnormal_content') { // 主键加密过期
+          window.location.href = `${window.location.href.split('/#/')[0]}/#/workbench`;
+          window.location.reload();
+        }
+        break;
+      }
       case 401: {
         if (!window.location.href.includes('?')) {
           authorizeC7n();
@@ -61,6 +69,7 @@ export default function handelResponseError(error: AxiosError) {
         }
         break;
       }
+
       default:
         if (Object.prototype.toString.call(response.data) !== '[object Blob]') {
           prompt(response.data, 'error');

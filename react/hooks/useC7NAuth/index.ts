@@ -40,6 +40,16 @@ function useC7NAuth(autoAuth?:boolean) {
     expiresIn = paramsObj.expires_in;
   }
 
+  useEffect(() => {
+    function handleStorageChange(e:StorageEvent) {
+      if (e.key === 'accessToken' && localStorage.getItem('accessToken') !== 'undefined') {
+        window.location.reload();
+      }
+    }
+    localStorage.setItem('accessToken', accessToken);
+    window.addEventListener('storage', handleStorageChange);
+  }, []);
+
   const handleAuth = useCallback(async () => {
     setTrue();
     try {
@@ -72,6 +82,7 @@ function useC7NAuth(autoAuth?:boolean) {
       await AppState.loadUserInfo();
       setFalse();
     } catch (e) {
+      console.log(e);
       throw new Error(e);
     }
   }, [accessToken, expiresIn, setFalse, setTrue, tokenType]);
