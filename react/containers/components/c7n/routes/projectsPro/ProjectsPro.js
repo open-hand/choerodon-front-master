@@ -14,6 +14,7 @@ export default () => {
       currentMenuType: { organizationId },
     },
     AppState,
+    projectListDataSet,
   } = useProjectsProStore();
 
   useEffect(() => {
@@ -24,6 +25,12 @@ export default () => {
     ProjectsProUseStore.axiosGetRecentProjects();
     AppState.setCurrentProject(null);
   }, []);
+
+  const refreshAllView = () => {
+    ProjectsProUseStore.axiosGetStarProjects();
+    ProjectsProUseStore.axiosGetRecentProjects();
+    projectListDataSet.query();
+  };
 
   return (
     <div className="projectsPro">

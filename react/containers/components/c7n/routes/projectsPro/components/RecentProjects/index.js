@@ -94,7 +94,7 @@ export default observer(() => {
       className="recentProjects-items"
     >
       <div className="recentProjects-items-topborder" />
-      <ProjectTaskContent alltrue data={p.projectDTO || {}} lastVisitTime={p.lastVisitTime} />
+      <ProjectTaskContent data={p.projectDTO || {}} lastVisitTime={p.lastVisitTime} />
     </div>
 
   )), [ProjectsProUseStore.getRecentProjects, history]);
