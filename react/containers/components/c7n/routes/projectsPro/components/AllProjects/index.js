@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback, useEffect, useState, useRef,
+} from 'react';
 import {
   TextField,
   Button,
@@ -51,6 +53,8 @@ export default observer(() => {
     projectListDataSet,
   } = useProjectsProStore();
 
+  const tableAddFilterCRef = useRef();
+
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
   const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
 
@@ -68,9 +72,8 @@ export default observer(() => {
   }, [AppState.getUserWizardStatus]);
 
   const refresh = (projectId) => {
-    // ProjectsProUseStore.axiosGetProjects();
-    projectListDataSet.query();
     ProjectsProUseStore.checkCreate(organizationId);
+    tableAddFilterCRef?.current?.reset();
     if (projectId) {
       MenuStore.menuGroup.project = {};
     }
@@ -534,38 +537,22 @@ export default observer(() => {
     }
   };
 
-  const handleChangePagination = (page, pageSize) => {
-    let newPage = page;
-    const { size } = ProjectsProUseStore.getPagination;
-    if (size !== pageSize) {
-      newPage = 1;
-    }
-    ProjectsProUseStore.setPagination({
-      page: newPage,
-      size: pageSize,
-    });
-    ProjectsProUseStore.axiosGetProjects();
-  };
-
-  const tableAddFilterChange = async (value) => {
-    function cycleFilterValuesObj(forEmpty) {
-      forIn(value, (itemValue, key) => {
-        if (value) {
-          if (key === 'updateTime' && itemValue) {
-            projectListDataSet.setQueryParameter('lastUpdateDateStart', forEmpty ? null : itemValue[0]);
-            projectListDataSet.setQueryParameter('lastUpdateDateEnd', forEmpty ? null : itemValue[1]);
-          } else if (key === 'createTime') {
-            projectListDataSet.setQueryParameter('creationDateStart', forEmpty ? null : itemValue[0]);
-            projectListDataSet.setQueryParameter('creationDateEnd', forEmpty ? null : itemValue[1]);
-          } else {
-            projectListDataSet.setQueryParameter(key, forEmpty ? null : itemValue);
-          }
-        }
+  const tableAddFilterChange = async (name, value) => {
+    if (name === 'updateTime' && value) {
+      projectListDataSet.setQueryParameter('lastUpdateDateStart', value[0]);
+      projectListDataSet.setQueryParameter('lastUpdateDateEnd', value[1]);
+    } else if (name === 'createTime' && value) {
+      projectListDataSet.setQueryParameter('creationDateStart', value[0]);
+      projectListDataSet.setQueryParameter('creationDateEnd', value[1]);
+    } else if (name === 'reset' && value === 'reset') {
+      // eslint-disable-next-line no-shadow
+      forIn(projectListDataSet.queryParameter, (value, key) => {
+        projectListDataSet.setQueryParameter(key, null);
       });
+    } else {
+      projectListDataSet.setQueryParameter(name, value);
     }
-    cycleFilterValuesObj();
-    await projectListDataSet.query();
-    cycleFilterValuesObj(true);
+    projectListDataSet.query();
   };
 
   const userOptionRender = ({ record, text, value }) => (
@@ -734,25 +721,9 @@ export default observer(() => {
             },
           ]}
           onChange={tableAddFilterChange}
+          cRef={tableAddFilterCRef}
         />
         <AllProjectTable />
-        {/* {renderProjects()}
-        {ProjectsProUseStore.getAllProjects.length > 0 && (
-          <Pagination
-            showSizeChangerLabel={false}
-            showTotal={false}
-            showPager
-            showQuickJumper
-            onChange={handleChangePagination}
-            page={ProjectsProUseStore.getPagination.page}
-            total={ProjectsProUseStore.getPagination.total}
-            pageSize={ProjectsProUseStore.getPagination.size}
-            style={{
-              textAlign: 'right',
-              marginTop: 15,
-            }}
-          />
-        )} */}
       </div>
     </div>
   );
