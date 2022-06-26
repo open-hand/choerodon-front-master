@@ -37,6 +37,14 @@ export interface IProps {
 
 const { Column } = Table;
 
+export const startProjChange = async (pid:string, enable:boolean, organizationId:string, ProjectsProUseStore:any) => {
+  enable ? await axios.post(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`, {
+    projectId: pid,
+  }) : await axios.delete(`/iam/choerodon/v1/organizations/${organizationId}/star_projects?project_id=${pid}`);
+  ProjectsProUseStore.axiosGetStarProjects();
+  ProjectsProUseStore.axiosGetRecentProjects();
+};
+
 const Index:React.FC<IProps> = (props) => {
   const {
     categoryCodes,
@@ -190,23 +198,15 @@ const Index:React.FC<IProps> = (props) => {
     }
   };
 
-  const startProjChange = async (pid:string, enable:boolean) => {
-    enable ? await axios.post(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`, {
-      projectId: pid,
-    }) : await axios.delete(`/iam/choerodon/v1/organizations/${organizationId}/star_projects?project_id=${pid}`);
-    ProjectsProUseStore.axiosGetStarProjects();
-  };
-
   const handleProjClick = async (data:any) => {
     if (data.enabled && checkOperation(data)) {
-      await handleClickProject(data, history, AppState);
-      refresh();
+      handleClickProject(data, history, AppState);
     }
   };
 
   const handleStarClick = throttle(async (data) => {
     if (data.enabled) {
-      await startProjChange(data.id, !data.starFlag);
+      await startProjChange(data.id, !data.starFlag, organizationId, ProjectsProUseStore);
       refresh();
     }
   }, 2000);
@@ -380,7 +380,7 @@ const Index:React.FC<IProps> = (props) => {
       <Column name="workGroup" tooltip={'overflow' as any} />
       <Column name="projectClassfication" tooltip={'overflow' as any} />
       <Column name="programName" tooltip={'overflow' as any} />
-      <Column renderer={renderCategories} name="categories" width={180} />
+      <Column renderer={renderCategories} name="categories" width={200} />
       <Column name="description" tooltip={'overflow' as any} />
     </Table>
   );

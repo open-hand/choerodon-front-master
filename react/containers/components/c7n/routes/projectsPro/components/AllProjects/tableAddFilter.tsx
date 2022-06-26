@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useMemo, useRef, useState,
+  useEffect, useMemo, useRef, useState, useImperativeHandle,
 } from 'react';
 import { FlatSelect } from '@choerodon/components';
 import {
@@ -19,7 +19,8 @@ const modalKey1 = Modal.key();
 export interface IProps {
     searchFieldsConfig: ISearchFields[]
     filterFieldsConfig: ICheckBoxFields[]
-    onChange: (value:any)=>void
+    onChange: (name: string, value:any)=>void
+    cRef: any
 }
 
 export interface ISearchFields {
@@ -32,6 +33,7 @@ export interface ISearchFields {
     optionQueryConfig?: () => void
     optionsTextField?: string
     optionsValueField?: string
+    cRef?: any
 }
 
 const fieldsMap = new Map(
@@ -42,8 +44,10 @@ const fieldsMap = new Map(
   ],
 );
 
-const Index: React.FC<IProps> = (props: any) => {
-  const { searchFieldsConfig, filterFieldsConfig, onChange } = props;
+const Index: React.FC<IProps> = (props) => {
+  const {
+    searchFieldsConfig, filterFieldsConfig, onChange, cRef,
+  } = props;
   const [initialFieldNum, setInitialFieldNum] = useState<number>(0);
   const [expandBtnVisible, setExpandBtnVisible] = useState<boolean>(false);
   const [expandBtnType, setExpandBtnType] = useState<'expand_less' | 'expand_more'>('expand_less');
@@ -51,6 +55,10 @@ const Index: React.FC<IProps> = (props: any) => {
   const [searchFieldsOrigin, setSearchFieldsOrigin] = useState<ISearchFields[]>([]);
 
   const childRef = useRef<any>();
+
+  useImperativeHandle(cRef, () => ({
+    reset: handleReset,
+  }));
 
   useEffect(() => {
     // 没有保存的数据的时候
@@ -73,7 +81,7 @@ const Index: React.FC<IProps> = (props: any) => {
       fields: [],
       events: {
         update: ({ record, name, value }:{record:Record, name:string, value:any}) => {
-          onChange(omit(record.toData(), '__dirty'));
+          onChange(name, value);
         },
       },
     });
@@ -192,7 +200,7 @@ const Index: React.FC<IProps> = (props: any) => {
   const handleReset = () => {
     setSearchFields(cloneDeep(searchFieldsOrigin));
     compDataSet.reset(); // 没有触发dataset update事件 手动触发一下
-    onChange({});
+    onChange('reset', 'reset');
     childRef?.current?.init();
     setExpandBtnVisible(false);
     setExpandBtnType('expand_less');
