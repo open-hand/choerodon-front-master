@@ -4,39 +4,39 @@ import {
 } from 'choerodon-ui/pro';
 import { cloneDeep } from 'lodash';
 import React, {
-  useCallback, useEffect, useImperativeHandle, useRef, useState,
+  useEffect, useImperativeHandle, useState,
 } from 'react';
 import {
-  usePersistFn, useSafeState, useInViewport,
+  useSafeState, useClickAway,
 } from 'ahooks';
 import { ISearchFields } from './tableAddFilter';
 
 export interface IProps {
   fields: Array<ICheckBoxFields>
-  onChange: (value: boolean, changeArr:ICheckBoxFields[])=> void
+  onChange: (value: boolean, changeArr: ICheckBoxFields[]) => void
   cRef: any
-  reset: ()=>void
+  reset: () => void
 }
 
-export interface ICheckBoxFields extends ISearchFields{
+export interface ICheckBoxFields extends ISearchFields {
   show: boolean
   checked: boolean
   checkboxLabel: string
 }
 
-const Index:React.FC<IProps> = (props) => {
+const Index: React.FC<IProps> = (props) => {
   const {
     onChange, fields, cRef, reset,
   } = props;
 
   const [hidden, setHidden] = useSafeState(true);
   const [searchValue, setSearchValue] = useState('');
-  const [indeterminate, setindeterminate] = useState(false);
+  // const [indeterminate, setindeterminate] = useState(false);
   const [checked, setchecked] = useState(false);
-  const [checkBoxFields, setCheckBoxFields] = useState<ICheckBoxFields[] | []>([]);
+  const [checkBoxFields, setCheckBoxFields] = useState<ICheckBoxFields[]>([]);
 
   useImperativeHandle(cRef, () => ({
-    checkChange: (value:boolean, index:number) => {
+    checkChange: (value: boolean, index: number) => {
       const cloneArr = cloneDeep(checkBoxFields);
       cloneArr[index].checked = value;
       initCheckboxAll(cloneArr);
@@ -45,33 +45,13 @@ const Index:React.FC<IProps> = (props) => {
     init,
   }));
 
-  function useClickOut(onClickOut: (e?: any) => void) {
-    const tref = useRef<HTMLDivElement | null>(null);
-    const handleClick = useCallback((e) => {
-      if (tref.current && !tref.current.contains(e.target)) {
-        onClickOut(e);
-      }
-    }, [onClickOut]);
-    useEffect(() => {
-      document.addEventListener('click', handleClick);
-      return () => {
-        document.removeEventListener('click', handleClick);
-      };
-    }, [handleClick]);
-    return tref;
-  }
-
-  const handleClickOut = usePersistFn(() => {
-    setHidden(true);
-  });
-
-  const initCheckboxAll = (arr:ICheckBoxFields[]) => {
+  const initCheckboxAll = (arr: ICheckBoxFields[]) => {
     if (arr.every((i) => i.checked)) {
       setchecked(true);
     }
-    if (arr.some((i) => i.checked) && !arr.every((i) => i.checked)) {
-      setindeterminate(true);
-    }
+    // if (arr.some((i) => i.checked) && !arr.every((i) => i.checked)) {
+    //   setindeterminate(true);
+    // }
   };
 
   const init = () => {
@@ -80,8 +60,9 @@ const Index:React.FC<IProps> = (props) => {
       item.show = true;
     });
     setCheckBoxFields(cloneArr);
-
     initCheckboxAll(fields);
+    // setindeterminate(false);
+    setchecked(false);
   };
 
   useEffect(() => {
@@ -91,21 +72,27 @@ const Index:React.FC<IProps> = (props) => {
   const handleAllChange = (value: boolean) => {
     const cloneCheckBoxFields = cloneDeep(checkBoxFields);
 
-    function reduceDuplication(bool:boolean) {
-      cloneCheckBoxFields.forEach((item:any) => {
+    function reduceDuplication(bool: boolean) {
+      cloneCheckBoxFields.forEach((item: ICheckBoxFields) => {
+        if (searchValue && item.checkboxLabel.indexOf(searchValue) === -1) {
+          return;
+        }
         if (bool ? !item.checked : item.checked) {
           changeArr.push(item);
         }
       });
     }
 
-    function reduceDuplication2(bool:boolean) {
-      cloneCheckBoxFields.forEach((item:any) => {
+    function reduceDuplication2(bool: boolean) {
+      cloneCheckBoxFields.forEach((item: ICheckBoxFields) => {
+        if (searchValue && item.checkboxLabel.indexOf(searchValue) === -1) {
+          return;
+        }
         item.checked = bool;
       });
     }
 
-    const changeArr:any = [];
+    const changeArr: any = [];
     if (value) {
       reduceDuplication(true);
     } else {
@@ -113,9 +100,9 @@ const Index:React.FC<IProps> = (props) => {
     }
     onChange(value, changeArr);
 
-    if (indeterminate) {
-      setindeterminate(false);
-    }
+    // if (indeterminate) {
+    //   setindeterminate(false);
+    // }
     setchecked(value);
     reduceDuplication2(value);
     setCheckBoxFields(cloneCheckBoxFields);
@@ -123,10 +110,10 @@ const Index:React.FC<IProps> = (props) => {
 
   const cleanAll = () => {
     reset();
-    setindeterminate(false);
+    // setindeterminate(false);
     setchecked(false);
     const cloneCheckBoxFields = cloneDeep(checkBoxFields);
-    cloneCheckBoxFields.forEach((item:any) => {
+    cloneCheckBoxFields.forEach((item: any) => {
       item.checked = false;
       item.show = true;
     });
@@ -135,28 +122,34 @@ const Index:React.FC<IProps> = (props) => {
     setHidden(true);
   };
 
-  const handleChooseFieldChange = (value: boolean, item: ICheckBoxFields, index:number) => {
+  const handleChooseFieldChange = (value: boolean, item: ICheckBoxFields, index: number) => {
     const cloneCheckBoxFields = cloneDeep(checkBoxFields);
     cloneCheckBoxFields[index].checked = value;
     setCheckBoxFields(cloneCheckBoxFields);
     onChange(value, [item]);
   };
 
-  const handleSearchChange = (value:string) => {
+  const handleSearchChange = (value: string) => {
     setSearchValue(value);
     const cloneArr = cloneDeep(checkBoxFields);
     if (!value) {
       cloneArr.forEach((item) => {
         item.show = true;
       });
+      setchecked(cloneArr.every((i) => i.checked));
     } else {
+      let afterFilterChecked = true;
       cloneArr.forEach((item) => {
         if (item.checkboxLabel.indexOf(value) !== -1) {
           item.show = true;
+          if (!item.checked) {
+            afterFilterChecked = false;
+          }
         } else {
           item.show = false;
         }
       });
+      setchecked(afterFilterChecked);
     }
     setCheckBoxFields(cloneArr);
   };
@@ -173,7 +166,8 @@ const Index:React.FC<IProps> = (props) => {
         <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" clearButton onChange={handleSearchChange} value={searchValue} />
       </div>
       <div className="c7n-agile-choose-field-list-header">
-        <CheckBox indeterminate={indeterminate} checked={checked} onChange={handleAllChange}>全选</CheckBox>
+        {/* indeterminate={indeterminate} */}
+        <CheckBox checked={checked} onChange={handleAllChange}>全选</CheckBox>
         <Button onClick={cleanAll}>清除筛选项</Button>
       </div>
       <div className="c7n-agile-choose-field-list-content">
@@ -181,16 +175,16 @@ const Index:React.FC<IProps> = (props) => {
           <div className="c7n-agile-choose-field-list-title">预定义字段</div>
           <div className="c7n-agile-choose-field-list-list">
             {
-                                checkBoxFields.map((item:ICheckBoxFields, index:number) => (item.show ? (
-                                  <div className="c7n-agile-choose-field-list-item">
-                                    <CheckBox
-                                      onChange={(value: boolean) => { handleChooseFieldChange(value, item, index); }}
-                                      checked={item.checked}
-                                    >
-                                      {item.checkboxLabel}
-                                    </CheckBox>
-                                  </div>
-                                ) : ''))
+              checkBoxFields.map((item: ICheckBoxFields, index: number) => (item.show ? (
+                <div className="c7n-agile-choose-field-list-item">
+                  <CheckBox
+                    onChange={(value: boolean) => { handleChooseFieldChange(value, item, index); }}
+                    checked={item.checked}
+                  >
+                    {item.checkboxLabel}
+                  </CheckBox>
+                </div>
+              ) : ''))
             }
           </div>
         </div>
@@ -198,44 +192,41 @@ const Index:React.FC<IProps> = (props) => {
     </div>
   );
 
-  const buttonRef = useRef<HTMLDivElement>(null);
-  const ref = useClickOut(handleClickOut);
-  const inViewPort = useInViewport(buttonRef);
-  useEffect(() => {
-    !inViewPort && setHidden(true);
-  }, [inViewPort, setHidden]);
+  const overlay = (
+    <div
+      role="none"
+      id="c7ncd-chooseFields-overlay"
+    >
+      {dropdownContent()}
+    </div>
+  );
+
+  useClickAway(() => { setHidden(true); }, () => document.getElementById('c7ncd-chooseFields-overlay'));
 
   return (
-    <div ref={buttonRef}>
+    <div>
       <Dropdown
         hidden={hidden}
-        overlay={(
-          <div
-            role="none"
-            ref={ref}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            {dropdownContent()}
-          </div>
-    )}
+        overlay={overlay}
         trigger={'click' as any}
+        // @ts-ignore
+        getPopupContainer={() => document.getElementById('c7ncd-chooseFieldsBtn')}
       >
-        <Button>
-          <span
+        <Button id="c7ncd-chooseFieldsBtn">
+          <div
             style={{
-              display: 'flex', alignItems: 'center', fontWeight: 500,
+              display: 'flex', alignItems: 'center', fontWeight: 500, height: '100%', padding: '0 12px',
             }}
             role="none"
             onClick={(e) => {
               e.nativeEvent.stopImmediatePropagation();
+              e.stopPropagation();
               setHidden(false);
             }}
           >
             添加筛选
             <Icon type="arrow_drop_down" />
-          </span>
+          </div>
         </Button>
       </Dropdown>
     </div>

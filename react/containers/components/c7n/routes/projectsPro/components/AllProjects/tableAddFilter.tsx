@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { FlatSelect } from '@choerodon/components';
 import {
-  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker,
+  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker, TreeSelect,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import {
@@ -17,23 +17,22 @@ import './tableAddFilter.less';
 const modalKey1 = Modal.key();
 
 export interface IProps {
-    searchFieldsConfig: ISearchFields[]
-    filterFieldsConfig: ICheckBoxFields[]
-    onChange: (name: string, value:any)=>void
-    cRef: any
+  searchFieldsConfig: ISearchFields[]
+  filterFieldsConfig: ICheckBoxFields[]
+  onChange: (name: string, value: any) => void
+  cRef: any
 }
 
 export interface ISearchFields {
-    name: string
-    type: string,
-    fieldProps: any
-    prefixIcon?: string
-    width?: number
-    initial: boolean
-    optionQueryConfig?: () => void
-    optionsTextField?: string
-    optionsValueField?: string
-    cRef?: any
+  name: string
+  type: string,
+  fieldProps: any
+  width?: number
+  initial: boolean
+  optionQueryConfig?: () => void
+  optionsTextField?: string
+  optionsValueField?: string
+  cRef?: any
 }
 
 const fieldsMap = new Map(
@@ -80,7 +79,7 @@ const Index: React.FC<IProps> = (props) => {
       autoQuery: false,
       fields: [],
       events: {
-        update: ({ record, name, value }:{record:Record, name:string, value:any}) => {
+        update: ({ record, name, value }: { record: Record, name: string, value: any }) => {
           onChange(name, value);
         },
       },
@@ -99,7 +98,7 @@ const Index: React.FC<IProps> = (props) => {
     }
   }, [searchFields]);
 
-  const getInitialFieldNum = (arr:ISearchFields[]) => {
+  const getInitialFieldNum = (arr: ISearchFields[]) => {
     let num = 0;
     arr.forEach((item) => {
       if (item.initial) {
@@ -109,13 +108,13 @@ const Index: React.FC<IProps> = (props) => {
     return num;
   };
 
-  const dsFieldAdd = (name:string) => {
+  const dsFieldAdd = (name: string) => {
     if (!compDataSet.getField(name)) {
       compDataSet.addField(name, {});
     }
   };
 
-  const dsOptionFieldAdd = (name:string, textField:string | undefined, valueField:string | undefined, optionQueryConfig:any) => {
+  const dsOptionFieldAdd = (name: string, textField: string | undefined, valueField: string | undefined, optionQueryConfig: any) => {
     if (!compDataSet.getField(name)) {
       compDataSet.addField(name, {
         textField,
@@ -134,7 +133,7 @@ const Index: React.FC<IProps> = (props) => {
     }
   };
 
-  const handleDeleteField = (index: number, name:string) => { // 外面X掉
+  const handleDeleteField = (index: number, name: string) => { // 外面X掉
     compDataSet?.current?.set(name, null);
     const cloneSearchFields = cloneDeep(searchFields);
     cloneSearchFields.splice(index, 1);
@@ -142,17 +141,40 @@ const Index: React.FC<IProps> = (props) => {
     childRef.current.checkChange(false, index - 2);
   };
 
+  const handleRemoteSearch = (e: any, item: ISearchFields) => {
+    const { value } = e.target;
+    if (item.fieldProps.remoteSearch) {
+      const optionDs = compDataSet?.getField(item.name)?.options;
+      if (optionDs) {
+        optionDs.setQueryParameter('param', value);
+      }
+      optionDs?.query();
+    }
+  };
+
   const getSearchField = (item: ISearchFields, index: number) => {
     const Ele = fieldsMap.get(item.type);
     return item.initial ? (
       <div className="searchField-item">
         {/*  @ts-ignore */}
-        <Ele style={{ width: item.width || 'auto' }} {...item.fieldProps} dataSet={compDataSet} name={item.name} prefix={item.prefixIcon ? <Icon type={item.prefixIcon} /> : null} />
+        <Ele
+          style={{ width: item.width || 'auto' }}
+          {...item.fieldProps}
+          dataSet={compDataSet}
+          name={item.name}
+          onInput={() => { console.log(777); }}
+        />
       </div>
     ) : (
       <div className="searchField-item searchField-item-deletable">
         {/*  @ts-ignore */}
-        <Ele style={{ width: item.width || 'auto' }} {...item.fieldProps} dataSet={compDataSet} name={item.name} prefix={item.prefixIcon ? <Icon type={item.prefixIcon} /> : null} />
+        <Ele
+          style={{ width: item.width || 'auto' }}
+          {...item.fieldProps}
+          dataSet={compDataSet}
+          name={item.name}
+          onInput={(e: string) => { handleRemoteSearch(e, item); }}
+        />
         <div
           className="deletable-div"
           role="none"
@@ -166,7 +188,7 @@ const Index: React.FC<IProps> = (props) => {
     );
   };
 
-  const fieldAdd = (changeArr:ICheckBoxFields[]) => {
+  const fieldAdd = (changeArr: ICheckBoxFields[]) => {
     const cloneSearchFields = cloneDeep(searchFields);
     changeArr.forEach((i) => {
       { /*  @ts-ignore */ }
@@ -180,7 +202,7 @@ const Index: React.FC<IProps> = (props) => {
     setSearchFields(cloneSearchFields);
   };
 
-  const fieldRemove = (changeArr:ICheckBoxFields[]) => { // 里面checkbox 移除外面字段
+  const fieldRemove = (changeArr: ICheckBoxFields[]) => { // 里面checkbox 移除外面字段
     const cloneSearchFields = cloneDeep(searchFields);
     changeArr.forEach((item) => {
       compDataSet?.current?.set(item.name, null);
@@ -252,12 +274,13 @@ const Index: React.FC<IProps> = (props) => {
         <div className="searchField-container-left">
           <div className="searchField-item">
             <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={compDataSet} name="searchContent" />
+            {/* <TreeSelect dataSet={compDataSet} name="workGroupIds" /> */}
           </div>
           <div className="searchField-container-left-block1">
             <div className="searchField-container-left-block1-inner">
               {
-            searchFields.map((item, index) => getSearchField(item, index))
-            }
+                searchFields.map((item, index) => getSearchField(item, index))
+              }
               <div className="searchField-item">
                 <ChooseFieldsBtn
                   fields={filterFieldsConfig}
@@ -270,16 +293,16 @@ const Index: React.FC<IProps> = (props) => {
           </div>
           <div className="searchField-container-left-block2">
             {
-                (searchFields.length > initialFieldNum || getIfValue())
-                && (
+              (searchFields.length > initialFieldNum || getIfValue())
+              && (
                 <>
                   <Button onClick={handleReset}>重置</Button>
                   <Tooltip title={expandBtnType === 'expand_less' ? '折叠筛选' : '展开筛选'}>
-                    { expandBtnVisible && <Button icon={expandBtnType} onClick={handleExpandClick} />}
+                    {expandBtnVisible && <Button icon={expandBtnType} onClick={handleExpandClick} />}
                   </Tooltip>
                 </>
-                )
-          }
+              )
+            }
           </div>
         </div>
         <div className="searchField-container-right">

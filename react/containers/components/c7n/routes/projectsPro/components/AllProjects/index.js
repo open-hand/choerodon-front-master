@@ -670,6 +670,7 @@ export default observer(() => {
                 searchable: true,
                 dropdownMatchSelectWidth: false,
                 maxTagCount: 3,
+                remoteSearch: true,
               },
               optionQueryConfig: organizationsApiConfig.getprojUsers(),
               optionsTextField: 'realName',
