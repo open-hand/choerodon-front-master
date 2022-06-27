@@ -24,3 +24,4 @@ export * from './System';
 export * from './hand';
 export * from './iam';
 export * from './Yqcloud';
+export * from './Site';
