@@ -9,7 +9,6 @@ import { ModalContainer } from 'choerodon-ui/pro';
 import { inject } from 'mobx-react';
 import { mount } from '@choerodon/inject';
 import { Loading } from '@choerodon/components';
-import useYqFeedback from '@/components/useYqFeedback';
 import PermissionRoute from '@/components/permission-route';
 import './index.less';
 
@@ -25,7 +24,6 @@ const AutoRouter = React.lazy(() => import('./routesCollections'));
 const RouteIndex = () => {
   const match = useRouteMatch();
 
-  useYqFeedback();
   return (
     <div
       className="c7ncd-routesIndex"

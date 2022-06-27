@@ -17,6 +17,7 @@ import axios from '@/components/axios';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from '@/routes';
+import YqFeedback from '@/components/yqFeedback';
 
 import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
@@ -434,12 +435,13 @@ class Masters extends Component {
           <div className="page-body">
             <div className="content-wrapper">
               <MenusPro />
-              {mount('base-pro:Guide', {
+              <YqFeedback />
+              {/* {mount('base-pro:Guide', {
                 ...this.props,
                 MasterServices,
                 popoverHead,
                 cRef: this.cRef,
-              })}
+              })} */}
               {mount('base-pro:UserCheck', {
                 ...this.props,
                 MasterServices,
