@@ -11,6 +11,16 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  checkLoginName(name: string) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/check_login_name`,
+      method: 'get',
+      params: {
+        loginName: name,
+      },
+    });
+  }
+
   roleList() {
     return this.request({
       url: `${this.prefix}/${this.orgId}/roles`,
