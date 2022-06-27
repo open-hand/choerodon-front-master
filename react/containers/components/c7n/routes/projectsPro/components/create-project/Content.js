@@ -265,15 +265,6 @@ const CreateProject = observer(() => {
     formDs?.current?.set('agileWaterfall', value);
   };
 
-  const renderStatus = ({ record: hereRecord, value, text }) => {
-    const arr = hereRecord?.getField('statusId')?.options?.toData();
-    const index = arr.findIndex((item) => item.id === hereRecord?.get('statusId')?.id);
-    if (index === -1) {
-      return hereRecord?.get('statusName');
-    }
-    return text;
-  };
-
   const selectedRecords = categoryDs.selected;
   const selectedCategoryCodes = map(selectedRecords, (selectedRecord) => selectedRecord.get('code'));
 
@@ -285,7 +276,7 @@ const CreateProject = observer(() => {
         <TextField colSpan={1} name="code" disabled={isModify} />
 
         {
-          isModify && <Select name="statusId" renderer={renderStatus} colSpan={1} />
+          isModify && <Select name="statusId" colSpan={1} />
         }
         <Select name="workGroupId" colSpan={1} />
         <Select name="projectClassficationId" colSpan={1} />
@@ -314,27 +305,27 @@ const CreateProject = observer(() => {
             </Tooltip>
             {categoryRecord.get('code') === 'N_WATERFALL'
               && categoryRecord.isSelected && (
-              <div
-                role="none"
-                className={`${prefixCls}-category-exception`}
-                onClick={(e) => { e.stopPropagation(); }}
-              >
-                <CheckBox checked={record?.get('agileWaterfall')} onChange={sprintCheckboxOnChange} />
-                <span style={{
-                  marginLeft: 4.25, fontSize: 12, position: 'relative', top: -1,
-                }}
+                <div
+                  role="none"
+                  className={`${prefixCls}-category-exception`}
+                  onClick={(e) => { e.stopPropagation(); }}
                 >
-                  启用冲刺
-                </span>
-                <NewTips
-                  helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等功能"
-                  style={{
-                    marginLeft: 3.17,
-                    position: 'relative',
+                  <CheckBox checked={record?.get('agileWaterfall')} onChange={sprintCheckboxOnChange} />
+                  <span style={{
+                    marginLeft: 4.25, fontSize: 12, position: 'relative', top: -1,
                   }}
-                />
-              </div>
-            )}
+                  >
+                    启用冲刺
+                  </span>
+                  <NewTips
+                    helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等功能"
+                    style={{
+                      marginLeft: 3.17,
+                      position: 'relative',
+                    }}
+                  />
+                </div>
+              )}
           </div>
         ))}
       </div>
@@ -356,26 +347,26 @@ const CreateProject = observer(() => {
       </div>
       {
         showDevopsAdvanced && (
-        <div className={`${prefixCls}-advanced`}>
-          <div className={`${prefixCls}-advanced-divided`} />
-          <p className={`${prefixCls}-advanced-title`}>
-            高级设置
-            <Icon type="expand_less" />
-          </p>
-          <Alert
-            message="DevOps组件编码将用于GitLab Group中的URL片段，Harbor Project的名称片段，SonarQube projectKey前缀，
+          <div className={`${prefixCls}-advanced`}>
+            <div className={`${prefixCls}-advanced-divided`} />
+            <p className={`${prefixCls}-advanced-title`}>
+              高级设置
+              <Icon type="expand_less" />
+            </p>
+            <Alert
+              message="DevOps组件编码将用于GitLab Group中的URL片段，Harbor Project的名称片段，SonarQube projectKey前缀，
           以及Helm仓库编码。"
-            type="info"
-            showIcon
-          />
-          <Form style={{ marginTop: 10 }} columns={3} record={record}>
-            <TextField
-              name="devopsComponentCode"
-              colSpan={2}
-              addonAfter={<NewTips helpText="" />}
+              type="info"
+              showIcon
             />
-          </Form>
-        </div>
+            <Form style={{ marginTop: 10 }} columns={3} record={record}>
+              <TextField
+                name="devopsComponentCode"
+                colSpan={2}
+                addonAfter={<NewTips helpText="" />}
+              />
+            </Form>
+          </div>
         )
       }
     </>
