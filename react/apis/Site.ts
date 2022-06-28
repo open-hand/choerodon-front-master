@@ -11,6 +11,22 @@ class SiteApi extends Api<SiteApi> {
       url: `${this.prefix}/feed_back`,
     });
   }
+
+  putFeedBack(data: any) {
+    return this.request({
+      method: 'put',
+      url: `${this.prefix}/feed_back`,
+      data,
+    });
+  }
+
+  postFeedBack(data: any) {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}/feed_back`,
+      data,
+    });
+  }
 }
 
 const siteApi = new SiteApi();
