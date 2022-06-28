@@ -2,7 +2,7 @@ import React, { useEffect, FunctionComponent } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 import { message } from 'choerodon-ui';
-import { yqcloudApi } from '@/apis';
+import { yqcloudApi, siteApi } from '@/apis';
 
 let tryTimes = 0;
 
@@ -16,9 +16,16 @@ const Index = (props: any): any => {
   } = props;
 
   useEffect(() => {
-    initSDK();
-    initSecret();
+    checkEnabled();
   }, []);
+
+  const checkEnabled = async () => {
+    const data = await siteApi.getFeedBack();
+    if (data.enable) {
+      initSDK();
+      initSecret();
+    }
+  };
 
   const initSecret = async () => {
     if (id) {
