@@ -14,35 +14,59 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getClassficationList() {
     return this.request({
       url: `${this.prefix}/${this.orgId}/classfication/tree`,
-      method: 'get',
-    });
-  }
-
-  classficationEnable() {
-    return this.request({
-      url: `${this.prefix}/${this.orgId}/classfication/classficationId/enable`,
-      method: 'put',
-    });
-  }
-
-  classficationDisable() {
-    return this.request({
-      url: `${this.prefix}/${this.orgId}/classfication/classficationId/disable`,
-      method: 'put',
-    });
-  }
-
-  createClassfication() {
-    return this.request({
-      url: `${this.prefix}/${this.orgId}/classfication`,
       method: 'post',
     });
   }
 
-  modifyClassfication() {
+  checkClassficationExistRelation(classficationId:string) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication/${classficationId}/exist_relation`,
+      method: 'get',
+    });
+  }
+
+  classficationMove(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication/move`,
+      method: 'post',
+      data,
+    });
+  }
+
+  classficationEnable(classficationId:string) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication/${classficationId}/enable`,
+      method: 'put',
+    });
+  }
+
+  classficationDisable(classficationId:string) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication/${classficationId}/disable`,
+      method: 'put',
+    });
+  }
+
+  createClassfication(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication`,
+      method: 'post',
+      data,
+    });
+  }
+
+  modifyClassfication(data:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/classfication`,
       method: 'put',
+      data,
+    });
+  }
+
+  deleteClassfication(classficationId:string) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication/${classficationId}`,
+      method: 'delete',
     });
   }
 
