@@ -11,6 +11,7 @@ import {
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import { mount, get as cherodonGet } from '@choerodon/inject';
+import { Permission } from '@/components/permission';
 import getSearchString from '@/utils/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '@/components/axios';
@@ -435,7 +436,9 @@ class Masters extends Component {
           <div className="page-body">
             <div className="content-wrapper">
               <MenusPro />
-              <YqFeedback />
+              <Permission service={['choerodon.code.site.setting.general-setting.ps.feedback']}>
+                <YqFeedback />
+              </Permission>
               {/* {mount('base-pro:Guide', {
                 ...this.props,
                 MasterServices,
