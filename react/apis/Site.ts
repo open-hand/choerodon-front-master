@@ -8,7 +8,7 @@ class SiteApi extends Api<SiteApi> {
   getFeedBack() {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/feedback`,
+      url: `${this.prefix}/feed_back`,
     });
   }
 }
