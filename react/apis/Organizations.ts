@@ -475,7 +475,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   // 获取项目工作组
   getprojWorkGroup() {
     return this.request({
-      method: 'post',
+      method: 'get',
       url: `/agile/v1/organizations/${this.orgId}/work_bench/work_group/query_tree`,
     });
   }

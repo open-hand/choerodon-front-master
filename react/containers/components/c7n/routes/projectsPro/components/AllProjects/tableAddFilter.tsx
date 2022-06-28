@@ -32,6 +32,7 @@ export interface ISearchFields {
   optionQueryConfig?: () => void
   optionsTextField?: string
   optionsValueField?: string
+  optionConfig?: any
   cRef?: any
 }
 
@@ -68,7 +69,8 @@ const Index: React.FC<IProps> = (props) => {
       if (!item.optionQueryConfig) {
         dsFieldAdd(item.name);
       } else {
-        dsOptionFieldAdd(item.name, item.optionsTextField || 'name', item.optionsValueField || 'id', item.optionQueryConfig);
+        dsOptionFieldAdd(item.name, item.optionsTextField || 'name', item.optionsValueField || 'id',
+          item.optionConfig || {}, item.optionQueryConfig);
       }
     });
     setInitialFieldNum(getInitialFieldNum(searchFieldsConfig));
@@ -115,13 +117,15 @@ const Index: React.FC<IProps> = (props) => {
     }
   };
 
-  const dsOptionFieldAdd = (name: string, textField: string | undefined, valueField: string | undefined, optionQueryConfig: any) => {
+  const dsOptionFieldAdd = (name: string, textField: string | undefined, valueField: string | undefined, optionConfig:any, optionQueryConfig: any) => {
     if (!compDataSet.getField(name)) {
       compDataSet.addField(name, {
         textField,
         valueField,
         options: new DataSet({
+          autoCreate: true,
           autoQuery: true,
+          ...optionConfig,
           transport: {
             read({ dataSet, record, params: { page } }) {
               return {
@@ -197,7 +201,9 @@ const Index: React.FC<IProps> = (props) => {
       if (!i.optionQueryConfig) {
         dsFieldAdd(i.name);
       } else {
-        dsOptionFieldAdd(i.name, i.optionsTextField || 'name', i.optionsValueField || 'id', i.optionQueryConfig);
+        dsOptionFieldAdd(i.name, i.optionsTextField || 'name', i.optionsValueField || 'id',
+          i.optionConfig || {},
+          i.optionQueryConfig);
       }
     });
     setSearchFields(cloneSearchFields);

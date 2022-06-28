@@ -1,29 +1,20 @@
 import React, {
-  useCallback, useEffect, useState, useRef,
+  useEffect, useState, useRef,
 } from 'react';
 import {
-  TextField,
   Button,
-  Pagination,
   Tooltip,
   Modal,
-  Icon,
-  Spin,
 } from 'choerodon-ui/pro';
 import { forIn } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
-import some from 'lodash/some';
 import JSONBig from 'json-bigint';
 import { UserInfo } from '@choerodon/components';
 import { Permission } from '@/components/permission';
-import handleClickProject from '@/utils/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
-import EmptyPage from '../empty-page';
 import CreateProject from '../create-project';
-import ProjectCategory from '../project-category';
-import Action from '@/components/action';
 import { organizationsApiConfig } from '@/apis';
 import TableAddFilter from './tableAddFilter';
 import AllProjectTable from './table';
@@ -609,6 +600,8 @@ export default observer(() => {
               name: 'workGroupIds',
               type: 'TreeSelect',
               width: 110,
+              optionsTextField: 'name',
+              optionsValueField: 'id',
               fieldProps: {
                 placeholder: '所属工作组',
                 optionTooltip: 'overflow',
@@ -627,11 +620,17 @@ export default observer(() => {
                 ...organizationsApiConfig.getprojWorkGroup(),
                 transformResponse: (res) => transformResponseTreeData(res, 'workGroupVOS'),
               },
+              optionConfig: {
+                idField: 'id',
+                parentField: 'parentId',
+              },
             },
             {
               name: 'projectClassficationIds',
               type: 'TreeSelect',
               width: 110,
+              optionsTextField: 'name',
+              optionsValueField: 'id',
               fieldProps: {
                 placeholder: '项目分类',
                 optionTooltip: 'overflow',
@@ -649,6 +648,10 @@ export default observer(() => {
               optionQueryConfig: {
                 ...organizationsApiConfig.getprojClassification(),
                 transformResponse: (res) => transformResponseTreeData(res, 'treeProjectClassfication'),
+              },
+              optionConfig: {
+                idField: 'id',
+                parentField: 'parentId',
               },
             },
             {

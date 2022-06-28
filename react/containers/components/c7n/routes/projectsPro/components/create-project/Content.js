@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
 import { notification, message, Alert } from 'choerodon-ui';
 import {
-  Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select, SelectBox,
+  Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select, SelectBox, TreeSelect,
 } from 'choerodon-ui/pro';
 import {
   includes, map, get, some,
@@ -278,8 +278,8 @@ const CreateProject = observer(() => {
         {
           isModify && <Select name="statusId" colSpan={1} />
         }
-        <Select name="workGroupId" colSpan={1} />
-        <Select name="projectClassficationId" colSpan={1} />
+        <TreeSelect name="workGroupId" colSpan={1} searchable />
+        <TreeSelect name="projectClassficationId" colSpan={1} searchable />
 
         <TextArea newLine colSpan={3} name="description" resize="vertical" />
         {
@@ -325,7 +325,7 @@ const CreateProject = observer(() => {
                     }}
                   />
                 </div>
-              )}
+            )}
           </div>
         ))}
       </div>

@@ -148,9 +148,11 @@ export default ({
         options: new DataSet({
           autoCreate: true,
           autoQuery: true,
+          idField: 'id',
+          parentField: 'parentId',
           transport: {
             read: ({ data }) => ({
-              method: 'post',
+              method: 'get',
               url: organizationsApiConfig.getprojWorkGroup().url,
               transformResponse: (res) => transformResponseTreeData(res, 'workGroupVOS'),
             }),
@@ -166,6 +168,8 @@ export default ({
         options: new DataSet({
           autoCreate: true,
           autoQuery: true,
+          idField: 'id',
+          parentField: 'parentId',
           transport: {
             read: ({ data }) => ({
               method: 'post',
