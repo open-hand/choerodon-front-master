@@ -11,6 +11,41 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  getClassficationList() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication/tree`,
+      method: 'get',
+    });
+  }
+
+  classficationEnable() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication/classficationId/enable`,
+      method: 'put',
+    });
+  }
+
+  classficationDisable() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication/classficationId/disable`,
+      method: 'put',
+    });
+  }
+
+  createClassfication() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication`,
+      method: 'post',
+    });
+  }
+
+  modifyClassfication() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication`,
+      method: 'put',
+    });
+  }
+
   checkLoginName(name: string) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/check_login_name`,
