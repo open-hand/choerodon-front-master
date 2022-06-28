@@ -9,15 +9,14 @@ import {
 import { forIn } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
-import JSONBig from 'json-bigint';
 import { UserInfo } from '@choerodon/components';
 import { Permission } from '@/components/permission';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import CreateProject from '../create-project';
-import { organizationsApiConfig } from '@/apis';
-import TableAddFilter from './tableAddFilter';
+import TableAddFilter from './customQuerybar';
 import AllProjectTable from './table';
+import { searchFieldsConfig, filterFieldsConfig } from './querybarConfig';
 
 import {
   MODAL_WIDTH,
@@ -26,25 +25,6 @@ import {
 import './index.less';
 
 const { MIDDLE } = MODAL_WIDTH;
-
-export const transformResponseTreeData = (res, attrName) => {
-  try {
-    const data = JSONBig.parse(res);
-
-    if (data && data[attrName]) {
-      const removeOrgItem = data[attrName].filter((item) => !(item.parentId === null && item.id === null));
-      return removeOrgItem.map((item) => {
-        if (item.id === null && item.parentId === 0) {
-          return { ...item, id: '0', parentId: null };
-        }
-        return { ...item, parentId: item.parentId ? item.parentId : null };
-      });
-    }
-    return data;
-  } catch (error) {
-    return res;
-  }
-};
 
 export default observer(() => {
   const {
@@ -579,175 +559,8 @@ export default observer(() => {
       <div className="allProjects-title">{renderTitle()}</div>
       <div className="allProjects-content">
         <TableAddFilter
-          searchFieldsConfig={[
-            {
-              name: 'statusIds',
-              type: 'Select',
-              fieldProps: {
-                placeholder: '项目状态',
-                optionTooltip: 'overflow',
-                multiple: true,
-                dropdownMatchSelectWidth: false,
-                maxTagCount: 3,
-                searchable: true,
-                flat: true,
-                isFlat: true,
-              },
-              initial: true,
-              optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
-            },
-            {
-              name: 'workGroupIds',
-              type: 'TreeSelect',
-              width: 110,
-              optionsTextField: 'name',
-              optionsValueField: 'id',
-              fieldProps: {
-                placeholder: '所属工作组',
-                optionTooltip: 'overflow',
-                multiple: true,
-                dropdownMatchSelectWidth: false,
-                maxTagCount: 3,
-                searchable: true,
-                optionRenderer: ({ text }) => (
-                  <span className="tableAddFilter-tree-text">
-                    {text}
-                  </span>
-                ),
-              },
-              initial: true,
-              optionQueryConfig: {
-                ...organizationsApiConfig.getprojWorkGroup(),
-                transformResponse: (res) => transformResponseTreeData(res, 'workGroupVOS'),
-              },
-              optionConfig: {
-                idField: 'id',
-                parentField: 'parentId',
-              },
-            },
-            {
-              name: 'projectClassficationIds',
-              type: 'TreeSelect',
-              width: 110,
-              optionsTextField: 'name',
-              optionsValueField: 'id',
-              fieldProps: {
-                placeholder: '项目分类',
-                optionTooltip: 'overflow',
-                multiple: true,
-                dropdownMatchSelectWidth: false,
-                maxTagCount: 3,
-                searchable: true,
-                optionRenderer: ({ text }) => (
-                  <span className="tableAddFilter-tree-text">
-                    {text}
-                  </span>
-                ),
-              },
-              initial: true,
-              optionQueryConfig: {
-                ...organizationsApiConfig.getprojClassification(),
-                transformResponse: (res) => transformResponseTreeData(res, 'treeProjectClassfication'),
-              },
-              optionConfig: {
-                idField: 'id',
-                parentField: 'parentId',
-              },
-            },
-            {
-              name: 'programIds',
-              type: 'Select',
-              fieldProps: {
-                placeholder: '所属项目群',
-                optionTooltip: 'overflow',
-                multiple: true,
-                dropdownMatchSelectWidth: false,
-                maxTagCount: 3,
-              },
-              initial: true,
-              optionQueryConfig: organizationsApiConfig.getprojPrograms(),
-            },
-            {
-              name: 'categoryIds',
-              type: 'Select',
-              fieldProps: {
-                placeholder: '项目类型',
-                optionTooltip: 'overflow',
-                multiple: true,
-                dropdownMatchSelectWidth: false,
-                maxTagCount: 3,
-              },
-              initial: true,
-              optionQueryConfig: organizationsApiConfig.getprojType(),
-            },
-          ]}
-          filterFieldsConfig={[
-            {
-              initial: false,
-              checked: false,
-              checkboxLabel: '创建人',
-              name: 'createdBys',
-              show: true,
-              type: 'Select',
-              fieldProps: {
-                placeholder: '创建人',
-                optionRenderer: userOptionRender,
-                multiple: true,
-                clearButton: true,
-                searchable: true,
-                dropdownMatchSelectWidth: false,
-                maxTagCount: 3,
-                remoteSearch: true,
-              },
-              optionQueryConfig: organizationsApiConfig.getprojUsers(),
-              optionsTextField: 'realName',
-            },
-            {
-              initial: false,
-              checked: false,
-              checkboxLabel: '创建时间',
-              name: 'createTime',
-              show: true,
-              type: 'DateTimePicker',
-              fieldProps: {
-                placeholder: ['创建时间从', '至'],
-                isFlat: true,
-                range: true,
-              },
-            },
-            {
-              initial: false,
-              checked: false,
-              checkboxLabel: '更新人',
-              name: 'lastUpdatedBys',
-              show: true,
-              type: 'Select',
-              fieldProps: {
-                placeholder: '更新人',
-                optionRenderer: userOptionRender,
-                multiple: true,
-                clearButton: true,
-                searchable: true,
-                dropdownMatchSelectWidth: false,
-                maxTagCount: 3,
-              },
-              optionQueryConfig: organizationsApiConfig.getprojUsers(),
-              optionsTextField: 'realName',
-            },
-            {
-              initial: false,
-              checked: false,
-              checkboxLabel: '更新时间',
-              name: 'updateTime',
-              show: true,
-              type: 'DateTimePicker',
-              fieldProps: {
-                placeholder: ['更新时间从', '至'],
-                isFlat: true,
-                range: true,
-              },
-            },
-          ]}
+          searchFieldsConfig={searchFieldsConfig}
+          filterFieldsConfig={filterFieldsConfig}
           onChange={tableAddFilterChange}
           cRef={tableAddFilterCRef}
         />

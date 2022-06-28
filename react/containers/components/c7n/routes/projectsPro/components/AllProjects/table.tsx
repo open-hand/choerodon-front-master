@@ -374,7 +374,7 @@ const Index:React.FC<IProps> = (props) => {
 
   return (
     <Table columnResizable dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table">
-      <Column renderer={renderName} name="name" width={230} />
+      <Column renderer={renderName} name="name" width={230} sortable />
       <Column renderer={renderAction} width={60} />
       <Column name="code" tooltip={'overflow' as any} />
       <Column renderer={renderEnabled} name="enabled" />

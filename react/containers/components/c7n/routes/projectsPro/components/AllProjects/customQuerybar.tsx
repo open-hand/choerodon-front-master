@@ -12,7 +12,7 @@ import {
 import { observer } from 'mobx-react-lite';
 import ChooseFieldsBtn, { ICheckBoxFields } from './chooseFieldsBtn';
 import TableColumnSet from './tableColumnSet';
-import './tableAddFilter.less';
+import './customQuerybar.less';
 
 const modalKey1 = Modal.key();
 

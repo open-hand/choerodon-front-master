@@ -9,7 +9,7 @@ import React, {
 import {
   useSafeState, useClickAway,
 } from 'ahooks';
-import { ISearchFields } from './tableAddFilter';
+import { ISearchFields } from './customQuerybar';
 
 export interface IProps {
   fields: Array<ICheckBoxFields>
