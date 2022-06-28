@@ -475,7 +475,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   // 获取项目工作组
   getprojWorkGroup() {
     return this.request({
-      method: 'get',
+      method: 'post',
       url: `/agile/v1/organizations/${this.orgId}/work_bench/work_group/query_tree`,
     });
   }
@@ -483,7 +483,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   // 获取项目分类
   getprojClassification() {
     return this.request({
-      method: 'get',
+      method: 'post',
       url: `/iam/choerodon/v1/organizations/${this.orgId}/classfication/tree`,
     });
   }
