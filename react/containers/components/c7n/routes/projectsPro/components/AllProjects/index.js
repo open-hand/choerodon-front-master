@@ -36,6 +36,25 @@ import './index.less';
 
 const { MIDDLE } = MODAL_WIDTH;
 
+export const transformResponseTreeData = (res, attrName) => {
+  try {
+    const data = JSONBig.parse(res);
+
+    if (data && data[attrName]) {
+      const removeOrgItem = data[attrName].filter((item) => !(item.parentId === null && item.id === null));
+      return removeOrgItem.map((item) => {
+        if (item.id === null && item.parentId === 0) {
+          return { ...item, id: '0', parentId: null };
+        }
+        return { ...item, parentId: item.parentId ? item.parentId : null };
+      });
+    }
+    return data;
+  } catch (error) {
+    return res;
+  }
+};
+
 export default observer(() => {
   const {
     ProjectsProUseStore,
@@ -588,43 +607,48 @@ export default observer(() => {
             },
             {
               name: 'workGroupIds',
-              type: 'Select',
+              type: 'TreeSelect',
+              width: 110,
               fieldProps: {
-                placeholder: '工作组',
+                placeholder: '所属工作组',
                 optionTooltip: 'overflow',
                 multiple: true,
                 dropdownMatchSelectWidth: false,
                 maxTagCount: 3,
                 searchable: true,
+                optionRenderer: ({ text }) => (
+                  <span className="tableAddFilter-tree-text">
+                    {text}
+                  </span>
+                ),
               },
               initial: true,
               optionQueryConfig: {
                 ...organizationsApiConfig.getprojWorkGroup(),
-                transformResponse: (res) => {
-                  let newRes = res;
-                  newRes = JSONBig.parse(newRes);
-                  return newRes.workGroupVOS;
-                },
+                transformResponse: (res) => transformResponseTreeData(res, 'workGroupVOS'),
               },
             },
             {
               name: 'projectClassficationIds',
-              type: 'Select',
+              type: 'TreeSelect',
+              width: 110,
               fieldProps: {
                 placeholder: '项目分类',
                 optionTooltip: 'overflow',
                 multiple: true,
                 dropdownMatchSelectWidth: false,
                 maxTagCount: 3,
+                searchable: true,
+                optionRenderer: ({ text }) => (
+                  <span className="tableAddFilter-tree-text">
+                    {text}
+                  </span>
+                ),
               },
               initial: true,
               optionQueryConfig: {
                 ...organizationsApiConfig.getprojClassification(),
-                transformResponse: (res) => {
-                  let newRes = res;
-                  newRes = JSONBig.parse(newRes);
-                  return newRes.treeProjectClassfication;
-                },
+                transformResponse: (res) => transformResponseTreeData(res, 'treeProjectClassfication'),
               },
             },
             {

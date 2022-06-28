@@ -39,6 +39,7 @@ const fieldsMap = new Map(
   [
     ['TextField', TextField],
     ['Select', FlatSelect],
+    ['TreeSelect', TreeSelect],
     ['DateTimePicker', DateTimePicker],
   ],
 );
@@ -162,7 +163,7 @@ const Index: React.FC<IProps> = (props) => {
           {...item.fieldProps}
           dataSet={compDataSet}
           name={item.name}
-          onInput={() => { console.log(777); }}
+          onInput={(e: string) => { handleRemoteSearch(e, item); }}
         />
       </div>
     ) : (

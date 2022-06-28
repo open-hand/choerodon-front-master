@@ -2,6 +2,7 @@ import { DataSet } from 'choerodon-ui/pro';
 import JSONBig from 'json-bigint';
 import { organizationsApiConfig } from '@/apis';
 import axios from '@/components/axios';
+import { transformResponseTreeData } from '@/containers/components/c7n/routes/projectsPro/components/AllProjects/index';
 
 // 项目编码只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"  /^[a-z](([a-z0-9]|-(?!-))*[a-z0-9])*$/
 // 项目名称只能由汉字、字母、数字、"_"、"."、"-"、"——"和空格组成   /^[-—\.\w\s\u4e00-\u9fa5]{1,32}$/
@@ -149,13 +150,9 @@ export default ({
           autoQuery: true,
           transport: {
             read: ({ data }) => ({
-              method: 'get',
+              method: 'post',
               url: organizationsApiConfig.getprojWorkGroup().url,
-              transformResponse: (res) => {
-                let newRes = res;
-                newRes = JSONBig.parse(newRes);
-                return newRes.workGroupVOS;
-              },
+              transformResponse: (res) => transformResponseTreeData(res, 'workGroupVOS'),
             }),
           },
         }),
@@ -171,13 +168,9 @@ export default ({
           autoQuery: true,
           transport: {
             read: ({ data }) => ({
-              method: 'get',
+              method: 'post',
               url: organizationsApiConfig.getprojClassification().url,
-              transformResponse: (res) => {
-                let newRes = res;
-                newRes = JSONBig.parse(newRes);
-                return newRes.treeProjectClassfication;
-              },
+              transformResponse: (res) => transformResponseTreeData(res, 'treeProjectClassfication'),
             }),
           },
         }),
