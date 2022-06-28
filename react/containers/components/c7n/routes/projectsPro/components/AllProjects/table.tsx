@@ -358,7 +358,8 @@ const Index:React.FC<IProps> = (props) => {
 
   const renderEnabled = ({ value, record }: { value: boolean, record:Record }) => (
     <StatusTag
-    // @ts-ignore
+      color={record?.get('color') ? record?.get('color') : ''}
+      // @ts-ignore
       colorCode={getStatusColorCode(record)}
       name={getStatusName(record)}
     />
