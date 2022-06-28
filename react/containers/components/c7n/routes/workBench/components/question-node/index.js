@@ -1,5 +1,5 @@
 import React, {
-  useReducer,
+  useReducer, useState, useEffect,
 } from 'react';
 import {
   Icon, Tooltip,
@@ -7,9 +7,11 @@ import {
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { merge, get } from 'lodash';
-import { getRandomBackground } from '@/utils';
 
+import { getRandomBackground } from '@/utils';
 import './index.less';
+import { ALL_TYPE_CODES } from '@/constants/STATUS_TYPE';
+import { useWorkBenchStore } from '../../stores';
 
 function getFirst(str) {
   if (!str) {
@@ -34,51 +36,27 @@ const QuestionNode = observer(({
     projectId: topProjectId, projectName: topProjectName, ...otherData
   } = record || {};
   const { code: statusCode } = statusVO || {};
+  const { openCurrent, closeCurrent } = useWorkBenchStore();
   const prefixCls = 'c7ncd-question-issue';
-
+  useEffect(() => {
+  }, []);
   const priorityVO = customPriorityVO || (backlogPriority && { colour: backlogPriority.color, name: backlogPriority.name });
-
-  function handleClick() {
-    const { id: projectId, name: projectName } = projectVO || {};
-    const queryData = {
-      id: projectId || topProjectId,
-      name: projectName || topProjectName,
-      organizationId,
-      type: 'project',
-    };
-    if (switchCode === 'myStarBeacon_backlog') {
-      const { code } = statusVO;
-      let pathSuffix = 'demand';
-      if (code === 'backlog_rejected') {
-        pathSuffix += '/approve';
-        merge(queryData, { paramBacklogStatus: statusCode });
-      }
-      merge(queryData, { paramBacklogId: id, paramBacklogName: backlogNum });
-      window.open(`#/agile/${pathSuffix}?${queryString.stringify(queryData)}`);
-      return;
+  const handleClick = () => {
+    if (record.issueId) {
+      openCurrent({
+        path: 'issue',
+        props: {
+          issueId: record.issueId,
+          projectId: record.issueTypeVO.id,
+          applyType: ALL_TYPE_CODES.includes(record.issueTypeVO.typeCode) ? 'waterfall' : 'agile',
+        },
+        events: {
+        },
+      });
+    } else {
+      closeCurrent();
     }
-    if (switchCode === 'myStarBeacon') {
-      if (typeCode !== 'feature') {
-        merge(queryData, { paramIssueId: issueId, paramName: issueNum });
-
-        window.open(`#/agile/work-list/issue?${queryString.stringify(queryData)}`);
-      } else {
-        merge(queryData, { paramIssueId: issueId, paramName: issueNum, category: 'PROGRAM' });
-        window.open(`#/agile/feature?${queryString.stringify(queryData)}`);
-      }
-      return;
-    }
-    if (typeCode === 'test-execution') {
-      const {
-        planId, executeId, cycleId, assignedTo,
-      } = otherData;
-      merge(queryData, { cycle_id: cycleId, plan_id: planId, assignerId: assignedTo });
-      window.open(`#/testManager/TestPlan/execute/${executeId}?${queryString.stringify(queryData)}`);
-
-      return;
-    }
-    window.open(`#/agile/scrumboard?${queryString.stringify(merge(queryData, { paramIssueId: issueId }))}`);
-  }
+  };
 
   function getIssueType(originTypeCode, isBacklogType = false) {
     let mes = '';
