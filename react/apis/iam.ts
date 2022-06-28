@@ -12,6 +12,15 @@ class IamApi extends Api<IamApi> {
       url: `${this.prefix}/users/ding_talk`,
     });
   }
+
+  // 个人信息平台层 审批提交接口
+  postSiteApproval({ id, data }:any) {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}/registers/approval/${id}`,
+      data: JSON.stringify(data),
+    });
+  }
 }
 
 const iamApi = new IamApi();
