@@ -376,8 +376,8 @@ const Index:React.FC<IProps> = (props) => {
     <Table columnResizable dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table">
       <Column renderer={renderName} name="name" width={230} sortable />
       <Column renderer={renderAction} width={60} />
-      <Column name="code" tooltip={'overflow' as any} />
-      <Column renderer={renderEnabled} name="enabled" />
+      <Column name="code" tooltip={'overflow' as any} sortable />
+      <Column renderer={renderEnabled} name="enabled" sortable />
       <Column name="workGroup" tooltip={'overflow' as any} />
       <Column name="projectClassfication" tooltip={'overflow' as any} />
       <Column name="programName" tooltip={'overflow' as any} />

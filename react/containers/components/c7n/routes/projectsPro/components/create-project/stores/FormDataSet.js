@@ -1,7 +1,7 @@
 import { DataSet } from 'choerodon-ui/pro';
 import { organizationsApiConfig } from '@/apis';
 import axios from '@/components/axios';
-import { transformResponseTreeData } from '@/containers/components/c7n/routes/projectsPro/components/AllProjects/querybarConfig';
+import transformResponseTreeData from '@/utils/transformResponseTreeData';
 
 // 项目编码只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"  /^[a-z](([a-z0-9]|-(?!-))*[a-z0-9])*$/
 // 项目名称只能由汉字、字母、数字、"_"、"."、"-"、"——"和空格组成   /^[-—\.\w\s\u4e00-\u9fa5]{1,32}$/

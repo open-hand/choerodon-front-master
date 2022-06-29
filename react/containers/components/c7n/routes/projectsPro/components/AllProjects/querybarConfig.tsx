@@ -1,27 +1,8 @@
-import JSONBig from 'json-bigint';
 import React from 'react';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { UserInfo } from '@choerodon/components';
 import { organizationsApiConfig } from '@/apis';
-
-export const transformResponseTreeData = (res:any, attrName:string) => {
-  try {
-    const data = JSONBig.parse(res);
-
-    if (data && data[attrName]) {
-      const removeOrgItem = data[attrName].filter((item:any) => !(item.parentId === null && item.id === null));
-      return removeOrgItem.map((item:any) => {
-        if (item.id === null && item.parentId === 0) {
-          return { ...item, id: '0', parentId: null };
-        }
-        return { ...item, parentId: item.parentId ? item.parentId : null };
-      });
-    }
-    return data;
-  } catch (error) {
-    return res;
-  }
-};
+import transformResponseTreeData from '@/utils/transformResponseTreeData';
 
 const userOptionRender = ({ record }:{ record:Record}) => (
   <UserInfo
