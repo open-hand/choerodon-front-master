@@ -268,6 +268,10 @@ const CreateProject = observer(() => {
   const selectedRecords = categoryDs.selected;
   const selectedCategoryCodes = map(selectedRecords, (selectedRecord) => selectedRecord.get('code'));
 
+  const nodeCover = ({ record: iRecord }) => ({
+    disabled: iRecord?.get('hasChildren') || iRecord?.get('children'),
+  });
+
   return (
     <>
       {renderAvatar()}
@@ -278,8 +282,8 @@ const CreateProject = observer(() => {
         {
           isModify && <Select name="statusId" colSpan={1} />
         }
-        <TreeSelect name="workGroupId" colSpan={1} searchable />
-        <TreeSelect name="projectClassficationId" colSpan={1} searchable />
+        <TreeSelect name="workGroupId" colSpan={1} searchable onOption={nodeCover} />
+        <TreeSelect name="projectClassficationId" colSpan={1} searchable onOption={nodeCover} />
 
         <TextArea newLine colSpan={3} name="description" resize="vertical" />
         {

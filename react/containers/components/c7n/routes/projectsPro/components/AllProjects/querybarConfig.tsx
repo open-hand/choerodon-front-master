@@ -16,7 +16,7 @@ const userOptionRender = ({ record }:{ record:Record}) => (
 export const searchFieldsConfig = [
   {
     name: 'statusIds',
-    type: 'Select',
+    type: 'FlatSelect',
     fieldProps: {
       placeholder: '项目状态',
       optionTooltip: 'overflow',
@@ -32,8 +32,7 @@ export const searchFieldsConfig = [
   },
   {
     name: 'workGroupIds',
-    type: 'TreeSelect',
-    width: 100,
+    type: 'FlatTreeSelect',
     optionsTextField: 'name',
     optionsValueField: 'id',
     fieldProps: {
@@ -43,11 +42,6 @@ export const searchFieldsConfig = [
       dropdownMatchSelectWidth: false,
       maxTagCount: 3,
       searchable: true,
-      optionRenderer: ({ text }:{text:string}) => (
-        <span className="tableAddFilter-tree-text">
-          {text}
-        </span>
-      ),
     },
     initial: true,
     optionQueryConfig: {
@@ -61,8 +55,7 @@ export const searchFieldsConfig = [
   },
   {
     name: 'projectClassficationIds',
-    type: 'TreeSelect',
-    width: 100,
+    type: 'FlatTreeSelect',
     optionsTextField: 'name',
     optionsValueField: 'id',
     fieldProps: {
@@ -72,11 +65,6 @@ export const searchFieldsConfig = [
       dropdownMatchSelectWidth: false,
       maxTagCount: 3,
       searchable: true,
-      optionRenderer: ({ text }:{text:string}) => (
-        <span className="tableAddFilter-tree-text">
-          {text}
-        </span>
-      ),
     },
     initial: true,
     optionQueryConfig: {
@@ -90,7 +78,7 @@ export const searchFieldsConfig = [
   },
   {
     name: 'programIds',
-    type: 'Select',
+    type: 'FlatSelect',
     fieldProps: {
       placeholder: '所属项目群',
       optionTooltip: 'overflow',
@@ -104,7 +92,7 @@ export const searchFieldsConfig = [
   },
   {
     name: 'categoryIds',
-    type: 'Select',
+    type: 'FlatSelect',
     fieldProps: {
       placeholder: '项目类型',
       optionTooltip: 'overflow',
@@ -125,7 +113,7 @@ export const filterFieldsConfig = [
     checkboxLabel: '创建人',
     name: 'createdBys',
     show: true,
-    type: 'Select',
+    type: 'FlatSelect',
     fieldProps: {
       placeholder: '创建人',
       optionRenderer: userOptionRender,
@@ -135,6 +123,7 @@ export const filterFieldsConfig = [
       dropdownMatchSelectWidth: false,
       maxTagCount: 3,
       remoteSearch: true,
+      remoteSearchName: 'params',
     },
     optionQueryConfig: organizationsApiConfig.getprojUsers(),
     optionsTextField: 'realName',
@@ -158,7 +147,7 @@ export const filterFieldsConfig = [
     checkboxLabel: '更新人',
     name: 'lastUpdatedBys',
     show: true,
-    type: 'Select',
+    type: 'FlatSelect',
     fieldProps: {
       placeholder: '更新人',
       optionRenderer: userOptionRender,
@@ -167,6 +156,8 @@ export const filterFieldsConfig = [
       searchable: true,
       dropdownMatchSelectWidth: false,
       maxTagCount: 3,
+      remoteSearch: true,
+      remoteSearchName: 'params',
     },
     optionQueryConfig: organizationsApiConfig.getprojUsers(),
     optionsTextField: 'realName',

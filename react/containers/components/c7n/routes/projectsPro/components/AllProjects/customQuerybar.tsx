@@ -1,9 +1,9 @@
 import React, {
   useEffect, useMemo, useRef, useState, useImperativeHandle,
 } from 'react';
-import { FlatSelect } from '@choerodon/components';
+import { FlatSelect, FlatTreeSelect } from '@choerodon/components';
 import {
-  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker, TreeSelect,
+  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import {
@@ -39,8 +39,8 @@ export interface ISearchFields {
 const fieldsMap = new Map(
   [
     ['TextField', TextField],
-    ['Select', FlatSelect],
-    ['TreeSelect', TreeSelect],
+    ['FlatSelect', FlatSelect],
+    ['FlatTreeSelect', FlatTreeSelect],
     ['DateTimePicker', DateTimePicker],
   ],
 );
@@ -151,7 +151,7 @@ const Index: React.FC<IProps> = (props) => {
     if (item.fieldProps.remoteSearch) {
       const optionDs = compDataSet?.getField(item.name)?.options;
       if (optionDs) {
-        optionDs.setQueryParameter('param', value);
+        optionDs.setQueryParameter(item.fieldProps.remoteSearchName || 'param', value);
       }
       optionDs?.query();
     }
