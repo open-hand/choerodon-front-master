@@ -11,6 +11,7 @@ import {
 } from 'ahooks';
 import { ISearchFields } from './customQuerybar';
 
+// TODO: usereducer
 export interface IProps {
   fields: Array<ICheckBoxFields>
   onChange: (value: boolean, changeArr: ICheckBoxFields[]) => void

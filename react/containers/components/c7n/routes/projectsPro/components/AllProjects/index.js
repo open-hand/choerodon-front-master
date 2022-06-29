@@ -81,6 +81,10 @@ export default observer(() => {
           label: '',
         });
       });
+      columnArr.forEach((item) => {
+        // eslint-disable-next-line no-param-reassign
+        item.label = projectListDataSet?.getField(item.name)?.get('label');
+      });
       setColumnsConfig(columnArr);
     }
   };
@@ -254,7 +258,7 @@ export default observer(() => {
       style: {
         width: 380,
       },
-      children: <TableColumnSet columnsConfig={columnsConfig} handleOk={handleEditColumnOk} tableDs={projectListDataSet} />,
+      children: <TableColumnSet columnsConfig={columnsConfig} handleOk={handleEditColumnOk} />,
       bodyStyle: {
         paddingTop: 10,
       },

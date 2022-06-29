@@ -42,5 +42,9 @@ export default (({ organizationId, userId }:{organizationId:string, userId:strin
       name: 'description',
       label: '项目描述',
     },
+    {
+      name: 'devopsComponentCode',
+      label: 'devops组件编码',
+    },
   ],
 }));

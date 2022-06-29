@@ -21,6 +21,8 @@ import { IColumnSetConfig } from './customQuerybar';
 import { renderCategoriesTags } from '@/containers/components/c7n/routes/projectsPro/components/projectTaskContent';
 import './table.less';
 
+// TODO: 把column的代码拆出去
+
 const { MIDDLE } = MODAL_WIDTH;
 
 const modalkey1 = Modal.key();
@@ -36,7 +38,7 @@ export interface IProps {
   columnsConfig: IColumnSetConfig[]
 }
 
-export const startProjChange = async (pid:string, enable:boolean, organizationId:string, ProjectsProUseStore:any) => {
+export const startProjChange = async (pid: string, enable: boolean, organizationId: string, ProjectsProUseStore: any) => {
   enable ? await axios.post(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`, {
     projectId: pid,
   }) : await axios.delete(`/iam/choerodon/v1/organizations/${organizationId}/star_projects?project_id=${pid}`);
@@ -44,7 +46,7 @@ export const startProjChange = async (pid:string, enable:boolean, organizationId
   ProjectsProUseStore.axiosGetRecentProjects();
 };
 
-const Index:React.FC<IProps> = (props) => {
+const Index: React.FC<IProps> = (props) => {
   const { columnsConfig } = props;
   const {
     categoryCodes,
@@ -66,7 +68,7 @@ const Index:React.FC<IProps> = (props) => {
     projectListDataSet.query();
   };
 
-  const handleEditProj = (pid:string) => {
+  const handleEditProj = (pid: string) => {
     Modal.open({
       key: modalkey2,
       drawer: true,
@@ -77,7 +79,7 @@ const Index:React.FC<IProps> = (props) => {
           refresh={refresh}
           projectId={pid}
           categoryCodes={categoryCodes}
-          // inNewUserGuideStepOne={inNewUserGuideStepOne}
+        // inNewUserGuideStepOne={inNewUserGuideStepOne}
         />
       ),
       okText: '保存',
@@ -87,13 +89,13 @@ const Index:React.FC<IProps> = (props) => {
     });
   };
 
-  const handleEnabledProj = async (pid:string) => {
+  const handleEnabledProj = async (pid: string) => {
     if (await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${pid}/enable`)) {
       refresh();
     }
   };
 
-  const handleDisableProj = async (pid:Record) => {
+  const handleDisableProj = async (pid: Record) => {
     if (await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${pid}/disable`)) {
       refresh();
     }
@@ -184,7 +186,7 @@ const Index:React.FC<IProps> = (props) => {
     return false;
   }, []);
 
-  const handleRetry = async (projectId:string, sagaInstanceIds:string) => {
+  const handleRetry = async (projectId: string, sagaInstanceIds: string) => {
     if (
       await axios.put(`/hagd/v1/sagas/projects/${projectId}/tasks/instances/retry`, sagaInstanceIds)
     ) {
@@ -192,13 +194,13 @@ const Index:React.FC<IProps> = (props) => {
     }
   };
 
-  const handleDelete = async (pid:string) => {
+  const handleDelete = async (pid: string) => {
     if (await axios.delete(`/iam/choerodon/v1/projects/${pid}`)) {
       refresh();
     }
   };
 
-  const handleProjClick = async (data:any) => {
+  const handleProjClick = async (data: any) => {
     if (data.enabled && checkOperation(data)) {
       handleClickProject(data, history, AppState);
     }
@@ -211,7 +213,7 @@ const Index:React.FC<IProps> = (props) => {
     }
   }, 2000);
 
-  const handleMouseEnter = (e: any, title:string) => {
+  const handleMouseEnter = (e: any, title: string) => {
     const { currentTarget } = e;
     if (isOverflow(currentTarget)) {
       Tooltip.show(currentTarget, {
@@ -226,7 +228,7 @@ const Index:React.FC<IProps> = (props) => {
   };
 
   const renderName = ({ record }: { record: Record }) => {
-    const projData:any = record?.toData();
+    const projData: any = record?.toData();
     const unix = String(moment(projData.creationDate).unix());
     projData.background = getRandomBackground(unix.substring(unix.length - 3));
     return (
@@ -285,7 +287,7 @@ const Index:React.FC<IProps> = (props) => {
       text: '停用',
       action: () => openDisableModal(data),
     };
-    let actionData:any = [];
+    let actionData: any = [];
     if (!enabled) {
       actionData = [
         {
@@ -327,28 +329,27 @@ const Index:React.FC<IProps> = (props) => {
     ) : null;
   };
 
-  const getStatusName = (record:Record) => {
+  const getStatusName = (record: Record) => {
     const pData = record.toData();
     if (pData.statusName) {
       return pData.statusName;
     }
-    const getName = (p:any) => (
+    const getName = (p: any) => (
       // eslint-disable-next-line no-nested-ternary
       !p.projectStatus || p.projectStatus === 'success'
         ? p.enabled
           ? '启用'
           : '停用'
         : formatMessage({
-          id: `c7ncd.project.${p.projectStatus}${
-            p.projectStatus === 'failed'
-              ? `.${p.operateType}`
-              : ''
-          }`,
+          id: `c7ncd.project.${p.projectStatus}${p.projectStatus === 'failed'
+            ? `.${p.operateType}`
+            : ''
+            }`,
         }));
     return getName(pData);
   };
 
-  const getStatusColorCode = (record:Record) => {
+  const getStatusColorCode = (record: Record) => {
     const p = record.toData();
     if (!p.projectStatus || p.projectStatus === 'success' || p.statusName) {
       return p.enabled ? 'success' : 'failed';
@@ -356,7 +357,7 @@ const Index:React.FC<IProps> = (props) => {
     return colorMap.get(p.projectStatus);
   };
 
-  const renderEnabled = ({ value, record }: { value: boolean, record:Record }) => (
+  const renderEnabled = ({ value, record }: { value: boolean, record: Record }) => (
     <StatusTag
       color={record?.get('color') ? record?.get('color') : ''}
       // @ts-ignore
@@ -409,10 +410,11 @@ const Index:React.FC<IProps> = (props) => {
         tooltip: 'overflow',
       },
     ];
-    const displayColumn:any = [
+    const displayColumn: any = [
       {
         name: 'name',
         renderer: renderName,
+        sortable: true,
         width: 230,
       },
       {

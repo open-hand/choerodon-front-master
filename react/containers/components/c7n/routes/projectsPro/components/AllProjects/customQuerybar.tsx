@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { FlatSelect, FlatTreeSelect } from '@choerodon/components';
 import {
-  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker,
+  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker, Select,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import {
@@ -14,7 +14,7 @@ import ChooseFieldsBtn, { ICheckBoxFields } from './chooseFieldsBtn';
 import './customQuerybar.less';
 
 const modalKey1 = Modal.key();
-
+// TODO: usereducer
 export interface IProps {
   searchFieldsConfig: ISearchFields[]
   filterFieldsConfig: ICheckBoxFields[]
@@ -45,6 +45,7 @@ const fieldsMap = new Map(
   [
     ['TextField', TextField],
     ['FlatSelect', FlatSelect],
+    ['Select', Select],
     ['FlatTreeSelect', FlatTreeSelect],
     ['DateTimePicker', DateTimePicker],
   ],
@@ -81,6 +82,27 @@ const Index: React.FC<IProps> = (props) => {
     setInitialFieldNum(getInitialFieldNum(searchFieldsConfig));
   }, []);
 
+  // {
+  //   name: 'createdBys',
+  //   textField: 'realName',
+  //   valueField: 'id',
+  //   multiple: true,
+  //   searchable: true,
+  //   options: new DataSet({
+  //     autoCreate: true,
+  //     autoQuery: true,
+  //     clearButton: true,
+  //     searchable: true,
+  //     transport: {
+  //       read({ dataSet, record, params: { page } }) {
+  //         return {
+  //           url: 'http://api.devops.hand-china.com/iam/choerodon/v1/organizations/1419/users/search',
+  //           method: 'get',
+  //         };
+  //       },
+  //     },
+  //   }),
+  // }
   const compDataSet = useMemo(() => {
     const ds = new DataSet({
       autoCreate: true,
@@ -98,7 +120,7 @@ const Index: React.FC<IProps> = (props) => {
   useEffect(() => {
     const ele = document.getElementsByClassName('searchField-container-left-block1-inner')[0];
     const height = +(window.getComputedStyle(ele).height.split('px')[0]);
-    const num = height / 52;
+    const num = height / 42;
     if (num > 1) {
       setExpandBtnVisible(true);
     } else {
@@ -122,7 +144,7 @@ const Index: React.FC<IProps> = (props) => {
     }
   };
 
-  const dsOptionFieldAdd = (name: string, textField: string | undefined, valueField: string | undefined, optionConfig:any, optionQueryConfig: any) => {
+  const dsOptionFieldAdd = (name: string, textField: string | undefined, valueField: string | undefined, optionConfig: any, optionQueryConfig: any) => {
     if (!compDataSet.getField(name)) {
       compDataSet.addField(name, {
         textField,
@@ -148,17 +170,17 @@ const Index: React.FC<IProps> = (props) => {
     const cloneSearchFields = cloneDeep(searchFields);
     cloneSearchFields.splice(index, 1);
     setSearchFields(cloneSearchFields);
-    childRef.current.checkChange(false, index - 2);
+    childRef.current.checkChange(false, index - initialFieldNum);
   };
 
-  const handleRemoteSearch = (e: any, item: ISearchFields) => {
+  const handleRemoteSearch = async (e: any, item: ISearchFields) => {
     const { value } = e.target;
     if (item.fieldProps.remoteSearch) {
       const optionDs = compDataSet?.getField(item.name)?.options;
       if (optionDs) {
         optionDs.setQueryParameter(item.fieldProps.remoteSearchName || 'param', value);
       }
-      optionDs?.query();
+      await optionDs?.query();
     }
   };
 
@@ -265,13 +287,19 @@ const Index: React.FC<IProps> = (props) => {
     setExpandBtnType('expand_less');
   };
 
+  // const test = (e: any) => {
+  //   const aa = compDataSet?.getField('createdBys')?.options;
+  //   aa.setQueryParameter('params', e.target.value);
+  //   aa?.query();
+  // };
+
   return (
     <>
       <div className="searchField-container">
         <div className="searchField-container-left">
           <div className="searchField-item">
             <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={compDataSet} name="searchContent" />
-            {/* <TreeSelect dataSet={compDataSet} name="workGroupIds" /> */}
+            {/* <Select searchable dataSet={compDataSet} name="createdBys" onInput={(e) => { test(e); }} /> */}
           </div>
           <div className="searchField-container-left-block1">
             <div className="searchField-container-left-block1-inner">

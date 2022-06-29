@@ -13,7 +13,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   getAllProjectsTableColumns() {
     return this.request({
-      url: `/iam/v1/organizations/${this.orgId}/list_layout/project_column`,
+      url: `/iam/v1/organizations/${this.orgId}/list_layout/projectView`,
       method: 'get',
     });
   }

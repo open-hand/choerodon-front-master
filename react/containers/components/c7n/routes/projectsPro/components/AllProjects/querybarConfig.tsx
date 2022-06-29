@@ -4,7 +4,7 @@ import { UserInfo } from '@choerodon/components';
 import { organizationsApiConfig } from '@/apis';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
 
-const userOptionRender = ({ record }:{ record:Record}) => (
+const userOptionRender = ({ record }: { record: Record }) => (
   <UserInfo
     className="c7ncd-waterfall-deliverables-table-search-line-userinfo"
     loginName={record?.get('ldap') ? record?.get('loginName') : record?.get('email')}
@@ -46,7 +46,7 @@ export const searchFieldsConfig = [
     initial: true,
     optionQueryConfig: {
       ...organizationsApiConfig.getprojWorkGroup(),
-      transformResponse: (res:any) => transformResponseTreeData(res, 'workGroupVOS'),
+      transformResponse: (res: any) => transformResponseTreeData(res, 'workGroupVOS'),
     },
     optionConfig: {
       idField: 'id',
@@ -69,7 +69,7 @@ export const searchFieldsConfig = [
     initial: true,
     optionQueryConfig: {
       ...organizationsApiConfig.getprojClassification(),
-      transformResponse: (res:any) => transformResponseTreeData(res, 'treeProjectClassfication'),
+      transformResponse: (res: any) => transformResponseTreeData(res, 'treeProjectClassfication'),
     },
     optionConfig: {
       idField: 'id',
@@ -118,7 +118,6 @@ export const filterFieldsConfig = [
       placeholder: '创建人',
       optionRenderer: userOptionRender,
       multiple: true,
-      clearButton: true,
       searchable: true,
       dropdownMatchSelectWidth: false,
       maxTagCount: 3,
@@ -152,7 +151,6 @@ export const filterFieldsConfig = [
       placeholder: '更新人',
       optionRenderer: userOptionRender,
       multiple: true,
-      clearButton: true,
       searchable: true,
       dropdownMatchSelectWidth: false,
       maxTagCount: 3,
