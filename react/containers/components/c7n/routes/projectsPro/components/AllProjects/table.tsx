@@ -1,7 +1,7 @@
 import {
   Icon, Modal, Table, TextField, Tooltip,
 } from 'choerodon-ui/pro';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { observer } from 'mobx-react';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { StatusTag } from '@choerodon/components';
@@ -17,6 +17,7 @@ import {
   MODAL_WIDTH,
 } from '@/constants/MODAL';
 import Action from '@/components/action';
+import { IColumnSetConfig } from './customQuerybar';
 import { renderCategoriesTags } from '@/containers/components/c7n/routes/projectsPro/components/projectTaskContent';
 import './table.less';
 
@@ -32,10 +33,8 @@ const colorMap = new Map([
 ]);
 
 export interface IProps {
-
+  columnsConfig: IColumnSetConfig[]
 }
-
-const { Column } = Table;
 
 export const startProjChange = async (pid:string, enable:boolean, organizationId:string, ProjectsProUseStore:any) => {
   enable ? await axios.post(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`, {
@@ -46,6 +45,7 @@ export const startProjChange = async (pid:string, enable:boolean, organizationId
 };
 
 const Index:React.FC<IProps> = (props) => {
+  const { columnsConfig } = props;
   const {
     categoryCodes,
     history,
@@ -372,18 +372,65 @@ const Index:React.FC<IProps> = (props) => {
     return renderCategoriesTags(value);
   };
 
+  const getColumns = useMemo(() => {
+    const adjustableColumns = [
+      {
+        name: 'code',
+        tooltip: 'overflow',
+        sortable: true,
+      },
+      {
+        name: 'enabled',
+        renderer: renderEnabled,
+        sortable: true,
+      },
+      {
+        name: 'workGroup',
+        tooltip: 'overflow',
+      },
+      {
+        name: 'projectClassfication',
+        tooltip: 'overflow',
+      },
+      {
+        name: 'programName',
+        tooltip: 'overflow',
+      },
+      {
+        name: 'categories',
+        renderer: renderCategories,
+      },
+      {
+        name: 'description',
+        tooltip: 'overflow',
+      },
+      {
+        name: 'devopsComponentCode',
+        tooltip: 'overflow',
+      },
+    ];
+    const displayColumn:any = [
+      {
+        name: 'name',
+        renderer: renderName,
+        width: 230,
+      },
+      {
+        renderer: renderAction,
+        width: 60,
+      },
+    ];
+    columnsConfig.forEach((item) => {
+      if (item.isSelected) {
+        const found = adjustableColumns.find((i) => i.name === item.name);
+        displayColumn.push(found);
+      }
+    });
+    return displayColumn;
+  }, [columnsConfig]);
+
   return (
-    <Table columnResizable dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table">
-      <Column renderer={renderName} name="name" width={230} sortable />
-      <Column renderer={renderAction} width={60} />
-      <Column name="code" tooltip={'overflow' as any} sortable />
-      <Column renderer={renderEnabled} name="enabled" sortable />
-      <Column name="workGroup" tooltip={'overflow' as any} />
-      <Column name="projectClassfication" tooltip={'overflow' as any} />
-      <Column name="programName" tooltip={'overflow' as any} />
-      <Column renderer={renderCategories} name="categories" width={200} />
-      <Column name="description" tooltip={'overflow' as any} />
-    </Table>
+    <Table columns={getColumns} columnResizable dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table" />
   );
 };
 

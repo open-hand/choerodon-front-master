@@ -176,3 +176,46 @@ export const filterFieldsConfig = [
     },
   },
 ];
+
+export const defaultColumnSetConfig = [
+  {
+    name: 'code',
+    label: '项目编码',
+    isSelected: true,
+  },
+  {
+    name: 'enabled',
+    label: '项目状态',
+    isSelected: true,
+  },
+  {
+    name: 'workGroup',
+    label: '工作组',
+    isSelected: true,
+  },
+  {
+    name: 'projectClassfication',
+    label: '项目分类',
+    isSelected: true,
+  },
+  {
+    name: 'programName',
+    label: '所属项目群',
+    isSelected: true,
+  },
+  {
+    name: 'categories',
+    label: '项目类型',
+    isSelected: true,
+  },
+  {
+    name: 'description',
+    label: '项目描述',
+    isSelected: true,
+  },
+  {
+    name: 'devopsComponentCode',
+    label: 'devops组件编码',
+    isSelected: false,
+  },
+];

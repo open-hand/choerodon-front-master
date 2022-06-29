@@ -1,7 +1,7 @@
 import {
-  CheckBox, DataSet, Form, Icon,
+  CheckBox, Form, Icon, DataSet,
 } from 'choerodon-ui/pro';
-import React, { useMemo, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Droppable, DragDropContext, DropResult, Draggable, DraggingStyle, NotDraggingStyle,
@@ -9,9 +9,13 @@ import {
 } from 'react-beautiful-dnd';
 import { usePersistFn } from 'ahooks';
 import { observer } from 'mobx-react-lite';
+import { cloneDeep } from 'lodash';
+import { IColumnSetConfig } from './customQuerybar';
 
 export interface IProps {
-
+  columnsConfig: IColumnSetConfig[]
+  handleOk: (columnsData:IColumnSetConfig[])=> boolean
+  tableDs: DataSet
 }
 
 const grid = 0;
@@ -23,53 +27,21 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
 } as const);
 
 const Index:React.FC<IProps> = (props) => {
-  // @ts-ignore
-  const { modal } = props;
-  const [columns, setColumns] = useState([
-    {
-      name: 'a',
-      label: '编号',
-      isSelected: false,
-    },
-    {
-      name: 'b',
-      label: '优先级',
-      isSelected: true,
-    },
-    {
-      name: 'c',
-      label: '经办人',
-      isSelected: false,
-    },
-  ]);
+  const {
+    // @ts-ignore
+    modal, columnsConfig, handleOk, tableDs,
+  } = props;
+  const [columns, setColumns] = useState<any>([]);
 
-  const formDs = useMemo(() => {
-    const ds = new DataSet({
-      autoCreate: true,
-    });
-    // ds.loadData([recordData?.toData()]);
-    const data = [
-      {
-        name: 'a',
-        label: '编号',
-        isSelected: false,
-      },
-      {
-        name: 'b',
-        label: '优先级',
-        isSelected: true,
-      },
-      {
-        name: 'c',
-        label: '经办人',
-        isSelected: false,
-      },
-    ];
-    // data.forEach((item:any) => {
-    //   ds.addField(item.name, { type: 'boolean' });
-    // });
-    return ds;
-  }, []);
+  useEffect(() => {
+    if (columnsConfig[0] && !columnsConfig[0].label) {
+      columnsConfig.forEach((item) => {
+        // eslint-disable-next-line no-param-reassign
+        item.label = tableDs?.getField(item.name)?.get('label');
+      });
+    }
+    setColumns(columnsConfig);
+  }, [columnsConfig]);
 
   // DropResult
   const onDragEnd = usePersistFn((result:any) => {
@@ -84,8 +56,17 @@ const Index:React.FC<IProps> = (props) => {
       setColumns([...columns]);
     }
   });
+
+  const handleCheckChange = (value:boolean, index:number) => {
+    const cloneColumns = cloneDeep(columns);
+    cloneColumns[index].isSelected = value;
+    setColumns(cloneColumns);
+  };
+
+  modal.handleOk(() => handleOk(columns));
+
   return (
-    <Form dataSet={formDs}>
+    <div>
       <DragDropContext
         onDragEnd={onDragEnd}
       >
@@ -105,15 +86,6 @@ const Index:React.FC<IProps> = (props) => {
                 //   const selected = selectedKeys.includes(item.code);
                 // eslint-disable-next-line implicit-arrow-linebreak
                   (
-                  // <ColumnItem
-                  //   renderItem={renderItem}
-                  //   tooltip={tooltip}
-                  //   selected={selected}
-                  //   onSelectChange={onSelectChange}
-                  //   key={item.code}
-                  //   data={item}
-                  //   index={index}
-                  // />
                     <Draggable
                       index={index}
                       draggableId={item.name}
@@ -144,10 +116,10 @@ const Index:React.FC<IProps> = (props) => {
                             }}
                             >
                               <Icon type="baseline-drag_indicator" style={{ marginRight: '10px' }} />
-                              {item.label}
+                              <span>{item.label}</span>
                             </div>
                             <div>
-                              <CheckBox checked={item.isSelected} />
+                              <CheckBox checked={item.isSelected} onChange={(value:boolean) => { handleCheckChange(value, index); }} />
                             </div>
                           </div>
                         </div>
@@ -160,7 +132,7 @@ const Index:React.FC<IProps> = (props) => {
           }}
         </Droppable>
       </DragDropContext>
-    </Form>
+    </div>
   );
 };
 

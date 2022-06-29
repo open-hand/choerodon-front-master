@@ -11,7 +11,6 @@ import {
 } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import ChooseFieldsBtn, { ICheckBoxFields } from './chooseFieldsBtn';
-import TableColumnSet from './tableColumnSet';
 import './customQuerybar.less';
 
 const modalKey1 = Modal.key();
@@ -23,13 +22,19 @@ export interface IProps {
   cRef: any
 }
 
+export interface IColumnSetConfig {
+  name: string,
+  label: string,
+  isSelected: boolean,
+}
+
 export interface ISearchFields {
   name: string
   type: string,
   fieldProps: any
   width?: number
   initial: boolean
-  optionQueryConfig?: () => void
+  optionQueryConfig?: any
   optionsTextField?: string
   optionsValueField?: string
   optionConfig?: any
@@ -260,21 +265,6 @@ const Index: React.FC<IProps> = (props) => {
     setExpandBtnType('expand_less');
   };
 
-  const openEditColumnModal = () => {
-    Modal.open({
-      key: modalKey1,
-      title: '列表显示设置',
-      drawer: true,
-      style: {
-        width: 380,
-      },
-      children: <TableColumnSet />,
-      bodyStyle: {
-        paddingTop: 10,
-      },
-    });
-  };
-
   return (
     <>
       <div className="searchField-container">
@@ -311,9 +301,6 @@ const Index: React.FC<IProps> = (props) => {
               )
             }
           </div>
-        </div>
-        <div className="searchField-container-right">
-          <Button icon="view_column" onClick={openEditColumnModal} />
         </div>
       </div>
     </>

@@ -6,24 +6,27 @@ import {
   Tooltip,
   Modal,
 } from 'choerodon-ui/pro';
-import { forIn } from 'lodash';
+import { forIn, orderBy } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
-import { UserInfo } from '@choerodon/components';
 import { Permission } from '@/components/permission';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import CreateProject from '../create-project';
-import TableAddFilter from './customQuerybar';
+import CustomQuerybar from './customQuerybar';
+import { organizationsApi } from '@/apis';
 import AllProjectTable from './table';
-import { searchFieldsConfig, filterFieldsConfig } from './querybarConfig';
-
+import {
+  searchFieldsConfig, filterFieldsConfig, defaultColumnSetConfig,
+} from './querybarConfig';
+import TableColumnSet from './tableColumnSet';
 import {
   MODAL_WIDTH,
 } from '@/constants/MODAL';
 
 import './index.less';
 
+const modalKey1 = Modal.key();
 const { MIDDLE } = MODAL_WIDTH;
 
 export default observer(() => {
@@ -43,10 +46,11 @@ export default observer(() => {
     projectListDataSet,
   } = useProjectsProStore();
 
-  const tableAddFilterCRef = useRef();
+  const customQuerybarCRef = useRef();
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
   const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
+  const [columnsConfig, setColumnsConfig] = useState(defaultColumnSetConfig);
 
   useEffect(() => {
     if (
@@ -61,9 +65,29 @@ export default observer(() => {
     }
   }, [AppState.getUserWizardStatus]);
 
+  useEffect(() => {
+    getTableColumns();
+  }, []);
+
+  const getTableColumns = async () => {
+    const res = await organizationsApi.getAllProjectsTableColumns();
+    if (res?.listLayoutColumnRelVOS) {
+      const columnArr = [];
+      const newArr = orderBy(res.listLayoutColumnRelVOS, ['order']);
+      newArr.forEach((i) => {
+        columnArr.push({
+          name: i.columnCode,
+          isSelected: i.display,
+          label: '',
+        });
+      });
+      setColumnsConfig(columnArr);
+    }
+  };
+
   const refresh = (projectId) => {
     ProjectsProUseStore.checkCreate(organizationId);
-    tableAddFilterCRef?.current?.reset();
+    customQuerybarCRef?.current?.reset();
     if (projectId) {
       MenuStore.menuGroup.project = {};
     }
@@ -83,14 +107,6 @@ export default observer(() => {
           {formatProject({ id: 'allProject' }, { name: org.name })}
         </p>
         <div className="allProjects-title-right">
-          {/* <TextField
-            onBlur={handleBlurProjects}
-            placeholder={formatCommon({ id: 'pleaseSearch' })}
-            className="allProjects-title-right-textField"
-            prefix={
-              <Icon style={{ color: 'rgba(202,202,228,1)' }} type="search" />
-            }
-          /> */}
           <Permission
             service={['choerodon.code.organization.project.ps.create']}
           >
@@ -144,342 +160,6 @@ export default observer(() => {
     });
   };
 
-  // const handleRetry = useCallback(async (projectId, sagaInstanceIds) => {
-  //   if (
-  //     await ProjectsProUseStore.retryProjectSaga(projectId, sagaInstanceIds)
-  //   ) {
-  //     refresh();
-  //   }
-  // }, []);
-
-  // const handleDelete = useCallback(async (projectId) => {
-  //   if (await ProjectsProUseStore.deleteProject(projectId)) {
-  //     refresh();
-  //   }
-  // }, []);
-
-  // const openDisableModal = useCallback((projectData) => {
-  //   try {
-  //     const {
-  //       categories, name: projectName, id: projectId, programName,
-  //     } = projectData || {};
-  //     const isProgram = some(categories, ['code', categoryCodes.program]);
-  //     const ModalContent = ({ modal: newModal }) => {
-  //       let extraMessage;
-  //       if (isProgram) {
-  //         extraMessage = (
-  //           <>
-  //             <div className="c7n-project-disabled-modal-warning">
-  //               <Icon type="info" />
-  //               <span>&nbsp;项目群停用后，ART将自动停止，子项目和项目群的关联也将自动停用，子项目的迭代节奏、迭代规划不再受到ART的统一管理。ART下进行中的PI将直接完成，未完成的PI将会删除，未完成的特性将会移动至待办。子项目进行中的迭代会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！</span>
-  //             </div>
-  //             <div style={{ marginTop: 10 }}>
-  //               请输入
-  //               {' '}
-  //               <span style={{ fontWeight: 600 }}>{projectName}</span>
-  //               {' '}
-  //               来确认停用。
-  //             </div>
-  //             <TextField
-  //               style={{ width: '100%', marginTop: 10 }}
-  //               autoFocus
-  //               onInput={(e) => {
-  //                 newModal.update({
-  //                   okProps: {
-  //                     disabled: e.target.value !== projectName,
-  //                   },
-  //                 });
-  //               }}
-  //             />
-  //           </>
-  //         );
-  //       } else if (programName) {
-  //         extraMessage = (
-  //           <div className="c7n-project-disabled-modal-warning">
-  //             <Icon type="info" />
-  //             <span>&nbsp;子项目停用后，与项目群相关的冲刺将发生变动，进行中的冲刺会直接完成，未开始的冲刺将会删除，未完成的问题将会移动至待办。请谨慎操作！</span>
-  //           </div>
-  //         );
-  //       }
-  //       const content = (
-  //         <div style={{ marginTop: -10 }}>
-  //           {isProgram && (
-  //             <p className="c7n-project-disabled-modal-tips">
-  //               请仔细阅读下列事项！
-  //             </p>
-  //           )}
-  //           <span>
-  //             确定要停用项目“
-  //             {projectName}
-  //             ”吗？停用后，您和项目下其他成员将无法进入此项目。
-  //           </span>
-  //           {extraMessage}
-  //         </div>
-  //       );
-  //       return content;
-  //     };
-  //     if (isProgram) {
-  //       Modal.open({
-  //         title: '停用项目',
-  //         children: <ModalContent />,
-  //         onOk: () => handleEnable(projectId, 'disable'),
-  //         okProps: { disabled: true },
-  //         okText: '我已经知道后果，停用此项目',
-  //       });
-  //     } else {
-  //       Modal.open({
-  //         title: '停用项目',
-  //         children: <ModalContent />,
-  //         onOk: () => handleEnable(projectId, 'disable'),
-  //       });
-  //     }
-  //   } catch (e) {
-  //     return false;
-  //   }
-  //   return false;
-  // }, []);
-
-  // const handleEnable = useCallback(async (projectId, type) => {
-  //   if (
-  //     await ProjectsProUseStore.handleEnable({
-  //       organizationId,
-  //       projectId,
-  //       type,
-  //     })
-  //   ) {
-  //     refresh();
-  //     return true;
-  //   }
-  //   return false;
-  // }, []);
-
-  // const checkOperation = useCallback(
-  //   (data) => data
-  //     && (data.operateType === 'update' || data.projectStatus === 'success'),
-  //   [],
-  // );
-
-  // const getActionData = useCallback((data) => {
-  //   const {
-  //     projectStatus, editFlag, enabled, id: currentProjectId,
-  //   } = data;
-  //   const editData = {
-  //     text: '修改',
-  //     action: () => handleAddProject(data.id),
-  //   };
-  //   const disableData = {
-  //     text: '停用',
-  //     action: () => openDisableModal(data),
-  //   };
-  //   let actionData;
-  //   if (!enabled) {
-  //     actionData = [
-  //       {
-  //         text: '启用',
-  //         action: () => handleEnable(currentProjectId, 'enable'),
-  //       },
-  //     ];
-  //   }
-  //   switch (projectStatus) {
-  //     case 'success':
-  //       actionData = [editData, disableData];
-  //       break;
-  //     case 'failed':
-  //       actionData = [
-  //         {
-  //           text: '重试',
-  //           action: () => handleRetry(data.id, data.sagaInstanceIds),
-  //         },
-  //       ];
-  //       if (data.operateType === 'create') {
-  //         actionData.push({
-  //           text: '删除',
-  //           action: () => handleDelete(data.id),
-  //         });
-  //       } else {
-  //         actionData.unshift(editData);
-  //         actionData.push(disableData);
-  //       }
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   return editFlag && actionData ? (
-  //     <Action
-  //       data={actionData}
-  //       onClick={(e) => e.stopPropagation()}
-  //       className="allProjects-content-item-right-top-edit"
-  //     />
-  //   ) : null;
-  // }, []);
-
-  // const handleStarClick = throttle((p) => {
-  //   if (p.enabled) {
-  //     ProjectsProUseStore.handleStarProject(p).then(() => {
-  //       ProjectsProUseStore.handleChangeStarProjects(p);
-  //     });
-  //   }
-  // }, 2000);
-
-  //   const renderProjects = useCallback(() => {
-  //     const projects = ProjectsProUseStore.getAllProjects;
-  //     if (ProjectsProUseStore.getProjectLoading) {
-  //       return (
-  //         <div className="allProjects-content-spin" style={{ width: '100%' }}>
-  //           <Spin spinning />
-  //         </div>
-  //       );
-  //     }
-
-  //     const getName = (p) => (
-  //       // eslint-disable-next-line no-nested-ternary
-  //       !p.projectStatus || p.projectStatus === 'success'
-  //         ? p.enabled
-  //           ? '启用'
-  //           : '停用'
-  //         : formatMessage({
-  //           id: `${intlPrefix}.${p.projectStatus}${
-  //             p.projectStatus === 'failed'
-  //               ? `.${p.operateType}`
-  //               : ''
-  //           }`,
-  //         }));
-
-  //     return projects.length > 0 ? (
-  //       projects.map((p) => (
-  //         <Tooltip
-  //           placement="left"
-  //           arrowPointAtCenter
-  //           title={
-  //             p.description
-  //               ? (
-  //                 <p className="allProjects-content-item-right-down-pro-tooltip">{p.description}</p>
-  //               ) : ''
-  // }
-  //         >
-  //           <div
-  //             key={p.id}
-  //             onClick={() => {
-  //               if (p.enabled && checkOperation(p)) {
-  //                 handleClickProject(p, history, AppState);
-  //               }
-  //             }}
-  //             className="allProjects-content-item"
-  //             style={{
-  //               cursor: p.enabled ? 'pointer' : 'not-allowed',
-  //             }}
-  //             role="none"
-  //           >
-  //             <div
-  //               className="allProjects-content-item-icon"
-  //               style={{
-  //                 backgroundImage: p.imageUrl
-  //                   ? `url("${p.imageUrl}")`
-  //                   : p.background,
-  //               }}
-  //             >
-  //               <span>
-  //                 {!p.imageUrl && p.name && p.name.slice(0, 1).toUpperCase()}
-  //               </span>
-  //             </div>
-
-  //             <div className="allProjects-content-item-right">
-  //               <div className="allProjects-content-item-right-top">
-  //                 <div className="allProjects-content-item-right-top-left">
-  //                   <span className="allProjects-content-item-right-top-left-code">
-  //                     {p.code}
-  //                   </span>
-  //                   <span
-  //                     className={`allProjects-content-item-right-top-left-status allProjects-content-item-right-top-left-status-${
-  //                       !p.projectStatus || p.projectStatus === 'success' || p.statusName
-  //                         ? p.enabled
-  //                         : p.projectStatus
-  //                     }`}
-  //                   >
-  //                     {p.statusName && p.statusName}
-  //                     {!p.statusName && getName(p)}
-  //                   </span>
-  //                 </div>
-  //                 {getActionData(p)}
-  //                 {checkOperation(p) ? (
-  //                   <Icon
-  //                     type={p.starFlag ? 'stars' : 'star_border'}
-  //                     style={{
-  //                       color: p.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
-  //                       fontSize: '20px',
-  //                     }}
-  //                     onClick={(e) => { e.stopPropagation(); handleStarClick(p); }}
-  //                   />
-  //                 ) : null}
-  //               </div>
-  //               <div className="allProjects-content-item-right-down">
-  //                 <div className="allProjects-content-item-right-down-pro">
-  //                   <p>
-  //                     <Tooltip
-  //                       title={p.name}
-  //                       placement="bottomLeft"
-  //                     >
-  //                       {p.name}
-  //                     </Tooltip>
-  //                   </p>
-  //                 </div>
-  //                 <ProjectCategory
-  //                   data={p.categories}
-  //                   agileWaterfall={p.agileWaterfall}
-  //                   className="allProjects-content-item-right-down-text1"
-  //                 />
-  //                 {p.programName && (
-  //                   <Tooltip title={p.programName}>
-  //                     <p className="allProjects-content-item-right-down-text2">
-  //                       <>
-  //                         <span>
-  //                           <Icon type="project_group" />
-  //                         </span>
-  //                         <p>{p.programName}</p>
-  //                       </>
-  //                     </p>
-  //                   </Tooltip>
-  //                 )}
-  //                 <p className="allProjects-content-item-right-down-time">
-  //                   <Tooltip title={p.createUserName} placement="top">
-  //                     <span
-  //                       className="allProjects-content-item-right-down-avatar"
-  //                       style={{
-  //                         backgroundImage: p.createUserImageUrl
-  //                           ? `url("${p.createUserImageUrl}")`
-  //                           : 'unset',
-  //                       }}
-  //                     >
-  //                       {!p.createUserImageUrl
-  //                         && p.createUserName
-  //                         && p.createUserName.slice(0, 1)}
-  //                     </span>
-  //                   </Tooltip>
-  //                   <p>
-  //                     {p.creationDate.split(' ')[0]}
-  //                     {' '}
-  //                     创建
-  //                   </p>
-  //                 </p>
-  //               </div>
-  //             </div>
-  //           </div>
-  //         </Tooltip>
-  //       ))
-  //     ) : (
-  //       <EmptyPage title="暂无项目" describe="该组织下暂无项目" />
-  //     );
-  //   }, [ProjectsProUseStore.getAllProjects, history]);
-
-  const handleBlurProjects = ({ ...e }) => {
-    ProjectsProUseStore.setAllProjectsParams(e.target.value);
-    ProjectsProUseStore.setPagination({
-      page: 1,
-      size: 10,
-    });
-    ProjectsProUseStore.axiosGetProjects();
-  };
-
   const toHelpDoc = () => {
     window.open(
       `${AppState?.getUserWizardStatus[0]?.helpDocs[0]}`,
@@ -527,7 +207,7 @@ export default observer(() => {
     }
   };
 
-  const tableAddFilterChange = async (name, value) => {
+  const customQuerybarChange = async (name, value) => {
     if (name === 'updateTime' && value) {
       projectListDataSet.setQueryParameter('lastUpdateDateStart', value[0]);
       projectListDataSet.setQueryParameter('lastUpdateDateEnd', value[1]);
@@ -545,26 +225,58 @@ export default observer(() => {
     projectListDataSet.query();
   };
 
-  const userOptionRender = ({ record, text, value }) => (
-    <UserInfo
-      className="c7ncd-waterfall-deliverables-table-search-line-userinfo"
-      loginName={record?.get('ldap') ? record?.get('loginName') : record?.get('email')}
-      realName={record?.get('realName')}
-      avatar={record?.get('imageUrl')}
-    />
-  );
+  const handleEditColumnOk = async (columnsData) => {
+    const listLayoutColumnRelVOS = [];
+    columnsData.forEach((item, index) => {
+      const iObj = {
+        columnCode: item.name, display: item.isSelected, sort: index, width: 0,
+      };
+      listLayoutColumnRelVOS.push(iObj);
+    });
+    const postObj = {
+      applyType: 'projectView',
+      listLayoutColumnRelVOS,
+    };
+    try {
+      await organizationsApi.editAllProjectsTableColumns(postObj);
+      getTableColumns();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const openEditColumnModal = () => {
+    Modal.open({
+      key: modalKey1,
+      title: '列表显示设置',
+      drawer: true,
+      style: {
+        width: 380,
+      },
+      children: <TableColumnSet columnsConfig={columnsConfig} handleOk={handleEditColumnOk} tableDs={projectListDataSet} />,
+      bodyStyle: {
+        paddingTop: 10,
+      },
+    });
+  };
 
   return (
     <div className="allProjects">
       <div className="allProjects-title">{renderTitle()}</div>
       <div className="allProjects-content">
-        <TableAddFilter
-          searchFieldsConfig={searchFieldsConfig}
-          filterFieldsConfig={filterFieldsConfig}
-          onChange={tableAddFilterChange}
-          cRef={tableAddFilterCRef}
-        />
-        <AllProjectTable />
+        <div className="allProjects-table-header">
+          <CustomQuerybar
+            searchFieldsConfig={searchFieldsConfig}
+            filterFieldsConfig={filterFieldsConfig}
+            onChange={customQuerybarChange}
+            cRef={customQuerybarCRef}
+          />
+          <div className="tableColumnSet-content">
+            <Button icon="view_column" onClick={openEditColumnModal} />
+          </div>
+        </div>
+        <AllProjectTable columnsConfig={columnsConfig} />
       </div>
     </div>
   );
