@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { forEach, get } from 'lodash';
 import { DataSet } from 'choerodon-ui/pro/lib';
+import { get as getInject, has as hasInject } from '@choerodon/inject';
 import useStore from './useStore';
 import useCpCacheStore from './useCpCacheStore';
 import modulesMapping from './modulesMapping';
@@ -31,7 +32,18 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     history,
   } = props;
   const hasAgile = currentModules && currentModules.includes('agile');
+  let detailPropsCurrent;
+  let openCurrent;
+  let closeCurrent;
 
+  if (hasInject('agile:useDetail')) {
+    const useDetail = getInject('agile:useDetail');
+    const [detailProps] = useDetail();
+    const { open, close } = detailProps;
+    openCurrent = open;
+    closeCurrent = close;
+    detailPropsCurrent = detailProps;
+  }
   function getAllCode() {
     let allowedModules = [...modulesMapping.common, ...hasAgile && HAS_BACKLOG ? modulesMapping.backlog : []];
     forEach(currentModules, (item) => {
@@ -82,6 +94,9 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     dashboardDs,
     addCardDs,
     ...pageDS,
+    openCurrent,
+    closeCurrent,
+    detailPropsCurrent,
   };
 
   return (
