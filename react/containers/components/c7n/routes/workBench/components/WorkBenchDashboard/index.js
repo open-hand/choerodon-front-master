@@ -43,17 +43,17 @@ const ComponetsObjs = {
   starTarget: <StarTargetPro />,
   selfInfo: <SelfIntro />,
   todoQustions: <QuestionTodo />, // 待办事项卡片
-  myReport: <QuestionReport />,
-  myStar: <QuestionFocus />,
+  myReport: <QuestionReport />, // 我报告的
+  myStar: <QuestionFocus />, // 我关注的
   myDefect: <QuestionBug />,
   todoThings: <TodoThings />,
   serviceList: <ServiceList />,
   quickLink: <QuickLink />,
-  doc: <Doc />,
+  doc: <Doc />, // 文档
   envList: <EnvList />,
   selfCode: <SelfCode />,
   myExecution: <ExecutionQuestions />,
-  myhandler: <MyHandler />,
+  myhandler: <MyHandler />, // 我经手的
   resourceOverview: <ResourceOverview />,
   resourceMonitoring: <ResourceMonitoring />,
   beginnerGuide: <BeginnerGuide />,
