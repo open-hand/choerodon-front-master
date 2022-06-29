@@ -5,6 +5,7 @@ import { Spin, Tooltip } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import { clone, find, omit } from 'lodash';
 import { Loading } from '@choerodon/components';
+import ScrollContext from 'react-infinite-scroll-component';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import Switch from '@/containers/components/c7n/routes/workBench/components/multiple-switch';
@@ -36,7 +37,6 @@ const TodoQuestion = observer(() => {
     tabKey,
   } = questionStore;
 
-  const [btnLoading, changeBtnLoading] = useState(false);
   const searchField = useMemo(() => {
     const showCodes = ['contents'];
     tabKey === 'myStarBeacon_backlog' ? showCodes.push('backlogStatus', 'backlogPriority', 'handler')
@@ -74,12 +74,9 @@ const TodoQuestion = observer(() => {
     return { title, describe };
   }, [tabKey]);
 
-  const loadMoreData = useCallback(() => {
-    changeBtnLoading(true);
+  const loadMoreData = useCallback(async () => {
     questionStore.setPage(questionStore.getPage + 1);
-    questionDs.query().finally(() => {
-      changeBtnLoading(false);
-    });
+    questionDs.query();
   }, [questionDs]);
 
   const handleTabChange = useCallback((key) => {
@@ -90,10 +87,7 @@ const TodoQuestion = observer(() => {
     questionStore.cancelStar(record?.issueId || record?.id, record?.projectId);
   }, [questionStore]);
   function getContent() {
-    if ((!questionDs || questionDs.status === 'loading') && !btnLoading) {
-      return <Loading display />;
-    }
-    if (!questionDs.length) {
+    if (questionStore.getTreeData < 0) {
       return (
         <EmptyPage
           title={emptyPrompt.title}
@@ -102,30 +96,32 @@ const TodoQuestion = observer(() => {
         />
       );
     }
-    let component = <Spin spinning />;
-    if (!btnLoading) {
-      component = (
-        <div
-          role="none"
-          onClick={() => loadMoreData()}
-          className={`${prefixCls}-issueContent-more`}
-        >
-          加载更多
-        </div>
-      );
-    }
     return (
-      <>
-        <QuestionTree
-          treeData={questionStore.getTreeData}
-          organizationId={organizationId}
-          isStar
-          onClickStar={handleClickStar}
-          switchCode={tabKey}
-        />
-        {questionStore.getHasMore ? component
-          : null}
-      </>
+      <Spin spinning={questionDs.status === 'loading'}>
+        <ScrollContext
+          className={`${prefixCls}-scroll`}
+          dataLength={questionDs.length}
+          next={loadMoreData}
+          hasMore={questionStore.getHasMore}
+          height="100%"
+          endMessage={(
+            <span
+              style={{ height: !questionStore.getHasMore ? '1.32rem' : 'auto' }}
+              className={`${prefixCls}-scroll-bottom`}
+            >
+              {questionStore.getHasMore ? '到底了' : ''}
+            </span>
+  )}
+        >
+          <QuestionTree
+            treeData={questionStore.getTreeData}
+            organizationId={organizationId}
+            isStar
+            onClickStar={handleClickStar}
+            switchCode={tabKey}
+          />
+        </ScrollContext>
+      </Spin>
     );
   }
 

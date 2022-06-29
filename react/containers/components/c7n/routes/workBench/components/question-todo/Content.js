@@ -73,10 +73,10 @@ const TodoQuestion = observer(() => {
           dataLength={questionDs.length}
           next={loadMoreData}
           hasMore={questionStore.getHasMore}
-          height="50vh"
+          height="100%"
           endMessage={(
             <span
-              style={{ height: questionDs.length < 5 ? '1.32rem' : 'auto' }}
+              style={{ height: !questionStore.getHasMore ? '1.32rem' : 'auto' }}
               className={`${prefixCls}-scroll-bottom`}
             >
               {questionStore.getHasMore ? '到底了' : ''}

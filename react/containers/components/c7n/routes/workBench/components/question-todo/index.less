@@ -25,6 +25,7 @@
     }
   }
   &-issueContent {
+    height:100%;
     &-more {
       color: var(--primary-color);
       padding: 0.2rem 0 0 0.2rem;
@@ -35,9 +36,11 @@
       width: 100%;
     }
     .c7n-workbench-card-content {
-      height: 50vh;
       overflow: hidden;
       padding: 0;
+      .c7n-spin-nested-loading,.c7n-spin-container,.infinite-scroll-component__outerdiv{
+        height:100%;
+      }
     }
   }
   &-more {

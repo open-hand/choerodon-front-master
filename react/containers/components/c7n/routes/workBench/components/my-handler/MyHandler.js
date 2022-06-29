@@ -3,6 +3,7 @@ import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import { omit } from 'lodash';
 import { Loading } from '@choerodon/components';
+import ScrollContext from 'react-infinite-scroll-component';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import { useMyHandler } from './stores';
@@ -21,7 +22,6 @@ const MyHandler = observer(() => {
     myHandlerStore,
   } = useMyHandler();
 
-  const [btnLoading, changeBtnLoading] = useState(false);
   const searchField = useMemo(() => questionSearchFields.filter((i) => ['contents', 'issueType', 'status', 'priority', 'assignee'].includes(i.code)), []);
 
   function load(search) {
@@ -31,19 +31,13 @@ const MyHandler = observer(() => {
     myHandlerDs.setQueryParameter('searchDataId', search._id);
     myHandlerDs.query();
   }
-  function loadMoreData() {
-    changeBtnLoading(true);
+  const loadMoreData = async () => {
     myHandlerStore.setPage(myHandlerStore.getPage + 1);
-    myHandlerDs.query().finally(() => {
-      changeBtnLoading(false);
-    });
-  }
+    myHandlerDs.query();
+  };
 
   function getContent() {
-    if ((!myHandlerDs || myHandlerDs.status === 'loading') && !btnLoading) {
-      return <Loading display />;
-    }
-    if (!myHandlerDs.length) {
+    if (myHandlerStore.getTreeData < 0) {
       return (
         <EmptyPage
           title="暂无我经手的问题"
@@ -52,28 +46,31 @@ const MyHandler = observer(() => {
         />
       );
     }
-    let component = <Spin spinning />;
-    if (!btnLoading) {
-      component = (
-        <div
-          role="none"
-          onClick={() => loadMoreData()}
-          className={`${prefixCls}-more`}
-        >
-          加载更多
-        </div>
-      );
-    }
+
     return (
-      <>
-        <QuestionTree
-          treeData={myHandlerStore.getTreeData}
-          organizationId={organizationId}
-          isStar
-        />
-        {myHandlerStore.getHasMore ? component
-          : null}
-      </>
+      <Spin spinning={myHandlerDs.status === 'loading'}>
+        <ScrollContext
+          className={`${prefixCls}-scroll`}
+          dataLength={myHandlerDs.length}
+          next={loadMoreData}
+          hasMore={myHandlerStore.getHasMore}
+          height="100%"
+          endMessage={(
+            <span
+              style={{ height: !myHandlerStore.getHasMore ? '1.32rem' : 'auto' }}
+              className={`${prefixCls}-scroll-bottom`}
+            >
+              {myHandlerStore.getHasMore ? '到底了' : ''}
+            </span>
+      )}
+        >
+          <QuestionTree
+            treeData={myHandlerStore.getTreeData}
+            organizationId={organizationId}
+            isStar
+          />
+        </ScrollContext>
+      </Spin>
     );
   }
 
