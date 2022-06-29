@@ -22,7 +22,7 @@ const Index = (props: any): any => {
   const checkEnabled = async () => {
     const data = await siteApi.getFeedBack();
     if (data.enable) {
-      initSDK();
+      // initSDK();
       initSecret();
     }
   };
@@ -32,6 +32,7 @@ const Index = (props: any): any => {
       const secret = await yqcloudApi.getSDKSecret(id);
       if (secret) {
         sessionStorage.setItem('YQ_USER_SECRET', secret);
+        initSDK();
       }
     } else if (tryTimes <= 3) {
       tryTimes += 1;
