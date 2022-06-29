@@ -7,6 +7,7 @@ import {
   omit,
 } from 'lodash';
 import { Loading } from '@choerodon/components';
+import ScrollContext from 'react-infinite-scroll-component';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import { useTodoQuestionStore } from './stores';
@@ -41,19 +42,16 @@ const TodoQuestion = observer(() => {
 
     questionDs.query();
   }
-  function loadMoreData() {
+  const loadMoreData = async () => {
     changeBtnLoading(true);
     questionStore.setPage(questionStore.getPage + 1);
     questionDs.query().finally(() => {
       changeBtnLoading(false);
     });
-  }
+  };
 
   function getContent() {
-    if ((!questionDs || questionDs.status === 'loading') && !btnLoading) {
-      return <Loading display />;
-    }
-    if (!questionDs.length) {
+    if (questionStore.getTreeData.length < 0) {
       return (
         <EmptyPage
           title={formatWorkbench({ id: 'noTodo' })}
@@ -68,27 +66,29 @@ const TodoQuestion = observer(() => {
         />
       );
     }
-    let component = <Spin spinning />;
-    if (!btnLoading) {
-      component = (
-        <div
-          role="none"
-          onClick={() => loadMoreData()}
-          className={`${prefixCls}-more`}
-        >
-          {formatCommon({ id: 'loadMore' })}
-        </div>
-      );
-    }
     return (
-      <>
-        <QuestionTree
-          treeData={questionStore.getTreeData}
-          organizationId={organizationId}
-        />
-        {questionStore.getHasMore ? component
-          : null}
-      </>
+      <Spin spinning={questionDs.status === 'loading'}>
+        <ScrollContext
+          className={`${prefixCls}-scroll`}
+          dataLength={questionDs.length}
+          next={loadMoreData}
+          hasMore={questionStore.getHasMore}
+          height="50vh"
+          endMessage={(
+            <span
+              style={{ height: questionDs.length < 5 ? '1.32rem' : 'auto' }}
+              className={`${prefixCls}-scroll-bottom`}
+            >
+              {questionStore.getHasMore ? '到底了' : ''}
+            </span>
+      )}
+        >
+          <QuestionTree
+            treeData={questionStore.getTreeData}
+            organizationId={organizationId}
+          />
+        </ScrollContext>
+      </Spin>
     );
   }
 

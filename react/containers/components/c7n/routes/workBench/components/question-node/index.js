@@ -47,7 +47,7 @@ const QuestionNode = observer(({
         path: 'issue',
         props: {
           issueId: record.issueId,
-          projectId: record.issueTypeVO.id,
+          projectId: record.projectId,
           applyType: ALL_TYPE_CODES.includes(record.issueTypeVO.typeCode) ? 'waterfall' : 'agile',
         },
         events: {
