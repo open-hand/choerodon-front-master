@@ -37,7 +37,7 @@ const MyHandler = observer(() => {
   };
 
   function getContent() {
-    if (myHandlerStore.getTreeData < 0) {
+    if (!myHandlerDs.length && myHandlerDs.currentPage === 1) {
       return (
         <EmptyPage
           title="暂无我经手的问题"

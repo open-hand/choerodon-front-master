@@ -51,7 +51,7 @@ const TodoQuestion = observer(() => {
   };
 
   function getContent() {
-    if (questionStore.getTreeData.length < 0) {
+    if (!questionDs.length && questionDs.currentPage === 1) {
       return (
         <EmptyPage
           title={formatWorkbench({ id: 'noTodo' })}

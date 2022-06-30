@@ -87,7 +87,7 @@ const TodoQuestion = observer(() => {
     questionStore.cancelStar(record?.issueId || record?.id, record?.projectId);
   }, [questionStore]);
   function getContent() {
-    if (questionStore.getTreeData < 0) {
+    if (!questionDs.length && questionDs.currentPage === 1) {
       return (
         <EmptyPage
           title={emptyPrompt.title}
