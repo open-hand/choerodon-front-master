@@ -45,7 +45,7 @@ const ComponetsObjs = {
   todoQustions: <QuestionTodo />, // 待办事项卡片
   myReport: <QuestionReport />, // 我报告的
   myStar: <QuestionFocus />, // 我关注的
-  myDefect: <QuestionBug />,
+  myDefect: <QuestionBug />, // 缺陷
   todoThings: <TodoThings />,
   serviceList: <ServiceList />,
   quickLink: <QuickLink />,
