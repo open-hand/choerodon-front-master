@@ -22,12 +22,6 @@ export interface IProps {
   cRef: any
 }
 
-export interface IColumnSetConfig {
-  name: string,
-  label: string,
-  isSelected: boolean,
-}
-
 export interface ISearchFields {
   name: string
   type: string,

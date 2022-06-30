@@ -87,8 +87,8 @@ export default observer(() => {
     <div
       role="none"
       onClick={() => {
-        if (p.enabled) {
-          handleClickProject(p, history);
+        if (p?.projectDTO?.enabled) {
+          handleClickProject(p?.projectDTO, history);
         }
       }}
       className="recentProjects-items"

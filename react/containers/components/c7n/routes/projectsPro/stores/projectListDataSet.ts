@@ -46,5 +46,21 @@ export default (({ organizationId, userId }:{organizationId:string, userId:strin
       name: 'devopsComponentCode',
       label: 'devops组件编码',
     },
+    {
+      name: 'createUserName',
+      label: '创建人',
+    },
+    {
+      name: 'creationDate',
+      label: '创建时间',
+    },
+    {
+      name: 'updateUserName',
+      label: '更新人',
+    },
+    {
+      name: 'lastUpdateDate',
+      label: '更新时间',
+    },
   ],
 }));

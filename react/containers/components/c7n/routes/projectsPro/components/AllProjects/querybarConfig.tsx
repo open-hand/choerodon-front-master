@@ -13,6 +13,10 @@ const userOptionRender = ({ record }: { record: Record }) => (
   />
 );
 
+const nodeCover = ({ record }: {record:Record}) => ({
+  disabled: record?.get('hasChildren') || record?.get('children'),
+});
+
 export const searchFieldsConfig = [
   {
     name: 'statusIds',
@@ -42,6 +46,7 @@ export const searchFieldsConfig = [
       dropdownMatchSelectWidth: false,
       maxTagCount: 3,
       searchable: true,
+      onOption: nodeCover,
     },
     initial: true,
     optionQueryConfig: {
@@ -65,6 +70,7 @@ export const searchFieldsConfig = [
       dropdownMatchSelectWidth: false,
       maxTagCount: 3,
       searchable: true,
+      onOption: nodeCover,
     },
     initial: true,
     optionQueryConfig: {
@@ -180,40 +186,72 @@ export const defaultColumnSetConfig = [
     name: 'code',
     label: '项目编码',
     isSelected: true,
+    order: 0,
   },
   {
     name: 'enabled',
     label: '项目状态',
     isSelected: true,
+    order: 1,
   },
   {
     name: 'workGroup',
     label: '工作组',
     isSelected: true,
+    order: 2,
   },
   {
     name: 'projectClassfication',
     label: '项目分类',
     isSelected: true,
+    order: 3,
   },
   {
     name: 'programName',
     label: '所属项目群',
     isSelected: true,
+    order: 4,
   },
   {
     name: 'categories',
     label: '项目类型',
     isSelected: true,
+    order: 5,
   },
   {
     name: 'description',
     label: '项目描述',
     isSelected: true,
+    order: 6,
   },
   {
     name: 'devopsComponentCode',
     label: 'devops组件编码',
     isSelected: false,
+    order: 7,
+  },
+  {
+    name: 'createUserName',
+    label: '创建人',
+    isSelected: false,
+    order: 8,
+  },
+  {
+    name: 'creationDate',
+    label: '创建时间',
+    isSelected: false,
+    order: 9,
+  },
+  {
+    name: 'updateUserName',
+    label: '更新人',
+    isSelected: false,
+    order: 10,
+  },
+  {
+    name: 'lastUpdateDate',
+    label: '更新时间',
+    isSelected: false,
+    order: 11,
   },
 ];

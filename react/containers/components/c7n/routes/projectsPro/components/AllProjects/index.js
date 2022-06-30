@@ -6,7 +6,7 @@ import {
   Tooltip,
   Modal,
 } from 'choerodon-ui/pro';
-import { forIn, orderBy } from 'lodash';
+import { forIn, orderBy, remove } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import { Permission } from '@/components/permission';
@@ -26,7 +26,6 @@ import {
 
 import './index.less';
 
-const modalKey1 = Modal.key();
 const { MIDDLE } = MODAL_WIDTH;
 
 export default observer(() => {
@@ -47,10 +46,11 @@ export default observer(() => {
   } = useProjectsProStore();
 
   const customQuerybarCRef = useRef();
+  const customColumnSetCRef = useRef();
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
   const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
-  const [columnsConfig, setColumnsConfig] = useState(defaultColumnSetConfig);
+  const [tableColumn, setTableColumn] = useState([]);
 
   useEffect(() => {
     if (
@@ -72,20 +72,9 @@ export default observer(() => {
   const getTableColumns = async () => {
     const res = await organizationsApi.getAllProjectsTableColumns();
     if (res?.listLayoutColumnRelVOS) {
-      const columnArr = [];
-      const newArr = orderBy(res.listLayoutColumnRelVOS, ['order']);
-      newArr.forEach((i) => {
-        columnArr.push({
-          name: i.columnCode,
-          isSelected: i.display,
-          label: '',
-        });
-      });
-      columnArr.forEach((item) => {
-        // eslint-disable-next-line no-param-reassign
-        item.label = projectListDataSet?.getField(item.name)?.get('label');
-      });
-      setColumnsConfig(columnArr);
+      setTableColumn(customColumnSetCRef?.current?.initData(res?.listLayoutColumnRelVOS, defaultColumnSetConfig));
+    } else {
+      setTableColumn(defaultColumnSetConfig);
     }
   };
 
@@ -250,21 +239,6 @@ export default observer(() => {
     }
   };
 
-  const openEditColumnModal = () => {
-    Modal.open({
-      key: modalKey1,
-      title: '列表显示设置',
-      drawer: true,
-      style: {
-        width: 380,
-      },
-      children: <TableColumnSet columnsConfig={columnsConfig} handleOk={handleEditColumnOk} />,
-      bodyStyle: {
-        paddingTop: 10,
-      },
-    });
-  };
-
   return (
     <div className="allProjects">
       <div className="allProjects-title">{renderTitle()}</div>
@@ -277,10 +251,10 @@ export default observer(() => {
             cRef={customQuerybarCRef}
           />
           <div className="tableColumnSet-content">
-            <Button icon="view_column" onClick={openEditColumnModal} />
+            <TableColumnSet cRef={customColumnSetCRef} tableDs={projectListDataSet} columnsConfig={tableColumn} handleOk={handleEditColumnOk} />
           </div>
         </div>
-        <AllProjectTable columnsConfig={columnsConfig} />
+        <AllProjectTable columnsConfig={tableColumn} />
       </div>
     </div>
   );

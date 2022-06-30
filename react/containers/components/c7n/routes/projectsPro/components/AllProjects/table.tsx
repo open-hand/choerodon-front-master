@@ -4,7 +4,7 @@ import {
 import React, { useCallback, useMemo } from 'react';
 import { observer } from 'mobx-react';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
-import { StatusTag } from '@choerodon/components';
+import { StatusTag, UserInfo } from '@choerodon/components';
 import { some, throttle } from 'lodash';
 import isOverflow from 'choerodon-ui/pro/lib/overflow-tip/util';
 import moment from 'moment';
@@ -17,7 +17,7 @@ import {
   MODAL_WIDTH,
 } from '@/constants/MODAL';
 import Action from '@/components/action';
-import { IColumnSetConfig } from './customQuerybar';
+import { IColumnSetConfig } from './tableColumnSet';
 import { renderCategoriesTags } from '@/containers/components/c7n/routes/projectsPro/components/projectTaskContent';
 import './table.less';
 
@@ -25,7 +25,6 @@ import './table.less';
 
 const { MIDDLE } = MODAL_WIDTH;
 
-const modalkey1 = Modal.key();
 const modalkey2 = Modal.key();
 
 const colorMap = new Map([
@@ -35,7 +34,7 @@ const colorMap = new Map([
 ]);
 
 export interface IProps {
-  columnsConfig: IColumnSetConfig[]
+  columnsConfig: IColumnSetConfig[] | []
 }
 
 export const startProjChange = async (pid: string, enable: boolean, organizationId: string, ProjectsProUseStore: any) => {
@@ -344,7 +343,7 @@ const Index: React.FC<IProps> = (props) => {
           id: `c7ncd.project.${p.projectStatus}${p.projectStatus === 'failed'
             ? `.${p.operateType}`
             : ''
-            }`,
+          }`,
         }));
     return getName(pData);
   };
@@ -373,7 +372,14 @@ const Index: React.FC<IProps> = (props) => {
     return renderCategoriesTags(value);
   };
 
+  const renderCreater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('createUserName')} avatar={record?.get('createUserImageUrl')} />;
+
+  const renderUpdater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('updateUserName')} avatar={record?.get('updateUserImageUrl')} />;
+
   const getColumns = useMemo(() => {
+    if (!columnsConfig.length) {
+      return [];
+    }
     const adjustableColumns = [
       {
         name: 'code',
@@ -400,6 +406,7 @@ const Index: React.FC<IProps> = (props) => {
       {
         name: 'categories',
         renderer: renderCategories,
+        width: 180,
       },
       {
         name: 'description',
@@ -408,6 +415,28 @@ const Index: React.FC<IProps> = (props) => {
       {
         name: 'devopsComponentCode',
         tooltip: 'overflow',
+      },
+      {
+        name: 'createUserName',
+        tooltip: 'overflow',
+        renderer: renderCreater,
+        width: 180,
+      },
+      {
+        name: 'creationDate',
+        tooltip: 'overflow',
+        width: 180,
+      },
+      {
+        name: 'updateUserName',
+        tooltip: 'overflow',
+        renderer: renderUpdater,
+        width: 180,
+      },
+      {
+        name: 'lastUpdateDate',
+        tooltip: 'overflow',
+        width: 180,
       },
     ];
     const displayColumn: any = [
@@ -422,7 +451,7 @@ const Index: React.FC<IProps> = (props) => {
         width: 60,
       },
     ];
-    columnsConfig.forEach((item) => {
+    columnsConfig.forEach((item:IColumnSetConfig) => {
       if (item.isSelected) {
         const found = adjustableColumns.find((i) => i.name === item.name);
         displayColumn.push(found);
