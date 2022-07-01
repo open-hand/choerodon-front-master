@@ -67,6 +67,7 @@ const MyHandler = observer(() => {
           <QuestionTree
             treeData={myHandlerStore.getTreeData}
             organizationId={organizationId}
+            dataSet={myHandlerDs}
             isStar
           />
         </ScrollContext>

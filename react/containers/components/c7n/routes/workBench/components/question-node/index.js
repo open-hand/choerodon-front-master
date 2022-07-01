@@ -27,7 +27,7 @@ function getFirst(str) {
 }
 
 const QuestionNode = observer(({
-  history, record, organizationId, switchCode, isStar, onClickStar,
+  history, record, organizationId, switchCode, isStar, onClickStar, dataSet,
 }) => {
   const {
     projectVO, typeCode, issueTypeVO, issueNum, summary, priorityVO: customPriorityVO,
@@ -51,6 +51,9 @@ const QuestionNode = observer(({
           applyType: ALL_TYPE_CODES.includes(record.issueTypeVO.typeCode) ? 'waterfall' : 'agile',
         },
         events: {
+          update: () => {
+            dataSet.query();
+          },
         },
       });
     } else {

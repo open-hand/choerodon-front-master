@@ -86,6 +86,7 @@ const TodoQuestion = observer(() => {
           <QuestionTree
             treeData={questionStore.getTreeData}
             organizationId={organizationId}
+            dataSet={questionDs}
           />
         </ScrollContext>
       </Spin>
