@@ -117,6 +117,7 @@ const TodoQuestion = observer(() => {
             treeData={questionStore.getTreeData}
             organizationId={organizationId}
             isStar
+            dataSet={questionDs}
             onClickStar={handleClickStar}
             switchCode={tabKey}
           />
