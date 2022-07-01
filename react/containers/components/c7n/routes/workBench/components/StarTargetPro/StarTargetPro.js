@@ -170,7 +170,7 @@ const StarTargetPro = observer(() => {
       <div className="title-container">
         <span>{formatCommon({ id: 'starProjects' })}</span>
         <span className="right-text" role="none" onClick={toAllProjects}>
-          所有项目
+          查看所有项目
           <Icon type="arrow_forward" />
         </span>
       </div>

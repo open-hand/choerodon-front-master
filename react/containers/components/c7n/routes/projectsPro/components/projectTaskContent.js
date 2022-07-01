@@ -12,37 +12,30 @@ import "./projectTaskContent.less";
 import moment from "moment";
 import { inject } from "mobx-react";
 
-export const renderCategoriesTags = arr =>
-  arr.map((item, index) => {
-    if (index <= 1) {
-      return (
-        <Tag
-          key={item.name}
-          className="categories-tag"
-          color="rgba(15, 19, 88, 0.06)"
-        >
-          {item.name}
-        </Tag>
-      );
-    } else if (index === 2) {
-      return (
-        <Tooltip title={getText(arr)}>
-          <span style={{ cursor: "pointer" }}>...</span>
-        </Tooltip>
-      );
-    }
+export const renderCategoriesTags = arr => {
+  let title = "";
+  arr.forEach(i => {
+    title += `${i.name}，`;
   });
-
-const getText = arr => {
-  let str = "";
-  arr.map((item, index) => {
-    if (index !== arr.length - 1) {
-      str += item.name + ",";
-    } else {
-      str += item.name;
-    }
-  });
-  return str;
+  return (
+    <Tooltip title={title.substring(0, title.length - 1)}>
+      {arr.map((item, index) => {
+        if (index <= 1) {
+          return (
+            <Tag
+              key={item.name}
+              className="categories-tag"
+              color="rgba(15, 19, 88, 0.06)"
+            >
+              {item.name}
+            </Tag>
+          );
+        } else if (index === 2) {
+          return <span style={{ cursor: "pointer" }}>...</span>;
+        }
+      })}
+    </Tooltip>
+  );
 };
 
 const Index = props => {
@@ -74,10 +67,9 @@ const Index = props => {
             .toData()
             .findIndex(i => i.id === projectData.id);
           if (tableCorrespondIndex !== -1) {
-            projectListDataSet.get(tableCorrespondIndex).set(
-              "starFlag",
-              !projectData.starFlag
-            );
+            projectListDataSet
+              .get(tableCorrespondIndex)
+              .set("starFlag", !projectData.starFlag);
           }
         }
       }

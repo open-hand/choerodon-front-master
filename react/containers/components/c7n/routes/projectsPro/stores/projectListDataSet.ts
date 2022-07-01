@@ -44,7 +44,7 @@ export default (({ organizationId, userId }:{organizationId:string, userId:strin
     },
     {
       name: 'devopsComponentCode',
-      label: 'devops组件编码',
+      label: 'Devops组件编码',
     },
     {
       name: 'createUserName',

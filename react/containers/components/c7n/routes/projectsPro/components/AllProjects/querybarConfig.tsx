@@ -226,7 +226,7 @@ export const defaultColumnSetConfig = [
   },
   {
     name: 'devopsComponentCode',
-    label: 'devops组件编码',
+    label: 'Devops组件编码',
     isSelected: false,
     order: 7,
   },

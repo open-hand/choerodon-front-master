@@ -1,6 +1,7 @@
 import {
   Icon, Modal, Table, TextField, Tooltip,
 } from 'choerodon-ui/pro';
+import { Tag } from 'choerodon-ui';
 import React, { useCallback, useMemo } from 'react';
 import { observer } from 'mobx-react';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
@@ -18,7 +19,6 @@ import {
 } from '@/constants/MODAL';
 import Action from '@/components/action';
 import { IColumnSetConfig } from './tableColumnSet';
-import { renderCategoriesTags } from '@/containers/components/c7n/routes/projectsPro/components/projectTaskContent';
 import './table.less';
 
 // TODO: 把column的代码拆出去
@@ -369,7 +369,24 @@ const Index: React.FC<IProps> = (props) => {
     if (!value) {
       return '';
     }
-    return renderCategoriesTags(value);
+    let title = '';
+    value.forEach((i:any) => {
+      title += `${i.name}，`;
+    });
+    return (
+      <Tooltip title={title.substring(0, title.length - 1)}>
+        { value.map((item:any, index:number) => (
+          <Tag
+            key={item.name}
+            className="categories-tag"
+            color="rgba(15, 19, 88, 0.06)"
+          >
+            {item.name}
+          </Tag>
+
+        ))}
+      </Tooltip>
+    );
   };
 
   const renderCreater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('createUserName')} avatar={record?.get('createUserImageUrl')} />;
@@ -385,11 +402,13 @@ const Index: React.FC<IProps> = (props) => {
         name: 'code',
         tooltip: 'overflow',
         sortable: true,
+        width: 110,
       },
       {
         name: 'enabled',
         renderer: renderEnabled,
         sortable: true,
+        width: 120,
       },
       {
         name: 'workGroup',
@@ -415,6 +434,7 @@ const Index: React.FC<IProps> = (props) => {
       {
         name: 'devopsComponentCode',
         tooltip: 'overflow',
+        width: 140,
       },
       {
         name: 'createUserName',
