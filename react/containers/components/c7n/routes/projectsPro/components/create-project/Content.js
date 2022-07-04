@@ -272,6 +272,8 @@ const CreateProject = observer(() => {
     disabled: iRecord?.get('hasChildren') || iRecord?.get('children'),
   });
 
+  const renderTreeSelect = ({ text }) => <span className="tree-select-text">{text}</span>;
+
   return (
     <>
       {renderAvatar()}
@@ -282,8 +284,8 @@ const CreateProject = observer(() => {
         {
           isModify && <Select name="statusId" colSpan={1} />
         }
-        <TreeSelect name="workGroupId" colSpan={1} searchable onOption={nodeCover} />
-        <TreeSelect name="projectClassficationId" colSpan={1} searchable onOption={nodeCover} />
+        <TreeSelect name="workGroupId" colSpan={1} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+        <TreeSelect name="projectClassficationId" colSpan={1} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
 
         <TextArea newLine colSpan={3} name="description" resize="vertical" />
         {

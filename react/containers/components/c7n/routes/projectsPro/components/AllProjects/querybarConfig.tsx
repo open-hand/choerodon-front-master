@@ -47,6 +47,7 @@ export const searchFieldsConfig = [
       maxTagCount: 3,
       searchable: true,
       onOption: nodeCover,
+      optionRenderer: ({ text }:{text:string}) => <span className="tree-select-text">{text}</span>,
     },
     initial: true,
     optionQueryConfig: {
@@ -71,6 +72,7 @@ export const searchFieldsConfig = [
       maxTagCount: 3,
       searchable: true,
       onOption: nodeCover,
+      optionRenderer: ({ text }:{text:string}) => <span className="tree-select-text">{text}</span>,
     },
     initial: true,
     optionQueryConfig: {
