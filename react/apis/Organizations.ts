@@ -11,6 +11,13 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  checkProjectCollaborationCode(code:string) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication/check_code_exist?code=${code}`,
+      method: 'get',
+    });
+  }
+
   getAllProjectsTableColumns() {
     return this.request({
       url: `/iam/v1/organizations/${this.orgId}/list_layout/projectView`,
