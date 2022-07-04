@@ -5,6 +5,7 @@ import {
 interface PermissionRouteProps extends RouteProps {
   service?: string[] | ((type: 'project' | 'organization' | 'site') => string[]),
   enabledRouteChangedAjaxBlock?: boolean,
+  rest: any,
 }
 
 export {

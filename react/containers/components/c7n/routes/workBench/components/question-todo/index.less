@@ -2,35 +2,50 @@
 
 .@{prefixCls} {
   flex: 1 1 62%;
-  margin-right: .20rem;
+  margin-right: 0.2rem;
   overflow: hidden;
-  &-title{
+  &-title {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-
+  &-scroll {
+    padding: 0 0.24rem;
+    &-load {
+      position: absolute;
+      left: 47%;
+      bottom: 0;
+    }
+    &-bottom {
+      width: 100%;
+      margin: auto;
+      text-align: center;
+      color: var(--text-color3);
+    }
+  }
   &-issueContent {
-
+    height:100%;
     &-more {
       color: var(--primary-color);
-      padding: .2rem 0 0 .2rem;
+      padding: 0.2rem 0 0 0.2rem;
       cursor: pointer;
     }
 
     .c7n-workbench-card-header-title {
       width: 100%;
     }
-
     .c7n-workbench-card-content {
-      overflow: auto;
+      overflow: hidden;
+      padding: 0;
+      .c7n-spin-nested-loading,.c7n-spin-container,.infinite-scroll-component__outerdiv{
+        height:100%;
+      }
     }
   }
-
   &-more {
     color: var(--primary-color);
-    padding: .2rem 0 0 .2rem;
+    padding: 0.2rem 0 0 0.2rem;
     cursor: pointer;
   }
 }

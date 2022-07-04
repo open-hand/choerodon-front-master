@@ -1,0 +1,43 @@
+.c7ncd-allprojectslist-table {
+  margin-top: 16px;
+  &-field-name {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .project-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      color: white;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-size: 100% 100%;
+      margin-right: 4px;
+    }
+    .icon-stars {
+      display: none;
+      margin-left: 8px;
+    }
+    .icon-star_border {
+      display: none;
+      margin-left: 8px;
+    }
+    .project-name {
+      display: inline-block;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .c7n-pro-table-row:hover {
+    .icon-stars {
+      display: inline-block !important;
+    }
+    .icon-star_border {
+      display: inline-block !important;
+    }
+  }
+}

@@ -53,7 +53,7 @@ const MasterIndex = () => {
   const [hasEnterpriseConfirmed, setEnterPriseConfirmed] = useLocalStorageState('hasEnterpriseConfirmed', false);
 
   // c7n登录hook
-  const [authStatus, auth] = useC7NAuth();
+  const [loading, auth] = useC7NAuth();
 
   // // 监听storage，作用在于如果有其他重新登录了，就触发刷新事件
   const [, setReloginValue] = useMultiTabsAutoRefresh();
@@ -110,31 +110,22 @@ const MasterIndex = () => {
 
   useUpdateEffect(() => {
     if (!isInOutward) {
-      if (!authStatus) {
+      if (!loading) {
         if (pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !HAS_AGILE_PRO) {
           checkEnterprise();
         }
         setReloginValue(true);
       }
     }
-  }, [pathname, authStatus, isInOutward]);
+  }, [pathname, loading, isInOutward]);
 
   const getContainer = useMemo(() => {
     const content = isInOutward ? Outward : Master;
     return React.createElement(content);
   }, [isInOutward]);
 
-  if (authStatus && !isInOutward) {
-    return (
-      <Loading
-        style={{
-          position: 'fixed',
-          margin: 'auto',
-          inset: 0,
-        }}
-        type="c7n"
-      />
-    );
+  if (loading && !isInOutward) {
+    return (<div />);
   }
 
   return (

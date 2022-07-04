@@ -8,7 +8,9 @@ import { Tabs } from 'choerodon-ui';
 import classnames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import { observer } from 'mobx-react-lite';
-import { Content, Choerodon } from '@/index';
+
+import { Content } from '@/components/c7n-page';
+import Choerodon from '@/utils/choerodon';
 import TaskRunDetail from './components/taskRunDetail';
 import TaskDetail from './components/taskDetail';
 import CodeShow from './components/codeShow';

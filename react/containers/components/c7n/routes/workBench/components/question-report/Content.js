@@ -2,8 +2,9 @@ import React, { useMemo, useState } from 'react';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import { omit } from 'lodash';
-import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import { Loading } from '@choerodon/components';
+import ScrollContext from 'react-infinite-scroll-component';
+import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
 import { useTodoQuestionStore } from './stores';
 import emptyImg from './image/empty.svg';
@@ -22,7 +23,6 @@ const TodoQuestion = observer(() => {
     questionStore,
   } = useTodoQuestionStore();
 
-  const [btnLoading, changeBtnLoading] = useState(false);
   const searchField = useMemo(() => questionSearchFields.filter((i) => ['contents', 'issueType', 'status', 'priority', 'assignee'].includes(i.code)), []);
 
   function load(search) {
@@ -32,19 +32,13 @@ const TodoQuestion = observer(() => {
     questionDs.setQueryParameter('searchDataId', search._id);
     questionDs.query();
   }
-  function loadMoreData() {
-    changeBtnLoading(true);
+  const loadMoreData = async () => {
     questionStore.setPage(questionStore.getPage + 1);
-    questionDs.query().finally(() => {
-      changeBtnLoading(false);
-    });
-  }
+    questionDs.query();
+  };
 
   function getContent() {
-    if ((!questionDs || questionDs.status === 'loading') && !btnLoading) {
-      return <Loading display />;
-    }
-    if (!questionDs.length) {
+    if (!questionDs.length && questionDs.currentPage === 1) {
       return (
         <EmptyPage
           title="暂无报告我的问题"
@@ -53,28 +47,31 @@ const TodoQuestion = observer(() => {
         />
       );
     }
-    let component = <Spin spinning />;
-    if (!btnLoading) {
-      component = (
-        <div
-          role="none"
-          onClick={() => loadMoreData()}
-          className={`${prefixCls}-more`}
-        >
-          加载更多
-        </div>
-      );
-    }
     return (
-      <>
-        <QuestionTree
-          treeData={questionStore.getTreeData}
-          organizationId={organizationId}
-          isStar
-        />
-        {questionStore.getHasMore ? component
-          : null}
-      </>
+      <Spin spinning={questionDs.status === 'loading'}>
+        <ScrollContext
+          className={`${prefixCls}-scroll`}
+          dataLength={questionDs.length}
+          next={loadMoreData}
+          hasMore={questionStore.getHasMore}
+          height="100%"
+          endMessage={(
+            <span
+              style={{ height: !questionStore.getHasMore ? '1.32rem' : 'auto' }}
+              className={`${prefixCls}-scroll-bottom`}
+            >
+              {questionStore.getHasMore ? '到底了' : ''}
+            </span>
+    )}
+        >
+          <QuestionTree
+            treeData={questionStore.getTreeData}
+            organizationId={organizationId}
+            dataSet={questionDs}
+            isStar
+          />
+        </ScrollContext>
+      </Spin>
     );
   }
 

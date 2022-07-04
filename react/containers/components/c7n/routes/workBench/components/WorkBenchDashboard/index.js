@@ -30,6 +30,7 @@ import ResourceOverview from '../ResourceOverview';
 import ResourceMonitoring from '../ResourceMonitoring';
 import BeginnerGuide from '../BeginnerGuide';
 import Notice from '../Notice';
+
 import { useWorkBenchStore } from '../../stores';
 import './index.less';
 
@@ -41,18 +42,18 @@ const ProjectProgress = () => (hasInject('agilePro:workbenchProjectStatistics') 
 const ComponetsObjs = {
   starTarget: <StarTargetPro />,
   selfInfo: <SelfIntro />,
-  todoQustions: <QuestionTodo />,
-  myReport: <QuestionReport />,
-  myStar: <QuestionFocus />,
-  myDefect: <QuestionBug />,
+  todoQustions: <QuestionTodo />, // 待办事项卡片
+  myReport: <QuestionReport />, // 我报告的
+  myStar: <QuestionFocus />, // 我关注的
+  myDefect: <QuestionBug />, // 缺陷
   todoThings: <TodoThings />,
   serviceList: <ServiceList />,
   quickLink: <QuickLink />,
-  doc: <Doc />,
+  doc: <Doc />, // 文档
   envList: <EnvList />,
   selfCode: <SelfCode />,
   myExecution: <ExecutionQuestions />,
-  myhandler: <MyHandler />,
+  myhandler: <MyHandler />, // 我经手的
   resourceOverview: <ResourceOverview />,
   resourceMonitoring: <ResourceMonitoring />,
   beginnerGuide: <BeginnerGuide />,
@@ -87,6 +88,7 @@ const WorkBenchDashboard = (props) => {
     allowedModules,
     AppState,
     addCardDs,
+    detailPropsCurrent,
   } = useWorkBenchStore();
 
   const [containerWidth, setContainerWidth] = useState(1280);
@@ -255,6 +257,7 @@ const WorkBenchDashboard = (props) => {
       <div className={`${prefixCls}-container`}>
         {renderContent()}
       </div>
+      {mount('agile:DetailContainer', detailPropsCurrent)}
     </div>
   );
 };

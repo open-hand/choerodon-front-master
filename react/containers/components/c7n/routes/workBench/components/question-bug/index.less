@@ -32,10 +32,18 @@
       }
     }
   }
-
+  &-scroll {
+    padding: 0 0.24rem;
+    &-bottom {
+      width: 100%;
+      margin: auto;
+      text-align: center;
+      color: var(--text-color3);
+    }
+  }
   &-issueContent {
-    padding-top: .13rem;
-
+    height:100%;
+    padding: 0.2rem 0 0.1rem 0;
     &-more {
       color: var(--primary-color);
       padding: .2rem 0 0 .2rem;
@@ -49,9 +57,12 @@
     .c7n-workbench-card-header-title {
       width: 100%;
     }
-
     .c7n-workbench-card-content {
-      overflow: auto;
+      overflow: hidden;
+      padding:0;
+      .c7n-spin-nested-loading,.c7n-spin-container,.infinite-scroll-component__outerdiv{
+        height:100%;
+      }
     }
   }
 

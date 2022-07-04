@@ -1,8 +1,10 @@
-import React, { useMemo } from 'react';
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useMemo, useState, useEffect } from 'react';
 import { Tree } from 'choerodon-ui';
 import { map } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
+import { DataSet } from 'choerodon-ui/pro';
 import { getRandomBackground } from '@/utils';
 import QuestionNode from '../question-node';
 
@@ -25,6 +27,7 @@ interface QuestionTreeProps {
   switchCode?: string,
   onClickStar?:(record:any)=>void,
   idField?: string,
+  dataSet:DataSet;
 }
 
 interface ProjectProps {
@@ -34,7 +37,7 @@ interface ProjectProps {
 }
 
 const QuestionTree = ({
-  treeData, organizationId, isStar = false, switchCode = 'all', idField = 'issueId', onClickStar,
+  treeData, organizationId, isStar = false, switchCode = 'all', idField = 'issueId', onClickStar, dataSet,
 }: QuestionTreeProps) => {
   const history = useHistory();
   const prefixCls = useMemo(() => 'c7ncd-workbench-question-tree', []);
@@ -47,6 +50,7 @@ const QuestionTree = ({
       switchCode={switchCode}
       isStar={isStar}
       onClickStar={onClickStar}
+      dataSet={dataSet}
     />
   );
 

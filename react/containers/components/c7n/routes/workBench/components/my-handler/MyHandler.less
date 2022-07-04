@@ -10,9 +10,22 @@
     align-items: center;
     justify-content: space-between;
   }
-
+  &-scroll {
+    padding: 0 0.24rem;
+    &-load {
+      position: absolute;
+      left: 47%;
+      bottom: 0;
+    }
+    &-bottom {
+      width: 100%;
+      margin: auto;
+      text-align: center;
+      color: var(--text-color3);
+    }
+  }
   &-issueContent {
-
+    height:100%;
     &-loading {
       text-align: center;
     }
@@ -22,7 +35,11 @@
     }
 
     .c7n-workbench-card-content {
-      overflow: auto;
+      overflow: hidden;
+      padding:0;
+      .c7n-spin-nested-loading,.c7n-spin-container,.infinite-scroll-component__outerdiv{
+        height:100%;
+      }
     }
   }
 

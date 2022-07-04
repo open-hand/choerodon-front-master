@@ -6,6 +6,7 @@ import { injectIntl } from 'react-intl';
 import useStore from './useStore';
 import ListDataSet from './ListDataSet';
 import CategoryDataSet from './CategoryDataSet';
+import ProjectListDataSet from './projectListDataSet';
 import { useFormatMessage, useFormatCommon } from '@/hooks';
 
 const Store = createContext();
@@ -24,6 +25,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore
         id,
         organizationId,
       },
+      getUserId,
     },
     history,
   } = props;
@@ -31,6 +33,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore
   const ProjectsProUseStore = useStore(AppState, history);
   const categoryDs = useMemo(() => new DataSet(CategoryDataSet(AppState, history)), [type, id, organizationId]);
   const dataSet = useMemo(() => new DataSet(ListDataSet(AppState, history, categoryDs)), [type, id, organizationId]);
+  const projectListDataSet = useMemo(() => new DataSet(ProjectListDataSet({ organizationId, userId: getUserId })), [type, id, organizationId]);
 
   const categoryCodes = useMemo(() => ({
     devops: 'N_DEVOPS',
@@ -56,6 +59,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore
     categoryCodes,
     formatProject,
     formatCommon,
+    projectListDataSet,
   };
 
   return (

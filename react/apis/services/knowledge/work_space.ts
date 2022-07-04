@@ -69,6 +69,14 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
       },
     });
   }
+
+  // 知识库查询上传状态
+  loadUploadStatus(menuType:string, id:string) {
+    return this.request({
+      url: `${menuType === 'organization' ? this.orgPrefix : this.prefix}/upload/status?ref_id=${id}&source_type=${menuType}${menuType === 'organization' ? '' : `&organization_id=${this.orgId}`}`,
+      method: 'get',
+    });
+  }
 }
 
 const workSpaceApi = new WorkSpaceApi();

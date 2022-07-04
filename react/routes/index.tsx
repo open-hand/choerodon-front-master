@@ -23,6 +23,7 @@ const AutoRouter = React.lazy(() => import('./routesCollections'));
 
 const RouteIndex = () => {
   const match = useRouteMatch();
+
   return (
     <div
       className="c7ncd-routesIndex"
