@@ -15,7 +15,8 @@
     "watch": "compiler compile --watch",
     "postinstall": "node ./postInstall.js",
     "clean-install": "rm -rf node_modules && rm -fr package-lock.json && npm i --registry https://nexus.choerodon.com.cn/repository/choerodon-npm && chmod -R u+x node_modules",
-    "published": "npm publish --registry https://nexus.choerodon.com.cn/repository/private-npm/"
+    "published": "npm publish --registry https://nexus.choerodon.com.cn/repository/private-npm/",
+    "commit": "cz"
   },
   "keywords": [
     "choerodon",
@@ -28,6 +29,11 @@
   },
   "author": "qyellow",
   "license": "ISC",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
   "devDependencies": {
     "@choerodon/boot": "1.3.0",
     "@choerodon/compiler": "^0.0.2",
@@ -42,7 +48,9 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-hooks": "^4.1.0"
+    "eslint-plugin-react-hooks": "^4.1.0",
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0"
   },
   "resolutions": {
     "react": "16.14.0",
