@@ -26,7 +26,19 @@ const Index = () => {
             // @ts-ignore
             onSuccess(info: any) {
               const infoCode = info.code; // 通过该免登授权码可以获取用户身份
-              window.location.href = `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${infoCode}&state=STATE&way=web`;
+              // window.location.href = `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${infoCode}&state=STATE&way=web`;
+              dd.biz.util.openLink({
+                url: `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${infoCode}&state=STATE&way=web`,
+                // 要打开链接的地址
+                // @ts-ignore
+                onSuccess(result) {
+                  /**/
+                  console.log(result, 'result');
+                },
+                onFail(err:any) {
+                  console.log(err);
+                },
+              });
             },
           });
         });
