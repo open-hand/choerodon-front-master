@@ -39,6 +39,14 @@ const Index = () => {
                   console.log(err);
                 },
               });
+              dd.biz.navigation.close({
+                onSuccess(result:any) {
+                  console.log(result, 'closeResult');
+                },
+                onFail(err:any) {
+                  console.log(err, 'closeErr');
+                },
+              });
             },
           });
         });
