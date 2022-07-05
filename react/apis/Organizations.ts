@@ -514,7 +514,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojPrograms() {
     return this.request({
       method: 'get',
-      url: `/iam//choerodon/v1/organizations/${this.orgId}/projects/programs`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/projects/programs`,
     });
   }
 
