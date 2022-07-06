@@ -61,8 +61,6 @@ export default class UserPreferences extends Component {
     const { organizationId } = queryString.parse(history.location.search);
     if (key === 'site-setting') {
       this.getGlobalMenuData(organizationId);
-    } else if (key === 'invitation') {
-      this.invitation();
     } else {
       AppState.menuType.type = 'user';
       history.push(`${key}?type=user&organizationId=${organizationId}`);
@@ -86,18 +84,6 @@ export default class UserPreferences extends Component {
     realData.forEach((v) => this.findUserInfoMenuItem(v, res));
     return res.res;
   }
-
-  invitation = () => {
-    const { MIN } = MODAL_WIDTH;
-    Modal.open({
-      title: '注册邀请',
-      maskClosable: true,
-      destroyOnClose: true,
-      drawer: true,
-      style: { width: MIN },
-      children: <InvitationModal />,
-    });
-  };
 
   render() {
     const {
@@ -143,11 +129,6 @@ export default class UserPreferences extends Component {
                 </MenuItem>,
               ] : null
             }
-            <Menu.Divider />
-            <MenuItem className={`${prefixCls}-popover-menu-item`} key="invitation">
-              <Icon type="share" />
-              注册邀请
-            </MenuItem>
           </Menu>
         </div>
         <div className="divider" />
