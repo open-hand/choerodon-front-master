@@ -5,6 +5,7 @@ import {
   Button,
   Tooltip,
   Modal,
+  Icon,
 } from 'choerodon-ui/pro';
 import { forIn, orderBy, remove } from 'lodash';
 import queryString from 'query-string';
@@ -100,6 +101,7 @@ export default observer(() => {
           {formatProject({ id: 'allProject' }, { name: org.name })}
         </p>
         <div className="allProjects-title-right">
+          <Button icon="refresh" onClick={() => { refresh('0'); }} />
           <Permission
             service={['choerodon.code.organization.project.ps.create']}
           >
