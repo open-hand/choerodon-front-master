@@ -463,7 +463,7 @@ const Index: React.FC<IProps> = (props) => {
         name: 'creationDate',
         tooltip: 'overflow',
         align: 'left',
-        minWidth: 150,
+        width: 155,
       },
       {
         name: 'updateUserName',
@@ -474,7 +474,7 @@ const Index: React.FC<IProps> = (props) => {
         name: 'lastUpdateDate',
         tooltip: 'overflow',
         align: 'left',
-        minWidth: 150,
+        width: 155,
       },
     ];
     const displayColumn: any = [

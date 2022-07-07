@@ -339,7 +339,11 @@ const CreateProject = observer(() => {
         {
           (!currentProjectId || (currentProjectId && !hasConfiged)) && selectedCategoryCodes.find((item) => item === 'N_AGILE') && includes(templateTabsKey, 'statusMachineTemplate') && (
             <>
-              <CheckBox dataSet={formDs} name="useTemplate" value className={`${prefixCls}-template-checkbox`}>使用组织预置的状态机及看板模板</CheckBox>
+              <div>
+                <span className={`${prefixCls}-template-checkbox-text`}>使用组织预置的状态机及看板模板</span>
+                <CheckBox dataSet={formDs} name="useTemplate" value className={`${prefixCls}-template-checkbox`} />
+              </div>
+
               <div
                 className={`${prefixCls}-template-btn`}
                 role="none"

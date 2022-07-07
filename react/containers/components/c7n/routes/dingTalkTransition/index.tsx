@@ -21,26 +21,26 @@ const Index = () => {
       } else if (corpId) {
         const res = await axios.get(`/iam/choerodon/v1/organizations/${orgId}/open_app/internal_browser?app_type=ding_talk`);
         if (cookies.get('access_token')) {
-          if (res) {
+          if (res) { // 内部跳转
             history.push(sessionStorage.getItem('historyPath') || '/workbench');
           } else {
-            dd.biz.util.openLink({
-              url: `${window.location.href.split('/#/')[0]}/#${sessionStorage.getItem('historyPath') || '/workbench'}`,
-              // @ts-ignore
-              onSuccess(result) {},
-              onFail(err:any) {
-                console.log(err);
-              },
-            });
-            dd.biz.navigation.close({
-              onSuccess(result:any) {},
-              onFail(err:any) {
-                console.log(err, 'closeErr');
-                localStorage.setItem('closeErr', JSON.stringify(err));
-              },
-            });
-            dd.biz.navigation.quit({
-              message: 'quit message',
+            history.push(sessionStorage.getItem('historyPath') || '/workbench'); // TODO:
+            dd.ready(() => {
+              dd.runtime.permission.requestAuthCode({
+                corpId, // 企业id
+                // @ts-ignore
+                onSuccess(info: any) {
+                  const infoCode = info.code; // 通过该免登授权码可以获取用户身份
+                  dd.biz.util.openLink({
+                    url: `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${infoCode}&state=STATE&way=web`,
+                    // @ts-ignore
+                    onSuccess(result) {},
+                    onFail(err:any) {
+                      console.log(err);
+                    },
+                  });
+                },
+              });
             });
           }
         } else {
@@ -50,28 +50,18 @@ const Index = () => {
               // @ts-ignore
               onSuccess(info: any) {
                 const infoCode = info.code; // 通过该免登授权码可以获取用户身份
+                const callBackUrl = `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${infoCode}&state=STATE&way=web`;
                 if (res) {
-                  window.location.href = `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${infoCode}&state=STATE&way=web`;
+                  window.location.href = callBackUrl;
                 } else {
+                  window.location.href = callBackUrl; //
                   dd.biz.util.openLink({
-                    url: `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${infoCode}&state=STATE&way=web`,
+                    url: callBackUrl,
                     // @ts-ignore
                     onSuccess(result) {},
                     onFail(err:any) {
                       console.log(err);
                     },
-                  });
-
-                  dd.biz.navigation.close({
-                    onSuccess(result:any) {},
-                    onFail(err:any) {
-                      console.log(err, 'closeErr');
-                      localStorage.setItem('closeErr', JSON.stringify(err));
-                    },
-                  });
-
-                  dd.biz.navigation.quit({
-                    message: 'quit message',
                   });
                 }
               },
