@@ -125,8 +125,7 @@ export default observer(() => {
             </span>
           </div>
           <div className="starProjects-title-right">
-            {ProjectsProUseStore.getStarProjectsList.length
-            && <Button icon={!expand ? 'expand_more' : 'expand_less'} size="small" onClick={handleExpandClick} />}
+            {ProjectsProUseStore.getStarProjectsList.length ? <Button icon={!expand ? 'expand_more' : 'expand_less'} size="small" onClick={handleExpandClick} /> : ''}
           </div>
         </p>
       </div>

@@ -70,8 +70,7 @@ export default observer(() => {
         <p className="recentProjects-title">
           <span>最近使用项目</span>
           <span>
-            {ProjectsProUseStore.getRecentProjects.length
-            && <Button icon={!expand ? 'expand_more' : 'expand_less'} size="small" onClick={handleExpandClick} />}
+            {ProjectsProUseStore.getRecentProjects.length ? <Button icon={!expand ? 'expand_more' : 'expand_less'} size="small" onClick={handleExpandClick} /> : ''}
           </span>
         </p>
       </div>
