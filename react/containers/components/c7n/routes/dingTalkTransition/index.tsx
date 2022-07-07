@@ -19,10 +19,28 @@ const Index = () => {
       if (dd.env.platform === 'notInDingTalk' && corpId) {
         window.location.href = `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${code}&state=STATE&way=web`;
       } else if (corpId) {
+        const res = await axios.get(`/iam/choerodon/v1/organizations/${orgId}/open_app/internal_browser?app_type=ding_talk`);
         if (cookies.get('access_token')) {
-          history.push(sessionStorage.getItem('historyPath') || '/workbench');
+          if (res) {
+            history.push(sessionStorage.getItem('historyPath') || '/workbench');
+          } else {
+            dd.biz.util.openLink({
+              url: `${window.location.href.split('/#/')[0]}/#${sessionStorage.getItem('historyPath') || '/workbench'}`,
+              // @ts-ignore
+              onSuccess(result) {},
+              onFail(err:any) {
+                console.log(err);
+              },
+            });
+            dd.biz.navigation.close({
+              onSuccess(result:any) {},
+              onFail(err:any) {
+                console.log(err, 'closeErr');
+                localStorage.setItem('closeErr', JSON.stringify(err));
+              },
+            });
+          }
         } else {
-          const res = await axios.get(`/iam/choerodon/v1/organizations/${orgId}/open_app/internal_browser?app_type=ding_talk`);
           dd.ready(() => {
             dd.runtime.permission.requestAuthCode({
               corpId, // 企业id
@@ -45,6 +63,7 @@ const Index = () => {
                     onSuccess(result:any) {},
                     onFail(err:any) {
                       console.log(err, 'closeErr');
+                      localStorage.setItem('closeErr', JSON.stringify(err));
                     },
                   });
                 }
