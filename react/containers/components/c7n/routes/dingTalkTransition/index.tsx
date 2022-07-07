@@ -39,6 +39,9 @@ const Index = () => {
                 localStorage.setItem('closeErr', JSON.stringify(err));
               },
             });
+            dd.biz.navigation.quit({
+              message: 'quit message',
+            });
           }
         } else {
           dd.ready(() => {
@@ -65,6 +68,10 @@ const Index = () => {
                       console.log(err, 'closeErr');
                       localStorage.setItem('closeErr', JSON.stringify(err));
                     },
+                  });
+
+                  dd.biz.navigation.quit({
+                    message: 'quit message',
                   });
                 }
               },
