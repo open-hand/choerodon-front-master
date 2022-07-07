@@ -42,10 +42,10 @@ const QuestionNode = observer(({
   }, []);
   const priorityVO = customPriorityVO || (backlogPriority && { colour: backlogPriority.color, name: backlogPriority.name });
   const handleClick = () => {
-    if (record.issueId) {
+    if (record.issueId || record.id) {
       openCurrent({
-        path: 'issue',
-        props: {
+        path: backlogNum ? 'demand' : 'issue',
+        props: backlogNum ? { id: record.id } : {
           issueId: record.issueId,
           projectId: record.projectId,
           applyType: ALL_TYPE_CODES.includes(record.issueTypeVO.typeCode) ? 'waterfall' : 'agile',
