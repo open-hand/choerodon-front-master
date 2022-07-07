@@ -5,15 +5,24 @@ import { message } from 'choerodon-ui';
 import { yqcloudApi, siteApi } from '@/apis';
 
 let tryTimes = 0;
+let maxOrgNameTimes = 0;
 
 const Index = (props: any): any => {
   const {
     AppState: {
+      menuType: {
+        name,
+      },
       userInfo: {
         id,
       },
     },
+    AppState,
   } = props;
+
+  useEffect(() => {
+    setFieldsSession();
+  }, [AppState?.currentOrginazationOrProjectId]);
 
   useEffect(() => {
     checkEnabled();
@@ -27,10 +36,30 @@ const Index = (props: any): any => {
     }
   };
 
+  const setFieldsSession = () => {
+    if (AppState?.currentProject?.organizationName) {
+      const fields = {
+        input_mxnzeblk: AppState?.currentProject?.organizationName,
+      };
+      sessionStorage.setItem('YQ_FIELD_DATA', JSON.stringify(fields));
+    } else if (maxOrgNameTimes < 3) {
+      setTimeout(() => {
+        maxOrgNameTimes += 1;
+        setFieldsSession();
+      }, 1000);
+    } else if (maxOrgNameTimes >= 3) {
+      const fields = {
+        input_mxnzeblk: name,
+      };
+      sessionStorage.setItem('YQ_FIELD_DATA', JSON.stringify(fields));
+    }
+  };
+
   const initSecret = async (token: string) => {
     if (id) {
       const secret = await yqcloudApi.getSDKSecret(id);
       if (secret) {
+        setFieldsSession();
         sessionStorage.setItem('YQ_USER_SECRET', secret);
         initSDK(token);
       }

@@ -366,7 +366,7 @@ class Masters extends Component {
           history.push(`/projects${search}`);
         }
       }
-      if (menuType.projectId) {
+      if (menuType?.projectId) {
         const currentProject = AppState.getCurrentProject;
         let res;
         if (
