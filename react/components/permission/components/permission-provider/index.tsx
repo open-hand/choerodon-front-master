@@ -157,7 +157,10 @@ class PermissionProvider extends Component {
           resourceType: type,
         };
       default:
-        return null;
+        return {
+          code,
+          resourceType: type,
+        };
     }
   }
 

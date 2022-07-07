@@ -1,6 +1,7 @@
-import React, { useEffect, FunctionComponent } from 'react';
+import React, { useEffect, FunctionComponent, useMemo } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
+import { toJS } from 'mobx';
 import { message } from 'choerodon-ui';
 import { yqcloudApi, siteApi } from '@/apis';
 
@@ -11,6 +12,7 @@ const Index = (props: any): any => {
   const {
     AppState: {
       menuType: {
+        organizationId,
         name,
       },
       userInfo: {
@@ -18,11 +20,22 @@ const Index = (props: any): any => {
       },
     },
     AppState,
+    HeaderStore: {
+      getOrgData,
+    },
   } = props;
+
+  const currentOrgData = useMemo(() => (getOrgData ? toJS(getOrgData) : []), [getOrgData]);
+
+  const currentSelectedOrg = useMemo(() => currentOrgData.find((v: { id: any; }) => String(v.id) === String(organizationId || id)), [currentOrgData, id, organizationId]);
+
+  const {
+    tenantName,
+  } = currentSelectedOrg || {};
 
   useEffect(() => {
     setFieldsSession();
-  }, [AppState?.currentOrginazationOrProjectId]);
+  }, [tenantName]);
 
   useEffect(() => {
     checkEnabled();
@@ -37,9 +50,9 @@ const Index = (props: any): any => {
   };
 
   const setFieldsSession = () => {
-    if (AppState?.currentProject?.organizationName) {
+    if (tenantName) {
       const fields = {
-        input_mxnzeblk: AppState?.currentProject?.organizationName,
+        input_mxnzeblk: tenantName,
       };
       sessionStorage.setItem('YQ_FIELD_DATA', JSON.stringify(fields));
     } else if (maxOrgNameTimes < 3) {
@@ -47,11 +60,6 @@ const Index = (props: any): any => {
         maxOrgNameTimes += 1;
         setFieldsSession();
       }, 1000);
-    } else if (maxOrgNameTimes >= 3) {
-      const fields = {
-        input_mxnzeblk: name,
-      };
-      sessionStorage.setItem('YQ_FIELD_DATA', JSON.stringify(fields));
     }
   };
 
@@ -86,4 +94,4 @@ const Index = (props: any): any => {
   };
 };
 
-export default inject('AppState')(observer(Index));
+export default inject('AppState', 'HeaderStore')(observer(Index));
