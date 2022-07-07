@@ -41,11 +41,53 @@ const QuestionNode = observer(({
   useEffect(() => {
   }, []);
   const priorityVO = customPriorityVO || (backlogPriority && { colour: backlogPriority.color, name: backlogPriority.name });
+  function handleExecuteClick() {
+    const { id: projectId, name: projectName } = projectVO || {};
+    const queryData = {
+      id: projectId || topProjectId,
+      name: projectName || topProjectName,
+      organizationId,
+      type: 'project',
+    };
+    // if (switchCode === 'myStarBeacon_backlog') {
+    //   const { code } = statusVO;
+    //   let pathSuffix = 'demand';
+    //   if (code === 'backlog_rejected') {
+    //     pathSuffix += '/approve';
+    //     merge(queryData, { paramBacklogStatus: statusCode });
+    //   }
+    //   merge(queryData, { paramBacklogId: id, paramBacklogName: backlogNum });
+    //   window.open(`#/agile/${pathSuffix}?${queryString.stringify(queryData)}`);
+    //   return;
+    // }
+    // if (switchCode === 'myStarBeacon') {
+    //   if (typeCode !== 'feature') {
+    //     merge(queryData, { paramIssueId: issueId, paramName: issueNum });
+
+    //     window.open(`#/agile/work-list/issue?${queryString.stringify(queryData)}`);
+    //   } else {
+    //     merge(queryData, { paramIssueId: issueId, paramName: issueNum, category: 'PROGRAM' });
+    //     window.open(`#/agile/feature?${queryString.stringify(queryData)}`);
+    //   }
+    //   return;
+    // }
+    // if (typeCode === 'test-execution') {
+    const {
+      planId, executeId, cycleId, assignedTo,
+    } = otherData;
+    merge(queryData, { cycle_id: cycleId, plan_id: planId, assignerId: assignedTo });
+    window.open(`#/testManager/TestPlan/execute/${executeId}?${queryString.stringify(queryData)}`);
+
+    // return;
+    // }
+    // window.open(`#/agile/scrumboard?${queryString.stringify(merge(queryData, { paramIssueId: issueId }))}`);
+  }
+
   const handleClick = () => {
-    if (record.issueId) {
+    if (record.issueId || record.id) {
       openCurrent({
-        path: 'issue',
-        props: {
+        path: backlogNum ? 'demand' : 'issue',
+        props: backlogNum ? { id: record.id } : {
           issueId: record.issueId,
           projectId: record.projectId,
           applyType: ALL_TYPE_CODES.includes(record.issueTypeVO.typeCode) ? 'waterfall' : 'agile',
@@ -227,7 +269,7 @@ const QuestionNode = observer(({
     <div
       role="none"
       className={`${prefixCls}`}
-      onClick={handleClick}
+      onClick={typeCode === 'test-execution' ? handleExecuteClick : handleClick}
       key={`${typeCode}-${issueId || id}`}
     >
       <div className={`${prefixCls}-main`}>
