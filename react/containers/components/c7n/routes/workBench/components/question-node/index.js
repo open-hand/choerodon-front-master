@@ -87,7 +87,7 @@ const QuestionNode = observer(({
     if (record.issueId || record.id) {
       openCurrent({
         path: backlogNum ? 'demand' : 'issue',
-        props: backlogNum ? { id: record.id } : {
+        props: backlogNum ? { id: record.id, projectId: record.projectId } : {
           issueId: record.issueId,
           projectId: record.projectId,
           applyType: ALL_TYPE_CODES.includes(record.issueTypeVO.typeCode) ? 'waterfall' : 'agile',
@@ -152,7 +152,7 @@ const QuestionNode = observer(({
       icon = issueTypeVO.icon || icon;
       color = issueTypeVO.colour || color;
     }
-    const reverse = ['agile_epic', 'agile_story', 'agile_fault', 'agile_task', 'agile_subtask', 'test-case', 'test-automation', 'agile-feature'].includes(icon);
+    const reverse = ['agile_epic', 'agile_story', 'agile_fault', 'agile_task', 'agile_subtask', 'test-case', 'test-automation', 'agile-feature', 'agile_milestone', 'agile_activity', 'agile_stage'].includes(icon);
     let otherClassName = '';
     if (!reverse && newTypeCode !== 'test-execution') {
       otherStyle = {
