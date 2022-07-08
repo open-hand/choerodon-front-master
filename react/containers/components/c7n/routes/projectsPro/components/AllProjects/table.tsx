@@ -354,6 +354,14 @@ const Index: React.FC<IProps> = (props) => {
     return getName(pData);
   };
 
+  const getColor = (record: Record) => {
+    const p = record.toData();
+    if (['creating', 'updating'].indexOf(p.projectStatus) !== -1) {
+      return '#4D90FE';
+    }
+    return record?.get('color') || '';
+  };
+
   const getStatusColorCode = (record: Record) => {
     const p = record.toData();
     if (!p.projectStatus || p.projectStatus === 'success' || p.statusName) {
@@ -368,7 +376,7 @@ const Index: React.FC<IProps> = (props) => {
     }}
     >
       <StatusTag
-        color={record?.get('color') ? record?.get('color') : ''}
+        color={getColor(record)}
       // @ts-ignore
         colorCode={getStatusColorCode(record)}
         name={getStatusName(record)}
