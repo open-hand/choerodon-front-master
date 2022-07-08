@@ -364,7 +364,7 @@ const CreateProject = observer(() => {
               <Icon type="expand_less" />
             </p>
             <Alert
-              message="DevOps组件编码将用于GitLab Group中的URL片段，Harbor Project的名称片段，SonarQube projectKey前缀，
+              message="DevOps组件编码将用于GitLab Group中的URL片段、Harbor Project的名称片段、SonarQube projectKey前缀、
           以及Helm仓库编码。"
               type="info"
               showIcon
@@ -373,7 +373,6 @@ const CreateProject = observer(() => {
               <TextField
                 name="devopsComponentCode"
                 colSpan={2}
-                addonAfter={<NewTips helpText="" />}
               />
             </Form>
           </div>
