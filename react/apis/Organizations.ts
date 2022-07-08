@@ -381,7 +381,8 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getProjectsIds(userId:any, filerData?:string) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging?params=${filerData}`,
-      method: 'get',
+      method: 'post',
+      data: {},
     });
   }
 
