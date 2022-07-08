@@ -24,7 +24,7 @@ const Index = () => {
           if (res) { // 内部跳转
             history.push(sessionStorage.getItem('historyPath') || '/workbench');
           } else {
-            history.push(sessionStorage.getItem('historyPath') || '/workbench'); // TODO:
+            history.push('/workbench');
             dd.ready(() => {
               dd.runtime.permission.requestAuthCode({
                 corpId, // 企业id
@@ -50,17 +50,23 @@ const Index = () => {
               // @ts-ignore
               onSuccess(info: any) {
                 const infoCode = info.code; // 通过该免登授权码可以获取用户身份
-                const callBackUrl = `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${infoCode}&state=STATE&way=web`;
-                if (res) {
-                  window.location.href = callBackUrl;
-                } else {
-                  window.location.href = callBackUrl; //
-                  dd.biz.util.openLink({
-                    url: callBackUrl,
+                const innerCallBackUrl = `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${infoCode}&state=STATE&way=web`;
+                window.location.href = innerCallBackUrl;
+                if (!res) { // 跳外部
+                  dd.runtime.permission.requestAuthCode({
+                    corpId, // 企业id
                     // @ts-ignore
-                    onSuccess(result) {},
-                    onFail(err:any) {
-                      console.log(err);
+                    onSuccess(info2: any) {
+                      const infoCode2 = info2.code; // 通过该免登授权码可以获取用户身份
+                      const outerCallBackUrl = `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${infoCode2}&state=STATE&way=web`;
+                      dd.biz.util.openLink({
+                        url: outerCallBackUrl,
+                        // @ts-ignore
+                        onSuccess(result) {},
+                        onFail(err:any) {
+                          console.log(err);
+                        },
+                      });
                     },
                   });
                 }
