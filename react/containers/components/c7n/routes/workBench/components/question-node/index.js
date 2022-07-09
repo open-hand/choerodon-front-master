@@ -87,7 +87,7 @@ const QuestionNode = observer(({
     if (record.issueId || record.id) {
       openCurrent({
         path: backlogNum ? 'demand' : 'issue',
-        props: backlogNum ? { id: record.id, projectId: record.projectId } : {
+        props: backlogNum ? { id: record.id, projectId: record.projectId, organizationId } : {
           issueId: record.issueId,
           projectId: record.projectId,
           applyType: ALL_TYPE_CODES.includes(record.issueTypeVO.typeCode) ? 'waterfall' : 'agile',
