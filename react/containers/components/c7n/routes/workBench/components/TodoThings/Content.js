@@ -103,9 +103,6 @@ const StarTargetPro = observer(() => {
         className="c7n-workbench-check"
       >
         <Alert
-          style={{
-            marginBottom: 16,
-          }}
           type="info"
           showIcon
           message={(
