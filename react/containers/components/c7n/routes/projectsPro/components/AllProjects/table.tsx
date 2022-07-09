@@ -232,43 +232,49 @@ const Index: React.FC<IProps> = (props) => {
     projData.background = getRandomBackground(unix.substring(unix.length - 3));
     return (
       <div className="c7ncd-allprojectslist-table-field-name">
-        <span
-          className="project-icon"
-          style={{
-            backgroundImage: projData.imageUrl
-              ? `url("${projData.imageUrl}")`
-              : projData.background,
-          }}
-        >
-          <span>
-            {!projData.imageUrl && projData.name && projData.name.slice(0, 1).toUpperCase()}
-          </span>
-        </span>
-
-        <span
-          style={{
-            cursor: projData.enabled ? 'pointer' : 'not-allowed',
-          }}
-          role="none"
-          className="project-name"
-          onMouseEnter={(e) => { handleMouseEnter(e, record.get('name')); }}
-          onMouseLeave={handleMouseLeave}
-          onClick={() => { handleProjClick(projData); }}
-        >
-          {record.get('name')}
-        </span>
-
-        {checkOperation(projData) ? (
-          <Icon
-            type={projData.starFlag ? 'stars' : 'star_border'}
+        <div className="c7ncd-allprojectslist-table-field-name-left">
+          <span
+            className="project-icon"
             style={{
-              color: projData.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
-              fontSize: '20px',
-              cursor: 'pointer',
+              backgroundImage: projData.imageUrl
+                ? `url("${projData.imageUrl}")`
+                : projData.background,
             }}
-            onClick={() => { handleStarClick(projData); }}
-          />
-        ) : null}
+          >
+            <span>
+              {!projData.imageUrl && projData.name && projData.name.slice(0, 1).toUpperCase()}
+            </span>
+          </span>
+
+          <span
+            style={{
+              cursor: projData.enabled ? 'pointer' : 'not-allowed',
+              color: 'rgba(83, 101, 234, 1)',
+            }}
+            role="none"
+            className="project-name"
+            onMouseEnter={(e) => { handleMouseEnter(e, record.get('name')); }}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => { handleProjClick(projData); }}
+          >
+            {record.get('name')}
+          </span>
+
+          {checkOperation(projData) ? (
+            <Icon
+              type={projData.starFlag ? 'stars' : 'star_border'}
+              style={{
+                color: projData.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
+                fontSize: '20px',
+                cursor: 'pointer',
+              }}
+              onClick={() => { handleStarClick(projData); }}
+            />
+          ) : null}
+        </div>
+        <div className="c7ncd-allprojectslist-table-field-name-right">
+          {renderAction({ record })}
+        </div>
       </div>
     );
   };
@@ -348,6 +354,14 @@ const Index: React.FC<IProps> = (props) => {
     return getName(pData);
   };
 
+  const getColor = (record: Record) => {
+    const p = record.toData();
+    if (['creating', 'updating'].indexOf(p.projectStatus) !== -1) {
+      return '#4D90FE';
+    }
+    return record?.get('color') || '';
+  };
+
   const getStatusColorCode = (record: Record) => {
     const p = record.toData();
     if (!p.projectStatus || p.projectStatus === 'success' || p.statusName) {
@@ -357,12 +371,17 @@ const Index: React.FC<IProps> = (props) => {
   };
 
   const renderEnabled = ({ value, record }: { value: boolean, record: Record }) => (
-    <StatusTag
-      color={record?.get('color') ? record?.get('color') : ''}
+    <div style={{
+      display: 'flex', justifyContent: 'left', height: '100%', alignItems: 'center',
+    }}
+    >
+      <StatusTag
+        color={getColor(record)}
       // @ts-ignore
-      colorCode={getStatusColorCode(record)}
-      name={getStatusName(record)}
-    />
+        colorCode={getStatusColorCode(record)}
+        name={getStatusName(record)}
+      />
+    </div>
   );
 
   const renderCategories = ({ value }: { value: any }) => {
@@ -402,61 +421,68 @@ const Index: React.FC<IProps> = (props) => {
         name: 'code',
         tooltip: 'overflow',
         sortable: true,
-        width: 110,
+        align: 'left',
+        minWidth: 120,
       },
       {
         name: 'enabled',
         renderer: renderEnabled,
         sortable: true,
-        width: 120,
+        align: 'left',
+        minWidth: 110,
       },
       {
         name: 'workGroup',
         tooltip: 'overflow',
+        align: 'left',
       },
       {
         name: 'projectClassfication',
         tooltip: 'overflow',
+        align: 'left',
       },
       {
         name: 'programName',
         tooltip: 'overflow',
+        align: 'left',
       },
       {
         name: 'categories',
         renderer: renderCategories,
-        width: 180,
+        align: 'left',
       },
       {
         name: 'description',
         tooltip: 'overflow',
+        align: 'left',
       },
       {
         name: 'devopsComponentCode',
         tooltip: 'overflow',
-        width: 140,
+        align: 'left',
+        minWidth: 140,
       },
       {
         name: 'createUserName',
-        tooltip: 'overflow',
         renderer: renderCreater,
-        width: 180,
+        align: 'left',
       },
       {
         name: 'creationDate',
         tooltip: 'overflow',
-        width: 180,
+        align: 'left',
+        width: 155,
       },
       {
         name: 'updateUserName',
-        tooltip: 'overflow',
         renderer: renderUpdater,
-        width: 180,
+        align: 'left',
       },
       {
         name: 'lastUpdateDate',
         tooltip: 'overflow',
-        width: 180,
+        align: 'left',
+        width: 155,
       },
     ];
     const displayColumn: any = [
@@ -464,11 +490,8 @@ const Index: React.FC<IProps> = (props) => {
         name: 'name',
         renderer: renderName,
         sortable: true,
-        width: 230,
-      },
-      {
-        renderer: renderAction,
-        width: 60,
+        width: 265,
+        lock: true,
       },
     ];
     columnsConfig.forEach((item:IColumnSetConfig) => {

@@ -1,8 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
   Droppable, Draggable, DragDropContext,
 } from 'react-beautiful-dnd';
+import { Animate } from 'choerodon-ui';
+import { Icon, Button } from 'choerodon-ui/pro';
 import handleClickProject from '@/utils/gotoProject';
 import { useProjectsProStore } from '../../stores';
 import ProjectTaskContent from '../projectTaskContent';
@@ -22,6 +24,10 @@ export default observer(() => {
   const formatWorkbench = useFormatMessage(workbenchIntlPrefix);
   const formatCommon = useFormatCommon();
 
+  const [starArrsForshow, setStarArrsForshow] = useState([]);
+  const [expand, setExpand] = useState(true);
+  const [haveLoadAll, setHaveLoadAll] = useState(false);
+
   const getItemStyle = (isDragging, draggableStyle, enabled) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: 'none',
@@ -30,9 +36,33 @@ export default observer(() => {
     cursor: enabled ? 'all-scroll' : 'not-allowed',
   });
 
-  const renderProjects = useCallback(() => ProjectsProUseStore.getStarProjectsList.map((p, index) => (
-    <Draggable key={`pre-${p.id}`} draggableId={`pre-${p.id}`} index={index}>
-      {
+  useEffect(() => {
+    if (expand) {
+      haveLoadAll ? setStarArrsForshow(ProjectsProUseStore.getStarProjectsList) : setStarArrsForshow(ProjectsProUseStore.getStarProjectsList.slice(0, 3));
+    } else {
+      setStarArrsForshow([]);
+    }
+  }, [ProjectsProUseStore.getStarProjectsList]);
+
+  const handleExpandClick = () => {
+    if (expand) {
+      setStarArrsForshow([]);
+    } else {
+      haveLoadAll ? setStarArrsForshow(ProjectsProUseStore.getStarProjectsList) : setStarArrsForshow(ProjectsProUseStore.getStarProjectsList.slice(0, 3));
+    }
+    setExpand(!expand);
+  };
+
+  const handleLoadmoreClick = () => {
+    setHaveLoadAll(true);
+    setStarArrsForshow(ProjectsProUseStore.getStarProjectsList);
+  };
+
+  const renderProjects = useCallback(() => (
+    <Animate component="div" transitionName={expand ? 'slide-down' : 'slide-up'}>
+      {starArrsForshow.map((p, index) => (
+        <Draggable key={`pre-${p.id}`} draggableId={`pre-${p.id}`} index={index}>
+          {
         (dragProvided, snapshotinner) => (
           <div
             onClick={() => {
@@ -40,6 +70,7 @@ export default observer(() => {
                 handleClickProject(p, history);
               }
             }}
+            key={`star${p.id}`}
             className="starProjects-items"
             role="none"
             ref={dragProvided.innerRef}
@@ -56,9 +87,10 @@ export default observer(() => {
           </div>
         )
       }
-    </Draggable>
-
-  )), [ProjectsProUseStore.getStarProjectsList, history]);
+        </Draggable>
+      ))}
+    </Animate>
+  ), [starArrsForshow, history]);
 
   function swap(arr, from, to) {
     arr.splice(to, 0, arr.splice(from, 1)[0]);
@@ -84,12 +116,17 @@ export default observer(() => {
     <div className="starProjects">
       <div className="starProjects-title-wrap">
         <p className="starProjects-title">
-          {formatCommon({ id: 'starProjects' })}
-          <span>
-            {
+          <div className="starProjects-title-left">
+            <span>{formatCommon({ id: 'starProjects' })}</span>
+            <span className="number">
+              {
               ProjectsProUseStore.getStarProjectsList.length || 0
             }
-          </span>
+            </span>
+          </div>
+          <div className="starProjects-title-right">
+            {ProjectsProUseStore.getStarProjectsList.length ? <Button icon={!expand ? 'expand_more' : 'expand_less'} size="small" onClick={handleExpandClick} /> : ''}
+          </div>
         </p>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -108,6 +145,15 @@ export default observer(() => {
           }
         </Droppable>
       </DragDropContext>
+      {
+        (ProjectsProUseStore.getStarProjectsList.length > 3 && !haveLoadAll && expand)
+        && (
+        <div className="starProjects-loadmore" role="none" onClick={handleLoadmoreClick}>
+          查看所有星标项目
+          <Icon type="expand_more" />
+        </div>
+        )
+      }
     </div>
   );
 });

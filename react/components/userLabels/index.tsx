@@ -1,26 +1,61 @@
-import React, { } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import { Tag } from 'choerodon-ui';
 // @ts-ignore
 import isOverflow from 'choerodon-ui/pro/lib/overflow-tip/util';
+import ResizeObserver from 'resize-observer-polyfill';
 import {
   Tooltip,
 } from 'choerodon-ui/pro';
 import './index.less';
+import { get, throttle } from 'lodash';
+
+let observeResize: any;
 
 export interface Iprops {
-    list: Array<string>
-    className: string
-    labelContainerWidth :number
-    agile: boolean
+  list: Array<string>
+  className: string
+  labelContainerWidth: number
+  agile: boolean
+  sizeObserver: boolean | undefined
 }
 
 // @ts-ignore
-const Index:React.FC<Iprops> = (props) => {
+const Index: React.FC<Iprops> = (props) => {
   const {
-    list, labelContainerWidth, className, agile,
+    list, labelContainerWidth, className, agile, sizeObserver,
   } = props;
 
-  const handleMouseEnter = (e:any, title:string) => {
+  const ref = useRef();
+
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    if (sizeObserver) {
+      const domTem = ref?.current;
+      if (domTem) {
+        observeResize = new ResizeObserver((entries: any) => {
+          const dom = get(entries[0], 'target');
+          const width = get(dom, 'offsetWidth');
+          throttlFn(width);
+        });
+        observeResize.observe(domTem);
+      }
+    } else {
+      setContainerWidth(labelContainerWidth);
+    }
+  }, [list]);
+
+  const throttlFn = useCallback(throttle((width) => { setContainerWidth(width); }, 300), []);
+
+  useEffect(() => () => {
+    if (observeResize) {
+      observeResize.disconnect();
+    }
+  }, []);
+
+  const handleMouseEnter = (e: any, title: string) => {
     const { currentTarget } = e;
     if (isOverflow(currentTarget)) {
       // @ts-ignore
@@ -36,14 +71,16 @@ const Index:React.FC<Iprops> = (props) => {
     Tooltip.hide();
   };
 
-  const numTag = (maxTagNum:number) => {
+  const numTag = (maxTagNum: number) => {
     let str = '';
-    list.forEach((i:string) => {
+    list.forEach((i: string) => {
       str = `${str + i} ,`;
     });
     str = str.substring(0, str.length - 1);
+    const copyList = JSON.parse(JSON.stringify(list));
+    const toolList = copyList.reverse().slice(0, list.length - maxTagNum + 1).reverse();
     return (
-      <Tooltip title={str}>
+      <Tooltip title={toolList.join(',')}>
         <Tag
           style={{
             color: '#4D90FE',
@@ -61,7 +98,9 @@ const Index:React.FC<Iprops> = (props) => {
   };
 
   const getContent = () => {
-    const containerWidth = labelContainerWidth || 100;
+    if (containerWidth < 40) {
+      return '';
+    }
     let totalWidth = 0;
     let maxTagNum = 0;
 
@@ -96,16 +135,16 @@ const Index:React.FC<Iprops> = (props) => {
       maxTagNum = list.length;
     }
     return (
-      <div className="c7ncd-userLabels-content" style={{ width: labelContainerWidth || 100 }}>
+      <div className="c7ncd-userLabels-content">
         {list.map((item, index) => getTag(item, index, maxTagNum, overflow))}
       </div>
     );
   };
 
-  const getTag = (item:string, index:number, maxTagNum:number, overflow:boolean) => {
+  const getTag = (item: string, index: number, maxTagNum: number, overflow: boolean) => {
     const ele = (
       <Tag
-    // @ts-ignore
+        // @ts-ignore
         onMouseEnter={(e) => { handleMouseEnter(e, item); }}
         onMouseLeave={handleMouseLeave}
         style={{
@@ -133,7 +172,8 @@ const Index:React.FC<Iprops> = (props) => {
   return (
     list.length
       ? (
-        <div className={`c7ncd-userLabels ${className || ''} ${agile ? 'c7ncd-userLabels-agile' : ''}`}>
+        // @ts-ignore
+        <div ref={ref} className={`c7ncd-userLabels ${className || ''} ${agile ? 'c7ncd-userLabels-agile' : ''}`}>
           {
             getContent()
           }

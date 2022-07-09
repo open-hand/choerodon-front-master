@@ -11,6 +11,13 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/iam/choerodon/v1/organizations';
   }
 
+  checkProjectCollaborationCode(code:string) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/classfication/check_code_exist?code=${code}`,
+      method: 'get',
+    });
+  }
+
   getAllProjectsTableColumns() {
     return this.request({
       url: `/iam/v1/organizations/${this.orgId}/list_layout/projectView`,
@@ -374,7 +381,8 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getProjectsIds(userId:any, filerData?:string) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging?params=${filerData}`,
-      method: 'get',
+      method: 'post',
+      data: {},
     });
   }
 
@@ -507,7 +515,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojPrograms() {
     return this.request({
       method: 'get',
-      url: `/iam//choerodon/v1/organizations/${this.orgId}/projects/programs`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/projects/programs`,
     });
   }
 
