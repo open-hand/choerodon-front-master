@@ -52,7 +52,7 @@ const Index = (props: any): any => {
   const setFieldsSession = () => {
     if (tenantName) {
       const fields = {
-        input_mxnzeblk: tenantName,
+        input_oxqhunva: tenantName,
       };
       sessionStorage.setItem('YQ_FIELD_DATA', JSON.stringify(fields));
     } else if (maxOrgNameTimes < 3) {
