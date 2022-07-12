@@ -1,3 +1,19 @@
+## [2.1.1](https://github.com/choerodon/choerodon-front-master/compare/2.1.0...2.1.1) (2022-07-12)
+
+
+### Bug Fixes
+
+* **创建项目:** 修改创建项目编码不能出现emoji的问题 ([ea29e57](https://github.com/choerodon/choerodon-front-master/commit/ea29e57966c154fff0a9830d2b493887b9b7495d)), closes [#3045](https://github.com/choerodon/choerodon-front-master/issues/3045)
+* **提单:** 修改提单fieldData ([3bd6a3c](https://github.com/choerodon/choerodon-front-master/commit/3bd6a3c8c6579146eaebe95bdff5bec2c2476b20))
+* **项目列表:** 样式修改 ([dc0caef](https://github.com/choerodon/choerodon-front-master/commit/dc0caef65e3db3e16837b9fb275d691dcb9815eb))
+
+
+### Features
+
+* **帮助文档链接:** 修改帮助文档链接 ([7810a1f](https://github.com/choerodon/choerodon-front-master/commit/7810a1f75151983df6a42e6cde988883313d73bf))
+
+
+
 # [2.1.0](https://github.com/choerodon/choerodon-front-master/compare/2.0.8...2.1.0) (2022-07-09)
 
 
