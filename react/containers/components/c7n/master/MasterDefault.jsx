@@ -170,7 +170,7 @@ class Masters extends Component {
 
   setDocUrl = async (params) => {
     if (JSON.stringify(params) !== '{}') {
-      this.props.AppState.setDocUrl('https://open.hand-china.com/document-center/doc/product/10177/10608?doc_id=168204&doc_code=118818');
+      this.props.AppState.setDocUrl('https://open.hand-china.com/document-center/doc/product/10177/10737?doc_id=250000&doc_code=118818');
     }
   };
 

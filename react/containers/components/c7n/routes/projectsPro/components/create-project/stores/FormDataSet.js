@@ -52,8 +52,12 @@ export default ({
     }
     // eslint-disable-next-line no-useless-escape
     const reg = /[\u4E00-\u9FA5\uF900-\uFA2D]{1,}/;
+    const reg1 = /(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/g;
     if (reg.test(value)) {
       return '编码不能包含汉字';
+    }
+    if (reg1.test(value)) {
+      return '编码不能包含Emoji';
     }
     try {
       const url = name === 'code'
