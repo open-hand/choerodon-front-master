@@ -1,3 +1,17 @@
+## [2.1.2](https://github.com/choerodon/choerodon-front-master/compare/2.1.1...2.1.2) (2022-07-13)
+
+
+### Bug Fixes
+
+* **userlabels:** agile userlabels 样式 ([494c45b](https://github.com/choerodon/choerodon-front-master/commit/494c45b2ab090e150328eabfc435708bffb6ebab))
+
+
+### Features
+
+* **全局:** 增加select下拉框加载更多全局配置 ([14bf1c3](https://github.com/choerodon/choerodon-front-master/commit/14bf1c3ffdf702fd56fa98e646ec3fbd22d42202)), closes [#2954](https://github.com/choerodon/choerodon-front-master/issues/2954)
+
+
+
 ## [2.1.1](https://github.com/choerodon/choerodon-front-master/compare/2.1.0...2.1.1) (2022-07-12)
 
 
