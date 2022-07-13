@@ -66,6 +66,7 @@ const useUiConfigs = () => {
     tableBorder: false,
     showLengthInfo: false,
     lookupAxiosMethod: 'get',
+    selectPagingOptionContent: '加载更多',
     lookupUrl: (code) => `/hpfm/v1/lovs/value?lovCode=${code}`,
     tableHighLightRow: false,
     tableColumnResizable: false,
