@@ -40,8 +40,9 @@ const Doc = () => {
   const goKnowledgeLink = ({
     baseId, orgFlag, projectId, organizationId, spaceId, baseName, name,
   }) => {
+    console.log('goKnowledgeLink', to, injectGet('agile:to'));
     // 敏捷跳转方法 知识库有部分内容依赖敏捷内容，故若无敏捷内的方法，则说明敏捷基础服务未安装 ，则不进行跳转
-    to && to(`#/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}`, {
+    injectGet('agile:to') && injectGet('agile:to')(`/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}`, {
       type: orgFlag ? 'org' : 'project',
       id: orgFlag ? organizationId : projectId,
       params: {
