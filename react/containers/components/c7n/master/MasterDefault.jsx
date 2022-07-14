@@ -18,8 +18,6 @@ import axios from '@/components/axios';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from '@/routes';
-import YqFeedback from '@/components/yqFeedback';
-
 import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
@@ -437,7 +435,8 @@ class Masters extends Component {
             <div className="content-wrapper">
               <MenusPro />
               <Permission service={['choerodon.code.site.setting.general-setting.ps.feedback']}>
-                <YqFeedback />
+                {mount('base-pro:yqFeedback', {})}
+                {/* <YqFeedback /> */}
               </Permission>
               {/* {mount('base-pro:Guide', {
                 ...this.props,
