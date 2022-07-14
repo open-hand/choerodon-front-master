@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { Tooltip, Spin } from 'choerodon-ui/pro';
 import ScrollContext from 'react-infinite-scroll-component';
 import moment from 'moment';
+import { get as injectGet } from '@choerodon/inject';
 import { TimePopover } from '@choerodon/components';
 import { getRandomBackground } from '@/utils';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
@@ -12,6 +13,8 @@ import EmptyImg from './image/empty.svg';
 import './index.less';
 import { useDoc } from './stores';
 import { useWorkBenchStore } from '../../stores';
+
+const to = injectGet('agile:to');
 
 const Doc = () => {
   const {
@@ -37,8 +40,15 @@ const Doc = () => {
   const goKnowledgeLink = ({
     baseId, orgFlag, projectId, organizationId, spaceId, baseName, name,
   }) => {
-    const url = `#/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}?baseName=${baseName}&id=${orgFlag ? organizationId : projectId}&organizationId=${organizationId}&spaceId=${spaceId}&name=${name}&type=${orgFlag ? 'organization' : 'project'}`;
-    window.open(url);
+    // 敏捷跳转方法 知识库有部分内容依赖敏捷内容，故若无敏捷内的方法，则说明敏捷基础服务未安装 ，则不进行跳转
+    to && to(`#/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}`, {
+      type: orgFlag ? 'org' : 'project',
+      id: orgFlag ? organizationId : projectId,
+      params: {
+        baseName,
+        spaceId,
+      },
+    }, { blank: true });
   };
 
   const renderUserList = (userList, visibleText = false) => map(userList, ({
@@ -121,15 +131,15 @@ const Doc = () => {
                 {renderUserList(updatedUserList.slice(0, 3))}
 
                 {updatedUserList.length > 3 && (
-                <Tooltip
-                  placement="top"
-                  title={renderUserList(updatedUserList.slice(3), true)}
-                >
-                  <span className={`${clsPrefix}-item-userlist-user-item ${clsPrefix}-item-userlist-user-item-more`}>
-                    +
-                    {updatedUserList.length - 3}
-                  </span>
-                </Tooltip>
+                  <Tooltip
+                    placement="top"
+                    title={renderUserList(updatedUserList.slice(3), true)}
+                  >
+                    <span className={`${clsPrefix}-item-userlist-user-item ${clsPrefix}-item-userlist-user-item-more`}>
+                      +
+                      {updatedUserList.length - 3}
+                    </span>
+                  </Tooltip>
                 )}
               </div>
               <div className={`${clsPrefix}-item-info-time`}>
