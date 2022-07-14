@@ -380,9 +380,11 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   getProjectsIds(userId:any, filerData?:string) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging?params=${filerData}`,
+      url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging`,
       method: 'post',
-      data: {},
+      data: {
+        name: filerData,
+      },
     });
   }
 
