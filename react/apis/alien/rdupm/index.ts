@@ -5,6 +5,13 @@ class RdupmAlienApi extends Api<RdupmAlienApi> {
     return '/rdupm';
   }
 
+  getProjectProductLibList(type?: string) {
+    return this.request({
+      url: `${this.prefix}/v2/product-library/list/215874867621597184?repo_type=${type}`,
+      method: 'get',
+    });
+  }
+
   getnexusMavenRepoIds(type?: string) {
     return this.request({
       url: `${this.prefix}/v1/nexus-repositorys/${this.orgId}/project/${this.projectId}/ci/repo/list?repoType=MAVEN${type ? `&type=${type}` : ''}`,
