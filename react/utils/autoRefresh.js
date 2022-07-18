@@ -8,7 +8,7 @@ function autoRefresh() {
 function register() {
   window.addEventListener('error', (e) => {
     // TODO 待删
-    message.error(e);
+    // message.error(e);
     if ((findJs(e) || findCss(e)) && timeLimit()) {
       // TODO 待删
       message.error('走入刷新逻辑');

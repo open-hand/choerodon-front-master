@@ -1,3 +1,20 @@
+## [2.1.3](https://github.com/choerodon/choerodon-front-master/compare/2.1.2...2.1.3) (2022-07-18)
+
+
+### Bug Fixes
+
+* **workbenchdoc:** 修复工作台知识卡片链接跳转生成的链接与敏捷内部跳转知识库不一致 ([fad3b42](https://github.com/choerodon/choerodon-front-master/commit/fad3b4207dfb6aeb3d11e70180619ebef6eb2e7e))
+* **全局:** 修改message传入Error对象的问题 ([0867ad8](https://github.com/choerodon/choerodon-front-master/commit/0867ad8acb6fefc86fbd6e14949bdab7ec35b426))
+* **全局:** 增加error拦截器 ([0b44dd4](https://github.com/choerodon/choerodon-front-master/commit/0b44dd492c15b152e628eb9856b5fb180cbc36cd))
+* **项目搜索:** 后端改了接口 ([06ad2a9](https://github.com/choerodon/choerodon-front-master/commit/06ad2a973f57ffae2a92920efcc51f00381bfdc8))
+
+
+### Features
+
+* **提单:** 将提单移动到base-pro ([acc2abf](https://github.com/choerodon/choerodon-front-master/commit/acc2abf7a8890fbef9ae2f64155e81b9070820dd))
+
+
+
 ## [2.1.2](https://github.com/choerodon/choerodon-front-master/compare/2.1.1...2.1.2) (2022-07-13)
 
 
