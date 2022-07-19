@@ -59,7 +59,7 @@
     "@types/react-dom": "16.9.14"
   },
   "dependencies": {
-    "@choerodon/components": "2.1.0",
+    "@choerodon/components": "2.1.1",
     "@choerodon/inject": "^0.1.0",
     "@hzero-front-ui/c7n-ui": "4.0.5",
     "@hzero-front-ui/core": "4.0.4",
