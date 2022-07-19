@@ -14,7 +14,6 @@ class MultiLanguageApi extends Api<MultiLanguageApi> {
     return this.request({
       url: `${this.prefix}?_token=${token}&fieldName=${fieldName}`,
       method: 'get',
-      params: { token, fieldName },
       transformResponse: (data) => {
         // eslint-disable-next-line no-useless-catch
         try {
