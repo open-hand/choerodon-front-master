@@ -536,6 +536,30 @@ class OrganizationsApi extends Api<OrganizationsApi> {
       url: `iam/choerodon/v1/organizations/${this.orgId}/users/search`,
     });
   }
+
+  checkCode(value:String) {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}/check`,
+      data: JSON.stringify({ tenantNum: value }),
+    });
+  }
+
+  createOrganization(data:any) {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}`,
+      data,
+    });
+  }
+
+  updateOrg({ tenantId, data }:any) { // 修改组织
+    return this.request({
+      method: 'put',
+      url: `${this.prefix}/${tenantId}`,
+      data,
+    });
+  }
 }
 
 const organizationsApi = new OrganizationsApi();

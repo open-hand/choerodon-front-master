@@ -12,8 +12,12 @@ class MultiLanguageApi extends Api<MultiLanguageApi> {
 
   getMultiLanguage({ token, fieldName }:Record<string, string>) {
     return this.request({
-      url: `${this.prefix}?_token=${token}&fieldName=${fieldName}`,
-      method: 'get',
+      url: `${this.prefix}`,
+      method: 'post',
+      data: {
+        _token: token,
+        fieldName,
+      },
       transformResponse: (data) => {
         // eslint-disable-next-line no-useless-catch
         try {
