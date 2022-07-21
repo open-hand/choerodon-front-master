@@ -164,7 +164,7 @@ const Index: React.FC<IProps> = (props) => {
     const cloneSearchFields = cloneDeep(searchFields);
     cloneSearchFields.splice(index, 1);
     setSearchFields(cloneSearchFields);
-    childRef.current.checkChange(false, index - initialFieldNum);
+    childRef.current.checkChange(false, name);
   };
 
   const handleRemoteSearch = async (e: any, item: ISearchFields) => {

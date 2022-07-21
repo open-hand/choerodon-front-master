@@ -10,6 +10,7 @@ import {
 import { forIn, orderBy, remove } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
+import moment from 'moment';
 import { Permission } from '@/components/permission';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
@@ -203,12 +204,12 @@ export default observer(() => {
   };
 
   const customQuerybarChange = async (name, value) => {
-    if (name === 'updateTime' && value) {
-      projectListDataSet.setQueryParameter('lastUpdateDateStart', value[0]);
-      projectListDataSet.setQueryParameter('lastUpdateDateEnd', value[1]);
-    } else if (name === 'createTime' && value) {
-      projectListDataSet.setQueryParameter('creationDateStart', value[0]);
-      projectListDataSet.setQueryParameter('creationDateEnd', value[1]);
+    if (name === 'updateTime') {
+      projectListDataSet.setQueryParameter('lastUpdateDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
+      projectListDataSet.setQueryParameter('lastUpdateDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
+    } else if (name === 'createTime') {
+      projectListDataSet.setQueryParameter('creationDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
+      projectListDataSet.setQueryParameter('creationDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
     } else if (name === 'reset' && value === 'reset') {
       // eslint-disable-next-line no-shadow
       forIn(projectListDataSet.queryParameter, (value, key) => {

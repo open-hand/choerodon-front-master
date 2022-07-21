@@ -37,8 +37,9 @@ const Index: React.FC<IProps> = (props) => {
   const [checkBoxFields, setCheckBoxFields] = useState<ICheckBoxFields[]>([]);
 
   useImperativeHandle(cRef, () => ({
-    checkChange: (value: boolean, index: number) => {
+    checkChange: (value: boolean, name: string) => {
       const cloneArr = cloneDeep(checkBoxFields);
+      const index = cloneArr.findIndex((i) => i.name === name);
       cloneArr[index].checked = value;
       initCheckboxAll(cloneArr);
       setCheckBoxFields(cloneArr);

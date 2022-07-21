@@ -356,15 +356,15 @@ const Index: React.FC<IProps> = (props) => {
 
   const getColor = (record: Record) => {
     const p = record.toData();
-    if (['creating', 'updating'].indexOf(p.projectStatus) !== -1) {
-      return '#4D90FE';
+    if (['creating', 'updating', 'failed'].includes(p.projectStatus)) {
+      return '';
     }
     return record?.get('color') || '';
   };
 
   const getStatusColorCode = (record: Record) => {
     const p = record.toData();
-    if (!p.projectStatus || p.projectStatus === 'success' || p.statusName) {
+    if (!p.projectStatus || p.projectStatus === 'success') {
       return p.enabled ? 'success' : 'failed';
     }
     return colorMap.get(p.projectStatus);

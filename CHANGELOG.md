@@ -1,3 +1,12 @@
+## [2.1.4](https://github.com/choerodon/choerodon-front-master/compare/2.1.3...2.1.4) (2022-07-21)
+
+
+### Bug Fixes
+
+* **项目列表:** 项目列表时间筛选失效，项目创建失败颜色 ([1b484b0](https://github.com/choerodon/choerodon-front-master/commit/1b484b0a9c3e35b8ac3a0fca87bb76ca4144d469))
+
+
+
 ## [2.1.3](https://github.com/choerodon/choerodon-front-master/compare/2.1.2...2.1.3) (2022-07-18)
 
 
