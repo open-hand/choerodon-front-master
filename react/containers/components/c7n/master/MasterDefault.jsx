@@ -12,7 +12,7 @@ import {
   Modal,
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
-import { mount, get as cherodonGet } from '@choerodon/inject';
+import { mount, get as cherodonGet, has } from '@choerodon/inject';
 import getSearchString from '@/containers/components/c7n/util/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '@/components/axios';
@@ -228,6 +228,10 @@ class Masters extends Component {
 
     // 获取系统公告
     this.getPlatformAnnouncement();
+    // 获取适用天数in the base-pro, only applied in the hand version
+    if (has('base-pro:getSaaSUserRestDays')) {
+      cherodonGet('base-pro:getSaaSUserRestDays')();
+    }
   }
 
   isInOutward = (pathname) => {
