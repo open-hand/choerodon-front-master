@@ -240,13 +240,18 @@ class Masters extends Component {
   }
 
   componentDidMount() {
+    const {
+      location, MenuStore, HeaderStore, history, AppState,
+    } = this.props;
+    const { pathname, search } = location;
+    const menuType = parseQueryToMenuType(search);
     this.initFavicon();
 
     // 获取系统公告
     this.getPlatformAnnouncement();
     // 获取适用天数in the base-pro, only applied in the hand version
     if (has('base-pro:getSaaSUserRestDays')) {
-      cherodonGet('base-pro:getSaaSUserRestDays')();
+      cherodonGet('base-pro:getSaaSUserRestDays')(menuType?.orgId);
     }
   }
 
