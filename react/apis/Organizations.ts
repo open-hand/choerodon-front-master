@@ -501,7 +501,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojWorkGroup() {
     return this.request({
       method: 'get',
-      url: `/agile/v1/organizations/${this.orgId}/work_bench/work_group/query_tree`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/work_bench/work_group/query_tree`,
     });
   }
 

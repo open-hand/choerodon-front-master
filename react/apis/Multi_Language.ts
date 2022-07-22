@@ -7,16 +7,15 @@ class MultiLanguageApi extends Api<MultiLanguageApi> {
    * @return {*}
    */
   get prefix() {
-    return '/hpfm/v1/multi-language';
+    return '/hpfm/choerodon/v1/multi-language';
   }
 
-  getMultiLanguage({ token, fieldName }:Record<string, string>) {
+  getMultiLanguage({ token, paramFieldName, fieldName }:Record<string, string>) {
     return this.request({
-      url: `${this.prefix}`,
+      url: `${this.prefix}/tl?fieldName=${paramFieldName}`,
       method: 'post',
       data: {
         _token: token,
-        fieldName,
       },
       transformResponse: (data) => {
         // eslint-disable-next-line no-useless-catch
