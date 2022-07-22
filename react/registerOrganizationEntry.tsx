@@ -8,14 +8,14 @@ import {
 } from 'react-router-dom';
 // @ts-ignore
 import registerOrg from '@choerodon/base-pro/lib/routes/outward/register-organization';
-// import stores from '@/containers/stores';
+import stores from '@/containers/stores';
 import { MasterLocaleContainer } from '@/configs/masterLocaleConfigs';
 import {
   UIConfigInitContainer,
 } from '@/configs';
 
 const App = () => (
-  <Provider>
+  <Provider {...stores}>
     <MasterLocaleContainer>
       <UIConfigInitContainer>
         <Router>
