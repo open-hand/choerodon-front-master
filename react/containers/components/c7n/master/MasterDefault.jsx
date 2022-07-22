@@ -10,7 +10,7 @@ import {
   Spin,
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
-import { mount, get as cherodonGet } from '@choerodon/inject';
+import { mount, get as cherodonGet, has } from '@choerodon/inject';
 import { Permission } from '@/components/permission';
 import getSearchString from '@/utils/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
