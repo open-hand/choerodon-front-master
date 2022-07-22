@@ -154,7 +154,9 @@ class Masters extends Component {
     const oldParams = new URLSearchParams(oldProps.location.search);
     if (newParams.get('organizationId') !== oldParams.get('organizationId')) {
       headerStore.deleteAnnouncement('saas_restdays_announcement');
-      this.getSaaSUserRestDays(newParams.get('organizationId'));
+      if (has('base-pro:getSaaSUserRestDays')) {
+        cherodonGet('base-pro:getSaaSUserRestDays')(newParams.get('organizationId'));
+      }
     }
   }
 
