@@ -19,6 +19,7 @@ const SERVICE_CODE = {
   knowledge: 'knowledgebase-service',
   market: 'market-service',
 };
+const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 
 const Setting = ({
   AppState, HeaderStore, MenuStore, history, ...props
@@ -42,11 +43,16 @@ const Setting = ({
   const LI_MAPPING = useMemo(() => {
     const mapping = [
       { title: '工作台', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/workbench' },
-      { title: '工作日历', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/agile/work-calendar' },
+      // { title: '工作日历', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/agile/work-calendar' },
       // {
       //   title: '项目', icon: theme === 'theme4' ? 'project_line' : 'project_filled', activePath: '/projects', style: { marginLeft: 3 },
       // },
     ];
+    if (HAS_AGILE_PRO) {
+      mapping.push({
+        title: '工作日历', icon: theme === 'theme4' ? 'home-o' : 'home', activePath: '/agile/work-calendar',
+      });
+    }
     forEach(currentServices, ({ serviceCode }) => {
       switch (serviceCode) {
         case SERVICE_CODE.knowledge:
