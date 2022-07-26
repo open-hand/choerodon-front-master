@@ -9,3 +9,4 @@ export { default as useFormatMessage } from './useFormatMessage';
 export { default as useCurrentLanguage } from './useCurrentLanguage';
 export { default as useFormatCommon } from './useFormatCommon';
 export { default as useGetWatermarkInfo } from './useGetWatermarkInfo';
+export { default as useInject } from './useInject';
