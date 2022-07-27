@@ -99,6 +99,7 @@ export const questionSearchFields = [
       readAxiosConfig: ({ organizationId }) => ({
         url: `/agile/v1/organizations/${organizationId}/work_bench/priority`,
         method: 'post',
+        data: {},
       }),
       filterParamName: 'param',
       valueField: 'id',
