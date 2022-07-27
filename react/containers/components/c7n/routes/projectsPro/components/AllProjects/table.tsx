@@ -384,6 +384,18 @@ const Index: React.FC<IProps> = (props) => {
     </div>
   );
 
+  const renderWorkGroup = ({ value, record }: { value: string, record: Record }) => {
+    if (value) {
+      const strEnd = value.split('-').pop();
+      return (
+        <Tooltip title={value}>
+          {strEnd}
+        </Tooltip>
+      );
+    }
+    return '';
+  };
+
   const renderCategories = ({ value }: { value: any }) => {
     if (!value) {
       return '';
@@ -433,7 +445,7 @@ const Index: React.FC<IProps> = (props) => {
       },
       {
         name: 'workGroup',
-        tooltip: 'overflow',
+        renderer: renderWorkGroup,
         align: 'left',
       },
       {
