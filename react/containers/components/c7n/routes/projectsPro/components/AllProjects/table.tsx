@@ -386,6 +386,13 @@ const Index: React.FC<IProps> = (props) => {
 
   const renderWorkGroup = ({ value, record }: { value: string, record: Record }) => {
     if (value) {
+      if (value.indexOf('-') === -1) {
+        return (
+          <Tooltip title={value}>
+            {value}
+          </Tooltip>
+        );
+      }
       const strEnd = value.split('-').pop();
       return (
         <Tooltip title={value}>
