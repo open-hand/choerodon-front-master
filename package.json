@@ -1,7 +1,7 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "2.1.5",
+  "version": "2.2.0",
   "description": "A package of Master for Choerodon platform.",
   "main": "./lib/index.js",
   "files": [
@@ -59,7 +59,7 @@
     "@types/react-dom": "16.9.14"
   },
   "dependencies": {
-    "@choerodon/components": "2.1.1",
+    "@choerodon/components": "2.2.0",
     "@choerodon/inject": "^0.2.0",
     "@hzero-front-ui/c7n-ui": "4.0.5",
     "@hzero-front-ui/core": "4.0.4",

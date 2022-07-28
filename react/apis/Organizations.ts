@@ -501,7 +501,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojWorkGroup() {
     return this.request({
       method: 'get',
-      url: `/agile/v1/organizations/${this.orgId}/work_bench/work_group/query_tree`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/work_bench/work_group/query_tree`,
     });
   }
 
@@ -534,6 +534,56 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return this.request({
       method: 'get',
       url: `iam/choerodon/v1/organizations/${this.orgId}/users/search`,
+    });
+  }
+
+  checkCode(value:String) {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}/check`,
+      data: JSON.stringify({ tenantNum: value }),
+    });
+  }
+
+  createOrganization(data:any) {
+    return this.request({
+      method: 'post',
+      url: `${this.prefix}`,
+      data,
+    });
+  }
+
+  updateOrg({ tenantId, data }:any) { // 修改组织
+    return this.request({
+      method: 'put',
+      url: `${this.prefix}/${tenantId}`,
+      data,
+    });
+  }
+
+  getOrgLanguage({ fieldName, orgId }:Record<string, string>) {
+    return this.request({
+      url: `${this.prefix}/${orgId}/tenant_tl?`,
+      method: 'get',
+      transformResponse: (data) => {
+        // eslint-disable-next-line no-useless-catch
+        try {
+          const jsonData = JSON.parse(data);
+          if (jsonData && !jsonData.failed) {
+            const tlsRecord = {};
+            jsonData.forEach((intlRecord:any) => {
+              (tlsRecord as any)[intlRecord.code] = intlRecord.value;
+            });
+            return [{ [fieldName]: tlsRecord }];
+          } if (jsonData && jsonData.failed) {
+            throw new Error(jsonData.message);
+          }
+        } catch (e) {
+          // do nothing, use default error deal
+          throw e;
+        }
+        return data;
+      },
     });
   }
 }
