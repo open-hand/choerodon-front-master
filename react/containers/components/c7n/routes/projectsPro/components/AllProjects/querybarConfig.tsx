@@ -46,7 +46,6 @@ export const searchFieldsConfig = [
       dropdownMatchSelectWidth: false,
       maxTagCount: 3,
       searchable: true,
-      onOption: nodeCover,
       optionRenderer: ({ text }:{text:string}) => <span className="tree-select-text">{text}</span>,
     },
     initial: true,
