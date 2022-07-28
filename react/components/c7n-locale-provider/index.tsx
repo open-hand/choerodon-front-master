@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { IntlConfig, IntlProvider } from 'react-intl';
-import { Loading } from '@choerodon/components';
 import { reduce, assign } from 'lodash';
 import { useBoolean, useMount } from 'ahooks';
 import closeLoading from '@/utils/closeLoading';

@@ -7,7 +7,6 @@ import {
 } from 'ahooks';
 import { Provider } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
-import { Loading } from '@choerodon/components';
 
 import Cookies from 'universal-cookie';
 import stores from '@/containers/stores';

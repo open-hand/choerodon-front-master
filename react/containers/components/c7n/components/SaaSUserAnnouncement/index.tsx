@@ -51,7 +51,7 @@ const SaaSUserAnnouncement = (props:{
           天
         </span>
       </div>
-      <Button
+      {/* <Button
         type="primary"
         funcType="raised"
         disabled={!link}
@@ -59,7 +59,7 @@ const SaaSUserAnnouncement = (props:{
         style={{ height: 26, fontSize: 13 }}
       >
         升级到付费版
-      </Button>
+      </Button> */}
     </div>
   );
 };

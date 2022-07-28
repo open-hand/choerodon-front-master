@@ -284,7 +284,7 @@ const CreateProject = observer(() => {
         {
           isModify && <Select name="statusId" colSpan={1} />
         }
-        <TreeSelect name="workGroupId" colSpan={1} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+        <TreeSelect name="workGroupId" colSpan={1} searchable optionRenderer={renderTreeSelect} />
         <TreeSelect name="projectClassficationId" colSpan={1} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
 
         <TextArea newLine colSpan={3} name="description" resize="vertical" />
