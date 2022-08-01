@@ -1,13 +1,12 @@
 import React, {
-  useEffect, useState, useRef,
+  useEffect, useState, useRef, useMemo,
 } from 'react';
 import {
   Button,
   Tooltip,
   Modal,
-  Icon,
 } from 'choerodon-ui/pro';
-import { forIn, orderBy, remove } from 'lodash';
+import { forIn } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import moment from 'moment';
@@ -19,7 +18,7 @@ import CustomQuerybar from './customQuerybar';
 import { organizationsApi } from '@/apis';
 import AllProjectTable from './table';
 import {
-  searchFieldsConfig, filterFieldsConfig, defaultColumnSetConfig,
+  getSearchFieldsConfig, getFilterFieldsConfig, defaultColumnSetConfig,
 } from './querybarConfig';
 import TableColumnSet from './tableColumnSet';
 import {
@@ -241,6 +240,9 @@ export default observer(() => {
       return false;
     }
   };
+
+  const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId), [organizationId]);
+  const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
 
   return (
     <div className="allProjects">

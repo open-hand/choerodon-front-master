@@ -6,19 +6,18 @@ import { Provider } from 'mobx-react';
 import {
   HashRouter as Router, Route,
 } from 'react-router-dom';
+import { mount } from '@choerodon/inject';
 import stores from './containers/stores';
 import { MasterLocaleContainer } from './configs/masterLocaleConfigs';
 import {
   UIConfigInitContainer,
 } from './configs';
 
-// @ts-ignore
-const registerOrg = C7NHasModule('@choerodon/base-pro') ? React.lazy(() => import('@choerodon/base-pro/lib/routes/outward/register-organization')) : <div />;
+const registerOrg = mount('base-pro:registerOrganization', {});
 const App = () => (
   <Provider {...stores}>
     <MasterLocaleContainer>
       <UIConfigInitContainer>
-        {/* @ts-ignore */}
         <Router>
           {/* @ts-ignore */}
           <Route path="/" component={registerOrg} />
