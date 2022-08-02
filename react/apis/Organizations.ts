@@ -553,6 +553,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
+  setHealthStatus(data:any) {
+    return this.request({
+      method: 'put',
+      url: `${this.prefix}/${this.orgId}/projects/health/state`,
+      data,
+    });
+  }
+
   updateOrg({ tenantId, data }:any) { // 修改组织
     return this.request({
       method: 'put',
