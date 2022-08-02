@@ -15,7 +15,7 @@ const DELAY = 500;
  * @extends {Component}
  */
 class PermissionProvider extends Component {
-  delayId:any = 0;
+  delayId: any = 0;
 
   permissions = new Map();
 
@@ -36,15 +36,15 @@ class PermissionProvider extends Component {
 
   fetch() {
     const handlers = Array.from(this.handlers);
-    const totalData = Array.from(this.queue).map((item:string) => JSON.parse(item));
+    const totalData = Array.from(this.queue).map((item: string) => JSON.parse(item));
     const dataByType = groupBy(totalData, 'resourceType');
-    const request:any[] = [];
+    const request: any[] = [];
     if (dataByType) {
       forEach(dataByType, (value, key) => {
         if (!isEmpty(value)) {
-          const params:{
-            projectId?:string | number
-            tenantId:string | number
+          const params: {
+            projectId?: string | number
+            tenantId: string | number
           } = { tenantId: key === 'site' ? 0 : value[0]?.organizationId };
           if (key === 'project') {
             params.projectId = value[0]?.projectId;
@@ -90,7 +90,7 @@ class PermissionProvider extends Component {
     }, DELAY);
   }
 
-  check(props:PermissionProps, handler:CallableFunction, flag?:boolean) {
+  check(props: PermissionProps, handler: CallableFunction, flag?: boolean) {
     if (!props.service || props.service.length === 0) {
       handler(SUCCESS);
     } else {
@@ -135,7 +135,7 @@ class PermissionProvider extends Component {
       type,
       organizationId,
       projectId,
-    }:any,
+    }: any,
   ) {
     switch (type) {
       case 'organization':
