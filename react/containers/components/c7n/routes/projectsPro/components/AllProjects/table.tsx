@@ -455,8 +455,8 @@ const Index: React.FC<IProps> = (props) => {
 
   const renderUpdater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('updateUserName')} avatar={record?.get('updateUserImageUrl')} />;
   const renderHealthState = ({ record }: { record: Record }) => {
-    const { color, name } = record.get('healthStateDTO') || {};
-    return <HealthStatus color={color} name={name} description="aaa" className={`${prefix}-healthStatus`} />;
+    const { color, name, description } = record.get('healthStateDTO') || {};
+    return <HealthStatus color={color} name={name} description={description} className={`${prefix}-healthStatus`} />;
   };
   const getColumns = useMemo(() => {
     if (!columnsConfig.length) {
