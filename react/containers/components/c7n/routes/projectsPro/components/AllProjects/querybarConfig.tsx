@@ -112,7 +112,7 @@ export const searchFieldsConfig = [
     optionQueryConfig: organizationsApiConfig.getprojType(),
   },
   {
-    name: 'healthState',
+    name: 'healthSateIds',
     type: 'FlatSelect',
     fieldProps: {
       placeholder: '项目健康状态',
