@@ -1,7 +1,7 @@
 import React from 'react';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { UserInfo } from '@choerodon/components';
-import { organizationsApiConfig } from '@/apis';
+import { organizationsApiConfig, iamApiConfig } from '@/apis';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
 
 const userOptionRender = ({ record }: { record: Record }) => (
@@ -110,6 +110,20 @@ export const searchFieldsConfig = [
     },
     initial: true,
     optionQueryConfig: organizationsApiConfig.getprojType(),
+  },
+  {
+    name: 'healthState',
+    type: 'FlatSelect',
+    fieldProps: {
+      placeholder: '项目健康状态',
+      optionTooltip: 'overflow',
+      multiple: true,
+      dropdownMatchSelectWidth: false,
+      // maxTagCount: 3,
+      searchable: true,
+    },
+    initial: true,
+    optionQueryConfig: iamApiConfig.getHealthStates(),
   },
 ];
 

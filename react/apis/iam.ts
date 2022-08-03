@@ -21,6 +21,14 @@ class IamApi extends Api<IamApi> {
       data: JSON.stringify(data),
     });
   }
+
+  // 获取健康状态列表
+  getHealthStates() {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/${this.orgId}/health-states`,
+    });
+  }
 }
 
 const iamApi = new IamApi();
