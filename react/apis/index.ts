@@ -25,3 +25,4 @@ export * from './hand';
 export * from './iam';
 export * from './Yqcloud';
 export * from './Site';
+export * from './Multi_Language';
