@@ -35,7 +35,8 @@ const colorMap = new Map([
   ['creating', 'operating'],
   ['updating', 'operating'],
 ]);
-
+// 是否存在base的商业版本
+const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
 export interface IProps {
   columnsConfig: IColumnSetConfig[] | []
 }
@@ -327,7 +328,7 @@ const Index: React.FC<IProps> = (props) => {
     }
     switch (projectStatus) {
       case 'success':
-        actionData = [editData, disableData, healthData];
+        actionData = HAS_BASE_BUSINESS ? [editData, disableData, healthData] : [editData, disableData];
         break;
       case 'failed':
         actionData = [

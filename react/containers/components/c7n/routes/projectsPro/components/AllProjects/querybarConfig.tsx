@@ -111,6 +111,9 @@ export const searchFieldsConfig = [
     initial: true,
     optionQueryConfig: organizationsApiConfig.getprojType(),
   },
+];
+export const searchBusinessFieldsConfig = [
+  ...searchFieldsConfig,
   {
     name: 'healthSateIds',
     type: 'FlatSelect',
@@ -125,6 +128,7 @@ export const searchFieldsConfig = [
     initial: true,
     optionQueryConfig: iamApiConfig.getHealthStates(),
   },
+
 ];
 
 export const filterFieldsConfig = [
@@ -210,12 +214,6 @@ export const defaultColumnSetConfig = [
     order: 1,
   },
   {
-    name: 'healthState',
-    label: '健康状态',
-    isSelected: true,
-    order: 2,
-  },
-  {
     name: 'workGroup',
     label: '工作组',
     isSelected: true,
@@ -274,5 +272,14 @@ export const defaultColumnSetConfig = [
     label: '更新时间',
     isSelected: false,
     order: 12,
+  },
+];
+export const defaultBusinessColumnSetConfig = [
+  ...defaultColumnSetConfig,
+  {
+    name: 'healthState',
+    label: '健康状态',
+    isSelected: true,
+    order: 2,
   },
 ];
