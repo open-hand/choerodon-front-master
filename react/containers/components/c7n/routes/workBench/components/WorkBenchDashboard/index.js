@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { get, noop } from 'lodash';
 import { has as hasInject, mount } from '@choerodon/inject';
-
+import ResizeObserver from 'resize-observer-polyfill';
 import { Loading } from '@choerodon/components';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
