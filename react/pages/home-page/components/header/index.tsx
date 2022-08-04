@@ -1,5 +1,5 @@
 import React from 'react';
-import { useInject } from '@/hooks';
+import { get } from '@choerodon/inject';
 import { StoreProvider } from './stores';
 import Content from './Content';
 import {
@@ -8,20 +8,16 @@ import {
 import './index.less';
 
 const HeaderIndex = (props: HeaderIndexProps) => {
-  const [list]: any[] = useInject({
-    idList: ['master-global:header'],
-  });
-
   const defaultResult = (
     <StoreProvider {...props}>
       <Content />
     </StoreProvider>
   );
 
-  if (list?.['master-global:header']) {
+  if (get('configuration.master-global:header')) {
     const {
       display,
-    } = list['master-global:header'];
+    } = get('configuration.master-global:header');
     if (display) {
       return defaultResult;
     }

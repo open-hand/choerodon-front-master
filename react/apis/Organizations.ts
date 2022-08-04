@@ -269,9 +269,9 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   }
 
   // 项目协作-项目-状态列表
-  cooperationProjStatusList() {
+  cooperationProjStatusList(id?:string) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/project_status/paging`,
+      url: `${this.prefix}/${id || this.orgId}/project_status/paging`,
       method: 'get',
     });
   }
@@ -498,42 +498,42 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   }
 
   // 获取项目工作组
-  getprojWorkGroup() {
+  getprojWorkGroup(id?:string) {
     return this.request({
       method: 'get',
-      url: `/iam/choerodon/v1/organizations/${this.orgId}/work_bench/work_group/query_tree`,
+      url: `/agile/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree?with_extra_items=false`,
     });
   }
 
   // 获取项目分类
-  getprojClassification() {
+  getprojClassification(id?:string) {
     return this.request({
       method: 'post',
-      url: `/iam/choerodon/v1/organizations/${this.orgId}/classfication/tree`,
+      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/classfication/tree`,
     });
   }
 
   // 获取项目群
-  getprojPrograms() {
+  getprojPrograms(id?:string) {
     return this.request({
       method: 'get',
-      url: `/iam/choerodon/v1/organizations/${this.orgId}/projects/programs`,
+      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/projects/programs`,
     });
   }
 
   // 获取项目类型
-  getprojType() {
+  getprojType(id?:string) {
     return this.request({
       method: 'get',
-      url: `/iam/v1/organizations/${this.orgId}/project_categories`,
+      url: `/iam/v1/organizations/${id || this.orgId}/project_categories`,
     });
   }
 
   // 项目创建人和更新人
-  getprojUsers() {
+  getprojUsers(id?:string) {
     return this.request({
       method: 'get',
-      url: `iam/choerodon/v1/organizations/${this.orgId}/users/search`,
+      url: `iam/choerodon/v1/organizations/${id || this.orgId}/users/search`,
     });
   }
 

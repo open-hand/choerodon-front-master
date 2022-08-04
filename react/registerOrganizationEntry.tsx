@@ -6,19 +6,20 @@ import { Provider } from 'mobx-react';
 import {
   HashRouter as Router, Route,
 } from 'react-router-dom';
-// @ts-ignore
-import registerOrg from '@choerodon/base-pro/lib/routes/outward/register-organization';
-import stores from '@/containers/stores';
-import { MasterLocaleContainer } from '@/configs/masterLocaleConfigs';
+import { mount } from '@choerodon/inject';
+import stores from './containers/stores';
+import { MasterLocaleContainer } from './configs/masterLocaleConfigs';
 import {
   UIConfigInitContainer,
-} from '@/configs';
+} from './configs';
 
+const registerOrg = mount('base-pro:registerOrganization', {});
 const App = () => (
   <Provider {...stores}>
     <MasterLocaleContainer>
       <UIConfigInitContainer>
         <Router>
+          {/* @ts-ignore */}
           <Route path="/" component={registerOrg} />
         </Router>
       </UIConfigInitContainer>

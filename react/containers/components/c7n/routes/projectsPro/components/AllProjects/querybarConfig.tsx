@@ -17,7 +17,7 @@ const nodeCover = ({ record }: {record:Record}) => ({
   disabled: record?.get('hasChildren') || record?.get('children'),
 });
 
-export const searchFieldsConfig = [
+export const getSearchFieldsConfig = (orgId:string) => [
   {
     name: 'statusIds',
     type: 'FlatSelect',
@@ -32,7 +32,7 @@ export const searchFieldsConfig = [
       isFlat: true,
     },
     initial: true,
-    optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
+    optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(orgId),
   },
   {
     name: 'workGroupIds',
@@ -50,7 +50,7 @@ export const searchFieldsConfig = [
     },
     initial: true,
     optionQueryConfig: {
-      ...organizationsApiConfig.getprojWorkGroup(),
+      ...organizationsApiConfig.getprojWorkGroup(orgId),
       transformResponse: (res: any) => transformResponseTreeData(res, 'workGroupVOS'),
     },
     optionConfig: {
@@ -75,7 +75,7 @@ export const searchFieldsConfig = [
     },
     initial: true,
     optionQueryConfig: {
-      ...organizationsApiConfig.getprojClassification(),
+      ...organizationsApiConfig.getprojClassification(orgId),
       transformResponse: (res: any) => transformResponseTreeData(res, 'treeProjectClassfication'),
     },
     optionConfig: {
@@ -95,7 +95,7 @@ export const searchFieldsConfig = [
       searchable: true,
     },
     initial: true,
-    optionQueryConfig: organizationsApiConfig.getprojPrograms(),
+    optionQueryConfig: organizationsApiConfig.getprojPrograms(orgId),
   },
   {
     name: 'categoryIds',
@@ -109,7 +109,7 @@ export const searchFieldsConfig = [
       searchable: true,
     },
     initial: true,
-    optionQueryConfig: organizationsApiConfig.getprojType(),
+    optionQueryConfig: organizationsApiConfig.getprojType(orgId),
   },
 ];
 export const searchBusinessFieldsConfig = [
@@ -131,7 +131,7 @@ export const searchBusinessFieldsConfig = [
 
 ];
 
-export const filterFieldsConfig = [
+export const getFilterFieldsConfig = (orgId:string) => [
   {
     initial: false,
     checked: false,
@@ -149,7 +149,7 @@ export const filterFieldsConfig = [
       remoteSearch: true,
       remoteSearchName: 'params',
     },
-    optionQueryConfig: organizationsApiConfig.getprojUsers(),
+    optionQueryConfig: organizationsApiConfig.getprojUsers(orgId),
     optionsTextField: 'realName',
   },
   {
@@ -182,7 +182,7 @@ export const filterFieldsConfig = [
       remoteSearch: true,
       remoteSearchName: 'params',
     },
-    optionQueryConfig: organizationsApiConfig.getprojUsers(),
+    optionQueryConfig: organizationsApiConfig.getprojUsers(orgId),
     optionsTextField: 'realName',
   },
   {

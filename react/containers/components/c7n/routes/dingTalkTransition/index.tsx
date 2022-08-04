@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Loading } from '@choerodon/components';
 import * as dd from 'dingtalk-jsapi';
 import Cookies from 'universal-cookie';
+import { get } from '@choerodon/inject';
 import { useHistory } from 'react-router-dom';
 import useQueryString from '@/hooks/useQueryString';
 import axios from '@/components/axios';
@@ -80,7 +81,7 @@ const Index = () => {
     dingTalkLogin();
   }, []);
 
-  return <Loading type="c7n" />;
+  return <Loading type={get('master-global:loadingType') || 'c7n'} />;
 };
 
 export default Index;

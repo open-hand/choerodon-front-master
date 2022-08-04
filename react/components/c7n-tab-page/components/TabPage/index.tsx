@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Loading } from '@choerodon/components';
+import { get } from '@choerodon/inject';
 import { Permission } from '@/components/permission';
-import { useInject } from '@/hooks';
 import NoAccess from '@/components/c7n-error-pages/403';
 import { C7NPageProps } from '../../interface';
 import './index.less';
@@ -12,10 +12,6 @@ const prefixCls = 'page-tab-container';
 const TabPage = ({
   className, service, onAccess, ...props
 }:C7NPageProps) => {
-  const [list]: any[] = useInject({
-    idList: ['master-global:loadingType'],
-  });
-
   const classString = classNames(prefixCls, className);
 
   const content = (
@@ -29,7 +25,7 @@ const TabPage = ({
     return (
       <Permission
         service={service}
-        defaultChildren={<Loading type={list?.['master-global:loadingType'] || 'c7n'} />}
+        defaultChildren={<Loading type={get('configuration.master-global:loadingType') || 'c7n'} />}
         noAccessChildren={<NoAccess />}
         onAccess={onAccess}
       >

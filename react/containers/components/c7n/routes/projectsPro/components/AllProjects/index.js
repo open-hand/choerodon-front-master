@@ -1,13 +1,12 @@
 import React, {
-  useEffect, useState, useRef,
+  useEffect, useState, useRef, useMemo,
 } from 'react';
 import {
   Button,
   Tooltip,
   Modal,
-  Icon,
 } from 'choerodon-ui/pro';
-import { forIn, orderBy, remove } from 'lodash';
+import { forIn } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import moment from 'moment';
@@ -243,6 +242,9 @@ export default observer(() => {
       return false;
     }
   };
+
+  const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId), [organizationId]);
+  const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
 
   return (
     <div className="allProjects">
