@@ -5,6 +5,8 @@ import {
 
 import queryString from 'querystring';
 import { observer } from 'mobx-react-lite';
+import { get } from '@choerodon/inject';
+
 import { useHistory } from 'react-router';
 import classnames from 'classnames';
 import { useIntl } from 'react-intl';
@@ -102,7 +104,7 @@ const SprintCount = observer(() => {
 
   function render() {
     if (startSprintDs.status === 'loading' || sprintCountDataSet.status === 'loading') {
-      return <Loading display type="c7n" />;
+      return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
     }
     if (startedRecord) {
       return (

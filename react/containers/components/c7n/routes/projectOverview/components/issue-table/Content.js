@@ -3,6 +3,8 @@ import { Tooltip } from 'choerodon-ui';
 import { isEmpty } from 'lodash';
 import { Table, Tabs } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
+import { get } from '@choerodon/inject';
+
 import queryString from 'query-string';
 import { Loading } from '@choerodon/components';
 import { useIntl } from 'react-intl';
@@ -218,7 +220,7 @@ const DeployChart = () => {
   };
   function getContent() {
     if (startSprintDs.status === 'loading') {
-      return <Loading display type="c7n" />;
+      return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
     }
     if (!startedRecord) {
       return <EmptyPage />;

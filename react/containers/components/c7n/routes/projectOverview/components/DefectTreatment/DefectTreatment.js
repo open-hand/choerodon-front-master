@@ -2,6 +2,8 @@ import React, {
   useState, memo, useMemo, useEffect,
 } from 'react';
 import { observer } from 'mobx-react-lite';
+import { get } from '@choerodon/inject';
+
 import Echart from 'echarts-for-react';
 import './index.less';
 import { Spin } from 'choerodon-ui';
@@ -152,7 +154,7 @@ const DefectTreatment = observer(() => {
   );
   function render() {
     if (defectTreatDs.status === 'loading') {
-      return <Loading display type="c7n" />;
+      return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
     }
     if (startedRecord) {
       return (
@@ -168,7 +170,7 @@ const DefectTreatment = observer(() => {
     if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;// 暂无活跃的冲刺"
     }
-    return <Loading display type="c7n" />;
+    return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
   }
   return (
     <OverviewWrap style={{

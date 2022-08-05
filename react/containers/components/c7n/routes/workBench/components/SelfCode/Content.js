@@ -2,6 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import './index.less';
 import { Tooltip } from 'choerodon-ui/pro';
+import { get } from '@choerodon/inject';
+
 import ScrollContext from 'react-infinite-scroll-component';
 import { Loading, TimePopover, UserInfo } from '@choerodon/components';
 
@@ -67,7 +69,7 @@ const SelfCode = () => {
   }
 
   const getContent = () => ((!selfCodeDs || (selfCodeDs.status === 'loading' && !selfCodeDs.length)) ? (
-    <Loading display />
+    <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />
   ) : (
     <div className={`${prefixCls}-content`}>
       {!selfCodeDs.length ? (

@@ -81,7 +81,7 @@ const Index = () => {
     dingTalkLogin();
   }, []);
 
-  return <Loading type={get('master-global:loadingType') || 'c7n'} />;
+  return <Loading type={get('configuration.master-global:loadingType') || 'c7n'} />;
 };
 
 export default Index;
