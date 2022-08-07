@@ -243,9 +243,6 @@ export default observer(() => {
     }
   };
 
-  const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId), [organizationId]);
-  const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
-
   return (
     <div className="allProjects">
       <div className="allProjects-title">{renderTitle()}</div>
