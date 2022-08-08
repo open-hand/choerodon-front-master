@@ -222,6 +222,9 @@ export const searchBusinessFieldsConfig = [
     },
     initial: true,
     optionQueryConfig: iamApiConfig.getHealthStates(),
+    optionConfig: {
+      paging: false,
+    },
   },
 
 ];
