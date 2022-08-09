@@ -23,6 +23,10 @@ export default (({ organizationId, userId }:{organizationId:string, userId:strin
       type: 'boolean',
     },
     {
+      name: 'healthState',
+      label: '项目健康状态',
+    },
+    {
       name: 'workGroup',
       label: '工作组',
     },
