@@ -498,10 +498,12 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   }
 
   // 获取项目工作组
-  getprojWorkGroup(id?:string) {
+  getprojWorkGroup(id?:string, excludeUnassigned = false) {
     return this.request({
       method: 'get',
-      url: `/agile/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree?with_extra_items=false`,
+      url: `/agile/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree${
+        excludeUnassigned ? '?with_extra_items=false&with_unassigned_group=false' : ''
+      }`,
     });
   }
 
