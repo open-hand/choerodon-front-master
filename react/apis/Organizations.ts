@@ -501,7 +501,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojWorkGroup(id?:string) {
     return this.request({
       method: 'get',
-      url: `/agile/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree?with_extra_items=false`,
+      url: `/iam/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree?with_extra_items=false`,
     });
   }
 
