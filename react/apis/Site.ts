@@ -10,7 +10,7 @@ class SiteApi extends Api<SiteApi> {
       method: 'get',
       url: `${this.prefix}/feed_back`,
       params: {
-        tenantId,
+        tenant_id: tenantId,
       },
     });
   }
