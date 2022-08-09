@@ -17,9 +17,10 @@ const HeaderIndex = (props: HeaderIndexProps) => {
   if (get('configuration.master-global:header')) {
     const {
       display,
+      customHeader,
     } = get('configuration.master-global:header');
     if (display) {
-      return defaultResult;
+      return customHeader ? customHeader() : defaultResult;
     }
     return null;
   }
