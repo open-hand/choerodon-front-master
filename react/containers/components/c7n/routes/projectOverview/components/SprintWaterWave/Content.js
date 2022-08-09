@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import { Tooltip, Icon } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import { useIntl } from 'react-intl';
+import { get } from '@choerodon/inject';
+
 import './index.less';
 
 import { Loading } from '@choerodon/components';
@@ -73,7 +75,7 @@ const SprintWaterWave = observer(() => {
       );
     }
     if (startedRecord) {
-      return <Loading display type="c7n" />;
+      return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
     }
     if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;

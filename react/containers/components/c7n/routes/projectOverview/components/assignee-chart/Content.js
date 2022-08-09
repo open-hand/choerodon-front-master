@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Spin,
 } from 'choerodon-ui/pro';
-
+import { get } from '@choerodon/inject';
 import Echart from 'echarts-for-react';
 import { reduce } from 'lodash';
 import { observer } from 'mobx-react-lite';
@@ -77,7 +77,7 @@ const SprintCount = observer(() => {
   }
   function render() {
     if (assigneeChartDs.status === 'loading' || startSprintDs.status === 'loading') {
-      return <Loading display type="c7n" />;
+      return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
     }
     if (startedRecord) {
       return (
@@ -89,7 +89,7 @@ const SprintCount = observer(() => {
     if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;
     }
-    return <Loading display type="c7n" />;
+    return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
   }
 
   return (

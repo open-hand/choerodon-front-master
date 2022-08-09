@@ -6,6 +6,7 @@ import {
 } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
+import { get as choerodonGet } from '@choerodon/inject';
 import { get } from 'lodash';
 import { Loading } from '@choerodon/components';
 import { useIntl } from 'react-intl';
@@ -252,7 +253,7 @@ const BurnDownChart = observer(() => {
 
   function render() {
     if (!chartDs.status === 'loading' || startSprintDs.status === 'loading') {
-      return <Loading display type="c7n" />;
+      return <Loading display type={choerodonGet('configuration.master-global:loadingType') || 'c7n'} />;
     }
     if (startedRecord) {
       return <Echart option={getOption()} style={{ height: '100%' }} />;

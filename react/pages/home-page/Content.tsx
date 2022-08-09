@@ -3,6 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router';
 import { useQueryString, Loading } from '@choerodon/components';
+import { get } from '@choerodon/inject';
+
 import { useHomePageStore } from './stores';
 import Header from './components/header';
 import C7NMenu from './components/menu';
@@ -32,7 +34,7 @@ const HomePage = (props:any) => {
   const params = useQueryString();
 
   if (isLoading || !currentMenuType) {
-    return <Loading type="c7n" />;
+    return <Loading type={get('configuration.master-global:loadingType') || 'c7n'} />;
   }
 
   return (
