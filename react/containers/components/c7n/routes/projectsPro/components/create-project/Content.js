@@ -277,17 +277,23 @@ const CreateProject = observer(() => {
   return (
     <>
       {renderAvatar()}
-      <Form columns={3} record={record} className={`${prefixCls}-form`} labelLayout="float">
-        <TextField colSpan={2} name="name" />
-        <TextField colSpan={1} name="code" disabled={isModify} />
-
+      <Form columns={100} record={record} className={`${prefixCls}-form`} labelLayout="float">
+        <TextField colSpan={60} name="name" />
+        <TextField colSpan={40} name="code" disabled={isModify} />
         {
-          isModify && <Select name="statusId" colSpan={1} />
+          isModify && (
+          <div colSpan={60} style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Select name="statusId" style={{ width: 180 }} />
+            <TreeSelect name="workGroupId" style={{ width: 180 }} searchable optionRenderer={renderTreeSelect} />
+          </div>
+          )
         }
-        <TreeSelect name="workGroupId" colSpan={1} searchable optionRenderer={renderTreeSelect} />
-        <TreeSelect name="projectClassficationId" colSpan={1} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+        {
+          !isModify && <TreeSelect name="workGroupId" colSpan={60} searchable optionRenderer={renderTreeSelect} />
+        }
+        <TreeSelect name="projectClassficationId" colSpan={40} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
 
-        <TextArea newLine colSpan={3} name="description" resize="vertical" />
+        <TextArea newLine rows={3} colSpan={100} name="description" resize="vertical" />
         {
           isModify && [
             <TextField name="creationDate" disabled />,
@@ -297,16 +303,19 @@ const CreateProject = observer(() => {
       </Form>
       <div className={`${prefixCls}-category-label`}>项目类型</div>
       <div className={`${prefixCls}-category`}>
-        {categoryDs.map((categoryRecord) => (
+        {categoryDs.map((categoryRecord, index) => (
           <div>
             <Tooltip title={getTooltipContent(categoryRecord)} key={categoryRecord.get('code')}>
               <div
                 className={getCategoryClassNames(categoryRecord)}
                 onClick={() => handleCategoryClick(categoryRecord)}
                 role="none"
+                style={index + 1 % 4 === 4 ? { marginRight: 0 } : {}}
               >
-                <div className={`${prefixCls}-category-item-icon ${prefixCls}-category-item-icon-${categoryRecord.get('code')}`} />
-                <span>{categoryRecord.get('name')}</span>
+                <div className={`${prefixCls}-category-item-content`}>
+                  <div className={`${prefixCls}-category-item-icon ${prefixCls}-category-item-icon-${categoryRecord.get('code')}`} />
+                  <span className="item-name">{categoryRecord.get('name')}</span>
+                </div>
               </div>
             </Tooltip>
             {categoryRecord.get('code') === 'N_WATERFALL'
@@ -341,16 +350,18 @@ const CreateProject = observer(() => {
             <>
               <div>
                 <span className={`${prefixCls}-template-checkbox-text`}>使用组织预置的状态机及看板模板</span>
-                <CheckBox dataSet={formDs} name="useTemplate" value className={`${prefixCls}-template-checkbox`} />
+                <span
+                  role="none"
+                  onClick={handleOpenTemplate}
+                  className={`${prefixCls}-template-btn`}
+                >
+                  查看模板
+                </span>
               </div>
-
-              <div
-                className={`${prefixCls}-template-btn`}
-                role="none"
-                onClick={handleOpenTemplate}
-              >
-                查看模板
-              </div>
+              <SelectBox dataSet={formDs} name="useTemplate">
+                <SelectBox.Option value>是</SelectBox.Option>
+                <SelectBox.Option value={false}>否</SelectBox.Option>
+              </SelectBox>
             </>
           )
         }
@@ -369,10 +380,10 @@ const CreateProject = observer(() => {
               type="info"
               showIcon
             />
-            <Form style={{ marginTop: 10 }} columns={3} record={record}>
+            <Form style={{ marginTop: 10 }} columns={100} record={record}>
               <TextField
                 name="devopsComponentCode"
-                colSpan={2}
+                colSpan={60}
               />
             </Form>
           </div>
