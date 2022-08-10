@@ -501,7 +501,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojWorkGroup(id?:string, excludeUnassigned = false) {
     return this.request({
       method: 'get',
-      url: `/iam/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree${
+      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree${
         excludeUnassigned ? '?with_extra_items=false&with_unassigned_group=false' : ''
       }`,
     });

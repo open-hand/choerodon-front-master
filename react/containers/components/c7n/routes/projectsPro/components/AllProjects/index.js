@@ -18,7 +18,7 @@ import CustomQuerybar from './customQuerybar';
 import { organizationsApi } from '@/apis';
 import AllProjectTable from './table';
 import {
-  searchFieldsConfig, filterFieldsConfig, defaultColumnSetConfig, searchBusinessFieldsConfig, defaultBusinessColumnSetConfig,
+  getSearchFieldsConfig, getFilterFieldsConfig, defaultColumnSetConfig, searchBusinessFieldsConfig, defaultBusinessColumnSetConfig,
 } from './querybarConfig';
 import TableColumnSet from './tableColumnSet';
 import {
@@ -242,6 +242,9 @@ export default observer(() => {
       return false;
     }
   };
+
+  const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId), [organizationId]);
+  const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
 
   return (
     <div className="allProjects">
