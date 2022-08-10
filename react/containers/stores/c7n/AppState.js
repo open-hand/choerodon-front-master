@@ -81,6 +81,8 @@ class AppState {
         this.setStarProject(tempStarProjectData);
         this.setCurrentDropDown(tempRecentProjectData, tempStarProjectData);
         this.isProjectsLoading = false;
+      }).catch((err) => {
+        this.isProjectsLoading = false;
       });
     }
   };
