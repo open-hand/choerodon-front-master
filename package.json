@@ -9,6 +9,7 @@
     "postInstall.js"
   ],
   "scripts": {
+    "yqstart": "yqcloud-front-boot start --config ./react/config.js",
     "start": "choerodon-front-boot start --config ./react/config.js",
     "compile": "compiler compile",
     "randomCompile": "choerodon-front-boot compile -t",
@@ -30,7 +31,7 @@
   "author": "qyellow",
   "license": "ISC",
   "devDependencies": {
-    "@choerodon/boot": "2.0.0",
+    "@choerodon/boot": "2.0.0-modules",
     "@choerodon/compiler": "^0.0.2",
     "@types/styled-components": "^5.1.11",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
@@ -71,6 +72,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
+    "@yqcloud/boot": "^1.15.0-master.20220809160458",
     "ahooks": "^2.10.5",
     "axios": "^0.16.2",
     "choerodon-ui": "1.5.5-alpha.7",
