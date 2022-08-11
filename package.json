@@ -30,7 +30,7 @@
   "author": "qyellow",
   "license": "ISC",
   "devDependencies": {
-    "@choerodon/boot": "1.3.0",
+    "@choerodon/boot": "2.0.0",
     "@choerodon/compiler": "^0.0.2",
     "@types/styled-components": "^5.1.11",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
