@@ -45,6 +45,10 @@ const CreateProject = observer(() => {
 
   const isModify = useMemo(() => record && record.status !== 'add', [record]);
 
+  if (isModify) {
+    record.getField('createUserName').set('required', true);
+  }
+
   useEffect(() => {
     modal.update({
       okProps: { loading: isLoading },
@@ -296,8 +300,8 @@ const CreateProject = observer(() => {
         <TextArea newLine rows={3} colSpan={100} name="description" resize="vertical" />
         {
           isModify && [
-            <TextField name="creationDate" disabled />,
-            <TextField name="createUserName" disabled />,
+            <TextField name="creationDate" colSpan={60} disabled />,
+            <TextField name="createUserName" colSpan={40} disabled />,
           ]
         }
       </Form>
