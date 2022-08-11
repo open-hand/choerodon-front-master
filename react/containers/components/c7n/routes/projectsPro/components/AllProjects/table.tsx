@@ -444,16 +444,25 @@ const Index: React.FC<IProps> = (props) => {
     });
     return (
       <Tooltip title={title.substring(0, title.length - 1)}>
-        { value.map((item:any, index:number) => (
+        <Tag
+          key={value[0].name}
+          className="categories-tag"
+          color="rgba(15, 19, 88, 0.06)"
+        >
+          {value[0].name}
+        </Tag>
+        {
+          value.length > 1
+          && (
           <Tag
-            key={item.name}
+            key={value[1].name}
             className="categories-tag"
             color="rgba(15, 19, 88, 0.06)"
           >
-            {item.name}
+            {`+${value.length - 1}`}
           </Tag>
-
-        ))}
+          )
+        }
       </Tooltip>
     );
   };
@@ -503,6 +512,7 @@ const Index: React.FC<IProps> = (props) => {
         name: 'categories',
         renderer: renderCategories,
         align: 'left',
+        minWidth: 140,
       },
       {
         name: 'description',
