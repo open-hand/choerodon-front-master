@@ -550,8 +550,7 @@ const Index: React.FC<IProps> = (props) => {
       {
         name: 'healthState',
         renderer: renderHealthState,
-        sortable: true,
-        width: 265,
+        width: 155,
         lock: false,
       },
     ];
