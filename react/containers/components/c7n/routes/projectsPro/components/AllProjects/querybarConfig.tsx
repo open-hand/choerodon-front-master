@@ -213,7 +213,7 @@ export const searchBusinessFieldsConfig = [
     name: 'healthSateIds',
     type: 'FlatSelect',
     fieldProps: {
-      placeholder: '项目健康状态',
+      placeholder: '健康状态',
       optionTooltip: 'overflow',
       multiple: true,
       dropdownMatchSelectWidth: false,
