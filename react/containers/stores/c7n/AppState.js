@@ -58,32 +58,36 @@ class AppState {
   getProjects = () => {
     this.isProjectsLoading = true;
     if (this.currentMenuType?.organizationId) {
-      const recentProjectPromise = axios.get(
-        `/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
-        {
-          enabledCancelRoute: false,
-        },
-      );
-      const starProjectPromise = axios.get(
-        `/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`,
-        {
-          enabledCancelRoute: false,
-        },
-      );
-      Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
-        const [recentProjectData = [], starProjectData = []] = res;
-        const tempRecentProjectData = recentProjectData?.map((i) => ({
-          ...i,
-          ...i.projectDTO,
-        }));
-        const tempStarProjectData = starProjectData;
-        this.setRecentUse(tempRecentProjectData);
-        this.setStarProject(tempStarProjectData);
-        this.setCurrentDropDown(tempRecentProjectData, tempStarProjectData);
+      try {
+        const recentProjectPromise = axios.get(
+          `/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
+          {
+            enabledCancelRoute: false,
+          },
+        );
+        const starProjectPromise = axios.get(
+          `/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`,
+          {
+            enabledCancelRoute: false,
+          },
+        );
+        Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
+          const [recentProjectData = [], starProjectData = []] = res;
+          const tempRecentProjectData = recentProjectData?.map((i) => ({
+            ...i,
+            ...i.projectDTO,
+          }));
+          const tempStarProjectData = starProjectData;
+          this.setRecentUse(tempRecentProjectData);
+          this.setStarProject(tempStarProjectData);
+          this.setCurrentDropDown(tempRecentProjectData, tempStarProjectData);
+          this.isProjectsLoading = false;
+        }).catch((err) => {
+          this.isProjectsLoading = false;
+        });
+      } catch (e) {
         this.isProjectsLoading = false;
-      }).catch((err) => {
-        this.isProjectsLoading = false;
-      });
+      }
     }
   };
 
