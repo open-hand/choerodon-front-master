@@ -63,6 +63,10 @@ const PageWrap: React.FC<PageWrapperProps> = (props) => {
   useEffect(() => {
     loadMenu();
   }, [Children.length]);
+  /**
+   * 路由地址监听hook 当使用非Cache模式时，仅路由跳转过去时
+   * 才去更换当前Page
+   */
   useEffect(() => {
     if (!cache && location.pathname === nextKeyRef.current?.realTabNodeRoute) {
       setCurrentKey(nextKeyRef.current.key);
