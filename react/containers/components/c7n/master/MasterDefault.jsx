@@ -124,15 +124,6 @@ class Masters extends Component {
         });
       }
     });
-    const e = window.onerror;
-    window.onerror = function (err) {
-      if (err === 'ResizeObserver loop limit exceeded') {
-        console.warn('Ignored: ResizeObserver loop limit exceeded');
-        return false;
-      }
-      // eslint-disable-next-line prefer-rest-params
-      return e(...arguments);
-    };
     this.initMenuType(this.props);
     cherodonGet('base-pro:handleGetHelpDocUrl')
       && cherodonGet('base-pro:handleGetHelpDocUrl')(
