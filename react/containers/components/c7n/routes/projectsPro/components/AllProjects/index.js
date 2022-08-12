@@ -6,7 +6,9 @@ import {
   Tooltip,
   Modal,
 } from 'choerodon-ui/pro';
-import { forIn } from 'lodash';
+import {
+  forIn, orderBy,
+} from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import moment from 'moment';
@@ -18,7 +20,7 @@ import CustomQuerybar from './customQuerybar';
 import { organizationsApi } from '@/apis';
 import AllProjectTable from './table';
 import {
-  searchFieldsConfig, filterFieldsConfig, defaultColumnSetConfig, searchBusinessFieldsConfig, defaultBusinessColumnSetConfig,
+  getSearchFieldsConfig, getFilterFieldsConfig, defaultColumnSetConfig, searchBusinessFieldsConfig, defaultBusinessColumnSetConfig,
 } from './querybarConfig';
 import TableColumnSet from './tableColumnSet';
 import {
@@ -77,7 +79,7 @@ export default observer(() => {
     if (res?.listLayoutColumnRelVOS) {
       setTableColumn(customColumnSetCRef?.current?.initData(res?.listLayoutColumnRelVOS, HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig));
     } else {
-      setTableColumn(HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig);
+      setTableColumn(orderBy(HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig, ['order']));
     }
   };
 
@@ -242,6 +244,9 @@ export default observer(() => {
       return false;
     }
   };
+
+  const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId), [organizationId]);
+  const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
 
   return (
     <div className="allProjects">

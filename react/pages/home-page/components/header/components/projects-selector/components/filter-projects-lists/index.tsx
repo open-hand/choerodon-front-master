@@ -3,6 +3,8 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import {} from 'choerodon-ui/pro';
+import { get } from '@choerodon/inject';
+
 import { Loading } from '@choerodon/components';
 
 import './index.less';
@@ -76,7 +78,7 @@ const FilterProjectsLists:FC<FilterProjectsListsProps> = (props:any) => {
   }, [run, searchData]);
 
   if (isLoading || isFetching) {
-    return <Loading display={isLoading || isFetching} type="c7n" />;
+    return <Loading display={isLoading || isFetching} type={get('configuration.master-global:loadingType') || 'c7n'} />;
   }
 
   if (!list?.length) {

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
+import { get } from '@choerodon/inject';
+
 import { Loading, TimePopover } from '@choerodon/components';
 
 import './index.less';
@@ -73,7 +75,7 @@ const ServiceList = observer((props) => {
   );
 
   const getContent = () => ((!appServiceDs || appServiceDs.status === 'loading') ? (
-    <Loading display />
+    <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />
   ) : (
     <div className="c7n-serviceList-content">
       {!appServiceDs.length ? (

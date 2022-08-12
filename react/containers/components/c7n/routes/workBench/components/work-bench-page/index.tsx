@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import { get as choerodonGet, has, mount } from '@choerodon/inject';
+
 import { get, noop } from 'lodash';
 
 import { Loading, EmptyPage } from '@choerodon/components';
-import { has, mount } from '@choerodon/inject';
+
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
@@ -70,7 +72,7 @@ const WorkBenchPage: React.FC<WorkBenchPageProps> = (props) => {
     if (dashboardDs.status === 'loading' || addCardDs.status === 'loading') {
       return (
         <div style={{ marginTop: '10%' }}>
-          <Loading display />
+          <Loading display type={choerodonGet('configuration.master-global:loadingType') || 'c7n'} />
         </div>
       );
     }

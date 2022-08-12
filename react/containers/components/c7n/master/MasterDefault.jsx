@@ -124,15 +124,6 @@ class Masters extends Component {
         });
       }
     });
-    const e = window.onerror;
-    window.onerror = function (err) {
-      if (err === 'ResizeObserver loop limit exceeded') {
-        console.warn('Ignored: ResizeObserver loop limit exceeded');
-        return false;
-      }
-      // eslint-disable-next-line prefer-rest-params
-      return e(...arguments);
-    };
     this.initMenuType(this.props);
     cherodonGet('base-pro:handleGetHelpDocUrl')
       && cherodonGet('base-pro:handleGetHelpDocUrl')(
@@ -179,7 +170,7 @@ class Masters extends Component {
 
   setDocUrl = async (params) => {
     if (JSON.stringify(params) !== '{}') {
-      this.props.AppState.setDocUrl('https://open.hand-china.com/document-center/doc/product/10177/10737?doc_id=250000&doc_code=118818');
+      this.props.AppState.setDocUrl('https://www.zknow.com/choerodonDoc/%E4%BB%8B%E7%BB%8D/');
     }
   };
 

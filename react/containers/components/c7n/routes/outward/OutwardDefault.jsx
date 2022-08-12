@@ -58,7 +58,7 @@ class Outward extends Component {
     if (this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">
-          <Suspense fallback={<Loading type={get('master-global:loadingType') || 'c7n'} />}>
+          <Suspense fallback={<Loading type={get('configuration.master-global:loadingType') || 'c7n'} />}>
             <Switch>
               <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
               <Route exact path={`${match.url}dingTalkTransition`} component={DingTalkTransition} />

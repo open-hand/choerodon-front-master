@@ -11,6 +11,7 @@ import isOverflow from 'choerodon-ui/pro/lib/overflow-tip/util';
 import moment from 'moment';
 import { get } from '@choerodon/inject';
 import { useRequest } from 'ahooks';
+import classNames from 'classnames';
 import { getRandomBackground } from '@/utils';
 import { useProjectsProStore } from '../../stores';
 import { axios } from '@/index';
@@ -244,6 +245,11 @@ const Index: React.FC<IProps> = (props) => {
     const projData: any = record?.toData();
     const unix = String(moment(projData.creationDate).unix());
     projData.background = getRandomBackground(unix.substring(unix.length - 3));
+    const disabled = projData.projectStatus === 'creating' || !projData.enabled;
+    const projectNameCls = classNames({
+      'project-name': true,
+      'project-name-disable': disabled,
+    });
     return (
       <div className="c7ncd-allprojectslist-table-field-name">
         <div className="c7ncd-allprojectslist-table-field-name-left">
@@ -262,11 +268,11 @@ const Index: React.FC<IProps> = (props) => {
 
           <span
             style={{
-              cursor: projData.enabled ? 'pointer' : 'not-allowed',
-              color: 'rgba(83, 101, 234, 1)',
+              cursor: disabled ? 'not-allowed' : 'pointer',
+              color: disabled ? '#0F1358' : 'rgba(83, 101, 234, 1)',
             }}
             role="none"
-            className="project-name"
+            className={projectNameCls}
             onMouseEnter={(e) => { handleMouseEnter(e, record.get('name')); }}
             onMouseLeave={handleMouseLeave}
             onClick={() => { handleProjClick(projData); }}
@@ -438,16 +444,25 @@ const Index: React.FC<IProps> = (props) => {
     });
     return (
       <Tooltip title={title.substring(0, title.length - 1)}>
-        { value.map((item:any, index:number) => (
+        <Tag
+          key={value[0].name}
+          className="categories-tag"
+          color="rgba(15, 19, 88, 0.06)"
+        >
+          {value[0].name}
+        </Tag>
+        {
+          value.length > 1
+          && (
           <Tag
-            key={item.name}
+            key={value[1].name}
             className="categories-tag"
             color="rgba(15, 19, 88, 0.06)"
           >
-            {item.name}
+            {`+${value.length - 1}`}
           </Tag>
-
-        ))}
+          )
+        }
       </Tooltip>
     );
   };
@@ -497,6 +512,7 @@ const Index: React.FC<IProps> = (props) => {
         name: 'categories',
         renderer: renderCategories,
         align: 'left',
+        minWidth: 140,
       },
       {
         name: 'description',
@@ -534,9 +550,8 @@ const Index: React.FC<IProps> = (props) => {
       {
         name: 'healthState',
         renderer: renderHealthState,
-        sortable: true,
-        width: 265,
-        lock: true,
+        width: 155,
+        lock: false,
       },
     ];
     const displayColumn: any = [

@@ -156,7 +156,7 @@ export default ({
           transport: {
             read: ({ data }) => ({
               method: 'get',
-              url: organizationsApiConfig.getprojWorkGroup().url,
+              url: organizationsApiConfig.getprojWorkGroup('', true).url,
               transformResponse: (res) => transformResponseTreeData(res, 'workGroupVOS'),
             }),
           },

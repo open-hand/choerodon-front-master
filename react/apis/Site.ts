@@ -5,10 +5,13 @@ class SiteApi extends Api<SiteApi> {
     return '/iam/choerodon/v1/site';
   }
 
-  getFeedBack() {
+  getFeedBack(tenantId: any) {
     return this.request({
       method: 'get',
       url: `${this.prefix}/feed_back`,
+      params: {
+        tenant_id: tenantId,
+      },
     });
   }
 

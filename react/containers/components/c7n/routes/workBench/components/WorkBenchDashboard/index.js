@@ -3,8 +3,9 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { get, noop } from 'lodash';
-import { has as hasInject, mount } from '@choerodon/inject';
+import { has as hasInject, mount, get as choerodonGet } from '@choerodon/inject';
 import ResizeObserver from 'resize-observer-polyfill';
+
 import { Loading } from '@choerodon/components';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
@@ -231,7 +232,7 @@ const WorkBenchDashboard = (props) => {
     if (dashboardDs.status === 'loading' || addCardDs.status === 'loading' || mountedComponentFromDashboardId.current !== currentDashboardId) {
       return (
         <div style={{ marginTop: '10%' }}>
-          <Loading display />
+          <Loading display type={choerodonGet('configuration.master-global:loadingType') || 'c7n'} />
         </div>
       );
     }

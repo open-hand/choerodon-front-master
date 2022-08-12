@@ -5,14 +5,15 @@ import {
   Spin,
 } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
-import { mount } from '@choerodon/inject';
+import { get, mount } from '@choerodon/inject';
+
 import Echart from 'echarts-for-react';
+import { Loading } from '@choerodon/components';
 import { useCustomChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';
 // E:\hand\agile615\agile-service\react\routes\ReportHost\custom-report\components\ChartSearch\index.ts
 import EmptyPage from '../EmptyPage';
-import { Loading } from '@choerodon/components';
 
 // const ChartSearch =
 // console.log('ChartSearch...', ChartSearch);
@@ -32,7 +33,7 @@ const CustomChart = observer(() => {
 
   function render() {
     if (loading) {
-      return <Loading display type="c7n" />;
+      return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
     }
     if (!optionConfig && !isHasData) {
       return <EmptyPage content="当前暂无数据" />;

@@ -2,6 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import { useIntl } from 'react-intl';
+import { get } from '@choerodon/inject';
+
 import { Loading } from '@choerodon/components';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
@@ -147,7 +149,7 @@ const DeployChart = () => {
 
   function getContent() {
     if (startSprintDs.status === 'loading') {
-      return <Loading display type="c7n" />;
+      return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
     }
     if (!startedRecord) {
       return <EmptyPage />;

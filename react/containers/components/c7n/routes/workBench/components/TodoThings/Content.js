@@ -2,6 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Tooltip, Icon, Alert } from 'choerodon-ui';
 import { Loading } from '@choerodon/components';
+import { get } from '@choerodon/inject';
+
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '../card';
 import { useTodoStore } from './stores';
@@ -42,7 +44,7 @@ const StarTargetPro = observer(() => {
 
   const renderContent = () => {
     if (!auditDs || auditDs.status === 'loading') {
-      return <Loading display />;
+      return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
     }
 
     if (!auditDs.length) {
