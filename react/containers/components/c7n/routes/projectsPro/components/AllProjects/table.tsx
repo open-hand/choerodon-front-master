@@ -552,7 +552,7 @@ const Index: React.FC<IProps> = (props) => {
         renderer: renderHealthState,
         sortable: true,
         width: 265,
-        lock: true,
+        lock: false,
       },
     ];
     const displayColumn: any = [

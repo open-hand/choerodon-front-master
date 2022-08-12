@@ -24,7 +24,7 @@ export default (({ organizationId, userId }:{organizationId:string, userId:strin
     },
     {
       name: 'healthState',
-      label: '项目健康状态',
+      label: '健康状态',
     },
     {
       name: 'workGroup',
