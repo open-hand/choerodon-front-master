@@ -40,6 +40,7 @@ const CreateProject = observer(() => {
   const [templateTabsKey, setTemplateTabsKey] = useState([]);
   const [hasConfiged, setHasConfiged] = useState(false);
   const [showDevopsAdvanced, setShowDevopsAdvanced] = useState(false);
+  const [expandAdvanced, setExpandAdvanced] = useState(true);
 
   const record = useMemo(() => formDs.current, [formDs.current]);
 
@@ -287,8 +288,8 @@ const CreateProject = observer(() => {
         {
           isModify && (
           <div colSpan={60} style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Select name="statusId" style={{ width: 180 }} />
-            <TreeSelect name="workGroupId" style={{ width: 180 }} searchable optionRenderer={renderTreeSelect} />
+            <Select name="statusId" style={{ width: 195 }} />
+            <TreeSelect name="workGroupId" style={{ width: 195 }} searchable optionRenderer={renderTreeSelect} />
           </div>
           )
         }
@@ -376,20 +377,22 @@ const CreateProject = observer(() => {
             <div className={`${prefixCls}-advanced-divided`} />
             <p className={`${prefixCls}-advanced-title`}>
               高级设置
-              <Icon type="expand_less" />
+              <Button onClick={() => { setExpandAdvanced(!expandAdvanced); }} icon={expandAdvanced ? 'expand_less' : 'expand_more'} className="btn-expand" />
             </p>
-            <Alert
-              message="DevOps组件编码将用于GitLab Group中的URL片段、Harbor Project的名称片段、SonarQube projectKey前缀、
+            <div style={expandAdvanced ? { height: 'auto' } : { height: 0, overflow: 'hidden' }}>
+              <Alert
+                message="DevOps组件编码将用于GitLab Group中的URL片段、Harbor Project的名称片段、SonarQube projectKey前缀、
           以及Helm仓库编码。"
-              type="info"
-              showIcon
-            />
-            <Form style={{ marginTop: 10 }} columns={100} record={record}>
-              <TextField
-                name="devopsComponentCode"
-                colSpan={60}
+                type="info"
+                showIcon
               />
-            </Form>
+              <Form style={{ marginTop: 10 }} columns={100} record={record}>
+                <TextField
+                  name="devopsComponentCode"
+                  colSpan={60}
+                />
+              </Form>
+            </div>
           </div>
         )
       }
