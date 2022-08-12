@@ -6,7 +6,9 @@ import {
   Tooltip,
   Modal,
 } from 'choerodon-ui/pro';
-import { forIn } from 'lodash';
+import {
+  forIn, orderBy,
+} from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import moment from 'moment';
@@ -77,7 +79,7 @@ export default observer(() => {
     if (res?.listLayoutColumnRelVOS) {
       setTableColumn(customColumnSetCRef?.current?.initData(res?.listLayoutColumnRelVOS, HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig));
     } else {
-      setTableColumn(HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig);
+      setTableColumn(orderBy(HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig, ['order']));
     }
   };
 
