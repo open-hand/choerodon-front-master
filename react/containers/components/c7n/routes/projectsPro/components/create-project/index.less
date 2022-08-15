@@ -73,8 +73,20 @@
 }
 
 .c7ncd-project-create {
+  &-body {
+    .c7n-pro-form-float-label {
+      margin: 0 !important;
+    }
+    td {
+      padding: 0 !important;
+    }
+  }
 
   &-form {
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+    }
     .c7n-pro-validation-message {
       white-space: unset;
     }
@@ -86,6 +98,10 @@
         display: inline-block;
         min-width: 1rem;
       }
+    }
+
+    .c7n-pro-field-wrapper {
+      padding: 0.1rem 0 !important;
     }
   }
 
@@ -116,7 +132,7 @@
     &-item {
       display: inline-block;
       text-align: center;
-      width: 158px;
+      width: 160px;
       height: 60px;
       border-radius: 6px;
       border: 1px solid #D9E6F2;
@@ -214,6 +230,7 @@
       font-weight: 500;
       color: #5365EA;
       font-size: 12px;
+      cursor: pointer;
     }
   }
   &-advanced {
@@ -235,7 +252,6 @@
         width: 12px;
         height: 12px;
         border-radius: 50%;
-        background: rgba(83, 101, 234, 0.08);
         display: inline-flex;
         align-items: center;
         justify-content: center;

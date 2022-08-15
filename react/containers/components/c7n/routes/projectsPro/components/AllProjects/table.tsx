@@ -98,7 +98,7 @@ const Index: React.FC<IProps> = (props) => {
       ),
       okText: '保存',
       style: {
-        width: MIDDLE,
+        width: 744,
       },
     });
   };
