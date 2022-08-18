@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useLocation, useHistory } from 'react-router-dom';
 import { Tabs } from 'choerodon-ui';
@@ -14,7 +14,7 @@ export const Context = React.createContext({});
 
 const prefixCls = 'page-wrap-tabs';
 
-const PageWrap:React.FC<PageWrapperProps> = (props) => {
+const PageWrap: React.FC<PageWrapperProps> = (props) => {
   const {
     children, noHeader, className, cache, onChange,
   } = props;
@@ -32,7 +32,7 @@ const PageWrap:React.FC<PageWrapperProps> = (props) => {
     throw new TypeError('PageWrap must accept children');
   }
 
-  const keyShowArr:{
+  const keyShowArr: {
     route: string
     tabKey: string
     alwaysShow: boolean
@@ -48,8 +48,8 @@ const PageWrap:React.FC<PageWrapperProps> = (props) => {
   });
 
   const [currentKey, setCurrentKey] = useSafeState<string>('');
-
-  const keyArr:string[] = React.Children.map(children, (child) => child.props.tabKey);
+  const nextKeyRef = useRef<{ key: string, realTabNodeRoute: string }>();
+  const keyArr: string[] = React.Children.map(children, (child) => child.props.tabKey);
 
   const Children = React.Children.map(children, (child) => child);
 
@@ -63,15 +63,23 @@ const PageWrap:React.FC<PageWrapperProps> = (props) => {
   useEffect(() => {
     loadMenu();
   }, [Children.length]);
-
-  const callback = (key:string) => {
+  /**
+   * 路由地址监听hook 当使用非Cache模式时，仅路由跳转过去时
+   * 才去更换当前Page
+   */
+  useEffect(() => {
+    if (!cache && location.pathname === nextKeyRef.current?.realTabNodeRoute) {
+      setCurrentKey(nextKeyRef.current.key);
+    }
+  }, [cache, location, setCurrentKey]);
+  const callback = (key: string) => {
     if (cache) {
       setCurrentKey(key);
     } else {
       const realTabNode = keyShowArr.find((v) => v.tabKey === key);
       if (!!realTabNode && realTabNode.route) {
+        nextKeyRef.current = { key, realTabNodeRoute: realTabNode.route };
         history.push(`${realTabNode.route}${location.search}`);
-        setCurrentKey(key);
       }
     }
     if (typeof onChange === 'function') {
@@ -87,7 +95,7 @@ const PageWrap:React.FC<PageWrapperProps> = (props) => {
     className,
   );
 
-  const renderTabs = () => Children.map((child:any) => {
+  const renderTabs = () => Children.map((child: any) => {
     const { type, props: childProps } = child;
     if (type === PageTab) {
       const existRouteKeyArr = keyShowArr && filter(keyShowArr, 'route');

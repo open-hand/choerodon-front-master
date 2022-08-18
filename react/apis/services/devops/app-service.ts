@@ -58,6 +58,22 @@ class AppServiceApi extends Api<AppServiceApi> {
       data,
     });
   }
+
+  // 校验是否能同步分支
+  checkSyncBranch(appServiceId:string) {
+    return this.request({
+      url: `${this.prefix}/${appServiceId}/git/check_sync_branch`,
+      method: 'get',
+    });
+  }
+
+  // 同步分支
+  syncBranch(appServiceId:string) {
+    return this.request({
+      url: `${this.prefix}/${appServiceId}/git/sync_branch`,
+      method: 'post',
+    });
+  }
 }
 const appServiceApi = new AppServiceApi();
 const appServiceApiConfig = new AppServiceApi(true);
