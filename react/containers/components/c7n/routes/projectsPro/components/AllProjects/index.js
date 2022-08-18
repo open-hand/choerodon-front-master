@@ -154,7 +154,7 @@ export default observer(() => {
       ),
       okText: currentProjectId ? '保存' : '创建',
       style: {
-        width: MIDDLE,
+        width: 744,
       },
     });
   };

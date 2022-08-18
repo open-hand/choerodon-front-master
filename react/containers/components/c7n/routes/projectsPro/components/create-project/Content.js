@@ -280,30 +280,39 @@ const CreateProject = observer(() => {
   const renderTreeSelect = ({ text }) => <span className="tree-select-text">{text}</span>;
 
   return (
-    <>
+    <div className={`${prefixCls}-body`}>
       {renderAvatar()}
       <Form columns={100} record={record} className={`${prefixCls}-form`} labelLayout="float">
-        <TextField colSpan={60} name="name" />
-        <TextField colSpan={40} name="code" disabled={isModify} />
+        <TextField name="name" colSpan={50} style={{ width: 340 }} />
+        <TextField name="code" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled={isModify} />
         {
           isModify && (
-          <div colSpan={60} style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Select name="statusId" style={{ width: 195 }} />
-            <TreeSelect name="workGroupId" style={{ width: 195 }} searchable optionRenderer={renderTreeSelect} />
-          </div>
+            <>
+              <Select name="statusId" colSpan={25} style={{ width: 161 }} />
+              <TreeSelect name="workGroupId" colSpan={25} style={{ width: 161, position: 'relative', left: 3 }} searchable optionRenderer={renderTreeSelect} />
+              <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+            </>
           )
         }
         {
-          !isModify && <TreeSelect name="workGroupId" colSpan={60} searchable optionRenderer={renderTreeSelect} />
+          !isModify
+          && (
+          <>
+            <TreeSelect name="workGroupId" colSpan={50} style={{ width: 340 }} searchable optionRenderer={renderTreeSelect} />
+            <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+          </>
+          )
         }
-        <TreeSelect name="projectClassficationId" colSpan={40} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
 
         <TextArea newLine rows={3} colSpan={100} name="description" resize="vertical" />
         {
-          isModify && [
-            <TextField name="creationDate" colSpan={60} disabled />,
-            <TextField name="createUserName" colSpan={40} disabled />,
-          ]
+          isModify
+           && (
+           <>
+             <TextField name="creationDate" colSpan={50} style={{ width: 340 }} disabled />
+             <TextField name="createUserName" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled />
+           </>
+           )
         }
       </Form>
       <div className={`${prefixCls}-category-label`}>项目类型</div>
@@ -385,18 +394,20 @@ const CreateProject = observer(() => {
           以及Helm仓库编码。"
                 type="info"
                 showIcon
+                style={{ marginBottom: 20 }}
               />
-              <Form style={{ marginTop: 10 }} columns={100} record={record}>
+              <Form columns={100} record={record}>
                 <TextField
                   name="devopsComponentCode"
-                  colSpan={60}
+                  colSpan={50}
+                  style={{ width: 340, position: 'relative', left: -5 }}
                 />
               </Form>
             </div>
           </div>
         )
       }
-    </>
+    </div>
   );
 });
 
