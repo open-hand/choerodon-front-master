@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {
   FC, CSSProperties, useMemo, useCallback,
 } from 'react';
@@ -9,13 +10,13 @@ import map from 'lodash/map';
 import { useHistory } from 'react-router';
 import pick from 'lodash/pick';
 import classNames from 'classnames';
+import { difference } from 'lodash';
 import { useMenuStore } from '../../stores';
 import CollapsedBtn from './components/collapsed-btn';
 import { MenuObjProps } from '../../interface';
 import getRoutePath from '@/utils/getRoutePath';
 
 import './index.less';
-import { difference } from 'lodash';
 
 export type SubMenuProps = {
 
