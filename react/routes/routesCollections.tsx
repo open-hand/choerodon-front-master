@@ -60,7 +60,7 @@ const AutoRouter = () => {
     }
     script.src = url;
     script.crossOrigin  = 'anonymous';
-    document.body.appendChild(script);
+    document.head.appendChild(script);
 }
 
   const asyncGetRemoteEntry = async (key: string, env: any) => new Promise((resolve) => {

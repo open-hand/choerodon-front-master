@@ -1,3 +1,4 @@
+// @ts-nocheck
 import stores from '@/containers/stores';
 
 const { AppState } = stores;
