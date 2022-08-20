@@ -88,12 +88,12 @@ const AutoRouter = () => {
   })
 
   const callbackWhenPathName = async () => {
-    let arr = [];
-    if (window._env_.localRouteName) {
-      debugger;
-      const localRouteName = window._env_.localRouteName;
-      arr = routes.filter(i => i[0].includes(localRouteName))
-    }
+    let arr = allRoutes;
+    // if (window._env_.localRouteName) {
+    //   debugger;
+    //   const localRouteName = window._env_.localRouteName;
+    //   arr = routes.filter(i => i[0].includes(localRouteName))
+    // }
     const env: any = window._env_;
     const envList = Object.keys(env);
     debugger;
@@ -102,6 +102,9 @@ const AutoRouter = () => {
         setAllRoutes(arr);
       } else {
         const key = envList[i];
+        if (arr.find(i => i[0] === `/${key}`)) { 
+          continue;
+        }
         debugger;
         const result = await asyncGetRemoteEntry(key, env);
         if (result) {
