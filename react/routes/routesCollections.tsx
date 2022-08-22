@@ -63,31 +63,18 @@ const AutoRouter = () => {
     document.head.appendChild(script);
 }
 
-  const asyncGetRemoteEntry = async (key: string, env: any) => new Promise((resolve) => {
-    if (key.startsWith('remote-')) {
-      debugger;
-      const routeName = key.split('-')[1];
-      const routeRemote = env[key];
-      if (window[routeName]) {
-        resolve();
+  const asyncGetRemoteEntry = async (path, remoteEntry) => new Promise((resolve) => {
+    loadScrip(remoteEntry, () => {
+      if (window[path]) {
+        const lazyComponent = loadComponent(path, './index');
+        resolve([`/${path}`, React.lazy(lazyComponent)])
       } else {
-        loadScrip(routeRemote, () => {
-          console.log(window[routeName])
-          if (window[routeName]) {
-            const lazyComponent = loadComponent(routeName, './index');
-            resolve([`/${routeName}`, React.lazy(lazyComponent)])
-          } else {
-            resolve();
-          }
-        });
+        resolve();
       }
-    } else {
-      debugger;
-      resolve();
-    }
+    });
   })
 
-  const callbackWhenPathName = async () => {
+  const callbackWhenPathName = async (path) => {
     let arr = allRoutes;
     // if (window._env_.localRouteName) {
     //   debugger;
@@ -96,26 +83,39 @@ const AutoRouter = () => {
     // }
     const env: any = window._env_;
     const envList = Object.keys(env);
-    debugger;
-    for (let i = 0; i <= envList.length; i += 1) {
-      if (i === envList.length) {
-        setAllRoutes(arr);
-      } else {
-        const key = envList[i];
-        if (arr.find(i => i[0] === `/${key}`)) { 
-          continue;
-        }
-        debugger;
-        const result = await asyncGetRemoteEntry(key, env);
+    if (window[path]) {
+      return;
+    } else {
+      const remoteEntry = env[`remote-${path}`];
+      if (remoteEntry) {
+        const result = await asyncGetRemoteEntry(path, remoteEntry.replace('$MINIO_URL', env['MINIO_URL']));
         if (result) {
           arr.push(result)
+          setAllRoutes(arr);
         }
+
       }
     }
+    // for (let i = 0; i <= envList.length; i += 1) {
+    //   if (i === envList.length) {
+    //     setAllRoutes(arr);
+    //   } else {
+    //     const key = envList[i];
+    //     if (arr.find(i => i[0] === `/${key}`)) { 
+    //       continue;
+    //     }
+    //     debugger;
+    //     const result = await asyncGetRemoteEntry(key, env);
+    //     if (result) {
+    //       arr.push(result)
+    //     }
+    //   }
+    // }
   }
 
   useEffect(() => {
-    callbackWhenPathName()
+    const path = pathname.split('/')[1];
+    callbackWhenPathName(path)
   }, [pathname])
 
   console.log(allRoutes);
