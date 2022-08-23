@@ -1,10 +1,11 @@
 import React, {
-  useMemo, useState,
+  useMemo, useState, useEffect,
 } from 'react';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import {
   omit,
+  get,
 } from 'lodash';
 import { Loading } from '@choerodon/components';
 import ScrollContext from 'react-infinite-scroll-component';
@@ -15,7 +16,6 @@ import emptyImg from './image/empty.svg';
 import QuestionSearch, { questionSearchFields } from '../question-search';
 import QuestionTree from '../question-tree';
 import QuestionCount from '../question-count';
-
 import './index.less';
 import { useWorkBenchStore } from '../../stores';
 
@@ -30,12 +30,15 @@ const TodoQuestion = observer(() => {
     questionDs,
     prefixCls,
     questionStore,
+    height,
   } = useTodoQuestionStore();
   const [btnLoading, changeBtnLoading] = useState(false);
+  const [containerHeight, setContainerHeight] = useState();
   const searchField = useMemo(() => questionSearchFields.filter((i) => ['contents', 'issueType', 'status', 'priority'].includes(i.code)), []);
 
   function load(search) {
     questionStore.setPage(1);
+    questionStore.setSize(height * 3 + 3);
     questionDs.setQueryParameter('searchData', omit(search, '_id'));
     // eslint-disable-next-line no-underscore-dangle
     questionDs.setQueryParameter('searchDataId', search._id);
@@ -44,6 +47,7 @@ const TodoQuestion = observer(() => {
   }
   const loadMoreData = async () => {
     changeBtnLoading(true);
+    questionStore.setSize(15);
     questionStore.setPage(questionStore.getPage + 1);
     questionDs.query().finally(() => {
       changeBtnLoading(false);
