@@ -91,7 +91,7 @@ const AutoRouter = () => {
         const result = await asyncGetRemoteEntry(path, remoteEntry.replace('$MINIO_URL', env['MINIO_URL']));
         if (result) {
           arr.push(result)
-          setAllRoutes(arr);
+          setAllRoutes([].concat(arr));
         }
 
       }
