@@ -49,7 +49,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     const searchDataId = get(mainData, 'searchDataId');
     const searchData = get(mainData, 'searchData');
     const preOrganizationId = get(mainData, 'organizationId');
-    questionStore.setSize(height * 3 + 3);
+    questionStore.setSize(height * 3 + 8);
     if (preOrganizationId !== organizationId) {
       questionDs.query();
       return;

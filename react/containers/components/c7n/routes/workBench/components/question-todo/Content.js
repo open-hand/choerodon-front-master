@@ -38,7 +38,7 @@ const TodoQuestion = observer(() => {
 
   function load(search) {
     questionStore.setPage(1);
-    questionStore.setSize(height * 3 + 3);
+    questionStore.setSize(height * 3 + 8);
     questionDs.setQueryParameter('searchData', omit(search, '_id'));
     // eslint-disable-next-line no-underscore-dangle
     questionDs.setQueryParameter('searchDataId', search._id);
@@ -47,7 +47,7 @@ const TodoQuestion = observer(() => {
   }
   const loadMoreData = async () => {
     changeBtnLoading(true);
-    questionStore.setSize(15);
+    questionStore.setSize(height * 3 + 8);
     questionStore.setPage(questionStore.getPage + 1);
     questionDs.query().finally(() => {
       changeBtnLoading(false);
