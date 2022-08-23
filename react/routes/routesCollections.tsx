@@ -86,7 +86,7 @@ const AutoRouter = () => {
     if (window[path]) {
       return;
     } else {
-      const remoteEntry = env[`remote-${path}`];
+      const remoteEntry = env[`remote_${path}`];
       if (remoteEntry) {
         const result = await asyncGetRemoteEntry(path, remoteEntry.replace('$MINIO_URL', env['MINIO_URL']));
         if (result) {
