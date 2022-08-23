@@ -9,6 +9,13 @@ export default function useStore(history) {
     setPage(data) {
       this.page = data;
     },
+    size: 20,
+    get getSize() {
+      return this.size;
+    },
+    setSize(data) {
+      this.size = data;
+    },
 
     totalCount: 0,
     get getTotalCount() {

@@ -153,7 +153,7 @@ const WorkBenchDashboard = (props) => {
   }
 
   const SwitchComponents = ({
-    type, title, permissionFlag = 1, emptyDiscribe,
+    type, title, permissionFlag = 1, emptyDiscribe, height,
   }) => {
     let tempComponent;
     const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
@@ -167,6 +167,9 @@ const WorkBenchDashboard = (props) => {
     if (type === 'backlogApprove' && needUpgrade) {
       tempComponent = <EmptyCard title={title} emptyDiscribe="此模块为高级版功能，升级高级版后，才能使用此卡片。" emptyTitle="暂未安装对应模块" />;
     }
+    if (type === 'todoQustions') {
+      return <QuestionTodo height={height} />;
+    }
     return tempComponent;
   };
 
@@ -174,6 +177,7 @@ const WorkBenchDashboard = (props) => {
     const cardData = addCardDs.toData();
     return dashboardDs.map((record) => {
       const key = record.get('i');
+      const height = record.get('h');
       const { groupId, fdLevel, title } = cardData.find((item) => item.i === key);
       const permissionFlag = record.get('permissionFlag');
       let emptyDiscribe;
@@ -191,7 +195,7 @@ const WorkBenchDashboard = (props) => {
           key={key}
         >
           {SwitchComponents({
-            type: key, title, permissionFlag, emptyDiscribe,
+            type: key, title, permissionFlag, emptyDiscribe, height,
           })}
         </DragCard>
       );

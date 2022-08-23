@@ -20,6 +20,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
     AppState: { currentMenuType: { organizationId } },
+    height,
   } = props;
 
   const {
@@ -37,7 +38,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     questionStore.init();
 
     return new DataSet(QuestionDataSet({
-      organizationId, questionStore, selectedProjectId, cacheStore,
+      organizationId, questionStore, selectedProjectId, cacheStore, height,
     }));
   }, [organizationId, selectedProjectId]);
 
@@ -48,6 +49,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     const searchDataId = get(mainData, 'searchDataId');
     const searchData = get(mainData, 'searchData');
     const preOrganizationId = get(mainData, 'organizationId');
+    questionStore.setSize(height * 3 + 3);
     if (preOrganizationId !== organizationId) {
       questionDs.query();
       return;
