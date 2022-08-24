@@ -50,8 +50,12 @@ Object.keys(env).forEach((i) => {
     const remoteUrl = env[i];
     loadScrip(remoteUrl.replace('$MINIO_URL', env['MINIO_URL']), () => {
       if (window[path]) {
-        const compo = loadComponent(path, './install');
-        compo();
+        try {
+          const compo = loadComponent(path, './install');
+          compo();
+        } catch (e) {
+          console.log(e);
+        }
       }
     });
   }
