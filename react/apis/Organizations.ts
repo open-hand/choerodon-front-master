@@ -508,10 +508,10 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   }
 
   // 获取项目分类
-  getprojClassification(id?:string) {
+  getprojClassification(id?:string, withUnassigned?:boolean) {
     return this.request({
       method: 'post',
-      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/classfication/tree`,
+      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/classfication/tree${withUnassigned ? '?with_unassigned_classfication=true' : ''}`,
     });
   }
 

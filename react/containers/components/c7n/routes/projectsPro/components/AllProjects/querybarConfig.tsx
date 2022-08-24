@@ -75,7 +75,7 @@ export const getSearchFieldsConfig = (orgId:string) => [
     },
     initial: true,
     optionQueryConfig: {
-      ...organizationsApiConfig.getprojClassification(orgId),
+      ...organizationsApiConfig.getprojClassification(orgId, true),
       transformResponse: (res: any) => transformResponseTreeData(res, 'treeProjectClassfication'),
     },
     optionConfig: {
