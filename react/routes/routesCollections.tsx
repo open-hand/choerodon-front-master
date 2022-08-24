@@ -21,19 +21,15 @@ const AutoRouter = () => {
     return async () => {
       // Initializes the share scope. This fills it with known provided modules from this build and all remotes
       await __webpack_init_sharing__('default');
-      debugger;
       const container = window[scope]; // or get the container somewhere else
-      debugger;
       // Initialize the container, it may provide shared modules
       if (!container) {
         throw new Error('加载了错误的importManifest.js，请检查服务版本');
       }
       try {
         await container.init(__webpack_share_scopes__.default);
-        debugger;
         const factory = await window[scope].get(module);
         const Module = factory();
-        debugger;
         return Module;
       } catch (e) {
         if (onError) {
@@ -83,17 +79,22 @@ const AutoRouter = () => {
     // }
     const env: any = window._env_;
     const envList = Object.keys(env);
-    if (window[path]) {
+    if (window[path] && allRoutes.find(i => i[0].includes(path))) {
       return;
     } else {
       const remoteEntry = env[`remote_${path}`];
       if (remoteEntry) {
-        const result = await asyncGetRemoteEntry(path, remoteEntry.replace('$MINIO_URL', env['MINIO_URL']));
-        if (result) {
-          arr.push(result)
+        if (window[path]) {
+          const lazyComponent = loadComponent(path, './index');
+          arr.push([`/${path}`, React.lazy(lazyComponent)]);
           setAllRoutes([].concat(arr));
+        } else {
+          const result = await asyncGetRemoteEntry(path, remoteEntry.replace('$MINIO_URL', env['MINIO_URL']));
+          if (result) {
+            arr.push(result)
+            setAllRoutes([].concat(arr));
+          }
         }
-
       }
     }
     // for (let i = 0; i <= envList.length; i += 1) {
@@ -117,8 +118,6 @@ const AutoRouter = () => {
     const path = pathname.split('/')[1];
     callbackWhenPathName(path)
   }, [pathname])
-
-  console.log(allRoutes);
 
   return (
     <Suspense fallback={<Skeleton />}>
