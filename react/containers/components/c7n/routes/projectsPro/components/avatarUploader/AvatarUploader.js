@@ -58,7 +58,7 @@ export default class AvatarUploader extends Component {
     const {
       x, y, size, rotate, file, imageStyle: { width, height }, img: { naturalWidth, naturalHeight },
     } = this.state;
-    const { organizationId, bucketName } = this.props;
+    const { organizationId, bucketName,AppState } = this.props;
     const flag = rotateFlag(rotate);
     const scale = naturalWidth / width;
     const startX = flag ? x - ((width - height) / 2) : x;
