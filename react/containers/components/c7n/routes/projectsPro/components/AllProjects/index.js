@@ -20,7 +20,7 @@ import CustomQuerybar from './customQuerybar';
 import { organizationsApi } from '@/apis';
 import AllProjectTable from './table';
 import {
-  getSearchFieldsConfig, getFilterFieldsConfig, defaultColumnSetConfig, searchBusinessFieldsConfig, defaultBusinessColumnSetConfig,
+  getSearchFieldsConfig, getFilterFieldsConfig, defaultColumnSetConfig, defaultBusinessColumnSetConfig,
 } from './querybarConfig';
 import TableColumnSet from './tableColumnSet';
 import {
@@ -245,7 +245,7 @@ export default observer(() => {
     }
   };
 
-  const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId), [organizationId]);
+  const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId, HAS_BASE_BUSINESS), [organizationId]);
   const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
 
   return (
@@ -254,7 +254,7 @@ export default observer(() => {
       <div className="allProjects-content">
         <div className="allProjects-table-header">
           <CustomQuerybar
-            searchFieldsConfig={HAS_BASE_BUSINESS ? searchBusinessFieldsConfig : searchFieldsConfig}
+            searchFieldsConfig={searchFieldsConfig}
             filterFieldsConfig={filterFieldsConfig}
             onChange={customQuerybarChange}
             cRef={customQuerybarCRef}

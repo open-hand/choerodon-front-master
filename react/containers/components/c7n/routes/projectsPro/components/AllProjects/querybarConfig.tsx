@@ -17,199 +17,103 @@ const nodeCover = ({ record }: {record:Record}) => ({
   disabled: record?.get('hasChildren') || record?.get('children'),
 });
 
-export const getSearchFieldsConfig = (orgId:string) => [
-  {
-    name: 'statusIds',
-    type: 'FlatSelect',
-    fieldProps: {
-      placeholder: '项目状态',
-      optionTooltip: 'overflow',
-      multiple: true,
-      dropdownMatchSelectWidth: false,
-      maxTagCount: 3,
-      searchable: true,
-      flat: true,
-      isFlat: true,
+export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
+  const searchFieldsConfig = [
+    {
+      name: 'statusIds',
+      type: 'FlatSelect',
+      fieldProps: {
+        placeholder: '项目状态',
+        optionTooltip: 'overflow',
+        multiple: true,
+        dropdownMatchSelectWidth: false,
+        maxTagCount: 3,
+        searchable: true,
+        flat: true,
+        isFlat: true,
+      },
+      initial: true,
+      optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(orgId),
     },
-    initial: true,
-    optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(orgId),
-  },
-  {
-    name: 'workGroupIds',
-    type: 'FlatTreeSelect',
-    optionsTextField: 'name',
-    optionsValueField: 'id',
-    fieldProps: {
-      placeholder: '工作组',
-      optionTooltip: 'overflow',
-      multiple: true,
-      dropdownMatchSelectWidth: false,
-      maxTagCount: 3,
-      searchable: true,
-      optionRenderer: ({ text }:{text:string}) => <span className="tree-select-text">{text}</span>,
+    {
+      name: 'workGroupIds',
+      type: 'FlatTreeSelect',
+      optionsTextField: 'name',
+      optionsValueField: 'id',
+      fieldProps: {
+        placeholder: '工作组',
+        optionTooltip: 'overflow',
+        multiple: true,
+        dropdownMatchSelectWidth: false,
+        maxTagCount: 3,
+        searchable: true,
+        optionRenderer: ({ text }:{text:string}) => <span className="tree-select-text">{text}</span>,
+      },
+      initial: true,
+      optionQueryConfig: {
+        ...organizationsApiConfig.getprojWorkGroup(orgId),
+        transformResponse: (res: any) => transformResponseTreeData(res, 'workGroupVOS'),
+      },
+      optionConfig: {
+        idField: 'id',
+        parentField: 'parentId',
+      },
     },
-    initial: true,
-    optionQueryConfig: {
-      ...organizationsApiConfig.getprojWorkGroup(orgId),
-      transformResponse: (res: any) => transformResponseTreeData(res, 'workGroupVOS'),
+    {
+      name: 'projectClassficationIds',
+      type: 'FlatTreeSelect',
+      optionsTextField: 'name',
+      optionsValueField: 'id',
+      fieldProps: {
+        placeholder: '项目分类',
+        optionTooltip: 'overflow',
+        multiple: true,
+        dropdownMatchSelectWidth: false,
+        maxTagCount: 3,
+        searchable: true,
+        onOption: nodeCover,
+        optionRenderer: ({ text }:{text:string}) => <span className="tree-select-text">{text}</span>,
+      },
+      initial: true,
+      optionQueryConfig: {
+        ...organizationsApiConfig.getprojClassification(orgId, true),
+        transformResponse: (res: any) => transformResponseTreeData(res, 'treeProjectClassfication'),
+      },
+      optionConfig: {
+        idField: 'id',
+        parentField: 'parentId',
+      },
     },
-    optionConfig: {
-      idField: 'id',
-      parentField: 'parentId',
+    {
+      name: 'programIds',
+      type: 'FlatSelect',
+      fieldProps: {
+        placeholder: '所属项目群',
+        optionTooltip: 'overflow',
+        multiple: true,
+        dropdownMatchSelectWidth: false,
+        maxTagCount: 3,
+        searchable: true,
+      },
+      initial: true,
+      optionQueryConfig: organizationsApiConfig.getprojPrograms(orgId),
     },
-  },
-  {
-    name: 'projectClassficationIds',
-    type: 'FlatTreeSelect',
-    optionsTextField: 'name',
-    optionsValueField: 'id',
-    fieldProps: {
-      placeholder: '项目分类',
-      optionTooltip: 'overflow',
-      multiple: true,
-      dropdownMatchSelectWidth: false,
-      maxTagCount: 3,
-      searchable: true,
-      onOption: nodeCover,
-      optionRenderer: ({ text }:{text:string}) => <span className="tree-select-text">{text}</span>,
+    {
+      name: 'categoryIds',
+      type: 'FlatSelect',
+      fieldProps: {
+        placeholder: '项目类型',
+        optionTooltip: 'overflow',
+        multiple: true,
+        dropdownMatchSelectWidth: false,
+        maxTagCount: 3,
+        searchable: true,
+      },
+      initial: true,
+      optionQueryConfig: organizationsApiConfig.getprojType(orgId),
     },
-    initial: true,
-    optionQueryConfig: {
-      ...organizationsApiConfig.getprojClassification(orgId, true),
-      transformResponse: (res: any) => transformResponseTreeData(res, 'treeProjectClassfication'),
-    },
-    optionConfig: {
-      idField: 'id',
-      parentField: 'parentId',
-    },
-  },
-  {
-    name: 'programIds',
-    type: 'FlatSelect',
-    fieldProps: {
-      placeholder: '所属项目群',
-      optionTooltip: 'overflow',
-      multiple: true,
-      dropdownMatchSelectWidth: false,
-      maxTagCount: 3,
-      searchable: true,
-    },
-    initial: true,
-    optionQueryConfig: organizationsApiConfig.getprojPrograms(orgId),
-  },
-  {
-    name: 'categoryIds',
-    type: 'FlatSelect',
-    fieldProps: {
-      placeholder: '项目类型',
-      optionTooltip: 'overflow',
-      multiple: true,
-      dropdownMatchSelectWidth: false,
-      maxTagCount: 3,
-      searchable: true,
-    },
-    initial: true,
-    optionQueryConfig: organizationsApiConfig.getprojType(orgId),
-  },
-];
-export const searchFieldsConfig = [
-  {
-    name: 'statusIds',
-    type: 'FlatSelect',
-    fieldProps: {
-      placeholder: '项目状态',
-      optionTooltip: 'overflow',
-      multiple: true,
-      dropdownMatchSelectWidth: false,
-      maxTagCount: 3,
-      searchable: true,
-      flat: true,
-      isFlat: true,
-    },
-    initial: true,
-    optionQueryConfig: organizationsApiConfig.cooperationProjStatusList(),
-  },
-  {
-    name: 'workGroupIds',
-    type: 'FlatTreeSelect',
-    optionsTextField: 'name',
-    optionsValueField: 'id',
-    fieldProps: {
-      placeholder: '工作组',
-      optionTooltip: 'overflow',
-      multiple: true,
-      dropdownMatchSelectWidth: false,
-      maxTagCount: 3,
-      searchable: true,
-      optionRenderer: ({ text }:{text:string}) => <span className="tree-select-text">{text}</span>,
-    },
-    initial: true,
-    optionQueryConfig: {
-      ...organizationsApiConfig.getprojWorkGroup(),
-      transformResponse: (res: any) => transformResponseTreeData(res, 'workGroupVOS'),
-    },
-    optionConfig: {
-      idField: 'id',
-      parentField: 'parentId',
-    },
-  },
-  {
-    name: 'projectClassficationIds',
-    type: 'FlatTreeSelect',
-    optionsTextField: 'name',
-    optionsValueField: 'id',
-    fieldProps: {
-      placeholder: '项目分类',
-      optionTooltip: 'overflow',
-      multiple: true,
-      dropdownMatchSelectWidth: false,
-      maxTagCount: 3,
-      searchable: true,
-      onOption: nodeCover,
-      optionRenderer: ({ text }:{text:string}) => <span className="tree-select-text">{text}</span>,
-    },
-    initial: true,
-    optionQueryConfig: {
-      ...organizationsApiConfig.getprojClassification(),
-      transformResponse: (res: any) => transformResponseTreeData(res, 'treeProjectClassfication'),
-    },
-    optionConfig: {
-      idField: 'id',
-      parentField: 'parentId',
-    },
-  },
-  {
-    name: 'programIds',
-    type: 'FlatSelect',
-    fieldProps: {
-      placeholder: '所属项目群',
-      optionTooltip: 'overflow',
-      multiple: true,
-      dropdownMatchSelectWidth: false,
-      maxTagCount: 3,
-      searchable: true,
-    },
-    initial: true,
-    optionQueryConfig: organizationsApiConfig.getprojPrograms(),
-  },
-  {
-    name: 'categoryIds',
-    type: 'FlatSelect',
-    fieldProps: {
-      placeholder: '项目类型',
-      optionTooltip: 'overflow',
-      multiple: true,
-      dropdownMatchSelectWidth: false,
-      maxTagCount: 3,
-      searchable: true,
-    },
-    initial: true,
-    optionQueryConfig: organizationsApiConfig.getprojType(),
-  },
-];
-export const searchBusinessFieldsConfig = [
-  ...searchFieldsConfig,
-  {
+  ];
+  const searchBusinessFieldsConfig = [...searchFieldsConfig, {
     name: 'healthSateIds',
     type: 'FlatSelect',
     fieldProps: {
@@ -217,17 +121,17 @@ export const searchBusinessFieldsConfig = [
       optionTooltip: 'overflow',
       multiple: true,
       dropdownMatchSelectWidth: false,
-      // maxTagCount: 3,
       searchable: true,
     },
     initial: true,
-    optionQueryConfig: iamApiConfig.getHealthStates(),
+    optionQueryConfig: iamApiConfig.getHealthStates(orgId),
     optionConfig: {
       paging: false,
     },
   },
-
-];
+  ];
+  return hasBusiness ? searchBusinessFieldsConfig : searchFieldsConfig;
+};
 
 export const getFilterFieldsConfig = (orgId:string) => [
   {
