@@ -23,10 +23,10 @@ class IamApi extends Api<IamApi> {
   }
 
   // 获取健康状态列表
-  getHealthStates() {
+  getHealthStates(orgId:string) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/${this.orgId}/health-states`,
+      url: `${this.prefix}/${orgId}/health-states`,
     });
   }
 }
