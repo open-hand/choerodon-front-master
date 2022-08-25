@@ -176,7 +176,7 @@ export default ({
           transport: {
             read: ({ data }) => ({
               method: 'post',
-              url: organizationsApiConfig.getprojClassification().url,
+              url: organizationsApiConfig.getprojClassification('').url,
               transformResponse: (res) => transformResponseTreeData(res, 'treeProjectClassfication'),
             }),
           },
