@@ -30,6 +30,7 @@ const TodoQuestion = observer(() => {
     questionDs,
     prefixCls,
     questionStore,
+    height,
   } = useTodoQuestionStore();
   const [btnLoading, changeBtnLoading] = useState(false);
   const searchField = useMemo(() => questionSearchFields.filter((i) => ['contents', 'issueType', 'status', 'priority'].includes(i.code)), []);
@@ -39,12 +40,14 @@ const TodoQuestion = observer(() => {
     questionDs.setQueryParameter('searchData', omit(search, '_id'));
     // eslint-disable-next-line no-underscore-dangle
     questionDs.setQueryParameter('searchDataId', search._id);
+    questionStore.setSize(height * 4 + 4);
 
     questionDs.query();
   }
   const loadMoreData = async () => {
     changeBtnLoading(true);
     questionStore.setPage(questionStore.getPage + 1);
+    questionStore.setSize(height * 4 + 4);
     questionDs.query().finally(() => {
       changeBtnLoading(false);
     });
