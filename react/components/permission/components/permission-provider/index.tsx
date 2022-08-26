@@ -49,9 +49,6 @@ class PermissionProvider extends Component {
           if (key === 'project') {
             params.projectId = value[0]?.projectId;
           }
-          if ((params.projectId && params.tenantId && params.projectId === params.tenantId) || !params?.projectId) {
-            delete params.projectId;
-          }
           request.push(axios({
             method: 'post',
             url: '/iam/choerodon/v1/permissions/menus/check-permissions',
