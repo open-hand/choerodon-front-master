@@ -236,14 +236,15 @@ class MenuStore {
     async function mainFunc (resolve) {
       try {
         const type = getMenuType(menuType, isUser) || 'site';
-        if (setData) {
-          if (type !== 'user' && typeof AppState.currentMenuType === 'object') {
-            AppState.currentMenuType.type = type;
-            if (menuType?.id) {
-              AppState.currentMenuType.id = menuType?.id
-            }
-          }
-        }
+        // 暂时注释，解决appstate赋值与路由不同步导致的接口id错误问题
+        // if (setData) {
+        //   if (type !== 'user' && typeof AppState.currentMenuType === 'object') {
+        //     AppState.currentMenuType.type = type;
+        //     if (menuType?.id) {
+        //       AppState.currentMenuType.id = menuType?.id
+        //     }
+        //   }
+        // }
 
         const { id = 0, organizationId, orgId } = menuType;
         const menu = this.menuData(type, id);
