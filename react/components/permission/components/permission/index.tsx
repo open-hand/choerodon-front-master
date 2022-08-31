@@ -77,7 +77,7 @@ class Permission extends Component<PermissionProps> {
       service,
       type,
       organizationId,
-      projectId: projectId === organizationId ? undefined : projectId,
+      projectId,
     };
   }
 
