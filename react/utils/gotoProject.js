@@ -53,13 +53,14 @@ export default async function handleClickProject(data, history, historyPush) {
       if (String(organizationId)) {
         path += `&organizationId=${organizationId}`;
       }
-      const t = getMenuType({ type, id }, false) || 'site';
-      if (t !== 'user') {
-        AppState.currentMenuType.type = t;
-        if (id) {
-          AppState.currentMenuType.id = id;
-        }
-      }
+      // 暂时注释，解决appstate赋值与路由不同步导致的接口id错误问题
+      // const t = getMenuType({ type, id }, false) || 'site';
+      // if (t !== 'user') {
+      //   AppState.currentMenuType.type = t;
+      //   if (id) {
+      //     AppState.currentMenuType.id = id;
+      //   }
+      // }
       if (historyPush && typeof historyPush === 'function') {
         historyPush(path, domain);
       } else {
