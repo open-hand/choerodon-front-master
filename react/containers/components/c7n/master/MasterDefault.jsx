@@ -406,7 +406,7 @@ class Masters extends Component {
             className="page-header"
           >
             <AnnouncementBannerPro />
-            <Header />
+            <Header appState={AppState} />
           </div>
           <div className="page-body">
             <div className="content-wrapper">
