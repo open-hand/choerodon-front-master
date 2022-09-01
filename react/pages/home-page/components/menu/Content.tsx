@@ -84,7 +84,8 @@ const Menu = () => {
 
   useEffect(() => {
     loadMenuData();
-  }, [loadMenuData]);
+    // 在同一个浏览器tab中通过url，访问不同组织（或项目）同一菜单路由时，不会进入该useEffect，因此依赖中加上id
+  }, [loadMenuData, menuType?.id]);
 
   // shouldHiddenMenu：通过配置的默认路径判断是否展示menu
   // currentTypeMenuDatas: menustore里头获取的当前type的菜单数组

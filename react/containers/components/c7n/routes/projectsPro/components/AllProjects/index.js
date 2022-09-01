@@ -6,7 +6,9 @@ import {
   Tooltip,
   Modal,
 } from 'choerodon-ui/pro';
-import { forIn } from 'lodash';
+import {
+  forIn, orderBy,
+} from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import moment from 'moment';
@@ -18,7 +20,7 @@ import CustomQuerybar from './customQuerybar';
 import { organizationsApi } from '@/apis';
 import AllProjectTable from './table';
 import {
-  getSearchFieldsConfig, getFilterFieldsConfig, defaultColumnSetConfig,
+  getSearchFieldsConfig, getFilterFieldsConfig, defaultColumnSetConfig, defaultBusinessColumnSetConfig,
 } from './querybarConfig';
 import TableColumnSet from './tableColumnSet';
 import {
@@ -29,6 +31,8 @@ import './index.less';
 
 const { MIDDLE } = MODAL_WIDTH;
 
+// 是否存在base的商业版本
+const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
 export default observer(() => {
   const {
     ProjectsProUseStore,
@@ -73,9 +77,9 @@ export default observer(() => {
   const getTableColumns = async () => {
     const res = await organizationsApi.getAllProjectsTableColumns();
     if (res?.listLayoutColumnRelVOS) {
-      setTableColumn(customColumnSetCRef?.current?.initData(res?.listLayoutColumnRelVOS, defaultColumnSetConfig));
+      setTableColumn(customColumnSetCRef?.current?.initData(res?.listLayoutColumnRelVOS, HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig));
     } else {
-      setTableColumn(defaultColumnSetConfig);
+      setTableColumn(orderBy(HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig, ['order']));
     }
   };
 
@@ -150,7 +154,7 @@ export default observer(() => {
       ),
       okText: currentProjectId ? '保存' : '创建',
       style: {
-        width: MIDDLE,
+        width: 744,
       },
     });
   };
@@ -241,7 +245,7 @@ export default observer(() => {
     }
   };
 
-  const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId), [organizationId]);
+  const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId, HAS_BASE_BUSINESS), [organizationId]);
   const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
 
   return (

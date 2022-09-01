@@ -38,7 +38,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     questionStore.init();
 
     return new DataSet(QuestionDataSet({
-      organizationId, questionStore, selectedProjectId, cacheStore,
+      organizationId, questionStore, selectedProjectId, cacheStore, height,
     }));
   }, [organizationId, selectedProjectId]);
 

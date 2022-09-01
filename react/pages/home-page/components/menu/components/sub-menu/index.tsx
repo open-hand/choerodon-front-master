@@ -205,7 +205,7 @@ const SubMenus:FC<SubMenuProps> = () => {
         subMenuCloseDelay={0.1}
         subMenuOpenDelay={0.1}
         selectedKeys={[activeMenu?.code].filter(String)}
-        openKeys={!isExpanded ? [] : savedOpenKeys}
+        openKeys={savedOpenKeys}
         mode="inline"
         onOpenChange={handleOpenChange}
       >
