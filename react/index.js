@@ -86,3 +86,8 @@ export * from '@/typings';
 export { default as getNearlyDays } from './utils/getNearlyDays';
 
 export { default as openCreateNotification } from '@/components/notification';
+
+export { default as ExternalComponent } from '@/components/external-component';
+export { default as getExternalFunc } from '@/utils/getExternalFunc';
+export * from '@/utils/to';
+export * from '@/utils/log';

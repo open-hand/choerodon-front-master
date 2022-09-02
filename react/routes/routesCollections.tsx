@@ -2,9 +2,11 @@
 // @ts-nocheck
 import React, { Suspense, useEffect, useState } from 'react';
 import { Route, useLocation  } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import CacheRoute, { CacheSwitch } from 'react-router-cache-route';
 import NoMacth from '@/components/c7n-error-pages/404';
 import Skeleton from '@/components/skeleton';
+import { setHistory } from '@/utils/to';
 
 // @ts-expect-error
 const routes:[string, React.ComponentType][] = __ROUTES__ || [];
@@ -12,6 +14,7 @@ const routes:[string, React.ComponentType][] = __ROUTES__ || [];
 const AutoRouter = () => {
   console.log(useLocation());
   const [allRoutes, setAllRoutes] = useState(routes);
+  const history = useHistory();
 
   const {
     pathname
@@ -102,7 +105,7 @@ const AutoRouter = () => {
     //     setAllRoutes(arr);
     //   } else {
     //     const key = envList[i];
-    //     if (arr.find(i => i[0] === `/${key}`)) { 
+    //     if (arr.find(i => i[0] === `/${key}`)) {
     //       continue;
     //     }
     //     debugger;
@@ -118,6 +121,10 @@ const AutoRouter = () => {
     const path = pathname.split('/')[1];
     callbackWhenPathName(path)
   }, [pathname])
+
+  useEffect(() => {
+    setHistory(history);
+  }, [history]);
 
   return (
     <Suspense fallback={<Skeleton />}>
