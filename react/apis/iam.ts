@@ -5,6 +5,27 @@ class IamApi extends Api<IamApi> {
     return '/iam/choerodon/v1';
   }
 
+  createTenant(registerId:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/new_registers/create_org?register_id=${registerId}`,
+    });
+  }
+
+  manualSyncXK() {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/new_registers/sync_leads`,
+    });
+  }
+
+  endTrialEarly(tenantId:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/new_registers/end_trial?tenant_id=${tenantId}`,
+    });
+  }
+
   completeRegisterInfo(data:any) {
     return this.request({
       url: `${this.prefix}/new_registers/supplement_info`,
