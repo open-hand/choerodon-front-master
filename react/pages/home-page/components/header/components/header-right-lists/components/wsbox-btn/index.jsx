@@ -94,7 +94,7 @@ class RenderPopoverContentClass extends Component {
         <RenderPopoverContentDetailClass
           handleVisibleChange={this.handleVisibleChange}
         />
-      </div>,
+                   </div>,
       document.body)
     );
   }
@@ -394,7 +394,7 @@ export default class Inbox extends Component {
                     </div>
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
-                    <div style={{ maxHeight: 63, overflow: 'hidden' }}>
+                    <div style={{ maxHeight: 84, overflow: 'hidden' }}>
                       {content && (
                         <p
                           id={`li-${id}`}
