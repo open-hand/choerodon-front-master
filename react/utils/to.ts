@@ -1,12 +1,13 @@
 import queryString from 'querystring';
 import { find } from 'lodash';
 import { History } from 'history';
-import HeaderStore from '@/containers/stores/c7n/HeaderStore';
-import AppState from '@/containers/stores/c7n/AppState';
+import stores from '@/containers/stores';
 import { projectsApi } from '@/apis/Projects';
 import { error } from './log';
 
 let history: History | null;
+// @ts-ignore
+const { HeaderStore, AppState } = stores;
 
 function setHistory(newHistory: History) {
   history = newHistory;
