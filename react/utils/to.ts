@@ -8,7 +8,7 @@ import { error } from './log';
 
 let history: History | null;
 
-export function setHistory(newHistory: History) {
+function setHistory(newHistory: History) {
   history = newHistory;
 }
 interface IProject {
@@ -216,4 +216,6 @@ async function linkUrlAsyn(path: Path, descriptor: LocationDescriptor = defaultD
   const search = queryString.stringify(params);
   return `${path}?${search}`;
 }
-export { linkUrl, linkUrlAsyn, linkTo };
+export {
+  linkUrl, linkUrlAsyn, linkTo, setHistory,
+};
