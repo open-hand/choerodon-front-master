@@ -22,7 +22,7 @@ class IamApi extends Api<IamApi> {
   endTrialEarly(tenantId:string) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/new_registers/end_trial?tenant_id=${tenantId}`,
+      url: `${this.prefix}/organizations/tenant/end_trial?tenant_id=${tenantId}`,
     });
   }
 
