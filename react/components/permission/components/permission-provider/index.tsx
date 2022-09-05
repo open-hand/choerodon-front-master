@@ -49,7 +49,7 @@ class PermissionProvider extends Component {
           if (key === 'project') {
             params.projectId = value[0]?.projectId;
           }
-          if (params.projectId && params.tenantId && params.projectId === params.tenantId) {
+          if (!params?.projectId) {
             delete params.projectId;
           }
           request.push(axios({
