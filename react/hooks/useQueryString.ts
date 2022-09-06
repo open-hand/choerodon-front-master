@@ -1,9 +1,10 @@
+import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
 export default function useQueryString() {
   const location = useLocation();
-  const urlParams = new URLSearchParams(location.search);
+  const urlParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   // @ts-ignore
-  const params = Object.fromEntries(urlParams);
+  const params = useMemo(() => Object.fromEntries(urlParams), [urlParams]);
   return params;
 }
