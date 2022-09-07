@@ -399,7 +399,7 @@ export default class Inbox extends Component {
                         <p
                           id={`li-${id}`}
                           className={`${prefixCls}-sider-content-list-description-text`}
-                          dangerouslySetInnerHTML={{ __html: `${content.replace(tablereg, '').replace(reg, '').replace(orgReg, `organizationId=${org?.id}`)}` }}
+                          dangerouslySetInnerHTML={{ __html: `${content.replace(tablereg, '').replace(orgReg, `organizationId=${org?.id}`)}` }}
                         />
                       )}
                       {document.getElementById(`#li-${id}`) && document.getElementById(`#li-${id}`).offsetHeight > 63 ? (
