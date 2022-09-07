@@ -146,7 +146,7 @@ class Masters extends Component {
     if (newParams.get('organizationId') !== oldParams.get('organizationId')) {
       headerStore.deleteAnnouncement('saas_restdays_announcement');
       if (has('base-pro:getSaaSUserRestDays')) {
-        cherodonGet('base-pro:getSaaSUserRestDays')(newParams.get('organizationId'));
+        cherodonGet('base-pro:getSaaSUserRestDays')(newParams.get('organizationId'), this);
       }
     }
   }
@@ -242,7 +242,7 @@ class Masters extends Component {
     this.getPlatformAnnouncement();
     // 获取适用天数in the base-pro, only applied in the hand version
     if (has('base-pro:getSaaSUserRestDays')) {
-      cherodonGet('base-pro:getSaaSUserRestDays')(menuType?.orgId);
+      cherodonGet('base-pro:getSaaSUserRestDays')(menuType?.orgId, this);
     }
   }
 
