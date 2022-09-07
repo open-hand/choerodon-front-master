@@ -5,7 +5,7 @@ import { getProjectId, getOrganizationId } from '@/utils/getId';
 import globalCache from './Cache';
 import { getMenuType } from '@/utils/getMenuType';
 
-interface RequestConfig extends AxiosRequestConfig {
+export interface RequestConfig extends AxiosRequestConfig {
   cache?: boolean
   noPrompt?: boolean
 }

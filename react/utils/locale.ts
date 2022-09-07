@@ -3,7 +3,7 @@
  */
 
 export type KeysDistributeObject<T extends string> = { [K in T]: string }
-interface LocaleExportObject<T extends string, K extends string, SK extends string = 'agile'> {
+export interface LocaleExportObject<T extends string, K extends string, SK extends string = 'agile'> {
   /** 当前拆分的文件的前缀 */
   intlPrefix: T
   /** 服务前缀 */
