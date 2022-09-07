@@ -62,3 +62,22 @@ export interface ILog {
   resolutionChanged?: boolean,
   ruleName?: string,
 }
+/**
+ * Action的数据体
+ */
+export interface IBootActionDataItem {
+  service?: string[]
+  disabled?: boolean
+  text?: React.ReactNode
+  action?: Function /** 单独触发 */
+  icon?: string
+}
+/**
+ * Premission组件Props
+ */
+export interface IBootPermissionProps {
+  service: string[]
+  organizationId?: string
+  projectId?: string | number
+  type?: string
+}
