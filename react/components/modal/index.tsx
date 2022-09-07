@@ -42,5 +42,4 @@ const ModalConsumer: React.FC<{ children: React.ReactElement }> = ({ children })
   useBindContextModal();
   return children;
 };
-export { Modal, useBindContextModal };
-export default ModalConsumer;
+export { Modal, useBindContextModal, ModalConsumer };
