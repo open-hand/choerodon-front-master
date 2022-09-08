@@ -1,5 +1,6 @@
 import stores from '@/containers/stores';
 
+// @ts-ignore
 const { AppState } = stores;
 /**
  * 获取当前菜单所属层级类型
