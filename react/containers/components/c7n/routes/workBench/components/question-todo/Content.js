@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import React, {
   useMemo, useState, useEffect,
 } from 'react';
@@ -63,10 +64,10 @@ const TodoQuestion = observer(() => {
           describe={(
             <span style={{ whiteSpace: 'nowrap' }}>
               {
-              formatWorkbench({ id: 'noTodo.desc' })
-            }
+                  formatWorkbench({ id: 'noTodo.desc' })
+                }
             </span>
-)}
+    )}
         />
       );
     }
