@@ -147,6 +147,11 @@ const QuestionNode = observer(({
         icon = 'done';
         color = '#4d90fe';
     }
+    // if (issueTypeVO && newTypeCode !== 'feature') {
+    //   mes = issueTypeVO.name || mes;
+    //   icon = issueTypeVO.icon || icon;
+    //   color = issueTypeVO.colour || color;
+    // }
     let otherClassName = '';
     if (newTypeCode !== 'test-execution') {
       otherStyle = {
