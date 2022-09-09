@@ -1,7 +1,22 @@
 import { AxiosRequestConfig } from 'axios';
+import { set } from 'lodash';
 import axios from '@/components/axios';
 import { getProjectId, getOrganizationId } from '@/utils/getId';
+import globalCache from './Cache';
+import { getMenuType } from '@/utils/getMenuType';
 
+export interface RequestConfig extends AxiosRequestConfig {
+  cache?: boolean
+  noPrompt?: boolean
+}
+function getCacheKey(config: any) {
+  const {
+    method, url, data, params,
+  } = config;
+  return JSON.stringify({
+    method, url, data, params,
+  });
+}
 class Api<T> {
   isConfig: boolean;
 
@@ -9,11 +24,26 @@ class Api<T> {
     this.isConfig = isConfig;
   }
 
-  request(AxiosConfig: AxiosRequestConfig):any {
+  request(AxiosConfig: RequestConfig) {
     if (this.isConfig) {
       return AxiosConfig;
     }
-    return axios(AxiosConfig);
+    const { cache } = AxiosConfig;
+    if (cache) {
+      const promise = new Promise((resolve) => {
+        globalCache.apply({
+          request: axios.bind(null, AxiosConfig),
+          cacheKey: getCacheKey(AxiosConfig),
+          callback: resolve,
+        });
+      });
+      set(promise, 'cancel', () => { });
+      return promise;
+    }
+    const req = axios(AxiosConfig);
+    // 避免 useQuery cancel调用异常
+    req.cancel = () => { };
+    return req;
   }
 
   get projectId() {
@@ -22,6 +52,14 @@ class Api<T> {
 
   get orgId() {
     return getOrganizationId();
+  }
+
+  get menuType(): 'organization' | 'project' {
+    return getMenuType() || 'project';
+  }
+
+  get programId(): false | string {
+    return false;
   }
 
   /**
@@ -49,9 +87,23 @@ class Api<T> {
     return this;
   }
 
+  program(programId: string | number | undefined | false) {
+    if (programId) {
+      return this.overwrite('programId', String(programId));
+    }
+    return this;
+  }
+
   org(orgId: string | number | undefined) {
     if (orgId) {
       return this.overwrite('orgId', orgId);
+    }
+    return this;
+  }
+
+  menu(menuType?: 'project' | 'organization') {
+    if (menuType) {
+      return this.overwrite('menuType', menuType);
     }
     return this;
   }

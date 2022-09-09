@@ -79,6 +79,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     organizationId,
     workBenchUseStore,
     questionStore,
+    height,
   };
 
   return (

@@ -42,6 +42,7 @@ const TodoQuestion = observer(() => {
     questionDs.setQueryParameter('searchData', omit(search, '_id'));
     // eslint-disable-next-line no-underscore-dangle
     questionDs.setQueryParameter('searchDataId', search._id);
+    questionStore.setSize(height * 4 + 4);
 
     questionDs.query();
   }
@@ -49,6 +50,7 @@ const TodoQuestion = observer(() => {
     changeBtnLoading(true);
     questionStore.setSize(height * 4 + 4);
     questionStore.setPage(questionStore.getPage + 1);
+    questionStore.setSize(height * 4 + 4);
     questionDs.query().finally(() => {
       changeBtnLoading(false);
     });

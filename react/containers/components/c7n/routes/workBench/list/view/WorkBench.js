@@ -2,7 +2,7 @@ import React, { } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import queryString from 'query-string';
-import { mount } from '@choerodon/inject';
+import { mount, get } from '@choerodon/inject';
 import { Page } from '@/components/c7n-page';
 import { useWorkBenchStore } from '../../stores';
 import WorkBenchHeader from './components/WorkBenchHeader';
@@ -16,7 +16,11 @@ const WorkBench = () => {
     viewDs,
     history,
     location: { search },
+    getUserId,
   } = useWorkBenchStore();
+  get('base-pro:useRegisterCompleteInfoModal') && get('base-pro:useRegisterCompleteInfoModal')({
+    userId: getUserId,
+  });
 
   const redirectToEdit = () => {
     const { dashboardId, dashboardName } = viewDs.current.toData();

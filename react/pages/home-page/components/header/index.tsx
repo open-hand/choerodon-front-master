@@ -7,7 +7,10 @@ import {
 } from './interface';
 import './index.less';
 
-const HeaderIndex = (props: HeaderIndexProps) => {
+const HeaderIndex = (props: any) => {
+  const {
+    appState,
+  } = props;
   const defaultResult = (
     <StoreProvider {...props}>
       <Content />
@@ -20,7 +23,7 @@ const HeaderIndex = (props: HeaderIndexProps) => {
       customHeader,
     } = get('configuration.master-global:header');
     if (display) {
-      return customHeader ? customHeader() : defaultResult;
+      return customHeader ? customHeader(appState) : defaultResult;
     }
     return null;
   }
