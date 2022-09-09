@@ -147,11 +147,13 @@ const QuestionNode = observer(({
         icon = 'done';
         color = '#4d90fe';
     }
-    // if (issueTypeVO && newTypeCode !== 'feature') {
-    //   mes = issueTypeVO.name || mes;
-    //   icon = issueTypeVO.icon || icon;
-    //   color = issueTypeVO.colour || color;
-    // }
+    if (issueTypeVO && newTypeCode !== 'feature') {
+      if (issueTypeVO.name !== mes) {
+        mes = issueTypeVO.name;
+        icon = issueTypeVO.icon;
+        color = issueTypeVO.colour;
+      }
+    }
     let otherClassName = '';
     if (newTypeCode !== 'test-execution') {
       otherStyle = {
