@@ -122,7 +122,7 @@ const QuestionNode = observer(({
         break;
       case 'issue_epic':
         mes = '史诗';
-        icon = 'bolt';
+        icon = 'agile_epic';
         color = '#743be7';
         break;
       case 'sub_task':
