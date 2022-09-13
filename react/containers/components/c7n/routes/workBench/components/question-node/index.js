@@ -7,7 +7,7 @@ import {
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { merge, get } from 'lodash';
-
+import { TypeTag } from '@choerodon/components';
 import { getRandomBackground } from '@/utils';
 import './index.less';
 import { ALL_TYPE_CODES } from '@/constants/STATUS_TYPE';
@@ -275,7 +275,7 @@ const QuestionNode = observer(({
       key={`${typeCode}-${issueId || id}`}
     >
       <div className={`${prefixCls}-main`}>
-        {getIssueType(typeCode, !!backlogNum)}
+        <TypeTag data={issueTypeVO} featureType={featureType} />
         <Tooltip title={issueNum} placement="top">
           <span className={`${prefixCls}-main-issueId`}>{issueNum || backlogNum}</span>
         </Tooltip>

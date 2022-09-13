@@ -13,22 +13,30 @@
   &-main {
     display: flex;
     align-items: center;
-
-    &-icon {
-      font-size: 0.22rem !important;
-      width: auto !important;
-      height: auto !important;
-      line-height: initial !important;
-
-      &-other {
-        font-size: 13px !important;
-        border-radius: 3px;
-        width: 16px !important;
-        height: 16px !important;
-        line-height: 17px !important;
-        text-align: center;
-      }
+    .c7n-typeTag {
+      display: flex !important;
+      align-items: center !important;
+      // .icon {
+      //   width: 18px !important;
+      //   height: 18px !important;
+      // }
     }
+
+    // &-icon {
+    //   font-size: 0.22rem !important;
+    //   width: auto !important;
+    //   height: auto !important;
+    //   line-height: initial !important;
+
+    //   &-other {
+    //     font-size: 13px !important;
+    //     border-radius: 3px;
+    //     width: 16px !important;
+    //     height: 16px !important;
+    //     line-height: 17px !important;
+    //     text-align: center;
+    //   }
+    // }
 
     &-issueId {
       font-size: 0.13rem;
@@ -36,6 +44,7 @@
       color: var(--primary-color);
       margin: 0 0.1rem 0 0.04rem;
       overflow: hidden;
+      // margin-left: 10px;
       white-space: nowrap;
       text-overflow: ellipsis;
       width: fit-content;
