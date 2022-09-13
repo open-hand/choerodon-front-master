@@ -1,9 +1,7 @@
-import React from 'react';
 import {
   observable, computed, action, set,
 } from 'mobx';
 import { useModal, Modal as UIModal } from 'choerodon-ui/pro';
-import useBindContextModal from '@/hooks/useBindModalContext';
 
 const defaultModal = {
   ...UIModal,
@@ -25,6 +23,9 @@ class ModalStore {
 }
 /** 替换UI导出的Modal */
 const modalStore = new ModalStore();
-/** 替换UI导出的Modal */
+/**
+ * 替换UI导出的Modal
+ * @description  需要当前服务路由使用 `ModalConsumer` 包裹，否则会默认使用`choerodon-ui/pro` 导出的`Modal`
+ *  */
 const Modal = modalStore.currentModal;
 export { Modal, modalStore };
