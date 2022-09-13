@@ -23,7 +23,7 @@ export default (({ organizationId, userId }:{organizationId:string, userId:strin
       type: 'boolean',
     },
     {
-      name: 'healthState',
+      name: 'rank',
       label: '健康状态',
     },
     {

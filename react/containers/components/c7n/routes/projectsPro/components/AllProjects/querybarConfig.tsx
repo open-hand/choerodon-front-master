@@ -279,7 +279,7 @@ export const defaultColumnSetConfig = [
 export const defaultBusinessColumnSetConfig = [
   ...defaultColumnSetConfig,
   {
-    name: 'healthState',
+    name: 'rank',
     label: '健康状态',
     isSelected: true,
     order: 2,
