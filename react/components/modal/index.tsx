@@ -9,7 +9,7 @@ import { Modal } from './store';
  * import React from 'react';
 import { ModalProvider } from 'choerodon-ui/pro';
 import { Switch, Route } from 'react-router-dom';
-import ModalConsumer from '@choerodon/master/lib/components/modal';
+import { ModalConsumer } from '@choerodon/master/lib/components/modal';
 
 function RouteIndex({ children }:{children:any}) {
   return (

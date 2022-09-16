@@ -548,10 +548,12 @@ const Index: React.FC<IProps> = (props) => {
         width: 155,
       },
       {
-        name: 'healthState',
+        name: 'rank',
         renderer: renderHealthState,
         width: 155,
         lock: false,
+        sortable: true,
+
       },
     ];
     const displayColumn: any = [
