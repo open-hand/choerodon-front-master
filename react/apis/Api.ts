@@ -1,9 +1,8 @@
 import { AxiosRequestConfig } from 'axios';
 import { set } from 'lodash';
 import axios from '@/components/axios';
-import { getProjectId, getOrganizationId } from '@/utils/getId';
+import { getProjectId, getOrganizationId, getMenuType } from '@/utils/getId';
 import globalCache from './Cache';
-import { getMenuType } from '@/utils/getMenuType';
 
 export interface RequestConfig extends AxiosRequestConfig {
   cache?: boolean

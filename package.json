@@ -1,7 +1,7 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "2.2.0",
+  "version": "2.2.0-modules",
   "description": "A package of Master for Choerodon platform.",
   "main": "./lib/index.js",
   "files": [
@@ -9,6 +9,7 @@
     "postInstall.js"
   ],
   "scripts": {
+    "yqstart": "yqcloud-front-boot start --config ./react/config.js",
     "start": "choerodon-front-boot start --config ./react/config.js",
     "compile": "compiler compile",
     "randomCompile": "choerodon-front-boot compile -t",
@@ -30,13 +31,13 @@
   "author": "qyellow",
   "license": "ISC",
   "devDependencies": {
-    "@choerodon/boot": "2.0.0",
+    "@choerodon/boot": "2.0.0-modules",
     "@choerodon/compiler": "^0.0.2",
     "@types/styled-components": "^5.1.11",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "babel-eslint": "8.2.6",
-    "babel-preset-c7n": "0.0.2",
+    "babel-preset-c7n": "0.0.2-modules",
     "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-c7n-app": "0.0.3",
@@ -85,9 +86,6 @@
     "js-base64": "^3.6.0",
     "json-bigint": "^0.3.1",
     "lodash": "^4.17.4",
-    "mobx": "4.15.7",
-    "mobx-react": "~6.1.1",
-    "mobx-react-lite": "^1.4.1",
     "moment": "^2.27.0",
     "moment-range": "^4.0.2",
     "pdfjs-dist": "2.2.228",

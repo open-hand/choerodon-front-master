@@ -1,6 +1,7 @@
 import React from 'react';
 import stores from '@/containers/stores';
 
+// @ts-ignore
 const { HeaderStore } = stores;
 /**
  * 获取顶部通知的高度并返回一个css的高度

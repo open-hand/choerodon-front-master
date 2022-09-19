@@ -1,11 +1,19 @@
+/* eslint-disable */
 import AppState from './c7n/AppState';
 import HeaderStore from './c7n/HeaderStore';
 import MenuStore from './c7n/MenuStore';
 
-const stores = {
-  AppState,
-  MenuStore,
-  HeaderStore,
-};
+let stores = {};
+
+if (!window.__choeordonStores__) {
+  window.__choeordonStores__ = {
+    AppState,
+    MenuStore,
+    HeaderStore,
+  };
+  stores = window.__choeordonStores__;
+} else {
+  stores = window.__choeordonStores__;
+}
 
 export default stores;
