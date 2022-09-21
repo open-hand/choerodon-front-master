@@ -14,7 +14,7 @@ import Cookies from 'universal-cookie';
 import { omit } from 'lodash';
 import { useStore } from '../../stores';
 import { toLoginAddress } from '../utils';
-import { registerOrganizationApi } from '@/api/index';
+import { registerOrganizationApi } from '@/apis';
 import './index.less';
 
 interface IProps {

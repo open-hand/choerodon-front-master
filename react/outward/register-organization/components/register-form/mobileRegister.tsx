@@ -5,7 +5,7 @@ import {
 import { CaptchaField } from '@choerodon/components/lib/index.js';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../stores';
-import { ButtonColor } from '@/interface';
+// import { ButtonColor } from '@/interface';
 // eslint-disable-next-line import/order
 import { LabelLayout } from 'choerodon-ui/pro/lib/form/enum';
 import './index.less';
@@ -78,7 +78,7 @@ const Index:React.FC<IProps> = (props:IProps) => {
               </a>
             </div>
           </CheckBox>
-          <Button onClick={handleSubmit} color={ButtonColor.primary}> 免费注册</Button>
+          <Button onClick={handleSubmit} color={'primary' as any}> 免费注册</Button>
         </Form>
       </div>
     </div>
