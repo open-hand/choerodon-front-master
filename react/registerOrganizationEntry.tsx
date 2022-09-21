@@ -11,9 +11,9 @@ import { MasterLocaleContainer } from './configs/masterLocaleConfigs';
 import {
   UIConfigInitContainer,
 } from './configs';
-// @ts-expect-error
-// eslint-disable-next-line @typescript-eslint/no-unused-expressions
-__REGISTERORG__;
+import RegisterOrg from './outward/register-organization';
+
+// __REGISTERORG__;
 
 const App = () => (
   <Provider {...stores}>
@@ -21,7 +21,7 @@ const App = () => (
       <UIConfigInitContainer>
         <Router>
           {/* @ts-ignore */}
-          <Route path="/" component={registerOrg} />
+          <Route component={RegisterOrg} />
         </Router>
       </UIConfigInitContainer>
     </MasterLocaleContainer>
