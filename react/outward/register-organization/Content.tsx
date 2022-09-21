@@ -12,7 +12,7 @@ import RegisterPagePhoneContainer from './mobileComponents/register/pageContaine
 import RegisterPhone from './mobileComponents/register/registerForm';
 import RegisterSuccessPhone from './mobileComponents/register/submitSuccess';
 import ApprovedPhone from './mobileComponents/register/approved';
-import { TPagecontainer, TPageContent } from './stores/usestore';
+import { TPagecontainer, TPageContent } from './stores/useStore';
 
 export interface IProps {
 
