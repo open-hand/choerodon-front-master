@@ -1,5 +1,6 @@
 declare interface Window {
   _env_: {
+    localRouteName: any
     YQ_FEEDBACK_SDK: string
     outward: string // 不需要登录鉴权的页面
     SAAS_FEEDBACK:string // 开放平台地址

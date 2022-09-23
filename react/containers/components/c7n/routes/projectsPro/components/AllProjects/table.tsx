@@ -2,13 +2,16 @@ import {
   Icon, Modal, Table, TextField, Tooltip,
 } from 'choerodon-ui/pro';
 import { Tag } from 'choerodon-ui';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { observer } from 'mobx-react';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
-import { StatusTag, UserInfo } from '@choerodon/components';
+import { StatusTag, UserInfo, HealthStatus } from '@choerodon/components';
 import { some, throttle } from 'lodash';
 import isOverflow from 'choerodon-ui/pro/lib/overflow-tip/util';
 import moment from 'moment';
+import { get } from '@choerodon/inject';
+import { useRequest } from 'ahooks';
+import classNames from 'classnames';
 import { getRandomBackground } from '@/utils';
 import { useProjectsProStore } from '../../stores';
 import { axios } from '@/index';
@@ -21,6 +24,7 @@ import Action from '@/components/action';
 import { IColumnSetConfig } from './tableColumnSet';
 import './table.less';
 
+import { organizationsApi } from '@/apis';
 // TODO: 把column的代码拆出去
 
 const { MIDDLE } = MODAL_WIDTH;
@@ -32,7 +36,8 @@ const colorMap = new Map([
   ['creating', 'operating'],
   ['updating', 'operating'],
 ]);
-
+// 是否存在base的商业版本
+const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
 export interface IProps {
   columnsConfig: IColumnSetConfig[] | []
 }
@@ -55,17 +60,27 @@ const Index: React.FC<IProps> = (props) => {
     projectListDataSet,
     intl: { formatMessage },
     ProjectsProUseStore,
+    prefix,
   } = useProjectsProStore();
+  const refresh = () => {
+    projectListDataSet.query();
+  };
+  const {
+    data, error, loading, run,
+  } = useRequest((paramData:any) => organizationsApi.setHealthStatus(paramData), {
+
+    manual: true,
+    onSuccess: (result, params) => {
+      refresh();
+    },
+
+  });
 
   const checkOperation = useCallback(
     (data) => data
       && (data.operateType === 'update' || data.projectStatus === 'success'),
     [],
   );
-
-  const refresh = () => {
-    projectListDataSet.query();
-  };
 
   const handleEditProj = (pid: string) => {
     Modal.open({
@@ -83,7 +98,7 @@ const Index: React.FC<IProps> = (props) => {
       ),
       okText: '保存',
       style: {
-        width: MIDDLE,
+        width: 744,
       },
     });
   };
@@ -230,6 +245,11 @@ const Index: React.FC<IProps> = (props) => {
     const projData: any = record?.toData();
     const unix = String(moment(projData.creationDate).unix());
     projData.background = getRandomBackground(unix.substring(unix.length - 3));
+    const disabled = projData.projectStatus === 'creating' || !projData.enabled;
+    const projectNameCls = classNames({
+      'project-name': true,
+      'project-name-disable': disabled,
+    });
     return (
       <div className="c7ncd-allprojectslist-table-field-name">
         <div className="c7ncd-allprojectslist-table-field-name-left">
@@ -248,11 +268,11 @@ const Index: React.FC<IProps> = (props) => {
 
           <span
             style={{
-              cursor: projData.enabled ? 'pointer' : 'not-allowed',
-              color: 'rgba(83, 101, 234, 1)',
+              cursor: disabled ? 'not-allowed' : 'pointer',
+              color: disabled ? '#0F1358' : 'rgba(83, 101, 234, 1)',
             }}
             role="none"
-            className="project-name"
+            className={projectNameCls}
             onMouseEnter={(e) => { handleMouseEnter(e, record.get('name')); }}
             onMouseLeave={handleMouseLeave}
             onClick={() => { handleProjClick(projData); }}
@@ -279,6 +299,13 @@ const Index: React.FC<IProps> = (props) => {
     );
   };
 
+  const openHealthModal = (record:Record) => {
+    const onOk = async (value:any) => {
+      const param = { projectId: record.get('id'), healthStateId: value };
+      run(param);
+    };
+    get('base-business:openStatusSettingModal')({ onOk, value: record.get('healthStateDTO')?.id, valueKey: 'id' });
+  };
   const renderAction = ({ record }: { record: Record }) => {
     const data = record.toData();
     const {
@@ -292,6 +319,10 @@ const Index: React.FC<IProps> = (props) => {
       text: '停用',
       action: () => openDisableModal(data),
     };
+    const healthData = {
+      text: '设置健康状态',
+      action: () => openHealthModal(record),
+    };
     let actionData: any = [];
     if (!enabled) {
       actionData = [
@@ -303,7 +334,7 @@ const Index: React.FC<IProps> = (props) => {
     }
     switch (projectStatus) {
       case 'success':
-        actionData = [editData, disableData];
+        actionData = HAS_BASE_BUSINESS ? [editData, disableData, healthData] : [editData, disableData];
         break;
       case 'failed':
         actionData = [
@@ -413,16 +444,25 @@ const Index: React.FC<IProps> = (props) => {
     });
     return (
       <Tooltip title={title.substring(0, title.length - 1)}>
-        { value.map((item:any, index:number) => (
+        <Tag
+          key={value[0].name}
+          className="categories-tag"
+          color="rgba(15, 19, 88, 0.06)"
+        >
+          {value[0].name}
+        </Tag>
+        {
+          value.length > 1
+          && (
           <Tag
-            key={item.name}
+            key={value[1].name}
             className="categories-tag"
             color="rgba(15, 19, 88, 0.06)"
           >
-            {item.name}
+            {`+${value.length - 1}`}
           </Tag>
-
-        ))}
+          )
+        }
       </Tooltip>
     );
   };
@@ -430,7 +470,10 @@ const Index: React.FC<IProps> = (props) => {
   const renderCreater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('createUserName')} avatar={record?.get('createUserImageUrl')} />;
 
   const renderUpdater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('updateUserName')} avatar={record?.get('updateUserImageUrl')} />;
-
+  const renderHealthState = ({ record }: { record: Record }) => {
+    const { color, name, description } = record.get('healthStateDTO') || {};
+    return <HealthStatus color={color} name={name} description={description} className={`${prefix}-healthStatus`} />;
+  };
   const getColumns = useMemo(() => {
     if (!columnsConfig.length) {
       return [];
@@ -469,6 +512,7 @@ const Index: React.FC<IProps> = (props) => {
         name: 'categories',
         renderer: renderCategories,
         align: 'left',
+        minWidth: 140,
       },
       {
         name: 'description',
@@ -502,6 +546,14 @@ const Index: React.FC<IProps> = (props) => {
         tooltip: 'overflow',
         align: 'left',
         width: 155,
+      },
+      {
+        name: 'rank',
+        renderer: renderHealthState,
+        width: 155,
+        lock: false,
+        sortable: true,
+
       },
     ];
     const displayColumn: any = [
