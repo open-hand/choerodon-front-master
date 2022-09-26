@@ -19,12 +19,16 @@ export interface IColumnSetConfig {
   name: string,
   label: string,
   isSelected: boolean,
+  sort: number
+  width?: number
+  minWidth?: number
 }
 
 export interface IRemoteColumnSetConfig {
   columnCode: string,
   display: boolean,
   sort: number
+  width: number
 }
 
 export interface IProps {
@@ -180,9 +184,20 @@ const Index: React.FC<IProps> = (props) => {
           label: tableDs?.getField(i.columnCode)?.get('label'),
           order: i.sort,
         });
-      });
 
+        const found = defaultData.find((defaultItem) => defaultItem.name === i.columnCode);
+
+        // console.log(found);
+
+        if (!i.width && found) { // 如果远程没有数据(为0) default有，用default的
+          // eslint-disable-next-line no-param-reassign
+          console.log(i);
+          console.log(found.width);
+          i.width = found.width || 0;
+        }
+      });
       columnArr = orderBy(columnArr.concat(newArr), ['order']);
+      console.log(columnArr);
       return columnArr;
     }
     return defaultData;

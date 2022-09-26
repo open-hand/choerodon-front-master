@@ -40,6 +40,7 @@ const colorMap = new Map([
 const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
 export interface IProps {
   columnsConfig: IColumnSetConfig[] | []
+  onColumnResize: ({ column, width, index }:any)=> void
 }
 
 export const startProjChange = async (pid: string, enable: boolean, organizationId: string, ProjectsProUseStore: any) => {
@@ -51,7 +52,8 @@ export const startProjChange = async (pid: string, enable: boolean, organization
 };
 
 const Index: React.FC<IProps> = (props) => {
-  const { columnsConfig } = props;
+  const { columnsConfig, onColumnResize: columnResize } = props;
+
   const {
     categoryCodes,
     history,
@@ -62,9 +64,11 @@ const Index: React.FC<IProps> = (props) => {
     ProjectsProUseStore,
     prefix,
   } = useProjectsProStore();
+
   const refresh = () => {
     projectListDataSet.query();
   };
+
   const {
     data, error, loading, run,
   } = useRequest((paramData:any) => organizationsApi.setHealthStatus(paramData), {
@@ -77,8 +81,8 @@ const Index: React.FC<IProps> = (props) => {
   });
 
   const checkOperation = useCallback(
-    (data) => data
-      && (data.operateType === 'update' || data.projectStatus === 'success'),
+    (projData) => projData
+      && (projData.operateType === 'update' || projData.projectStatus === 'success'),
     [],
   );
 
@@ -214,15 +218,15 @@ const Index: React.FC<IProps> = (props) => {
     }
   };
 
-  const handleProjClick = async (data: any) => {
-    if (data.enabled && checkOperation(data)) {
-      handleClickProject(data, history, AppState);
+  const handleProjClick = async (projData: any) => {
+    if (projData.enabled && checkOperation(projData)) {
+      handleClickProject(projData, history, AppState);
     }
   };
 
-  const handleStarClick = throttle(async (data) => {
-    if (data.enabled) {
-      await startProjChange(data.id, !data.starFlag, organizationId, ProjectsProUseStore);
+  const handleStarClick = throttle(async (item) => {
+    if (item.enabled) {
+      await startProjChange(item.id, !item.starFlag, organizationId, ProjectsProUseStore);
       refresh();
     }
   }, 2000);
@@ -307,17 +311,17 @@ const Index: React.FC<IProps> = (props) => {
     get('base-business:openStatusSettingModal')({ onOk, value: record.get('healthStateDTO')?.id, valueKey: 'id' });
   };
   const renderAction = ({ record }: { record: Record }) => {
-    const data = record.toData();
+    const projData = record.toData();
     const {
       projectStatus, editFlag, enabled, id: currentProjectId,
     } = record.toData();
     const editData = {
       text: '修改',
-      action: () => handleEditProj(data.id),
+      action: () => handleEditProj(projData.id),
     };
     const disableData = {
       text: '停用',
-      action: () => openDisableModal(data),
+      action: () => openDisableModal(projData),
     };
     const healthData = {
       text: '设置健康状态',
@@ -340,13 +344,13 @@ const Index: React.FC<IProps> = (props) => {
         actionData = [
           {
             text: '重试',
-            action: () => handleRetry(data.id, data.sagaInstanceIds),
+            action: () => handleRetry(projData.id, projData.sagaInstanceIds),
           },
         ];
-        if (data.operateType === 'create') {
+        if (projData.operateType === 'create') {
           actionData.push({
             text: '删除',
-            action: () => handleDelete(data.id),
+            action: () => handleDelete(projData.id),
           });
         } else {
           // @ts-ignore
@@ -470,10 +474,16 @@ const Index: React.FC<IProps> = (props) => {
   const renderCreater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('createUserName')} avatar={record?.get('createUserImageUrl')} />;
 
   const renderUpdater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('updateUserName')} avatar={record?.get('updateUserImageUrl')} />;
+
   const renderHealthState = ({ record }: { record: Record }) => {
     const { color, name, description } = record.get('healthStateDTO') || {};
     return <HealthStatus color={color} name={name} description={description} className={`${prefix}-healthStatus`} />;
   };
+
+  const onColumnResize = ({ column, width, index }:any) => {
+    columnResize({ column, width, index });
+  };
+
   const getColumns = useMemo(() => {
     if (!columnsConfig.length) {
       return [];
@@ -553,7 +563,6 @@ const Index: React.FC<IProps> = (props) => {
         width: 155,
         lock: false,
         sortable: true,
-
       },
     ];
     const displayColumn: any = [
@@ -561,6 +570,7 @@ const Index: React.FC<IProps> = (props) => {
         name: 'name',
         renderer: renderName,
         sortable: true,
+        resizable: false,
         width: 265,
         lock: true,
       },
@@ -568,14 +578,22 @@ const Index: React.FC<IProps> = (props) => {
     columnsConfig.forEach((item:IColumnSetConfig) => {
       if (item.isSelected) {
         const found = adjustableColumns.find((i) => i.name === item.name);
-        displayColumn.push(found);
+        if (found) {
+          if (item?.width) {
+            // eslint-disable-next-line no-param-reassign
+            delete item?.minWidth;
+            found.width = item.width;
+          }
+          displayColumn.push(found);
+        }
       }
     });
+    console.log(displayColumn, 'displayColumn');
     return displayColumn;
   }, [columnsConfig]);
 
   return (
-    <Table columns={getColumns} columnResizable dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table" />
+    <Table columns={getColumns} columnResizable onColumnResize={onColumnResize} dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table" />
   );
 };
 

@@ -56,6 +56,7 @@ export default observer(() => {
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
   const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
   const [tableColumn, setTableColumn] = useState([]);
+  const [columnChangeArr, setColumnChangeArr] = useState([]);
 
   useEffect(() => {
     if (
@@ -245,6 +246,17 @@ export default observer(() => {
     }
   };
 
+  const handleColumnResize = ({ column, width, index }) => {
+    const arr = columnChangeArr;
+    const foundIndex = columnChangeArr.findIndex((item) => item.name === column.name);
+    if (foundIndex === -1) {
+      arr.push(column);
+    } else {
+      arr[foundIndex] = column;
+    }
+    setColumnChangeArr(arr);
+  };
+
   const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId, HAS_BASE_BUSINESS), [organizationId]);
   const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
 
@@ -263,7 +275,7 @@ export default observer(() => {
             <TableColumnSet cRef={customColumnSetCRef} tableDs={projectListDataSet} columnsConfig={tableColumn} handleOk={handleEditColumnOk} />
           </div>
         </div>
-        <AllProjectTable columnsConfig={tableColumn} />
+        <AllProjectTable columnsConfig={tableColumn} onColumnResize={handleColumnResize} />
       </div>
     </div>
   );
