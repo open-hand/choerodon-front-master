@@ -5,6 +5,10 @@ class CiTemplateJobGroupApi extends Api<CiTemplateJobGroupApi> {
     return `/devops/v1/organizations/${this.orgId}/ci_template_job_group`;
   }
 
+  get projectPrefix() {
+    return `/devops/v1/project/${this.projectId}/ci_template_job_group`;
+  }
+
   get sitePrefix() {
     return '/devops/v1/site/0/ci_template_job_group';
   }
@@ -12,6 +16,13 @@ class CiTemplateJobGroupApi extends Api<CiTemplateJobGroupApi> {
   getList() {
     return this.request({
       url: `${this.orgPrefix}/list`,
+      method: 'get',
+    });
+  }
+
+  getProjectList() {
+    return this.request({
+      url: `${this.projectPrefix}/list`,
       method: 'get',
     });
   }

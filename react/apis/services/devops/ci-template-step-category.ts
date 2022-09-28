@@ -5,6 +5,10 @@ class CiTemplateStepCategoryApi extends Api<CiTemplateStepCategoryApi> {
     return `/devops/v1/organizations/${this.orgId}/ci_template_step_category`;
   }
 
+  get projectPrefix() {
+    return `/devops/v1/project/${this.projectId}/ci_template_step_category`;
+  }
+
   get sitePrefix() {
     return '/devops/v1/site/0/ci_template_step_category';
   }
@@ -12,6 +16,13 @@ class CiTemplateStepCategoryApi extends Api<CiTemplateStepCategoryApi> {
   getSteps() {
     return this.request({
       url: `${this.orgPrefix}`,
+      method: 'get',
+    });
+  }
+
+  getProjectSteps() {
+    return this.request({
+      url: `${this.projectPrefix}`,
       method: 'get',
     });
   }
