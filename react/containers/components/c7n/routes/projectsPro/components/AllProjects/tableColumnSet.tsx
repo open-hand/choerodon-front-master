@@ -19,7 +19,7 @@ export interface IColumnSetConfig {
   name: string,
   label: string,
   isSelected: boolean,
-  sort: number
+  order: number
   width?: number
   minWidth?: number
 }
@@ -158,8 +158,8 @@ const Index: React.FC<IProps> = (props) => {
 
   const initData = (remoteData:IRemoteColumnSetConfig[] | null, defaultData:IColumnSetConfig[]) => {
     if (remoteData) {
-      let columnArr:any = [];
-      const newArr:any = [];
+      let columnArr:IColumnSetConfig[] = [];
+      const newArr:IColumnSetConfig[] = [];
 
       defaultData.forEach((defaultItem) => { // 新增
         const foundIndex = remoteData.findIndex((i) => i.columnCode === defaultItem.name);
@@ -178,26 +178,20 @@ const Index: React.FC<IProps> = (props) => {
 
       const exceptDeleteArr = remoteData;
       exceptDeleteArr.forEach((i) => {
+        const found = defaultData.find((defaultItem) => defaultItem.name === i.columnCode);
+        if (!i.width && found) { // 如果远程没有数据(为0) default有，用default的
+          // eslint-disable-next-line no-param-reassign
+          i.width = found.width || 0;
+        }
         columnArr.push({
           name: i.columnCode,
           isSelected: i.display,
           label: tableDs?.getField(i.columnCode)?.get('label'),
           order: i.sort,
+          width: i.width,
         });
-
-        const found = defaultData.find((defaultItem) => defaultItem.name === i.columnCode);
-
-        // console.log(found);
-
-        if (!i.width && found) { // 如果远程没有数据(为0) default有，用default的
-          // eslint-disable-next-line no-param-reassign
-          console.log(i);
-          console.log(found.width);
-          i.width = found.width || 0;
-        }
       });
       columnArr = orderBy(columnArr.concat(newArr), ['order']);
-      console.log(columnArr);
       return columnArr;
     }
     return defaultData;

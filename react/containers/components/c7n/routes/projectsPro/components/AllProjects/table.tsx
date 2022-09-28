@@ -588,7 +588,6 @@ const Index: React.FC<IProps> = (props) => {
         }
       }
     });
-    console.log(displayColumn, 'displayColumn');
     return displayColumn;
   }, [columnsConfig]);
 

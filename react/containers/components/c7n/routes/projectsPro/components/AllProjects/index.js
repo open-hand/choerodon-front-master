@@ -12,6 +12,7 @@ import {
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import moment from 'moment';
+import { useDebounceFn } from 'ahooks';
 import { Permission } from '@/components/permission';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
@@ -56,7 +57,6 @@ export default observer(() => {
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
   const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
   const [tableColumn, setTableColumn] = useState([]);
-  const [columnChangeArr, setColumnChangeArr] = useState([]);
 
   useEffect(() => {
     if (
@@ -225,11 +225,11 @@ export default observer(() => {
     projectListDataSet.query();
   };
 
-  const handleEditColumnOk = async (columnsData) => {
+  function transformColumnData(columnsData) {
     const listLayoutColumnRelVOS = [];
     columnsData.forEach((item, index) => {
       const iObj = {
-        columnCode: item.name, display: item.isSelected, sort: index, width: 0,
+        columnCode: item.name, display: item.isSelected, sort: index, width: item.width || 0,
       };
       listLayoutColumnRelVOS.push(iObj);
     });
@@ -237,6 +237,11 @@ export default observer(() => {
       applyType: 'projectView',
       listLayoutColumnRelVOS,
     };
+    return postObj;
+  }
+
+  const handleEditColumnOk = async (columnsData) => {
+    const postObj = transformColumnData(columnsData);
     try {
       await organizationsApi.editAllProjectsTableColumns(postObj);
       getTableColumns();
@@ -247,15 +252,19 @@ export default observer(() => {
   };
 
   const handleColumnResize = ({ column, width, index }) => {
-    const arr = columnChangeArr;
-    const foundIndex = columnChangeArr.findIndex((item) => item.name === column.name);
-    if (foundIndex === -1) {
-      arr.push(column);
-    } else {
-      arr[foundIndex] = column;
+    const columnsData = tableColumn;
+    const found = columnsData.find((item) => item.name === column.name);
+    found.width = width;
+    const postObj = transformColumnData(columnsData);
+    try {
+      organizationsApi.editAllProjectsTableColumns(postObj);
+      return true;
+    } catch (error) {
+      return false;
     }
-    setColumnChangeArr(arr);
   };
+
+  const { run } = useDebounceFn(handleColumnResize, { wait: 500 });
 
   const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId, HAS_BASE_BUSINESS), [organizationId]);
   const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
@@ -275,7 +284,7 @@ export default observer(() => {
             <TableColumnSet cRef={customColumnSetCRef} tableDs={projectListDataSet} columnsConfig={tableColumn} handleOk={handleEditColumnOk} />
           </div>
         </div>
-        <AllProjectTable columnsConfig={tableColumn} onColumnResize={handleColumnResize} />
+        <AllProjectTable columnsConfig={tableColumn} onColumnResize={run} />
       </div>
     </div>
   );
