@@ -47,7 +47,7 @@ function ExternalComponent(props: Props) {
   }
 
   // @ts-ignore
-  if (window[system.scope]) {
+  if (!window[system.scope]) {
     return notFound || <span />;
   }
 
@@ -67,7 +67,7 @@ function ExternalComponent(props: Props) {
 ExternalComponent.defaultProps = {
   fallback: <Loading />,
   notFound: <span />,
-  ErrorComponent: null,
+  ErrorComponent: <span />,
   type: 'component',
 };
 
