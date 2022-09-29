@@ -6,7 +6,7 @@ class TemplateStepsApi extends Api<TemplateStepsApi> {
   }
 
   get templatePrefix() {
-    return `/devops/v1/projects/${this.projectId}/ci_template_step/list/with/category`;
+    return `/devops/v1/project/${this.projectId}/ci_template_step/list/with/category`;
   }
 
   // eslint-disable-next-line camelcase
