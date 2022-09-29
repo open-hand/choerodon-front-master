@@ -149,7 +149,7 @@ class DevopsProjectApi extends Api<DevopsProjectApi> {
         ...data,
         builtIn: false,
         sourceId: this.projectId,
-        sourceType: 'organization',
+        sourceType: 'project',
       },
     });
   }
@@ -201,7 +201,7 @@ class DevopsProjectApi extends Api<DevopsProjectApi> {
         ...data,
         builtIn: false,
         sourceId: this.projectId,
-        sourceType: 'organization',
+        sourceType: 'project',
       },
     });
   }
