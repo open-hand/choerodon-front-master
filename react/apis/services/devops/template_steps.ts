@@ -5,6 +5,10 @@ class TemplateStepsApi extends Api<TemplateStepsApi> {
     return `/devops/v1/projects/${this.projectId}/template_steps`;
   }
 
+  get templatePrefix() {
+    return `/devops/v1/projects/${this.projectId}/ci_template_step/list/with/category`;
+  }
+
   // eslint-disable-next-line camelcase
   getTemplateSteps(template_job_id: any) {
     return this.request({
@@ -12,6 +16,13 @@ class TemplateStepsApi extends Api<TemplateStepsApi> {
       params: {
         template_job_id,
       },
+    });
+  }
+
+  getTemplateStepsWithoutPipeline() {
+    return this.request({
+      url: `${this.templatePrefix}`,
+      method: 'get',
     });
   }
 }
