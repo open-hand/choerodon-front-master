@@ -42,7 +42,7 @@ export default ({ }: {}): object => ({
       required: true,
       maxLength: 11,
       validator: (value:string) => {
-        const regex = /^1[3|4|5|7|8][0-9]{9}$/;
+        const regex = /^1[3|4|5|7|8|9][0-9]{9}$/;
         if (!regex.test(value)) {
           return '请输入正确格式的手机号';
         }
