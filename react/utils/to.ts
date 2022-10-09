@@ -5,12 +5,13 @@ import stores from '@/containers/stores';
 import { projectsApi } from '@/apis/Projects';
 import { error } from './log';
 
-let history: History | null;
 // @ts-ignore
 const { HeaderStore, AppState } = stores;
 
 function setHistory(newHistory: History) {
-  history = newHistory;
+  console.warn('[Deprecated] The setHistory function has been deprecated!');
+  // eslint-disable-next-line no-underscore-dangle
+  window.___choeordonHistory__ = newHistory;
 }
 interface IProject {
   id: number
@@ -180,6 +181,7 @@ const linkTo = (path: Path, descriptor: LocationDescriptor = defaultDescriptor, 
       window.open(`/#${path}?${search}`);
       return;
     }
+    const { ___choeordonHistory__: history } = window;
     if (!history) {
       error('跳转失败，未设置history');
       return;
