@@ -78,7 +78,7 @@ const MainMenu:FC<MainMenuProps> = () => {
   const renderItems = useCallback(
     () => {
       const filterCodes = ['choerodon.code.site.market'];
-      const filterData = menuData.filter((i) => !filterCodes.includes(i.code));
+      const filterData = menuData.filter((i: any) => !filterCodes.includes(i.code));
       return map(filterData, (item:{
         code: keyof typeof ICON_MAP,
         id: string,
