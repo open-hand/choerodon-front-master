@@ -166,8 +166,10 @@ const SubMenus:FC<SubMenuProps> = () => {
   }, []);
 
   const renderContent = useMemo(() => {
+    const filterListCodes = ['choerodon.code.project.market.publish'];
+    const filterSub = currentRootChildrenMenu.filter((i) => !filterListCodes.includes(i.code));
     const content = (
-      map(currentRootChildrenMenu, (item:any) => {
+      map(filterSub, (item:any) => {
         const pickItemProps = pick(item, ['subMenus', 'route', 'icon', 'name', 'code', 'level']);
         const currentItem = { ...pickItemProps, menuLevel: 0, showIcon: true };
         return renderMenuItem({ ...currentItem });
