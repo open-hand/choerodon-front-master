@@ -122,7 +122,14 @@ const AutoRouter = () => {
     <Suspense fallback={<Skeleton />}>
       <CacheSwitch>
         {allRoutes.map(([path, component]) => <Route path={path} component={component} />)}
-        <CacheRoute path="*" component={NoMacth} />
+        <CacheRoute path="*" component={() => {
+          const path = pathname?.split('/')?.[1];
+          if (window[`remote_${path}`]) {
+            return <Skeleton />;
+          } else {
+            return <NoMacth />
+          }
+        }} />
       </CacheSwitch>
     </Suspense>
   );
