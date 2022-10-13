@@ -5,16 +5,31 @@ import loadComponent from '@/utils/loadComponent';
 const cache = new Map();
 
 interface Props {
+  /**
+   * 微服务与组件信息
+   */
   system: SystemProps
   notFound?: ReactNode
   ErrorComponent?: any
   fallback?: ReactNode
+  /**
+   * 组件或方法，目前只支持component
+   */
   type?: 'component' | 'func'
+  /**
+   * 组件本身需要的props
+   */
   [key: string]: any
 }
 
 interface SystemProps {
+  /**
+   * 微服务的routeName
+   */
   scope: string
+  /**
+   * 组件名
+   */
   module: string
 }
 
@@ -27,7 +42,6 @@ function getComponent({ scope, module }: SystemProps, ErrorComponent = null) {
   }
   const lazyComponent = React.lazy(
     loadComponent(scope, module, (error: Error) => {
-      console.error(error);
       return {
         default: () => ErrorComponent,
       };
