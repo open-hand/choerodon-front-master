@@ -123,8 +123,10 @@ const AutoRouter = () => {
       <CacheSwitch>
         {allRoutes.map(([path, component]) => <Route path={path} component={component} />)}
         <CacheRoute path="*" component={() => {
+          // return <Skeleton />;
+          // 这里是防止联邦资源未加载完成显示404的问题
           const path = pathname?.split('/')?.[1];
-          if (window[`remote_${path}`]) {
+          if (window._env_?.[`remote_${path}`]) {
             return <Skeleton />;
           } else {
             return <NoMacth />
