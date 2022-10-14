@@ -2,7 +2,7 @@
 import AppState from './c7n/AppState';
 import HeaderStore from './c7n/HeaderStore';
 import MenuStore from './c7n/MenuStore';
-
+/**@type any */
 let stores = {};
 
 if (!window.__choeordonStores__) {

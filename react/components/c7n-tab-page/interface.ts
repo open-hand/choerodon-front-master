@@ -8,8 +8,7 @@ type PageWrapperProps = {
   cache?:boolean
   className?:string
   noHeader?:Array<string | number>
-  children: any
-  onChange: (key:string | number)=>void
+  onChange?: (key:string | number)=>void
 }
 
 export {

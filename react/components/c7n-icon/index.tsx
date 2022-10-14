@@ -1,13 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
+import { C7NBaseIcon } from '@choerodon/components';
 
 export interface IconProps extends HTMLElement {
   type: string;
 }
 
 /**
- *这个组件要删掉了，用到的地方直接改成components里头的
- *
+
+ * @deprecated 废弃 使用 `import { C7NBaseIcon } from '@choerodon/components';` 替代此导入
  * @param {IconProps} props
  * @return {*}
  */
