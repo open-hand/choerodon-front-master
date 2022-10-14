@@ -17,13 +17,21 @@ import ButtonGroup from '@/components/btn-group';
 import { GroupBtnItemProps } from '@/components/btn-group/interface';
 import { ToolTipsConfigType } from './interface';
 
-export interface itemsProps extends ButtonProps {
-  display: boolean,
-  name: string,
+export interface IHeaderButtonItemRefresh {
+  icon: 'refresh',
+}
+export interface IHeaderButtonItem {
+  icon?: string,
+  name: string
+}
+export type itemsProps = ButtonProps & {
+  /**
+   * @default true
+   */
+  display?: boolean,
   handler?(): void,
   permissions?: Array<string>,
   disabled?: boolean,
-  icon?: string,
   group?: number,
   color?: ButtonColor,
   iconOnly?: boolean;
@@ -33,7 +41,7 @@ export interface itemsProps extends ButtonProps {
   preElement?: React.ReactElement,
   groupBtnItems?: GroupBtnItemProps[],
   // groupBtnConfigs
-}
+} & (IHeaderButtonItem | IHeaderButtonItemRefresh)
 
 const HeaderButtons = ({ items, children, showClassName = false }: {
   items: Array<itemsProps>,
@@ -77,9 +85,13 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         preElement,
         groupBtnItems,
         ...props
-      }, index:number) => {
-        let btn:React.ReactNode;
+      }, index: number) => {
+        let btn: React.ReactNode;
+        let itemName = name as string;
         const isRefreshIcon = icon === 'refresh' && !name;
+        if (isRefreshIcon) {
+          itemName = 'isRefreshIcon';
+        }
         const transColor = index === 0 && Number(key) === minGroupKey && !isRefreshIcon ? 'primary' as ButtonColor : color;
         if (actions) {
           const { data, ...restActionsProps } = actions;
@@ -104,7 +116,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
               display={display}
               color={transColor}
               icon={icon}
-              name={name}
+              name={itemName}
               disabled={disabled}
             />
           );
@@ -149,7 +161,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
                   color={transColor}
                   icon={icon}
                 >
-                  {name}
+                  {itemName}
                 </Button>
               </Tooltip>
               {preElement && React.cloneElement(preElement, {})}
@@ -158,7 +170,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         }
 
         return (
-          <Fragment key={name}>
+          <Fragment key={itemName}>
             {permissions && permissions.length ? (
               <Permission service={permissions}>
                 {btn}
