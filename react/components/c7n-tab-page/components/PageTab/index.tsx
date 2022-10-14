@@ -6,7 +6,7 @@ export const Context = React.createContext({});
 export interface PageTabProps {
     alwaysShow?: boolean
     title?: React.ReactNode
-    tabKey: React.Key | null
+    tabKey: string
     component: string | React.FunctionComponent<any> | React.ComponentClass<any, any>
     route?: string
 }
