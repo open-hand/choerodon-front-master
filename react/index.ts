@@ -81,8 +81,7 @@ export * from '@/functions';
 // hooks
 export * from '@/hooks';
 
-// typings
-export * from '@/typings';
+export type { UserInfoProps, useFormatMessageRetrunTypes, LanguageTypes } from './typings';
 export { default as getNearlyDays } from './utils/getNearlyDays';
 
 export { default as openCreateNotification } from '@/components/notification';
@@ -91,3 +90,6 @@ export { default as ExternalComponent } from '@/components/external-component';
 export { default as getExternalFunc } from '@/utils/getExternalFunc';
 export * from '@/utils/to';
 export * from '@/utils/log';
+export * from '@/components/provider';
+// 导出模态框
+export { Modal } from '@/components/modal';

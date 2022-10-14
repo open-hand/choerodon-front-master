@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useLocation, useHistory } from 'react-router-dom';
+import { useSafeState } from 'ahooks';
 import { Tabs } from 'choerodon-ui';
 import filter from 'lodash/filter';
 import PageTab from '../PageTab';
 import './index.less';
 import { PageWrapperProps } from '../../interface';
-import { useSafeState } from 'ahooks';
 
 const { TabPane } = Tabs;
 

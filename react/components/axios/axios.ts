@@ -1,4 +1,4 @@
-import axios, { AxiosStatic } from 'axios';
+import axios from 'axios';
 import { API_HOST } from '@/utils/constants';
 import paramsSerializer from './utils/paramsSerializer';
 import handleRequestError from './interceptors/requestErrorInterceptor';
@@ -22,11 +22,10 @@ function choerodonAxios({
   type,
 }:choerodonAxiosProps) {
   // @ts-ignore
-  const instance:C7NAxiosRequestConfig = axios.create({
+  const instance = axios.create({
     timeout: 30000,
     baseURL: API_HOST,
   });
-
   // 这里配置一个切换路由取消全部pending请求的标识
   instance.defaults.enabledCancelRoute = true;
 

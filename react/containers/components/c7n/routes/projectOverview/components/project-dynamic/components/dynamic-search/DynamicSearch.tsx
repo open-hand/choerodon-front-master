@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useMemo, useRef, useImperativeHandle,
+  useCallback, useMemo, useRef,
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { DataSet, DatePicker } from 'choerodon-ui/pro';
