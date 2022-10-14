@@ -81,8 +81,7 @@ export * from '@/functions';
 // hooks
 export * from '@/hooks';
 
-// typings
-export * from '@/typings';
+export type { UserInfoProps, useFormatMessageRetrunTypes, LanguageTypes } from './typings';
 export { default as getNearlyDays } from './utils/getNearlyDays';
 
 export { default as openCreateNotification } from '@/components/notification';

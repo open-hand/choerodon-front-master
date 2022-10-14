@@ -26,6 +26,7 @@ class AppState {
 
   @observable menuType = null; // 一个菜单对象 {id:'',name:'',type:''}
 
+  /** @type any */
   @observable userInfo = {};
 
   @observable userWizardStatus = '';
@@ -178,6 +179,7 @@ class AppState {
     this.currentTheme = data;
   }
 
+  /** @type any */
   @computed
   get getCurrentProject() {
     return this.currentProject;
@@ -233,6 +235,7 @@ class AppState {
     return !!this.userInfo.loginName;
   }
 
+  /** @type any */
   @computed
   get currentMenuType() {
     return this.menuType;

@@ -181,6 +181,7 @@ class HeaderStore {
     this.currentMsgType = newType;
   }
 
+  /** @type any */
   @computed
   get getOrgData() {
     return this.orgData;

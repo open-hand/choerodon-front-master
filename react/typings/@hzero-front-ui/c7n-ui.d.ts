@@ -1,1 +1,1 @@
-declare module '@hzero-front-ui/c7n-ui'
+declare module '@hzero-front-ui/c7n-ui';
