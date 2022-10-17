@@ -3,7 +3,13 @@ import { IntlProvider } from 'react-intl';
 import { reduce } from 'lodash';
 import { LanguageTypes } from '@/typings';
 import esModule from '@/utils/esModule';
-
+/**
+ * 多语言异步导入组件
+ * @deprecated 后续版本停止维护 使用 C7NLocaleProvider 替换 或分服务路由出直接使用SubServiceProvider
+ * @param locale
+ * @param getMessage
+ * @returns
+ */
 export default function asyncLocaleProvider(locale:LanguageTypes, getMessage:CallableFunction):React.ComponentType {
   return class AsyncLocaleProvider extends PureComponent<any, any> {
     constructor(props:any) {
