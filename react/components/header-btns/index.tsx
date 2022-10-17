@@ -16,33 +16,92 @@ import { Permission } from '@/components/permission';
 import ButtonGroup from '@/components/btn-group';
 import { GroupBtnItemProps } from '@/components/btn-group/interface';
 import { ToolTipsConfigType } from './interface';
+import { ActionProps } from '../action/interface';
+import { PermissionService } from '../permission/interface';
 
-export interface IHeaderButtonItemRefresh {
+export interface IHeaderButtonItemRefresh extends IHeaderButtonItemProps {
   icon: 'refresh',
 }
-export interface IHeaderButtonItem {
+export interface IHeaderButtonItem extends IHeaderButtonItemProps {
   icon?: string,
   name: string
 }
-export type itemsProps = ButtonProps & {
+export interface IHeaderButtonItemActions {
   /**
+   * 三个点的按钮组
+   */
+  actions?: ActionProps,
+}
+export interface IHeaderButtonItemProps {
+  /** 唯一key  */
+  key?: React.Key
+  /**
+   * 按钮名称
+   * 当为 string时会构成 唯一`key`
+   * @description `key` 属性优先级最大
+   */
+  name?: React.ReactNode
+
+  /**
+   * 点击事件
+   */
+  handler?(): void,
+  /**
+   * 按钮颜色
+   */
+  color?: ButtonColor,
+  /**
+   * 是否仅显示 Icon
+   * @deprecated 废弃属性， 当不传`name`时会不显示
+   */
+  iconOnly?: boolean;
+
+}
+interface IHeaderElementItemProps {
+  /**
+   * 自定义显示内容
+   */
+  element: React.ReactElement,
+}
+
+interface IHeaderGroupButtonItemProps {
+  /**
+   * 按钮组
+   */
+  groupBtnItems: GroupBtnItemProps[],
+}
+export type itemsProps = {
+  /**
+   * 是否展示
    * @default true
    */
-  display?: boolean,
-  handler?(): void,
-  permissions?: Array<string>,
-  disabled?: boolean,
-  group?: number,
-  color?: ButtonColor,
-  iconOnly?: boolean;
-  actions?: any,
+  display?: boolean;
+  /**
+   * 按钮 / Actions / 按钮组
+   * tooltip配置
+   */
   tooltipsConfig?: ToolTipsConfigType,
-  element?: React.ReactElement,
+  /**
+   * 权限codes
+   */
+  permissions?: PermissionService,
+  /**
+   * 是否禁止
+   * */
+  disabled?: boolean,
+  /**
+   * 元素组别
+   */
+  group?: number,
+  /**
+   * 前置自定义内容
+   */
   preElement?: React.ReactElement,
-  groupBtnItems?: GroupBtnItemProps[],
-  // groupBtnConfigs
-} & (IHeaderButtonItem | IHeaderButtonItemRefresh)
+} & (IHeaderButtonItem | IHeaderButtonItemRefresh | IHeaderButtonItemActions | IHeaderGroupButtonItemProps | IHeaderElementItemProps)
 
+type ItemInnerProps = itemsProps & IHeaderButtonItem & IHeaderButtonItemRefresh & IHeaderButtonItemActions &
+  IHeaderGroupButtonItemProps & IHeaderElementItemProps
+// TODO: 需要优化
 const HeaderButtons = ({ items, children, showClassName = false }: {
   items: Array<itemsProps>,
   children?: ReactElement,
@@ -70,10 +129,10 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
     const minGroupKey = Math.min.apply(null, displayBtn.map((value) => value.group));
     const btnGroups = map(groupBy(displayBtn, 'group'), (value, key) => {
       const Split = <Divider key={Math.random()} type="vertical" className="c7ncd-header-split" />;
-      const btns = map(value, ({
+      const btns = map(value as ItemInnerProps[], ({
         name,
         handler,
-        iconOnly = false,
+        iconOnly: propsIconOnly = false,
         permissions,
         display = true,
         icon,
@@ -84,14 +143,17 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         element,
         preElement,
         groupBtnItems,
+        key: propsKey,
         ...props
       }, index: number) => {
+        let iconOnly = propsIconOnly;
         let btn: React.ReactNode;
-        let itemName = name as string;
+        const itemName = name as string;
         const isRefreshIcon = icon === 'refresh' && !name;
         if (isRefreshIcon) {
-          itemName = 'isRefreshIcon';
+          iconOnly = true;
         }
+        const componentKey = propsKey ?? typeof itemName === 'string' ? undefined : itemName;
         const transColor = index === 0 && Number(key) === minGroupKey && !isRefreshIcon ? 'primary' as ButtonColor : color;
         if (actions) {
           const { data, ...restActionsProps } = actions;
@@ -116,7 +178,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
               display={display}
               color={transColor}
               icon={icon}
-              name={itemName}
+              name={componentKey || 'default'}
               disabled={disabled}
             />
           );
@@ -195,7 +257,6 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
     </div>
   ) : null;
 };
-
 HeaderButtons.defaultProps = {
   children: undefined,
   showClassName: false,
