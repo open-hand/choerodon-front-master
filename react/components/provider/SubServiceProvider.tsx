@@ -7,7 +7,6 @@ import 'moment/locale/zh-cn';
 import 'moment/locale/en-nz';
 import C7NLocaleProvider, { C7NLocaleProviderTypes } from '../c7n-locale-provider';
 import { ModalConsumer } from '../modal';
-import { COMPONENT_DEFAULT_PROPS } from '@/constants';
 import { useCurrentLanguage } from '@/hooks';
 
 interface SubServiceProviderProps<L extends Record<string, string>> {
@@ -78,5 +77,4 @@ function SubServiceProvider<L extends Record<string, string>>({ children, locale
   );
 }
 
-SubServiceProvider.defaultProps = COMPONENT_DEFAULT_PROPS;
 export default SubServiceProvider;
