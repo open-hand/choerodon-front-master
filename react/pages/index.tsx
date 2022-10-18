@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 import {
@@ -10,6 +10,7 @@ import { Provider } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 
 import Cookies from 'universal-cookie';
+import { message } from 'choerodon-ui';
 import ErrorImage from '@/assets/images/errorhandle.png';
 import stores from '@/containers/stores';
 
@@ -50,6 +51,17 @@ const MasterIndex = () => {
   const {
     pathname,
   } = location;
+
+  useEffect(() => {
+    window.addEventListener('error', (event) => {
+      console.log(event);
+      message.error('系统出现问题，请稍后再试');
+    }, true);
+    window.addEventListener('unhandledrejection', (event) => {
+      console.log(event);
+      message.error('系统出现问题，请稍后再试');
+    });
+  }, []);
 
   const [hasEnterpriseConfirmed, setEnterPriseConfirmed] = useLocalStorageState('hasEnterpriseConfirmed', false);
 
