@@ -173,12 +173,13 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         } else if (groupBtnItems?.length) {
           btn = (
             <ButtonGroup
+              key={componentKey}
               btnItems={groupBtnItems}
               tooltipsConfig={tooltipsConfig}
               display={display}
               color={transColor}
               icon={icon}
-              name={componentKey || 'default'}
+              name={name}
               disabled={disabled}
             />
           );
