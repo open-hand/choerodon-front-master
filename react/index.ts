@@ -6,8 +6,13 @@ export { default as store } from './containers/components/c7n/tools/store';
 
 export { default as stores } from './containers/stores';
 
-export { default as NoMatch } from '@/components/c7n-error-pages/404';
-
+import NoMatch from '@/components/c7n-error-pages/404';
+export { NoMatch };
+/**
+ *  路由不匹配时 404页面
+ * @deprecated 后续使用 NoMatch
+ */
+export const nomatch = NoMatch;
 export { default as NoAccess } from '@/components/c7n-error-pages/403';
 
 export { default as WSHandler } from '@/components/ws/WSHandler';
