@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { ErrorBoundary } from 'react-error-boundary';
 import {
   useLocalStorageState,
   useMount,
@@ -9,6 +10,7 @@ import { Provider } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 
 import Cookies from 'universal-cookie';
+import ErrorImage from '@/assets/images/errorhandle.png';
 import stores from '@/containers/stores';
 
 import Master from '@/containers/components/c7n/master';
@@ -119,7 +121,7 @@ const MasterIndex = () => {
   }, [pathname, loading, isInOutward]);
 
   const getContainer = useMemo(() => {
-    const content = isInOutward ? Outward : Master;
+    const content: any = isInOutward ? Outward : Master;
     return React.createElement(content);
   }, [isInOutward]);
 
@@ -127,20 +129,69 @@ const MasterIndex = () => {
     return (<div />);
   }
 
+  const handleFallBack = ({ error, resetErrorBoundary }: any) => {
+    console.log(error);
+    return (
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div>
+          <img style={{ width: 471 }} src={ErrorImage} alt="" />
+          <p
+            style={{
+              fontSize: 24,
+              fontFamily: 'PingFangSC-Regular, PingFang SC',
+              fontWeight: 400,
+              lineHeight: '33px',
+              textAlign: 'center',
+            }}
+          >
+            页面出错了，请
+            <span
+              role="none"
+              style={{
+                color: '#5365EA',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              【刷新】
+
+            </span>
+          </p>
+        </div>
+
+      </div>
+    );
+  };
+
   return (
-    <Provider {...stores}>
-      <MasterLocaleContainer>
-        <UIConfigInitContainer>
-          <C7NReactQueryContainer>
-            <PermissionProvider>
-              <WSProvider server={WEBSOCKET_SERVER}>
-                {getContainer}
-              </WSProvider>
-            </PermissionProvider>
-          </C7NReactQueryContainer>
-        </UIConfigInitContainer>
-      </MasterLocaleContainer>
-    </Provider>
+    <ErrorBoundary
+      FallbackComponent={handleFallBack}
+    >
+      <Provider {...stores}>
+        <MasterLocaleContainer>
+          <UIConfigInitContainer>
+            <C7NReactQueryContainer>
+              <PermissionProvider>
+                <WSProvider server={WEBSOCKET_SERVER}>
+                  {getContainer}
+                </WSProvider>
+              </PermissionProvider>
+            </C7NReactQueryContainer>
+          </UIConfigInitContainer>
+        </MasterLocaleContainer>
+      </Provider>
+    </ErrorBoundary>
+
   );
 };
 
