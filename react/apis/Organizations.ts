@@ -461,7 +461,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   loadProjectData(userId:string, selectProjectId:string) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging?enabled=true${selectProjectId ? `&project_id=${selectProjectId}` : ''}`,
+      url: `${this.prefix}/${this.orgId}/users/${userId}/page_owned_projects?current_project_id=${selectProjectId}`,
     });
   }
 
