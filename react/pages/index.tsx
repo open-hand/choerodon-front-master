@@ -55,11 +55,9 @@ const MasterIndex = () => {
   useEffect(() => {
     window.addEventListener('error', (event) => {
       console.log(event);
-      message.error('系统出现问题，请稍后再试');
     }, true);
     window.addEventListener('unhandledrejection', (event) => {
       console.log(event);
-      message.error('系统出现问题，请稍后再试');
     });
   }, []);
 
