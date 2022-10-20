@@ -26,3 +26,4 @@ export * from './iam';
 export * from './Yqcloud';
 export * from './Site';
 export * from './Multi_Language';
+export * from './RegisterOrganization';

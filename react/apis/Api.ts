@@ -1,9 +1,8 @@
 import { AxiosRequestConfig } from 'axios';
 import { set } from 'lodash';
 import axios from '@/components/axios';
-import { getProjectId, getOrganizationId } from '@/utils/getId';
+import { getProjectId, getOrganizationId, getMenuType } from '@/utils/getId';
 import globalCache from './Cache';
-import { getMenuType } from '@/utils/getMenuType';
 
 export interface RequestConfig extends AxiosRequestConfig {
   cache?: boolean
@@ -21,12 +20,13 @@ class Api<T> {
   isConfig: boolean;
 
   constructor(isConfig: boolean = false) {
-    this.isConfig = isConfig;
+    this.isConfig = isConfig as any;
   }
 
-  request(AxiosConfig: RequestConfig) {
+  // TODO 待补充类型
+  request(AxiosConfig: RequestConfig): any {
     if (this.isConfig) {
-      return AxiosConfig;
+      return AxiosConfig as any;
     }
     const { cache } = AxiosConfig;
     if (cache) {
@@ -42,6 +42,7 @@ class Api<T> {
     }
     const req = axios(AxiosConfig);
     // 避免 useQuery cancel调用异常
+    // @ts-ignore
     req.cancel = () => { };
     return req;
   }

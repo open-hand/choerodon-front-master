@@ -74,7 +74,7 @@ const CreateNotification = ({
         }
       }
     }
-  }, [progressData, oncancel]);
+  }, [progressData]);
   const text = useMemo(() => {
     switch (loading) {
       case 'failed':

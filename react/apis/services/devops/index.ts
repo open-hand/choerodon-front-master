@@ -16,3 +16,4 @@ export * from './docker-auth-configs';
 export * from './ci-pipeline-schedules';
 export * from './docker-compose';
 export * from './project-product-lib';
+export * from './Project';

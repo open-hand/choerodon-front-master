@@ -18,7 +18,8 @@ const useChangeLanguage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      window.location.reload(true);
+      // @ts-ignore
+      window.location.reload(true); // 将强制 Firefox 从服务器加载页面资源
     }
   }, [isSuccess]);
 

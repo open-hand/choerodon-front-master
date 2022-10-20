@@ -1,5 +1,6 @@
 import stores from '@/containers/stores';
 
+// @ts-ignore
 const { AppState } = stores;
 /**
  * 判断当前是否是组织层

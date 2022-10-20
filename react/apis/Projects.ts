@@ -14,6 +14,17 @@ class ProjectsApi extends Api<ProjectsApi> {
       method: 'get',
     });
   }
+
+  /**
+   * 获取项目基本信息
+   * @param projectId
+   */
+  loadBasicInfo(projectId?: string) {
+    return this.request({
+      url: `/iam/choerodon/v1/projects/${projectId}/basic_info`,
+      method: 'get',
+    });
+  }
 }
 
 const projectsApi = new ProjectsApi();

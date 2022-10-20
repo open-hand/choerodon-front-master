@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {
   FC, CSSProperties, useMemo, useCallback,
 } from 'react';
@@ -9,13 +10,13 @@ import map from 'lodash/map';
 import { useHistory } from 'react-router';
 import pick from 'lodash/pick';
 import classNames from 'classnames';
+import { difference } from 'lodash';
 import { useMenuStore } from '../../stores';
 import CollapsedBtn from './components/collapsed-btn';
 import { MenuObjProps } from '../../interface';
 import getRoutePath from '@/utils/getRoutePath';
 
 import './index.less';
-import { difference } from 'lodash';
 
 export type SubMenuProps = {
 
@@ -165,8 +166,10 @@ const SubMenus:FC<SubMenuProps> = () => {
   }, []);
 
   const renderContent = useMemo(() => {
+    const filterListCodes = ['choerodon.code.project.market.publish'];
+    const filterSub = currentRootChildrenMenu.filter((i) => !filterListCodes.includes(i.code));
     const content = (
-      map(currentRootChildrenMenu, (item:any) => {
+      map(filterSub, (item:any) => {
         const pickItemProps = pick(item, ['subMenus', 'route', 'icon', 'name', 'code', 'level']);
         const currentItem = { ...pickItemProps, menuLevel: 0, showIcon: true };
         return renderMenuItem({ ...currentItem });

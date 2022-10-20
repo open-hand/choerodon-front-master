@@ -215,9 +215,10 @@ const CreateProject = observer(() => {
   }, [record, isShowAvatar, AppState]);
 
   const getCategoryClassNames = useCallback((categoryRecord) => (classnames({
-    [`${prefixCls}-category-item`]: true,
-    [`${prefixCls}-category-item-disabled`]: categoryRecord.getState('disabled'),
-    [`${prefixCls}-category-item-selected`]: categoryRecord.isSelected,
+    [`${prefixCls}-category-container`]: true,
+    [`${prefixCls}-category-container-disabled`]: categoryRecord.getState('disabled'),
+    [`${prefixCls}-category-container-selected`]: categoryRecord.isSelected,
+    [`${prefixCls}-category-container-waterfall-selected`]: categoryRecord.isSelected && categoryRecord.get('code') === 'N_WATERFALL',
   })), []);
 
   const getTooltipContent = useCallback((categoryRecord) => {
@@ -318,17 +319,16 @@ const CreateProject = observer(() => {
       <div className={`${prefixCls}-category-label`}>项目类型</div>
       <div className={`${prefixCls}-category`}>
         {categoryDs.map((categoryRecord, index) => (
-          <div>
+          <div className={getCategoryClassNames(categoryRecord)}>
             <Tooltip title={getTooltipContent(categoryRecord)} key={categoryRecord.get('code')}>
               <div
-                className={getCategoryClassNames(categoryRecord)}
+                className="category-item"
                 onClick={() => handleCategoryClick(categoryRecord)}
                 role="none"
-                style={index + 1 % 4 === 4 ? { marginRight: 0 } : {}}
               >
-                <div className={`${prefixCls}-category-item-content`}>
-                  <div className={`${prefixCls}-category-item-icon ${prefixCls}-category-item-icon-${categoryRecord.get('code')}`} />
-                  <span className="item-name">{categoryRecord.get('name')}</span>
+                <div className="category-item-content">
+                  <div className={`category-item-content-icon category-item-content-icon-${categoryRecord.get('code')}`} />
+                  <span className="category-item-content-name">{categoryRecord.get('name')}</span>
                 </div>
               </div>
             </Tooltip>

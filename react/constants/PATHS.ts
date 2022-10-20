@@ -22,7 +22,7 @@ const ENTERPRISE_ADDRESS = '/iam/enterprise' as const;
 const AGILE_WORK_CALENDAR_PATH = '/agile/work-calendar'as const;
 
 // 用户信息路由
-const USERINFO_PATH = '/iam/user-info';
+const USERINFO_PATH = '/base/user-info';
 
 // const defaultBlackList = ['/projects', '/applications', '/knowledge/organization', '/workbench', '/market/app-market', '/iam/enterprise', '/agile/work-calendar'];
 

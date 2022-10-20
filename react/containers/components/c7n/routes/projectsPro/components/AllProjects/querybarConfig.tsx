@@ -262,6 +262,7 @@ export const defaultColumnSetConfig = [
     label: '创建时间',
     isSelected: false,
     order: 10,
+    width: 155,
   },
   {
     name: 'updateUserName',
@@ -274,6 +275,7 @@ export const defaultColumnSetConfig = [
     label: '更新时间',
     isSelected: false,
     order: 12,
+    width: 155,
   },
 ];
 export const defaultBusinessColumnSetConfig = [
@@ -283,5 +285,6 @@ export const defaultBusinessColumnSetConfig = [
     label: '健康状态',
     isSelected: true,
     order: 2,
+    width: 155,
   },
 ];
