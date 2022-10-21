@@ -10,7 +10,6 @@ import { Button, Tooltip } from 'choerodon-ui/pro';
 import './index.less';
 import classNames from 'classnames';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
-import { ButtonProps } from 'choerodon-ui/pro/lib/button/Button';
 import Action from '@/components/action';
 import { Permission } from '@/components/permission';
 import ButtonGroup from '@/components/btn-group';
@@ -24,7 +23,6 @@ export interface IHeaderButtonItemRefresh extends IHeaderButtonItemProps {
 }
 export interface IHeaderButtonItem extends IHeaderButtonItemProps {
   icon?: string,
-  name: string
 }
 export interface IHeaderButtonItemActions {
   /**
@@ -69,6 +67,7 @@ interface IHeaderGroupButtonItemProps {
    * 按钮组
    */
   groupBtnItems: GroupBtnItemProps[],
+  name: string
 }
 export type itemsProps = {
   /**
@@ -262,5 +261,4 @@ HeaderButtons.defaultProps = {
   children: undefined,
   showClassName: false,
 };
-
 export default HeaderButtons;
