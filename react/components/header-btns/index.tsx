@@ -10,6 +10,7 @@ import { Button, Tooltip } from 'choerodon-ui/pro';
 import './index.less';
 import classNames from 'classnames';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
+import { ButtonProps } from 'choerodon-ui/pro/lib/button/Button';
 import Action from '@/components/action';
 import { Permission } from '@/components/permission';
 import ButtonGroup from '@/components/btn-group';
@@ -21,7 +22,7 @@ import { PermissionService } from '../permission/interface';
 export interface IHeaderButtonItemRefresh extends IHeaderButtonItemProps {
   icon: 'refresh',
 }
-export interface IHeaderButtonItem extends IHeaderButtonItemProps {
+export type IHeaderButtonItem = IHeaderButtonItemProps & ButtonProps & {
   icon?: string,
 }
 export interface IHeaderButtonItemActions {
@@ -261,4 +262,5 @@ HeaderButtons.defaultProps = {
   children: undefined,
   showClassName: false,
 };
+
 export default HeaderButtons;
