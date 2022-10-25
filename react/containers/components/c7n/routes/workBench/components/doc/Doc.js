@@ -152,7 +152,7 @@ const Doc = () => {
   }
 
   const loadMore = async () => {
-    await docDs.query(docDs.currentPage + 1);
+    await docDs.queryMore(docDs.currentPage + 1);
   };
 
   return (
