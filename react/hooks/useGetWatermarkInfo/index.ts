@@ -1,4 +1,6 @@
-import AppState from '@/containers/stores/c7n/AppState';
+import stores from '@/containers/stores';
+
+const { AppState } = stores;
 
 interface WatermarkInfoProps {
   enable?: boolean,
