@@ -5,9 +5,10 @@ import { useLocation } from 'react-router';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'moment/locale/en-nz';
-import C7NLocaleProvider, { C7NLocaleProviderTypes } from '../c7n-locale-provider';
+import { C7NLocaleProviderTypes } from '../c7n-locale-provider';
 import { ModalConsumer } from '../modal';
 import { useCurrentLanguage } from '@/hooks';
+import { asyncLocaleProvider } from '@/hoc';
 
 interface SubServiceProviderProps<L extends Record<string, string>> {
   /**
@@ -64,8 +65,11 @@ function SubServiceProvider<L extends Record<string, string>>({ children, locale
     } as const;
     moment.locale(languageMap[language]);
   }, [language]);
+
+  const IntlProviderAsync = asyncLocaleProvider(language, () => localeProviderConfig.importer(language));
+
   return (
-    <C7NLocaleProvider {...localeProviderConfig}>
+    <IntlProviderAsync>
       <ModalProvider location={location}>
         <ModalConsumer>
           <TooltipProvider>
@@ -73,7 +77,7 @@ function SubServiceProvider<L extends Record<string, string>>({ children, locale
           </TooltipProvider>
         </ModalConsumer>
       </ModalProvider>
-    </C7NLocaleProvider>
+    </IntlProviderAsync>
   );
 }
 
