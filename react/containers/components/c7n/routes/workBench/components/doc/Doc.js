@@ -96,7 +96,8 @@ const Doc = () => {
 
   function renderItems() {
     return map(docDs.toData(), ({
-      knowledgeBaseName, orgFlag, id, baseId, organizationId, imageUrl, title, projectId, projectName, organizationName, updatedUserList: originUpdatedUserList, lastUpdateDate,
+      knowledgeBaseName, orgFlag, id, baseId, organizationId, imageUrl, title, projectId, projectName, organizationName,
+      updatedUserList: originUpdatedUserList, lastUpdateDate, approve,
     }) => {
       const updatedUserList = originUpdatedUserList ? originUpdatedUserList.filter(Boolean) : [];
       return (
@@ -104,7 +105,7 @@ const Doc = () => {
           role="none"
           className={`${clsPrefix}-item`}
           onClick={goKnowledgeLink.bind(this, {
-            baseId, orgFlag, organizationId, spaceId: id, baseName: knowledgeBaseName, projectId, name: orgFlag ? organizationName : projectName,
+            baseId, orgFlag, organizationId, spaceId: id, baseName: knowledgeBaseName, projectId, name: orgFlag ? organizationName : projectName, approve,
           })}
         >
           {orgFlag ? (
