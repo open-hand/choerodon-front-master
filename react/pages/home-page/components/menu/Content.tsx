@@ -72,13 +72,11 @@ const Menu = () => {
       tree,
       callback: findCurrentRoute,
     });
-    const displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
-    if (getInject('configuration.master-global:customTitleRoute')) {
-      const customTitleRouteMap = getInject('configuration.master-global:customTitleRoute');
-      if (customTitleRouteMap.get(pathname)) {
-        document.title = customTitleRouteMap.get(pathname);
-        return;
-      }
+    let displayTitle = '';
+    if (getInject('configuration.master-global:customTitle')) {
+      displayTitle = HEADERER_TITLE;
+    } else {
+      displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
     }
     // todo... 这里逻辑可以拆分为一个hook，监听activeMenu变化而变化，这个逻辑是肯定要拆到全局去的
     if (activeMenu && activeMenu.route === pathname && pathname !== '/') {
