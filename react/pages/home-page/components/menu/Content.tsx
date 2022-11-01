@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import { useLocation } from 'react-router';
 import { observer } from 'mobx-react-lite';
+import { get as getInject } from '@choerodon/inject';
 import { useMenuStore } from './stores';
 import MainMenu from './components/main-menu';
 import SubMenu from './components/sub-menu';
@@ -72,6 +73,13 @@ const Menu = () => {
       callback: findCurrentRoute,
     });
     const displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
+    if (getInject('configuration.master-global:customTitleRoute')) {
+      const customTitleRouteMap = getInject('configuration.master-global:customTitleRoute');
+      if (customTitleRouteMap.get(pathname)) {
+        document.title = customTitleRouteMap.get(pathname);
+        return;
+      }
+    }
     // todo... 这里逻辑可以拆分为一个hook，监听activeMenu变化而变化，这个逻辑是肯定要拆到全局去的
     if (activeMenu && activeMenu.route === pathname && pathname !== '/') {
       // document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${menuType.type !== 'site' ? `${menuType.name} – ` : ''} ${displayTitle}`;
