@@ -73,8 +73,8 @@ const Menu = () => {
       callback: findCurrentRoute,
     });
     const displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
-    if (getInject('master-global:customTitleRoute')) {
-      const customTitleRouteMap = getInject('master-global:customTitleRoute');
+    if (getInject('configuration.master-global:customTitleRoute')) {
+      const customTitleRouteMap = getInject('configuration.master-global:customTitleRoute');
       if (customTitleRouteMap.get(pathname)) {
         document.title = customTitleRouteMap.get(pathname);
         return;
