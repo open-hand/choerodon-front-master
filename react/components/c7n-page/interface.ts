@@ -17,7 +17,6 @@ type PageContentProps = {
   className?:string
   code?:string
   style?:CSSProperties
-  AppState:any
 }
 
 export {

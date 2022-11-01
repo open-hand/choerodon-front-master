@@ -5,7 +5,7 @@ import { toJS } from 'mobx';
 import getQuestionTreeData from '../../../utils/getQuestionTreeData';
 
 export default (({
-  organizationId, questionStore, selectedProjectId, cacheStore,
+  organizationId, questionStore, selectedProjectId, cacheStore, height,
 }) => ({
   id: `backlog_issues-${organizationId}`,
   autoQuery: false,
@@ -51,6 +51,8 @@ export default (({
             organizationId,
           };
           cacheStore.setTodoQuestions(tempObj);
+          const treeData = getQuestionTreeData(tempArr);
+          questionStore.setTreeData(treeData);
           return tempArr;
         } catch (e) {
           return response;
@@ -60,8 +62,10 @@ export default (({
   },
   events: {
     load: ({ dataSet }) => {
-      const treeData = getQuestionTreeData(dataSet.toData());
-      questionStore.setTreeData(treeData);
+      // console.log('dataSet.toData()', dataSet.toData());
+      // const treeData = getQuestionTreeData(dataSet.toData());
+      // console.log('treeData', treeData);
+      // questionStore.setTreeData(treeData);
     },
   },
 }));

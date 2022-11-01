@@ -10,7 +10,7 @@ import {
   Spin,
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
-import { mount, get as cherodonGet } from '@choerodon/inject';
+import { mount, get as cherodonGet, has } from '@choerodon/inject';
 import { Permission } from '@/components/permission';
 import getSearchString from '@/utils/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
@@ -124,15 +124,6 @@ class Masters extends Component {
         });
       }
     });
-    const e = window.onerror;
-    window.onerror = function (err) {
-      if (err === 'ResizeObserver loop limit exceeded') {
-        console.warn('Ignored: ResizeObserver loop limit exceeded');
-        return false;
-      }
-      // eslint-disable-next-line prefer-rest-params
-      return e(...arguments);
-    };
     this.initMenuType(this.props);
     cherodonGet('base-pro:handleGetHelpDocUrl')
       && cherodonGet('base-pro:handleGetHelpDocUrl')(
@@ -154,7 +145,9 @@ class Masters extends Component {
     const oldParams = new URLSearchParams(oldProps.location.search);
     if (newParams.get('organizationId') !== oldParams.get('organizationId')) {
       headerStore.deleteAnnouncement('saas_restdays_announcement');
-      this.getSaaSUserRestDays(newParams.get('organizationId'));
+      if (has('base-pro:getSaaSUserRestDays')) {
+        cherodonGet('base-pro:getSaaSUserRestDays')(newParams.get('organizationId'), this);
+      }
     }
   }
 
@@ -177,7 +170,7 @@ class Masters extends Component {
 
   setDocUrl = async (params) => {
     if (JSON.stringify(params) !== '{}') {
-      this.props.AppState.setDocUrl('https://open.hand-china.com/document-center/doc/product/10177/10737?doc_id=250000&doc_code=118818');
+      this.props.AppState.setDocUrl('https://www.zknow.com/choerodonDoc/%E4%BB%8B%E7%BB%8D/');
     }
   };
 
@@ -237,45 +230,20 @@ class Masters extends Component {
     }
   }
 
-  // 获取SaaS 新用户的免费使用天数提醒
-  getSaaSUserRestDays = async (orgId) => {
-    const {
-      organizationId,
-    } = this.props.AppState.currentMenuType || {};
-    const reqOrgId = orgId || organizationId;
-    if (window._env_.BUSINESS || !organizationId) {
-      return;
-    }
-    try {
-      const res = await getSaaSUserAvilableDays(reqOrgId);
-      if (res && res.failed) {
-        message.error(res?.message);
-        return;
-      }
-      const { HeaderStore } = this.props;
-
-      const identity = 'saas_restdays_announcement';
-      if (res && (!localStorage.saaslastClosedId || localStorage.saaslastClosedId !== res?.link)) {
-        HeaderStore.innsertAnnouncement(identity, {
-          data: res,
-          onCloseCallback: () => {
-            window.localStorage.setItem('saaslastClosedId', `${res?.link}`);
-          },
-          component: <SaaSUserAnnouncement data={res} />,
-        });
-      }
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
   componentDidMount() {
+    const {
+      location, MenuStore, HeaderStore, history, AppState,
+    } = this.props;
+    const { pathname, search } = location;
+    const menuType = parseQueryToMenuType(search);
     this.initFavicon();
 
     // 获取系统公告
     this.getPlatformAnnouncement();
     // 获取适用天数in the base-pro, only applied in the hand version
-    this.getSaaSUserRestDays();
+    if (has('base-pro:getSaaSUserRestDays')) {
+      cherodonGet('base-pro:getSaaSUserRestDays')(menuType?.orgId, this);
+    }
   }
 
   /**

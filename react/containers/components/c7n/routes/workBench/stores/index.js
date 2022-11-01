@@ -27,7 +27,7 @@ export function useWorkBenchStore() {
 export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
-    AppState: { currentMenuType: { organizationId, projectId }, currentModules },
+    AppState: { currentMenuType: { organizationId, projectId }, currentModules, getUserId },
     AppState,
     history,
   } = props;
@@ -97,6 +97,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     openCurrent,
     closeCurrent,
     detailPropsCurrent,
+    getUserId,
   };
 
   return (

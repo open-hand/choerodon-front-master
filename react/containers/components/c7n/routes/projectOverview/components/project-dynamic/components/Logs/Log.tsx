@@ -1,7 +1,6 @@
 import { merge } from 'lodash';
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router';
-// @ts-ignore
 import queryString from 'query-string';
 import { IIssueType } from '@/types';
 import AppState from '@/containers/stores/c7n/AppState';

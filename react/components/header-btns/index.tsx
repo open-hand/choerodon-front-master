@@ -10,31 +10,97 @@ import { Button, Tooltip } from 'choerodon-ui/pro';
 import './index.less';
 import classNames from 'classnames';
 import { ButtonColor } from 'choerodon-ui/pro/lib/button/enum';
-import { ButtonProps } from 'choerodon-ui/pro/lib/button/Button';
 import Action from '@/components/action';
 import { Permission } from '@/components/permission';
 import ButtonGroup from '@/components/btn-group';
 import { GroupBtnItemProps } from '@/components/btn-group/interface';
 import { ToolTipsConfigType } from './interface';
+import { ActionProps } from '../action/interface';
+import { PermissionService } from '../permission/interface';
 
-export interface itemsProps extends ButtonProps {
-  display: boolean,
-  name: string,
-  handler?(): void,
-  permissions?: Array<string>,
-  disabled?: boolean,
+export interface IHeaderButtonItemRefresh extends IHeaderButtonItemProps {
+  icon: 'refresh',
+}
+export interface IHeaderButtonItem extends IHeaderButtonItemProps {
   icon?: string,
-  group?: number,
+}
+export interface IHeaderButtonItemActions {
+  /**
+   * 三个点的按钮组
+   */
+  actions?: ActionProps,
+}
+export interface IHeaderButtonItemProps {
+  /** 唯一key  */
+  key?: React.Key
+  /**
+   * 按钮名称
+   * 当为 string时会构成 唯一`key`
+   * @description `key` 属性优先级最大
+   */
+  name?: React.ReactNode
+
+  /**
+   * 点击事件
+   */
+  handler?(): void,
+  /**
+   * 按钮颜色
+   */
   color?: ButtonColor,
+  /**
+   * 是否仅显示 Icon
+   * @deprecated 废弃属性， 当不传`name`时会不显示
+   */
   iconOnly?: boolean;
-  actions?: any,
-  tooltipsConfig?: ToolTipsConfigType,
-  element?: React.ReactElement,
-  preElement?: React.ReactElement,
-  groupBtnItems?: GroupBtnItemProps[],
-  // groupBtnConfigs
+
+}
+interface IHeaderElementItemProps {
+  /**
+   * 自定义显示内容
+   */
+  element: React.ReactElement,
 }
 
+interface IHeaderGroupButtonItemProps {
+  /**
+   * 按钮组
+   */
+  groupBtnItems: GroupBtnItemProps[],
+  name: string
+}
+export type itemsProps = {
+  /**
+   * 是否展示
+   * @default true
+   */
+  display?: boolean;
+  /**
+   * 按钮 / Actions / 按钮组
+   * tooltip配置
+   */
+  tooltipsConfig?: ToolTipsConfigType,
+  /**
+   * 权限codes
+   */
+  permissions?: PermissionService,
+  /**
+   * 是否禁止
+   * */
+  disabled?: boolean,
+  /**
+   * 元素组别
+   */
+  group?: number,
+  /**
+   * 前置自定义内容
+   */
+  preElement?: React.ReactElement,
+} & (IHeaderButtonItem | IHeaderButtonItemRefresh | IHeaderButtonItemActions | IHeaderGroupButtonItemProps | IHeaderElementItemProps)
+
+type ItemInnerProps = itemsProps & IHeaderButtonItem & IHeaderButtonItemRefresh & IHeaderButtonItemActions &
+  IHeaderGroupButtonItemProps & IHeaderElementItemProps
+// TODO: 需要优化
 const HeaderButtons = ({ items, children, showClassName = false }: {
   items: Array<itemsProps>,
   children?: ReactElement,
@@ -62,10 +128,10 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
     const minGroupKey = Math.min.apply(null, displayBtn.map((value) => value.group));
     const btnGroups = map(groupBy(displayBtn, 'group'), (value, key) => {
       const Split = <Divider key={Math.random()} type="vertical" className="c7ncd-header-split" />;
-      const btns = map(value, ({
+      const btns = map(value as ItemInnerProps[], ({
         name,
         handler,
-        iconOnly = false,
+        iconOnly: propsIconOnly = false,
         permissions,
         display = true,
         icon,
@@ -76,10 +142,17 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         element,
         preElement,
         groupBtnItems,
+        key: propsKey,
         ...props
-      }, index:number) => {
-        let btn:React.ReactNode;
+      }, index: number) => {
+        let iconOnly = propsIconOnly;
+        let btn: React.ReactNode;
+        const itemName = name as string;
         const isRefreshIcon = icon === 'refresh' && !name;
+        if (isRefreshIcon) {
+          iconOnly = true;
+        }
+        const componentKey = propsKey ?? typeof itemName === 'string' ? undefined : itemName;
         const transColor = index === 0 && Number(key) === minGroupKey && !isRefreshIcon ? 'primary' as ButtonColor : color;
         if (actions) {
           const { data, ...restActionsProps } = actions;
@@ -99,6 +172,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         } else if (groupBtnItems?.length) {
           btn = (
             <ButtonGroup
+              key={componentKey}
               btnItems={groupBtnItems}
               tooltipsConfig={tooltipsConfig}
               display={display}
@@ -149,7 +223,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
                   color={transColor}
                   icon={icon}
                 >
-                  {name}
+                  {itemName}
                 </Button>
               </Tooltip>
               {preElement && React.cloneElement(preElement, {})}
@@ -158,7 +232,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         }
 
         return (
-          <Fragment key={name}>
+          <Fragment key={itemName}>
             {permissions && permissions.length ? (
               <Permission service={permissions}>
                 {btn}
@@ -183,10 +257,8 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
     </div>
   ) : null;
 };
-
 HeaderButtons.defaultProps = {
   children: undefined,
   showClassName: false,
 };
-
 export default HeaderButtons;

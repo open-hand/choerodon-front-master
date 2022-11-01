@@ -18,7 +18,7 @@ export interface Iprops {
   className: string
   labelContainerWidth: number
   agile: boolean
-  sizeObserver: boolean | undefined
+  sizeObserver?: boolean
 }
 
 // @ts-ignore
