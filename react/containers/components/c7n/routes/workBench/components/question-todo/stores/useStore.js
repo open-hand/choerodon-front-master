@@ -16,6 +16,7 @@ export default function useStore(history) {
     setSize(data) {
       this.size = data;
     },
+
     totalCount: 0,
     get getTotalCount() {
       return this.totalCount;

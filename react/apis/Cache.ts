@@ -1,6 +1,5 @@
 type CacheKey = string
 type Callback = (data: any) => void
-// eslint-disable-next-line no-shadow
 enum STATUS {
   PENDING = 'pending',
   SUCCESS = 'success',

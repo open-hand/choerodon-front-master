@@ -1,15 +1,21 @@
 import { get, has } from '@choerodon/inject';
+import type { History } from 'history';
 import { historyPushMenu } from '@/utils';
-import HeaderStore from '../containers/stores/c7n/HeaderStore';
-import MenuStore, { getMenuType } from '../containers/stores/c7n/MenuStore';
-import AppState from '../containers/stores/c7n/AppState';
 import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
+import { stores } from '..';
 
-export default async function handleClickProject(data, history, historyPush) {
+/**
+ * 点击跳转到项目 会加载项目菜单等信息
+ * //TODO data类型待补充 可以和 to 工具类融合
+ * @param data
+ * @param history
+ * @param historyPush
+ */
+export default async function handleClickProject(data: any, history: History, historyPush?: any) {
   const {
     id, name, organizationId, category,
   } = data;
-
+  const { MenuStore, AppState, HeaderStore } = stores;
   const selfEmail = AppState.getUserInfo?.email;
 
   // 如果是pro或者huawei

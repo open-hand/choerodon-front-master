@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useEffect, useState, useRef } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import classnames from 'classnames';
@@ -204,6 +205,17 @@ const WorkBenchDashboard = (props) => {
 
   const renderGridLayouts = () => {
     const layoutData = dashboardDs.toData();
+    layoutData.forEach((item) => {
+      if (item.cardCode === 'starTarget') {
+        if (document.body.clientWidth <= 1300) {
+          item.h = 2.3;
+          item.minH = 2.3;
+        } else {
+          item.h = 2;
+          item.minH = 2;
+        }
+      }
+    });
     const tempObj = {
       className: `${prefixCls}-layout`,
       onLayoutChange,
