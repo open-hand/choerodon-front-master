@@ -21,7 +21,7 @@ import { PermissionService } from '../permission/interface';
 export interface IHeaderButtonItemRefresh extends IHeaderButtonItemProps {
   icon: 'refresh',
 }
-export interface IHeaderButtonItem extends IHeaderButtonItemProps {
+export type IHeaderButtonItem = IHeaderButtonItemProps & ButtonProps & {
   icon?: string,
 }
 export interface IHeaderButtonItemActions {

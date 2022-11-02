@@ -4,6 +4,7 @@ declare global {
     interface Window {
         /** 内部的to 跳转方法使用的history */
         ___choeordonHistory__: History | null
+        __choeordonStores__: any
         _env_: {
             localRouteName: any
             YQ_FEEDBACK_SDK: string

@@ -189,15 +189,15 @@ const MasterIndex = () => {
     >
       <Provider {...stores}>
         <MasterLocaleContainer>
-          <UIConfigInitContainer>
-            <C7NReactQueryContainer>
+          <C7NReactQueryContainer>
+            <UIConfigInitContainer>
               <PermissionProvider>
                 <WSProvider server={WEBSOCKET_SERVER}>
                   {getContainer}
                 </WSProvider>
               </PermissionProvider>
-            </C7NReactQueryContainer>
-          </UIConfigInitContainer>
+            </UIConfigInitContainer>
+          </C7NReactQueryContainer>
         </MasterLocaleContainer>
       </Provider>
     </ErrorBoundary>

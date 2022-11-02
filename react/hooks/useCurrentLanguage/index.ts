@@ -1,6 +1,8 @@
 import { useLocalStorageState, useUpdateEffect } from 'ahooks';
 import { LanguageTypes } from '@/typings';
-import AppState from '@/containers/stores/c7n/AppState';
+import stores from '@/containers/stores';
+
+const { AppState } = stores;
 
 /**
  * 获取当前的系统语言

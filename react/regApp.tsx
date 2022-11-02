@@ -27,7 +27,5 @@ const App = () => (
     </MasterLocaleContainer>
   </Provider>
 );
-const rootNode = document.getElementById('app');
 
-// 入口,react 18之后可以替换为createRoot
-render(<App />, rootNode);
+export default App;

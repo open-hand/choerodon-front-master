@@ -211,6 +211,7 @@ const SubMenus:FC<SubMenuProps> = () => {
         openKeys={savedOpenKeys}
         mode="inline"
         onOpenChange={handleOpenChange}
+        style={{ overflow: 'hidden overlay' }}
       >
         {renderContent}
       </Menu>

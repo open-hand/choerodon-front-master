@@ -18,7 +18,10 @@ import { useFormatMessage, useFormatCommon } from '@/hooks';
 
 // eslint-disable-next-line no-undef
 const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
-const Store = createContext();
+// eslint-disable-next-line no-underscore-dangle
+window.___choeordonWorkBenchContenxt__ = window.___choeordonWorkBenchContenxt__ || createContext();
+// eslint-disable-next-line no-underscore-dangle
+const Store = window.___choeordonWorkBenchContenxt__;
 
 export function useWorkBenchStore() {
   return useContext(Store);
