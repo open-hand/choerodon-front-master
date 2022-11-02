@@ -1,6 +1,9 @@
-import MenuStore from '@/containers/stores/c7n/MenuStore';
+import PropMenuStore from '@/containers/stores/c7n/MenuStore';
 
 export default function cursiveSetCorrectId(source: any[], correctId: any, flag: number) {
+  // eslint-disable-next-line no-underscore-dangle
+  const MenuStore = window.__choeordonStores__.MenuStore || PropMenuStore;
+
   let tempCorrectedId = correctId;
   let tempFlag = flag;
   for (let i = 0; i < source.length; i += 1) {
