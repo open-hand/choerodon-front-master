@@ -51,7 +51,6 @@ const QuickLink = observer(() => {
         } = event.target;
         const isBottom = scrollTop + clientHeight + 20 > scrollHeight;
         if (isBottom && quickLinkDs.status === 'ready' && quickLinkUseStore.getListHasMore) {
-          console.log('yes');
           handleLoadMore();
         }
       });

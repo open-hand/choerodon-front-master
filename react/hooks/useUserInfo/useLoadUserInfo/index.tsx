@@ -12,7 +12,6 @@ import { USER_INFO_QUERY_KEY } from '../CONSTANTS';
  */
 const useLoadUserInfo = (queryOptions?:Omit<UseQueryOptions, 'queryKey' | 'queryFn'>):UseQueryResult => {
   const handleSuccess = useCallback((data:any) => {
-    console.log(data);
   }, []);
 
   return useQuery(USER_INFO_QUERY_KEY, () => usersApi.getUserInfo(), {
