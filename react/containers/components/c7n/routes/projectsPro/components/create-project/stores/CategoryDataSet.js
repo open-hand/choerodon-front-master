@@ -92,7 +92,6 @@ function setRequireModule({ dataSet, selected, categoryCodes }) {
     const hasSelected = dataSet.some(
       (eachRecord) => codeArr.includes(eachRecord.get('code')) && eachRecord.isSelected,
     );
-    console.log(hasSelected);
     if (!hasSelected) {
       dataSet.unSelect(findRecord);
     }

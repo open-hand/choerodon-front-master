@@ -139,49 +139,46 @@ const MasterIndex = () => {
     return (<div />);
   }
 
-  const handleFallBack = ({ error, resetErrorBoundary }: any) => {
-    console.log(error);
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div>
-          <img style={{ width: 471 }} src={ErrorImage} alt="" />
-          <p
+  const handleFallBack = ({ error, resetErrorBoundary }: any) => (
+    <div
+      style={{
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div>
+        <img style={{ width: 471 }} src={ErrorImage} alt="" />
+        <p
+          style={{
+            fontSize: 24,
+            fontFamily: 'PingFangSC-Regular, PingFang SC',
+            fontWeight: 400,
+            lineHeight: '33px',
+            textAlign: 'center',
+          }}
+        >
+          页面出错了，请
+          <span
+            role="none"
             style={{
-              fontSize: 24,
-              fontFamily: 'PingFangSC-Regular, PingFang SC',
-              fontWeight: 400,
-              lineHeight: '33px',
-              textAlign: 'center',
+              color: '#5365EA',
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              window.location.reload();
             }}
           >
-            页面出错了，请
-            <span
-              role="none"
-              style={{
-                color: '#5365EA',
-                cursor: 'pointer',
-              }}
-              onClick={() => {
-                window.location.reload();
-              }}
-            >
-              【刷新】
+            【刷新】
 
-            </span>
-          </p>
-        </div>
-
+          </span>
+        </p>
       </div>
-    );
-  };
+
+    </div>
+  );
 
   return (
     <ErrorBoundary

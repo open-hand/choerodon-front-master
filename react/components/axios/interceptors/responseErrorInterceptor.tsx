@@ -14,7 +14,6 @@ const regTokenExpired = /(PERMISSION_ACCESS_TOKEN_NULL|error.permission.accessTo
 
 export default function handelResponseError(error: AxiosError) {
   const { response } = error;
-  console.log(error, 'error');
   if (response) {
     const { status } = response;
     switch (status) {

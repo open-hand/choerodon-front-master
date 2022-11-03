@@ -19,7 +19,6 @@ async function getFunc(scope: string, module: string) {
   const lazyComponent = await loadComponent(scope, module, (error: Error) => ({
     default: noop,
   }));
-  console.log('lazyComponent===', lazyComponent);
   scopeItem.set(module, lazyComponent);
   return lazyComponent;
 }
@@ -31,7 +30,6 @@ export default async function getExternalFunc(props: Props) {
 
   // @ts-ignore
   if (!scope || !funcName || !window[scope]) {
-    console.log('no value');
     return noop;
   }
 

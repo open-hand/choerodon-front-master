@@ -2,12 +2,14 @@ import { AxiosRequestConfig } from 'axios';
 import {
   getAccessToken,
 } from '@/utils';
-import MenuStore from '@/containers/stores/c7n/MenuStore';
+import PropMenuStore from '@/containers/stores/c7n/MenuStore';
 import cursiveSetCorrectId from '../utils/cursiveSetCorrectedId';
 
 export default function addCustomHeader(config: AxiosRequestConfig) {
   // eslint-disable-next-line no-underscore-dangle
   const { AppState } = window.__choeordonStores__ || {};
+  // eslint-disable-next-line no-underscore-dangle
+  const MenuStore = window.__choeordonStores__.MenuStore || PropMenuStore;
   const newConfig = config;
   const str = window.location.hash.split('?')[1];
   const urlSearchParam = new URLSearchParams(str);
