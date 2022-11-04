@@ -18,10 +18,12 @@ const ExtraButton:FC<ExtraButtonProps> = (props) => {
   const [btnVisible, setBtnVisible] = useState(false);
 
   useEffect(() => {
-    axios.get(`/iam/v1/huawei/check_saas?tenant_id=${AppState?.currentMenuType?.organizationId}`).then((res) => {
-      setBtnVisible(res);
-    });
-  }, []);
+    if (AppState?.currentMenuType?.organizationId) {
+      axios.get(`/iam/v1/huawei/check_saas?tenant_id=${AppState?.currentMenuType?.organizationId}`).then((res) => {
+        setBtnVisible(res);
+      });
+    }
+  }, [AppState?.currentMenuType?.organizationId]);
 
   const handleUpgradeBtnClick = () => {
     window.open('https://marketplace.huaweicloud.com/contents/b18fc5c6-d952-4f16-9770-9ab782d0d4ed');
