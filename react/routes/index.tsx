@@ -24,6 +24,28 @@ const AutoRouter = React.lazy(() => import('./routesCollections'));
 const RouteIndex = () => {
   const match = useRouteMatch();
 
+  const redirectWorkBench = get('configuration.master-global:redirectWorkBench');
+
+  const workBenchRoute = () => {
+    if (redirectWorkBench) {
+      return (
+        <Route
+          exact
+          path={`${match.url}workbench`}
+        >
+          <Redirect to={redirectWorkBench} />
+        </Route>
+      );
+    }
+    return (
+      <PermissionRoute
+        exact
+        path={`${match.url}workbench`}
+        component={WorkBench}
+      />
+    );
+  };
+
   return (
     <div
       className="c7ncd-routesIndex"
@@ -32,17 +54,7 @@ const RouteIndex = () => {
         <Switch>
           <Route exact path={`${match.url}projects`} component={ProjectsPro} />
           <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
-          <PermissionRoute
-            exact
-            path={`${match.url}workbench`}
-            component={WorkBench}
-          />
-          <PermissionRoute
-            service={['choerodon.code.project.project.overview.ps.default']}
-            exact
-            path={`${match.url}agile/project-overview`}
-            component={ProjectOverview}
-          />
+          {workBenchRoute()}
           <Route exact path="/">
             <Redirect to={`${match.url}workbench`} />
           </Route>
