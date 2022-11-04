@@ -32,9 +32,12 @@ const RouteIndex = () => {
         <Route
           exact
           path={`${match.url}workbench`}
-        >
-          <Redirect to={redirectWorkBench} />
-        </Route>
+          // @ts-ignore
+          component={() => {
+            window.location.href = `${window.location.origin}/#${redirectWorkBench}`;
+            return null;
+          }}
+        />
       );
     }
     return (
