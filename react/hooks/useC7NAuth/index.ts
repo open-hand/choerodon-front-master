@@ -62,7 +62,6 @@ function useC7NAuth(autoAuth?:boolean) {
           window.location.href = `${window.location.href.replace(/[&?]redirectFlag.*/g, '').split('/#/')[0]}/#/workbench?`
           + `id=${res.tenantId}&name=${res.tenantName}&organizationId=${res.tenantId}&type=organization`;
         }
-
         window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
         // try {
         //   openLink({ url: window.location.href.replace(/[&?]redirectFlag.*/g, '') }).then(() => close({}));

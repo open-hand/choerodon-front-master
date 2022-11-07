@@ -47,6 +47,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore
   }), []);
 
   const intlPrefix = 'c7ncd.project';
+  const prefix = '.c7ncd-allprojectslist-table';
 
   const formatProject = useFormatMessage(intlPrefix);
   const formatCommon = useFormatCommon();
@@ -60,6 +61,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore
     formatProject,
     formatCommon,
     projectListDataSet,
+    prefix,
   };
 
   return (

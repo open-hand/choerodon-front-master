@@ -10,10 +10,6 @@ export interface C7NAxiosRequestConfig {
   application?: 'default' | 'ui',
 }
 
-declare module 'axios' {
-  interface AxiosRequestConfig extends C7NAxiosRequestConfig{}
-}
-
 const uiAxiosInstance = choerodonAxios({
   type: AXIOS_TYPE_UI,
 });
@@ -21,7 +17,6 @@ const uiAxiosInstance = choerodonAxios({
 const c7nAxios = choerodonAxios({
   type: AXIOS_TYPE_DEFAULT,
 });
-
 export {
   uiAxiosInstance,
 };

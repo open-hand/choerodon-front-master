@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import map from 'lodash/map';
 import { observer } from 'mobx-react-lite';
-import { Tooltip, Spin } from 'choerodon-ui/pro';
+import { Tooltip, Spin, message } from 'choerodon-ui/pro';
 import ScrollContext from 'react-infinite-scroll-component';
 import moment from 'moment';
 import { get as injectGet } from '@choerodon/inject';
@@ -36,8 +36,12 @@ const Doc = () => {
   );
 
   const goKnowledgeLink = ({
-    baseId, orgFlag, projectId, organizationId, spaceId, baseName, name,
+    baseId, orgFlag, projectId, organizationId, spaceId, baseName, name, approve,
   }) => {
+    if (!approve) {
+      message.info('暂无查看权限');
+      return;
+    }
     // 敏捷跳转方法 知识库有部分内容依赖敏捷内容，故若无敏捷内的方法，则说明敏捷基础服务未安装 ，则不进行跳转
     injectGet('agile:to') && injectGet('agile:to')(`/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}`, {
       type: orgFlag ? 'org' : 'project',
@@ -92,7 +96,8 @@ const Doc = () => {
 
   function renderItems() {
     return map(docDs.toData(), ({
-      knowledgeBaseName, orgFlag, id, baseId, organizationId, imageUrl, title, projectId, projectName, organizationName, updatedUserList: originUpdatedUserList, lastUpdateDate,
+      knowledgeBaseName, orgFlag, id, baseId, organizationId, imageUrl, title, projectId, projectName, organizationName,
+      updatedUserList: originUpdatedUserList, lastUpdateDate, approve,
     }) => {
       const updatedUserList = originUpdatedUserList ? originUpdatedUserList.filter(Boolean) : [];
       return (
@@ -100,7 +105,7 @@ const Doc = () => {
           role="none"
           className={`${clsPrefix}-item`}
           onClick={goKnowledgeLink.bind(this, {
-            baseId, orgFlag, organizationId, spaceId: id, baseName: knowledgeBaseName, projectId, name: orgFlag ? organizationName : projectName,
+            baseId, orgFlag, organizationId, spaceId: id, baseName: knowledgeBaseName, projectId, name: orgFlag ? organizationName : projectName, approve,
           })}
         >
           {orgFlag ? (
@@ -152,7 +157,7 @@ const Doc = () => {
   }
 
   const loadMore = async () => {
-    await docDs.query(docDs.currentPage + 1);
+    await docDs.queryMore(docDs.currentPage + 1);
   };
 
   return (

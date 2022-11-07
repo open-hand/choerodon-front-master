@@ -48,7 +48,7 @@ const Index: React.FC<IProps> = (props) => {
   }));
 
   const initCheckboxAll = (arr: ICheckBoxFields[]) => {
-    if (arr.every((i) => i.checked)) {
+    if (arr?.every((i) => i.checked)) {
       setchecked(true);
     }
     // if (arr.some((i) => i.checked) && !arr.every((i) => i.checked)) {
@@ -58,7 +58,7 @@ const Index: React.FC<IProps> = (props) => {
 
   const init = () => {
     const cloneArr = cloneDeep(fields);
-    cloneArr.forEach((item) => {
+    cloneArr?.forEach((item) => {
       item.show = true;
     });
     setCheckBoxFields(cloneArr);
@@ -135,13 +135,13 @@ const Index: React.FC<IProps> = (props) => {
     setSearchValue(value);
     const cloneArr = cloneDeep(checkBoxFields);
     if (!value) {
-      cloneArr.forEach((item) => {
+      cloneArr?.forEach((item) => {
         item.show = true;
       });
       setchecked(cloneArr.every((i) => i.checked));
     } else {
       let afterFilterChecked = true;
-      cloneArr.forEach((item) => {
+      cloneArr?.forEach((item) => {
         if (item.checkboxLabel.indexOf(value) !== -1) {
           item.show = true;
           if (!item.checked) {
@@ -177,7 +177,7 @@ const Index: React.FC<IProps> = (props) => {
           <div className="c7n-agile-choose-field-list-title">预定义字段</div>
           <div className="c7n-agile-choose-field-list-list">
             {
-              checkBoxFields.map((item: ICheckBoxFields, index: number) => (item.show ? (
+              checkBoxFields?.map((item: ICheckBoxFields, index: number) => (item.show ? (
                 <div className="c7n-agile-choose-field-list-item">
                   <CheckBox
                     onChange={(value: boolean) => { handleChooseFieldChange(value, item, index); }}

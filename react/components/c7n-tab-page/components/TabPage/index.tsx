@@ -9,9 +9,9 @@ import './index.less';
 
 const prefixCls = 'page-tab-container';
 
-const TabPage = ({
+const TabPage:React.FC<C7NPageProps> = ({
   className, service, onAccess, ...props
-}:C7NPageProps) => {
+}) => {
   const classString = classNames(prefixCls, className);
 
   const content = (

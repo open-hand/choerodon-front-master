@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="756px" height="800px" viewBox="0 0 756 800" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 5</title>
+    <defs>
+        <linearGradient x1="94.65125%" y1="23.29056%" x2="35.8041523%" y2="59.595942%" id="linearGradient-1">
+            <stop stop-color="#E7EDFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <rect id="path-2" x="0" y="0" width="756" height="800"></rect>
+        <linearGradient x1="86.6948132%" y1="43.0044869%" x2="0%" y2="58.6625141%" id="linearGradient-4">
+            <stop stop-color="#CDD3FF" offset="0%"></stop>
+            <stop stop-color="#CDDFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="86.6948132%" y1="41.3296239%" x2="0%" y2="60.7364898%" id="linearGradient-5">
+            <stop stop-color="#CDD3FF" offset="0%"></stop>
+            <stop stop-color="#CDDFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组-5">
+            <mask id="mask-3" fill="white">
+                <use xlink:href="#path-2"></use>
+            </mask>
+            <use id="矩形" fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+            <polygon id="矩形" fill-opacity="0.4" fill="url(#linearGradient-4)" mask="url(#mask-3)" points="333.855914 -49.3562871 433 -49.3562871 139.144086 97.6437129 40 97.6437129"></polygon>
+            <polygon id="矩形" fill-opacity="0.4" fill="url(#linearGradient-5)" mask="url(#mask-3)" points="525.855914 -49.3562871 625 -49.3562871 212.644086 163.643713 113.5 163.643713"></polygon>
+            <polygon id="矩形" fill-opacity="0.4" fill="url(#linearGradient-5)" mask="url(#mask-3)" points="668.855914 -7.64371287 768 -7.64371287 355.644086 205.356287 256.5 205.356287"></polygon>
+        </g>
+    </g>
+</svg>

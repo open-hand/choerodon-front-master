@@ -1,7 +1,6 @@
-import './Cache';
+import Api from '@/apis/Api';
 import AppState from '@/containers/stores/c7n/AppState';
 import { User } from '@/types';
-import Api from './Api';
 
 class UserApi extends Api<UserApi> {
   get prefix() {

@@ -9,3 +9,4 @@ export * from './HEADER_TITLE';
 export * from './ENV';
 export * from './LANGUAGES_TYPES';
 export * from './DEFAUTL_SYSTEM_NAME';
+export * from './COMPONENT';

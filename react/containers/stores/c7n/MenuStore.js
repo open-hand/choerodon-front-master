@@ -57,7 +57,7 @@ class MenuStore {
   @observable activeMenuRoot = {};
 
   @observable collapsed = false;
-
+  /** @type any */
   @observable activeMenu = null;
 
   @observable openKeys = [];
