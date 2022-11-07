@@ -44,7 +44,9 @@ const Menu = () => {
     treeNode,
   }:TreeReduceCallbackProps) => {
     // 如果当前是路由全匹配，则进入，或者是匹配到了子路由
-    if (treeNode.route === pathname || pathname.indexOf(`${treeNode.route}/`) === 0) {
+    // treeNode.route === path
+    // 改为这样是因为 如果有重定向 这里pathname还没变
+    if (window.location.href.includes(treeNode.route) || pathname.indexOf(`${treeNode.route}/`) === 0) {
       const currentActiveMenu = treeNode;
       if (currentActiveMenu && window.location.href.includes(currentActiveMenu.route)) {
         MenuStore.setActiveMenu(currentActiveMenu);

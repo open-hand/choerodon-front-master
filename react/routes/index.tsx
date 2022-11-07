@@ -23,12 +23,39 @@ const AutoRouter = React.lazy(() => import('./routesCollections'));
 
 const RouteIndex = () => {
   const match = useRouteMatch();
+
+  const redirectWorkBench = get('configuration.master-global:redirectWorkBench');
+
+  const workBenchRoute = () => {
+    if (redirectWorkBench) {
+      return (
+        <Route
+          exact
+          path={`${match.url}workbench`}
+          // @ts-ignore
+          component={() => {
+            window.location.href = `${window.location.origin}/#${redirectWorkBench}`;
+            return null;
+          }}
+        />
+      );
+    }
+    return (
+      <PermissionRoute
+        exact
+        path={`${match.url}workbench`}
+        component={WorkBench}
+      />
+    );
+  };
+
   const history = useHistory();
   const location = useLocation();
   useEffect(() => {
     // eslint-disable-next-line no-underscore-dangle
     window.___choeordonHistory__ = history;
   }, [history]);
+
   return (
     <div
       className="c7ncd-routesIndex"
@@ -38,11 +65,7 @@ const RouteIndex = () => {
           <Switch>
             <Route exact path={`${match.url}projects`} component={ProjectsPro} />
             <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
-            <PermissionRoute
-              exact
-              path={`${match.url}workbench`}
-              component={WorkBench}
-            />
+            {workBenchRoute()}
             <PermissionRoute
               service={['choerodon.code.project.project.overview.ps.default']}
               exact
