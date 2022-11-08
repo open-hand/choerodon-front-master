@@ -5,7 +5,7 @@ import MenuStore, { getMenuType } from '../containers/stores/c7n/MenuStore';
 import AppState from '../containers/stores/c7n/AppState';
 import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
 
-export default async function handleClickProject(data, history, historyPush) {
+export default async function handleClickProject(data, history, historyPush, url) {
   const {
     id, name, organizationId, category,
   } = data;
@@ -40,10 +40,21 @@ export default async function handleClickProject(data, history, historyPush) {
         if (isOwe) {
           route = '/knowledge/project';
         } else {
-          route = menuRoute;
+          route = url || menuRoute;
         }
         domain = menuDomain;
-        if (menus[0].subMenus.length) {
+        if (url) {
+          // 为了兼容跳转到具体菜单
+          const redirectWorkBench = get('configuration.master-global:redirectWorkBench');
+          const rootMenu = menus.find((item) => item.code === redirectWorkBench?.rootMenuCode);
+          if (rootMenu) {
+            MenuStore.setActiveMenuRoot({ project: rootMenu });
+            const subMenu = rootMenu.subMenus.find((item) => item.code === redirectWorkBench?.subMenuCode);
+            if (subMenu) {
+              MenuStore.setActiveMenu(subMenu);
+            }
+          }
+        } else if (menus[0].subMenus.length) {
           MenuStore.setActiveMenu(menus[0].subMenus[0]);
           MenuStore.setRootBaseOnActiveMenu();
         }

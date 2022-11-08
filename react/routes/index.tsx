@@ -4,13 +4,14 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom';
-import { useRouteMatch } from 'react-router';
+import { useHistory, useRouteMatch } from 'react-router';
 import { ModalContainer } from 'choerodon-ui/pro';
 import { inject } from 'mobx-react';
 import { mount, get } from '@choerodon/inject';
 import { Loading } from '@choerodon/components';
 import PermissionRoute from '@/components/permission-route';
 import './index.less';
+import handleClickProject from '@/utils/gotoProject';
 
 const Unauthorized = React.lazy(() => import('@/containers/components/c7n/routes/unauthorized'));
 const WorkBench = React.lazy(() => import('@/containers/components/c7n/routes/workBench/list/view'));
@@ -23,6 +24,7 @@ const AutoRouter = React.lazy(() => import('./routesCollections'));
 
 const RouteIndex = () => {
   const match = useRouteMatch();
+  const history = useHistory();
 
   const redirectWorkBench = get('configuration.master-global:redirectWorkBench');
 
@@ -34,7 +36,7 @@ const RouteIndex = () => {
           path={`${match.url}workbench`}
           // @ts-ignore
           component={() => {
-            window.location.href = `${window.location.origin}/#${redirectWorkBench}`;
+            handleClickProject(redirectWorkBench.data, history, null, redirectWorkBench.url);
             return null;
           }}
         />
