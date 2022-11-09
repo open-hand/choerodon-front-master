@@ -33,7 +33,7 @@
   "author": "qyellow",
   "license": "ISC",
   "devDependencies": {
-    "@choerodon/boot": "2.2.0",
+    "@choerodon/boot": "2.3.0",
     "@choerodon/compiler": "^0.0.4",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/styled-components": "^5.1.11",
