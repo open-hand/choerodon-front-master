@@ -207,7 +207,7 @@ class MenuStore {
   @action
   loadMenuData (menuType = AppState.currentMenuType, isUser, setData = true, selfResolve) {
     // 判断当前的菜单是否 再  failedMenuType 这个全局变量中存在
-    if (this.judgeFailedMenuType(menuType) || !menuType?.type) {
+    if (this.judgeFailedMenuType(menuType)) {
       this.setCurrentIsLoadMenu(0);
       // 如果是存在返回一个空数组
       return new Promise((resolve) => {

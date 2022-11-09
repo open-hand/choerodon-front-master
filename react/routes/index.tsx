@@ -24,32 +24,6 @@ const AutoRouter = React.lazy(() => import('./routesCollections'));
 
 const RouteIndex = () => {
   const match = useRouteMatch();
-  const history = useHistory();
-
-  const redirectWorkBench = get('configuration.master-global:redirectWorkBench');
-
-  const workBenchRoute = () => {
-    if (redirectWorkBench) {
-      return (
-        <Route
-          exact
-          path={`${match.url}workbench`}
-          // @ts-ignore
-          component={() => {
-            handleClickProject(redirectWorkBench.data, history, null, redirectWorkBench.url);
-            return null;
-          }}
-        />
-      );
-    }
-    return (
-      <PermissionRoute
-        exact
-        path={`${match.url}workbench`}
-        component={WorkBench}
-      />
-    );
-  };
 
   return (
     <div
@@ -59,7 +33,11 @@ const RouteIndex = () => {
         <Switch>
           <Route exact path={`${match.url}projects`} component={ProjectsPro} />
           <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
-          {workBenchRoute()}
+          <PermissionRoute
+            exact
+            path={`${match.url}workbench`}
+            component={WorkBench}
+          />
           <Route exact path="/">
             <Redirect to={`${match.url}workbench`} />
           </Route>
