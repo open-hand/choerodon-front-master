@@ -314,8 +314,8 @@ class Masters extends Component {
     } else if (!menuType.type) {
       menuType.type = 'site';
     }
-
-    async function checkUrl() {
+    // eslint-disable-next-line
+      async function checkUrl() {
       async function goSafty(data) {
         if (!HeaderStore.getOrgData) {
           setTimeout(() => {
@@ -346,7 +346,7 @@ class Masters extends Component {
         let res;
         if (
           !currentProject
-          || String(menuType.projectId) !== String(currentProject?.id)
+            || String(menuType.projectId) !== String(currentProject?.id)
         ) {
           try {
             res = await axios.get(
@@ -357,7 +357,7 @@ class Masters extends Component {
             }
             if (
               String(res.id)
-              === String(new URLSearchParams(location.search).get('id'))
+                === String(new URLSearchParams(location.search).get('id'))
             ) {
               AppState.setCurrentProject(res);
             } else {
@@ -375,8 +375,8 @@ class Masters extends Component {
           checkArray.some((c) => {
             if (
               menuType[c]
-              && menuType[c] !== 'undefined'
-              && String(menuType[c]) !== String(res[c])
+                && menuType[c] !== 'undefined'
+                && String(menuType[c]) !== String(res[c])
             ) {
               return true;
             }
@@ -392,7 +392,6 @@ class Masters extends Component {
         return true;
       }
     }
-
     AppState.setTypeUser(isUser);
     AppState.changeMenuType(menuType, checkUrl);
   }
