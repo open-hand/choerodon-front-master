@@ -9,12 +9,7 @@ import { ModalProvider } from 'choerodon-ui/pro';
 import { inject } from 'mobx-react';
 import { mount, get } from '@choerodon/inject';
 import { Loading } from '@choerodon/components';
-import PermissionRoute from '@/components/permission-route';const history = useHistory();
-  const location = useLocation();
-  useEffect(() => {
-    // eslint-disable-next-line no-underscore-dangle
-    window.___choeordonHistory__ = history;
-  }, [history]);
+import PermissionRoute from '@/components/permission-route';
 
 import './index.less';
 import handleClickProject from '@/utils/gotoProject';
