@@ -16,7 +16,11 @@ const WorkBench = () => {
     viewDs,
     history,
     location: { search },
+    getUserId,
   } = useWorkBenchStore();
+  get('base-pro:useRegisterCompleteInfoModal') && get('base-pro:useRegisterCompleteInfoModal')({
+    userId: getUserId,
+  });
 
   useEffect(() => {
     // 这个是是否有重定向工作台 有就跳转到传入的重定向地址

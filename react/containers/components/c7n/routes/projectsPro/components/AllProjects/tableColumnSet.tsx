@@ -19,12 +19,16 @@ export interface IColumnSetConfig {
   name: string,
   label: string,
   isSelected: boolean,
+  order: number
+  width?: number
+  minWidth?: number
 }
 
 export interface IRemoteColumnSetConfig {
   columnCode: string,
   display: boolean,
   sort: number
+  width: number
 }
 
 export interface IProps {
@@ -154,8 +158,8 @@ const Index: React.FC<IProps> = (props) => {
 
   const initData = (remoteData:IRemoteColumnSetConfig[] | null, defaultData:IColumnSetConfig[]) => {
     if (remoteData) {
-      let columnArr:any = [];
-      const newArr:any = [];
+      let columnArr:IColumnSetConfig[] = [];
+      const newArr:IColumnSetConfig[] = [];
 
       defaultData.forEach((defaultItem) => { // 新增
         const foundIndex = remoteData.findIndex((i) => i.columnCode === defaultItem.name);
@@ -174,14 +178,19 @@ const Index: React.FC<IProps> = (props) => {
 
       const exceptDeleteArr = remoteData;
       exceptDeleteArr.forEach((i) => {
+        const found = defaultData.find((defaultItem) => defaultItem.name === i.columnCode);
+        if (!i.width && found) { // 如果远程没有数据(为0) default有，用default的
+          // eslint-disable-next-line no-param-reassign
+          i.width = found.width || 0;
+        }
         columnArr.push({
           name: i.columnCode,
           isSelected: i.display,
           label: tableDs?.getField(i.columnCode)?.get('label'),
           order: i.sort,
+          width: i.width,
         });
       });
-
       columnArr = orderBy(columnArr.concat(newArr), ['order']);
       return columnArr;
     }

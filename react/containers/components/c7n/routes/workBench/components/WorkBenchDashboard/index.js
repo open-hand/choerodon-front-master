@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useEffect, useState, useRef } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import classnames from 'classnames';
@@ -39,8 +40,14 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const UserIssue = () => (hasInject('agilePro:workbenchUserIssue') ? mount('agilePro:workbenchUserIssue', {}) : <></>);
 const ProjectProgress = () => (hasInject('agilePro:workbenchProjectStatistics') ? mount('agilePro:workbenchProjectStatistics', {}) : <></>);
+/** 临时兼容性操作 */
+// eslint-disable-next-line no-underscore-dangle
+window.___choeordonWorkbenchComponent__ = window.___choeordonWorkbenchComponent__ || {};
+// eslint-disable-next-line no-underscore-dangle
+const injectWorkbenchComponent = window.___choeordonWorkbenchComponent__;
 
-const ComponetsObjs = {
+const ComponetsObjs = Object.create(injectWorkbenchComponent);
+Object.assign(ComponetsObjs, {
   starTarget: <StarTargetPro />,
   selfInfo: <SelfIntro />,
   todoQustions: <QuestionTodo />, // 待办事项卡片
@@ -61,13 +68,21 @@ const ComponetsObjs = {
   notice: <Notice />,
   userIssue: <UserIssue />,
   projectProgress: <ProjectProgress />,
+});
+const componentCodeMapInJectCode = {
+  backlogApprove: 'backlog:workBenchApprove',
 };
 
 let observerLayout;
-
+/**
+ * @deprecated 后续会移除 先使用 '@choerodon/inject' 库中的 set 方式 可以使用微前端分享组件方式
+ * @param {*} key
+ * @param {*} component
+ */
 export function injectWorkBench(key, component) {
-  ComponetsObjs[key] = component;
+  injectWorkbenchComponent[key] = component;
 }
+
 const groupMap = new Map([
   ['devops', 'DevOps管理'],
   ['agile', '敏捷管理'],
@@ -156,11 +171,13 @@ const WorkBenchDashboard = (props) => {
     type, title, permissionFlag = 1, emptyDiscribe, height,
   }) => {
     let tempComponent;
-    const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type);
+    const injectComponentCode = componentCodeMapInJectCode[type] && hasInject(componentCodeMapInJectCode[type]) ? componentCodeMapInJectCode[type] : undefined;
+    const injectComponent = injectComponentCode ? mount(injectComponentCode) : null;
+    const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type) || Object.prototype.hasOwnProperty.call(injectWorkbenchComponent, type) || !!injectComponent;
     const hasType = allowedModules.includes(type);
 
     if ((hasOwnProperty && hasType) && permissionFlag === 1) {
-      tempComponent = ComponetsObjs[type];
+      tempComponent = ComponetsObjs[type] || injectComponent;
     } else {
       tempComponent = <EmptyCard title={title} emptyDiscribe={emptyDiscribe} emptyTitle={permissionFlag ? '暂未安装对应模块' : '暂无权限'} />;
     }
@@ -204,6 +221,17 @@ const WorkBenchDashboard = (props) => {
 
   const renderGridLayouts = () => {
     const layoutData = dashboardDs.toData();
+    layoutData.forEach((item) => {
+      if (item.cardCode === 'starTarget') {
+        if (document.body.clientWidth <= 1300) {
+          item.h = 2.3;
+          item.minH = 2.3;
+        } else {
+          item.h = 2;
+          item.minH = 2;
+        }
+      }
+    });
     const tempObj = {
       className: `${prefixCls}-layout`,
       onLayoutChange,
