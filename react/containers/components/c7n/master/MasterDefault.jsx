@@ -145,7 +145,7 @@ class Masters extends Component {
   componentWillReceiveProps(nextProps) {
     this.saaSUserRestDaysAnewReq(nextProps, this.props);
     this.judgeIfGetUserCountCheck(nextProps, this.props);
-    this.initMenuType(nextProps);
+    this.initMenuType(nextProps, this.props);
     this.getGuideContentByLocationChange(nextProps, this.props);
   }
 
@@ -318,115 +318,117 @@ class Masters extends Component {
     });
   }
 
-  initMenuType(props) {
+  initMenuType(props, oldProps) {
     const {
       location, MenuStore, HeaderStore, history, AppState,
     } = props;
     const { pathname, search } = location;
-    let isUser = false;
-    let menuType = parseQueryToMenuType(search);
-    if (pathname === '/') {
-      const recent = HeaderStore.getRecentItem;
-      if (recent.length && !sessionStorage.home_first_redirect) {
-        const {
-          id, name, type, organizationId,
-        } = recent[0];
-        menuType = {
-          id,
-          name,
-          type,
-          organizationId,
-        };
-      } else {
-        menuType = {};
-      }
-      sessionStorage.home_first_redirect = 'yes';
-    } else if (menuType.type === 'site') {
-      isUser = true;
-    } else if (!menuType.type) {
-      menuType.type = 'site';
-    }
-
-    async function checkUrl() {
-      async function goSafty(data) {
-        if (!HeaderStore.getOrgData) {
-          setTimeout(() => {
-            goSafty();
-          }, 500);
+    // 这里由于适配直接跳转到项目层 会死循环 加上了判断 后续如果有问题 可以回退
+    if (pathname + search !== oldProps?.location?.pathname + oldProps?.location?.search) {
+      let isUser = false;
+      let menuType = parseQueryToMenuType(search);
+      if (pathname === '/') {
+        const recent = HeaderStore.getRecentItem;
+        if (recent.length && !sessionStorage.home_first_redirect) {
+          const {
+            id, name, type, organizationId,
+          } = recent[0];
+          menuType = {
+            id,
+            name,
+            type,
+            organizationId,
+          };
         } else {
-          message.info(data ? '该项目已停用' : '地址过期');
-          // 说明是停用项目 需要删除最近使用的数据
-          if (data) {
-            const recents = JSON.parse(localStorage.getItem('recentItem'));
-            const newRecents = recents.filter((r) => r.code !== data.code);
-            localStorage.setItem('recentItem', JSON.stringify(newRecents));
-            HeaderStore.recentItem = newRecents;
-          }
-          AppState.setCurrentProject(null);
-          const queryObj = queryString.parse(history.location.search);
-          const search = await getSearchString(
-            'organization',
-            'id',
-            queryObj.organizationId,
-          );
-          MenuStore.setActiveMenu(null);
-          history.push(`/projects${search}`);
+          menuType = {};
         }
+        sessionStorage.home_first_redirect = 'yes';
+      } else if (menuType.type === 'site') {
+        isUser = true;
+      } else if (!menuType.type) {
+        menuType.type = 'site';
       }
-      if (menuType?.projectId) {
-        const currentProject = AppState.getCurrentProject;
-        let res;
-        if (
-          !currentProject
-          || String(menuType.projectId) !== String(currentProject?.id)
-        ) {
-          try {
-            res = await axios.get(
-              `/iam/choerodon/v1/projects/${menuType.projectId}/basic_info`,
-            );
-            if (!res.enabled) {
-              goSafty(res);
+      // eslint-disable-next-line
+      async function checkUrl() {
+        async function goSafty(data) {
+          if (!HeaderStore.getOrgData) {
+            setTimeout(() => {
+              goSafty();
+            }, 500);
+          } else {
+            message.info(data ? '该项目已停用' : '地址过期');
+            // 说明是停用项目 需要删除最近使用的数据
+            if (data) {
+              const recents = JSON.parse(localStorage.getItem('recentItem'));
+              const newRecents = recents.filter((r) => r.code !== data.code);
+              localStorage.setItem('recentItem', JSON.stringify(newRecents));
+              HeaderStore.recentItem = newRecents;
             }
-            if (
-              String(res.id)
-              === String(new URLSearchParams(location.search).get('id'))
-            ) {
-              AppState.setCurrentProject(res);
-            } else {
+            AppState.setCurrentProject(null);
+            const queryObj = queryString.parse(history.location.search);
+            const search = await getSearchString(
+              'organization',
+              'id',
+              queryObj.organizationId,
+            );
+            MenuStore.setActiveMenu(null);
+            history.push(`/projects${search}`);
+          }
+        }
+        if (menuType?.projectId) {
+          const currentProject = AppState.getCurrentProject;
+          let res;
+          if (
+            !currentProject
+            || String(menuType.projectId) !== String(currentProject?.id)
+          ) {
+            try {
+              res = await axios.get(
+                `/iam/choerodon/v1/projects/${menuType.projectId}/basic_info`,
+              );
+              if (!res.enabled) {
+                goSafty(res);
+              }
+              if (
+                String(res.id)
+                === String(new URLSearchParams(location.search).get('id'))
+              ) {
+                AppState.setCurrentProject(res);
+              } else {
+                return true;
+              }
+            } catch (e) {
+              goSafty();
               return true;
             }
-          } catch (e) {
+          } else {
+            res = currentProject;
+          }
+          const checkArray = ['name', 'organizationId'];
+          if (
+            checkArray.some((c) => {
+              if (
+                menuType[c]
+                && menuType[c] !== 'undefined'
+                && String(menuType[c]) !== String(res[c])
+              ) {
+                return true;
+              }
+            })
+          ) {
             goSafty();
             return true;
           }
-        } else {
-          res = currentProject;
-        }
-        const checkArray = ['name', 'organizationId'];
-        if (
-          checkArray.some((c) => {
-            if (
-              menuType[c]
-              && menuType[c] !== 'undefined'
-              && String(menuType[c]) !== String(res[c])
-            ) {
-              return true;
-            }
-          })
-        ) {
-          goSafty();
+          AppState.changeMenuType({
+            ...menuType,
+            categories: res.categories?.slice(),
+          });
           return true;
         }
-        AppState.changeMenuType({
-          ...menuType,
-          categories: res.categories?.slice(),
-        });
-        return true;
       }
+      AppState.setTypeUser(isUser);
+      AppState.changeMenuType(menuType, checkUrl);
     }
-
-    AppState.setTypeUser(isUser);
-    AppState.changeMenuType(menuType, checkUrl);
   }
 
   render() {
