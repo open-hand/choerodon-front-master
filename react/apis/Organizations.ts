@@ -1,4 +1,5 @@
 import { omit } from 'lodash';
+import { get } from '@choerodon/inject';
 import Api from './Api';
 
 class OrganizationsApi extends Api<OrganizationsApi> {
@@ -499,6 +500,11 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   // 获取项目工作组
   getprojWorkGroup(id?:string, excludeUnassigned = false) {
+    // ctyun偶尔会跳转到工作台请求agile接口 这里直接屏蔽
+    const config = get('configuration.master-global:redirectWorkBench');
+    if (config) {
+      return undefined;
+    }
     return this.request({
       method: 'get',
       url: `/agile/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree${
