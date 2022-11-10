@@ -18,7 +18,9 @@ const WorkBench = () => {
     location: { search },
     getUserId,
   } = useWorkBenchStore();
-  get('base-pro:useRegisterCompleteInfoModal') && get('base-pro:useRegisterCompleteInfoModal')({
+
+  const method = get('base-pro:useRegisterCompleteInfoModal') || function Tentative() {};
+  method({
     userId: getUserId,
   });
 
