@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import queryString from 'query-string';
@@ -22,6 +22,13 @@ const WorkBench = () => {
     userId: getUserId,
   });
 
+  useEffect(() => {
+    // 这个是是否有重定向工作台 有就跳转到传入的重定向地址
+    const redirectWorkBench = get('configuration.master-global:redirectWorkBench');
+    if (redirectWorkBench) {
+      window.location.replace(`${window.location.origin}/#${redirectWorkBench}`);
+    }
+  }, []);
   const redirectToEdit = () => {
     const { dashboardId, dashboardName } = viewDs.current.toData();
     let searchParams = queryString.parse(search);

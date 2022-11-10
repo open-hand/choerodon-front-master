@@ -10,7 +10,9 @@ import { inject } from 'mobx-react';
 import { mount, get } from '@choerodon/inject';
 import { Loading } from '@choerodon/components';
 import PermissionRoute from '@/components/permission-route';
+
 import './index.less';
+import handleClickProject from '@/utils/gotoProject';
 
 const Unauthorized = React.lazy(() => import('@/containers/components/c7n/routes/unauthorized'));
 const WorkBench = React.lazy(() => import('@/containers/components/c7n/routes/workBench/list/view'));
@@ -23,31 +25,6 @@ const AutoRouter = React.lazy(() => import('./routesCollections'));
 
 const RouteIndex = () => {
   const match = useRouteMatch();
-
-  const redirectWorkBench = get('configuration.master-global:redirectWorkBench');
-
-  const workBenchRoute = () => {
-    if (redirectWorkBench) {
-      return (
-        <Route
-          exact
-          path={`${match.url}workbench`}
-          // @ts-ignore
-          component={() => {
-            window.location.href = `${window.location.origin}/#${redirectWorkBench}`;
-            return null;
-          }}
-        />
-      );
-    }
-    return (
-      <PermissionRoute
-        exact
-        path={`${match.url}workbench`}
-        component={WorkBench}
-      />
-    );
-  };
 
   const history = useHistory();
   const location = useLocation();
@@ -65,7 +42,11 @@ const RouteIndex = () => {
           <Switch>
             <Route exact path={`${match.url}projects`} component={ProjectsPro} />
             <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
-            {workBenchRoute()}
+            <PermissionRoute
+              exact
+              path={`${match.url}workbench`}
+              component={WorkBench}
+            />
             <PermissionRoute
               service={['choerodon.code.project.project.overview.ps.default']}
               exact
