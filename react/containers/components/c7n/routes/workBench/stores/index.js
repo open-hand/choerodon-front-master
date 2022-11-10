@@ -39,14 +39,14 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   let openCurrent;
   let closeCurrent;
 
-  if (hasInject('agile:useDetail')) {
-    const useDetail = getInject('agile:useDetail');
-    const [detailProps] = useDetail();
-    const { open, close } = detailProps;
-    openCurrent = open;
-    closeCurrent = close;
+  const useDetail = getInject('agile:useDetail') || function Tentative() { return []; };
+  const [detailProps] = useDetail();
+  if (detailProps) {
+    openCurrent = detailProps.open;
+    closeCurrent = detailProps.close;
     detailPropsCurrent = detailProps;
   }
+
   function getAllCode() {
     let allowedModules = [...modulesMapping.common, ...hasAgile && HAS_BACKLOG ? modulesMapping.backlog : []];
     forEach(currentModules, (item) => {

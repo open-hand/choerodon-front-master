@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import queryString from 'query-string';
@@ -18,7 +18,9 @@ const WorkBench = () => {
     location: { search },
     getUserId,
   } = useWorkBenchStore();
-  get('base-pro:useRegisterCompleteInfoModal') && get('base-pro:useRegisterCompleteInfoModal')({
+
+  const method = get('base-pro:useRegisterCompleteInfoModal') || function Tentative() {};
+  method({
     userId: getUserId,
   });
 
