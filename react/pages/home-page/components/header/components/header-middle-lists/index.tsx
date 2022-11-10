@@ -70,9 +70,10 @@ const HeaderMiddleLists:FC<HeaderMiddleListsProps> = (props) => {
     if (serviceCodeLists.includes(SERVICE_KNOWLEDGE)) {
       tempLists.push(KNOWLEDGE_CONFIG);
     }
-    if (serviceCodeLists.includes(SERVICE_MARKET) && !isSaas?.[organizationId]) {
-      tempLists.push(MARKET_CONFIG);
-    }
+    // 新功能去掉
+    // if (serviceCodeLists.includes(SERVICE_MARKET) && !isSaas?.[organizationId]) {
+    //   tempLists.push(MARKET_CONFIG);
+    // }
     return map(tempLists, (config) => <ListItem {...config} />);
   }, [isSaas, organizationId, serviceCodeLists]);
 

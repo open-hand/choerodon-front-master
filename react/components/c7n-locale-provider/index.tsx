@@ -6,7 +6,7 @@ import closeLoading from '@/utils/closeLoading';
 import { useCurrentLanguage } from '@/hooks';
 import { LanguageTypes } from '@/typings';
 
-type C7NLocaleProviderTypes<T> = {
+export type C7NLocaleProviderTypes<T> = {
   importer(language:LanguageTypes):Promise<T>
 } & Partial<IntlConfig> & { children: React.ReactNode }
 

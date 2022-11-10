@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { difference } from 'lodash';
 import { useMenuStore } from '../../../../stores';
 import UnfoldImg from './assets/unfold.svg';
 import FoldImg from './assets/folding.svg';
@@ -27,6 +28,8 @@ function CollapsedBtn() {
     MenuStore.setOpenKeys([]);
     if (!isExpanded) {
       setIsExpanded(true);
+      const rest = difference(savedOpenkeys, JSON.parse(JSON.stringify(openKeys)));
+      MenuStore.setClosedKeys(rest, true);
       MenuStore.setOpenKeys(savedOpenkeys);
     } else {
       setSavedKeys(openKeys);

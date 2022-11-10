@@ -6,7 +6,12 @@ import axios from '@/components/axios';
 const prefixCls = 'c7ncd-saasUser-announcement';
 
 function getSaaSUserAvilableDays(orgId:string) {
-  return axios.get(`/iam/choerodon/v1/organizations/trial_due?organization_id=${orgId}`);
+  if (orgId) {
+    return axios.get(`/iam/choerodon/v1/organizations/trial_due?organization_id=${orgId}`);
+  }
+  return new Promise((resolve) => {
+    resolve(undefined);
+  });
 }
 
 export {

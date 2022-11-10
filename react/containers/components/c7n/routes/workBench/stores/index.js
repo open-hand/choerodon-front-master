@@ -18,7 +18,10 @@ import { useFormatMessage, useFormatCommon } from '@/hooks';
 
 // eslint-disable-next-line no-undef
 const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
-const Store = createContext();
+// eslint-disable-next-line no-underscore-dangle
+window.___choeordonWorkBenchContenxt__ = window.___choeordonWorkBenchContenxt__ || createContext();
+// eslint-disable-next-line no-underscore-dangle
+const Store = window.___choeordonWorkBenchContenxt__;
 
 export function useWorkBenchStore() {
   return useContext(Store);
@@ -27,7 +30,7 @@ export function useWorkBenchStore() {
 export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
-    AppState: { currentMenuType: { organizationId, projectId }, currentModules },
+    AppState: { currentMenuType: { organizationId, projectId }, currentModules, getUserId },
     AppState,
     history,
   } = props;
@@ -97,6 +100,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     openCurrent,
     closeCurrent,
     detailPropsCurrent,
+    getUserId,
   };
 
   return (

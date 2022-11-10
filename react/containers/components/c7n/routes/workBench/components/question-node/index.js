@@ -7,7 +7,7 @@ import {
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { merge, get } from 'lodash';
-
+import { TypeTag } from '@choerodon/components';
 import { getRandomBackground } from '@/utils';
 import './index.less';
 import { ALL_TYPE_CODES } from '@/constants/STATUS_TYPE';
@@ -117,12 +117,12 @@ const QuestionNode = observer(({
         break;
       case 'bug':
         mes = '缺陷';
-        icon = 'agile_fault';
+        icon = 'bug_report';
         color = '#f44336';
         break;
       case 'issue_epic':
         mes = '史诗';
-        icon = 'agile_epic';
+        icon = 'bolt';
         color = '#743be7';
         break;
       case 'sub_task':
@@ -144,13 +144,15 @@ const QuestionNode = observer(({
       }
       default:
         mes = '任务';
-        icon = 'agile_task';
+        icon = 'done';
         color = '#4d90fe';
     }
     if (issueTypeVO && newTypeCode !== 'feature') {
-      mes = issueTypeVO.name || mes;
-      icon = issueTypeVO.icon || icon;
-      color = issueTypeVO.colour || color;
+      if (issueTypeVO.name !== mes) {
+        mes = issueTypeVO.name;
+        icon = issueTypeVO.icon;
+        color = issueTypeVO.colour;
+      }
     }
     let otherClassName = '';
     if (newTypeCode !== 'test-execution') {
@@ -160,7 +162,6 @@ const QuestionNode = observer(({
       color = 'white';
       otherClassName = `${prefixCls}-main-icon-other`;
     }
-
     return (
       <Tooltip title={mes} placement="top">
         {typeCode === 'backlog' ? (
@@ -171,7 +172,10 @@ const QuestionNode = observer(({
             <Icon
               className={`${prefixCls}-main-icon`}
               type={icon}
-              style={{ color: '#fff', fontSize: '12px' }}
+              style={{
+                color: '#fff',
+                fontSize: '12px',
+              }}
             />
           </div>
         ) : (
@@ -181,7 +185,6 @@ const QuestionNode = observer(({
             style={{ ...otherStyle, color }}
           />
         )}
-
       </Tooltip>
     );
   }
@@ -272,7 +275,7 @@ const QuestionNode = observer(({
       key={`${typeCode}-${issueId || id}`}
     >
       <div className={`${prefixCls}-main`}>
-        {getIssueType(typeCode, !!backlogNum)}
+        <TypeTag data={issueTypeVO} featureType={featureType} />
         <Tooltip title={issueNum} placement="top">
           <span className={`${prefixCls}-main-issueId`}>{issueNum || backlogNum}</span>
         </Tooltip>
@@ -293,6 +296,7 @@ const QuestionNode = observer(({
         {(switchCode === 'reportedBug' || (isStar && typeCode !== 'feature')) && getUsers(assignees || [{ id: assigneeId, imageUrl: assigneeImageUrl, realName: assigneeRealName }])}
         {typeCode === 'feature' && getProjects(featureTeams)}
         {typeCode !== 'feature' && (
+        <Tooltip title={priorityVO ? priorityVO.name : '无'} placement="top">
           <span
             className={`${prefixCls}-main-priority`}
             style={{
@@ -302,6 +306,7 @@ const QuestionNode = observer(({
           >
             {priorityVO ? priorityVO.name : '无'}
           </span>
+        </Tooltip>
         )}
       </div>
     </div>
