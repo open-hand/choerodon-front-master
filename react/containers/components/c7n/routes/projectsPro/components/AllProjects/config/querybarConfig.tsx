@@ -41,7 +41,6 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
     {
       type: 'FlatSelect',
       initial: true,
-      placeholder: '项目状态',
       dsProps: {
         name: 'statusIds',
         ...defaultDsConfig,
@@ -58,12 +57,12 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
       },
       eleProps: {
         ...defaultSelectEleConfig,
+        placeholder: '项目状态',
       },
     },
     {
       type: 'FlatTreeSelect',
       initial: true,
-      placeholder: '工作组',
       dsProps: {
         name: 'workGroupIds',
         ...defaultDsConfig,
@@ -84,12 +83,12 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
       },
       eleProps: {
         ...defaultSelectEleConfig,
+        placeholder: '工作组',
       },
     },
     {
       type: 'FlatTreeSelect',
       initial: true,
-      placeholder: '项目分类',
       dsProps: {
         name: 'projectClassficationIds',
         ...defaultDsConfig,
@@ -111,12 +110,12 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
       },
       eleProps: {
         ...defaultSelectEleConfig,
+        placeholder: '项目分类',
       },
     },
     {
       type: 'FlatSelect',
       initial: true,
-      placeholder: '所属项目群',
       dsProps: {
         name: 'programIds',
         ...defaultDsConfig,
@@ -133,12 +132,12 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
       },
       eleProps: {
         ...defaultSelectEleConfig,
+        placeholder: '所属项目群',
       },
     },
     {
       type: 'FlatSelect',
       initial: true,
-      placeholder: '项目类型',
       dsProps: {
         name: 'categoryIds',
         ...defaultDsConfig,
@@ -155,12 +154,12 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
       },
       eleProps: {
         ...defaultSelectEleConfig,
+        placeholder: '项目类型',
       },
     },
     {
       type: 'FlatSelect',
       initial: false,
-      placeholder: '创建人',
       dsProps: {
         name: 'createdBys',
         textField: 'realName',
@@ -180,21 +179,23 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
         ...defaultSelectEleConfig,
         optionRenderer: userOptionRender,
         searchMatcher: 'params',
+        placeholder: '创建人',
       },
     },
     {
       type: 'DateTimePicker',
       initial: false,
-      placeholder: ['创建时间从', '至'],
       dsProps: {
         name: 'createTime',
         range: true,
+      },
+      eleProps: {
+        placeholder: ['创建时间从', '至'],
       },
     },
     {
       type: 'FlatSelect',
       initial: false,
-      placeholder: '更新人',
       dsProps: {
         name: 'lastUpdatedBys',
         textField: 'realName',
@@ -214,22 +215,24 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
         ...defaultSelectEleConfig,
         optionRenderer: userOptionRender,
         searchMatcher: 'params',
+        placeholder: '更新人',
       },
     },
     {
       type: 'DateTimePicker',
       initial: false,
-      placeholder: ['更新时间从', '至'],
       dsProps: {
         name: 'updateTime',
         range: true,
+      },
+      eleProps: {
+        placeholder: ['更新时间从', '至'],
       },
     },
   ];
   const searchBusinessFieldsConfig = [...searchFieldsConfig, {
     type: 'FlatSelect',
     initial: true,
-    placeholder: '健康状态',
     dsProps: {
       name: 'healthSateIds',
       ...defaultDsConfig,
@@ -247,6 +250,7 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
     },
     eleProps: {
       ...defaultSelectEleConfig,
+      placeholder: '健康状态',
     },
   },
   ];

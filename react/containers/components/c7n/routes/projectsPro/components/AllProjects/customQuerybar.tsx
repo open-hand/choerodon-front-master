@@ -23,8 +23,6 @@ export interface IProps {
 export interface ISearchFields {
   type: string,
   initial: boolean
-  placeholder: string
-  visible: boolean
   dsProps: DataSetProps
   eleProps: {[key:string]:any}
   width?: number
@@ -80,7 +78,6 @@ const Index: React.FC<IProps> = (props) => {
       ds.setState(item.dsProps.name as string, {
         initial: item.initial,
         type: item.type,
-        placeholder: item.placeholder,
         visible: item.initial,
         width: item.width,
         eleProps: item.eleProps,
@@ -181,7 +178,7 @@ const Index: React.FC<IProps> = (props) => {
       return <span />;
     }
     const {
-      initial, type, placeholder, width, visible, eleProps,
+      initial, type, width, visible, eleProps,
     } = state;
     const Ele = fieldsMap.get(type);
 
@@ -189,7 +186,6 @@ const Index: React.FC<IProps> = (props) => {
       <div className={initial ? 'searchField-item' : 'searchField-item-deletable'}>
         {/*  @ts-ignore */}
         <Ele
-          placeholder={placeholder}
           name={fieldName}
           style={{ width: width || 'auto' }}
           dataSet={queryBarDataSet}
