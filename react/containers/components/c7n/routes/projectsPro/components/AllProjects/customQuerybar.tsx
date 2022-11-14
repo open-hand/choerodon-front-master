@@ -1,38 +1,33 @@
+/* eslint-disable consistent-return */
 import React, {
-  useEffect, useMemo, useRef, useState, useImperativeHandle,
+  useEffect, useMemo, useRef, useState, useImperativeHandle, useCallback,
 } from 'react';
 import { FlatSelect, FlatTreeSelect } from '@choerodon/components';
 import {
-  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker, Select,
+  Button, TextField, Icon, DataSet, Tooltip, DateTimePicker, Select,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
-import {
-  cloneDeep, forIn, isNil, omit, remove,
-} from 'lodash';
+import { DataSetProps } from 'choerodon-ui/pro/lib/data-set/DataSet';
+import { forIn, isNil, omit } from 'lodash';
 import { observer } from 'mobx-react-lite';
-import ChooseFieldsBtn, { ICheckBoxFields } from './chooseFieldsBtn';
+import SearchFilterBtn, { ICheckBoxFields } from './customQueryBarFilter';
 import './customQuerybar.less';
 
-const modalKey1 = Modal.key();
-// TODO: usereducer
 export interface IProps {
   searchFieldsConfig: ISearchFields[]
   filterFieldsConfig: ICheckBoxFields[]
-  onChange: (name: string, value: any) => void
+  onChange: (data:{[key:string]:any}) => void
   cRef: any
 }
 
 export interface ISearchFields {
-  name: string
   type: string,
-  fieldProps: any
-  width?: number
   initial: boolean
-  optionQueryConfig?: any
-  optionsTextField?: string
-  optionsValueField?: string
-  optionConfig?: any
-  cRef?: any
+  placeholder: string
+  visible: boolean
+  dsProps: DataSetProps
+  eleProps: {[key:string]:any}
+  width?: number
 }
 
 const fieldsMap = new Map(
@@ -49,11 +44,10 @@ const Index: React.FC<IProps> = (props) => {
   const {
     searchFieldsConfig, filterFieldsConfig, onChange, cRef,
   } = props;
-  const [initialFieldNum, setInitialFieldNum] = useState<number>(0);
+  const [visibleOptionalFieldsNum, setVisibleOptionalFieldsNum] = useState(0);
+  const [recordExistedValue, setRecordExistedValue] = useState(false);
   const [expandBtnVisible, setExpandBtnVisible] = useState<boolean>(false);
   const [expandBtnType, setExpandBtnType] = useState<'expand_less' | 'expand_more'>('expand_less');
-  const [searchFields, setSearchFields] = useState<ISearchFields[]>([]);
-  const [searchFieldsOrigin, setSearchFieldsOrigin] = useState<ISearchFields[]>([]);
 
   const childRef = useRef<any>();
 
@@ -61,55 +55,67 @@ const Index: React.FC<IProps> = (props) => {
     reset: handleReset,
   }));
 
-  useEffect(() => {
-    // 没有保存的数据的时候
-    setSearchFields(searchFieldsConfig);
-    setSearchFieldsOrigin(searchFieldsConfig);
-    searchFieldsConfig.forEach((item: any) => {
-      if (!item.optionQueryConfig) {
-        dsFieldAdd(item.name);
-      } else {
-        dsOptionFieldAdd(item.name, item.optionsTextField || 'name', item.optionsValueField || 'id',
-          item.optionConfig || {}, item.optionQueryConfig);
-      }
+  const queryBarDataSet = useMemo(() => {
+    const ds = new DataSet({
+      autoCreate: true,
+      autoQuery: false,
+      fields: [],
+      events: {
+        update: ({
+          record, name, value, oldValue,
+        }: { record: Record, name: string, value: any, oldValue:any }) => {
+          // console.log(oldValue, 'oldValue');
+          // console.log(omit(record?.toData()));
+          if (isNil(oldValue) && Array.isArray(value) && !value.length) {
+            return;
+          }
+          onChange(omit(record?.toData(), '__dirty'));
+        },
+      },
     });
-    setInitialFieldNum(getInitialFieldNum(searchFieldsConfig));
-  }, []);
+    searchFieldsConfig.forEach((item: ISearchFields) => {
+      ds.addField(item.dsProps.name as string, {
+        ...item.dsProps,
+      });
+      ds.setState(item.dsProps.name as string, {
+        initial: item.initial,
+        type: item.type,
+        placeholder: item.placeholder,
+        visible: item.initial,
+        width: item.width,
+        eleProps: item.eleProps,
+      });
+    });
+    return ds;
+  }, [searchFieldsConfig]);
 
-  // {
-  //   name: 'createdBys',
-  //   textField: 'realName',
-  //   valueField: 'id',
-  //   multiple: true,
-  //   searchable: true,
-  //   options: new DataSet({
-  //     autoCreate: true,
-  //     autoQuery: true,
-  //     clearButton: true,
-  //     searchable: true,
-  //     transport: {
-  //       read({ dataSet, record, params: { page } }) {
-  //         return {
-  //           url: 'http://api.devops.hand-china.com/iam/choerodon/v1/organizations/1419/users/search',
-  //           method: 'get',
-  //         };
-  //       },
-  //     },
-  //   }),
-  // }
-  const compDataSet = useMemo(() => {
+  const searchFilterDataSet = useMemo(() => {
     const ds = new DataSet({
       autoCreate: true,
       autoQuery: false,
       fields: [],
       events: {
         update: ({ record, name, value }: { record: Record, name: string, value: any }) => {
-          onChange(name, value);
+          const state = queryBarDataSet?.getState(name);
+          queryBarDataSet?.setState(name, {
+            ...state,
+            visible: value,
+          });
+          setVisibleOptionalFieldsNum(getVisibleOptionalFieldsNum());
         },
       },
     });
+    filterFieldsConfig.forEach((item: ICheckBoxFields) => {
+      ds.addField(item.name, {
+        type: 'boolean' as any,
+      });
+      ds.setState(item.name, {
+        visible: true,
+        label: item.label,
+      });
+    });
     return ds;
-  }, []);
+  }, [filterFieldsConfig]);
 
   useEffect(() => {
     const ele = document.getElementsByClassName('searchField-container-left-block1-inner')[0];
@@ -120,154 +126,109 @@ const Index: React.FC<IProps> = (props) => {
     } else {
       setExpandBtnVisible(false);
     }
-  }, [searchFields]);
+  }, [searchFilterDataSet?.current?.toData()]);
 
-  const getInitialFieldNum = (arr: ISearchFields[]) => {
+  useEffect(() => {
+    const record = queryBarDataSet?.current;
+    const obj = omit(record?.toData(), '__dirty');
+    let bool = false;
+    forIn(obj, (value, key) => {
+      if (Array.isArray(value)) {
+        if (value.length) {
+          bool = true;
+          return false;
+        }
+      } else if (!isNil(value)) {
+        bool = true;
+        return false;
+      }
+    });
+    setRecordExistedValue(bool);
+  }, [queryBarDataSet?.current?.toData()]);
+
+  const handleDeleteField = (fieldName: string) => { // 外面X掉
+    const queryBarRecord = queryBarDataSet?.current;
+    const queryBarState = queryBarDataSet?.getState(fieldName);
+    queryBarDataSet?.setState(fieldName, {
+      ...queryBarState,
+      visible: false,
+    });
+    queryBarRecord?.set(fieldName, null);
+
+    const searchFilterRecord = searchFilterDataSet?.current;
+    searchFilterRecord?.set(fieldName, false);
+
+    setVisibleOptionalFieldsNum(getVisibleOptionalFieldsNum());
+  };
+
+  const getVisibleOptionalFieldsNum = () => {
     let num = 0;
-    arr.forEach((item) => {
-      if (item.initial) {
+    [...queryBarDataSet.fields].map((arr) => {
+      const fieldName = arr[0];
+      const state = queryBarDataSet?.getState(fieldName);
+      if (state?.visible && !state?.initial) { // 第一个input框没有
         num += 1;
       }
     });
     return num;
   };
 
-  const dsFieldAdd = (name: string) => {
-    if (!compDataSet.getField(name)) {
-      compDataSet.addField(name, {});
+  const getFields = (arr: Array<any>) => {
+    const field = arr[1];
+    const fieldName = field.name;
+    const state = queryBarDataSet?.getState(fieldName);
+    if (!state) {
+      return <span />;
     }
-  };
+    const {
+      initial, type, placeholder, width, visible, eleProps,
+    } = state;
+    const Ele = fieldsMap.get(type);
 
-  const dsOptionFieldAdd = (name: string, textField: string | undefined, valueField: string | undefined, optionConfig: any, optionQueryConfig: any) => {
-    if (!compDataSet.getField(name)) {
-      compDataSet.addField(name, {
-        textField,
-        valueField,
-        options: new DataSet({
-          autoCreate: true,
-          autoQuery: true,
-          ...optionConfig,
-          transport: {
-            read({ dataSet, record, params: { page } }) {
-              return {
-                ...optionQueryConfig,
-              };
-            },
-          },
-        }),
-      });
-    }
-  };
-
-  const handleDeleteField = (index: number, name: string) => { // 外面X掉
-    compDataSet?.current?.set(name, null);
-    const cloneSearchFields = cloneDeep(searchFields);
-    cloneSearchFields.splice(index, 1);
-    setSearchFields(cloneSearchFields);
-    childRef.current.checkChange(false, name);
-  };
-
-  const handleRemoteSearch = async (e: any, item: ISearchFields) => {
-    const { value } = e.target;
-    if (item.fieldProps.remoteSearch) {
-      const optionDs = compDataSet?.getField(item.name)?.options;
-      if (optionDs) {
-        optionDs.setQueryParameter(item.fieldProps.remoteSearchName || 'param', value);
-      }
-      await optionDs?.query();
-    }
-  };
-
-  const getSearchField = (item: ISearchFields, index: number) => {
-    const Ele = fieldsMap.get(item.type);
-    return item.initial ? (
-      <div className="searchField-item">
+    return visible ? (
+      <div className={initial ? 'searchField-item' : 'searchField-item-deletable'}>
         {/*  @ts-ignore */}
         <Ele
-          style={{ width: item.width || 'auto' }}
-          {...item.fieldProps}
-          dataSet={compDataSet}
-          name={item.name}
-          onInput={(e: string) => { handleRemoteSearch(e, item); }}
+          placeholder={placeholder}
+          name={fieldName}
+          style={{ width: width || 'auto' }}
+          dataSet={queryBarDataSet}
+          {...eleProps}
         />
+        {
+          !initial
+          && (
+            <div
+              className="deletable-div"
+              role="none"
+              onClick={() => {
+                handleDeleteField(fieldName);
+              }}
+            >
+              <Icon type="close" />
+            </div>
+          )
+        }
       </div>
-    ) : (
-      <div className="searchField-item searchField-item-deletable">
-        {/*  @ts-ignore */}
-        <Ele
-          style={{ width: item.width || 'auto' }}
-          {...item.fieldProps}
-          dataSet={compDataSet}
-          name={item.name}
-          onInput={(e: string) => { handleRemoteSearch(e, item); }}
-        />
-        <div
-          className="deletable-div"
-          role="none"
-          onClick={() => {
-            handleDeleteField(index, item.name);
-          }}
-        >
-          <Icon type="close" />
-        </div>
-      </div>
-    );
-  };
-
-  const fieldAdd = (changeArr: ICheckBoxFields[]) => {
-    const cloneSearchFields = cloneDeep(searchFields);
-    changeArr.forEach((i) => {
-      { /*  @ts-ignore */ }
-      cloneSearchFields.push(i);
-      if (!i.optionQueryConfig) {
-        dsFieldAdd(i.name);
-      } else {
-        dsOptionFieldAdd(i.name, i.optionsTextField || 'name', i.optionsValueField || 'id',
-          i.optionConfig || {},
-          i.optionQueryConfig);
-      }
-    });
-    setSearchFields(cloneSearchFields);
-  };
-
-  const fieldRemove = (changeArr: ICheckBoxFields[]) => { // 里面checkbox 移除外面字段
-    const cloneSearchFields = cloneDeep(searchFields);
-    changeArr.forEach((item) => {
-      compDataSet?.current?.set(item.name, null);
-      remove(cloneSearchFields, (i) => item.name === i.name);
-    });
-    setSearchFields(cloneSearchFields);
-  };
-
-  const chooseFieldsChange = (value: boolean, changeArr: ICheckBoxFields[]) => {
-    if (value) {
-      fieldAdd(changeArr);
-    } else {
-      fieldRemove(changeArr);
-    }
+    ) : '';
   };
 
   const handleReset = () => {
-    setSearchFields(cloneDeep(searchFieldsOrigin));
-    compDataSet.reset(); // 没有触发dataset update事件 手动触发一下
-    onChange('reset', 'reset');
-    childRef?.current?.init();
+    queryBarDataSet?.current?.reset();
+    searchFilterDataSet?.current?.reset();
     setExpandBtnVisible(false);
     setExpandBtnType('expand_less');
+    setVisibleOptionalFieldsNum(0);
+    childRef?.current?.reset();
+    onChange({});
   };
 
-  const getIfValue = () => {
-    const obj = omit(compDataSet?.current?.toData(), '__dirty');
-    let bool = false;
-    // eslint-disable-next-line consistent-return
-    forIn(obj, (value, key) => {
-      if (!isNil(value)) {
-        bool = true;
-        return false;
-      }
-    });
-    return bool;
-  };
+  //  useCallback ???
+  // const querybarDsCurrentExistValue = useMemo(
+  //   () => {
+  //   },
+  //   [queryBarDataSet?.current?.toData()],
+  // );
 
   const handleExpandClick = () => {
     if (expandBtnType === 'expand_less') {
@@ -281,38 +242,29 @@ const Index: React.FC<IProps> = (props) => {
     setExpandBtnType('expand_less');
   };
 
-  // const test = (e: any) => {
-  //   const aa = compDataSet?.getField('createdBys')?.options;
-  //   aa.setQueryParameter('params', e.target.value);
-  //   aa?.query();
-  // };
-
   return (
     <>
       <div className="searchField-container">
         <div className="searchField-container-left">
           <div className="searchField-item">
-            <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={compDataSet} name="searchContent" />
-            {/* <Select searchable dataSet={compDataSet} name="createdBys" onInput={(e) => { test(e); }} /> */}
+            <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={queryBarDataSet} name="searchContent" />
           </div>
           <div className="searchField-container-left-block1">
             <div className="searchField-container-left-block1-inner">
               {
-                searchFields.map((item, index) => getSearchField(item, index))
+                [...queryBarDataSet.fields].map((item) => getFields(item))
               }
               <div className="searchField-item">
-                <ChooseFieldsBtn
-                  fields={filterFieldsConfig}
-                  onChange={chooseFieldsChange}
+                <SearchFilterBtn
+                  dataSet={searchFilterDataSet}
                   cRef={childRef}
-                  reset={handleReset}
                 />
               </div>
             </div>
           </div>
           <div className="searchField-container-left-block2">
             {
-              (searchFields.length > initialFieldNum || getIfValue())
+              (visibleOptionalFieldsNum > 0 || recordExistedValue)
               && (
                 <>
                   <Button onClick={handleReset}>重置</Button>
