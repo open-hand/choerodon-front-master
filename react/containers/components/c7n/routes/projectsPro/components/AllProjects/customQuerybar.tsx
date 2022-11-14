@@ -98,6 +98,9 @@ const Index: React.FC<IProps> = (props) => {
             ...state,
             visible: value,
           });
+          if (!value) {
+            queryBarDataSet?.current?.set(name, null);
+          }
           setVisibleOptionalFieldsNum(getVisibleOptionalFieldsNum());
         },
       },
