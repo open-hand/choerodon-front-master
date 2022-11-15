@@ -74,7 +74,7 @@ class HeaderStore {
 
   @observable unreadMessageCount = 0;
 
-  @observable userMsgcurrentSize = 11;
+  @observable userMsgcurrentSize = 200;
 
   @observable userMsgCount = 0;
 
