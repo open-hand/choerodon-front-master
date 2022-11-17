@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import onClickOutside from 'react-onclickoutside';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
+import ScrollContext from 'react-infinite-scroll-component';
 import {
   Badge, Button, Tabs, Avatar, Tooltip, notification,
 } from 'choerodon-ui';
@@ -17,6 +18,7 @@ import { TimePopover } from '@choerodon/components';
 import WSHandler from '@/components/ws/WSHandler';
 import defaultAvatar from '@/assets/images/favicon.png';
 import './index.less';
+import headerStore from '@/containers/stores/c7n/HeaderStore';
 
 const { TabPane } = Tabs;
 const PREFIX_CLS = 'c7n';
@@ -37,6 +39,7 @@ class RenderPopoverContentClass extends Component {
   handleClickOutside = () => {
     const { HeaderStore } = this.props;
     HeaderStore.setInboxVisible(false);
+    HeaderStore.axiosGetUnreadMessageCount();
     setTimeout(() => {
       HeaderStore.setInboxDetailVisible(false);
     }, 700);
@@ -44,7 +47,7 @@ class RenderPopoverContentClass extends Component {
 
   render() {
     const {
-      HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, openCleanAllModal, handleSettingReceive, readAllMsg,
+      HeaderStore, inboxData, inboxLoading, renderMessages, handleVisibleChange, openCleanAllModal, handleSettingReceive, readAllMsg, AppState,
     } = this.props;
     const {
       inboxVisible, getUnreadMsg, getUnreadOther,
@@ -61,41 +64,58 @@ class RenderPopoverContentClass extends Component {
         {HeaderStore.getInboxActiveKey === '1' && (<Tooltip title="全部清除"><ButtonPro funcType="flat" icon="delete_sweep" color="primary" onClick={openCleanAllModal} style={{ marginLeft: '.04rem' }} /></Tooltip>)}
       </>
     );
+
+    const loadMore = () => {
+      headerStore.setUserMsgcurrentSize(headerStore.userMsgcurrentSize + 11);
+      headerStore.axiosGetUserMsg(AppState.getUserId);
+    };
+
     return (
-      createPortal(<div className={siderClasses}>
-        <div className={`${prefixCls}-sider-header-wrap no-mr ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
-          <div className={`${prefixCls}-sider-header`}>
-            <div className={`${prefixCls}-sider-header-title`}>
-              <span className="msgTitle">消息通知</span>
-              <Button
-                funcType="flat"
-                icon="close"
-                shape="circle"
-                onClick={() => handleVisibleChange(!inboxVisible)}
-              />
+      createPortal(
+        <div className={siderClasses}>
+          <div className={`${prefixCls}-sider-header-wrap no-mr ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
+            <div className={`${prefixCls}-sider-header`}>
+              <div className={`${prefixCls}-sider-header-title`}>
+                <span className="msgTitle">消息通知</span>
+                <Button
+                  funcType="flat"
+                  icon="close"
+                  shape="circle"
+                  onClick={() => {
+                    handleVisibleChange(!inboxVisible);
+                    HeaderStore.axiosGetUnreadMessageCount();
+                  }}
+                />
+              </div>
+              <Tabs defaultActiveKey="1" activeKey={HeaderStore.getInboxActiveKey} onChange={(flag) => HeaderStore.setInboxActiveKey(flag)} tabBarExtraContent={operations}>
+                <TabPane
+                  tab={<span><Badge count={getUnreadMsg.filter((v) => !v.read).length} style={{ transform: 'scale(.75)' }}>消息</Badge></span>}
+                  key="1"
+                  className={`${prefixCls}-sider-pane-usermsg`}
+                >
+                  <ScrollContext
+                    dataLength={HeaderStore.userMsgCount}
+                    next={loadMore}
+                    hasMore={HeaderStore.userMsghaveMore}
+                    height="100%"
+                  >
+                    {renderMessages(getUnreadMsg)}
+                  </ScrollContext>
+                </TabPane>
+                <TabPane tab="公告" key="3">
+                  <Spin spinning={inboxLoading} className={`${prefixCls}-sider-header-loading`}>
+                    {renderMessages(getUnreadOther)}
+                  </Spin>
+                </TabPane>
+              </Tabs>
             </div>
-            <Tabs defaultActiveKey="1" activeKey={HeaderStore.getInboxActiveKey} onChange={(flag) => HeaderStore.setInboxActiveKey(flag)} tabBarExtraContent={operations}>
-              <TabPane
-                tab={<span><Badge count={getUnreadMsg.filter((v) => !v.read).length} style={{ transform: 'scale(.75)' }}>消息</Badge></span>}
-                key="1"
-              >
-                <Spin spinning={inboxLoading} className={`${prefixCls}-sider-header-loading`}>
-                  {renderMessages(getUnreadMsg)}
-                </Spin>
-              </TabPane>
-              <TabPane tab="公告" key="3">
-                <Spin spinning={inboxLoading} className={`${prefixCls}-sider-header-loading`}>
-                  {renderMessages(getUnreadOther)}
-                </Spin>
-              </TabPane>
-            </Tabs>
           </div>
-        </div>
-        <RenderPopoverContentDetailClass
-          handleVisibleChange={this.handleVisibleChange}
-        />
-                   </div>,
-      document.body)
+          <RenderPopoverContentDetailClass
+            handleVisibleChange={this.handleVisibleChange}
+          />
+        </div>,
+        document.body,
+      )
     );
   }
 }
@@ -352,7 +372,7 @@ export default class Inbox extends Component {
     if (inboxData.length > 0) {
       const org = HeaderStore?.getOrgData?.[0];
       return (
-        <ul>
+        <ul height="100%">
           {
             inboxData.map((data) => {
               const {
