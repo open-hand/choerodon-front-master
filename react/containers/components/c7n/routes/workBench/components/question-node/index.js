@@ -1,5 +1,5 @@
 import React, {
-  useReducer,
+  useReducer, useState, useEffect,
 } from 'react';
 import {
   Icon, Tooltip,
@@ -7,9 +7,11 @@ import {
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { merge, get } from 'lodash';
+import { TypeTag } from '@choerodon/components';
 import { getRandomBackground } from '@/utils';
-
 import './index.less';
+import { ALL_TYPE_CODES } from '@/constants/STATUS_TYPE';
+import { useWorkBenchStore } from '../../stores';
 
 function getFirst(str) {
   if (!str) {
@@ -25,7 +27,7 @@ function getFirst(str) {
 }
 
 const QuestionNode = observer(({
-  history, record, organizationId, switchCode, isStar, onClickStar,
+  history, record, organizationId, switchCode, isStar, onClickStar, dataSet,
 }) => {
   const {
     projectVO, typeCode, issueTypeVO, issueNum, summary, priorityVO: customPriorityVO,
@@ -34,11 +36,12 @@ const QuestionNode = observer(({
     projectId: topProjectId, projectName: topProjectName, ...otherData
   } = record || {};
   const { code: statusCode } = statusVO || {};
+  const { openCurrent, closeCurrent } = useWorkBenchStore();
   const prefixCls = 'c7ncd-question-issue';
-
+  useEffect(() => {
+  }, []);
   const priorityVO = customPriorityVO || (backlogPriority && { colour: backlogPriority.color, name: backlogPriority.name });
-
-  function handleClick() {
+  function handleExecuteClick() {
     const { id: projectId, name: projectName } = projectVO || {};
     const queryData = {
       id: projectId || topProjectId,
@@ -46,39 +49,59 @@ const QuestionNode = observer(({
       organizationId,
       type: 'project',
     };
-    if (switchCode === 'myStarBeacon_backlog') {
-      const { code } = statusVO;
-      let pathSuffix = 'demand';
-      if (code === 'backlog_rejected') {
-        pathSuffix += '/approve';
-        merge(queryData, { paramBacklogStatus: statusCode });
-      }
-      merge(queryData, { paramBacklogId: id, paramBacklogName: backlogNum });
-      window.open(`#/agile/${pathSuffix}?${queryString.stringify(queryData)}`);
-      return;
-    }
-    if (switchCode === 'myStarBeacon') {
-      if (typeCode !== 'feature') {
-        merge(queryData, { paramIssueId: issueId, paramName: issueNum });
+    // if (switchCode === 'myStarBeacon_backlog') {
+    //   const { code } = statusVO;
+    //   let pathSuffix = 'demand';
+    //   if (code === 'backlog_rejected') {
+    //     pathSuffix += '/approve';
+    //     merge(queryData, { paramBacklogStatus: statusCode });
+    //   }
+    //   merge(queryData, { paramBacklogId: id, paramBacklogName: backlogNum });
+    //   window.open(`#/agile/${pathSuffix}?${queryString.stringify(queryData)}`);
+    //   return;
+    // }
+    // if (switchCode === 'myStarBeacon') {
+    //   if (typeCode !== 'feature') {
+    //     merge(queryData, { paramIssueId: issueId, paramName: issueNum });
 
-        window.open(`#/agile/work-list/issue?${queryString.stringify(queryData)}`);
-      } else {
-        merge(queryData, { paramIssueId: issueId, paramName: issueNum, category: 'PROGRAM' });
-        window.open(`#/agile/feature?${queryString.stringify(queryData)}`);
-      }
-      return;
-    }
-    if (typeCode === 'test-execution') {
-      const {
-        planId, executeId, cycleId, assignedTo,
-      } = otherData;
-      merge(queryData, { cycle_id: cycleId, plan_id: planId, assignerId: assignedTo });
-      window.open(`#/testManager/TestPlan/execute/${executeId}?${queryString.stringify(queryData)}`);
+    //     window.open(`#/agile/work-list/issue?${queryString.stringify(queryData)}`);
+    //   } else {
+    //     merge(queryData, { paramIssueId: issueId, paramName: issueNum, category: 'PROGRAM' });
+    //     window.open(`#/agile/feature?${queryString.stringify(queryData)}`);
+    //   }
+    //   return;
+    // }
+    // if (typeCode === 'test-execution') {
+    const {
+      planId, executeId, cycleId, assignedTo,
+    } = otherData;
+    merge(queryData, { cycle_id: cycleId, plan_id: planId, assignerId: assignedTo });
+    window.open(`#/testManager/TestPlan/execute/${executeId}?${queryString.stringify(queryData)}`);
 
-      return;
-    }
-    window.open(`#/agile/scrumboard?${queryString.stringify(merge(queryData, { paramIssueId: issueId }))}`);
+    // return;
+    // }
+    // window.open(`#/agile/scrumboard?${queryString.stringify(merge(queryData, { paramIssueId: issueId }))}`);
   }
+
+  const handleClick = () => {
+    if (record.issueId || record.id) {
+      openCurrent({
+        path: backlogNum ? 'demand' : 'issue',
+        props: backlogNum ? { id: record.id, projectId: record.projectId, organizationId } : {
+          issueId: record.issueId,
+          projectId: record.projectId,
+          applyType: ALL_TYPE_CODES.includes(record.issueTypeVO.typeCode) ? 'waterfall' : 'agile',
+        },
+        events: {
+          update: () => {
+            dataSet.query();
+          },
+        },
+      });
+    } else {
+      closeCurrent();
+    }
+  };
 
   function getIssueType(originTypeCode, isBacklogType = false) {
     let mes = '';
@@ -94,12 +117,12 @@ const QuestionNode = observer(({
         break;
       case 'bug':
         mes = '缺陷';
-        icon = 'agile_fault';
+        icon = 'bug_report';
         color = '#f44336';
         break;
       case 'issue_epic':
         mes = '史诗';
-        icon = 'agile_epic';
+        icon = 'bolt';
         color = '#743be7';
         break;
       case 'sub_task':
@@ -121,24 +144,24 @@ const QuestionNode = observer(({
       }
       default:
         mes = '任务';
-        icon = 'agile_task';
+        icon = 'done';
         color = '#4d90fe';
     }
     if (issueTypeVO && newTypeCode !== 'feature') {
-      mes = issueTypeVO.name || mes;
-      icon = issueTypeVO.icon || icon;
-      color = issueTypeVO.colour || color;
+      if (issueTypeVO.name !== mes) {
+        mes = issueTypeVO.name;
+        icon = issueTypeVO.icon;
+        color = issueTypeVO.colour;
+      }
     }
-    const reverse = ['agile_epic', 'agile_story', 'agile_fault', 'agile_task', 'agile_subtask', 'test-case', 'test-automation', 'agile-feature'].includes(icon);
     let otherClassName = '';
-    if (!reverse && newTypeCode !== 'test-execution') {
+    if (newTypeCode !== 'test-execution') {
       otherStyle = {
         background: color,
       };
       color = 'white';
       otherClassName = `${prefixCls}-main-icon-other`;
     }
-
     return (
       <Tooltip title={mes} placement="top">
         {typeCode === 'backlog' ? (
@@ -149,7 +172,10 @@ const QuestionNode = observer(({
             <Icon
               className={`${prefixCls}-main-icon`}
               type={icon}
-              style={{ color: '#fff', fontSize: '12px' }}
+              style={{
+                color: '#fff',
+                fontSize: '12px',
+              }}
             />
           </div>
         ) : (
@@ -159,7 +185,6 @@ const QuestionNode = observer(({
             style={{ ...otherStyle, color }}
           />
         )}
-
       </Tooltip>
     );
   }
@@ -246,11 +271,11 @@ const QuestionNode = observer(({
     <div
       role="none"
       className={`${prefixCls}`}
-      onClick={handleClick}
+      onClick={typeCode === 'test-execution' ? handleExecuteClick : handleClick}
       key={`${typeCode}-${issueId || id}`}
     >
       <div className={`${prefixCls}-main`}>
-        {getIssueType(typeCode, !!backlogNum)}
+        <TypeTag data={issueTypeVO} featureType={featureType} />
         <Tooltip title={issueNum} placement="top">
           <span className={`${prefixCls}-main-issueId`}>{issueNum || backlogNum}</span>
         </Tooltip>
@@ -271,6 +296,7 @@ const QuestionNode = observer(({
         {(switchCode === 'reportedBug' || (isStar && typeCode !== 'feature')) && getUsers(assignees || [{ id: assigneeId, imageUrl: assigneeImageUrl, realName: assigneeRealName }])}
         {typeCode === 'feature' && getProjects(featureTeams)}
         {typeCode !== 'feature' && (
+        <Tooltip title={priorityVO ? priorityVO.name : '无'} placement="top">
           <span
             className={`${prefixCls}-main-priority`}
             style={{
@@ -280,6 +306,7 @@ const QuestionNode = observer(({
           >
             {priorityVO ? priorityVO.name : '无'}
           </span>
+        </Tooltip>
         )}
       </div>
     </div>

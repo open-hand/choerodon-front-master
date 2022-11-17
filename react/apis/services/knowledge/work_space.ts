@@ -48,9 +48,9 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
     });
   }
 
-  rename(id: any, name: any) {
+  rename(menuType:string, id: any, name: any) {
     return this.request({
-      url: `${this.prefix}/rename/${id}`,
+      url: `${menuType === 'organization' ? this.orgPrefix : this.prefix}/rename/${id}`,
       method: 'put',
       params: {
         new_name: name,
@@ -59,14 +59,11 @@ class WorkSpaceApi extends Api<WorkSpaceApi> {
     });
   }
 
-  renameOrg(id: any, name: any) {
+  // 知识库查询上传状态
+  loadUploadStatus(menuType:string, id:string) {
     return this.request({
-      url: `${this.orgPrefix}/rename/${id}`,
-      method: 'put',
-      params: {
-        new_name: name,
-        organization_id: this.orgId,
-      },
+      url: `${menuType === 'organization' ? this.orgPrefix : this.prefix}/upload/status?ref_id=${id}&source_type=${menuType}${menuType === 'organization' ? '' : `&organization_id=${this.orgId}`}`,
+      method: 'get',
     });
   }
 }

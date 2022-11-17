@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { forEach, get } from 'lodash';
 import { DataSet } from 'choerodon-ui/pro/lib';
+import { get as getInject, has as hasInject } from '@choerodon/inject';
 import useStore from './useStore';
 import useCpCacheStore from './useCpCacheStore';
 import modulesMapping from './modulesMapping';
@@ -17,7 +18,10 @@ import { useFormatMessage, useFormatCommon } from '@/hooks';
 
 // eslint-disable-next-line no-undef
 const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
-const Store = createContext();
+// eslint-disable-next-line no-underscore-dangle
+window.___choeordonWorkBenchContenxt__ = window.___choeordonWorkBenchContenxt__ || createContext();
+// eslint-disable-next-line no-underscore-dangle
+const Store = window.___choeordonWorkBenchContenxt__;
 
 export function useWorkBenchStore() {
   return useContext(Store);
@@ -26,11 +30,22 @@ export function useWorkBenchStore() {
 export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     children,
-    AppState: { currentMenuType: { organizationId, projectId }, currentModules },
+    AppState: { currentMenuType: { organizationId, projectId }, currentModules, getUserId },
     AppState,
     history,
   } = props;
   const hasAgile = currentModules && currentModules.includes('agile');
+  let detailPropsCurrent;
+  let openCurrent;
+  let closeCurrent;
+
+  const useDetail = getInject('agile:useDetail') || function Tentative() { return []; };
+  const [detailProps] = useDetail();
+  if (detailProps) {
+    openCurrent = detailProps.open;
+    closeCurrent = detailProps.close;
+    detailPropsCurrent = detailProps;
+  }
 
   function getAllCode() {
     let allowedModules = [...modulesMapping.common, ...hasAgile && HAS_BACKLOG ? modulesMapping.backlog : []];
@@ -82,6 +97,10 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     dashboardDs,
     addCardDs,
     ...pageDS,
+    openCurrent,
+    closeCurrent,
+    detailPropsCurrent,
+    getUserId,
   };
 
   return (

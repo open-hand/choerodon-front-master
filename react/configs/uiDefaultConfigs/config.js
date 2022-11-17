@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Loading, useLoading } from '@choerodon/components';
 import { uniqueId } from 'lodash';
+import { get } from '@choerodon/inject';
 import { uiAxiosInstance } from '@/components/axios';
 import useFormatCommon from '@/hooks/useFormatCommon';
 import AppState from '@/containers/stores/c7n/AppState';
@@ -26,7 +27,7 @@ function TableSpin(props) {
     };
   }, [cancelRegisterChildren, change, loadId, registerChildren]);
   //  无统一Loading管理 则使用table表格内部loading状态判断
-  return <Loading type="c7n" className={className} display={!isHasProvider || loading} style={{ display: !isHasProvider || loading ? 'inline-block' : 'none' }} />;
+  return <Loading type={get('configuration.master-global:loadingType') || 'c7n'} className={className} display={!isHasProvider || loading} style={{ display: !isHasProvider || loading ? 'inline-block' : 'none' }} />;
 }
 
 const useUiConfigs = () => {
@@ -66,6 +67,7 @@ const useUiConfigs = () => {
     tableBorder: false,
     showLengthInfo: false,
     lookupAxiosMethod: 'get',
+    selectPagingOptionContent: '加载更多',
     lookupUrl: (code) => `/hpfm/v1/lovs/value?lovCode=${code}`,
     tableHighLightRow: false,
     tableColumnResizable: false,

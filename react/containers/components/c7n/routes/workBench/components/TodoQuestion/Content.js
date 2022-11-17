@@ -4,6 +4,8 @@ import React, {
 import {
   Icon, Tooltip, Tree, Dropdown, Menu,
 } from 'choerodon-ui/pro';
+import { get } from '@choerodon/inject';
+
 import { Spin } from 'choerodon-ui';
 import { merge } from 'lodash';
 import { observer } from 'mobx-react-lite';
@@ -382,7 +384,7 @@ const TodoQuestion = observer(() => {
   }
   function getContent() {
     if (!questionDs || questionDs.status === 'loading' || loading) {
-      return <Loading display />;
+      return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
     }
     if (!questionDs.length) {
       return (

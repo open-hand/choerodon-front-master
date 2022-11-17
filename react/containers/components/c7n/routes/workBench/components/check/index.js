@@ -1,6 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon, Tooltip } from 'choerodon-ui/pro';
+import { get } from '@choerodon/inject';
+
 import { Loading } from '@choerodon/components';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import { useWorkBenchStore } from '../../stores';
@@ -35,7 +37,7 @@ const Check = observer(() => {
   }
 
   if (!auditDs || auditDs.status === 'loading') {
-    return <Loading display />;
+    return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
   }
 
   if (!auditDs.length) {

@@ -3,6 +3,7 @@ import { withRouter, Route, Switch } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import './style';
 import { Loading } from '@choerodon/components';
+import { get } from '@choerodon/inject';
 import AppState from '../../../../stores/c7n/AppState';
 
 const Unauthorized = React.lazy(() => import('../unauthorized'));
@@ -57,7 +58,7 @@ class Outward extends Component {
     if (this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">
-          <Suspense fallback={<Loading type="c7n" />}>
+          <Suspense fallback={<Loading type={get('configuration.master-global:loadingType') || 'c7n'} />}>
             <Switch>
               <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
               <Route exact path={`${match.url}dingTalkTransition`} component={DingTalkTransition} />

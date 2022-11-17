@@ -1,4 +1,4 @@
-import Api from './Api';
+import Api from '@/apis/Api';
 
 export interface ICreate {
   name: string

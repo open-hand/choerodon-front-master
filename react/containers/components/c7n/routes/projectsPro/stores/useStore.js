@@ -1,13 +1,12 @@
 import { useLocalStore } from 'mobx-react-lite';
 import queryString from 'query-string';
+import moment from 'moment';
+import get from 'lodash/get';
 import { axios } from '@/index';
 import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import MenuStore from '@/containers/stores/c7n/MenuStore';
-import moment from 'moment';
-import { getRandomBackground } from '@/utils';
+import { getRandomBackground, historyPushMenu } from '@/utils';
 import findFirstLeafMenu from '@/utils/findFirstLeafMenu';
-import { historyPushMenu } from '@/utils';
-import get from 'lodash/get';
 
 export default function useStore(AppState, history) {
   return useLocalStore(() => ({
@@ -65,20 +64,27 @@ export default function useStore(AppState, history) {
       const { page, size } = this.getPagination;
       this.projectLoading = true;
       const hasOrgId = queryString.parse(history.location.search).organizationId;
-      axios.get(hasOrgId ? `/iam/choerodon/v1/organizations/${hasOrgId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
-        const tempContent = get(res, 'content') ? res.content.map((r) => {
-          const unix = String(moment(r.creationDate).unix());
-          r.background = getRandomBackground(unix.substring(unix.length - 3));
-          return r;
-        }) : [];
-        this.setAllProjects(tempContent);
-        this.setPagination({
-          page: res?.pageNum,
-          size: res?.size,
-          total: res?.totalElements,
+      const func = () => {
+        axios.post(hasOrgId ? `/iam/choerodon/v1/organizations/${hasOrgId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
+          const tempContent = get(res, 'content') ? res.content.map((r) => {
+            const unix = String(moment(r.creationDate).unix());
+            r.background = getRandomBackground(unix.substring(unix.length - 3));
+            return r;
+          }) : [];
+          this.setAllProjects(tempContent);
+          this.setPagination({
+            page: res?.pageNum,
+            size: res?.size,
+            total: res?.totalElements,
+          });
+          this.projectLoading = false;
         });
-        this.projectLoading = false;
-      });
+      };
+      if (!AppState?.getUserId) {
+        setTimeout(() => this.axiosGetProjects(), 1000);
+      } else {
+        func();
+      }
     },
 
     canCreate: false,

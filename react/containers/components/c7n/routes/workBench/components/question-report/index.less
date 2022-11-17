@@ -4,6 +4,9 @@
   flex: 1 1 62%;
   margin-right: .20rem;
   overflow: hidden;
+  .c7n-workbench-card{
+    padding:0.2rem 0 0 0;
+  }
   &-title{
     width: 100%;
     display: flex;
@@ -15,9 +18,22 @@
       white-space: nowrap;
     }
   }
-
+  &-scroll {
+    padding: 0 0.24rem;
+    &-load {
+      position: absolute;
+      left: 47%;
+      bottom: 0;
+    }
+    &-bottom {
+      width: 100%;
+      margin: auto;
+      text-align: center;
+      color: var(--text-color3);
+    }
+  }
   &-issueContent {
-
+    height:100%;
     &-loading {
       text-align: center;
     }
@@ -25,9 +41,15 @@
     .c7n-workbench-card-header-title {
       width: 100%;
     }
-
+    .c7n-workbench-card-header{
+      margin-bottom:0;
+    }
     .c7n-workbench-card-content {
-      overflow: auto;
+      overflow: hidden;
+      padding:0;
+      .c7n-spin-nested-loading,.c7n-spin-container,.infinite-scroll-component__outerdiv{
+        height:100%;
+      }
     }
   }
 

@@ -2,16 +2,19 @@ import { AxiosRequestConfig } from 'axios';
 import {
   getAccessToken,
 } from '@/utils';
-import MenuStore from '@/containers/stores/c7n/MenuStore';
-import AppState from '@/containers/stores/c7n/AppState';
+import PropMenuStore from '@/containers/stores/c7n/MenuStore';
 import cursiveSetCorrectId from '../utils/cursiveSetCorrectedId';
 
 export default function addCustomHeader(config: AxiosRequestConfig) {
+  // eslint-disable-next-line no-underscore-dangle
+  const { AppState } = window.__choeordonStores__ || {};
+  // eslint-disable-next-line no-underscore-dangle
+  const MenuStore = window.__choeordonStores__.MenuStore || PropMenuStore;
   const newConfig = config;
   const str = window.location.hash.split('?')[1];
   const urlSearchParam = new URLSearchParams(str);
-  const type = urlSearchParam.get('type') || AppState.currentMenuType?.type;
-  const orgId = urlSearchParam.get('organizationId') || AppState.currentMenuType?.organizationId;
+  const type = urlSearchParam.get('type') || AppState?.currentMenuType?.type;
+  const orgId = urlSearchParam.get('organizationId') || AppState?.currentMenuType?.organizationId;
   const id = !type || type === 'site' ? 0 : orgId || 0;
 
   newConfig.headers['Content-Type'] = 'application/json';
@@ -38,7 +41,6 @@ export default function addCustomHeader(config: AxiosRequestConfig) {
 
   newConfig.headers['H-Menu-Id'] = correctId || 0;
   const accessToken = getAccessToken();
-  console.log(accessToken, 'axios accessToken');
   if (accessToken) {
     newConfig.headers.Authorization = accessToken;
   }

@@ -37,7 +37,9 @@ export const questionSearchFields = [
         { meaning: '缺陷', value: 'bug' },
         { meaning: '任务', value: 'task' },
         { meaning: '子任务', value: 'sub_task' },
-        // { meaning: '缺陷', value: 'bug' },
+        { meaning: '里程碑', value: 'milestone' },
+        { meaning: '活动', value: 'activity' },
+        { meaning: '阶段', value: 'stage' },
       ],
       readAxiosConfig: {
 

@@ -1,48 +1,47 @@
 .recentProjects {
+  margin-bottom: 33px;
   p {
     margin: 0;
+    text-overflow: ellipsis;
   }
-  border-left: 1px solid #d3d3d3;
-  padding: 20px 0;
-  flex-basis: 332px;
-  max-width: 332px;
-  background: #fff;
   &-title {
+    margin-bottom: 20px !important;
     font-size:16px;
     font-weight:500;
-    color:rgba(58,52,95,1);
-    padding-bottom: 19px;
-    border-bottom: 1px solid #D8DCEB;
+    color: #3A345F;
+    display: flex;
+    justify-content: space-between;
+    .c7n-pro-btn {
+      width: 24px !important;
+      height: 24px !important;
+      border-radius: 50% !important;
+    }
+    .icon {
+      font-size: 18px;
+    }
   }
-  &-content {
-    padding: 11px 6px;
-    border-bottom: 1px solid #D8DCEB;
+  &-items {
+    width: 100%;
+    height: auto;
+    background: white;
+    box-shadow:0 2px 6px 0 rgba(14,29,128,0.1);
+    border-radius:0 10px 0 10px;
+    padding: 14px 16px 14px 16px;
+    position: relative;
+    margin-bottom: 16px;
     &:hover {
       background: rgba(140,158,255,0.06);
     }
-    &-time {
-      display: flex;
-      align-items: center;
-      margin-bottom: 14px;
-      p {
-        font-size:12px;
-        font-weight:400;
-        color:rgba(58,52,95,0.65);
-      }
-      span {
-        width: 18px;
-        height: 18px;
-        background:rgba(104,135,232,0.1);
-        border-radius:4px;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 4px;
-        i {
-          font-size: 14px;
-          color: rgba(104,135,232,1);
-        }
-      }
+    &-topborder {
+      position: absolute;
+      width: 100%;
+      height: 9px;
+      border-radius: 0 10px 0 6px;
+      border: 2px solid #6887e8;
+      border-left: none;
+      border-bottom: none;
+      left: 0;
+      top: 0;
     }
   }
 
@@ -51,8 +50,7 @@
   }
 
   &-content-wrap {
-    height: calc(100% - 46px);
-    overflow-y: scroll;
-    padding: 0 .24rem;
+    margin: 0 .24rem;
   }
 }
+

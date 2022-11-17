@@ -317,7 +317,12 @@ export default class Inbox extends Component {
   handleMessagePop = (data) => {
     const { HeaderStore } = this.props;
     const newData = JSONBig.parse(data);
-    const content = newData && newData.content && <p dangerouslySetInnerHTML={{ __html: `${newData.content.replace(imgreg, '[图片]').replace(tablereg, '').replace(reg, '').replace(detailLinkReg, '')}` }} />;
+    const content = newData && newData.content && (
+      <p
+        className={`${prefixCls}-sider-content-list-description-text`}
+        dangerouslySetInnerHTML={{ __html: `${newData.content.replace(imgreg, '[图片]').replace(tablereg, '').replace(reg, '').replace(detailLinkReg, '')}` }}
+      />
+    );
     const notificationKey = `msg-${newData?.messageId}`;
     HeaderStore.notificationKeyList?.add(notificationKey);
     notification.info({
@@ -409,8 +414,14 @@ export default class Inbox extends Component {
                     </div>
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
-                    <div style={{ maxHeight: 63, overflow: 'hidden' }}>
-                      {content && <p id={`li-${id}`} dangerouslySetInnerHTML={{ __html: `${content.replace(tablereg, '').replace(reg, '').replace(orgReg, `organizationId=${org?.id}`)}` }} />}
+                    <div style={{ maxHeight: 84, overflow: 'hidden' }}>
+                      {content && (
+                        <p
+                          id={`li-${id}`}
+                          className={`${prefixCls}-sider-content-list-description-text`}
+                          dangerouslySetInnerHTML={{ __html: `${content.replace(tablereg, '').replace(orgReg, `organizationId=${org?.id}`)}` }}
+                        />
+                      )}
                       {document.getElementById(`#li-${id}`) && document.getElementById(`#li-${id}`).offsetHeight > 63 ? (
                         <a href="#" target="_blank" rel="noreferrer noopener">
                           <span>了解更多</span>

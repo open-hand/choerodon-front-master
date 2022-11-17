@@ -14,10 +14,14 @@ class PermissionsApi extends Api<PermissionsApi> {
     projectId?:string | number
     tenantId:string |number
   }) {
+    const newParams = params;
+    if (!newParams?.projectId) {
+      delete newParams.projectId;
+    }
     return this.request({
       url: `${this.prefix}/menus/check-permissions`,
       method: 'post',
-      params,
+      params: newParams,
       data,
     });
   }

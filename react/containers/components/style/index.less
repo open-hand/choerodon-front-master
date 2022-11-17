@@ -53,21 +53,25 @@
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(15, 19, 88, 0.26);
+  background-color: rgba(15, 19, 88, 0.2);
   transition: background-color .3s;
+  border-radius: 6px;
+  border: 2px dashed transparent;
+  background-clip: padding-box;
 
   &:hover {
-    background-color: #aeaeae;
+    background: rgba(15, 19, 88, 0.3);
   }
 }
 
 body {
   font-size: 0.13rem !important;
+  overflow: hidden;
 }
 
 @btn-height-base: 0.32rem;
@@ -247,4 +251,18 @@ body:not([data-theme="theme4"]) {
       overflow: auto;
     }
   }
+}
+
+.c7n-pro-select-dropdown-menu-item-active {
+  color: var(--primary-color) !important;
+  background: rgba(104, 135, 232, 0.08) !important;
+}
+
+.c7n-notification-notice:has(.icon-info) {
+  background-color: #fff;
+}
+
+// 这里是联邦后样式重复加载 防止selectbox的高度被算成36px
+.c7n-pro-select-box {
+  min-height: 28px !important;
 }

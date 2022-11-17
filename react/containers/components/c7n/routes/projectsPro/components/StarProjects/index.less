@@ -1,21 +1,29 @@
 .starProjects {
-  padding: 20px 0;
-  background: #f5f6fa;
-  height: 100%;
-  cursor: pointer;
-  flex-basis: 332px;
-  max-width: 332px;
-  overflow: auto;
+  margin-bottom: 27px;
   p {
     margin: 0;
     text-overflow: ellipsis;
   }
   &-title {
     margin-bottom: 20px !important;
-    font-size:16px;
-    font-weight:500;
-    color:rgba(58,52,95,1);
-    span {
+    display: flex;
+    justify-content: space-between;
+    &-left {
+      font-size:16px;
+      font-weight:500;
+      color: #3A345F;
+    }
+    &-right {
+      .c7n-pro-btn {
+        width: 24px !important;
+        height: 24px !important;
+        border-radius: 50% !important;
+      }
+      .icon {
+        font-size: 18px;
+      }
+    }
+    .number {
       font-size:14px;
       font-weight:500;
       color:rgba(244,133,144,1);
@@ -49,14 +57,29 @@
       top: 0;
     }
   }
+  &-items:last-child {
+    margin-bottom: 10px;
+  }
 
   &-title-wrap {
     padding: 0 .24rem;
   }
 
   &-content-wrap {
-    height: calc(100% - 46px);
-    overflow-y: scroll;
+    // height: 384px;
+    // height: calc(100% - 46px);
     margin: 0 .24rem;
+    // overflow: auto;
+  }
+
+  &-loadmore {
+    color:rgba(83, 101, 234, 1);
+    font-size: 13px;
+    padding-left: 24px;
+    cursor: pointer;
+    .icon {
+      position: relative;
+      top: -2px;
+    }
   }
 }

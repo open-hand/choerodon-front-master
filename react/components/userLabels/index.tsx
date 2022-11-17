@@ -18,7 +18,7 @@ export interface Iprops {
   className: string
   labelContainerWidth: number
   agile: boolean
-  sizeObserver: boolean | undefined
+  sizeObserver?: boolean
 }
 
 // @ts-ignore
@@ -77,8 +77,10 @@ const Index: React.FC<Iprops> = (props) => {
       str = `${str + i} ,`;
     });
     str = str.substring(0, str.length - 1);
+    const copyList = JSON.parse(JSON.stringify(list));
+    const toolList = copyList.reverse().slice(0, list.length - maxTagNum + 1).reverse();
     return (
-      <Tooltip title={str}>
+      <Tooltip title={toolList.join(',')}>
         <Tag
           style={{
             color: '#4D90FE',

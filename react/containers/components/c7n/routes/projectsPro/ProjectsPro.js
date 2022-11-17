@@ -14,22 +14,31 @@ export default () => {
       currentMenuType: { organizationId },
     },
     AppState,
+    projectListDataSet,
   } = useProjectsProStore();
 
   useEffect(() => {
     AppState.getProjects();
-    ProjectsProUseStore.axiosGetProjects();
+    // ProjectsProUseStore.axiosGetProjects();
     ProjectsProUseStore.checkCreate(organizationId);
     ProjectsProUseStore.axiosGetStarProjects();
     ProjectsProUseStore.axiosGetRecentProjects();
     AppState.setCurrentProject(null);
   }, []);
 
+  const refreshAllView = () => {
+    ProjectsProUseStore.axiosGetStarProjects();
+    ProjectsProUseStore.axiosGetRecentProjects();
+    projectListDataSet.query();
+  };
+
   return (
     <div className="projectsPro">
-      <StarProjects />
+      <div className="projectsPro-left">
+        <StarProjects />
+        <RecentProjects />
+      </div>
       <AllProjects />
-      <RecentProjects />
     </div>
   );
 };

@@ -3,9 +3,9 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
-import { notification, message } from 'choerodon-ui';
+import { notification, message, Alert } from 'choerodon-ui';
 import {
-  Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select,
+  Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select, SelectBox, TreeSelect,
 } from 'choerodon-ui/pro';
 import {
   includes, map, get, some,
@@ -39,10 +39,16 @@ const CreateProject = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [templateTabsKey, setTemplateTabsKey] = useState([]);
   const [hasConfiged, setHasConfiged] = useState(false);
+  const [showDevopsAdvanced, setShowDevopsAdvanced] = useState(false);
+  const [expandAdvanced, setExpandAdvanced] = useState(true);
 
   const record = useMemo(() => formDs.current, [formDs.current]);
 
   const isModify = useMemo(() => record && record.status !== 'add', [record]);
+
+  if (isModify) {
+    record.getField('createUserName').set('required', true);
+  }
 
   useEffect(() => {
     modal.update({
@@ -94,18 +100,22 @@ const CreateProject = observer(() => {
       if (some(categories, ['code', 'N_WATERFALL'])) {
         record.set('useTemplate', false);
       }
-      const res = await formDs.submit();
-      if (res && !res.failed && res.list && res.list.length) {
-        const projectId = get(res.list[0], 'id');
-        if (projectId) {
-          openNotification({ projectId, operateType: isModify ? 'update' : 'create' });
+      const flag = await formDs.validate();
+      if (flag) {
+        const res = await formDs.forceSubmit();
+        if (res && !res.failed && res.list && res.list.length) {
+          const projectId = get(res.list[0], 'id');
+          if (projectId) {
+            openNotification({ projectId, operateType: isModify ? 'update' : 'create' });
+          }
+          refresh(projectId);
+          return true;
+        } if (res.failed) {
+          message.error(res.message);
         }
-        refresh(projectId);
-        return true;
-      } if (res.failed) {
-        message.error(res.message);
+        setIsLoading(false);
+        return false;
       }
-      setIsLoading(false);
       return false;
     } catch (e) {
       setIsLoading(false);
@@ -156,6 +166,16 @@ const CreateProject = observer(() => {
     }
   }, []);
 
+  useEffect(() => {
+    const values = ['N_DEVOPS', 'N_OPERATIONS'];
+    const flag = categoryDs.selected.some((categoryRecord) => values.includes(categoryRecord.get('code')));
+    if (flag) {
+      setShowDevopsAdvanced(true);
+    } else {
+      setShowDevopsAdvanced(false);
+    }
+  }, [categoryDs.selected, showDevopsAdvanced]);
+
   const renderAvatar = useCallback(() => {
     const name = record.get('name');
     const imageUrl = record.get('imageUrl');
@@ -195,9 +215,10 @@ const CreateProject = observer(() => {
   }, [record, isShowAvatar, AppState]);
 
   const getCategoryClassNames = useCallback((categoryRecord) => (classnames({
-    [`${prefixCls}-category-item`]: true,
-    [`${prefixCls}-category-item-disabled`]: categoryRecord.getState('disabled'),
-    [`${prefixCls}-category-item-selected`]: categoryRecord.isSelected,
+    [`${prefixCls}-category-container`]: true,
+    [`${prefixCls}-category-container-disabled`]: categoryRecord.getState('disabled'),
+    [`${prefixCls}-category-container-selected`]: categoryRecord.isSelected,
+    [`${prefixCls}-category-container-waterfall-selected`]: categoryRecord.isSelected && categoryRecord.get('code') === 'N_WATERFALL',
   })), []);
 
   const getTooltipContent = useCallback((categoryRecord) => {
@@ -250,82 +271,89 @@ const CreateProject = observer(() => {
     formDs?.current?.set('agileWaterfall', value);
   };
 
-  const renderStatus = ({ record: hereRecord, value, text }) => {
-    const arr = hereRecord?.getField('statusId')?.options?.toData();
-    const index = arr.findIndex((item) => item.id === hereRecord?.get('statusId')?.id);
-    if (index === -1) {
-      return hereRecord?.get('statusName');
-    }
-    return text;
-  };
-
   const selectedRecords = categoryDs.selected;
   const selectedCategoryCodes = map(selectedRecords, (selectedRecord) => selectedRecord.get('code'));
 
+  const nodeCover = ({ record: iRecord }) => ({
+    disabled: iRecord?.get('hasChildren') || iRecord?.get('children'),
+  });
+
+  const renderTreeSelect = ({ text }) => <span className="tree-select-text">{text}</span>;
+
   return (
-    <>
+    <div className={`${prefixCls}-body`}>
       {renderAvatar()}
-      <Form record={record} className={`${prefixCls}-form`} labelLayout="float">
-        <TextField name="name" />
-        <TextField name="code" disabled={isModify} />
-        {/* <Select name="aaa">
-          <Option value="jack">新品</Option>
-          <Option value="jack1">包装升级</Option>
-        </Select>
-        <Select name="bbb">
-          <Option value="jack">柔润修护润唇膏屈臣氏陈列版本</Option>
-          <Option value="jack">舒缓保湿氨基酸洁面泡沫</Option>
-          <Option value="jack">敏肌修护镜湖水</Option>
-          <Option value="jack">清痘调理水</Option>
-        </Select> */}
+      <Form columns={100} record={record} className={`${prefixCls}-form`} labelLayout="float">
+        <TextField name="name" colSpan={50} style={{ width: 340 }} />
+        <TextField name="code" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled={isModify} />
         {
-          isModify && <Select name="statusId" renderer={renderStatus} />
+          isModify && (
+            <>
+              <Select name="statusId" colSpan={25} style={{ width: 161 }} />
+              <TreeSelect name="workGroupId" colSpan={25} style={{ width: 161, position: 'relative', left: 3 }} searchable optionRenderer={renderTreeSelect} />
+              <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+            </>
+          )
+        }
+        {
+          !isModify
+          && (
+          <>
+            <TreeSelect name="workGroupId" colSpan={50} style={{ width: 340 }} searchable optionRenderer={renderTreeSelect} />
+            <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+          </>
+          )
         }
 
-        <TextArea name="description" resize="vertical" />
+        <TextArea newLine rows={3} colSpan={100} name="description" resize="vertical" />
         {
-          isModify && [
-            <TextField name="creationDate" disabled />,
-            <TextField name="createUserName" disabled />,
-          ]
+          isModify
+           && (
+           <>
+             <TextField name="creationDate" colSpan={50} style={{ width: 340 }} disabled />
+             <TextField name="createUserName" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled />
+           </>
+           )
         }
       </Form>
       <div className={`${prefixCls}-category-label`}>项目类型</div>
       <div className={`${prefixCls}-category`}>
-        {categoryDs.map((categoryRecord) => (
-          <div>
+        {categoryDs.map((categoryRecord, index) => (
+          <div className={getCategoryClassNames(categoryRecord)}>
             <Tooltip title={getTooltipContent(categoryRecord)} key={categoryRecord.get('code')}>
               <div
-                className={getCategoryClassNames(categoryRecord)}
+                className="category-item"
                 onClick={() => handleCategoryClick(categoryRecord)}
                 role="none"
               >
-                <div className={`${prefixCls}-category-item-icon ${prefixCls}-category-item-icon-${categoryRecord.get('code')}`} />
-                <span>{categoryRecord.get('name')}</span>
+                <div className="category-item-content">
+                  <div className={`category-item-content-icon category-item-content-icon-${categoryRecord.get('code')}`} />
+                  <span className="category-item-content-name">{categoryRecord.get('name')}</span>
+                </div>
               </div>
             </Tooltip>
             {categoryRecord.get('code') === 'N_WATERFALL'
               && categoryRecord.isSelected && (
-              <div
-                role="none"
-                className={`${prefixCls}-category-exception`}
-                onClick={(e) => { e.stopPropagation(); }}
-              >
-                <CheckBox checked={record?.get('agileWaterfall')} onChange={sprintCheckboxOnChange} />
-                <span style={{
-                  marginLeft: 4.25, fontSize: 12, position: 'relative', top: -1,
-                }}
+                <div
+                  role="none"
+                  className={`${prefixCls}-category-exception`}
+                  onClick={(e) => { e.stopPropagation(); }}
                 >
-                  启用冲刺
-                </span>
-                <NewTips
-                  helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等功能"
-                  style={{
-                    marginLeft: 3.17,
-                    position: 'relative',
+                  <CheckBox checked={record?.get('agileWaterfall')} onChange={sprintCheckboxOnChange} />
+                  <span style={{
+                    marginLeft: 4.25, fontSize: 12, position: 'relative', top: -1,
                   }}
-                />
-              </div>
+                  >
+                    启用冲刺
+                  </span>
+                  <NewTips
+                    helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等功能"
+                    style={{
+                      marginLeft: 3.17,
+                      position: 'relative',
+                    }}
+                  />
+                </div>
             )}
           </div>
         ))}
@@ -334,19 +362,52 @@ const CreateProject = observer(() => {
         {
           (!currentProjectId || (currentProjectId && !hasConfiged)) && selectedCategoryCodes.find((item) => item === 'N_AGILE') && includes(templateTabsKey, 'statusMachineTemplate') && (
             <>
-              <CheckBox dataSet={formDs} name="useTemplate" value className={`${prefixCls}-template-checkbox`}>使用组织预置的状态机及看板模板</CheckBox>
-              <div
-                className={`${prefixCls}-template-btn`}
-                role="none"
-                onClick={handleOpenTemplate}
-              >
-                查看模板
+              <div>
+                <span className={`${prefixCls}-template-checkbox-text`}>使用组织预置的状态机及看板模板</span>
+                <span
+                  role="none"
+                  onClick={handleOpenTemplate}
+                  className={`${prefixCls}-template-btn`}
+                >
+                  查看模板
+                </span>
               </div>
+              <SelectBox dataSet={formDs} name="useTemplate">
+                <SelectBox.Option value>是</SelectBox.Option>
+                <SelectBox.Option value={false}>否</SelectBox.Option>
+              </SelectBox>
             </>
           )
         }
       </div>
-    </>
+      {
+        showDevopsAdvanced && (
+          <div className={`${prefixCls}-advanced`}>
+            <div className={`${prefixCls}-advanced-divided`} />
+            <p className={`${prefixCls}-advanced-title`}>
+              高级设置
+              <Button onClick={() => { setExpandAdvanced(!expandAdvanced); }} icon={expandAdvanced ? 'expand_less' : 'expand_more'} className="btn-expand" />
+            </p>
+            <div style={expandAdvanced ? { height: 'auto' } : { height: 0, overflow: 'hidden' }}>
+              <Alert
+                message="DevOps组件编码将用于GitLab Group中的URL片段、Harbor Project的名称片段、SonarQube projectKey前缀、
+          以及Helm仓库编码。"
+                type="info"
+                showIcon
+                style={{ marginBottom: 20 }}
+              />
+              <Form columns={100} record={record}>
+                <TextField
+                  name="devopsComponentCode"
+                  colSpan={50}
+                  style={{ width: 340, position: 'relative', left: -5 }}
+                />
+              </Form>
+            </div>
+          </div>
+        )
+      }
+    </div>
   );
 });
 

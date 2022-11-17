@@ -26,6 +26,7 @@ class AppState {
 
   @observable menuType = null; // 一个菜单对象 {id:'',name:'',type:''}
 
+  /** @type any */
   @observable userInfo = {};
 
   @observable userWizardStatus = '';
@@ -58,30 +59,36 @@ class AppState {
   getProjects = () => {
     this.isProjectsLoading = true;
     if (this.currentMenuType?.organizationId) {
-      const recentProjectPromise = axios.get(
-        `/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
-        {
-          enabledCancelRoute: false,
-        },
-      );
-      const starProjectPromise = axios.get(
-        `/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`,
-        {
-          enabledCancelRoute: false,
-        },
-      );
-      Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
-        const [recentProjectData = [], starProjectData = []] = res;
-        const tempRecentProjectData = recentProjectData?.map((i) => ({
-          ...i,
-          ...i.projectDTO,
-        }));
-        const tempStarProjectData = starProjectData;
-        this.setRecentUse(tempRecentProjectData);
-        this.setStarProject(tempStarProjectData);
-        this.setCurrentDropDown(tempRecentProjectData, tempStarProjectData);
+      try {
+        const recentProjectPromise = axios.get(
+          `/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
+          {
+            enabledCancelRoute: false,
+          },
+        );
+        const starProjectPromise = axios.get(
+          `/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`,
+          {
+            enabledCancelRoute: false,
+          },
+        );
+        Promise.all([recentProjectPromise, starProjectPromise]).then((res) => {
+          const [recentProjectData = [], starProjectData = []] = res;
+          const tempRecentProjectData = recentProjectData?.map((i) => ({
+            ...i,
+            ...i.projectDTO,
+          }));
+          const tempStarProjectData = starProjectData;
+          this.setRecentUse(tempRecentProjectData);
+          this.setStarProject(tempStarProjectData);
+          this.setCurrentDropDown(tempRecentProjectData, tempStarProjectData);
+          this.isProjectsLoading = false;
+        }).catch((err) => {
+          this.isProjectsLoading = false;
+        });
+      } catch (e) {
         this.isProjectsLoading = false;
-      });
+      }
     }
   };
 
@@ -172,6 +179,7 @@ class AppState {
     this.currentTheme = data;
   }
 
+  /** @type any */
   @computed
   get getCurrentProject() {
     return this.currentProject;
@@ -227,6 +235,7 @@ class AppState {
     return !!this.userInfo.loginName;
   }
 
+  /** @type any */
   @computed
   get currentMenuType() {
     return this.menuType;

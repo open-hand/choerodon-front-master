@@ -4,6 +4,8 @@ import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import { useIntl } from 'react-intl';
 import { Loading } from '@choerodon/components';
+import { get } from '@choerodon/inject';
+
 import OverviewWrap from '../OverviewWrap';
 import './index.less';
 import EmptyPage from '../EmptyPage';
@@ -151,7 +153,7 @@ const DefectChart = observer(() => {
   }
   function render() {
     if (defectCountDs.status === 'loading' || startSprintDs.status === 'loading') {
-      return <Loading display type="c7n" />;
+      return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
     }
     if (startedRecord) {
       return (
@@ -163,7 +165,7 @@ const DefectChart = observer(() => {
     if (startSprintDs.status !== 'loading') {
       return <EmptyPage />;// 暂无活跃的冲刺"
     }
-    return <Loading display type="c7n" />;
+    return <Loading display type={get('configuration.master-global:loadingType') || 'c7n'} />;
   }
   return (
     <OverviewWrap>

@@ -10,14 +10,14 @@ import {
   Spin,
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
-import { mount, get as cherodonGet } from '@choerodon/inject';
+import { mount, get as cherodonGet, has } from '@choerodon/inject';
+import { Permission } from '@/components/permission';
 import getSearchString from '@/utils/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
 import axios from '@/components/axios';
 import PlatformAnnouncement, { axiosGetNewSticky } from '../components/PlatformAnnouncement';
 import SaaSUserAnnouncement, { getSaaSUserAvilableDays } from '../components/SaaSUserAnnouncement';
 import RouteIndex from '@/routes';
-
 import popoverHead from '@/assets/images/popoverHead.png';
 import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
@@ -145,7 +145,9 @@ class Masters extends Component {
     const oldParams = new URLSearchParams(oldProps.location.search);
     if (newParams.get('organizationId') !== oldParams.get('organizationId')) {
       headerStore.deleteAnnouncement('saas_restdays_announcement');
-      this.getSaaSUserRestDays(newParams.get('organizationId'));
+      if (has('base-pro:getSaaSUserRestDays')) {
+        cherodonGet('base-pro:getSaaSUserRestDays')(newParams.get('organizationId'), this);
+      }
     }
   }
 
@@ -168,7 +170,7 @@ class Masters extends Component {
 
   setDocUrl = async (params) => {
     if (JSON.stringify(params) !== '{}') {
-      this.props.AppState.setDocUrl('https://open.hand-china.com/document-center/doc/product/10177/10608?doc_id=168204&doc_code=118818');
+      this.props.AppState.setDocUrl('https://www.zknow.com/choerodonDoc/%E4%BB%8B%E7%BB%8D/');
     }
   };
 
@@ -228,45 +230,20 @@ class Masters extends Component {
     }
   }
 
-  // 获取SaaS 新用户的免费使用天数提醒
-  getSaaSUserRestDays = async (orgId) => {
-    const {
-      organizationId,
-    } = this.props.AppState.currentMenuType || {};
-    const reqOrgId = orgId || organizationId;
-    if (window._env_.BUSINESS || !organizationId) {
-      return;
-    }
-    try {
-      const res = await getSaaSUserAvilableDays(reqOrgId);
-      if (res && res.failed) {
-        message.error(res?.message);
-        return;
-      }
-      const { HeaderStore } = this.props;
-
-      const identity = 'saas_restdays_announcement';
-      if (res && (!localStorage.saaslastClosedId || localStorage.saaslastClosedId !== res?.link)) {
-        HeaderStore.innsertAnnouncement(identity, {
-          data: res,
-          onCloseCallback: () => {
-            window.localStorage.setItem('saaslastClosedId', `${res?.link}`);
-          },
-          component: <SaaSUserAnnouncement data={res} />,
-        });
-      }
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
   componentDidMount() {
+    const {
+      location, MenuStore, HeaderStore, history, AppState,
+    } = this.props;
+    const { pathname, search } = location;
+    const menuType = parseQueryToMenuType(search);
     this.initFavicon();
 
     // 获取系统公告
     this.getPlatformAnnouncement();
     // 获取适用天数in the base-pro, only applied in the hand version
-    this.getSaaSUserRestDays();
+    if (has('base-pro:getSaaSUserRestDays')) {
+      cherodonGet('base-pro:getSaaSUserRestDays')(menuType?.orgId, this);
+    }
   }
 
   /**
@@ -337,8 +314,8 @@ class Masters extends Component {
     } else if (!menuType.type) {
       menuType.type = 'site';
     }
-
-    async function checkUrl() {
+    // eslint-disable-next-line
+      async function checkUrl() {
       async function goSafty(data) {
         if (!HeaderStore.getOrgData) {
           setTimeout(() => {
@@ -364,12 +341,12 @@ class Masters extends Component {
           history.push(`/projects${search}`);
         }
       }
-      if (menuType.projectId) {
+      if (menuType?.projectId) {
         const currentProject = AppState.getCurrentProject;
         let res;
         if (
           !currentProject
-          || String(menuType.projectId) !== String(currentProject?.id)
+            || String(menuType.projectId) !== String(currentProject?.id)
         ) {
           try {
             res = await axios.get(
@@ -380,7 +357,7 @@ class Masters extends Component {
             }
             if (
               String(res.id)
-              === String(new URLSearchParams(location.search).get('id'))
+                === String(new URLSearchParams(location.search).get('id'))
             ) {
               AppState.setCurrentProject(res);
             } else {
@@ -398,8 +375,8 @@ class Masters extends Component {
           checkArray.some((c) => {
             if (
               menuType[c]
-              && menuType[c] !== 'undefined'
-              && String(menuType[c]) !== String(res[c])
+                && menuType[c] !== 'undefined'
+                && String(menuType[c]) !== String(res[c])
             ) {
               return true;
             }
@@ -415,7 +392,6 @@ class Masters extends Component {
         return true;
       }
     }
-
     AppState.setTypeUser(isUser);
     AppState.changeMenuType(menuType, checkUrl);
   }
@@ -429,17 +405,21 @@ class Masters extends Component {
             className="page-header"
           >
             <AnnouncementBannerPro />
-            <Header />
+            <Header appState={AppState} />
           </div>
           <div className="page-body">
             <div className="content-wrapper">
               <MenusPro />
-              {mount('base-pro:Guide', {
+              <Permission service={['choerodon.code.site.setting.general-setting.ps.feedback']}>
+                {mount('base-business:yqFeedback', {})}
+                {/* <YqFeedback /> */}
+              </Permission>
+              {/* {mount('base-pro:Guide', {
                 ...this.props,
                 MasterServices,
                 popoverHead,
                 cRef: this.cRef,
-              })}
+              })} */}
               {mount('base-pro:UserCheck', {
                 ...this.props,
                 MasterServices,

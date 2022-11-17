@@ -9,10 +9,10 @@ const LCLETTER_NUMREGEX = {
 const WEBSITE_REGEX = {
   regex: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)$/,
   text: '请输入正确的网页地址',
-}
+};
 
 export {
   LCLETTER_NUM,
   LCLETTER_NUMREGEX,
   WEBSITE_REGEX,
-}
+};

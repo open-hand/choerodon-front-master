@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { axios } from '@/index';
+import axios from '@/components/axios';
+
 import { NoticeDTO, NoticeVO } from '../model';
 
 export default function useStore() {
