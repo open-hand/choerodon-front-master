@@ -6,9 +6,7 @@ import {
   Tooltip,
   Modal,
 } from 'choerodon-ui/pro';
-import {
-  forIn, orderBy,
-} from 'lodash';
+import { forIn, isNil } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import moment from 'moment';
@@ -21,16 +19,11 @@ import CustomQuerybar from './customQuerybar';
 import { organizationsApi } from '@/apis';
 import AllProjectTable from './table';
 import {
-  getSearchFieldsConfig, getFilterFieldsConfig, defaultColumnSetConfig, defaultBusinessColumnSetConfig,
-} from './querybarConfig';
-import TableColumnSet from './tableColumnSet';
-import {
-  MODAL_WIDTH,
-} from '@/constants/MODAL';
-
+  getSearchFieldsConfig, getFilterFieldsConfig,
+} from './config/querybarConfig';
+import { defaultColumnSetConfig, defaultBusinessColumnSetConfig } from './config/tableColumnsSetConfig';
+import TableColumnSet, { initColumnSetData } from './tableColumnSet';
 import './index.less';
-
-const { MIDDLE } = MODAL_WIDTH;
 
 // 是否存在base的商业版本
 const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
@@ -52,11 +45,10 @@ export default observer(() => {
   } = useProjectsProStore();
 
   const customQuerybarCRef = useRef();
-  const customColumnSetCRef = useRef();
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
   const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
-  const [tableColumn, setTableColumn] = useState([]);
+  const [tableColumnsSet, setTableColumnsSet] = useState([]);
 
   useEffect(() => {
     if (
@@ -72,16 +64,12 @@ export default observer(() => {
   }, [AppState.getUserWizardStatus]);
 
   useEffect(() => {
-    getTableColumns();
+    initTableColumnsSet();
   }, []);
 
-  const getTableColumns = async () => {
+  const initTableColumnsSet = async () => {
     const res = await organizationsApi.getAllProjectsTableColumns();
-    if (res?.listLayoutColumnRelVOS) {
-      setTableColumn(customColumnSetCRef?.current?.initData(res?.listLayoutColumnRelVOS, HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig));
-    } else {
-      setTableColumn(orderBy(HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig, ['order']));
-    }
+    setTableColumnsSet(initColumnSetData(res?.listLayoutColumnRelVOS, HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig, projectListDataSet));
   };
 
   const refresh = (projectId) => {
@@ -207,21 +195,26 @@ export default observer(() => {
     }
   };
 
-  const customQuerybarChange = async (name, value) => {
-    if (name === 'updateTime') {
-      projectListDataSet.setQueryParameter('lastUpdateDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
-      projectListDataSet.setQueryParameter('lastUpdateDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
-    } else if (name === 'createTime') {
-      projectListDataSet.setQueryParameter('creationDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
-      projectListDataSet.setQueryParameter('creationDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
-    } else if (name === 'reset' && value === 'reset') {
-      // eslint-disable-next-line no-shadow
-      forIn(projectListDataSet.queryParameter, (value, key) => {
-        projectListDataSet.setQueryParameter(key, null);
-      });
-    } else {
-      projectListDataSet.setQueryParameter(name, value);
-    }
+  const customQuerybarChange = async (data) => {
+    forIn(projectListDataSet.queryParameter, (value, key) => {
+      projectListDataSet.setQueryParameter(key, null);
+    });
+
+    Object.keys(data).forEach((key) => {
+      const value = data[key];
+      if (isNil(value) || (Array.isArray(value) && !value.length)) {
+        return;
+      }
+      if (key === 'updateTime') {
+        projectListDataSet.setQueryParameter('lastUpdateDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
+        projectListDataSet.setQueryParameter('lastUpdateDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
+      } else if (key === 'createTime') {
+        projectListDataSet.setQueryParameter('creationDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
+        projectListDataSet.setQueryParameter('creationDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
+      } else {
+        projectListDataSet.setQueryParameter(key, value);
+      }
+    });
     projectListDataSet.query();
   };
 
@@ -244,7 +237,7 @@ export default observer(() => {
     const postObj = transformColumnData(columnsData);
     try {
       await organizationsApi.editAllProjectsTableColumns(postObj);
-      getTableColumns();
+      initTableColumnsSet();
       return true;
     } catch (error) {
       return false;
@@ -252,7 +245,7 @@ export default observer(() => {
   };
 
   const handleColumnResize = ({ column, width, index }) => {
-    const columnsData = tableColumn;
+    const columnsData = [...tableColumnsSet];
     const found = columnsData.find((item) => item.name === column.name);
     found.width = width;
     const postObj = transformColumnData(columnsData);
@@ -281,10 +274,10 @@ export default observer(() => {
             cRef={customQuerybarCRef}
           />
           <div className="tableColumnSet-content">
-            <TableColumnSet cRef={customColumnSetCRef} tableDs={projectListDataSet} columnsConfig={tableColumn} handleOk={handleEditColumnOk} />
+            <TableColumnSet columnsSetConfig={tableColumnsSet} handleOk={handleEditColumnOk} />
           </div>
         </div>
-        <AllProjectTable columnsConfig={tableColumn} onColumnResize={run} />
+        <AllProjectTable columnsSetConfig={tableColumnsSet} onColumnResize={run} />
       </div>
     </div>
   );

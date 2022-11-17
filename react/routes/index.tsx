@@ -10,7 +10,9 @@ import { inject } from 'mobx-react';
 import { mount, get } from '@choerodon/inject';
 import { Loading } from '@choerodon/components';
 import PermissionRoute from '@/components/permission-route';
+
 import './index.less';
+import handleClickProject from '@/utils/gotoProject';
 
 const Unauthorized = React.lazy(() => import('@/containers/components/c7n/routes/unauthorized'));
 const WorkBench = React.lazy(() => import('@/containers/components/c7n/routes/workBench/list/view'));
@@ -23,12 +25,14 @@ const AutoRouter = React.lazy(() => import('./routesCollections'));
 
 const RouteIndex = () => {
   const match = useRouteMatch();
+
   const history = useHistory();
   const location = useLocation();
   useEffect(() => {
     // eslint-disable-next-line no-underscore-dangle
     window.___choeordonHistory__ = history;
   }, [history]);
+
   return (
     <div
       className="c7ncd-routesIndex"
