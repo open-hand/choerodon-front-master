@@ -66,7 +66,7 @@ class RenderPopoverContentClass extends Component {
     );
 
     const loadMore = () => {
-      headerStore.setUserMsgcurrentSize(headerStore.userMsgcurrentSize + 11);
+      headerStore.setUserMsgcurrentSize(headerStore.userMsgcurrentSize + 200);
       headerStore.axiosGetUserMsg(AppState.getUserId);
     };
 
