@@ -1,10 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 import { useQueryString } from '@choerodon/components';
 import { useCallback, useEffect } from 'react';
 import { useBoolean } from 'ahooks';
 import { authorizeC7n, getAccessToken, setAccessToken } from '@/utils';
-
 import AppState from '@/containers/stores/c7n/AppState';
 import HeaderStore from '@/containers/stores/c7n/HeaderStore';
+import { getCookie } from '@/utils/cookie';
 
 type AuthStatus = 'noAuth' | 'pending' | 'success' | 'failed'
 
@@ -69,6 +70,13 @@ function useC7NAuth(autoAuth?:boolean) {
         //   console.log(error);
         // }
       } else if (!getAccessToken()) {
+        //  上海电气单点登录逻辑处理 （后续有功能二开，把逻辑挪到二开仓库）
+        if ((window as any)._env_.shanghaiElectric) {
+          const shanghaiElectricToken = getCookie('Ltpatoken', {
+            domain: '.shanghai-electric.com',
+          });
+          return;
+        }
         // token过期
         authorizeC7n();
         return;
