@@ -38,11 +38,13 @@ const orgReg = /\${orgString}/;
 class RenderPopoverContentClass extends Component {
   handleClickOutside = () => {
     const { HeaderStore } = this.props;
-    HeaderStore.setInboxVisible(false);
-    HeaderStore.axiosGetUnreadMessageCount();
-    setTimeout(() => {
-      HeaderStore.setInboxDetailVisible(false);
-    }, 700);
+    if (HeaderStore.inboxVisible) {
+      HeaderStore.setInboxVisible(false);
+      HeaderStore.axiosGetUnreadMessageCount();
+      setTimeout(() => {
+        HeaderStore.setInboxDetailVisible(false);
+      }, 700);
+    }
   };
 
   render() {
