@@ -9,6 +9,8 @@ import AppState from '../../../../stores/c7n/AppState';
 const Unauthorized = React.lazy(() => import('../unauthorized'));
 const AutoRouter = React.lazy(() => import('@/routes/routesCollections'));
 const DingTalkTransition = React.lazy(() => import('../dingTalkTransition'));
+const AuthenticationFailurenotLogin = React.lazy(() => import('../authenticationFailure/notLogin'));
+const AuthenticationFailurenotExistUser = React.lazy(() => import('../authenticationFailure/notExistUser'));
 
 @withRouter
 @inject('AppState')
@@ -62,6 +64,8 @@ class Outward extends Component {
             <Switch>
               <Route exact path={`${match.url}unauthorized`} component={Unauthorized} />
               <Route exact path={`${match.url}dingTalkTransition`} component={DingTalkTransition} />
+              <Route exact path={`${match.url}authenticationFailure/notLogin`} component={AuthenticationFailurenotLogin} />
+              <Route exact path={`${match.url}authenticationFailure/notExistUser`} component={AuthenticationFailurenotExistUser} />
               <Route path={match.url} component={AutoRouter} />
             </Switch>
           </Suspense>

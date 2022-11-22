@@ -5,6 +5,7 @@ import { useBoolean } from 'ahooks';
 import { authorizeC7n, getAccessToken, setAccessToken } from '@/utils';
 import AppState from '@/containers/stores/c7n/AppState';
 import HeaderStore from '@/containers/stores/c7n/HeaderStore';
+import axios from '@/components/axios';
 import { getCookie } from '@/utils/cookie';
 
 type AuthStatus = 'noAuth' | 'pending' | 'success' | 'failed'
@@ -75,6 +76,14 @@ function useC7NAuth(autoAuth?:boolean) {
           const shanghaiElectricToken = getCookie('Ltpatoken', {
             domain: '.shanghai-electric.com',
           });
+          if (!shanghaiElectricToken) {
+            window.location.href = '/authenticationFailure/notLogin';
+          } else {
+            const res = await axios.get(`/oauth/choerodon/electric/authorization_by_token?token=${shanghaiElectricToken}`);
+            if (res?.failed) {
+              window.location.href = '/authenticationFailure/notExistUser';
+            }
+          }
           return;
         }
         // token过期
