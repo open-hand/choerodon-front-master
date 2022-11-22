@@ -115,6 +115,9 @@ const MasterIndex = () => {
     if (pathname === '/dingTalkTransition' && cookies.get('access_token')) {
       auth(); // auth() 没有异步抛出结果-- 在这里请求
     }
+    if (['/authenticationFailure/notLogin', '/authenticationFailure/notExistUser'].includes(pathname)) {
+      auth();
+    }
     // 不是就校验去登录
     !isInOutward && auth();
   });
