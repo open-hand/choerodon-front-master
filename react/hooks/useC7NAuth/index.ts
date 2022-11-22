@@ -73,15 +73,15 @@ function useC7NAuth(autoAuth?:boolean) {
       } else if (!getAccessToken()) {
         //  上海电气单点登录逻辑处理 （后续有功能二开，把逻辑挪到二开仓库）
         if ((window as any)._env_.shanghaiElectric) {
-          const shanghaiElectricToken = getCookie('Ltpatoken', {
+          const shanghaiElectricToken = getCookie('LtpaToken', {
             domain: '.shanghai-electric.com',
           });
           if (!shanghaiElectricToken) {
-            window.location.href = '/authenticationFailure/notLogin';
+            window.location.href = '/#/authenticationFailure/notLogin';
           } else {
             const res = await axios.get(`/oauth/choerodon/electric/authorization_by_token?token=${shanghaiElectricToken}`);
             if (res?.failed) {
-              window.location.href = '/authenticationFailure/notExistUser';
+              window.location.href = '/#/authenticationFailure/notExistUser';
             }
           }
           return;
