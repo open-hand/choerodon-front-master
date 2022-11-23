@@ -78,11 +78,13 @@ function useC7NAuth(autoAuth?:boolean) {
           });
           if (!shanghaiElectricToken) {
             window.location.href = '/#/authenticationFailure/notLogin';
-          } else {
-            const res = await axios.get(`/oauth/choerodon/electric/authorization_by_token?token=${shanghaiElectricToken}`);
-            if (res?.failed) {
-              window.location.href = '/#/authenticationFailure/notExistUser';
-            }
+            return;
+          }
+          try {
+            const res = await axios.post('/oauth/choerodon/electric/authorization_by_token', shanghaiElectricToken);
+            window.location.href = res;
+          } catch (error) {
+            window.location.href = '/#/authenticationFailure/notExistUser';
           }
           return;
         }
