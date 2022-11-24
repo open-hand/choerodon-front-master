@@ -262,5 +262,4 @@ HeaderButtons.defaultProps = {
   children: undefined,
   showClassName: false,
 };
-
 export default HeaderButtons;

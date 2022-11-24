@@ -14,39 +14,74 @@ import WSProvider from '@/components/ws/WSProvider';
 import Choerodon from '@/utils/choerodon';
 import styles from './index.less';
 
+type DescriptionType = ReactNode | string | ((wsData: object) => string | ReactNode)
+
 interface Props {
+  /**
+   * 弹窗key，方便用于关闭
+   */
   notificationKey: string,
-  type?: 'polling' | 'ws', // 查询进度方式：轮询或ws
-  afterSuccess?: () => void, // 成功后回调函数
-  loadStatus?: () => Promise<string>, // 用于ws方式下刚打开弹窗时查询，避免打开弹窗时ws已经发完
+  /**
+   * 查询进度方式：轮询或ws
+   * @default polling
+   */
+  type?: 'polling' | 'ws',
+  /**
+   * 成功后延迟执行2秒执行的回调函数
+   */
+  afterSuccess?: (data?: object) => void,
+  /**
+   * 用于ws方式下刚打开弹窗时查询，避免打开弹窗时ws已经发完
+   */
+  loadStatus?: () => Promise<string>,
+  /**
+   * 轮询模式下查询进度方法
+   */
   loadProgress?: () => Promise<{ status: 'success' | 'failed' | 'doing', progress: number }>
-  duration?: number // 轮询间隔时间
-  messageKey?: string, // ws方式下messageKey
-  // 弹窗显示文案
+  /**
+   * 轮询间隔时间
+   * @default 1500
+   */
+  duration?: number,
+  /**
+   * ws方式下messageKey
+   */
+  messageKey?: string,
+  /**
+   * 弹窗显示文案
+   */
   textObject: {
     failed: {
       title: string,
-      description: ReactNode,
+      description: DescriptionType,
       icon?: string,
     },
     success: {
       title: string,
-      description: ReactNode,
+      description: DescriptionType,
       icon?: string,
     },
     doing: {
       title: string,
-      description: ReactNode,
+      description: DescriptionType,
       icon?: string,
     }
   }
+  /**
+   * 成功后自动关闭弹窗时间
+   * @default 2000
+   * @description 默认 2 秒后自动关闭，配置为 null 则不自动关闭
+   */
+  closeDuration?: number | null
 }
 
 const CreateNotification = ({
   // @ts-ignore
-  notificationKey, afterSuccess, textObject, messageKey, loadStatus: propsLoadStatus, type = 'polling', loadProgress = new Promise(noop), duration = 1500,
+  notificationKey, afterSuccess, textObject, messageKey, loadStatus: propsLoadStatus, type = 'polling', loadProgress = new Promise(noop),
+  duration = 1500, closeDuration = 2000,
 }: Props) => {
   const [progress, setProgress] = useState(0);
+  const [wsData, setWsData] = useState({});
   const [loading, setLoading] = useState<boolean | 'success' | 'failed'>(true);
   const { data: progressData, cancel, error } = useRequest(loadProgress, {
     pollingInterval: type === 'ws' ? 0 : duration,
@@ -110,11 +145,11 @@ const CreateNotification = ({
           {text.title}
         </div>
         <div className={styles.des}>
-          {text.description}
+          {typeof text.description === 'function' ? text.description(wsData) : text.description}
         </div>
       </div>
     </>
-  ), [text, progress]);
+  ), [text, progress, wsData]);
 
   const loadStatus = useCallback(async () => {
     if (progress === 0 && propsLoadStatus) {
@@ -142,8 +177,8 @@ const CreateNotification = ({
       if (afterSuccess) {
         afterSuccess();
       }
-      notification?.close(notificationKey);
-    }, 2000);
+      closeDuration !== null && notification?.close(notificationKey);
+    }, closeDuration || 0);
   }, [loading, afterSuccess, notificationKey]);
 
   const handleMessage = (message: string) => {
@@ -156,6 +191,7 @@ const CreateNotification = ({
       switch (status) {
         case 'succeed': {
           onSuccess(process);
+          setWsData(data);
           break;
         }
         case 'doing': {
