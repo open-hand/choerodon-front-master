@@ -83,6 +83,7 @@ function useC7NAuth(autoAuth?:boolean) {
           try {
             const res = await axios.post('/oauth/choerodon/electric/authorization_by_token', shanghaiElectricToken);
             window.location.href = res;
+            window.location.reload();
           } catch (error) {
             window.location.href = '/#/authenticationFailure/notExistUser';
           }
