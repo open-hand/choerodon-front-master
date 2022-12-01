@@ -13,7 +13,9 @@ import { mount, get } from '@choerodon/inject';
 import { Loading } from '@choerodon/components';
 import Skeleton from '@/components/skeleton';
 import PermissionRoute from '@/components/permission-route';
+
 import './index.less';
+import handleClickProject from '@/utils/gotoProject';
 
 const Unauthorized = React.lazy(() => import('@/containers/components/c7n/routes/unauthorized'));
 const WorkBench = React.lazy(() => import('@/containers/components/c7n/routes/workBench/list/view'));
@@ -30,6 +32,7 @@ const RouteIndex = () => {
   const [remoteAllSet, setRemoteAllSet] = useState(false);
 
   const match = useRouteMatch();
+
   const history = useHistory();
   const location = useLocation();
   useEffect(() => {

@@ -296,6 +296,7 @@ const QuestionNode = observer(({
         {(switchCode === 'reportedBug' || (isStar && typeCode !== 'feature')) && getUsers(assignees || [{ id: assigneeId, imageUrl: assigneeImageUrl, realName: assigneeRealName }])}
         {typeCode === 'feature' && getProjects(featureTeams)}
         {typeCode !== 'feature' && (
+        <Tooltip title={priorityVO ? priorityVO.name : '无'} placement="top">
           <span
             className={`${prefixCls}-main-priority`}
             style={{
@@ -305,6 +306,7 @@ const QuestionNode = observer(({
           >
             {priorityVO ? priorityVO.name : '无'}
           </span>
+        </Tooltip>
         )}
       </div>
     </div>

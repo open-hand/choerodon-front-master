@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import { useLocation } from 'react-router';
 import { observer } from 'mobx-react-lite';
+import { get as getInject } from '@choerodon/inject';
 import { useMenuStore } from './stores';
 import MainMenu from './components/main-menu';
 import SubMenu from './components/sub-menu';
@@ -43,7 +44,9 @@ const Menu = () => {
     treeNode,
   }:TreeReduceCallbackProps) => {
     // 如果当前是路由全匹配，则进入，或者是匹配到了子路由
-    if (treeNode.route === pathname || pathname.indexOf(`${treeNode.route}/`) === 0) {
+    // treeNode.route === path
+    // 改为这样是因为 如果有重定向 这里pathname还没变
+    if (window.location.href.includes(treeNode.route) || pathname.indexOf(`${treeNode.route}/`) === 0) {
       const currentActiveMenu = treeNode;
       if (currentActiveMenu && window.location.href.includes(currentActiveMenu.route)) {
         MenuStore.setActiveMenu(currentActiveMenu);
@@ -71,7 +74,12 @@ const Menu = () => {
       tree,
       callback: findCurrentRoute,
     });
-    const displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
+    let displayTitle = '';
+    if (getInject('configuration.master-global:customTitle')) {
+      displayTitle = HEADERER_TITLE;
+    } else {
+      displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
+    }
     // todo... 这里逻辑可以拆分为一个hook，监听activeMenu变化而变化，这个逻辑是肯定要拆到全局去的
     if (activeMenu && activeMenu.route === pathname && pathname !== '/') {
       // document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${menuType.type !== 'site' ? `${menuType.name} – ` : ''} ${displayTitle}`;
