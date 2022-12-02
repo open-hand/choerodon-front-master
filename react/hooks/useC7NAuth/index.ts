@@ -81,7 +81,10 @@ function useC7NAuth(autoAuth?:boolean) {
             return;
           }
           try {
-            const res = await axios.post('/oauth/choerodon/electric/authorization_by_token', shanghaiElectricToken);
+            const res = await axios.post('/oauth/choerodon/electric/authorization_by_token', {
+              token: shanghaiElectricToken,
+              authType: 'token',
+            });
             window.location.href = res;
             window.location.reload();
           } catch (error) {
