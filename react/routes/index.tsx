@@ -7,6 +7,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { useHistory, useLocation, useRouteMatch } from 'react-router';
+import { observer } from 'mobx-react-lite';
 import { ModalProvider } from 'choerodon-ui/pro';
 import { inject } from 'mobx-react';
 import { mount, get } from '@choerodon/inject';
@@ -28,7 +29,11 @@ const AutoRouter = React.lazy(() => import('./routesCollections'));
 
 let timer: any;
 
-const RouteIndex = () => {
+const RouteIndex = (props: any) => {
+  const {
+    AppState,
+  } = props;
+
   const [remoteAllSet, setRemoteAllSet] = useState(false);
 
   const match = useRouteMatch();
@@ -53,10 +58,20 @@ const RouteIndex = () => {
       });
       if (flag) {
         setRemoteAllSet(true);
+        // 监控 在base-pro注入成功后 调用setUser方法
+        get('base-pro:datafluxRumSetUser') && get('base-pro:datafluxRumSetUser')(AppState.userInfo);
+        get('base-pro:datafluxRumSetGlobalContext') && get('base-pro:datafluxRumSetGlobalContext')(AppState);
         clearInterval(timer);
       }
     }, 1000);
   }, []);
+
+  useEffect(() => {
+    get('base-pro:datafluxRumSetGlobalContext') && get('base-pro:datafluxRumSetGlobalContext')(AppState);
+  }, [
+    AppState?.menuType?.type,
+    AppState?.menuType?.id,
+  ]);
 
   return remoteAllSet ? (
     <div
@@ -93,4 +108,4 @@ const RouteIndex = () => {
   );
 };
 
-export default inject('AppState')(RouteIndex);
+export default inject('AppState')(observer(RouteIndex));
