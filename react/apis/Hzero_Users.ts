@@ -8,12 +8,12 @@ class HzeroUsersApi extends Api<HzeroUsersApi> {
    * @return {*}
    */
   get prefix() {
-    return '/iam/hzero/v1/users';
+    return '/cbase/hzero/v1/users';
   }
 
   changeLanguages(language:LanguageTypes) {
     return this.request({
-      url: `/iam/choerodon/v1/users/default-user-language?language=${language}`,
+      url: `/cbase/choerodon/v1/users/default-user-language?language=${language}`,
       method: 'put',
     });
   }

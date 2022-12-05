@@ -113,7 +113,7 @@ export default ({
   transport: {
     read: {
       url: organizationId
-        ? `iam/v1/organizations/${organizationId}/project_categories`
+        ? `cbase/v1/organizations/${organizationId}/project_categories`
         : '',
       method: 'get',
     },

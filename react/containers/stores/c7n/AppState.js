@@ -61,13 +61,13 @@ class AppState {
     if (this.currentMenuType?.organizationId) {
       try {
         const recentProjectPromise = axios.get(
-          `/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
+          `/cbase/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
           {
             enabledCancelRoute: false,
           },
         );
         const starProjectPromise = axios.get(
-          `/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`,
+          `/cbase/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`,
           {
             enabledCancelRoute: false,
           },
@@ -312,7 +312,7 @@ class AppState {
   }
 
   loadUserInfo = (setUserId = true) => axios
-    .get('iam/choerodon/v1/users/self', {
+    .get('cbase/choerodon/v1/users/self', {
       enabledCancelRoute: false,
     })
     .then((res) => {
@@ -331,7 +331,7 @@ class AppState {
   // 新手引导完成情况
   loadUserWizardStatus = (organizationId) => axios
     .get(
-      `/iam/choerodon/v1/organizations/${organizationId}/user_wizard/list_status`,
+      `/cbase/choerodon/v1/organizations/${organizationId}/user_wizard/list_status`,
       {
         enabledCancelRoute: false,
       },
@@ -345,11 +345,11 @@ class AppState {
       return res;
     });
 
-  loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting', {
+  loadSiteInfo = () => axios.get('/cbase/choerodon/v1/system/setting', {
     enabledCancelRoute: false,
   });
 
-  checkEnterpriseInfo = () => axios.get('/iam/choerodon/v1/enterprises/default', {
+  checkEnterpriseInfo = () => axios.get('/cbase/choerodon/v1/enterprises/default', {
     enabledCancelRoute: false,
   });
 

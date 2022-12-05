@@ -37,11 +37,11 @@ export default function useStore() {
     retry(id, organizationId, type, apiGetway) {
       switch (type) {
         case 'organization':
-          return axios.put(`/iam/choerodon/v1/organization/${organizationId}/${id}/org/retry`);
+          return axios.put(`/cbase/choerodon/v1/organization/${organizationId}/${id}/org/retry`);
         case 'project':
           return axios.put(`${apiGetway}tasks/instances/${id}/retry`);
         case 'site':
-          return axios.put(`/iam/choerodon/v1/site/0/${id}/site/retry`);
+          return axios.put(`/cbase/choerodon/v1/site/0/${id}/site/retry`);
         default:
           break;
       }

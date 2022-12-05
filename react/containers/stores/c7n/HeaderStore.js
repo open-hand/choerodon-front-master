@@ -140,7 +140,7 @@ class HeaderStore {
 
   axiosGetRoles() {
     axios({
-      url: 'iam/hzero/v1/member-roles/self-roles',
+      url: 'cbase/hzero/v1/member-roles/self-roles',
       method: 'get',
     }).then((res) => {
       this.setRoles(res);
@@ -244,7 +244,7 @@ class HeaderStore {
   }
 
   axiosGetPro(key, value) {
-    return axios.post('/iam/choerodon/v1/projects/query_by_option', {
+    return axios.post('/cbase/choerodon/v1/projects/query_by_option', {
       [key]: value,
     }).then((res) => {
       this.addProject(res[0]);
@@ -255,7 +255,7 @@ class HeaderStore {
   axiosGetOrgAndPro(userId) {
     return axios({
       method: 'get',
-      url: '/iam/choerodon/v1/users/self-tenants',
+      url: '/cbase/choerodon/v1/users/self-tenants',
     }).then((data) => {
       data.forEach((value) => {
         value.id = value.tenantId;

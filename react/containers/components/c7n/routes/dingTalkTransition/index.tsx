@@ -20,7 +20,7 @@ const Index = () => {
       if (dd.env.platform === 'notInDingTalk' && corpId) {
         window.location.href = `${API_HOST}/oauth/open/ding_talk/callback?organization_id=${orgId}&code=${code}&state=STATE&way=web`;
       } else if (corpId) {
-        const res = await axios.get(`/iam/choerodon/v1/organizations/${orgId}/open_app/internal_browser?app_type=ding_talk`);
+        const res = await axios.get(`/cbase/choerodon/v1/organizations/${orgId}/open_app/internal_browser?app_type=ding_talk`);
         if (cookies.get('access_token')) {
           if (res) { // 内部跳转
             history.push(sessionStorage.getItem('historyPath') || '/workbench');

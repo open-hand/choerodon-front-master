@@ -100,7 +100,7 @@ export default function useStore(projectId) {
         temp.layout = merge(temp.layout, item);
         return temp;
       });
-      axios.post(`iam/choerodon/v1/projects/${this.projectId}/project_overview_config`, JSON.stringify({
+      axios.post(`cbase/choerodon/v1/projects/${this.projectId}/project_overview_config`, JSON.stringify({
         data: JSON.stringify(tempObj),
       }));
     },

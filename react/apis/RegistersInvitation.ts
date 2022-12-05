@@ -7,7 +7,7 @@ class RegistersInvitationApi extends Api<RegistersInvitationApi> {
    * @return {*}
    */
   get prefix() {
-    return '/iam/choerodon/v1/registers_invitation';
+    return '/cbase/choerodon/v1/registers_invitation';
   }
 
   batchInvite() {

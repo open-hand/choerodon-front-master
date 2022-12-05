@@ -9,7 +9,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
    * @return {*}
    */
   get prefix() {
-    return '/iam/choerodon/v1/organizations';
+    return '/cbase/choerodon/v1/organizations';
   }
 
   checkProjectCollaborationCode(code:string) {
@@ -21,14 +21,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   getAllProjectsTableColumns() {
     return this.request({
-      url: `/iam/v1/organizations/${this.orgId}/list_layout/projectView`,
+      url: `/cbase/v1/organizations/${this.orgId}/list_layout/projectView`,
       method: 'get',
     });
   }
 
   editAllProjectsTableColumns(data:any) {
     return this.request({
-      url: `/iam/v1/organizations/${this.orgId}/list_layout`,
+      url: `/cbase/v1/organizations/${this.orgId}/list_layout`,
       method: 'post',
       data,
     });
@@ -507,7 +507,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     }
     return this.request({
       method: 'get',
-      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree${
+      url: `/cbase/choerodon/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree${
         excludeUnassigned ? '?with_extra_items=false&with_unassigned_group=false' : ''
       }`,
     });
@@ -517,7 +517,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojClassification(id?:string, withUnassigned?:boolean) {
     return this.request({
       method: 'post',
-      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/classfication/tree${withUnassigned ? '?with_unassigned_classfication=true' : ''}`,
+      url: `/cbase/choerodon/v1/organizations/${id || this.orgId}/classfication/tree${withUnassigned ? '?with_unassigned_classfication=true' : ''}`,
     });
   }
 
@@ -525,7 +525,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojPrograms(id?:string) {
     return this.request({
       method: 'get',
-      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/projects/programs`,
+      url: `/cbase/choerodon/v1/organizations/${id || this.orgId}/projects/programs`,
     });
   }
 
@@ -533,7 +533,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojType(id?:string) {
     return this.request({
       method: 'get',
-      url: `/iam/v1/organizations/${id || this.orgId}/project_categories`,
+      url: `/cbase/v1/organizations/${id || this.orgId}/project_categories`,
     });
   }
 
@@ -541,7 +541,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojUsers(id?:string) {
     return this.request({
       method: 'get',
-      url: `iam/choerodon/v1/organizations/${id || this.orgId}/users/search`,
+      url: `cbase/choerodon/v1/organizations/${id || this.orgId}/users/search`,
     });
   }
 

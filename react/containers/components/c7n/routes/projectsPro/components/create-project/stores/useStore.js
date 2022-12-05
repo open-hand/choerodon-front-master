@@ -14,7 +14,7 @@ export default function useStore() {
 
     async hasProgramProjects(organizationId, projectId) {
       try {
-        const res = await axios.get(`/iam/choerodon/v1/organizations/${organizationId}/project_relations/${projectId}/${projectId}`);
+        const res = await axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/project_relations/${projectId}/${projectId}`);
         if (res && !res.failed && res.length) {
           return true;
         }

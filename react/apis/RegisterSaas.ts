@@ -2,7 +2,7 @@ import Api from './Api';
 
 class RegisterSaasApi extends Api<RegisterSaasApi> {
   get prefix() {
-    return '/iam//choerodon/v1/register_saas';
+    return '/cbase//choerodon/v1/register_saas';
   }
 
   isSaasTenant(data: any) {

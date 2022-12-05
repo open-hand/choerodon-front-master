@@ -18,7 +18,7 @@ export default async function checkPermission({
   try {
     const res = await axios({
       method: 'post',
-      url: '/iam/choerodon/v1/permissions/menus/check-permissions',
+      url: '/cbase/choerodon/v1/permissions/menus/check-permissions',
       data: codeArr || [code],
       params,
       enabledCancelRoute: false,

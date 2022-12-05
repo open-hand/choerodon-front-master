@@ -2,7 +2,7 @@ import Api from './Api';
 
 class IamApi extends Api<IamApi> {
   get prefix() {
-    return '/iam/choerodon/v1';
+    return '/cbase/choerodon/v1';
   }
 
   createTenant(registerId:string) {

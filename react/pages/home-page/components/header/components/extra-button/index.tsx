@@ -19,7 +19,7 @@ const ExtraButton:FC<ExtraButtonProps> = (props) => {
 
   useEffect(() => {
     if (AppState?.currentMenuType?.organizationId && C7NHasModule('@choerodon/base-pro')) {
-      axios.get(`/iam/v1/huawei/check_saas?tenant_id=${AppState?.currentMenuType?.organizationId}`).then((res) => {
+      axios.get(`/cbase/v1/huawei/check_saas?tenant_id=${AppState?.currentMenuType?.organizationId}`).then((res) => {
         setBtnVisible(res);
       });
     }

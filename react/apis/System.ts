@@ -2,7 +2,7 @@ import Api from './Api';
 
 class SystemApi extends Api<SystemApi> {
   get prefix() {
-    return '/iam/choerodon/v1/system/setting';
+    return '/cbase/choerodon/v1/system/setting';
   }
 
   getLoginIndexInfo = () => this.request({

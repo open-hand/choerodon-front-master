@@ -266,11 +266,11 @@ class MenuStore {
           if (type === 'site') {
             // 当前user不是site角色，而且有site的权限
             if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-              await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
+              await axios.put('cbase/v1/users/tenant-id?tenantId=0', null, {
                 enabledCancelRoute: false,
               });
               // 组织层切换到平台层需要调用的接口
-              const result = await axios.get('/iam/choerodon/v1/switch/site', {
+              const result = await axios.get('/cbase/choerodon/v1/switch/site', {
                 enabledCancelRoute: false,
               });
               // 返回值为false或者不存在则设置平台层访问权限false
@@ -284,7 +284,7 @@ class MenuStore {
             if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
 
               await axios({
-                url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
+                url: `cbase/v1/users/tenant-id?tenantId=${orgId}`,
                 method: 'put',
                 enabledCancelRoute: false,
               });
@@ -301,7 +301,7 @@ class MenuStore {
         async function getMenu (that) {
           const currentOrgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
           const newId = menuType?.id || id;
-          let url = '/iam/choerodon/v1/menu';
+          let url = '/cbase/choerodon/v1/menu';
           if (type === 'project') {
             url += `?projectId=${newId}&tenantId=${currentOrgId}`;
           } else if (type === 'organization') {
@@ -331,10 +331,10 @@ class MenuStore {
         let flag = 0;
         if (type === 'site') {
           if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-            await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
+            await axios.put('cbase/v1/users/tenant-id?tenantId=0', null, {
               enabledCancelRoute: false,
             });
-            const result = await axios.get('/iam/choerodon/v1/switch/site', {
+            const result = await axios.get('/cbase/choerodon/v1/switch/site', {
               enabledCancelRoute: false,
             });
 
@@ -346,7 +346,7 @@ class MenuStore {
           const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
           if (!loadingTenant.includes(orgId)) {
             loadingTenant.push(String(orgId));
-            await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
+            await axios.put(`cbase/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
               enabledCancelRoute: false,
             });
 

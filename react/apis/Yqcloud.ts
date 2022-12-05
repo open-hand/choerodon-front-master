@@ -2,7 +2,7 @@ import Api from './Api';
 
 class YqcloudApi extends Api<YqcloudApi> {
   get prefix() {
-    return '/iam/choerodon/v1/yqcloud';
+    return '/cbase/choerodon/v1/yqcloud';
   }
 
   getSDKSecret(userId: any) {

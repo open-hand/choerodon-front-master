@@ -117,7 +117,7 @@ class Masters extends Component {
           },
           onOk: () => {
             history.push(
-              `/iam/user-info?type=user&organizationId=${this.info.organizationId}`,
+              `/cbase/user-info?type=user&organizationId=${this.info.organizationId}`,
             );
             sessionStorage.setItem('infoCheckFlag', true);
           },
@@ -350,7 +350,7 @@ class Masters extends Component {
         ) {
           try {
             res = await axios.get(
-              `/iam/choerodon/v1/projects/${menuType.projectId}/basic_info`,
+              `/cbase/choerodon/v1/projects/${menuType.projectId}/basic_info`,
             );
             if (!res.enabled) {
               goSafty(res);

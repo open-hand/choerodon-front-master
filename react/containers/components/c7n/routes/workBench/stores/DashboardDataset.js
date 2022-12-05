@@ -10,7 +10,7 @@ export default () => ({
     read: ({ data }) => {
       const { dashboardId } = data;
       return {
-        url: `iam/v1/dashboard-layouts/${dashboardId}`,
+        url: `cbase/v1/dashboard-layouts/${dashboardId}`,
         params: {},
         method: 'get',
         transformResponse: (value) => {

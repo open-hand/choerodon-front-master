@@ -5,7 +5,7 @@ export default ({
   autoQuery: false,
   transport: {
     read: {
-      url: `/iam/choerodon/v1/organizations/${organizationId}/project_status/projects/${projectId}/list`,
+      url: `/cbase/choerodon/v1/organizations/${organizationId}/project_status/projects/${projectId}/list`,
       method: 'get',
     },
   },
