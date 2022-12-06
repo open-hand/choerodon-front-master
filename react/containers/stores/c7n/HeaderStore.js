@@ -255,7 +255,7 @@ class HeaderStore {
   axiosGetOrgAndPro(userId) {
     return axios({
       method: 'get',
-      url: '/cbase/choerodon/v1/users/self-tenants',
+      url: '/iam/choerodon/v1/users/self-tenants',
     }).then((data) => {
       data.forEach((value) => {
         value.id = value.tenantId;

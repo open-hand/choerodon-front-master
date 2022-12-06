@@ -13,7 +13,7 @@ class HzeroUsersApi extends Api<HzeroUsersApi> {
 
   changeLanguages(language:LanguageTypes) {
     return this.request({
-      url: `/cbase/choerodon/v1/users/default-user-language?language=${language}`,
+      url: `/iam/choerodon/v1/users/default-user-language?language=${language}`,
       method: 'put',
     });
   }

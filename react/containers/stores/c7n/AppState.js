@@ -312,7 +312,7 @@ class AppState {
   }
 
   loadUserInfo = (setUserId = true) => axios
-    .get('cbase/choerodon/v1/users/self', {
+    .get('iam/choerodon/v1/users/self', {
       enabledCancelRoute: false,
     })
     .then((res) => {

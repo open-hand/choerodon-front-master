@@ -7,12 +7,12 @@ class SystemApi extends Api<SystemApi> {
 
   getLoginIndexInfo = () => this.request({
     method: 'get',
-    url: `${this.prefix}/login_all`,
+    url: '/iam/choerodon/v1/system/setting/login_all',
   })
 
   editLoginIndexInfo = (data:any) => this.request({
     method: 'put',
-    url: `${this.prefix}/login`,
+    url: '/iam/choerodon/v1/system/setting/login',
     data,
   })
 }

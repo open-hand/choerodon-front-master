@@ -9,7 +9,7 @@ class UsersApi extends Api<UsersApi> {
   checkPhoneExitNoSelf(email:string) {
     return this.request({
       method: 'get',
-      url: `/cbase/choerodon/v1/organizations/${this.orgId}/users/check/email`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/users/check/email`,
       params: {
         email,
       },
@@ -22,7 +22,7 @@ class UsersApi extends Api<UsersApi> {
   openAppGetCanBindOrgs(type:string) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/list_tenants_with_open_app?open_app_type=${type}`,
+      url: `/iam/choerodon/v1/users/list_tenants_with_open_app?open_app_type=${type}`,
     });
   }
 
@@ -30,28 +30,28 @@ class UsersApi extends Api<UsersApi> {
   openAppGetBindOrgs(type:string) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/list_organizations_bound_up_with_open_app?open_app_type=${type}`,
+      url: `/iam/choerodon/v1/users/list_organizations_bound_up_with_open_app?open_app_type=${type}`,
     });
   }
 
   yqcloudCheckPhoneExist(phone:string, orgId:string) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/check_yqcloud_email_or_phone_exist?verify_type=PHONE&phone=${phone}&organization_id=${orgId}`,
+      url: `/iam/choerodon/v1/users/check_yqcloud_email_or_phone_exist?verify_type=PHONE&phone=${phone}&organization_id=${orgId}`,
     });
   }
 
   yqcloudCheckEmailExist(email:string, orgId:string) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/check_yqcloud_email_or_phone_exist?verify_type=EMAIL&email=${email}&organization_id=${orgId}`,
+      url: `/iam/choerodon/v1/users/check_yqcloud_email_or_phone_exist?verify_type=EMAIL&email=${email}&organization_id=${orgId}`,
     });
   }
 
   yqcloudBind(data:any) {
     return this.request({
       method: 'post',
-      url: `${this.prefix}/bind_yqcloud`,
+      url: '/iam/choerodon/v1/users/bind_yqcloud',
       data,
     });
   }
@@ -68,7 +68,7 @@ class UsersApi extends Api<UsersApi> {
   yqcloudUnBind(orgId:string) {
     return this.request({
       method: 'post',
-      url: `${this.prefix}/unbind_yqcloud?organization_id=${orgId}`,
+      url: `/iam/choerodon/v1/users/unbind_yqcloud?organization_id=${orgId}`,
     });
   }
 
@@ -76,7 +76,7 @@ class UsersApi extends Api<UsersApi> {
 
    yqcloudBindGetCaptchaByEmail = (email:string, params:any) => this.request({
      method: 'post',
-     url: `${this.prefix}/get_yqcloud_verify_code`,
+     url: '/iam/choerodon/v1/users/get_yqcloud_verify_code',
      data: {
        verifyType: 'EMAIL',
        email,
@@ -86,7 +86,7 @@ class UsersApi extends Api<UsersApi> {
 
    yqcloudBindGetCaptchaByPhone=(phone:string, params:any) => this.request({
      method: 'post',
-     url: `${this.prefix}/get_yqcloud_verify_code`,
+     url: '/iam/choerodon/v1/users/get_yqcloud_verify_code',
      data: {
        verifyType: 'PHONE',
        phone,
@@ -101,7 +101,7 @@ class UsersApi extends Api<UsersApi> {
    */
    getUserInfo() {
      return this.request({
-       url: `${this.prefix}/self`,
+       url: '/iam/choerodon/v1/users/self',
        method: 'get',
      });
    }

@@ -346,7 +346,7 @@ export default class AvatarUploader extends Component {
       multiple: false,
       name: 'file',
       accept: 'image/jpeg, image/png, image/jpg',
-      action: id && `${process.env.API_HOST}/cbase/v1/users/${id}/upload_photo`,
+      action: id && `${process.env.API_HOST}/iam/v1/users/${id}/upload_photo`,
       headers: {
         Authorization: `bearer ${getCookie('access_token')}`,
       },
