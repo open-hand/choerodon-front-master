@@ -266,7 +266,7 @@ class MenuStore {
           if (type === 'site') {
             // 当前user不是site角色，而且有site的权限
             if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-              await axios.put('cbase/v1/users/tenant-id?tenantId=0', null, {
+              await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
                 enabledCancelRoute: false,
               });
               // 组织层切换到平台层需要调用的接口
@@ -284,7 +284,7 @@ class MenuStore {
             if (String(AppState.getUserInfo.tenantId) !== String(orgId)) {
 
               await axios({
-                url: `cbase/v1/users/tenant-id?tenantId=${orgId}`,
+                url: `iam/v1/users/tenant-id?tenantId=${orgId}`,
                 method: 'put',
                 enabledCancelRoute: false,
               });
@@ -331,7 +331,7 @@ class MenuStore {
         let flag = 0;
         if (type === 'site') {
           if (AppState.getUserInfo?.currentRoleLevel !== 'site' && this.getHasSitePermission) {
-            await axios.put('cbase/v1/users/tenant-id?tenantId=0', null, {
+            await axios.put('iam/v1/users/tenant-id?tenantId=0', null, {
               enabledCancelRoute: false,
             });
             const result = await axios.get('/iam/choerodon/v1/switch/site', {
@@ -346,7 +346,7 @@ class MenuStore {
           const orgId = String(organizationId || new URLSearchParams(window.location.hash.split('?')[1]).get('organizationId') || id);
           if (!loadingTenant.includes(orgId)) {
             loadingTenant.push(String(orgId));
-            await axios.put(`cbase/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
+            await axios.put(`iam/v1/users/tenant-id?tenantId=${orgId || id}`, null, {
               enabledCancelRoute: false,
             });
 

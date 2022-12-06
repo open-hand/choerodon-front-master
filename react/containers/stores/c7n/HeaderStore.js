@@ -140,7 +140,7 @@ class HeaderStore {
 
   axiosGetRoles() {
     axios({
-      url: 'cbase/hzero/v1/member-roles/self-roles',
+      url: 'iam/hzero/v1/member-roles/self-roles',
       method: 'get',
     }).then((res) => {
       this.setRoles(res);

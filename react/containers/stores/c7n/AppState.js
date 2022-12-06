@@ -331,7 +331,7 @@ class AppState {
   // 新手引导完成情况
   loadUserWizardStatus = (organizationId) => axios
     .get(
-      `/cbase/choerodon/v1/organizations/${organizationId}/user_wizard/list_status`,
+      `/iam/choerodon/v1/organizations/${organizationId}/user_wizard/list_status`,
       {
         enabledCancelRoute: false,
       },
@@ -345,7 +345,7 @@ class AppState {
       return res;
     });
 
-  loadSiteInfo = () => axios.get('/cbase/choerodon/v1/system/setting', {
+  loadSiteInfo = () => axios.get('/iam/choerodon/v1/system/setting', {
     enabledCancelRoute: false,
   });
 

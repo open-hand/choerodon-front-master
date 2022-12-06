@@ -374,7 +374,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   getUserWizardList(organizationId:string) {
     return this.request({
-      url: `${this.prefix}/${organizationId}/user_wizard/list`,
+      url: `/iam/choerodon/v1/organizations/${organizationId}/user_wizard/list`,
       method: 'get',
     });
   }
