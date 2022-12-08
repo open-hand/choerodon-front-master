@@ -46,7 +46,7 @@ const ProjectNotification = observer(({
 
   const loadData = useCallback(async () => {
     try {
-      const res = await axios.get(`/iam/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
+      const res = await axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
       if (res && !res.failed) {
         setStatus(res.status);
         if (res.status === 'success') {

@@ -244,7 +244,7 @@ class HeaderStore {
   }
 
   axiosGetPro(key, value) {
-    return axios.post('/iam/choerodon/v1/projects/query_by_option', {
+    return axios.post('/cbase/choerodon/v1/projects/query_by_option', {
       [key]: value,
     }).then((res) => {
       this.addProject(res[0]);

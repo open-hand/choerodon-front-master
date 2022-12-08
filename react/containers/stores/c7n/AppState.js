@@ -61,13 +61,13 @@ class AppState {
     if (this.currentMenuType?.organizationId) {
       try {
         const recentProjectPromise = axios.get(
-          `/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
+          `/cbase/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
           {
             enabledCancelRoute: false,
           },
         );
         const starProjectPromise = axios.get(
-          `/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`,
+          `/cbase/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`,
           {
             enabledCancelRoute: false,
           },
@@ -349,7 +349,7 @@ class AppState {
     enabledCancelRoute: false,
   });
 
-  checkEnterpriseInfo = () => axios.get('/iam/choerodon/v1/enterprises/default', {
+  checkEnterpriseInfo = () => axios.get('/cbase/choerodon/v1/enterprises/default', {
     enabledCancelRoute: false,
   });
 

@@ -79,15 +79,15 @@ export default function useStore(history, AppState) {
       return axios.post(`agile/v1/organizations/${organizationId}/work_bench/personal/backlog_issues?page=${page}&size=20${projectId ? `&projectId=${projectId}` : ''}`, { type });
     },
     saveConfig(value) {
-      return axios.put('iam/v1/dashboards', value);
+      return axios.put('cbase/v1/dashboards', value);
     },
 
     rankDashboard(dashboards) {
-      return axios.post('iam/v1/dashboard-users/dashboard-rank', [...dashboards]);
+      return axios.post('cbase/v1/dashboard-users/dashboard-rank', [...dashboards]);
     },
 
     loadDashboardDetail(dashboardId) {
-      return axios.get(`iam/v1/dashboard-layouts/${dashboardId}`);
+      return axios.get(`cbase/v1/dashboard-layouts/${dashboardId}`);
     },
   }));
 }

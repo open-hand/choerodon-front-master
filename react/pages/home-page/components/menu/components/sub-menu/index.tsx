@@ -143,7 +143,7 @@ const SubMenus:FC<SubMenuProps> = () => {
       return null;
     }
 
-    if (!subMenus.length) {
+    if (!subMenus?.length) {
       return (
         <Item
           key={menuCode}

@@ -34,9 +34,9 @@ export interface IProps {
 }
 
 export const startProjChange = async (pid: string, enable: boolean, organizationId: string, ProjectsProUseStore: any) => {
-  enable ? await axios.post(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`, {
+  enable ? await axios.post(`/cbase/choerodon/v1/organizations/${organizationId}/star_projects`, {
     projectId: pid,
-  }) : await axios.delete(`/iam/choerodon/v1/organizations/${organizationId}/star_projects?project_id=${pid}`);
+  }) : await axios.delete(`/cbase/choerodon/v1/organizations/${organizationId}/star_projects?project_id=${pid}`);
   ProjectsProUseStore.axiosGetStarProjects();
   ProjectsProUseStore.axiosGetRecentProjects();
 };
@@ -169,13 +169,13 @@ const Index: React.FC<IProps> = (props) => {
   };
 
   const handleEnabledProj = async (pid: string) => {
-    if (await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${pid}/enable`)) {
+    if (await axios.put(`/cbase/choerodon/v1/organizations/${organizationId}/projects/${pid}/enable`)) {
       refresh();
     }
   };
 
   const handleDisableProj = async (pid: Record) => {
-    if (await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${pid}/disable`)) {
+    if (await axios.put(`/cbase/choerodon/v1/organizations/${organizationId}/projects/${pid}/disable`)) {
       refresh();
     }
   };
@@ -274,7 +274,7 @@ const Index: React.FC<IProps> = (props) => {
   };
 
   const handleDelete = async (pid: string) => {
-    if (await axios.delete(`/iam/choerodon/v1/projects/${pid}`)) {
+    if (await axios.delete(`/cbase/choerodon/v1/projects/${pid}`)) {
       refresh();
     }
   };

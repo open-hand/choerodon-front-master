@@ -2,7 +2,7 @@ import Api from './Api';
 
 class SiteOpenApi extends Api<SiteOpenApi> {
   get prefix() {
-    return '/iam/choerodon/v1/site/open';
+    return '/cbase/choerodon/v1/site/open';
   }
 
   getCaptcha = (email: string) => this.request({

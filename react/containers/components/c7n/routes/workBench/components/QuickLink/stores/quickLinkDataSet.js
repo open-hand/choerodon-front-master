@@ -14,7 +14,7 @@ export default ({
   axios,
   transport: {
     read: ({ dataSet, data }) => ({
-      url: `/iam/choerodon/v1/organizations/${organizationId}/quick_links/scope/${linkType}${selectedProjectId ? `?project_id=${selectedProjectId}` : ''}`,
+      url: `/cbase/choerodon/v1/organizations/${organizationId}/quick_links/scope/${linkType}${selectedProjectId ? `?project_id=${selectedProjectId}` : ''}`,
       method: 'get',
       transformResponse(res) {
         try {

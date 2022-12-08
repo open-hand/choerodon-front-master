@@ -7,7 +7,7 @@ class PermissionsApi extends Api<PermissionsApi> {
    * @return {*}
    */
   get prefix() {
-    return '/iam/choerodon/v1/permissions';
+    return '/cbase/choerodon/v1/permissions';
   }
 
   checkPermissions(data:string[], params: {

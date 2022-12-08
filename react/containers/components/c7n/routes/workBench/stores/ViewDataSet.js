@@ -23,7 +23,7 @@ export default ({
   }],
   transport: {
     read: ({ data }) => ({
-      url: 'iam/v1/dashboards',
+      url: 'cbase/v1/dashboards',
       method: 'get',
       transformResponse: (value) => {
         try {
@@ -38,7 +38,7 @@ export default ({
     destroy: ({ data }) => {
       const dashboardIds = data.map((dashboard) => dashboard.dashboardId);
       return {
-        url: 'iam/v1/dashboards',
+        url: 'cbase/v1/dashboards',
         method: 'delete',
         data: dashboardIds,
       };

@@ -2,7 +2,7 @@ import Api from './Api';
 
 class SiteApi extends Api<SiteApi> {
   get prefix() {
-    return '/iam/choerodon/v1/site';
+    return '/cbase/choerodon/v1/site';
   }
 
   getFeedBack(tenantId: any) {

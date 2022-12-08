@@ -10,7 +10,7 @@ export default ({
   autoCreate: true,
   transport: {
     // read: ({ data }) => ({
-    //   url: `iam/v1/dashboard-layouts/205085098088542208`,
+    //   url: `cbase/v1/dashboard-layouts/205085098088542208`,
     //   method: 'get',
     //   transformResponse: (value) => {
     //     try {
@@ -44,7 +44,7 @@ export default ({
       textField: 'dashboardName',
       valueField: 'dashboardId',
       lookupAxiosConfig: () => ({
-        url: '/iam/v1/dashboards/internal',
+        url: '/cbase/v1/dashboards/internal',
         params: { filterFlag: 0 },
         method: 'get',
         transformResponse: (res) => {

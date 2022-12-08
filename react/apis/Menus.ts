@@ -7,7 +7,7 @@ class MenusApi extends Api<MenusApi> {
    * @return {*}
    */
   get prefix() {
-    return '/iam/choerodon/v1/menus';
+    return '/cbase/choerodon/v1/menus';
   }
 
   getPlatFormMenuEntryPermission() {
