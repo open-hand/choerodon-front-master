@@ -12,6 +12,7 @@ import { ModalProvider } from 'choerodon-ui/pro';
 import { inject } from 'mobx-react';
 import { mount, get } from '@choerodon/inject';
 import { Loading } from '@choerodon/components';
+import useDatafluxRum from '@/hooks/useDatafluxRum';
 import Skeleton from '@/components/skeleton';
 import PermissionRoute from '@/components/permission-route';
 
@@ -38,6 +39,8 @@ const RouteIndex = (props: any) => {
 
   const match = useRouteMatch();
 
+  const [setUser, setGlobalContext] = useDatafluxRum();
+
   const history = useHistory();
   const location = useLocation();
   useEffect(() => {
@@ -59,18 +62,19 @@ const RouteIndex = (props: any) => {
       if (flag) {
         setRemoteAllSet(true);
         // 监控 在base-pro注入成功后 调用setUser方法
-        get('base-pro:datafluxRumSetUser') && get('base-pro:datafluxRumSetUser')(AppState.userInfo);
-        get('base-pro:datafluxRumSetGlobalContext') && get('base-pro:datafluxRumSetGlobalContext')(AppState);
+        setUser(AppState.userInfo);
+        setGlobalContext(AppState);
         clearInterval(timer);
       }
     }, 1000);
   }, []);
 
   useEffect(() => {
-    get('base-pro:datafluxRumSetGlobalContext') && get('base-pro:datafluxRumSetGlobalContext')(AppState);
+    setGlobalContext(AppState);
   }, [
     AppState?.menuType?.type,
     AppState?.menuType?.id,
+    AppState?.currentProject?.id,
   ]);
 
   return remoteAllSet ? (
