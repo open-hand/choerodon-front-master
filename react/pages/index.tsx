@@ -153,7 +153,8 @@ const MasterIndex = () => {
         <img style={{ width: 471 }} src={ErrorImage} alt="" />
         <p
           style={{
-            fontSize: 24,
+            marginTop: '1em',
+            fontSize: 22,
             fontFamily: 'PingFangSC-Regular, PingFang SC',
             fontWeight: 400,
             lineHeight: '33px',
