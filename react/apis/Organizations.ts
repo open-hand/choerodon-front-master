@@ -433,7 +433,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getLink() {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/${this.orgId}/generate/link`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/generate/link`,
     });
   }
 
@@ -441,7 +441,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   refreshLink() {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/${this.orgId}/refresh/link`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/refresh/link`,
     });
   }
 
