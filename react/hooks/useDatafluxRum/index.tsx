@@ -14,6 +14,7 @@ const useDatafluxRum = () => {
   const setGlobalContext = (AppState: any) => {
     if (AppState?.menuType?.type === 'project' && !AppState?.currentProject) {
       // 如果是项目 需要拿到currentProject
+      // @ts-ignore
     } else if (originAppState?.current?.type !== AppState?.menuType?.type || (originAppState?.current?.currentProject?.id !== AppState?.currentProject?.id)) {
       originAppState.current = {
         type: AppState?.menuType?.type,
