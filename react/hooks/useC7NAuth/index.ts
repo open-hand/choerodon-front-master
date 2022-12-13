@@ -77,7 +77,10 @@ function useC7NAuth(autoAuth?:boolean) {
             domain: '.shanghai-electric.com',
           });
           if (!shanghaiElectricToken) {
-            window.location.href = '/#/authenticationFailure/notLogin';
+            // eslint-disable-next-line no-underscore-dangle
+            const { API_HOST } = (window as any)._env_;
+            // window.location.href = '/#/authenticationFailure/notLogin';
+            window.location.href = `${API_HOST}/oauth/choerodon/login}`;
             return;
           }
           try {
