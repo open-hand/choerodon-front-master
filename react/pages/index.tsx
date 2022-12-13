@@ -190,6 +190,7 @@ const MasterIndex = () => {
             onClick={() => {
               const input = document.createElement('input');
               document.body.appendChild(input);
+              console.log('ERROR', ERROR);
               input.setAttribute('value', ERROR?.error?.stack);
               input.select();
               if (document.execCommand('copy')) {
