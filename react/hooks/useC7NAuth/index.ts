@@ -80,7 +80,7 @@ function useC7NAuth(autoAuth?:boolean) {
             // eslint-disable-next-line no-underscore-dangle
             const { API_HOST } = (window as any)._env_;
             // window.location.href = '/#/authenticationFailure/notLogin';
-            window.location.href = `${API_HOST}/oauth/choerodon/login}`;
+            window.location.href = `${API_HOST}/oauth/choerodon/login`;
             return;
           }
           try {
