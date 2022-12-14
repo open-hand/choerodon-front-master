@@ -191,7 +191,8 @@ const MasterIndex = () => {
               const input = document.createElement('input');
               document.body.appendChild(input);
               console.log('ERROR', ERROR);
-              input.setAttribute('value', error?.message || ERROR?.error?.stack);
+              console.log('error', error);
+              input.setAttribute('value', error?.stack || error?.message || ERROR?.error?.stack);
               input.select();
               if (document.execCommand('copy')) {
                 document.execCommand('copy');
