@@ -556,7 +556,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   createOrganization(data:any) {
     return this.request({
       method: 'post',
-      url: `${this.prefix}`,
+      url: '/iam/choerodon/v1/organizations',
       data,
     });
   }
