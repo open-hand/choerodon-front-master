@@ -191,12 +191,8 @@ const MasterIndex = () => {
               const input = document.createElement('input');
               document.body.appendChild(input);
               console.log('ERROR', ERROR);
-<<<<<<< HEAD
               console.log('error', error);
               input.setAttribute('value', error?.stack || error?.message || ERROR?.error?.stack);
-=======
-              input.setAttribute('value', error?.message || ERROR?.error?.stack);
->>>>>>> 63313bc1 (修改错误边界)
               input.select();
               if (document.execCommand('copy')) {
                 document.execCommand('copy');
