@@ -1,10 +1,12 @@
+/* eslint-disable no-underscore-dangle */
 import { useQueryString } from '@choerodon/components';
 import { useCallback, useEffect } from 'react';
 import { useBoolean } from 'ahooks';
 import { authorizeC7n, getAccessToken, setAccessToken } from '@/utils';
-
 import AppState from '@/containers/stores/c7n/AppState';
 import HeaderStore from '@/containers/stores/c7n/HeaderStore';
+import axios from '@/components/axios';
+import { getCookie } from '@/utils/cookie';
 
 type AuthStatus = 'noAuth' | 'pending' | 'success' | 'failed'
 
@@ -69,6 +71,30 @@ function useC7NAuth(autoAuth?:boolean) {
         //   console.log(error);
         // }
       } else if (!getAccessToken()) {
+        //  上海电气单点登录逻辑处理 （后续有功能二开，把逻辑挪到二开仓库）
+        if ((window as any)._env_.shanghaiElectric) {
+          const shanghaiElectricToken = getCookie('LtpaToken', {
+            domain: '.shanghai-electric.com',
+          });
+          if (!shanghaiElectricToken) {
+            // eslint-disable-next-line no-underscore-dangle
+            const { API_HOST } = (window as any)._env_;
+            // window.location.href = '/#/authenticationFailure/notLogin';
+            window.location.href = `${API_HOST}/oauth/choerodon/login`;
+            return;
+          }
+          try {
+            const res = await axios.post('/oauth/choerodon/electric/authorization_by_token', {
+              token: shanghaiElectricToken,
+              authType: 'token',
+            });
+            window.location.href = res;
+            window.location.reload();
+          } catch (error) {
+            window.location.href = '/#/authenticationFailure/notExistUser';
+          }
+          return;
+        }
         // token过期
         authorizeC7n();
         return;

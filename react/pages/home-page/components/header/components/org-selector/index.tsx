@@ -91,6 +91,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
 
   const orgButton = useMemo(() => {
     const btnCls = classnames(`${prefixCls}-button`);
+    // 这里如果出现显示的项目名称 而不是组织名称 多半原因是 下拉组织列表没有返回这个组织id对应的数据
     return (
       <div
         className={btnCls}
