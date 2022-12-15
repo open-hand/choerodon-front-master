@@ -74,6 +74,12 @@ class HeaderStore {
 
   @observable unreadMessageCount = 0;
 
+  @observable userMsgcurrentSize = 200;
+
+  @observable userMsgCount = 0;
+
+  @observable userMsghaveMore = false;
+
   @observable notificationKeyList = new Set();
 
   @action setInboxActiveKey(flag) {
@@ -222,6 +228,21 @@ class HeaderStore {
     this.unreadMessageCount = data;
   }
 
+  @action
+  setUserMsgcurrentSize(size) {
+    this.userMsgcurrentSize = size;
+  }
+
+  @action
+  setUserMsgCount(count) {
+    this.userMsgCount = count;
+  }
+
+  @action
+  setUserMsghaveMore(boolean) {
+    this.userMsghaveMore = boolean;
+  }
+
   axiosGetPro(key, value) {
     return axios.post('/iam/choerodon/v1/projects/query_by_option', {
       [key]: value,
@@ -262,7 +283,7 @@ class HeaderStore {
     const params = new URLSearchParams();
     params.append('user_id', userId);
     params.append('page', 0);
-    params.append('size', 9999);
+    params.append('size', this.userMsgcurrentSize);
     params.append('sort', 'read_flag,asc');
     params.append('sort', 'creationDate,desc');
     params.append('withContent', 1);
@@ -271,7 +292,9 @@ class HeaderStore {
     };
 
     return axios.get('/hmsg/v1/0/messages/user', request)
-      .then(action(({ list }) => {
+      .then(action(({ list, hasNextPage, numberOfElements }) => {
+        this.userMsghaveMore = hasNextPage;
+        this.userMsgCount = numberOfElements;
         if (list && list.length) {
           list.forEach((item) => {
             const {
@@ -294,7 +317,7 @@ class HeaderStore {
 
   axiosGetUnreadMessageCount() {
     return axios({
-      url: 'hmsg/v1/0/messages/user/count',
+      url: `hmsg/choerodon/v1/messages/count?size=${this.userMsgcurrentSize}`,
       method: 'get',
     }).then(action((data) => {
       this.setUnreadMessageCount(data ? data.unreadMessageCount : 0);
