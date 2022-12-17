@@ -244,6 +244,13 @@ class PipelineTemplateApi extends Api<PipelineTemplateApi> {
       method: 'get',
     });
   }
+
+  getSiteStepsTemplateDetails(id:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_step/template_step_id/${id}`,
+      method: 'get',
+    });
+  }
 }
 
 const pipelineTemplateApi = new PipelineTemplateApi();
