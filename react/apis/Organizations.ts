@@ -120,7 +120,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   userLabelList() {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/list_user_labels`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/list_user_labels`,
       method: 'get',
     });
   }
