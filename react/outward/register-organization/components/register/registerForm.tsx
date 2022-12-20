@@ -109,28 +109,33 @@ const Index:React.FC<IProps> = (props) => {
           ajaxRequest={registerOrganizationApi.getCaptcha}
           maxAge={600}
         />
-        <CheckBox name="isAgree" colSpan={1}>
-          <span>我同意</span>
-          <a
-            onClick={(e) => {
-              handleJump(e, 'serviceAgreement');
-            }}
-            role="none"
-            rel="noopener noreferrer"
-          >
-            服务协议
-          </a>
-          与
-          <a
-            role="none"
-            onClick={(e) => {
-              handleJump(e, 'agreement');
-            }}
-            rel="noopener noreferrer"
-          >
-            隐私条款
-          </a>
-        </CheckBox>
+        {/*  @ts-ignore */}
+        <div colSpan={2} className="row-notice">
+          <CheckBox name="isAgree" colSpan={1}>
+            <span>我同意</span>
+          </CheckBox>
+          <span className="row-notice-right">
+            <a
+              onClick={(e) => {
+                handleJump(e, 'serviceAgreement');
+              }}
+              role="none"
+              rel="noopener noreferrer"
+            >
+              服务协议
+            </a>
+            与
+            <a
+              role="none"
+              onClick={(e) => {
+                handleJump(e, 'agreement');
+              }}
+              rel="noopener noreferrer"
+            >
+              隐私条款
+            </a>
+          </span>
+        </div>
       </Form>
       <Button disabled={!registerFormDs?.current?.get('isAgree')} className="submit-btn" block color={'primary' as any} onClick={handleSubmit}>免费试用</Button>
       <div className="row-tologin"><a href="" onClick={(e) => { toLogin(e); }}>已有账号，立即登录</a></div>
