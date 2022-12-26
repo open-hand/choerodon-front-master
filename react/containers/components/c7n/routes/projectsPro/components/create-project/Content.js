@@ -95,6 +95,12 @@ const CreateProject = observer(() => {
       }));
       if (typeof formDs?.current?.get('statusId') === 'object') {
         formDs?.current?.set('statusId', formDs?.current?.get('statusId')?.id);
+        formDs?.current?.set('projectEnable', formDs?.current?.get('statusId')?.projectEnable);
+      } else {
+        const statusItem = formDs?.current?.getField('statusId')?.options?.toData()?.find((i) => String(i?.id) === String(formDs?.current?.get('statusId')));
+        if (statusItem) {
+          formDs?.current?.set('projectEnable', statusItem?.projectEnable);
+        }
       }
       record.set('categories', categories);
       if (some(categories, ['code', 'N_WATERFALL'])) {
@@ -289,7 +295,14 @@ const CreateProject = observer(() => {
         {
           isModify && (
             <>
-              <Select name="statusId" colSpan={25} style={{ width: 161 }} />
+              <Select
+                name="statusId"
+                colSpan={25}
+                style={{ width: 161 }}
+                onOption={({ record: record1 }) => ({
+                  disabled: !record1?.get('enable'),
+                })}
+              />
               <TreeSelect name="workGroupId" colSpan={25} style={{ width: 161, position: 'relative', left: 3 }} searchable optionRenderer={renderTreeSelect} />
               <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
             </>
