@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React, {
   useEffect, useMemo, useRef, useState, useImperativeHandle,
 } from 'react';
@@ -14,12 +15,17 @@ import ChooseFieldsBtn, { ICheckBoxFields } from './chooseFieldsBtn';
 import './customQuerybar.less';
 
 const modalKey1 = Modal.key();
+
+export interface ICustomBtnConfig {
+  ele: React.ReactNode
+}
 // TODO: usereducer
 export interface IProps {
   searchFieldsConfig: ISearchFields[]
   filterFieldsConfig: ICheckBoxFields[]
+  customButtonsConfig?: ICustomBtnConfig[]
   onChange: (name: string, value: any) => void
-  cRef: any
+  cRef?: any
 }
 
 export interface ISearchFields {
@@ -47,7 +53,7 @@ const fieldsMap = new Map(
 
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, onChange, cRef,
+    searchFieldsConfig, filterFieldsConfig, customButtonsConfig, onChange, cRef,
   } = props;
   const [initialFieldNum, setInitialFieldNum] = useState<number>(0);
   const [expandBtnVisible, setExpandBtnVisible] = useState<boolean>(false);
@@ -300,14 +306,25 @@ const Index: React.FC<IProps> = (props) => {
               {
                 searchFields.map((item, index) => getSearchField(item, index))
               }
-              <div className="searchField-item">
-                <ChooseFieldsBtn
-                  fields={filterFieldsConfig}
-                  onChange={chooseFieldsChange}
-                  cRef={childRef}
-                  reset={handleReset}
-                />
-              </div>
+              {
+                filterFieldsConfig.length > 0 ? (
+                  <div className="searchField-item">
+                    <ChooseFieldsBtn
+                      fields={filterFieldsConfig}
+                      onChange={chooseFieldsChange}
+                      cRef={childRef}
+                      reset={handleReset}
+                    />
+                  </div>
+                ) : ''
+              }
+              {
+               customButtonsConfig && customButtonsConfig.map((item) => (
+                 <div className="searchField-item">
+                   {item.ele}
+                 </div>
+               ))
+              }
             </div>
           </div>
           <div className="searchField-container-left-block2">
