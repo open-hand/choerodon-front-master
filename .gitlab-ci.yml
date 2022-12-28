@@ -9,7 +9,7 @@ release:
   stage: release
   script:
     - echo "//${NPM_INSTALL_REGISTRY}:_authToken=${NPM_TOKEN}">.npmrc
-    - pnpm install --registry ${NPM_REPO}
+    - pnpm install --registry ${NPM_REPO} --shamefully-hoist
     - chmod -R 755 .
     - pnpm run compile
     - echo "//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}">.npmrc
