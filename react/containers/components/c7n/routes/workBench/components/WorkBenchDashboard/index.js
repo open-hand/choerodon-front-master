@@ -7,7 +7,7 @@ import { get, noop } from 'lodash';
 import { has as hasInject, mount, get as choerodonGet } from '@choerodon/inject';
 import ResizeObserver from 'resize-observer-polyfill';
 
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 import GridBg from '@/containers/components/c7n/components/gridBackground';

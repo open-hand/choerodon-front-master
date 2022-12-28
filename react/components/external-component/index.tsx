@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import loadComponent from '@/utils/loadComponent';
 
 const cache = new Map();

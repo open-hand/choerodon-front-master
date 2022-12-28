@@ -46,9 +46,10 @@ const cookies = new Cookies();
 
 let ERROR: any = '';
 
-const MasterIndex = () => {
+const MasterIndex = (props: any) => {
   const location = useLocation();
   const history = useHistory();
+  const { AutoRouter } = props;
 
   const {
     pathname,
@@ -136,8 +137,9 @@ const MasterIndex = () => {
   }, [pathname, loading, isInOutward]);
 
   const getContainer = useMemo(() => {
-    const content: any = isInOutward ? Outward : Master;
-    return React.createElement(content);
+    return isInOutward ? <Outward AutoRouter={AutoRouter} /> : <Master AutoRouter={AutoRouter} />
+    // const content: any = isInOutward ? Outward : Master;
+    // return React.createElement(content);
   }, [isInOutward]);
 
   if (loading && !isInOutward) {

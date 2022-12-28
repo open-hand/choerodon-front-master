@@ -7,7 +7,7 @@ import {
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
 import { merge, get } from 'lodash';
-import { TypeTag } from '@choerodon/components';
+import { TypeTag } from '@zknow/components';
 import { getRandomBackground } from '@/utils';
 import './index.less';
 import { ALL_TYPE_CODES } from '@/constants/STATUS_TYPE';
@@ -283,30 +283,30 @@ const QuestionNode = observer(({
           <span className={`${prefixCls}-main-description`}>{summary}</span>
         </Tooltip>
         {isStar && starBeacon && (
-        <Icon
-          className={`${prefixCls}-main-star`}
-          type="stars"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClickStar && onClickStar(record);
-          }}
-        />
+          <Icon
+            className={`${prefixCls}-main-star`}
+            type="stars"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClickStar && onClickStar(record);
+            }}
+          />
         )}
         {getStatus()}
         {(switchCode === 'reportedBug' || (isStar && typeCode !== 'feature')) && getUsers(assignees || [{ id: assigneeId, imageUrl: assigneeImageUrl, realName: assigneeRealName }])}
         {typeCode === 'feature' && getProjects(featureTeams)}
         {typeCode !== 'feature' && (
-        <Tooltip title={priorityVO ? priorityVO.name : '无'} placement="top">
-          <span
-            className={`${prefixCls}-main-priority`}
-            style={{
-              backgroundColor: `${priorityVO ? priorityVO.colour : '#FFFFFF'}1F`,
-              color: priorityVO ? priorityVO.colour : '#FFFFFF',
-            }}
-          >
-            {priorityVO ? priorityVO.name : '无'}
-          </span>
-        </Tooltip>
+          <Tooltip title={priorityVO ? priorityVO.name : '无'} placement="top">
+            <span
+              className={`${prefixCls}-main-priority`}
+              style={{
+                backgroundColor: `${priorityVO ? priorityVO.colour : '#FFFFFF'}1F`,
+                color: priorityVO ? priorityVO.colour : '#FFFFFF',
+              }}
+            >
+              {priorityVO ? priorityVO.name : '无'}
+            </span>
+          </Tooltip>
         )}
       </div>
     </div>

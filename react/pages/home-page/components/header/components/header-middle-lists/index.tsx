@@ -10,7 +10,7 @@ import {
   KNOWLEDGE_CONFIG, MARKET_CONFIG, WORKBENCH_CONFIG, WORKCALENDAR_CONFIG,
 } from './CONSTANTS';
 import {} from 'choerodon-ui/pro';
-import {} from '@choerodon/components';
+import {} from '@zknow/components';
 
 import './index.less';
 import ListItem from './components/list-item';

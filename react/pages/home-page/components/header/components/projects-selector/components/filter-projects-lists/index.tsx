@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import {} from 'choerodon-ui/pro';
 import { get } from '@choerodon/inject';
 
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 
 import './index.less';
 import { useQuery } from 'react-query';

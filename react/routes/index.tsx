@@ -11,7 +11,7 @@ import { observer } from 'mobx-react-lite';
 import { ModalProvider } from 'choerodon-ui/pro';
 import { inject } from 'mobx-react';
 import { mount, get } from '@choerodon/inject';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import useDatafluxRum from '@/hooks/useDatafluxRum';
 import Skeleton from '@/components/skeleton';
 import PermissionRoute from '@/components/permission-route';

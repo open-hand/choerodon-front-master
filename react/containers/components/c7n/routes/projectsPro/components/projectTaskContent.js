@@ -2,7 +2,7 @@
 import React from "react";
 import { Icon, Tag } from "choerodon-ui";
 import { Tooltip } from "choerodon-ui/pro";
-import { TimePopover } from "@choerodon/components";
+import { TimePopover } from "@zknow/components";
 import TimeAgo from "timeago-react";
 import { throttle } from "lodash";
 import { getRandomBackground } from "@/utils";

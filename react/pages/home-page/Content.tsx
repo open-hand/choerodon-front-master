@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router';
-import { useQueryString, Loading } from '@choerodon/components';
+import { useQueryString, Loading } from '@zknow/components';
 import { get } from '@choerodon/inject';
 
 import { useHomePageStore } from './stores';

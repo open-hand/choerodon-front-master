@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import {
   pick,
 } from 'lodash';
-import { LoadingProvider, LoadingHiddenWrap } from '@choerodon/components';
+import { LoadingProvider, LoadingHiddenWrap } from '@zknow/components';
 import { useIntl } from 'react-intl';
 import EmptyPage from '../EmptyPage';
 import OverviewWrap from '../OverviewWrap';

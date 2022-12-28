@@ -31,14 +31,19 @@ const getConfirmation = (message:string, callback:CallableFunction) => {
 
 autoRefresh();
 
-const App = () => (
-  <Router getUserConfirmation={getConfirmation}>
-    {/* <ErrorBoundar renderError={(props) => <ErrorPage {...props} />}> */}
-    <PageEntry />
-    {/* </ErrorBoundar> */}
-    {/* <C7NDevTool /> */}
-  </Router>
-);
+const App = (props: any) => {
+  const { AutoRouter } = props;
+  return (
+    <>
+      <Router getUserConfirmation={getConfirmation}>
+        {/* <ErrorBoundar renderError={(props) => <ErrorPage {...props} />}> */}
+        <PageEntry AutoRouter={AutoRouter} />
+        {/* </ErrorBoundar> */}
+        {/* <C7NDevTool /> */}
+      </Router>
+    </>
+  );
+};
 
 // const rootNode = document.getElementById('app');
 

@@ -6,7 +6,7 @@ import { inject } from 'mobx-react';
 import { Menu, Popover, Icon } from 'choerodon-ui';
 import { useUserAvatarStore } from './stores';
 
-import {} from '@choerodon/components';
+import {} from '@zknow/components';
 import Avatar from './components/avatar';
 import DropdownMenu from './components/dropdown-menu';
 

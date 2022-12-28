@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 import classNames from 'classnames';
-import { OverflowWrap, useQueryString } from '@choerodon/components';
+import { OverflowWrap, useQueryString } from '@zknow/components';
 import { Permission } from '@/components/permission';
 import { PermissionService } from '@/components/permission/interface';
 import getSearchString from '@/utils/gotoSome';

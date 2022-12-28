@@ -12,6 +12,7 @@ npm-debug.log
 yarn-error.log
 .yalc
 yalc.lock
+pnpm-lock.yaml
 # folder
 dist
 lib
