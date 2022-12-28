@@ -8,10 +8,11 @@ stages:
 release:
   stage: release
   script:
-    - pnpm install --registry ${NPM_REPO} --sass-binary-site=http://npm.taobao.org/mirrors/node-sass --ignore-engines
+    - echo "//${NPM_INSTALL_REGISTRY}:_authToken=${NPM_TOKEN}">.npmrc
+    - pnpm install --registry ${NPM_REPO}
     - chmod -R 755 .
     - pnpm run compile
-    - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>.npmrc
+    - echo "//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}">.npmrc
     - pnpm publish --registry ${NPM_PUBLISH_REGISTRY} --no-git-checks
     - curl -sX POST -F token=${FRONT_REPOSITORY_TOKEN} -F ref=${REF_NAME} https://code.choerodon.com.cn/api/v4/projects/7909/trigger/pipeline
   only:
