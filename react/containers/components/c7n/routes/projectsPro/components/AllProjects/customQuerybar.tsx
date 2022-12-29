@@ -74,7 +74,7 @@ const Index: React.FC<IProps> = (props) => {
     setSearchFieldsOrigin(searchFieldsConfig);
     searchFieldsConfig.forEach((item: any) => {
       if (!item.optionQueryConfig) {
-        dsFieldAdd(item.name);
+        dsFieldAdd(item.name, item.forAShortTimeDsProps || {});
       } else {
         dsOptionFieldAdd(item.name, item.optionsTextField || 'name', item.optionsValueField || 'id',
           item.optionConfig || {}, item.optionQueryConfig);
@@ -139,9 +139,9 @@ const Index: React.FC<IProps> = (props) => {
     return num;
   };
 
-  const dsFieldAdd = (name: string) => {
+  const dsFieldAdd = (name: string, forAShortTimeDsObj:any) => {
     if (!compDataSet.getField(name)) {
-      compDataSet.addField(name, {});
+      compDataSet.addField(name, forAShortTimeDsObj);
     }
   };
 
@@ -227,7 +227,8 @@ const Index: React.FC<IProps> = (props) => {
       { /*  @ts-ignore */ }
       cloneSearchFields.push(i);
       if (!i.optionQueryConfig) {
-        dsFieldAdd(i.name);
+        // @ts-ignore
+        dsFieldAdd(i.name, i.forAShortTimeDsProps || {});
       } else {
         dsOptionFieldAdd(i.name, i.optionsTextField || 'name', i.optionsValueField || 'id',
           i.optionConfig || {},
