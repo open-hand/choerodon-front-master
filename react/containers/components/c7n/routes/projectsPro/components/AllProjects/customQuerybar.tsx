@@ -26,6 +26,7 @@ export interface IProps {
   customButtonsConfig?: ICustomBtnConfig[]
   onChange: (name: string, value: any) => void
   cRef?: any
+  showResetButton?: boolean
 }
 
 export interface ISearchFields {
@@ -53,7 +54,7 @@ const fieldsMap = new Map(
 
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, customButtonsConfig, onChange, cRef,
+    searchFieldsConfig, filterFieldsConfig, customButtonsConfig, onChange, cRef, showResetButton = true,
   } = props;
   const [initialFieldNum, setInitialFieldNum] = useState<number>(0);
   const [expandBtnVisible, setExpandBtnVisible] = useState<boolean>(false);
@@ -330,7 +331,7 @@ const Index: React.FC<IProps> = (props) => {
           <div className="searchField-container-left-block2">
             {
               (searchFields.length > initialFieldNum || getIfValue())
-              && (
+              && showResetButton && (
                 <>
                   <Button onClick={handleReset}>重置</Button>
                   <Tooltip title={expandBtnType === 'expand_less' ? '折叠筛选' : '展开筛选'}>
