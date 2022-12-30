@@ -209,16 +209,10 @@ const SubMenus:FC<SubMenuProps> = () => {
         subMenuOpenDelay={0.1}
         selectedKeys={[activeMenu?.code].filter(String)}
         // 为了解决收起状态的菜单 所有展开二级菜单都弹出的问题
-<<<<<<< HEAD
         openKeys={savedOpenKeys}
         // {...isExpanded ? {
         //   openKeys: savedOpenKeys,
         // } : {}}
-=======
-        {...isExpanded ? {
-          openKeys: savedOpenKeys,
-        } : {}}
->>>>>>> e18c266b... [FIX]修改菜单缩小状态无法点开二级菜单的问题
         mode="inline"
         onOpenChange={handleOpenChange}
         style={{ overflow: 'hidden overlay' }}
