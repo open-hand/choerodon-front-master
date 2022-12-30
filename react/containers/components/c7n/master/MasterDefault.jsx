@@ -140,7 +140,7 @@ class Masters extends Component {
     this.getGuideContentByLocationChange(nextProps, this.props);
   }
 
-  saaSUserRestDaysAnewReq=(newProps, oldProps) => {
+  saaSUserRestDaysAnewReq = (newProps, oldProps) => {
     const newParams = new URLSearchParams(newProps.location.search);
     const oldParams = new URLSearchParams(oldProps.location.search);
     if (newParams.get('organizationId') !== oldParams.get('organizationId')) {
@@ -315,7 +315,7 @@ class Masters extends Component {
       menuType.type = 'site';
     }
     // eslint-disable-next-line
-      async function checkUrl() {
+    async function checkUrl() {
       async function goSafty(data) {
         if (!HeaderStore.getOrgData) {
           setTimeout(() => {
@@ -346,7 +346,7 @@ class Masters extends Component {
         let res;
         if (
           !currentProject
-            || String(menuType.projectId) !== String(currentProject?.id)
+          || String(menuType.projectId) !== String(currentProject?.id)
         ) {
           try {
             res = await axios.get(
@@ -357,7 +357,7 @@ class Masters extends Component {
             }
             if (
               String(res.id)
-                === String(new URLSearchParams(location.search).get('id'))
+              === String(new URLSearchParams(location.search).get('id'))
             ) {
               AppState.setCurrentProject(res);
             } else {
@@ -375,8 +375,8 @@ class Masters extends Component {
           checkArray.some((c) => {
             if (
               menuType[c]
-                && menuType[c] !== 'undefined'
-                && String(menuType[c]) !== String(res[c])
+              && menuType[c] !== 'undefined'
+              && String(menuType[c]) !== String(res[c])
             ) {
               return true;
             }
@@ -397,7 +397,7 @@ class Masters extends Component {
   }
 
   render() {
-    const { AppState } = this.props;
+    const { AppState, AutoRouter } = this.props;
     return (
       <Spin spinning={AppState.getIsLoadMenu}>
         <div className="page-wrapper">
@@ -427,7 +427,7 @@ class Masters extends Component {
                 cRef: this.userRef,
               })}
               <div id="autoRouter" className="content">
-                <RouteIndex />
+                <RouteIndex AutoRouter={AutoRouter} />
               </div>
             </div>
           </div>

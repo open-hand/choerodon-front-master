@@ -26,13 +26,14 @@ const ProjectsPro = React.lazy(() => import('@/containers/components/c7n/routes/
 const ProjectOverview = React.lazy(() => import('@/containers/components/c7n/routes/projectOverview'));
 
 // this is child services routes collections page
-const AutoRouter = React.lazy(() => import('./routesCollections'));
+// const AutoRouter = React.lazy(() => import('./routesCollections'));
 
 let timer: any;
 
 const RouteIndex = (props: any) => {
   const {
     AppState,
+    AutoRouter,
   } = props;
 
   const [remoteAllSet, setRemoteAllSet] = useState(false);
