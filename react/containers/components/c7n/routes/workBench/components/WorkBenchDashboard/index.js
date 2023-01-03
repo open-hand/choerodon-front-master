@@ -42,7 +42,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 const UserIssue = () => (hasInject('agilePro:workbenchUserIssue') ? mount('agilePro:workbenchUserIssue', {}) : <></>);
 const ProjectProgress = () => (hasInject('agilePro:workbenchProjectStatistics') ? mount('agilePro:workbenchProjectStatistics', {}) : <></>);
 const ProjectReleaseSchedule = <ExternalComponent system={{ scope: 'haitianMaster', module: 'project-release-schedule' }} />;
-const TeamLeaderOrder = <ExternalComponent system={{ scope: 'haitianMaster', module: 'project-release-schedule' }} />;
+const TeamLeaderOrder = <ExternalComponent system={{ scope: 'haitianMaster', module: 'technical-director-schedule' }} />;
 /** 临时兼容性操作 */
 // eslint-disable-next-line no-underscore-dangle
 window.___choeordonWorkbenchComponent__ = window.___choeordonWorkbenchComponent__ || {};
