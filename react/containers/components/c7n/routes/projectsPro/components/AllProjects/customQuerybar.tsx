@@ -11,6 +11,7 @@ import {
   cloneDeep, forIn, isNil, omit, remove,
 } from 'lodash';
 import { observer } from 'mobx-react-lite';
+import { useDebounceFn } from 'ahooks';
 import ChooseFieldsBtn, { ICheckBoxFields } from './chooseFieldsBtn';
 import './customQuerybar.less';
 
@@ -139,7 +140,7 @@ const Index: React.FC<IProps> = (props) => {
     return num;
   };
 
-  const dsFieldAdd = (name: string, forAShortTimeDsObj:any) => {
+  const dsFieldAdd = (name: string, forAShortTimeDsObj: any) => {
     if (!compDataSet.getField(name)) {
       compDataSet.addField(name, forAShortTimeDsObj);
     }
@@ -174,8 +175,8 @@ const Index: React.FC<IProps> = (props) => {
     childRef.current.checkChange(false, name);
   };
 
-  const handleRemoteSearch = async (e: any, item: ISearchFields) => {
-    const { value } = e.target;
+  const handleRemoteSearch = async (v: any, item: ISearchFields) => {
+    const value = v;
     if (item.fieldProps.remoteSearch) {
       const optionDs = compDataSet?.getField(item.name)?.options;
       if (optionDs) {
@@ -184,6 +185,8 @@ const Index: React.FC<IProps> = (props) => {
       await optionDs?.query();
     }
   };
+
+  const { run } = useDebounceFn((v, item) => { handleRemoteSearch(v, item); }, { wait: 500 });
 
   const getSearchField = (item: ISearchFields, index: number) => {
     const Ele = fieldsMap.get(item.type);
@@ -195,7 +198,7 @@ const Index: React.FC<IProps> = (props) => {
           {...item.fieldProps}
           dataSet={compDataSet}
           name={item.name}
-          onInput={(e: string) => { handleRemoteSearch(e, item); }}
+          onInput={(e: any) => { run(e.target.value, item); }}
         />
       </div>
     ) : (
@@ -206,7 +209,7 @@ const Index: React.FC<IProps> = (props) => {
           {...item.fieldProps}
           dataSet={compDataSet}
           name={item.name}
-          onInput={(e: string) => { handleRemoteSearch(e, item); }}
+          onInput={(e: any) => { run(e.target.value, item); }}
         />
         <div
           className="deletable-div"
@@ -321,11 +324,11 @@ const Index: React.FC<IProps> = (props) => {
                 ) : ''
               }
               {
-               customButtonsConfig && customButtonsConfig.map((item) => (
-                 <div className="searchField-item">
-                   {item.ele}
-                 </div>
-               ))
+                customButtonsConfig && customButtonsConfig.map((item) => (
+                  <div className="searchField-item">
+                    {item.ele}
+                  </div>
+                ))
               }
             </div>
           </div>
