@@ -189,7 +189,7 @@ export default ({
         validator: async (value, name, record) => {
           const values = ['N_DEVOPS', 'N_OPERATIONS'];
           const flag1 = categoryDs.selected.some((categoryRecord) => values.includes(categoryRecord.get('code')));
-          if (flag1 && record?.status === 'add') {
+          if (flag1) {
             if (value.length > 40) {
               return '编码长度不能超过40！';
             }

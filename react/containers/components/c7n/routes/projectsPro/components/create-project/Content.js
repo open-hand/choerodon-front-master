@@ -122,6 +122,7 @@ const CreateProject = observer(() => {
         setIsLoading(false);
         return false;
       }
+      setIsLoading(false);
       return false;
     } catch (e) {
       setIsLoading(false);
