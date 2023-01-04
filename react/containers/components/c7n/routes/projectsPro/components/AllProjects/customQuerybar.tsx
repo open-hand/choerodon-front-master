@@ -35,6 +35,7 @@ const fieldsMap = new Map(
     ['Select', Select],
     ['FlatTreeSelect', FlatTreeSelect],
     ['DateTimePicker', DateTimePicker],
+    ['DatePicker', DatePicker],
   ],
 );
 
