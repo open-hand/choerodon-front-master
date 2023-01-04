@@ -24,7 +24,6 @@ export interface ICustomBtnConfig {
 export interface IProps {
   searchFieldsConfig: ISearchFields[]
   filterFieldsConfig: ICheckBoxFields[]
-  customButtonsConfig?: ICustomBtnConfig[]
   onChange: (name: string, value: any) => void
   cRef?: any
   showResetButton?: boolean
@@ -55,7 +54,7 @@ const fieldsMap = new Map(
 
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, customButtonsConfig, onChange, cRef, showResetButton = true,
+    searchFieldsConfig, filterFieldsConfig, onChange, cRef, showResetButton = true,
   } = props;
   const [initialFieldNum, setInitialFieldNum] = useState<number>(0);
   const [expandBtnVisible, setExpandBtnVisible] = useState<boolean>(false);
@@ -324,13 +323,6 @@ const Index: React.FC<IProps> = (props) => {
                     />
                   </div>
                 ) : ''
-              }
-              {
-                customButtonsConfig && customButtonsConfig.map((item) => (
-                  <div className="searchField-item">
-                    {item.ele}
-                  </div>
-                ))
               }
             </div>
           </div>
