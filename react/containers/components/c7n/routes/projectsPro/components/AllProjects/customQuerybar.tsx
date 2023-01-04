@@ -40,7 +40,7 @@ const fieldsMap = new Map(
 
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, customButtonsConfig, onChange, cRef, showResetButton = true,
+    searchFieldsConfig, filterFieldsConfig, onChange, cRef, showResetButton = true,
   } = props;
   const [visibleOptionalFieldsNum, setVisibleOptionalFieldsNum] = useState(0);
   const [recordExistedValue, setRecordExistedValue] = useState(false);
