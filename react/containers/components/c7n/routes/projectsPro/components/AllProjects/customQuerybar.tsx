@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import { FlatSelect, FlatTreeSelect } from '@choerodon/components';
 import {
-  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker, Select,
+  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker, Select, DatePicker,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import {
@@ -49,6 +49,7 @@ const fieldsMap = new Map(
     ['Select', Select],
     ['FlatTreeSelect', FlatTreeSelect],
     ['DateTimePicker', DateTimePicker],
+    ['DatePicker', DatePicker],
   ],
 );
 
