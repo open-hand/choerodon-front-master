@@ -78,7 +78,7 @@ const Index: React.FC<IProps> = (props) => {
         dsFieldAdd(item.name, item.forAShortTimeDsProps || {});
       } else {
         dsOptionFieldAdd(item.name, item.optionsTextField || 'name', item.optionsValueField || 'id',
-          item.optionConfig || {}, item.optionQueryConfig);
+          item.optionConfig || {}, item.optionQueryConfig, item.forAShortTimeDsProps || {});
       }
     });
     setInitialFieldNum(getInitialFieldNum(searchFieldsConfig));
@@ -146,11 +146,12 @@ const Index: React.FC<IProps> = (props) => {
     }
   };
 
-  const dsOptionFieldAdd = (name: string, textField: string | undefined, valueField: string | undefined, optionConfig: any, optionQueryConfig: any) => {
+  const dsOptionFieldAdd = (name: string, textField: string | undefined, valueField: string | undefined, optionConfig: any, optionQueryConfig: any, forAShortTimeDsObj:any) => {
     if (!compDataSet.getField(name)) {
       compDataSet.addField(name, {
         textField,
         valueField,
+        ...forAShortTimeDsObj,
         options: new DataSet({
           autoCreate: true,
           autoQuery: true,
@@ -226,7 +227,7 @@ const Index: React.FC<IProps> = (props) => {
 
   const fieldAdd = (changeArr: ICheckBoxFields[]) => {
     const cloneSearchFields = cloneDeep(searchFields);
-    changeArr.forEach((i) => {
+    changeArr.forEach((i:any) => {
       { /*  @ts-ignore */ }
       cloneSearchFields.push(i);
       if (!i.optionQueryConfig) {
@@ -235,7 +236,8 @@ const Index: React.FC<IProps> = (props) => {
       } else {
         dsOptionFieldAdd(i.name, i.optionsTextField || 'name', i.optionsValueField || 'id',
           i.optionConfig || {},
-          i.optionQueryConfig);
+          i.optionQueryConfig,
+          i.forAShortTimeDsProps || {});
       }
     });
     setSearchFields(cloneSearchFields);
