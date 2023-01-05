@@ -230,7 +230,7 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
       },
     },
   ];
-  const searchBusinessFieldsConfig = [...searchFieldsConfig, {
+  const searchBusinessFieldsConfigObj = {
     type: 'FlatSelect',
     initial: true,
     dsProps: {
@@ -252,9 +252,13 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
       ...defaultSelectEleConfig,
       placeholder: '健康状态',
     },
-  },
-  ];
-  return hasBusiness ? searchBusinessFieldsConfig : searchFieldsConfig;
+  };
+
+  if (hasBusiness) {
+    searchFieldsConfig.splice(5, 0, searchBusinessFieldsConfigObj);
+  }
+
+  return searchFieldsConfig;
 };
 
 export const getFilterFieldsConfig = () => [
