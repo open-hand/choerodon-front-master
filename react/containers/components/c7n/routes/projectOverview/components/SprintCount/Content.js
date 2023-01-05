@@ -12,6 +12,7 @@ import classnames from 'classnames';
 import { useIntl } from 'react-intl';
 import { Loading } from '@choerodon/components';
 import useQueryString from '@/hooks/useQueryString';
+import EMPTY_VALUE from '@/constants/EMPTY_VALUE';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import { useSprintCountChartStore } from './stores';
@@ -78,7 +79,7 @@ const SprintCount = observer(() => {
                   search.statusId = statusIds.join(',');
                 }
                 if (key === 'unassignCount') {
-                  search.assigneeId = '0';
+                  search.assigneeId = EMPTY_VALUE.filter_empty_value;
                 }
                 if (issueTypeIds.length > 0) {
                   search.issueTypeId = issueTypeIds.join(',');
