@@ -90,19 +90,15 @@ export default class WSProvider extends Component {
       onError(e);
     }
 
-    this.needReRegister = true;
-    this.destroySocketByPath(path);
-    this.initSocket(this.props, path);
-
-    // if (!this.retry) {
-    //   this.retry = true;
-    //   setTimeout(() => {
-    //     this.retry = false;
-    //     this.needReRegister = true;
-    //     this.destroySocketByPath(path);
-    //     this.initSocket(this.props, path);
-    //   }, TIMEOUT_TIME);
-    // }
+    if (!this.retry) {
+      this.retry = true;
+      setTimeout(() => {
+        this.retry = false;
+        this.needReRegister = true;
+        this.destroySocketByPath(path);
+        this.initSocket(this.props, path);
+      }, TIMEOUT_TIME);
+    }
   };
 
   handleClose = (e, path) => {
@@ -111,19 +107,15 @@ export default class WSProvider extends Component {
       onClose();
     }
 
-    this.needReRegister = true;
-    this.destroySocketByPath(path);
-    this.initSocket(this.props, path);
-
-    // if (!this.retry) {
-    //   this.retry = true;
-    //   setTimeout(() => {
-    //     this.retry = false;
-    //     this.needReRegister = true;
-    //     this.destroySocketByPath(path);
-    //     this.initSocket(this.props, path);
-    //   }, TIMEOUT_TIME);
-    // }
+    if (!this.retry) {
+      this.retry = true;
+      setTimeout(() => {
+        this.retry = false;
+        this.needReRegister = true;
+        this.destroySocketByPath(path);
+        this.initSocket(this.props, path);
+      }, TIMEOUT_TIME);
+    }
   };
 
   destroySocketByPath(path) {
