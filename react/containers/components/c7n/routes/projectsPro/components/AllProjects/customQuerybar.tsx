@@ -1,25 +1,32 @@
+/* eslint-disable react/require-default-props */
 import React, {
   useEffect, useMemo, useRef, useState, useImperativeHandle,
 } from 'react';
 import { FlatSelect, FlatTreeSelect } from '@choerodon/components';
 import {
-  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker, Select,
+  Button, TextField, Icon, DataSet, Tooltip, Modal, DateTimePicker, Select, DatePicker,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import {
   cloneDeep, forIn, isNil, omit, remove,
 } from 'lodash';
 import { observer } from 'mobx-react-lite';
+import { useDebounceFn } from 'ahooks';
 import ChooseFieldsBtn, { ICheckBoxFields } from './chooseFieldsBtn';
 import './customQuerybar.less';
 
 const modalKey1 = Modal.key();
+
+export interface ICustomBtnConfig {
+  ele: React.ReactNode
+}
 // TODO: usereducer
 export interface IProps {
   searchFieldsConfig: ISearchFields[]
   filterFieldsConfig: ICheckBoxFields[]
   onChange: (name: string, value: any) => void
-  cRef: any
+  cRef?: any
+  showResetButton?: boolean
 }
 
 export interface ISearchFields {
@@ -42,12 +49,13 @@ const fieldsMap = new Map(
     ['Select', Select],
     ['FlatTreeSelect', FlatTreeSelect],
     ['DateTimePicker', DateTimePicker],
+    ['DatePicker', DatePicker],
   ],
 );
 
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, onChange, cRef,
+    searchFieldsConfig, filterFieldsConfig, onChange, cRef, showResetButton = true,
   } = props;
   const [initialFieldNum, setInitialFieldNum] = useState<number>(0);
   const [expandBtnVisible, setExpandBtnVisible] = useState<boolean>(false);
@@ -67,10 +75,10 @@ const Index: React.FC<IProps> = (props) => {
     setSearchFieldsOrigin(searchFieldsConfig);
     searchFieldsConfig.forEach((item: any) => {
       if (!item.optionQueryConfig) {
-        dsFieldAdd(item.name);
+        dsFieldAdd(item.name, item.forAShortTimeDsProps || {});
       } else {
         dsOptionFieldAdd(item.name, item.optionsTextField || 'name', item.optionsValueField || 'id',
-          item.optionConfig || {}, item.optionQueryConfig);
+          item.optionConfig || {}, item.optionQueryConfig, item.forAShortTimeDsProps || {});
       }
     });
     setInitialFieldNum(getInitialFieldNum(searchFieldsConfig));
@@ -132,17 +140,18 @@ const Index: React.FC<IProps> = (props) => {
     return num;
   };
 
-  const dsFieldAdd = (name: string) => {
+  const dsFieldAdd = (name: string, forAShortTimeDsObj: any) => {
     if (!compDataSet.getField(name)) {
-      compDataSet.addField(name, {});
+      compDataSet.addField(name, forAShortTimeDsObj);
     }
   };
 
-  const dsOptionFieldAdd = (name: string, textField: string | undefined, valueField: string | undefined, optionConfig: any, optionQueryConfig: any) => {
+  const dsOptionFieldAdd = (name: string, textField: string | undefined, valueField: string | undefined, optionConfig: any, optionQueryConfig: any, forAShortTimeDsObj:any) => {
     if (!compDataSet.getField(name)) {
       compDataSet.addField(name, {
         textField,
         valueField,
+        ...forAShortTimeDsObj,
         options: new DataSet({
           autoCreate: true,
           autoQuery: true,
@@ -167,8 +176,8 @@ const Index: React.FC<IProps> = (props) => {
     childRef.current.checkChange(false, name);
   };
 
-  const handleRemoteSearch = async (e: any, item: ISearchFields) => {
-    const { value } = e.target;
+  const handleRemoteSearch = async (v: any, item: ISearchFields) => {
+    const value = v;
     if (item.fieldProps.remoteSearch) {
       const optionDs = compDataSet?.getField(item.name)?.options;
       if (optionDs) {
@@ -177,6 +186,8 @@ const Index: React.FC<IProps> = (props) => {
       await optionDs?.query();
     }
   };
+
+  const { run } = useDebounceFn((v, item) => { handleRemoteSearch(v, item); }, { wait: 500 });
 
   const getSearchField = (item: ISearchFields, index: number) => {
     const Ele = fieldsMap.get(item.type);
@@ -188,7 +199,7 @@ const Index: React.FC<IProps> = (props) => {
           {...item.fieldProps}
           dataSet={compDataSet}
           name={item.name}
-          onInput={(e: string) => { handleRemoteSearch(e, item); }}
+          onInput={(e: any) => { run(e.target.value, item); }}
         />
       </div>
     ) : (
@@ -199,7 +210,7 @@ const Index: React.FC<IProps> = (props) => {
           {...item.fieldProps}
           dataSet={compDataSet}
           name={item.name}
-          onInput={(e: string) => { handleRemoteSearch(e, item); }}
+          onInput={(e: any) => { run(e.target.value, item); }}
         />
         <div
           className="deletable-div"
@@ -216,15 +227,17 @@ const Index: React.FC<IProps> = (props) => {
 
   const fieldAdd = (changeArr: ICheckBoxFields[]) => {
     const cloneSearchFields = cloneDeep(searchFields);
-    changeArr.forEach((i) => {
+    changeArr.forEach((i:any) => {
       { /*  @ts-ignore */ }
       cloneSearchFields.push(i);
       if (!i.optionQueryConfig) {
-        dsFieldAdd(i.name);
+        // @ts-ignore
+        dsFieldAdd(i.name, i.forAShortTimeDsProps || {});
       } else {
         dsOptionFieldAdd(i.name, i.optionsTextField || 'name', i.optionsValueField || 'id',
           i.optionConfig || {},
-          i.optionQueryConfig);
+          i.optionQueryConfig,
+          i.forAShortTimeDsProps || {});
       }
     });
     setSearchFields(cloneSearchFields);
@@ -300,20 +313,24 @@ const Index: React.FC<IProps> = (props) => {
               {
                 searchFields.map((item, index) => getSearchField(item, index))
               }
-              <div className="searchField-item">
-                <ChooseFieldsBtn
-                  fields={filterFieldsConfig}
-                  onChange={chooseFieldsChange}
-                  cRef={childRef}
-                  reset={handleReset}
-                />
-              </div>
+              {
+                filterFieldsConfig.length > 0 ? (
+                  <div className="searchField-item">
+                    <ChooseFieldsBtn
+                      fields={filterFieldsConfig}
+                      onChange={chooseFieldsChange}
+                      cRef={childRef}
+                      reset={handleReset}
+                    />
+                  </div>
+                ) : ''
+              }
             </div>
           </div>
           <div className="searchField-container-left-block2">
             {
               (searchFields.length > initialFieldNum || getIfValue())
-              && (
+              && showResetButton && (
                 <>
                   <Button onClick={handleReset}>重置</Button>
                   <Tooltip title={expandBtnType === 'expand_less' ? '折叠筛选' : '展开筛选'}>
