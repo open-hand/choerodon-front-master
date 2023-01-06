@@ -73,10 +73,10 @@ const RequestChart = () => {
         />
       </Header>
       <div className={`${prefixCls}-list-header`}>
-        <div className={`${prefixCls}-list-header-item`}>应用服务</div>
-        <div className={`${prefixCls}-list-header-item`}>合并请求</div>
-        <div className={`${prefixCls}-list-header-item`}>创建</div>
-        <div className={`${prefixCls}-list-header-item`} style={{ width: '15%' }}>审核人</div>
+        <div className={`${prefixCls}-list-header-item`} style={{ width: '25%' }}>应用服务</div>
+        <div className={`${prefixCls}-list-header-item`} style={{ width: '25%' }}>合并请求</div>
+        <div className={`${prefixCls}-list-header-item`} style={{ width: '25%' }}>创建</div>
+        <div className={`${prefixCls}-list-header-item`} style={{ width: '25%' }}>审核人</div>
       </div>
       {requestListDs.length ? (
         <>
@@ -87,20 +87,20 @@ const RequestChart = () => {
               } = record.toData();
               return (
                 <div className={`${prefixCls}-request-list-header`}>
-                  <div className={`${prefixCls}-request-list-header-item`}>
+                  <div className={`${prefixCls}-request-list-header-item`} style={{ width: '25%' }}>
 
                     <span className={`${prefixCls}-request-list-header-item-content`}>
                       <Tooltip title={appServiceName}>{appServiceName}</Tooltip>
                     </span>
                   </div>
-                  <div className={`${prefixCls}-request-list-header-item`}>
+                  <div className={`${prefixCls}-request-list-header-item`} style={{ width: '25%' }}>
                     <Tooltip title={title}><span className={`${prefixCls}-request-list-header-item-content`}><a href={gitlabUrl} target="_blank" rel="noreferrer">{title}</a></span></Tooltip>
                     <div>
                       !
                       {gitlabMergeRequestId}
                     </div>
                   </div>
-                  <div className={`${prefixCls}-request-list-header-item`}>
+                  <div className={`${prefixCls}-request-list-header-item`} style={{ width: '25%' }}>
                     {iamAuthor
                       ? (
                         <>
@@ -123,18 +123,17 @@ const RequestChart = () => {
                       ) : ''}
 
                   </div>
-                  <div className={`${prefixCls}-request-list-header-item`} style={{ width: '15%' }}>
+                  <div className={`${prefixCls}-request-list-header-item`} style={{ width: '25%' }}>
                     {iamAssignee ? (
                       <Tooltip title={iamAssignee.ldap ? `${iamAssignee.realName}(${iamAssignee.loginName})` : `${iamAssignee.realName}(${iamAssignee.email})`}>
                         <div>
                           <UserInfo
                             avatar={iamAssignee?.imageUrl}
-                            realName={iamAssignee?.realName}
+                            realName={iamAuthor?.realName}
                             loginName={iamAssignee?.loginName}
                             showTooltip={false}
                             className={`${prefixCls}-request-list-user`}
                           />
-
                         </div>
                       </Tooltip>
                     ) : <span className={`${prefixCls}-request-list-user`}>未指派</span>}
