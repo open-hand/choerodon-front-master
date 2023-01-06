@@ -1,4 +1,4 @@
-@prefixCls: ~"c7ncd-request-chart";
+@prefixCls: ~'c7ncd-request-chart';
 
 .fontCss {
   display: flex;
@@ -46,11 +46,18 @@
   &-request-list-user {
     font-size: 13px;
     color: #0f1358;
+    width: 100%;
+    .c7ncd-test-user-info-wrap-name {
+      width: 80%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
   &-select {
     width: 2.4rem;
   }
-  &-pagination{
+  &-pagination {
     margin-top: 0.2rem;
     width: 100%;
     overflow: hidden;
@@ -59,12 +66,14 @@
     .c7n-pro-pagination-page-info {
       margin: 0 0.1rem;
     }
-    span.c7n-pro-select-wrapper .c7n-pro-select-suffix-button .c7n-pro-select-not-editable {
+    span.c7n-pro-select-wrapper
+      .c7n-pro-select-suffix-button
+      .c7n-pro-select-not-editable {
       width: 0.5rem !important;
     }
-  
-    .c7n-pro-btn +.c7n-pro-btn {
-      margin-left: .06rem;
+
+    .c7n-pro-btn + .c7n-pro-btn {
+      margin-left: 0.06rem;
     }
   }
 }
