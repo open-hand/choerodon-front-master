@@ -148,17 +148,23 @@ const WorkBenchDashboard = (props) => {
   });
 
   function onLayoutChange(layouts) {
-    layouts.forEach((card) => {
+    const data = layouts.map((card) => {
+      let newCard = card;
       dashboardDs.forEach((record) => {
         if (record.get('i') === card.i) {
           record.set('x', card.x);
           record.set('y', card.y);
           record.set('w', card.w);
           record.set('h', card.h);
+          newCard = {
+            ...record?.toData(),
+            ...card,
+          };
         }
       });
+      return newCard;
     });
-    // dashboardDs.loadData(layouts);
+    dashboardDs.loadData(data);
   }
 
   function handleDelete(record) {
