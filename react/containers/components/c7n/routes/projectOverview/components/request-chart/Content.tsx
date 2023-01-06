@@ -105,7 +105,7 @@ const RequestChart = () => {
                       ? (
                         <>
                           <Tooltip title={iamAuthor.ldap ? `${iamAuthor.realName}(${iamAuthor.loginName})` : `${iamAuthor.realName}(${iamAuthor.email})`}>
-                            <div>
+                            <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                               <UserInfo
                                 avatar={iamAuthor?.imageUrl}
                                 realName={iamAuthor?.realName}
@@ -126,7 +126,7 @@ const RequestChart = () => {
                   <div className={`${prefixCls}-request-list-header-item`} style={{ width: '25%' }}>
                     {iamAssignee ? (
                       <Tooltip title={iamAssignee.ldap ? `${iamAssignee.realName}(${iamAssignee.loginName})` : `${iamAssignee.realName}(${iamAssignee.email})`}>
-                        <div>
+                        <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                           <UserInfo
                             avatar={iamAssignee?.imageUrl}
                             realName={iamAuthor?.realName}
