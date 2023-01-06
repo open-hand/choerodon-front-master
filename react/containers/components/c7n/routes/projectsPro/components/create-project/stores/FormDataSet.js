@@ -202,6 +202,9 @@ export default ({
                 url: `/cbase/choerodon/v1/organizations/${organizationId}/projects/check_devops_code_exist`,
                 params: {
                   devops_component_code: value,
+                  ...record?.get('id') ? {
+                    project_id: record?.get('id'),
+                  } : {},
                 },
               });
               if (flag) {
