@@ -259,7 +259,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
     },
   };
 
-  if (!hasBusiness) {
+  if (hasBusiness) {
     searchFieldsConfig.splice(5, 0, searchBusinessFieldsConfigObj);
   }
 
