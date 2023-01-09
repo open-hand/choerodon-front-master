@@ -2,11 +2,13 @@ import { omit, set } from 'lodash';
 import { getProjectId } from '@/utils/getId';
 
 export interface CacheStoreInterface {
-  getItem: (code: string) => any
+  getItem: (code: string, that: CacheBaseStore<any>) => any
 
-  setItem: (code: string, data: any) => void
+  setItem: (code: string, data: any, that: CacheBaseStore<any>) => void
 
-  removeItem: (code: string) => void
+  removeItem: (code: string, that: CacheBaseStore<any>) => void
+
+  mergeSetItem?: (pageKey: string, data: any, that: CacheBaseStore<any>) => void
 
   clear: () => void
 
@@ -26,8 +28,36 @@ class CacheBaseStore<T extends string> implements CacheStoreInterface {
 
   [propsName: string]: any;
 
-  get project() {
-    return this.openProjectPrefix ? `${getProjectId()} ` : '';
+  get prefix() {
+    return this.openProjectPrefix ? `${this.projectId} ` : '';
+  }
+
+  get projectId() {
+    return getProjectId();
+  }
+
+  overwrite(Property: string, value: any): CacheBaseStore<T> {
+    // 以当前this为模板，创建一个新对象
+    const temp = Object.create(this);
+    // 不直接temp[Property] = value;的原因是，如果这个属性只有getter，会报错
+    Object.defineProperty(temp, Property, {
+      get() {
+        return value;
+      },
+    });
+    // 返回新对象
+    return temp;
+  }
+
+  project(projectId?: string) {
+    if (projectId) {
+      return this.overwrite('projectId', projectId);
+    }
+    return this;
+  }
+
+  unPrefix() {
+    return this.overwrite('project', '');
   }
 
   constructor(cacheStore: CacheStoreInterface, config?: CacheBaseStoreConfigProps) {
@@ -37,22 +67,26 @@ class CacheBaseStore<T extends string> implements CacheStoreInterface {
     const otherProps = omit(cacheStore, 'getItem', 'setItem', 'removeItem', 'clear', 'has', 'remove');
     Object.entries(otherProps).forEach(([key, value]) => {
       if (value instanceof Function) {
-        set(this, key, (...args:any[]) => this.cacheStore[key](...args));
+        set(this, key, (...args: any[]) => this.cacheStore[key](...args));
       }
     });
   }
 
-  getItem = (code: T) => this.cacheStore.getItem(`${this.project}${code}`)
+  getItem(code: T): any { return this.cacheStore.getItem(`${this.prefix}${code}`, this); }
 
-  setItem = (code: T, data: any) => this.cacheStore.setItem(`${this.project}${code}`, data);
+  setItem(code: T, data: any) { this.cacheStore.setItem(`${this.prefix}${code}`, data, this); }
 
-  removeItem = (code: T) => this.cacheStore.removeItem(`${this.project}${code}`);
+  removeItem(code: T) { this.cacheStore.removeItem(`${this.prefix}${code}`, this); }
 
-  remove = (code: T) => this.removeItem(`${this.project}${code}` as T);
+  remove(code: T) { this.removeItem(`${this.prefix}${code}` as T); }
 
-  has = (code: any) => (typeof (this.cacheStore.has) === 'function' ? this.cacheStore.has(`${this.project}${code}`) : this.getItem(`${this.project}${code}` as T))
+  mergeSetItem(pageKey: string, data: any) {
+    this.cacheStore.mergeSetItem && this.cacheStore.mergeSetItem(pageKey, data, this);
+  }
 
-  clear = () => this.cacheStore.clear()
+  has(code: any) { return (typeof (this.cacheStore.has) === 'function' ? this.cacheStore.has(`${this.prefix}${code}`, this) : this.getItem(`${this.prefix}${code}` as T)); }
+
+  clear() { this.cacheStore.clear(); }
 }
 
 export default CacheBaseStore;
