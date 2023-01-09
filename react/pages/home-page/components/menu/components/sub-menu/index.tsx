@@ -209,7 +209,10 @@ const SubMenus:FC<SubMenuProps> = () => {
         subMenuOpenDelay={0.1}
         selectedKeys={[activeMenu?.code].filter(String)}
         // 为了解决收起状态的菜单 所有展开二级菜单都弹出的问题
-        openKeys={isExpanded ? savedOpenKeys : []}
+        openKeys={savedOpenKeys}
+        // {...isExpanded ? {
+        //   openKeys: savedOpenKeys,
+        // } : {}}
         mode="inline"
         onOpenChange={handleOpenChange}
         style={{ overflow: 'hidden overlay' }}

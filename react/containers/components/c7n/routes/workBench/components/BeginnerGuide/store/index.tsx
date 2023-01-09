@@ -37,7 +37,7 @@ export function StoreProvider({ children }:{children:React.ReactNode}) {
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
   }, []);
 
   const value = {

@@ -29,6 +29,7 @@ const MainMenu:FC<MainMenuProps> = () => {
       getActiveMenuRoot,
       getMenuData,
     },
+    mainStore,
     MenuStore,
     AppState: {
       getSiteInfo,
@@ -67,7 +68,9 @@ const MainMenu:FC<MainMenuProps> = () => {
       tempMenuRoot[menuType.type] = item;
       runInAction(() => {
       // 设置默认展开的子menu
-        MenuStore.setOpenkeysBaseonRoot(item);
+        if (mainStore.isExpanded) {
+          MenuStore.setOpenkeysBaseonRoot(item);
+        }
         // 设置menu的root
         MenuStore.setActiveMenuRoot(tempMenuRoot);
       });

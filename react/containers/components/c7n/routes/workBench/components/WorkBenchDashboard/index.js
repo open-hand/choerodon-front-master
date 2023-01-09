@@ -32,6 +32,7 @@ import ResourceOverview from '../ResourceOverview';
 import ResourceMonitoring from '../ResourceMonitoring';
 import BeginnerGuide from '../BeginnerGuide';
 import Notice from '../Notice';
+import ExternalComponent from '@/components/external-component';
 
 import { useWorkBenchStore } from '../../stores';
 import './index.less';
@@ -40,6 +41,8 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const UserIssue = () => (hasInject('agilePro:workbenchUserIssue') ? mount('agilePro:workbenchUserIssue', {}) : <></>);
 const ProjectProgress = () => (hasInject('agilePro:workbenchProjectStatistics') ? mount('agilePro:workbenchProjectStatistics', {}) : <></>);
+const ProjectReleaseSchedule = <ExternalComponent system={{ scope: 'haitianMaster', module: 'project-release-schedule' }} />;
+const TeamLeaderOrder = <ExternalComponent system={{ scope: 'haitianMaster', module: 'technical-director-schedule' }} />;
 /** 临时兼容性操作 */
 // eslint-disable-next-line no-underscore-dangle
 window.___choeordonWorkbenchComponent__ = window.___choeordonWorkbenchComponent__ || {};
@@ -68,6 +71,8 @@ Object.assign(ComponetsObjs, {
   notice: <Notice />,
   userIssue: <UserIssue />,
   projectProgress: <ProjectProgress />,
+  projectVersionProgress: ProjectReleaseSchedule,
+  teamLeaderOrder: TeamLeaderOrder,
 });
 const componentCodeMapInJectCode = {
   backlogApprove: 'backlog:workBenchApprove',
@@ -148,19 +153,23 @@ const WorkBenchDashboard = (props) => {
   });
 
   function onLayoutChange(layouts) {
-    layouts.map((card) => {
-      dashboardDs.map((record) => {
+    const data = layouts.map((card) => {
+      let newCard = card;
+      dashboardDs.forEach((record) => {
         if (record.get('i') === card.i) {
           record.set('x', card.x);
           record.set('y', card.y);
           record.set('w', card.w);
           record.set('h', card.h);
+          newCard = {
+            ...record?.toData(),
+            ...card,
+          };
         }
-        return null;
       });
-      return null;
+      return newCard;
     });
-    // dashboardDs.loadData(layouts);
+    dashboardDs.loadData(data);
   }
 
   function handleDelete(record) {

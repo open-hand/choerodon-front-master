@@ -4,6 +4,7 @@ import { UserInfo } from '@zknow/components';
 import { DataSet } from 'choerodon-ui/pro';
 import { organizationsApiConfig, iamApiConfig } from '@/apis';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
+import { ISearchFields } from '../customQuerybar';
 
 const userOptionRender = ({ record }: { record: Record }) => (
   <UserInfo
@@ -14,7 +15,7 @@ const userOptionRender = ({ record }: { record: Record }) => (
   />
 );
 
-const nodeCover = ({ record }: {record:Record}) => ({
+const nodeCover = ({ record }: { record: Record }) => ({
   disabled: record?.get('hasChildren') || record?.get('children'),
 });
 
@@ -36,8 +37,8 @@ const defaultSelectEleConfig = {
   maxTagCount: 3,
 };
 
-export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
-  const searchFieldsConfig = [
+export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
+  const searchFieldsConfig: ISearchFields[] = [
     {
       type: 'FlatSelect',
       initial: true,
@@ -66,7 +67,7 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
       dsProps: {
         name: 'workGroupIds',
         ...defaultDsConfig,
-        optionRenderer: ({ text }:{text:string}) => <span className="tree-select-text">{text}</span>,
+        optionRenderer: ({ text }: { text: string }) => <span className="tree-select-text">{text}</span>,
         options: new DataSet({
           ...defaultOptionConfig,
           idField: 'id',
@@ -93,7 +94,7 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
         name: 'projectClassficationIds',
         ...defaultDsConfig,
         onOption: nodeCover,
-        optionRenderer: ({ text }:{text:string}) => <span className="tree-select-text">{text}</span>,
+        optionRenderer: ({ text }: { text: string }) => <span className="tree-select-text">{text}</span>,
         options: new DataSet({
           ...defaultOptionConfig,
           idField: 'id',
@@ -188,8 +189,10 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
       dsProps: {
         name: 'createTime',
         range: true,
+        isFlat: true,
       },
       eleProps: {
+        isFlat: true,
         placeholder: ['创建时间从', '至'],
       },
     },
@@ -226,11 +229,13 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
         range: true,
       },
       eleProps: {
+        isFlat: true,
         placeholder: ['更新时间从', '至'],
       },
     },
   ];
-  const searchBusinessFieldsConfig = [...searchFieldsConfig, {
+
+  const searchBusinessFieldsConfigObj: ISearchFields = {
     type: 'FlatSelect',
     initial: true,
     dsProps: {
@@ -252,9 +257,13 @@ export const getSearchFieldsConfig = (orgId:string, hasBusiness:boolean) => {
       ...defaultSelectEleConfig,
       placeholder: '健康状态',
     },
-  },
-  ];
-  return hasBusiness ? searchBusinessFieldsConfig : searchFieldsConfig;
+  };
+
+  if (hasBusiness) {
+    searchFieldsConfig.splice(5, 0, searchBusinessFieldsConfigObj);
+  }
+
+  return searchFieldsConfig;
 };
 
 export const getFilterFieldsConfig = () => [
