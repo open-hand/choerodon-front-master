@@ -96,6 +96,7 @@ export { default as getExternalFunc } from '@/utils/getExternalFunc';
 export * from '@/utils/to';
 export * from '@/utils/log';
 export * from '@/components/provider';
+export * from '@/utils/LocalPageCacheStore';
 // 导出模态框
 export { Modal } from '@/components/modal';
 
