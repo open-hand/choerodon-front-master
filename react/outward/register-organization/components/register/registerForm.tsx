@@ -137,7 +137,7 @@ const Index:React.FC<IProps> = (props) => {
           </span>
         </div>
       </Form>
-      <Button disabled={!registerFormDs?.current?.get('isAgree')} className="submit-btn" block color={'primary' as any} onClick={handleSubmit}>预约Demo演示</Button>
+      <Button disabled={!registerFormDs?.current?.get('isAgree')} className="submit-btn" block color={'primary' as any} onClick={handleSubmit}>预约DEMO体验</Button>
       <div className="row-tologin"><a href="" onClick={(e) => { toLogin(e); }}>已有账号，立即登录</a></div>
     </div>
   );
