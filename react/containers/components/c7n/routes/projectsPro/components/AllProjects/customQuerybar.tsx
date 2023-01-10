@@ -1,13 +1,13 @@
 /* eslint-disable consistent-return */
+/* eslint-disable react/require-default-props */
 import React, {
-  useEffect, useMemo, useRef, useState, useImperativeHandle, useCallback,
+  useEffect, useMemo, useRef, useState, useImperativeHandle,
 } from 'react';
 import { FlatSelect, FlatTreeSelect } from '@choerodon/components';
 import {
-  Button, TextField, Icon, DataSet, Tooltip, DateTimePicker, Select,
+  Button, TextField, Icon, DataSet, Tooltip, DateTimePicker, Select, DatePicker,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
-import { DataSetProps } from 'choerodon-ui/pro/lib/data-set/DataSet';
 import { forIn, isNil, omit } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import SearchFilterBtn, { ICheckBoxFields } from './customQueryBarFilter';
@@ -16,15 +16,16 @@ import './customQuerybar.less';
 export interface IProps {
   searchFieldsConfig: ISearchFields[]
   filterFieldsConfig: ICheckBoxFields[]
-  onChange: (data:{[key:string]:any}) => void
+  onChange: (data: { [key: string]: any }) => void
+  showResetButton?: boolean
   cRef: any
 }
 
 export interface ISearchFields {
   type: string,
   initial: boolean
-  dsProps: DataSetProps
-  eleProps: {[key:string]:any}
+  dsProps: { [key: string]: any }
+  eleProps: { [key: string]: any }
   width?: number
 }
 
@@ -35,12 +36,13 @@ const fieldsMap = new Map(
     ['Select', Select],
     ['FlatTreeSelect', FlatTreeSelect],
     ['DateTimePicker', DateTimePicker],
+    ['DatePicker', DatePicker],
   ],
 );
 
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, onChange, cRef,
+    searchFieldsConfig, filterFieldsConfig, onChange, cRef, showResetButton = true,
   } = props;
   const [visibleOptionalFieldsNum, setVisibleOptionalFieldsNum] = useState(0);
   const [recordExistedValue, setRecordExistedValue] = useState(false);
@@ -61,7 +63,7 @@ const Index: React.FC<IProps> = (props) => {
       events: {
         update: ({
           record, name, value, oldValue,
-        }: { record: Record, name: string, value: any, oldValue:any }) => {
+        }: { record: Record, name: string, value: any, oldValue: any }) => {
           // console.log(oldValue, 'oldValue');
           // console.log(omit(record?.toData()));
           if (isNil(oldValue) && Array.isArray(value) && !value.length) {
@@ -253,18 +255,22 @@ const Index: React.FC<IProps> = (props) => {
               {
                 [...queryBarDataSet.fields].map((item) => getFields(item))
               }
-              <div className="searchField-item">
-                <SearchFilterBtn
-                  dataSet={searchFilterDataSet}
-                  cRef={childRef}
-                />
-              </div>
+              {
+                filterFieldsConfig.length > 0 ? (
+                  <div className="searchField-item">
+                    <SearchFilterBtn
+                      dataSet={searchFilterDataSet}
+                      cRef={childRef}
+                    />
+                  </div>
+                ) : ''
+              }
             </div>
           </div>
           <div className="searchField-container-left-block2">
             {
               (visibleOptionalFieldsNum > 0 || recordExistedValue)
-              && (
+              && showResetButton && (
                 <>
                   <Button onClick={handleReset}>重置</Button>
                   <Tooltip title={expandBtnType === 'expand_less' ? '折叠筛选' : '展开筛选'}>
