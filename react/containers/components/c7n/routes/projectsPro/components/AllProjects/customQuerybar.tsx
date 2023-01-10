@@ -18,7 +18,7 @@ export interface IProps {
   filterFieldsConfig: ICheckBoxFields[]
   onChange: (data: { [key: string]: any }) => void
   showResetButton?: boolean
-  cRef: any
+  cRef?: any
 }
 
 export interface ISearchFields {
