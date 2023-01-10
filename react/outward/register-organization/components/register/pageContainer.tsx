@@ -20,7 +20,7 @@ const Index: React.FC<IProps> = (props) => {
     <div className={`${prefixCls}`}>
       <LogoContainer />
       <header className={`${prefixCls}-container-section1`}>
-        <h2>一分钟快速填写，预约Demo演示！</h2>
+        <h2>一分钟快速填写，预约DEMO体验！</h2>
         <h3>进度可视、协作顺，高效管理企业研发和项目，</h3>
         <h3>猪齿鱼提供协作、测试、DevOps及容器工具，助力团队效能更快更强更稳定。</h3>
       </header>

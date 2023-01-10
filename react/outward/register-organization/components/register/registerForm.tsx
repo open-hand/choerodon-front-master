@@ -89,7 +89,7 @@ const Index:React.FC<IProps> = (props) => {
   return (
     <div className={`${pagePrefixCls} ${prefixCls}-children-content`}>
       <h4 className={`${pagePrefixCls}-title-1`}>
-        预约Demo演示
+        预约DEMO体验
       </h4>
       <p className={`${pagePrefixCls}-title-2`}>留下联系方式获得更多信息</p>
       <Form dataSet={registerFormDs} columns={2}>
