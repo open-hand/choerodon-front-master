@@ -16,7 +16,7 @@ import './customQuerybar.less';
 export interface IProps {
   searchFieldsConfig: ISearchFields[]
   filterFieldsConfig: ICheckBoxFields[]
-  onChange: (data: { [key: string]: any }, name?:string) => void
+  onChange: (data: { [key: string]: any }, name?:string, record?:Record) => void
   showResetButton?: boolean
   cRef?: any
 }
@@ -69,7 +69,7 @@ const Index: React.FC<IProps> = (props) => {
           if (isNil(oldValue) && Array.isArray(value) && !value.length) {
             return;
           }
-          onChange(omit(record?.toData(), '__dirty'), name);
+          onChange(omit(record?.toData(), '__dirty'), name, record);
         },
       },
     });
