@@ -18,6 +18,7 @@ export interface IProps {
   filterFieldsConfig: ICheckBoxFields[]
   onChange: (data: { [key: string]: any }, name?:string, record?:Record) => void
   showResetButton?: boolean
+  dateFieldsArr?: string[]
   cRef?: any
 }
 
@@ -42,7 +43,7 @@ const fieldsMap = new Map(
 
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, onChange, cRef, showResetButton = true,
+    searchFieldsConfig, filterFieldsConfig, onChange, cRef, showResetButton = true, dateFieldsArr = [],
   } = props;
   const [visibleOptionalFieldsNum, setVisibleOptionalFieldsNum] = useState(0);
   const [recordExistedValue, setRecordExistedValue] = useState(false);
@@ -69,7 +70,30 @@ const Index: React.FC<IProps> = (props) => {
           if (isNil(oldValue) && Array.isArray(value) && !value.length) {
             return;
           }
-          onChange(omit(record?.toData(), '__dirty'), name, record);
+
+          if (dateFieldsArr.includes(name)) {
+            if (oldValue && (!oldValue[0] || !oldValue[1])) {
+              return;
+            }
+            if (value && (!value[0] || !value[1])) {
+              setTimeout(() => {
+                record.set(name, null);
+              }, 1500);
+              return;
+            }
+          }
+
+          let returnData = omit(record?.toData(), '__dirty');
+
+          const omitArr:string[] = [];
+          Object.keys(returnData).forEach((key) => {
+            if (dateFieldsArr.includes(key) && returnData[key] && (!returnData[key][0] || !returnData[key][1])) {
+              omitArr.push(key);
+            }
+          });
+          returnData = omit(returnData, omitArr); // 防止settimeout 期间请求
+
+          onChange(returnData, name, record);
         },
       },
     });
