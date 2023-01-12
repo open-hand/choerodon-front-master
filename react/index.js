@@ -99,5 +99,6 @@ export * from '@/components/provider';
 export * from '@/utils/LocalPageCacheStore';
 // 导出模态框
 export { Modal } from '@/components/modal';
+export { Route, Switch, withRouter } from 'react-router-dom';
 
 export { default } from './app';
