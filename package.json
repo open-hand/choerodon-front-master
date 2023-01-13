@@ -2,7 +2,7 @@
   "name": "@choerodon/master",
   "routeName": "master",
   "nonExpose": true,
-  "version": "2.3.0-alpha.1-next.1",
+  "version": "2.3.0-alpha.1-next.1-undefined.20230113143918",
   "description": "A package of Master for Choerodon platform.",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -14,6 +14,7 @@
     "start": "zknow-front-boot start --config ./react/config.js",
     "compile": "zknow-front-boot compile",
     "postinstall": "node ./postInstall.js",
+    "pre-publish": "zknow-front-boot prepublish",
     "clean-install": "rm -rf node_modules && rm -fr package-lock.json && npm i --registry https://nexus.choerodon.com.cn/repository/choerodon-npm && chmod -R u+x node_modules",
     "published": "npm publish --registry https://nexus.choerodon.com.cn/repository/private-npm/",
     "commit": "cz"
