@@ -1,13 +1,13 @@
 /* eslint-disable consistent-return */
+/* eslint-disable react/require-default-props */
 import React, {
-  useEffect, useMemo, useRef, useState, useImperativeHandle, useCallback,
+  useEffect, useMemo, useRef, useState, useImperativeHandle,
 } from 'react';
 import { FlatSelect, FlatTreeSelect } from '@choerodon/components';
 import {
-  Button, TextField, Icon, DataSet, Tooltip, DateTimePicker, Select,
+  Button, TextField, Icon, DataSet, Tooltip, DateTimePicker, Select, DatePicker,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
-import { DataSetProps } from 'choerodon-ui/pro/lib/data-set/DataSet';
 import { forIn, isNil, omit } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import SearchFilterBtn, { ICheckBoxFields } from './customQueryBarFilter';
@@ -16,15 +16,17 @@ import './customQuerybar.less';
 export interface IProps {
   searchFieldsConfig: ISearchFields[]
   filterFieldsConfig: ICheckBoxFields[]
-  onChange: (data:{[key:string]:any}) => void
-  cRef: any
+  onChange: (data: { [key: string]: any }, name?:string, record?:Record) => void
+  showResetButton?: boolean
+  dateFieldsArr?: string[]
+  cRef?: any
 }
 
 export interface ISearchFields {
   type: string,
   initial: boolean
-  dsProps: DataSetProps
-  eleProps: {[key:string]:any}
+  dsProps: { [key: string]: any }
+  eleProps: { [key: string]: any }
   width?: number
 }
 
@@ -35,12 +37,13 @@ const fieldsMap = new Map(
     ['Select', Select],
     ['FlatTreeSelect', FlatTreeSelect],
     ['DateTimePicker', DateTimePicker],
+    ['DatePicker', DatePicker],
   ],
 );
 
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, onChange, cRef,
+    searchFieldsConfig, filterFieldsConfig, onChange, cRef, showResetButton = true, dateFieldsArr = [],
   } = props;
   const [visibleOptionalFieldsNum, setVisibleOptionalFieldsNum] = useState(0);
   const [recordExistedValue, setRecordExistedValue] = useState(false);
@@ -61,13 +64,36 @@ const Index: React.FC<IProps> = (props) => {
       events: {
         update: ({
           record, name, value, oldValue,
-        }: { record: Record, name: string, value: any, oldValue:any }) => {
+        }: { record: Record, name: string, value: any, oldValue: any }) => {
           // console.log(oldValue, 'oldValue');
           // console.log(omit(record?.toData()));
           if (isNil(oldValue) && Array.isArray(value) && !value.length) {
             return;
           }
-          onChange(omit(record?.toData(), '__dirty'));
+
+          if (dateFieldsArr.includes(name)) {
+            if (oldValue && (!oldValue[0] || !oldValue[1])) {
+              return;
+            }
+            if (value && (!value[0] || !value[1])) {
+              setTimeout(() => {
+                record.set(name, null);
+              }, 1500);
+              return;
+            }
+          }
+
+          let returnData = omit(record?.toData(), '__dirty');
+
+          const omitArr:string[] = [];
+          Object.keys(returnData).forEach((key) => {
+            if (dateFieldsArr.includes(key) && returnData[key] && (!returnData[key][0] || !returnData[key][1])) {
+              omitArr.push(key);
+            }
+          });
+          returnData = omit(returnData, omitArr); // 防止settimeout 期间请求
+
+          onChange(returnData, name, record);
         },
       },
     });
@@ -253,18 +279,22 @@ const Index: React.FC<IProps> = (props) => {
               {
                 [...queryBarDataSet.fields].map((item) => getFields(item))
               }
-              <div className="searchField-item">
-                <SearchFilterBtn
-                  dataSet={searchFilterDataSet}
-                  cRef={childRef}
-                />
-              </div>
+              {
+                filterFieldsConfig.length > 0 ? (
+                  <div className="searchField-item">
+                    <SearchFilterBtn
+                      dataSet={searchFilterDataSet}
+                      cRef={childRef}
+                    />
+                  </div>
+                ) : ''
+              }
             </div>
           </div>
           <div className="searchField-container-left-block2">
             {
               (visibleOptionalFieldsNum > 0 || recordExistedValue)
-              && (
+              && showResetButton && (
                 <>
                   <Button onClick={handleReset}>重置</Button>
                   <Tooltip title={expandBtnType === 'expand_less' ? '折叠筛选' : '展开筛选'}>
