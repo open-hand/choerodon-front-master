@@ -54,6 +54,13 @@ function useC7NAuth(autoAuth?:boolean) {
 
   const handleAuth = useCallback(async () => {
     setTrue();
+
+    //  上海电气单点登录逻辑处理 （后续有功能二开，把逻辑挪到二开仓库）
+    const isShanghaiElectric = (window as any)._env_.shanghaiElectric;
+    const shanghaiElectricToken = getCookie('LtpaToken', {
+      domain: '.shanghai-electric.com',
+    });
+
     try {
       if (accessToken) {
         // 单点登录界面过来的时候
@@ -65,21 +72,10 @@ function useC7NAuth(autoAuth?:boolean) {
           + `id=${res.tenantId}&name=${res.tenantName}&organizationId=${res.tenantId}&type=organization`;
         }
         window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
-        // try {
-        //   openLink({ url: window.location.href.replace(/[&?]redirectFlag.*/g, '') }).then(() => close({}));
-        // } catch (error) {
-        //   console.log(error);
-        // }
       } else if (!getAccessToken()) {
-        //  上海电气单点登录逻辑处理 （后续有功能二开，把逻辑挪到二开仓库）
-        if ((window as any)._env_.shanghaiElectric) {
-          const shanghaiElectricToken = getCookie('LtpaToken', {
-            domain: '.shanghai-electric.com',
-          });
+        if (isShanghaiElectric) {
           if (!shanghaiElectricToken) {
-            // eslint-disable-next-line no-underscore-dangle
             const { API_HOST } = (window as any)._env_;
-            // window.location.href = '/#/authenticationFailure/notLogin';
             window.location.href = `${API_HOST}/oauth/choerodon/login`;
             return;
           }
@@ -98,6 +94,13 @@ function useC7NAuth(autoAuth?:boolean) {
         // token过期
         authorizeC7n();
         return;
+      } else if (isShanghaiElectric && shanghaiElectricToken && getAccessToken()) {
+        // 防止token过期登录不上刷新token
+        const newToken = await axios.post('/oauth/choerodon/electric/refresh_token', {
+          token: shanghaiElectricToken,
+          authType: 'token',
+        });
+        setAccessToken(newToken, 'bearer', 'placeholder');
       }
       // 一进页面就需要请求的接口
       HeaderStore.axiosGetRoles(); // 请求角色
