@@ -9,12 +9,11 @@ release:
   stage: release
   script:
     - echo "//${NPM_INSTALL_REGISTRY}:_authToken=${NPM_TOKEN}">.npmrc
-    - pnpm install --registry ${NPM_REPO} --shamefully-hoist
+    - npm install --registry ${NPM_REPO}
     - chmod -R 755 .
-    - pnpm run compile
-    - pnpm run pre-publish
+    - npm run compile
     - echo "//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}">.npmrc
-    - pnpm publish --registry ${NPM_PUBLISH_REGISTRY} --no-git-checks
+    - npm publish --registry ${NPM_PUBLISH_REGISTRY} --no-git-checks
     - curl -sX POST -F token=${FRONT_REPOSITORY_TOKEN} -F ref=${REF_NAME} https://code.choerodon.com.cn/api/v4/projects/7909/trigger/pipeline
   only:
     refs:
