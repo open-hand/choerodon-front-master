@@ -25,7 +25,14 @@ const StarTargetPro = observer(() => {
 
   function linkToDetail(record) {
     const {
-      type, projectId, projectName, pipelineRecordId, mergeRequestUrl, pipelineId, devopsPipelineRecordRelId,
+      type,
+      projectId,
+      projectName,
+      pipelineRecordId,
+      mergeRequestUrl,
+      pipelineId,
+      devopsPipelineRecordRelId,
+      cdPipelineId,
     } = record.toData() || {};
     const search = `?id=${projectId}&name=${encodeURIComponent(projectName)}&organizationId=${organizationId}&type=project`;
     switch (type) {
@@ -38,6 +45,8 @@ const StarTargetPro = observer(() => {
       case 'ci_pipeline':
         history.push(`/devops/pipeline-manage${search}&pipelineId=${pipelineId}&pipelineIdRecordId=${devopsPipelineRecordRelId}`);
         break;
+      case 'cd_pipeline':
+        history.push(`/devops/continuous-deployment/detail/${cdPipelineId}${search}&audit_flag=true`);
       default:
     }
   }
@@ -107,6 +116,9 @@ const StarTargetPro = observer(() => {
         <Alert
           type="info"
           showIcon
+          style={{
+            marginBottom: 20,
+          }}
           message={(
             <div
               className="c7n-workbench-check-message"
@@ -114,6 +126,7 @@ const StarTargetPro = observer(() => {
               <p>该卡片中将展示出:</p>
               <p>1.【流水线-待我审核】的人工卡点任务</p>
               <p>2.【代码管理-合并请求-待我审核】的合并请求</p>
+              <p>3.【持续部署-部署流程-待我审核】的人工卡点任务</p>
             </div>
           )}
         />
