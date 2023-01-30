@@ -43,7 +43,7 @@ const Index:React.FC<IProps> = (props) => {
 
   const toLogin = (e:React.MouseEvent) => {
     e.preventDefault();
-    toLoginAddress();
+    toLoginAddress('?registered=0');
   };
 
   const handleSubmit = async () => {
