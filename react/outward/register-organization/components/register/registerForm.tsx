@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import {
@@ -43,7 +44,12 @@ const Index:React.FC<IProps> = (props) => {
 
   const toLogin = (e:React.MouseEvent) => {
     e.preventDefault();
-    toLoginAddress('?registered=0');
+    let str = '';
+    const { inviter_info } = queryString.parse(search);
+    if (inviter_info) {
+      str = `?inviter_info=${inviter_info}`;
+    }
+    toLoginAddress(`?${str}`);
   };
 
   const handleSubmit = async () => {
