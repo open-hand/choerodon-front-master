@@ -103,9 +103,9 @@ const CreateProject = observer(() => {
         }
       }
       record.set('categories', categories);
-      if (some(categories, ['code', 'N_WATERFALL'])) {
-        record.set('useTemplate', false);
-      }
+      // if (some(categories, ['code', 'N_WATERFALL'])) {
+      //   record.set('useTemplate', false);
+      // }
       const flag = await formDs.validate();
       if (flag) {
         const res = await formDs.forceSubmit();
@@ -267,8 +267,9 @@ const CreateProject = observer(() => {
   }, [createProjectStore.getIsSenior, isModify]);
 
   const handleOpenTemplate = useCallback(() => {
-    getInject('agile:openTemplate')({});
-  }, []);
+    const currentCategoryCodes = map(categoryDs.selected, (selectedRecord) => selectedRecord.get('code'));
+    getInject('agile:openTemplate')({ selectedCategoryCodes: currentCategoryCodes, agileWaterfall: formDs?.current?.get('agileWaterfall') });
+  }, [categoryDs.selected]);
 
   if (!record) {
     return <Spin spinning />;
@@ -374,7 +375,7 @@ const CreateProject = observer(() => {
       </div>
       <div className={`${prefixCls}-template`}>
         {
-          (!currentProjectId || (currentProjectId && !hasConfiged)) && selectedCategoryCodes.find((item) => item === 'N_AGILE') && includes(templateTabsKey, 'statusMachineTemplate') && (
+          (!currentProjectId || (currentProjectId && !hasConfiged)) && selectedCategoryCodes.find((item) => includes([categoryCodes.agile, categoryCodes.waterfall], item)) && includes(templateTabsKey, 'statusMachineTemplate') && (
             <>
               <div>
                 <span className={`${prefixCls}-template-checkbox-text`}>使用组织预置的状态机及看板模板</span>
