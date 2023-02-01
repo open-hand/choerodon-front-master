@@ -117,7 +117,7 @@ class Masters extends Component {
           },
           onOk: () => {
             history.push(
-              `/cbase/user-info?type=user&organizationId=${this.info.organizationId}`,
+              `/base/user-info?type=user&organizationId=${this.info.organizationId}`,
             );
             sessionStorage.setItem('infoCheckFlag', true);
           },
