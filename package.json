@@ -81,6 +81,7 @@
     "choerodon-ui": "1.5.5-alpha.9",
     "classnames": "^2.2.5",
     "core-js": "^3.6.5",
+    "globby": "13.1.0",
     "dingtalk-jsapi": "^2.13.92",
     "echarts": "^4.8.0",
     "echarts-for-react": "^2.0.16",
