@@ -44,12 +44,7 @@ const Index:React.FC<IProps> = (props) => {
 
   const toLogin = (e:React.MouseEvent) => {
     e.preventDefault();
-    let str = '';
-    const { inviter_info } = queryString.parse(search);
-    if (inviter_info) {
-      str = `?inviter_info=${inviter_info}`;
-    }
-    toLoginAddress(`?${str}`);
+    toLoginAddress();
   };
 
   const handleSubmit = async () => {
