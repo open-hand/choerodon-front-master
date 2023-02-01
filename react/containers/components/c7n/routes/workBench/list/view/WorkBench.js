@@ -55,7 +55,7 @@ const WorkBench = () => {
           />
         )}
       {mount('base-pro:newUserGuidePage', {})}
-      <ExternalComponent system={{ scope: 'basePro', module: 'RegisterenterSystemModal' }} fallback={<span />} />
+      <ExternalComponent system={{ scope: 'baseBusiness', module: 'InviteEnterSystemModal' }} fallback={<span />} />
     </Page>
   );
 };
