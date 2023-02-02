@@ -54,7 +54,7 @@ class PermissionProvider extends Component {
           }
           request.push(axios({
             method: 'post',
-            url: '/iam/choerodon/v1/permissions/menus/check-permissions',
+            url: '/cbase/choerodon/v1/permissions/menus/check-permissions',
             data: map(value, 'code'),
             params,
           }));

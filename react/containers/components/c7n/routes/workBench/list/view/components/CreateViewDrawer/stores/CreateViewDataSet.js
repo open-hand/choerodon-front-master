@@ -27,7 +27,7 @@ const CreateViewDataSet = () => ({
       textField: 'dashboardName',
       valueField: 'dashboardId',
       lookupAxiosConfig: () => ({
-        url: '/iam/v1/dashboards/internal',
+        url: '/cbase/v1/dashboards/internal',
         params: { filterFlag: 1 },
         method: 'get',
         transformResponse: (res) => {
@@ -69,7 +69,7 @@ const CreateViewDataSet = () => ({
   transport: {
     submit: ({ data, dataSet }) => {
       const { view, ...rest } = data[0];
-      const url = view === 'INTERNAL' ? 'iam/v1/dashboard-users' : 'iam/v1/dashboards';
+      const url = view === 'INTERNAL' ? 'cbase/v1/dashboard-users' : 'cbase/v1/dashboards';
       return {
         url,
         data: rest,

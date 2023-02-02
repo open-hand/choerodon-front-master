@@ -123,7 +123,7 @@ const Index:React.FC<IProps> = (props:IProps) => {
             </a>
           </div>
         </CheckBox>
-        <Button disabled={!mobileFormDs?.current?.get('isAgree')} block color={'primary' as any} onClick={handleSubmit}>免费试用</Button>
+        <Button disabled={!mobileFormDs?.current?.get('isAgree')} block color={'primary' as any} onClick={handleSubmit}>预约DEMO体验</Button>
       </Form>
     </div>
   );

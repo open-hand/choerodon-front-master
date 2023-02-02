@@ -8,7 +8,7 @@ class HzeroUsersApi extends Api<HzeroUsersApi> {
    * @return {*}
    */
   get prefix() {
-    return '/iam/hzero/v1/users';
+    return '/cbase/hzero/v1/users';
   }
 
   changeLanguages(language:LanguageTypes) {

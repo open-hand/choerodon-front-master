@@ -71,6 +71,7 @@
 
 body {
   font-size: 0.13rem !important;
+  overflow: hidden;
 }
 
 @btn-height-base: 0.32rem;
@@ -257,8 +258,9 @@ body:not([data-theme="theme4"]) {
   background: rgba(104, 135, 232, 0.08) !important;
 }
 
+// 解决notification组件红色背景问题
 .c7n-notification-notice:has(.icon-info) {
-  background-color: #fff;
+  background-color: #fff !important;
 }
 
 // 这里是联邦后样式重复加载 防止selectbox的高度被算成36px

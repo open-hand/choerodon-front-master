@@ -1,4 +1,5 @@
 import { omit } from 'lodash';
+import { get } from '@choerodon/inject';
 import Api from './Api';
 
 class OrganizationsApi extends Api<OrganizationsApi> {
@@ -8,7 +9,22 @@ class OrganizationsApi extends Api<OrganizationsApi> {
    * @return {*}
    */
   get prefix() {
-    return '/iam/choerodon/v1/organizations';
+    return '/cbase/choerodon/v1/organizations';
+  }
+
+  getInviteEnterSystemInfo() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/user/invitation/info`,
+      method: 'get',
+    });
+  }
+
+  postInviteEnterSystemInfo(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/user/join/team`,
+      method: 'post',
+      data,
+    });
   }
 
   checkProjectCollaborationCode(code:string) {
@@ -20,14 +36,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   getAllProjectsTableColumns() {
     return this.request({
-      url: `/iam/v1/organizations/${this.orgId}/list_layout/projectView`,
+      url: `/cbase/v1/organizations/${this.orgId}/list_layout/projectView`,
       method: 'get',
     });
   }
 
   editAllProjectsTableColumns(data:any) {
     return this.request({
-      url: `/iam/v1/organizations/${this.orgId}/list_layout`,
+      url: `/cbase/v1/organizations/${this.orgId}/list_layout`,
       method: 'post',
       data,
     });
@@ -94,7 +110,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   checkLoginName(name: string) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/check_login_name`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/check_login_name`,
       method: 'get',
       params: {
         loginName: name,
@@ -119,7 +135,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   userLabelList() {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/list_user_labels`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/list_user_labels`,
       method: 'get',
     });
   }
@@ -127,7 +143,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   // 第三方配置唯一校验
   thirdPartyAppOnlyVerify(data:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/check_config_create`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/check_config_create`,
       method: 'post',
       data,
     });
@@ -153,7 +169,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppErrorUsers(historyId:string, data?:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/error-users/${historyId}`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/error-users/${historyId}`,
       method: 'get',
       data,
     });
@@ -161,28 +177,28 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppHistory(openAppId:string) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/histories/${openAppId}`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/histories/${openAppId}`,
       method: 'get',
     });
   }
 
   thirdPartyAppLatestHistory(openAppId:string, type:string) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/latest_history/${openAppId}?type=${type}`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/latest_history/${openAppId}?type=${type}`,
       method: 'get',
     });
   }
 
   thirdPartyAppList() {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/list`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/list`,
       method: 'get',
     });
   }
 
   thirdPartyAppDetail(params:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/details`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/details`,
       method: 'get',
       params,
     });
@@ -190,7 +206,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppCreate(data:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app`,
       method: 'post',
       data,
     });
@@ -198,7 +214,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppEdit(data:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app`,
       method: 'put',
       data,
     });
@@ -206,7 +222,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppDisable(params:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/disable`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/disable`,
       method: 'put',
       params,
     });
@@ -214,7 +230,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppEnable(params:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/enable`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/enable`,
       method: 'put',
       params,
     });
@@ -222,7 +238,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppEditSyncSetting(data:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/sync_setting`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/sync_setting`,
       method: 'put',
       data,
     });
@@ -230,7 +246,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppHMSync(params:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/sync_user`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/sync_user`,
       method: 'get',
       params,
     });
@@ -238,7 +254,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppSyncBindUser(params:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/sync_bind_user`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/sync_bind_user`,
       method: 'get',
       params,
     });
@@ -246,7 +262,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppWorkGroupHMSync(params:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/sync_work_group`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/sync_work_group`,
       method: 'get',
       params,
     });
@@ -254,7 +270,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppTestConnection(data:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/test_connection`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/test_connection`,
       method: 'post',
       data,
     });
@@ -262,7 +278,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppTestConnectionYq(data:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/open_app/check_yqcloud_config`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/check_yqcloud_config`,
       method: 'post',
       data,
     });
@@ -349,7 +365,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   // 移交组织所有者
   transferOrg(orgid:string, params:any) {
     return this.request({
-      url: `${this.prefix}/${orgid}/change_tenant_owner`,
+      url: `/iam/choerodon/v1/organizations/${orgid}/change_tenant_owner`,
       method: 'put',
       params,
     });
@@ -357,7 +373,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   transferOrgSite(params:any) {
     return this.request({
-      url: `${this.prefix}/site_change_tenant_owner`,
+      url: '/iam/choerodon/v1/organizations/site_change_tenant_owner',
       method: 'put',
       params,
     });
@@ -373,7 +389,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   getUserWizardList(organizationId:string) {
     return this.request({
-      url: `${this.prefix}/${organizationId}/user_wizard/list`,
+      url: `/iam/choerodon/v1/organizations/${organizationId}/user_wizard/list`,
       method: 'get',
     });
   }
@@ -432,7 +448,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getLink() {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/${this.orgId}/generate/link`,
+      url: `/cbase/choerodon/v1/organizations/${this.orgId}/generate/link`,
     });
   }
 
@@ -440,7 +456,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   refreshLink() {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/${this.orgId}/refresh/link`,
+      url: `/cbase/choerodon/v1/organizations/${this.orgId}/refresh/link`,
     });
   }
 
@@ -469,7 +485,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   loadOrganization(id:string) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/bus/pro/${id}`,
+      url: `/iam/choerodon/v1/organizations/bus/pro/${id}`,
     });
   }
 
@@ -493,15 +509,20 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getDingdingDisable() {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/${this.orgId}/open_app/is_message_enabled?type=ding_talk`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/is_message_enabled?type=ding_talk`,
     });
   }
 
   // 获取项目工作组
   getprojWorkGroup(id?:string, excludeUnassigned = false) {
+    // ctyun偶尔会跳转到工作台请求agile接口 这里直接屏蔽
+    const config = get('configuration.master-global:redirectWorkBench');
+    if (config) {
+      return undefined;
+    }
     return this.request({
       method: 'get',
-      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree${
+      url: `/cbase/choerodon/v1/organizations/${id || this.orgId}/work_bench/work_group/query_tree${
         excludeUnassigned ? '?with_extra_items=false&with_unassigned_group=false' : ''
       }`,
     });
@@ -511,7 +532,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojClassification(id?:string, withUnassigned?:boolean) {
     return this.request({
       method: 'post',
-      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/classfication/tree${withUnassigned ? '?with_unassigned_classfication=true' : ''}`,
+      url: `/cbase/choerodon/v1/organizations/${id || this.orgId}/classfication/tree${withUnassigned ? '?with_unassigned_classfication=true' : ''}`,
     });
   }
 
@@ -519,7 +540,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojPrograms(id?:string) {
     return this.request({
       method: 'get',
-      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/projects/programs`,
+      url: `/cbase/choerodon/v1/organizations/${id || this.orgId}/projects/programs`,
     });
   }
 
@@ -527,7 +548,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojType(id?:string) {
     return this.request({
       method: 'get',
-      url: `/iam/v1/organizations/${id || this.orgId}/project_categories`,
+      url: `/cbase/v1/organizations/${id || this.orgId}/project_categories`,
     });
   }
 
@@ -542,7 +563,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   checkCode(value:String) {
     return this.request({
       method: 'post',
-      url: `${this.prefix}/check`,
+      url: '/iam/choerodon/v1/organizations/check',
       data: JSON.stringify({ tenantNum: value }),
     });
   }
@@ -550,7 +571,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   createOrganization(data:any) {
     return this.request({
       method: 'post',
-      url: `${this.prefix}`,
+      url: '/iam/choerodon/v1/organizations',
       data,
     });
   }
@@ -566,14 +587,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   updateOrg({ tenantId, data }:any) { // 修改组织
     return this.request({
       method: 'put',
-      url: `${this.prefix}/${tenantId}`,
+      url: `/iam/choerodon/v1/organizations/${tenantId}`,
       data,
     });
   }
 
   getOrgLanguage({ fieldName, orgId }:Record<string, string>) {
     return this.request({
-      url: `${this.prefix}/${orgId}/tenant_tl?`,
+      url: `/iam/choerodon/v1/organizations/${orgId}/tenant_tl?`,
       method: 'get',
       transformResponse: (data) => {
         // eslint-disable-next-line no-useless-catch

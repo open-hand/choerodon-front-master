@@ -37,7 +37,6 @@ const statusDs = new DataSet({
   ],
 });
 
-
 export default (AppState, history, categoryDs) => {
   const codeValidator = async (value, name, record) => {
     if (record.status !== 'add') {
@@ -48,7 +47,7 @@ export default (AppState, history, categoryDs) => {
     }
     if (value.length > 14) {
       return '编码长度不能超过14！';
-    } else if (value.trim() === '') {
+    } if (value.trim() === '') {
       return '编码不能全为空！';
     }
     // eslint-disable-next-line no-useless-escape
@@ -65,8 +64,8 @@ export default (AppState, history, categoryDs) => {
         apiOrgId = organizationId;
       }
       const url = name === 'code'
-        ? `/iam/choerodon/v1/organizations/${apiOrgId}/projects/check`
-        : `/iam/choerodon/v1/organizations/${apiOrgId}/applications/check/${value}`;
+        ? `/cbase/choerodon/v1/organizations/${apiOrgId}/projects/check`
+        : `/cbase/choerodon/v1/organizations/${apiOrgId}/applications/check/${value}`;
       const params = { code: value };
       const res = await axios({
         method: name === 'code' ? 'post' : 'get',
@@ -75,11 +74,10 @@ export default (AppState, history, categoryDs) => {
       });
       if (res === false) {
         return '项目编码已存在';
-      } else if (res && res.failed) {
+      } if (res && res.failed) {
         return res.message;
-      } else {
-        return true;
       }
+      return true;
     } catch (err) {
       return '编码已存在或编码重名校验失败，请稍后再试';
     }
@@ -91,22 +89,28 @@ export default (AppState, history, categoryDs) => {
     paging: false,
     transport: {
       read: {
-        url: queryString.parse(history.location.search).organizationId ? `/iam/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/users/${AppState.getUserId}/projects` : '',
+        url: queryString.parse(history.location.search).organizationId ? `/cbase/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/users/${AppState.getUserId}/projects` : '',
         method: 'get',
       },
       submit: ({ dataSet }) => ({
-        url: `/iam/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/projects/${dataSet.current.get('id')}`,
+        url: `/cbase/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/projects/${dataSet.current.get('id')}`,
         method: 'put',
         data: dataSet.current.toData(),
       }),
     },
     fields: [
-      { name: 'name', type: 'string', label: '项目名称', required: true, validator: nameValidator },
-      { name: 'code', type: 'string', label: '项目编码', required: true, validator: codeValidator },
+      {
+        name: 'name', type: 'string', label: '项目名称', required: true, validator: nameValidator,
+      },
+      {
+        name: 'code', type: 'string', label: '项目编码', required: true, validator: codeValidator,
+      },
       { name: 'enabled', type: 'boolean', label: '状态' },
       // { name: 'applicationCode', type: 'string', label: '应用编码', required: true, validator: codeValidator },
       // { name: 'applicationName', type: 'string', label: '应用名称', required: true, validator: nameValidator },
-      { name: 'category', type: 'string', label: '项目类型', required: true, textField: 'name', valueField: 'code', options: categoryDs, defaultValue: 'GENERAL' },
+      {
+        name: 'category', type: 'string', label: '项目类型', required: true, textField: 'name', valueField: 'code', options: categoryDs, defaultValue: 'GENERAL',
+      },
       { name: 'programName', type: 'string', label: '项目群' },
       { name: 'createUserName', type: 'string', label: '创建人' },
       { name: 'createUserImageUrl', type: 'string' },
@@ -117,8 +121,12 @@ export default (AppState, history, categoryDs) => {
     queryFields: [
       { name: 'name', type: 'string', label: '项目名称' },
       { name: 'code', type: 'string', label: '项目编码' },
-      { name: 'category', type: 'string', label: '项目类型', textField: 'name', valueField: 'code', options: categoryDs },
-      { name: 'enabled', type: 'auto', label: '状态', textField: 'value', valueField: 'key', options: statusDs },
+      {
+        name: 'category', type: 'string', label: '项目类型', textField: 'name', valueField: 'code', options: categoryDs,
+      },
+      {
+        name: 'enabled', type: 'auto', label: '状态', textField: 'value', valueField: 'key', options: statusDs,
+      },
     ],
     events: {
       update: ({ record, name, value }) => {

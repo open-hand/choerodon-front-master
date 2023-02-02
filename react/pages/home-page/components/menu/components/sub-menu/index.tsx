@@ -143,7 +143,7 @@ const SubMenus:FC<SubMenuProps> = () => {
       return null;
     }
 
-    if (!subMenus.length) {
+    if (!subMenus?.length) {
       return (
         <Item
           key={menuCode}
@@ -208,7 +208,11 @@ const SubMenus:FC<SubMenuProps> = () => {
         subMenuCloseDelay={0.1}
         subMenuOpenDelay={0.1}
         selectedKeys={[activeMenu?.code].filter(String)}
+        // 为了解决收起状态的菜单 所有展开二级菜单都弹出的问题
         openKeys={savedOpenKeys}
+        // {...isExpanded ? {
+        //   openKeys: savedOpenKeys,
+        // } : {}}
         mode="inline"
         onOpenChange={handleOpenChange}
         style={{ overflow: 'hidden overlay' }}

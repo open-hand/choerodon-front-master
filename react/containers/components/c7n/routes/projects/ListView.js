@@ -82,7 +82,7 @@ const ListView = observer(() => {
         category,
         imageUrl,
       };
-      const res = await axios.post(`/iam/choerodon/v1/organizations/${organizationId}/projects`, data);
+      const res = await axios.post(`/cbase/choerodon/v1/organizations/${organizationId}/projects`, data);
       if (res.failed) {
         prompt(res.message);
         return false;
@@ -242,7 +242,7 @@ const ListView = observer(() => {
             children: <ModalContent />,
             onOk: async () => {
               try {
-                const result = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${id}/disable`);
+                const result = await axios.put(`/cbase/choerodon/v1/organizations/${organizationId}/projects/${id}/disable`);
                 if (result.failed) {
                   throw result.message;
                 }
@@ -263,7 +263,7 @@ const ListView = observer(() => {
             children: <ModalContent />,
             onOk: async () => {
               try {
-                const result = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${id}/disable`);
+                const result = await axios.put(`/cbase/choerodon/v1/organizations/${organizationId}/projects/${id}/disable`);
                 if (result.failed) {
                   throw result.message;
                 }
@@ -277,7 +277,7 @@ const ListView = observer(() => {
         }
       } else {
         try {
-          const result = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${id}/enable`);
+          const result = await axios.put(`/cbase/choerodon/v1/organizations/${organizationId}/projects/${id}/enable`);
           if (result.failed) {
             throw result.message;
           }

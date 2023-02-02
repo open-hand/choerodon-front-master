@@ -21,7 +21,7 @@ const Home = (props) => {
 
   useEffect(() => {
     async function loadLists() {
-      const res = await axios.get(`/iam/choerodon/v1/projects/${AppState.currentMenuType.id}/report/list/${reportType}`);
+      const res = await axios.get(`/cbase/choerodon/v1/projects/${AppState.currentMenuType.id}/report/list/${reportType}`);
       setList(res);
     }
     loadLists();

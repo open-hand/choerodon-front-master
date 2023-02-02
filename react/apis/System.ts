@@ -2,17 +2,17 @@ import Api from './Api';
 
 class SystemApi extends Api<SystemApi> {
   get prefix() {
-    return '/iam/choerodon/v1/system/setting';
+    return '/cbase/choerodon/v1/system/setting';
   }
 
   getLoginIndexInfo = () => this.request({
     method: 'get',
-    url: `${this.prefix}/login_all`,
+    url: '/iam/choerodon/v1/system/setting/login_all',
   })
 
   editLoginIndexInfo = (data:any) => this.request({
     method: 'put',
-    url: `${this.prefix}/login`,
+    url: '/iam/choerodon/v1/system/setting/login',
     data,
   })
 }

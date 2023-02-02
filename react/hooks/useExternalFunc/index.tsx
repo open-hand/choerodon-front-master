@@ -24,10 +24,14 @@ const useExternalFunc = (scope: string, module: string) => {
 
   const loadFunc = useCallback(async () => {
     setLoading(true);
-    const funcComponent = await getFunc(scope, module);
-    const newFunc = await funcComponent();
-    setFunc(newFunc);
-    setLoading(false);
+    try {
+      const funcComponent = await getFunc(scope, module);
+      const newFunc = await funcComponent();
+      setFunc(newFunc);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {

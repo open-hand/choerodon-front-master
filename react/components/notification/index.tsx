@@ -1,61 +1,128 @@
 /* eslint-disable react/require-default-props */
 import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo, useState,
+  ReactNode, useCallback, useEffect,
+  useMemo, useState, useRef,
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon, notification } from 'choerodon-ui/pro';
-import { useRequest } from 'ahooks';
+import { useRequest, useWhyDidYouUpdate } from 'ahooks';
 import { noop } from 'lodash';
 import WSHandler from '@/components/ws/WSHandler';
 import WSProvider from '@/components/ws/WSProvider';
 import Choerodon from '@/utils/choerodon';
 import styles from './index.less';
 
+type DescriptionType = ReactNode | string | ((wsData: object) => string | ReactNode)
+
 interface Props {
+  /**
+   * 弹窗key，方便用于关闭
+   */
   notificationKey: string,
-  type?: 'polling' | 'ws', // 查询进度方式：轮询或ws
-  afterSuccess?: () => void, // 成功后回调函数
-  loadStatus?: () => Promise<string>, // 用于ws方式下刚打开弹窗时查询，避免打开弹窗时ws已经发完
+  /**
+   * 查询进度方式：轮询或ws
+   * @default polling
+   */
+  type?: 'polling' | 'ws',
+  /**
+   * 成功后延迟执行2秒执行的回调函数
+   */
+  afterSuccess?: (data?: object) => void,
+  /**
+   * 用于ws方式下刚打开弹窗时查询，避免打开弹窗时ws已经发完
+   */
+  loadStatus?: () => Promise<string>,
+  /**
+   * 轮询模式下查询进度方法
+   */
   loadProgress?: () => Promise<{ status: 'success' | 'failed' | 'doing', progress: number }>
-  duration?: number // 轮询间隔时间
-  messageKey?: string, // ws方式下messageKey
-  // 弹窗显示文案
+  /**
+   * 轮询间隔时间
+   * @default 1500
+   */
+  duration?: number,
+  /**
+   * ws方式下messageKey
+   */
+  messageKey?: string,
+  /**
+   * 弹窗显示文案
+   */
   textObject: {
     failed: {
       title: string,
-      description: ReactNode,
+      description: DescriptionType,
       icon?: string,
     },
     success: {
       title: string,
-      description: ReactNode,
+      description: DescriptionType,
       icon?: string,
     },
     doing: {
       title: string,
-      description: ReactNode,
+      description: DescriptionType,
       icon?: string,
     }
   }
+  /**
+   * 成功后自动关闭弹窗时间
+   * @default 2000
+   * @description 默认 2 秒后自动关闭，配置为 null 则不自动关闭
+   */
+  closeDuration?: number | null
 }
 
 const CreateNotification = ({
   // @ts-ignore
-  notificationKey, afterSuccess, textObject, messageKey, loadStatus: propsLoadStatus, type = 'polling', loadProgress = new Promise(noop), duration = 1500,
+  notificationKey, afterSuccess, textObject, messageKey, loadStatus: propsLoadStatus, type = 'polling', loadProgress = new Promise(noop),
+  duration = 1500, closeDuration = 2000,
 }: Props) => {
+  useWhyDidYouUpdate('CreateNotification', [textObject, propsLoadStatus, afterSuccess, notificationKey, duration, closeDuration]);
+
   const [progress, setProgress] = useState(0);
+  const [wsData, setWsData] = useState({});
   const [loading, setLoading] = useState<boolean | 'success' | 'failed'>(true);
+
+  const closeTimer = useRef<number | null>(null);
+  const isOnMouseEnterRef = useRef(false);
+
   const { data: progressData, cancel, error } = useRequest(loadProgress, {
     pollingInterval: type === 'ws' ? 0 : duration,
   });
+
+  const clearCloseTimer = useCallback(() => {
+    const { current } = closeTimer;
+    if (current) {
+      window.clearTimeout(current);
+      closeTimer.current = null;
+    }
+  }, []);
+
+  const close = useCallback(() => {
+    clearCloseTimer();
+    notification?.close(notificationKey);
+  }, [notificationKey]);
+
+  const startCloseTimer = useCallback(() => {
+    if (closeDuration !== null) {
+      const { current } = closeTimer;
+      if (current) {
+        // 需要将旧的timeout清空
+        window.clearTimeout(current);
+      }
+      closeTimer.current = window.setTimeout(close, closeDuration);
+    }
+  }, [close]);
+
+  useEffect(() => clearCloseTimer, []);
+
   useEffect(() => {
     if (error) {
       cancel();
     }
   }, [error]);
+
   useEffect(() => {
     if (progressData?.status) {
       switch (progressData?.status) {
@@ -75,6 +142,7 @@ const CreateNotification = ({
       }
     }
   }, [progressData]);
+
   const text = useMemo(() => {
     switch (loading) {
       case 'failed':
@@ -98,8 +166,23 @@ const CreateNotification = ({
     }
   }, [loading]);
 
+  const handleMouseEnter = useCallback(() => {
+    isOnMouseEnterRef.current = true;
+    clearCloseTimer();
+  }, [clearCloseTimer]);
+
+  const handleMouseLeave = useCallback(() => {
+    isOnMouseEnterRef.current = false;
+    if (loading === 'success') {
+      startCloseTimer();
+    }
+  }, [loading, startCloseTimer]);
+
   const content = useMemo(() => (
-    <>
+    <div
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {typeof loading === 'boolean' && ([
         <div className={styles.progress} style={{ width: `${progress}%` }} />,
         <div className={styles.progress_line} style={{ width: `${progress}%` }} />,
@@ -110,11 +193,11 @@ const CreateNotification = ({
           {text.title}
         </div>
         <div className={styles.des}>
-          {text.description}
+          {typeof text.description === 'function' ? text.description(wsData) : text.description}
         </div>
       </div>
-    </>
-  ), [text, progress]);
+    </div>
+  ), [text, progress, wsData]);
 
   const loadStatus = useCallback(async () => {
     if (progress === 0 && propsLoadStatus) {
@@ -138,12 +221,10 @@ const CreateNotification = ({
     }
     setLoading('success');
     setProgress(Number(newProcess));
-    setTimeout(() => {
-      if (afterSuccess) {
-        afterSuccess();
-      }
-      notification?.close(notificationKey);
-    }, 2000);
+    if (afterSuccess) {
+      afterSuccess();
+    }
+    !isOnMouseEnterRef.current && startCloseTimer();
   }, [loading, afterSuccess, notificationKey]);
 
   const handleMessage = (message: string) => {
@@ -156,6 +237,7 @@ const CreateNotification = ({
       switch (status) {
         case 'succeed': {
           onSuccess(process);
+          setWsData(data);
           break;
         }
         case 'doing': {

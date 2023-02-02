@@ -193,6 +193,13 @@ class DevopsOrganizationsApi extends Api<DevopsOrganizationsApi> {
     });
   }
 
+  getOrgStepsTemplateDetails(id:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/ci_template_step/template_step_id/${id}`,
+      method: 'get',
+    });
+  }
+
   createOrgStepsTemplate(data:any) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/ci_template_step`,

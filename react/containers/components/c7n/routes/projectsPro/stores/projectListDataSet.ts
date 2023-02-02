@@ -4,7 +4,7 @@ export default (({ organizationId, userId }:{organizationId:string, userId:strin
   selection: false as any,
   transport: {
     read: ({ dataSet, params, data }:any) => ({
-      url: `/iam/choerodon/v1/organizations/${organizationId}/users/${userId}/projects/paging`,
+      url: `/cbase/choerodon/v1/organizations/${organizationId}/users/${userId}/projects/paging`,
       method: 'post',
     }),
   },

@@ -61,8 +61,8 @@ export default ({
     }
     try {
       const url = name === 'code'
-        ? `/iam/choerodon/v1/organizations/${organizationId}/projects/check`
-        : `/iam/choerodon/v1/organizations/${organizationId}/applications/check/${value}`;
+        ? `/cbase/choerodon/v1/organizations/${organizationId}/projects/check`
+        : `/cbase/choerodon/v1/organizations/${organizationId}/applications/check/${value}`;
       const params = { code: value };
       const res = await axios({
         method: name === 'code' ? 'post' : 'get',
@@ -99,16 +99,16 @@ export default ({
     },
     transport: {
       read: () => ({
-        url: `/iam/choerodon/v1/projects/${projectId}`,
+        url: `/cbase/choerodon/v1/projects/${projectId}`,
         method: 'get',
       }),
       create: ({ data: [data] }) => ({
-        url: `/iam/choerodon/v1/organizations/${organizationId}/projects`,
+        url: `/cbase/choerodon/v1/organizations/${organizationId}/projects`,
         method: 'post',
         data: { ...data, operateType: 'create' },
       }),
       update: ({ data: [data] }) => ({
-        url: `/iam/choerodon/v1/organizations/${organizationId}/projects/${data.id}`,
+        url: `/cbase/choerodon/v1/organizations/${organizationId}/projects/${data.id}`,
         method: 'put',
         data: { ...data, operateType: 'update' },
       }),
@@ -189,7 +189,7 @@ export default ({
         validator: async (value, name, record) => {
           const values = ['N_DEVOPS', 'N_OPERATIONS'];
           const flag1 = categoryDs.selected.some((categoryRecord) => values.includes(categoryRecord.get('code')));
-          if (flag1 && record?.status === 'add') {
+          if (flag1) {
             if (value.length > 40) {
               return '编码长度不能超过40！';
             }
@@ -199,9 +199,12 @@ export default ({
             }
             try {
               const flag = await axios({
-                url: `/iam/choerodon/v1/organizations/${organizationId}/projects/check_devops_code_exist`,
+                url: `/cbase/choerodon/v1/organizations/${organizationId}/projects/check_devops_code_exist`,
                 params: {
                   devops_component_code: value,
+                  ...record?.get('id') ? {
+                    project_id: record?.get('id'),
+                  } : {},
                 },
               });
               if (flag) {

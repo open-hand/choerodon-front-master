@@ -193,6 +193,13 @@ class DevopsProjectApi extends Api<DevopsProjectApi> {
     });
   }
 
+  getProjectStepsTemplateDetails(id:any) {
+    return this.request({
+      url: `${this.prefix}/${this.projectId}/ci_template_step/template_step_id/${id}`,
+      method: 'get',
+    });
+  }
+
   createProjectStepsTemplate(data:any) {
     return this.request({
       url: `${this.prefix}/${this.projectId}/ci_template_step`,

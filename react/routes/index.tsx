@@ -7,13 +7,17 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { useHistory, useLocation, useRouteMatch } from 'react-router';
+import { observer } from 'mobx-react-lite';
 import { ModalProvider } from 'choerodon-ui/pro';
 import { inject } from 'mobx-react';
 import { mount, get } from '@choerodon/inject';
 import { Loading } from '@choerodon/components';
+import useDatafluxRum from '@/hooks/useDatafluxRum';
 import Skeleton from '@/components/skeleton';
 import PermissionRoute from '@/components/permission-route';
+
 import './index.less';
+import handleClickProject from '@/utils/gotoProject';
 
 const Unauthorized = React.lazy(() => import('@/containers/components/c7n/routes/unauthorized'));
 const WorkBench = React.lazy(() => import('@/containers/components/c7n/routes/workBench/list/view'));
@@ -26,10 +30,17 @@ const AutoRouter = React.lazy(() => import('./routesCollections'));
 
 let timer: any;
 
-const RouteIndex = () => {
+const RouteIndex = (props: any) => {
+  const {
+    AppState,
+  } = props;
+
   const [remoteAllSet, setRemoteAllSet] = useState(false);
 
   const match = useRouteMatch();
+
+  const [setUser, setGlobalContext] = useDatafluxRum();
+
   const history = useHistory();
   const location = useLocation();
   useEffect(() => {
@@ -50,10 +61,21 @@ const RouteIndex = () => {
       });
       if (flag) {
         setRemoteAllSet(true);
+        // 监控 在base-pro注入成功后 调用setUser方法
+        setUser(AppState.userInfo);
+        setGlobalContext(AppState);
         clearInterval(timer);
       }
     }, 1000);
   }, []);
+
+  useEffect(() => {
+    setGlobalContext(AppState);
+  }, [
+    AppState?.menuType?.type,
+    AppState?.menuType?.id,
+    AppState?.currentProject?.id,
+  ]);
 
   return remoteAllSet ? (
     <div
@@ -90,4 +112,4 @@ const RouteIndex = () => {
   );
 };
 
-export default inject('AppState')(RouteIndex);
+export default inject('AppState')(observer(RouteIndex));

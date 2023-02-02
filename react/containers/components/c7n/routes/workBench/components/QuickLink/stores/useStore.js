@@ -25,10 +25,10 @@ export default function useStore(organizationId, AppState) {
       this.quickLinkList = data;
     },
     axiosTopIf(data) {
-      return axios.put(`/iam/choerodon/v1/organizations/${organizationId}/quick_links/${data.id}/${data.top ? 'delete_top' : 'add_top'}`);
+      return axios.put(`/cbase/choerodon/v1/organizations/${organizationId}/quick_links/${data.id}/${data.top ? 'delete_top' : 'add_top'}`);
     },
     async axiosDeleteQuickLink(id, activeId, type) {
-      await axios.delete(`/iam/choerodon/v1/organizations/${organizationId}/quick_links/${id}`);
+      await axios.delete(`/cbase/choerodon/v1/organizations/${organizationId}/quick_links/${id}`);
     },
   }));
 }

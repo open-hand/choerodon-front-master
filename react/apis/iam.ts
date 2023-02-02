@@ -2,7 +2,7 @@ import Api from './Api';
 
 class IamApi extends Api<IamApi> {
   get prefix() {
-    return '/iam/choerodon/v1';
+    return '/cbase/choerodon/v1';
   }
 
   createTenant(registerId:string) {
@@ -45,7 +45,7 @@ class IamApi extends Api<IamApi> {
   getSiteDingdingDisable() {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/users/ding_talk`,
+      url: '/iam/choerodon/v1/users/ding_talk',
     });
   }
 

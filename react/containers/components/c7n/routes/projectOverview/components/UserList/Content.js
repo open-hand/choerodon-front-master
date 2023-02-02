@@ -47,7 +47,7 @@ const UserList = () => {
                   <span className={`${clsPrefix}-item-name`}>{realName}</span>
                   <span className={`${clsPrefix}-item-status`}>活跃</span>
                   <div className={`${clsPrefix}-item-roles`}>
-                    {(roleNames.split(',') || []).map((item) => (
+                    {(roleNames ? roleNames.split(',') : []).map((item) => (
                       <span className={`${clsPrefix}-item-roles-item`}>{item}</span>
                     ))}
                   </div>

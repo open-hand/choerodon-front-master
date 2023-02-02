@@ -2,7 +2,7 @@ import Api from './Api';
 
 class RegisterOrganization extends Api<RegisterOrganization> {
   get prefix() {
-    return '/iam/choerodon/v1';
+    return '/cbase/choerodon/v1';
   }
 
   getCaptcha= (phone:string) => this.request({

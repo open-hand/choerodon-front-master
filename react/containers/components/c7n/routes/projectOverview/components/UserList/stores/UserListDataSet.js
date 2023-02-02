@@ -5,7 +5,7 @@ export default ({ projectId, mainStore }) => ({
   pageSize: 8,
   transport: {
     read: ({ dataSet }) => ({
-      url: `/iam/choerodon/v1/projects/${projectId}/user_count`,
+      url: `/cbase/choerodon/v1/projects/${projectId}/user_count`,
       method: 'get',
       transformResponse: (response) => {
         try {

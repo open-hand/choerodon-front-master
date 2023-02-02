@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import {
@@ -89,9 +90,9 @@ const Index:React.FC<IProps> = (props) => {
   return (
     <div className={`${pagePrefixCls} ${prefixCls}-children-content`}>
       <h4 className={`${pagePrefixCls}-title-1`}>
-        注册14天免费试用
+        预约DEMO体验
       </h4>
-      <p className={`${pagePrefixCls}-title-2`}>注册后您将立即开始在试用环境下体验产品</p>
+      <p className={`${pagePrefixCls}-title-2`}>留下联系方式获得更多信息</p>
       <Form dataSet={registerFormDs} columns={2}>
         <TextField name="userName" colSpan={2} />
         <TextField name="orgName" colSpan={2} />
@@ -109,30 +110,35 @@ const Index:React.FC<IProps> = (props) => {
           ajaxRequest={registerOrganizationApi.getCaptcha}
           maxAge={600}
         />
-        <CheckBox name="isAgree" colSpan={1}>
-          <span>我同意</span>
-          <a
-            onClick={(e) => {
-              handleJump(e, 'serviceAgreement');
-            }}
-            role="none"
-            rel="noopener noreferrer"
-          >
-            服务协议
-          </a>
-          与
-          <a
-            role="none"
-            onClick={(e) => {
-              handleJump(e, 'agreement');
-            }}
-            rel="noopener noreferrer"
-          >
-            隐私条款
-          </a>
-        </CheckBox>
+        {/*  @ts-ignore */}
+        <div colSpan={2} className="row-notice">
+          <CheckBox name="isAgree" colSpan={1}>
+            <span>我同意</span>
+          </CheckBox>
+          <span className="row-notice-right">
+            <a
+              onClick={(e) => {
+                handleJump(e, 'serviceAgreement');
+              }}
+              role="none"
+              rel="noopener noreferrer"
+            >
+              服务协议
+            </a>
+            与
+            <a
+              role="none"
+              onClick={(e) => {
+                handleJump(e, 'agreement');
+              }}
+              rel="noopener noreferrer"
+            >
+              隐私条款
+            </a>
+          </span>
+        </div>
       </Form>
-      <Button disabled={!registerFormDs?.current?.get('isAgree')} className="submit-btn" block color={'primary' as any} onClick={handleSubmit}>免费试用</Button>
+      <Button disabled={!registerFormDs?.current?.get('isAgree')} className="submit-btn" block color={'primary' as any} onClick={handleSubmit}>预约DEMO体验</Button>
       <div className="row-tologin"><a href="" onClick={(e) => { toLogin(e); }}>已有账号，立即登录</a></div>
     </div>
   );

@@ -23,6 +23,9 @@ const prefixCls = 'c7ncd-platform-entry';
 const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
   const {
     MenuStore,
+    HeaderStore: {
+      getOrgData,
+    },
   } = props;
 
   const {
@@ -41,7 +44,11 @@ const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
     MenuStore.loadMenuData({ type: 'site' }, false).then((menus: string | any[]) => {
       if (menus.length) {
         const { route, domain } = findFirstLeafMenu(menus[0]);
-        const routeWithOrgId = `${route}?organizationId=${organizationId}`;
+        let routeWithOrgId = `${route}?organizationId=${organizationId}`;
+        // 避免登录进来id是0的时候跳平台层引起的bug
+        if (organizationId == '0') {
+          routeWithOrgId = `${route}?organizationId=${getOrgData[0]?.id}`;
+        }
         historyPushMenu(history, routeWithOrgId, domain);
       }
     });
@@ -59,4 +66,4 @@ const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
   );
 };
 
-export default inject('MenuStore')(observer(PlatformEntry));
+export default inject('MenuStore', 'HeaderStore')(observer(PlatformEntry));

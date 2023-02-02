@@ -17,3 +17,4 @@ export * from './ci-pipeline-schedules';
 export * from './docker-compose';
 export * from './project-product-lib';
 export * from './Project';
+export * from './continuous-deployment';

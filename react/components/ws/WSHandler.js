@@ -3,7 +3,9 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import JSONbig from 'json-bigint';
 import { getCookie } from '@/utils';
-import AppState from '../../containers/stores/c7n/AppState';
+import stores from '../../containers/stores';
+
+const { AppState } = stores;
 
 export default class WSHandler extends Component {
   static defaultProps = {

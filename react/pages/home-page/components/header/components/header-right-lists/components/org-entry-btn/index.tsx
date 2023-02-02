@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon, message } from 'choerodon-ui/pro';
-import {} from '@choerodon/components';
 
 import './index.less';
 import { useHistory } from 'react-router';
@@ -54,7 +53,7 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
         const params:Record<string, any> = {
           type: 'organization',
           id: organizationId,
-          name,
+          name: currentSelectedOrg.name,
           organizationId,
         };
         if (category) params.category = category;

@@ -3,7 +3,7 @@ import Api from './Api';
 
 class BlackListApi extends Api<BlackListApi> {
   get prefix() {
-    return '/iam/choerodon/v1/blacklist';
+    return '/cbase/choerodon/v1/blacklist';
   }
 
   getblackList =(data: object) => this.request({
