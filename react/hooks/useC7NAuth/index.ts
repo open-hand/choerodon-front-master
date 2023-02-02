@@ -2,7 +2,10 @@
 import { useQueryString } from '@choerodon/components';
 import { useCallback, useEffect } from 'react';
 import { useBoolean } from 'ahooks';
-import { authorizeC7n, getAccessToken, setAccessToken } from '@/utils';
+import {
+  authorizeC7n, getAccessToken, setAccessToken, logout, removeCookie,
+} from '@/utils';
+
 import AppState from '@/containers/stores/c7n/AppState';
 import HeaderStore from '@/containers/stores/c7n/HeaderStore';
 import axios from '@/components/axios';
@@ -83,9 +86,12 @@ function useC7NAuth(autoAuth?:boolean) {
             const res = await axios.post('/oauth/choerodon/electric/authorization_by_token', {
               token: shanghaiElectricToken,
               authType: 'token',
-            });
+            }, { noPrompt: true });
+
             window.location.href = res;
-            window.location.reload();
+            if (res.indexOf('/oauth/choerodon/login') === -1) {
+              window.location.reload();
+            }
           } catch (error) {
             window.location.href = '/#/authenticationFailure/notExistUser';
           }
@@ -96,11 +102,19 @@ function useC7NAuth(autoAuth?:boolean) {
         return;
       } else if (isShanghaiElectric && shanghaiElectricToken && getAccessToken()) {
         // 防止token过期登录不上刷新token
-        const newToken = await axios.post('/oauth/choerodon/electric/refresh_token', {
-          token: shanghaiElectricToken,
-          authType: 'token',
-        });
-        setAccessToken(newToken, 'bearer', 'placeholder');
+        try {
+          const newToken = await axios.post('/oauth/choerodon/electric/refresh_token', {
+            token: shanghaiElectricToken,
+            authType: 'token',
+          });
+          setAccessToken(newToken, 'bearer', 'placeholder');
+        } catch (error) {
+          removeCookie('LtpaToken', {
+            path: '/',
+          });
+          logout();
+          return;
+        }
       }
       // 一进页面就需要请求的接口
       HeaderStore.axiosGetRoles(); // 请求角色
