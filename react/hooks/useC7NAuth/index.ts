@@ -86,16 +86,12 @@ function useC7NAuth(autoAuth?:boolean) {
             const res = await axios.post('/oauth/choerodon/electric/authorization_by_token', {
               token: shanghaiElectricToken,
               authType: 'token',
-            });
-            if (!res) {
-              removeCookie('LtpaToken', {
-                path: '/',
-              });
-              logout();
-              return;
-            }
+            }, { noPrompt: true });
+
             window.location.href = res;
-            window.location.reload();
+            if (res.indexOf('/oauth/choerodon/login') === -1) {
+              window.location.reload();
+            }
           } catch (error) {
             window.location.href = '/#/authenticationFailure/notExistUser';
           }
