@@ -5,6 +5,7 @@ class CICDPipelineApi extends Api<CICDPipelineApi> {
     return `/devops/v1/projects/${this.projectId}/cicd_pipelines`;
   }
 
+  // eslint-disable-next-line camelcase
   getTemplate(pipelineId: number, include_default?: boolean) {
     return this.request({
       url: `${this.prefix}/${pipelineId}/functions`,
@@ -12,6 +13,13 @@ class CICDPipelineApi extends Api<CICDPipelineApi> {
       params: {
         include_default,
       },
+    });
+  }
+
+  getPipelineGitlabCiYml(pipelineId: string) {
+    return this.request({
+      url: `${this.prefix}/${pipelineId}/gitlab_ci_yaml`,
+      method: 'get',
     });
   }
 }

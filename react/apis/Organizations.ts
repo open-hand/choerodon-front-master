@@ -12,6 +12,21 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     return '/cbase/choerodon/v1/organizations';
   }
 
+  getInviteEnterSystemInfo() {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/user/invitation/info`,
+      method: 'get',
+    });
+  }
+
+  postInviteEnterSystemInfo(data:any) {
+    return this.request({
+      url: `${this.prefix}/${this.orgId}/user/join/team`,
+      method: 'post',
+      data,
+    });
+  }
+
   checkProjectCollaborationCode(code:string) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/classfication/check_code_exist?code=${code}`,
