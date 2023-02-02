@@ -87,6 +87,13 @@ function useC7NAuth(autoAuth?:boolean) {
               token: shanghaiElectricToken,
               authType: 'token',
             });
+            if (!res) {
+              removeCookie('LtpaToken', {
+                path: '/',
+              });
+              logout();
+              return;
+            }
             window.location.href = res;
             window.location.reload();
           } catch (error) {
