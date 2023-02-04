@@ -4,7 +4,7 @@ import React, {
 import { Popover } from 'choerodon-ui';
 import { useBoolean } from 'ahooks';
 import { Tabs, Icon } from 'choerodon-ui/pro';
-import {} from '@choerodon/components';
+import {} from '@zknow/components';
 
 import './index.less';
 import { map } from 'lodash';

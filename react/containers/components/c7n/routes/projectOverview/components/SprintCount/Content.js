@@ -10,7 +10,7 @@ import { get } from '@choerodon/inject';
 import { useHistory } from 'react-router';
 import classnames from 'classnames';
 import { useIntl } from 'react-intl';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import useQueryString from '@/hooks/useQueryString';
 import EMPTY_VALUE from '@/constants/EMPTY_VALUE';
 import OverviewWrap from '../OverviewWrap';

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Icon, Tooltip } from 'choerodon-ui/pro';
 import { get } from '@choerodon/inject';
 
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import { useWorkBenchStore } from '../../stores';
 
@@ -63,9 +63,9 @@ const Check = observer(() => {
               <div className="c7n-workbench-check-item-user">
                 {imageUrl ? (
                   <img src={imageUrl} alt="avatar" className="c7n-workbench-check-item-user-image" />) : (
-                    <span className="c7n-workbench-check-item-user-text">
-                      {(content || '').toUpperCase().substring(0, 1)}
-                    </span>
+                  <span className="c7n-workbench-check-item-user-text">
+                    {(content || '').toUpperCase().substring(0, 1)}
+                  </span>
                 )}
               </div>
             ) : null}

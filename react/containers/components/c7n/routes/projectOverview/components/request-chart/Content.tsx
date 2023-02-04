@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Select, Tooltip, Pagination } from 'choerodon-ui/pro';
-import { UserInfo, TimePopover } from '@choerodon/components';
+import { UserInfo, TimePopover } from '@zknow/components';
 import { map } from 'lodash';
 import { useRequestChartStore } from './stores';
 import OverviewWrap from '../OverviewWrap';

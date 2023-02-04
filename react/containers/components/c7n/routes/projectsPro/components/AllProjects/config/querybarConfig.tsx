@@ -1,6 +1,6 @@
 import React from 'react';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
-import { UserInfo } from '@choerodon/components';
+import { UserInfo } from '@zknow/components';
 import { DataSet } from 'choerodon-ui/pro';
 import { organizationsApiConfig, iamApiConfig } from '@/apis';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';

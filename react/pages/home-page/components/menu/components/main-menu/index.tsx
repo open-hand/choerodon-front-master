@@ -8,7 +8,7 @@ import { map } from 'lodash';
 import './index.less';
 import classNames from 'classnames';
 import { Tooltip } from 'choerodon-ui';
-import { OverflowWrap } from '@choerodon/components';
+import { OverflowWrap } from '@zknow/components';
 import { useMenuStore } from '../../stores';
 import { DEFAULT_THEME_COLOR } from '@/constants';
 import MenuBgImg from '../../assets/MenuBgImg.svg';

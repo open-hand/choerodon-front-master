@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { get } from '@choerodon/inject';
 
 import queryString from 'query-string';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import { useIntl } from 'react-intl';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';

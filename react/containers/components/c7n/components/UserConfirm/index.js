@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Modal } from 'choerodon-ui/pro';
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn } from 'ahooks';
 import './index.less';
 
 const UserConfirmation = (props) => {
@@ -13,7 +13,7 @@ const UserConfirmation = (props) => {
   const [nextLocation, setNextLocation] = useState(null);
   const [action, setAction] = useState();
   const [unblock, setUnblock] = useState(null);
-  const openModal = usePersistFn(() => {
+  const openModal = useMemoizedFn(() => {
     Modal.open({
       closable: false,
       title,

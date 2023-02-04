@@ -4,7 +4,7 @@ import React from 'react';
 import {
   Form, TextField, CheckBox, Button, Select, EmailField,
 } from 'choerodon-ui/pro';
-import { CaptchaField } from '@choerodon/components/lib/index.js';
+import { CaptchaField } from '@zknow/components/lib/index.js';
 import { observer } from 'mobx-react-lite';
 // @ts-ignore
 import queryString from 'query-string';

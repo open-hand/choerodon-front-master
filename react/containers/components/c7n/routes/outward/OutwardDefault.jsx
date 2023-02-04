@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import './style';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import { get } from '@choerodon/inject';
 import AppState from '../../../../stores/c7n/AppState';
 

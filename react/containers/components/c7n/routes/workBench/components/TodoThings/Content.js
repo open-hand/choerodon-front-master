@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Tooltip, Icon, Alert } from 'choerodon-ui';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import { get } from '@choerodon/inject';
 
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
@@ -80,9 +80,9 @@ const StarTargetPro = observer(() => {
                   <div className="c7n-workbench-check-item-user">
                     {imageUrl ? (
                       <img src={imageUrl} alt="avatar" className="c7n-workbench-check-item-user-image" />) : (
-                        <span className="c7n-workbench-check-item-user-text">
-                          {(content || '').toUpperCase().substring(0, 1)}
-                        </span>
+                      <span className="c7n-workbench-check-item-user-text">
+                        {(content || '').toUpperCase().substring(0, 1)}
+                      </span>
                     )}
                   </div>
                 ) : null}

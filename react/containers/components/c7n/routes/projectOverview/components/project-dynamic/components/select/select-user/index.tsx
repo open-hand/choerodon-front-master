@@ -5,7 +5,7 @@ import { toJS } from 'mobx';
 import { Select } from 'choerodon-ui/pro';
 import { unionBy } from 'lodash';
 import { SelectProps } from 'choerodon-ui/pro/lib/select/Select';
-import { FlatSelect } from '@choerodon/components';
+import { FlatSelect } from '@zknow/components';
 import { userApi } from '@/containers/components/c7n/routes/projectOverview/components/project-dynamic/api';
 import useSelect, { SelectConfig } from '@/hooks/useSelect';
 import type { User } from '@/types';

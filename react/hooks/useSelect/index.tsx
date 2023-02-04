@@ -5,7 +5,7 @@ import React, {
 import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 import { omit, debounce } from 'lodash';
 import { Button, DataSet, Tooltip } from 'choerodon-ui/pro';
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn } from 'ahooks';
 import { SearchMatcher } from 'choerodon-ui/pro/lib/select/Select';
 import { Renderer } from 'choerodon-ui/pro/lib/field/FormField';
 
@@ -91,8 +91,8 @@ export default function useSelect<T extends { [key: string]: any }>(config: Sele
     props,
     combo,
   } = config;
-  const request = usePersistFn(requestFn);
-  const afterLoad = usePersistFn(afterLoadFn || noop);
+  const request = useMemoizedFn(requestFn);
+  const afterLoad = useMemoizedFn(afterLoadFn || noop);
   const renderer = useCallback(({
     value, text: originText, maxTagTextLength, ...ote
   }) => {

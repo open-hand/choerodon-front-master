@@ -10,7 +10,7 @@ import {
 import {
   includes, map, get, some,
 } from 'lodash';
-import { NewTips } from '@choerodon/components';
+import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
 import { fileServer, prompt } from '@/utils';
 import axios from '@/components/axios';
@@ -313,22 +313,22 @@ const CreateProject = observer(() => {
         {
           !isModify
           && (
-          <>
-            <TreeSelect name="workGroupId" colSpan={50} style={{ width: 340 }} searchable optionRenderer={renderTreeSelect} />
-            <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
-          </>
+            <>
+              <TreeSelect name="workGroupId" colSpan={50} style={{ width: 340 }} searchable optionRenderer={renderTreeSelect} />
+              <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+            </>
           )
         }
 
         <TextArea newLine rows={3} colSpan={100} name="description" resize="vertical" />
         {
           isModify
-           && (
-           <>
-             <TextField name="creationDate" colSpan={50} style={{ width: 340 }} disabled />
-             <TextField name="createUserName" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled />
-           </>
-           )
+          && (
+            <>
+              <TextField name="creationDate" colSpan={50} style={{ width: 340 }} disabled />
+              <TextField name="createUserName" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled />
+            </>
+          )
         }
       </Form>
       <div className={`${prefixCls}-category-label`}>项目类型</div>
@@ -369,7 +369,7 @@ const CreateProject = observer(() => {
                     }}
                   />
                 </div>
-            )}
+              )}
           </div>
         ))}
       </div>

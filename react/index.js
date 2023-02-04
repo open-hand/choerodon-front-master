@@ -1,3 +1,5 @@
+import NoMatch from '@/components/c7n-error-pages/404';
+
 export { default as C7NIcon } from '@/components/c7n-icon';
 
 export { default as axios } from '@/components/axios';
@@ -5,8 +7,6 @@ export { default as axios } from '@/components/axios';
 export { default as store } from './containers/components/c7n/tools/store';
 
 export { default as stores } from './containers/stores';
-
-import NoMatch from '@/components/c7n-error-pages/404';
 export { NoMatch };
 /**
  *  路由不匹配时 404页面
@@ -96,5 +96,9 @@ export { default as getExternalFunc } from '@/utils/getExternalFunc';
 export * from '@/utils/to';
 export * from '@/utils/log';
 export * from '@/components/provider';
+export * from '@/utils/LocalPageCacheStore';
 // 导出模态框
 export { Modal } from '@/components/modal';
+export { Route, Switch, withRouter } from 'react-router-dom';
+
+export { default } from './app';

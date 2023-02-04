@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useQueryString } from '@choerodon/components';
+import { useQueryString } from '@zknow/components';
 import { useCallback, useEffect } from 'react';
 import { useBoolean } from 'ahooks';
 import {

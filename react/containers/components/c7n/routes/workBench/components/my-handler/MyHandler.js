@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Spin } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import { omit } from 'lodash';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import ScrollContext from 'react-infinite-scroll-component';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
@@ -62,7 +62,7 @@ const MyHandler = observer(() => {
             >
               {myHandlerStore.getHasMore ? '到底了' : ''}
             </span>
-      )}
+          )}
         >
           <QuestionTree
             treeData={myHandlerStore.getTreeData}

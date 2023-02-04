@@ -11,7 +11,7 @@ import { observer } from 'mobx-react-lite';
 import { ModalProvider } from 'choerodon-ui/pro';
 import { inject } from 'mobx-react';
 import { mount, get } from '@choerodon/inject';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import useDatafluxRum from '@/hooks/useDatafluxRum';
 import Skeleton from '@/components/skeleton';
 import PermissionRoute from '@/components/permission-route';
@@ -26,13 +26,14 @@ const ProjectsPro = React.lazy(() => import('@/containers/components/c7n/routes/
 const ProjectOverview = React.lazy(() => import('@/containers/components/c7n/routes/projectOverview'));
 
 // this is child services routes collections page
-const AutoRouter = React.lazy(() => import('./routesCollections'));
+// const AutoRouter = React.lazy(() => import('./routesCollections'));
 
 let timer: any;
 
 const RouteIndex = (props: any) => {
   const {
     AppState,
+    AutoRouter,
   } = props;
 
   const [remoteAllSet, setRemoteAllSet] = useState(false);

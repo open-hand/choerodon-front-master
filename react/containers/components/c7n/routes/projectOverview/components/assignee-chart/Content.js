@@ -7,7 +7,7 @@ import Echart from 'echarts-for-react';
 import { reduce } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { useIntl } from 'react-intl';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import OverviewWrap from '../OverviewWrap';
 
 import { useProjectOverviewStore } from '../../stores';

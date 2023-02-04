@@ -2,7 +2,7 @@ import React, {
   FC,
 } from 'react';
 import {} from 'choerodon-ui/pro';
-import {} from '@choerodon/components';
+import {} from '@zknow/components';
 
 import './index.less';
 import OrgEntryBtn from './components/org-entry-btn';
