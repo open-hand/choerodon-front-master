@@ -22,8 +22,10 @@ import { ENTERPRISE_ADDRESS } from '@/constants';
 
 import '@/containers/components/style';
 
+import './dynamicScript';
+
 // injects modules entry
-import './moduleInjects';
+// import './moduleInjects';
 
 import {
   C7NReactQueryContainer, UIConfigInitContainer,
