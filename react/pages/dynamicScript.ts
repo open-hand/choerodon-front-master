@@ -1,5 +1,7 @@
 /* eslint-disable */
 // @ts-nocheck
+import React, { useEffect } from 'react';
+
 const env: any = window._env_;
 
 function loadComponent(scope, module, onError) {
@@ -44,21 +46,27 @@ const loadScrip = (url, callback) => {
   document.head.appendChild(script);
 }
 
-Object.keys(env).forEach((i) => {
-  if (i.startsWith('remote_')) {
-    const path: any = i.split('_')[1];
-    const remoteUrl = env[i];
-    loadScrip(remoteUrl.replace('$STATIC_URL', `${env['STATIC_URL']}/${path}`), () => {
-      if (window[path]) {
-        try {
-          const compo = loadComponent(path, `./${path}`);
-          const inject = loadComponent(path, './install');
-          compo();
-          inject();
-        } catch (e) {
-          console.log(e);
-        }
+const useDynamicScript = () => {
+  useEffect(() => {
+    Object.keys(env).forEach((i) => {
+      if (i.startsWith('remote_')) {
+        const path: any = i.split('_')[1];
+        const remoteUrl = env[i];
+        loadScrip(remoteUrl.replace('$STATIC_URL', `${env['STATIC_URL']}/${path}`), () => {
+          if (window[path]) {
+            try {
+              const compo = loadComponent(path, `./${path}`);
+              const inject = loadComponent(path, './install');
+              compo();
+              inject();
+            } catch (e) {
+              console.log(e);
+            }
+          }
+        });
       }
     });
-  }
-});
+  }, []);
+};
+
+export default useDynamicScript;

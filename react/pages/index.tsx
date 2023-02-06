@@ -22,7 +22,9 @@ import { ENTERPRISE_ADDRESS } from '@/constants';
 
 import '@/containers/components/style';
 
-import './dynamicScript';
+import useDynamicScript from './dynamicScript';
+
+// import './dynamicScript';
 
 // injects modules entry
 // import './moduleInjects';
@@ -52,6 +54,8 @@ const MasterIndex = (props: any) => {
   const location = useLocation();
   const history = useHistory();
   const { AutoRouter } = props;
+
+  useDynamicScript();
 
   const {
     pathname,
@@ -138,11 +142,10 @@ const MasterIndex = (props: any) => {
     }
   }, [pathname, loading, isInOutward]);
 
-  const getContainer = useMemo(() => {
-    return isInOutward ? <Outward AutoRouter={AutoRouter} /> : <Master AutoRouter={AutoRouter} />
-    // const content: any = isInOutward ? Outward : Master;
-    // return React.createElement(content);
-  }, [isInOutward]);
+  const getContainer = useMemo(() => (isInOutward ? <Outward AutoRouter={AutoRouter} /> : <Master AutoRouter={AutoRouter} />),
+  // const content: any = isInOutward ? Outward : Master;
+  // return React.createElement(content);
+    [isInOutward]);
 
   if (loading && !isInOutward) {
     return (<div />);
