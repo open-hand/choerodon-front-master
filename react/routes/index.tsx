@@ -35,7 +35,7 @@ const RouteIndex = (props: any) => {
     AppState,
   } = props;
 
-  const [remoteAllSet, setRemoteAllSet] = useState(false);
+  const [remoteAllSet, setRemoteAllSet] = useState(true);
 
   const match = useRouteMatch();
 
@@ -48,26 +48,26 @@ const RouteIndex = (props: any) => {
     window.___choeordonHistory__ = history;
   }, [history]);
 
-  useEffect(() => {
-    timer = setInterval(() => {
-      // eslint-disable-next-line no-underscore-dangle
-      const envList = window._env_;
-      const flag = Object.keys(envList).filter((i) => i.startsWith('remote_')).every((key: any) => {
-        const item = key.split('_')[1];
-        if (window[item]) {
-          return true;
-        }
-        return false;
-      });
-      if (flag) {
-        setRemoteAllSet(true);
-        // 监控 在base-pro注入成功后 调用setUser方法
-        setUser(AppState.userInfo);
-        setGlobalContext(AppState);
-        clearInterval(timer);
-      }
-    }, 1000);
-  }, []);
+  // useEffect(() => {
+  //   timer = setInterval(() => {
+  //     // eslint-disable-next-line no-underscore-dangle
+  //     const envList = window._env_;
+  //     const flag = Object.keys(envList).filter((i) => i.startsWith('remote_')).every((key: any) => {
+  //       const item = key.split('_')[1];
+  //       if (window[item]) {
+  //         return true;
+  //       }
+  //       return false;
+  //     });
+  //     if (flag) {
+  //       setRemoteAllSet(true);
+  //       // 监控 在base-pro注入成功后 调用setUser方法
+  //       setUser(AppState.userInfo);
+  //       setGlobalContext(AppState);
+  //       clearInterval(timer);
+  //     }
+  //   }, 1000);
+  // }, []);
 
   useEffect(() => {
     setGlobalContext(AppState);
