@@ -1,8 +1,12 @@
 /* eslint-disable */
 // @ts-nocheck
 import React, { useEffect } from 'react';
+import { EventEmitter } from 'events';
+
+const eventBus = new EventEmitter();
 
 const env: any = window._env_;
+window.loadFlag = {};
 
 function loadComponent(scope, module, onError) {
   return async () => {
@@ -28,22 +32,53 @@ function loadComponent(scope, module, onError) {
 }
 
 const loadScrip = (url, callback) => {
-  let script = document.createElement('script');
-  if (script.readyState) { // IE
-      script.onreadystatechange = function () {
-          if (script.readyState === 'loaded' || script.readyState === 'complete') {
-              script.onreadystatechange = null;
-              callback();
-          }
-      }
-  } else { // 其他浏览器
-      script.onload = function () {
-          callback();
-      }
+  // 已加载的资源不再重新加载
+  const scripts = Array.from(document.getElementsByTagName('script'));
+  const isExist = scripts.find(script => script.src === url);
+  if (isExist) {
+    if (
+      window.loadFlag[url]
+      || url?.includes(`localhost:${window.location.port}`)
+      || url?.includes(`127.0.0.1:${window.location.port}`)
+    ) {
+      setReady(true);
+    } else {
+      eventBus.once(url, () => {
+        setReady(true);
+      });
+    }
+    return () => {
+      console.log(`Dynamic Script Removed: ${url}`);
+      // document.head.removeChild(element);
+    };
   }
-  script.src = url;
-  script.crossOrigin  = 'anonymous';
-  document.head.appendChild(script);
+
+  const element = document.createElement('script');
+
+  element.src = url;
+  element.type = 'text/javascript';
+  element.async = true;
+
+  // setReady(false);
+  // setFailed(false);
+  window.loadFlag[url] = true;
+
+  element.onload = () => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`Dynamic Script Loaded: ${url}`);
+    }
+    // setReady(true);
+    eventBus.emit(url);
+    callback();
+  };
+
+  element.onerror = () => {
+    console.error(`Dynamic Script Error: ${url}`);
+    // setReady(false);
+    // setFailed(true);
+  };
+
+  document.head.appendChild(element);
 }
 
 const useDynamicScript = () => {
