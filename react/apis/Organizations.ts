@@ -21,7 +21,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   postInviteEnterSystemInfo(data:any) {
     return this.request({
-      url: `${this.prefix}/${this.orgId}/user/join/team`,
+      url: `${this.prefix}/${data.orgId}/user/join/team`,
       method: 'post',
       data,
     });
