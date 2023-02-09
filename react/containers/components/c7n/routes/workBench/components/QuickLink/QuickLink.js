@@ -179,7 +179,7 @@ const QuickLink = observer(() => {
               <div
                 className="c7n-quickLink-newItem-items-image"
                 style={{
-                  backgroundImage: `url(${child?.user?.imageUrl})`,
+                  backgroundImage: child?.user?.imageUrl ? `url(${child?.user?.imageUrl})` : '',
                 }}
               />
               <div
