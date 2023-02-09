@@ -329,7 +329,7 @@ class AppState {
       };
       this.setUserInfo(res);
       if (setUserId) {
-        sessionStorage.setItem('userId', res.id);
+        sessionStorage.setItem('userId', res.loginName);
       }
       return res;
     });

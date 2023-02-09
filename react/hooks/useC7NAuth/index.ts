@@ -72,7 +72,7 @@ function useC7NAuth(autoAuth?:boolean) {
         const res = await AppState.loadUserInfo(false);
         console.log("sessionStorage.getItem('userId')", sessionStorage.getItem('userId'));
         console.log('res.id', res.id);
-        if (sessionStorage.getItem('userId') && (String(res.id) !== (sessionStorage.getItem('userId')))) {
+        if (sessionStorage.getItem('userId') && (String(res.loginName) !== (sessionStorage.getItem('userId')))) {
           window.location.href = `${window.location.href.replace(/[&?]redirectFlag.*/g, '').split('/#/')[0]}/#/workbench?`
           + `id=${res.tenantId}&name=${res.tenantName}&organizationId=${res.tenantId}&type=organization`;
         }
