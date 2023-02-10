@@ -19,6 +19,10 @@ module.exports = {
       singleton: true,
       requiredVersion: false,
     },
+    '@hzero-front-ui/c7n-ui/lib/TablePro': {
+      singleton: true,
+      requiredVersion: false,
+    },
     '@hzero-front-ui/core': {
       singleton: true,
       requiredVersion: false,
