@@ -8,7 +8,7 @@ import Echart from 'echarts-for-react';
 import './index.less';
 import { Spin } from 'choerodon-ui';
 import { useIntl } from 'react-intl';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import OverviewWrap from '../OverviewWrap';
 import { useProjectOverviewStore } from '../../stores';
 import EmptyPage from '../EmptyPage';
@@ -160,9 +160,9 @@ const DefectTreatment = observer(() => {
       return (
         <OverviewWrap.Content className={`${clsPrefix}-content`}>
           {
-              defectTreatDs.length > 0
-                ? <Echart style={{ width: '100%', height: '100%' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
-            }
+            defectTreatDs.length > 0
+              ? <Echart style={{ width: '100%', height: '100%' }} option={getOptions()} /> : <EmptyPage height={274} content="暂无数据" />
+          }
 
         </OverviewWrap.Content>
       );

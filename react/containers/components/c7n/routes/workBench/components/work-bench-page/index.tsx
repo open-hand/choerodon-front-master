@@ -5,7 +5,7 @@ import { get as choerodonGet, has, mount } from '@choerodon/inject';
 
 import { get, noop } from 'lodash';
 
-import { Loading, EmptyPage } from '@choerodon/components';
+import { Loading, EmptyPage } from '@zknow/components';
 
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';

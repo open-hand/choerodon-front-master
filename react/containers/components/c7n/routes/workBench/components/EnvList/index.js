@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import uniqWith from 'lodash/uniqWith';
-import { TimePopover } from '@choerodon/components';
+import { TimePopover } from '@zknow/components';
 import StatusDot from '../StatusDot';
 import { useWorkBenchStore } from '../../stores';
 
@@ -55,8 +55,8 @@ const EnvList = observer(() => {
         {!envList.length ? (
           <div className="c7n-workbench-empty-span">
             {
-            formatWorkbench({ id: 'noEnvironmentsTodo' })
-          }
+              formatWorkbench({ id: 'noEnvironmentsTodo' })
+            }
           </div>
         ) : null}
         {envList.map(({

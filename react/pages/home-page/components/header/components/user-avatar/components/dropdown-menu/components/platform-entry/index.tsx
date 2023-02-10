@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui/pro';
-import { useQueryString } from '@choerodon/components';
+import { useQueryString } from '@zknow/components';
 import { useHistory } from 'react-router';
 
 import './index.less';

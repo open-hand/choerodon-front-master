@@ -10,7 +10,7 @@ import {
 import {
   includes, map, get, some,
 } from 'lodash';
-import { NewTips } from '@choerodon/components';
+import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
 import { fileServer, prompt } from '@/utils';
 import axios from '@/components/axios';
@@ -103,9 +103,9 @@ const CreateProject = observer(() => {
         }
       }
       record.set('categories', categories);
-      if (some(categories, ['code', 'N_WATERFALL'])) {
-        record.set('useTemplate', false);
-      }
+      // if (some(categories, ['code', 'N_WATERFALL'])) {
+      //   record.set('useTemplate', false);
+      // }
       const flag = await formDs.validate();
       if (flag) {
         const res = await formDs.forceSubmit();
@@ -267,8 +267,9 @@ const CreateProject = observer(() => {
   }, [createProjectStore.getIsSenior, isModify]);
 
   const handleOpenTemplate = useCallback(() => {
-    getInject('agile:openTemplate')({});
-  }, []);
+    const currentCategoryCodes = map(categoryDs.selected, (selectedRecord) => selectedRecord.get('code'));
+    getInject('agile:openTemplate')({ selectedCategoryCodes: currentCategoryCodes, agileWaterfall: formDs?.current?.get('agileWaterfall') });
+  }, [categoryDs.selected]);
 
   if (!record) {
     return <Spin spinning />;
@@ -312,22 +313,22 @@ const CreateProject = observer(() => {
         {
           !isModify
           && (
-          <>
-            <TreeSelect name="workGroupId" colSpan={50} style={{ width: 340 }} searchable optionRenderer={renderTreeSelect} />
-            <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
-          </>
+            <>
+              <TreeSelect name="workGroupId" colSpan={50} style={{ width: 340 }} searchable optionRenderer={renderTreeSelect} />
+              <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+            </>
           )
         }
 
         <TextArea newLine rows={3} colSpan={100} name="description" resize="vertical" />
         {
           isModify
-           && (
-           <>
-             <TextField name="creationDate" colSpan={50} style={{ width: 340 }} disabled />
-             <TextField name="createUserName" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled />
-           </>
-           )
+          && (
+            <>
+              <TextField name="creationDate" colSpan={50} style={{ width: 340 }} disabled />
+              <TextField name="createUserName" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled />
+            </>
+          )
         }
       </Form>
       <div className={`${prefixCls}-category-label`}>项目类型</div>
@@ -368,13 +369,13 @@ const CreateProject = observer(() => {
                     }}
                   />
                 </div>
-            )}
+              )}
           </div>
         ))}
       </div>
       <div className={`${prefixCls}-template`}>
         {
-          (!currentProjectId || (currentProjectId && !hasConfiged)) && selectedCategoryCodes.find((item) => item === 'N_AGILE') && includes(templateTabsKey, 'statusMachineTemplate') && (
+          (!currentProjectId || (currentProjectId && !hasConfiged)) && selectedCategoryCodes.find((item) => includes([categoryCodes.agile, categoryCodes.waterfall], item)) && includes(templateTabsKey, 'statusMachineTemplate') && (
             <>
               <div>
                 <span className={`${prefixCls}-template-checkbox-text`}>使用组织预置的状态机及看板模板</span>

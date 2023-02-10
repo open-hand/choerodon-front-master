@@ -8,7 +8,7 @@ import map from 'lodash/map';
 import { Tooltip } from 'choerodon-ui/pro';
 import WSHandler from '@/components/ws/WSHandler';
 
-import {} from '@choerodon/components';
+import {} from '@zknow/components';
 
 import './index.less';
 import { useProjectsSelectorStore } from '../../stores';

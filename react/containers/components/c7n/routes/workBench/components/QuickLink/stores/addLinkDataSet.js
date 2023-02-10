@@ -26,8 +26,10 @@ export default (projectIdOptionsDs) => ({
       let param;
       if (data.scope === 'project') {
         param = {
-          id: data.id, projectId: data.projectId.id, name: data.name, linkUrl: data.linkUrl, scope: data.scope,
+          id: data.id, name: data.name, linkUrl: data.linkUrl, scope: data.scope,
         };
+        const pId = typeof data.projectId === 'string' ? data.projectId : data?.projectId?.id;
+        Object.assign(param, { projectId: pId });
       } else {
         param = {
           id: data.id, name: data.name, linkUrl: data.linkUrl, scope: data.scope,

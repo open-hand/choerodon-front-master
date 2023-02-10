@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
 import { get } from 'lodash';
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn } from 'ahooks';
 import { useWorkBenchStore } from '../../../stores';
 import QuestionDataSet from './QuestionDataSet';
 import useStore from './useStore';
@@ -33,7 +33,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   const {
     focusQuestions,
   } = cacheStore;
-  const handleRemoveCache = usePersistFn((key = undefined) => {
+  const handleRemoveCache = useMemoizedFn((key = undefined) => {
     key ? remove(focusQuestions, key) : cacheStore.setFocusQuestions({});
   });
   const questionStore = useStore(focusQuestions, organizationId, handleRemoveCache);

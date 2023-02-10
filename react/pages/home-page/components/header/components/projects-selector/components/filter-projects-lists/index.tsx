@@ -1,16 +1,16 @@
 import React, {
-  useEffect, FC,
+  useEffect, FC, useRef, useState,
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import {} from 'choerodon-ui/pro';
 import { get } from '@choerodon/inject';
 
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 
 import './index.less';
 import { useQuery } from 'react-query';
 import { inject } from 'mobx-react';
-import { useVirtualList, useDebounceFn } from 'ahooks';
+import { useVirtualList, useDebounceFn, useRequest } from 'ahooks';
 import map from 'lodash/map';
 import { organizationsApi } from '@/apis';
 import { useProjectsSelectorStore } from '../../stores';
@@ -33,61 +33,69 @@ const FilterProjectsLists:FC<FilterProjectsListsProps> = (props:any) => {
   const userId = AppState.getUserId;
   const searchData = selectorRef.current?.text;
 
-  const {
-    data = {
-      content: [],
-    },
-    isLoading,
-    isFetching,
-    refetch,
-  } = useQuery<{
-    content:any[]
-  }>('c7ncd-projects-filter', getData, { enabled: false });
+  const containerRef = useRef(null);
+  const wrapperRef = useRef(null);
 
-  // 防抖
-  const { run } = useDebounceFn(refetch, {
-    wait: 500,
-    leading: true,
+  // const {
+  //   data,
+  //   isLoading,
+  //   isFetching,
+  //   refetch,
+  // } = useQuery<{
+  //   content:any[]
+  // }>('c7ncd-projects-filter', getData, { enabled: false });
+
+  // // 防抖
+  // const { run } = useDebounceFn(refetch, {
+  //   wait: 1000,
+  //   leading: true,
+  // });
+
+  const { data, loading, run }: any = useRequest(getData, {
+    debounceWait: 100,
+    manual: true,
   });
 
-  // 使用virtuallists
-  const { list, containerProps, wrapperProps } = useVirtualList(data?.content || [], {
-    overscan: 5,
-    itemHeight: 29,
-  });
+  // // 使用virtuallists
+  // const [list] = useVirtualList(data?.content || [], {
+  //   containerTarget: containerRef,
+  //   wrapperTarget: wrapperRef,
+  //   overscan: 5,
+  //   itemHeight: 29,
+  // });
 
   function getData() {
     return organizationsApi.getProjectsIds(userId, searchData);
   }
 
   const renderLists = () => (
-    list?.length && map(list, (listItem:any) => (
+    data?.content?.length && map(data?.content, (listItem:any) => (
       <div
         role="none"
         key={listItem.index}
-        onClick={() => handleSelectProjectCallback(listItem.data)}
+        onClick={() => handleSelectProjectCallback(listItem)}
         className={`${prefixCls}-lists-content-item`}
       >
-        {listItem?.data?.name || 'unkown'}
+        {listItem?.name || 'unkown'}
       </div>
     ))
   );
 
   useEffect(() => {
     searchData && run();
-  }, [run, searchData]);
+  }, [searchData]);
 
-  if (isLoading || isFetching) {
-    return <Loading display={isLoading || isFetching} type={get('configuration.master-global:loadingType') || 'c7n'} />;
+  if (loading) {
+    return <Loading display={loading} type={get('configuration.master-global:loadingType') || 'c7n'} />;
   }
 
-  if (!list?.length) {
+  if (!data?.content?.length) {
     return <div className={`${prefixCls}-lists-content-empty`}>{`找不到"${searchData}"对应项目`}</div>;
   }
 
   return (
-    <div className={`${prefixCls}-lists-content`} {...containerProps} style={{ maxHeight: '1.5rem', overflow: 'auto' }}>
-      <div {...wrapperProps}>
+    <div className={`${prefixCls}-lists-content`} ref={containerRef} style={{ maxHeight: '1.5rem', overflow: 'auto' }}>
+      <div ref={wrapperRef}>
         {renderLists()}
       </div>
     </div>
