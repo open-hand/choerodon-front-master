@@ -532,7 +532,7 @@ const CreateProject = observer(() => {
                     启用冲刺
                   </span>
                   <NewTips
-                    helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等功能"
+                    helpText="启用冲刺适用于敏捷项目群， 启用后可使用任务看板，工作列表等功能，注意使用过冲刺不能修改成单一的敏捷项目群。"
                     style={{
                       marginLeft: 3.17,
                       position: 'relative',
