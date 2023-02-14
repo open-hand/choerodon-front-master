@@ -12,6 +12,7 @@ import {
 } from 'lodash';
 import { NewTips } from '@choerodon/components';
 import { get as getInject } from '@choerodon/inject';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import { fileServer, prompt } from '@/utils';
 import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
@@ -30,6 +31,9 @@ const CreateProject = observer(() => {
       currentMenuType: {
         organizationId,
       },
+      userInfo: {
+        currentRoleLabels,
+      },
     },
     projectId: currentProjectId,
     createProjectStore,
@@ -41,6 +45,8 @@ const CreateProject = observer(() => {
   const [hasConfiged, setHasConfiged] = useState(false);
   const [showDevopsAdvanced, setShowDevopsAdvanced] = useState(false);
   const [expandAdvanced, setExpandAdvanced] = useState(true);
+
+  const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
 
   const record = useMemo(() => formDs.current, [formDs.current]);
 
@@ -305,7 +311,10 @@ const CreateProject = observer(() => {
                 })}
               />
               <TreeSelect name="workGroupId" colSpan={25} style={{ width: 161, position: 'relative', left: 3 }} searchable optionRenderer={renderTreeSelect} />
-              <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+              <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 161, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+              {
+                func && func.default(!currentRoleLabels?.includes('TENANT_ADMIN'))
+              }
             </>
           )
         }
@@ -315,10 +324,12 @@ const CreateProject = observer(() => {
           <>
             <TreeSelect name="workGroupId" colSpan={50} style={{ width: 340 }} searchable optionRenderer={renderTreeSelect} />
             <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+            {
+              func && func.default(!currentRoleLabels?.includes('TENANT_ADMIN'))
+            }
           </>
           )
         }
-
         <TextArea newLine rows={3} colSpan={100} name="description" resize="vertical" />
         {
           isModify

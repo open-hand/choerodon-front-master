@@ -17,6 +17,7 @@ import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import CreateProject from '../create-project';
 import CustomQuerybar from './customQuerybar';
 import { organizationsApi } from '@/apis';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import AllProjectTable from './table';
 import {
   getSearchFieldsConfig, getFilterFieldsConfig,
@@ -44,6 +45,8 @@ export default observer(() => {
     projectListDataSet,
   } = useProjectsProStore();
 
+  const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
+
   const customQuerybarCRef = useRef();
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
@@ -65,11 +68,25 @@ export default observer(() => {
 
   useEffect(() => {
     initTableColumnsSet();
-  }, []);
+  }, [func]);
 
   const initTableColumnsSet = async () => {
     const res = await organizationsApi.getAllProjectsTableColumns();
-    setTableColumnsSet(initColumnSetData(res?.listLayoutColumnRelVOS, HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig, projectListDataSet));
+    let extraColumns = [];
+    let columnBusinessSetConfig = defaultBusinessColumnSetConfig;
+    let columnConfig = defaultColumnSetConfig;
+    if (func) {
+      extraColumns = func.default();
+      columnBusinessSetConfig = [
+        ...defaultBusinessColumnSetConfig, {
+          ...extraColumns[0], isSelected: true, order: 4.1, width: 140,
+        }];
+      columnConfig = [
+        ...defaultColumnSetConfig, {
+          ...extraColumns[0], isSelected: true, order: 4.1, width: 140,
+        }];
+    }
+    setTableColumnsSet(initColumnSetData(res?.listLayoutColumnRelVOS, HAS_BASE_BUSINESS ? columnBusinessSetConfig : columnConfig, projectListDataSet));
   };
 
   const refresh = (projectId) => {
@@ -261,6 +278,8 @@ export default observer(() => {
 
   const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId, HAS_BASE_BUSINESS), [organizationId]);
   const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
+
+  console.log('tableColumnsSet', tableColumnsSet);
 
   return (
     <div className="allProjects">

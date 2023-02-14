@@ -36,7 +36,7 @@ function trimSpecial(string) {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({
-  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs,
+  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs, func,
 }) => {
   const codeValidator = async (value, name, record) => {
     if (record.status !== 'add') {
@@ -86,6 +86,12 @@ export default ({
       name: '全流程示例项目',
       code: 'proj-demo',
     };
+  }
+
+  let extraFields = [];
+
+  if (func) {
+    extraFields = func.default();
   }
 
   return {
@@ -246,6 +252,7 @@ export default ({
       { name: 'imageUrl', type: 'string' },
       { name: 'creationDate', type: 'date', label: '创建时间' },
       { name: 'useTemplate', defaultValue: true },
+      ...extraFields,
     ],
     events: {
       load: ({ dataSet }) => {
