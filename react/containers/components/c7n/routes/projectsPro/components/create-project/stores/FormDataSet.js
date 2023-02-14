@@ -246,6 +246,9 @@ export default ({
       { name: 'imageUrl', type: 'string' },
       { name: 'creationDate', type: 'date', label: '创建时间' },
       { name: 'useTemplate', defaultValue: true },
+      {
+        name: 'abc', type: 'boolean', label: '允许其他项目关联此项目工作项/需求', defaultValue: false,
+      },
     ],
     events: {
       load: ({ dataSet }) => {
