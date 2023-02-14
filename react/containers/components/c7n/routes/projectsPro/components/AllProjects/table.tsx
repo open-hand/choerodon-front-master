@@ -41,7 +41,7 @@ export const startProjChange = async (pid: string, enable: boolean, organization
   ProjectsProUseStore.axiosGetRecentProjects();
 };
 
-const Index: React.FC<IProps> = (props) => {
+const Index: React.FC<any> = (props) => {
   const { columnsSetConfig, onColumnResize: columnResize, fieldFunc } = props;
 
   const {
