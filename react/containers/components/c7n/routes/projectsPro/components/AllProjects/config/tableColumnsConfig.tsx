@@ -2,6 +2,7 @@ import React from 'react';
 import { Tag, Tooltip } from 'choerodon-ui';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { StatusTag, UserInfo, HealthStatus } from '@choerodon/components';
+import useExternalFunc from '@/hooks/useExternalFunc';
 
 const colorMap = new Map([
   ['failed', 'failed'],
@@ -120,7 +121,7 @@ const renderHealthState = (record: Record, prefix:string) => {
   return <HealthStatus color={color} name={name} description={description} className={`${prefix}-healthStatus`} />;
 };
 
-export const getAdjustableColumns = (formatMessage:any, prefix:string) => [
+export const getAdjustableColumns = (formatMessage:any, prefix:string, fieldFunc: any) => [
   {
     name: 'code',
     tooltip: 'overflow' as any,
@@ -196,4 +197,5 @@ export const getAdjustableColumns = (formatMessage:any, prefix:string) => [
     lock: false,
     sortable: true,
   },
+  ...fieldFunc ? fieldFunc.default() : [],
 ];

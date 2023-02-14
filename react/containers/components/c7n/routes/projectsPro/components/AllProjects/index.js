@@ -68,7 +68,7 @@ export default observer(() => {
 
   useEffect(() => {
     initTableColumnsSet();
-  }, [func]);
+  }, [func, projectListDataSet]);
 
   const initTableColumnsSet = async () => {
     const res = await organizationsApi.getAllProjectsTableColumns();
@@ -296,7 +296,7 @@ export default observer(() => {
             <TableColumnSet columnsSetConfig={tableColumnsSet} handleOk={handleEditColumnOk} />
           </div>
         </div>
-        <AllProjectTable columnsSetConfig={tableColumnsSet} onColumnResize={run} />
+        <AllProjectTable columnsSetConfig={tableColumnsSet} onColumnResize={run} fieldFunc={func} />
       </div>
     </div>
   );

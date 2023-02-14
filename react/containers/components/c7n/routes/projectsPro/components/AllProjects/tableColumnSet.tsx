@@ -47,7 +47,6 @@ export const initColumnSetData = (remoteData:IRemoteColumnSetConfig[] | null, de
   if (remoteData) {
     let columnArr:IColumnSetConfig[] = [];
     const newArr:IColumnSetConfig[] = [];
-
     defaultData.forEach((defaultItem) => { // 本地新增字段
       const foundIndex = remoteData.findIndex((i) => i.columnCode === defaultItem.name);
       if (foundIndex === -1) {

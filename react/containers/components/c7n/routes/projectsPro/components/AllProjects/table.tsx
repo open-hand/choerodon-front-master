@@ -42,7 +42,7 @@ export const startProjChange = async (pid: string, enable: boolean, organization
 };
 
 const Index: React.FC<IProps> = (props) => {
-  const { columnsSetConfig, onColumnResize: columnResize } = props;
+  const { columnsSetConfig, onColumnResize: columnResize, fieldFunc } = props;
 
   const {
     categoryCodes,
@@ -70,7 +70,7 @@ const Index: React.FC<IProps> = (props) => {
 
   });
 
-  const displayColumn = useGetDisplayColumn(columnsSetConfig, getAdjustableColumns(formatMessage, prefix));
+  const displayColumn = useGetDisplayColumn(columnsSetConfig, getAdjustableColumns(formatMessage, prefix, fieldFunc));
 
   const renderName = ({ record }: { record: Record }) => {
     const projData: any = record?.toData();
