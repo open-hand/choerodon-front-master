@@ -604,9 +604,7 @@ const CreateProject = observer(() => {
             }
           >
             {
-              getProjRelationShowInDevopsAdvanced() && (
-                { allowLinkForm }
-              )
+              getProjRelationShowInDevopsAdvanced() && allowLinkForm
             }
             <Alert
               message="DevOps组件编码将用于GitLab Group中的URL片段、Harbor Project的名称片段、SonarQube projectKey前缀、
