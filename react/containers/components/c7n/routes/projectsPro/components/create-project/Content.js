@@ -5,7 +5,17 @@ import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
 import { notification, message, Alert } from 'choerodon-ui';
 import {
-  Form, TextField, Tooltip, Spin, Icon, Button, TextArea, CheckBox, Select, SelectBox, TreeSelect,
+  Form,
+  TextField,
+  Tooltip,
+  Spin,
+  Icon,
+  Button,
+  TextArea,
+  CheckBox,
+  Select,
+  SelectBox,
+  TreeSelect,
 } from 'choerodon-ui/pro';
 import {
   includes, map, get, some,
@@ -22,14 +32,22 @@ import './index.less';
 
 const { Option } = Select;
 
+const projectRelationshipCodes = ['N_WATERFALL', 'N_AGILE', 'N_REQUIREMENT'];
+
 const CreateProject = observer(() => {
   const {
-    formDs, categoryDs, AppState, intl, prefixCls, modal, refresh, categoryCodes,
-    intl: { formatMessage }, intlPrefix,
+    formDs,
+    categoryDs,
+    AppState,
+    intl,
+    prefixCls,
+    modal,
+    refresh,
+    categoryCodes,
+    intl: { formatMessage },
+    intlPrefix,
     AppState: {
-      currentMenuType: {
-        organizationId,
-      },
+      currentMenuType: { organizationId },
     },
     projectId: currentProjectId,
     createProjectStore,
@@ -61,19 +79,25 @@ const CreateProject = observer(() => {
     const loadTemplateConfig = async () => {
       let notConfigured = true;
       if (currentProjectId) {
-        notConfigured = await axios.get(`/agile/v1/organizations/${organizationId}/organization_config/check_configured?projectId=${currentProjectId}`);
+        notConfigured = await axios.get(
+          `/agile/v1/organizations/${organizationId}/organization_config/check_configured?projectId=${currentProjectId}`,
+        );
         setHasConfiged(!notConfigured);
       }
       if (!currentProjectId || (currentProjectId && notConfigured)) {
-        axios.get(`/agile/v1/organizations/${organizationId}/organization_config/check_config_template`).then((res) => {
-          if (res.statusMachineTemplateConfig) {
-            if (res.boardTemplateConfig) {
-              setTemplateTabsKey(['statusMachineTemplate', 'boardTemplate']);
-            } else {
-              setTemplateTabsKey(['statusMachineTemplate']);
+        axios
+          .get(
+            `/agile/v1/organizations/${organizationId}/organization_config/check_config_template`,
+          )
+          .then((res) => {
+            if (res.statusMachineTemplateConfig) {
+              if (res.boardTemplateConfig) {
+                setTemplateTabsKey(['statusMachineTemplate', 'boardTemplate']);
+              } else {
+                setTemplateTabsKey(['statusMachineTemplate']);
+              }
             }
-          }
-        });
+          });
       }
     };
 
@@ -95,9 +119,17 @@ const CreateProject = observer(() => {
       }));
       if (typeof formDs?.current?.get('statusId') === 'object') {
         formDs?.current?.set('statusId', formDs?.current?.get('statusId')?.id);
-        formDs?.current?.set('projectEnable', formDs?.current?.get('statusId')?.projectEnable);
+        formDs?.current?.set(
+          'projectEnable',
+          formDs?.current?.get('statusId')?.projectEnable
+        );
       } else {
-        const statusItem = formDs?.current?.getField('statusId')?.options?.toData()?.find((i) => String(i?.id) === String(formDs?.current?.get('statusId')));
+        const statusItem = formDs?.current
+          ?.getField('statusId')
+          ?.options?.toData()
+          ?.find(
+            (i) => String(i?.id) === String(formDs?.current?.get('statusId'))
+          );
         if (statusItem) {
           formDs?.current?.set('projectEnable', statusItem?.projectEnable);
         }
@@ -112,11 +144,15 @@ const CreateProject = observer(() => {
         if (res && !res.failed && res.list && res.list.length) {
           const projectId = get(res.list[0], 'id');
           if (projectId) {
-            openNotification({ projectId, operateType: isModify ? 'update' : 'create' });
+            openNotification({
+              projectId,
+              operateType: isModify ? 'update' : 'create',
+            });
           }
           refresh(projectId);
           return true;
-        } if (res.failed) {
+        }
+        if (res.failed) {
           message.error(res.message);
         }
         setIsLoading(false);
@@ -134,16 +170,22 @@ const CreateProject = observer(() => {
     const notificationKey = `${organizationId}-${projectId}`;
     notification.open({
       key: notificationKey,
-      message: <span className={`${prefixCls}-notification-title`}>{isModify ? '修改项目' : '创建项目'}</span>,
-      description: <ProjectNotification
-        notificationKey={notificationKey}
-        organizationId={organizationId}
-        projectId={projectId}
-        operateType={operateType}
-        formatMessage={formatMessage}
-        intlPrefix={intlPrefix}
-        refresh={refresh}
-      />,
+      message: (
+        <span className={`${prefixCls}-notification-title`}>
+          {isModify ? '修改项目' : '创建项目'}
+        </span>
+      ),
+      description: (
+        <ProjectNotification
+          notificationKey={notificationKey}
+          organizationId={organizationId}
+          projectId={projectId}
+          operateType={operateType}
+          formatMessage={formatMessage}
+          intlPrefix={intlPrefix}
+          refresh={refresh}
+        />
+      ),
       duration: null,
       placement: 'bottomLeft',
       className: `${prefixCls}-notification`,
@@ -154,10 +196,13 @@ const CreateProject = observer(() => {
     setIsShowAvatar(flag);
   }, []);
 
-  const handleUploadOk = useCallback((res) => {
-    record.set('imageUrl', res);
-    changeAvatarUploader(false);
-  }, [record]);
+  const handleUploadOk = useCallback(
+    (res) => {
+      record.set('imageUrl', res);
+      changeAvatarUploader(false);
+    },
+    [record],
+  );
 
   const handleCategoryClick = useCallback((categoryRecord) => {
     if (categoryRecord.getState('disabled')) {
@@ -199,7 +244,10 @@ const CreateProject = observer(() => {
           >
             {!imageUrl && name && name.charAt(0)}
             <Button
-              className={classnames(`${prefixCls}-avatar-button`, `${prefixCls}-avatar-button-edit`)}
+              className={classnames(
+                `${prefixCls}-avatar-button`,
+                `${prefixCls}-avatar-button-edit`,
+              )}
               onClick={() => changeAvatarUploader(true)}
             >
               <div className={`${prefixCls}-avatar-button-icon`}>
@@ -216,59 +264,94 @@ const CreateProject = observer(() => {
             />
           </div>
         </div>
-        <div style={{ margin: '.06rem 0 .2rem 0', textAlign: 'center' }}>项目logo</div>
+        <div style={{ margin: '.06rem 0 .2rem 0', textAlign: 'center' }}>
+          项目logo
+        </div>
       </>
     );
   }, [record, isShowAvatar, AppState]);
 
-  const getCategoryClassNames = useCallback((categoryRecord) => (classnames({
-    [`${prefixCls}-category-container`]: true,
-    [`${prefixCls}-category-container-disabled`]: categoryRecord.getState('disabled'),
-    [`${prefixCls}-category-container-selected`]: categoryRecord.isSelected,
-    [`${prefixCls}-category-container-waterfall-selected`]: categoryRecord.isSelected && categoryRecord.get('code') === 'N_WATERFALL',
-  })), []);
+  const getCategoryClassNames = useCallback(
+    (categoryRecord) => classnames({
+      [`${prefixCls}-category-container`]: true,
+      [`${prefixCls}-category-container-disabled`]: categoryRecord.getState(
+        'disabled',
+      ),
+      [`${prefixCls}-category-container-selected`]: categoryRecord.isSelected,
+      [`${prefixCls}-category-container-waterfall-selected`]:
+          categoryRecord.isSelected
+          && categoryRecord.get('code') === 'N_WATERFALL',
+    }),
+    [],
+  );
 
-  const getTooltipContent = useCallback((categoryRecord) => {
-    const code = categoryRecord.get('code');
-    if (!categoryRecord.getState('disabled')) {
+  const getTooltipContent = useCallback(
+    (categoryRecord) => {
+      const code = categoryRecord.get('code');
+      if (!categoryRecord.getState('disabled')) {
+        return '';
+      }
+      if (!createProjectStore.getIsSenior && standardDisable.includes(code)) {
+        return '仅SaaS企业版可选此项目类型';
+      }
+      if (code === categoryCodes.require) {
+        return '请先选择【敏捷管理】或【敏捷项目群】或【瀑布管理】项目类型';
+      }
+      if (categoryRecord.isSelected && isModify) {
+        if (code === categoryCodes.program) {
+          return '项目群中存在子项目，无法移除此项目类型';
+        }
+        if (code === categoryCodes.agile) {
+          return '敏捷管理项目已加入项目群，无法移除此项目类型';
+        }
+      } else {
+        if (isModify) {
+          if (
+            code === categoryCodes.waterfall
+            && (categoryDs.getState('isBeforeAgile')
+              || categoryDs.getState('isBeforeProgram'))
+          ) {
+            return '已添加或添加过【敏捷管理】/【敏捷项目群】项目类型，不可添加【瀑布管理】项目类型';
+          }
+          if (
+            code === categoryCodes.program
+            && ((categoryDs.getState('isBeforeAgile')
+              && !categoryDs.getState('isBeforeProgram'))
+              || categoryDs.getState('isBeforeWaterfall'))
+          ) {
+            return '已添加或添加过【敏捷管理】/ 【瀑布管理】项目类型，不可添加【敏捷项目群】项目类型';
+          }
+          if (
+            code === categoryCodes.agile
+            && ((categoryDs.getState('isBeforeProgram')
+              && !categoryDs.getState('isProgram'))
+              || categoryDs.getState('isBeforeWaterfall'))
+          ) {
+            return '已添加或添加过【敏捷项目群】/ 【瀑布管理】项目类型，不可添加【敏捷管理】项目类型';
+          }
+        }
+        if (
+          [
+            categoryCodes.program,
+            categoryCodes.waterfall,
+            categoryCodes.agile,
+          ].indexOf(code) !== -1
+        ) {
+          return '不可同时选择敏捷管理/敏捷项目群与瀑布管理项目类型';
+        }
+        return '不可同时选择【敏捷管理】与【规模化敏捷项目群】项目类型';
+      }
       return '';
-    }
-    if (!createProjectStore.getIsSenior && standardDisable.includes(code)) {
-      return '仅SaaS企业版可选此项目类型';
-    }
-    if (code === categoryCodes.require) {
-      return '请先选择【敏捷管理】或【敏捷项目群】或【瀑布管理】项目类型';
-    }
-    if (categoryRecord.isSelected && isModify) {
-      if (code === categoryCodes.program) {
-        return '项目群中存在子项目，无法移除此项目类型';
-      }
-      if (code === categoryCodes.agile) {
-        return '敏捷管理项目已加入项目群，无法移除此项目类型';
-      }
-    } else {
-      if (isModify) {
-        if (code === categoryCodes.waterfall && (categoryDs.getState('isBeforeAgile') || categoryDs.getState('isBeforeProgram'))) {
-          return '已添加或添加过【敏捷管理】/【敏捷项目群】项目类型，不可添加【瀑布管理】项目类型';
-        }
-        if (code === categoryCodes.program && ((categoryDs.getState('isBeforeAgile') && !categoryDs.getState('isBeforeProgram')) || categoryDs.getState('isBeforeWaterfall'))) {
-          return '已添加或添加过【敏捷管理】/ 【瀑布管理】项目类型，不可添加【敏捷项目群】项目类型';
-        }
-        if (code === categoryCodes.agile && ((categoryDs.getState('isBeforeProgram') && !categoryDs.getState('isProgram')) || categoryDs.getState('isBeforeWaterfall'))) {
-          return '已添加或添加过【敏捷项目群】/ 【瀑布管理】项目类型，不可添加【敏捷管理】项目类型';
-        }
-      }
-      if ([categoryCodes.program, categoryCodes.waterfall, categoryCodes.agile].indexOf(code) !== -1) {
-        return '不可同时选择敏捷管理/敏捷项目群与瀑布管理项目类型';
-      }
-      return '不可同时选择【敏捷管理】与【规模化敏捷项目群】项目类型';
-    }
-    return '';
-  }, [createProjectStore.getIsSenior, isModify]);
+    },
+    [createProjectStore.getIsSenior, isModify],
+  );
 
   const handleOpenTemplate = useCallback(() => {
     const currentCategoryCodes = map(categoryDs.selected, (selectedRecord) => selectedRecord.get('code'));
-    getInject('agile:openTemplate')({ selectedCategoryCodes: currentCategoryCodes, agileWaterfall: formDs?.current?.get('agileWaterfall') });
+    getInject('agile:openTemplate')({
+      selectedCategoryCodes: currentCategoryCodes,
+      agileWaterfall: formDs?.current?.get('agileWaterfall'),
+    });
   }, [categoryDs.selected]);
 
   if (!record) {
@@ -286,64 +369,151 @@ const CreateProject = observer(() => {
     disabled: iRecord?.get('hasChildren') || iRecord?.get('children'),
   });
 
-  const renderTreeSelect = ({ text }) => <span className="tree-select-text">{text}</span>;
+  const renderTreeSelect = ({ text }) => (
+    <span className="tree-select-text">{text}</span>
+  );
+
+  const getProjRelationShowInDevopsAdvanced = () => {
+    if (!isModify) {
+      return false;
+    }
+    if (selectedCategoryCodes.some((item) => projectRelationshipCodes.includes(item))) {
+      return true;
+    }
+    return false;
+  };
+
+  const getProjRelationShow = () => {
+    if (!isModify) {
+      return false;
+    }
+    if (
+      !showDevopsAdvanced
+      && selectedCategoryCodes.some((item) => projectRelationshipCodes.includes(item))
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const allowLinkForm = (
+    <Form record={record} labelLayout="horizontal" labelWidth={300} labelAlign="left">
+      <SelectBox name="allowLink" style={{ width: 340, position: 'relative', top: -3 }}>
+        <SelectBox.Option value>允许</SelectBox.Option>
+        <SelectBox.Option value={false}>禁止</SelectBox.Option>
+      </SelectBox>
+    </Form>
+  );
 
   return (
     <div className={`${prefixCls}-body`}>
       {renderAvatar()}
-      <Form columns={100} record={record} className={`${prefixCls}-form`} labelLayout="float">
+      <Form
+        columns={100}
+        record={record}
+        className={`${prefixCls}-form`}
+        labelLayout="float"
+      >
         <TextField name="name" colSpan={50} style={{ width: 340 }} />
-        <TextField name="code" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled={isModify} />
-        {
-          isModify && (
-            <>
-              <Select
-                name="statusId"
-                colSpan={25}
-                style={{ width: 161 }}
-                onOption={({ record: record1 }) => ({
-                  disabled: !record1?.get('enable'),
-                })}
-              />
-              <TreeSelect name="workGroupId" colSpan={25} style={{ width: 161, position: 'relative', left: 3 }} searchable optionRenderer={renderTreeSelect} />
-              <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
-            </>
-          )
-        }
-        {
-          !isModify
-          && (
-            <>
-              <TreeSelect name="workGroupId" colSpan={50} style={{ width: 340 }} searchable optionRenderer={renderTreeSelect} />
-              <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
-            </>
-          )
-        }
+        <TextField
+          name="code"
+          colSpan={50}
+          style={{ width: 340, position: 'relative', left: 10 }}
+          disabled={isModify}
+        />
+        {isModify && (
+          <>
+            <Select
+              name="statusId"
+              colSpan={25}
+              style={{ width: 161 }}
+              onOption={({ record: record1 }) => ({
+                disabled: !record1?.get('enable'),
+              })}
+            />
+            <TreeSelect
+              name="workGroupId"
+              colSpan={25}
+              style={{ width: 161, position: 'relative', left: 3 }}
+              searchable
+              optionRenderer={renderTreeSelect}
+            />
+            <TreeSelect
+              name="projectClassficationId"
+              colSpan={50}
+              style={{ width: 340, position: 'relative', left: 10 }}
+              searchable
+              onOption={nodeCover}
+              optionRenderer={renderTreeSelect}
+            />
+          </>
+        )}
+        {!isModify && (
+          <>
+            <TreeSelect
+              name="workGroupId"
+              colSpan={50}
+              style={{ width: 340 }}
+              searchable
+              optionRenderer={renderTreeSelect}
+            />
+            <TreeSelect
+              name="projectClassficationId"
+              colSpan={50}
+              style={{ width: 340, position: 'relative', left: 10 }}
+              searchable
+              onOption={nodeCover}
+              optionRenderer={renderTreeSelect}
+            />
+          </>
+        )}
 
-        <TextArea newLine rows={3} colSpan={100} name="description" resize="vertical" />
-        {
-          isModify
-          && (
-            <>
-              <TextField name="creationDate" colSpan={50} style={{ width: 340 }} disabled />
-              <TextField name="createUserName" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled />
-            </>
-          )
-        }
+        <TextArea
+          newLine
+          rows={3}
+          colSpan={100}
+          name="description"
+          resize="vertical"
+        />
+        {isModify && (
+          <>
+            <TextField
+              name="creationDate"
+              colSpan={50}
+              style={{ width: 340 }}
+              disabled
+            />
+            <TextField
+              name="createUserName"
+              colSpan={50}
+              style={{ width: 340, position: 'relative', left: 10 }}
+              disabled
+            />
+          </>
+        )}
       </Form>
       <div className={`${prefixCls}-category-label`}>项目类型</div>
       <div className={`${prefixCls}-category`}>
         {categoryDs.map((categoryRecord, index) => (
           <div className={getCategoryClassNames(categoryRecord)}>
-            <Tooltip title={getTooltipContent(categoryRecord)} key={categoryRecord.get('code')}>
+            <Tooltip
+              title={getTooltipContent(categoryRecord)}
+              key={categoryRecord.get('code')}
+            >
               <div
                 className="category-item"
                 onClick={() => handleCategoryClick(categoryRecord)}
                 role="none"
               >
                 <div className="category-item-content">
-                  <div className={`category-item-content-icon category-item-content-icon-${categoryRecord.get('code')}`} />
-                  <span className="category-item-content-name">{categoryRecord.get('name')}</span>
+                  <div
+                    className={`category-item-content-icon category-item-content-icon-${categoryRecord.get(
+                      'code',
+                    )}`}
+                  />
+                  <span className="category-item-content-name">
+                    {categoryRecord.get('name')}
+                  </span>
                 </div>
               </div>
             </Tooltip>
@@ -352,33 +522,43 @@ const CreateProject = observer(() => {
                 <div
                   role="none"
                   className={`${prefixCls}-category-exception`}
-                  onClick={(e) => { e.stopPropagation(); }}
-                >
-                  <CheckBox checked={record?.get('agileWaterfall')} onChange={sprintCheckboxOnChange} />
-                  <span style={{
-                    marginLeft: 4.25, fontSize: 12, position: 'relative', top: -1,
+                  onClick={(e) => {
+                    e.stopPropagation();
                   }}
+                >
+                  <CheckBox
+                    checked={record?.get('agileWaterfall')}
+                    onChange={sprintCheckboxOnChange}
+                  />
+                  <span
+                    style={{
+                      marginLeft: 4.25,
+                      fontSize: 12,
+                      position: 'relative',
+                      top: -1,
+                    }}
                   >
                     启用冲刺
                   </span>
                   <NewTips
-                    helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等功能"
+                    helpText="启用冲刺适用于敏捷项目群， 启用后可使用任务看板，工作列表等功能，注意使用过冲刺不能修改成单一的敏捷项目群。"
                     style={{
                       marginLeft: 3.17,
                       position: 'relative',
                     }}
                   />
                 </div>
-              )}
+            )}
           </div>
         ))}
       </div>
       <div className={`${prefixCls}-template`}>
-        {
-          (!currentProjectId || (currentProjectId && !hasConfiged)) && selectedCategoryCodes.find((item) => includes([categoryCodes.agile, categoryCodes.waterfall], item)) && includes(templateTabsKey, 'statusMachineTemplate') && (
+        {(!currentProjectId || (currentProjectId && !hasConfiged))
+          && selectedCategoryCodes.find((item) => includes([categoryCodes.agile, categoryCodes.waterfall], item))
+          && includes(templateTabsKey, 'statusMachineTemplate') && (
             <>
               <div>
-                <span className={`${prefixCls}-template-checkbox-text`}>使用组织预置的状态机及看板模板</span>
+                <span className={`${prefixCls}-template-checkbox-text`}> </span>
                 <span
                   role="none"
                   onClick={handleOpenTemplate}
@@ -392,36 +572,57 @@ const CreateProject = observer(() => {
                 <SelectBox.Option value={false}>否</SelectBox.Option>
               </SelectBox>
             </>
-          )
-        }
+        )}
       </div>
       {
-        showDevopsAdvanced && (
-          <div className={`${prefixCls}-advanced`}>
-            <div className={`${prefixCls}-advanced-divided`} />
-            <p className={`${prefixCls}-advanced-title`}>
-              高级设置
-              <Button onClick={() => { setExpandAdvanced(!expandAdvanced); }} icon={expandAdvanced ? 'expand_less' : 'expand_more'} className="btn-expand" />
-            </p>
-            <div style={expandAdvanced ? { height: 'auto' } : { height: 0, overflow: 'hidden' }}>
-              <Alert
-                message="DevOps组件编码将用于GitLab Group中的URL片段、Harbor Project的名称片段、SonarQube projectKey前缀、
-          以及Helm仓库编码。"
-                type="info"
-                showIcon
-                style={{ marginBottom: 20 }}
-              />
-              <Form columns={100} record={record}>
-                <TextField
-                  name="devopsComponentCode"
-                  colSpan={50}
-                  style={{ width: 340, position: 'relative', left: -5 }}
-                />
-              </Form>
-            </div>
+        getProjRelationShow() && (
+          <div className={`${prefixCls}-projRelation`}>
+            <div className={`${prefixCls}-projRelation-divided`} />
+            <p>高级设置</p>
+            {allowLinkForm}
           </div>
         )
       }
+      {showDevopsAdvanced && (
+        <div className={`${prefixCls}-advanced`}>
+          <div className={`${prefixCls}-advanced-divided`} />
+          <p className={`${prefixCls}-advanced-title`}>
+            高级设置
+            <Button
+              onClick={() => {
+                setExpandAdvanced(!expandAdvanced);
+              }}
+              icon={expandAdvanced ? 'expand_less' : 'expand_more'}
+              className="btn-expand"
+            />
+          </p>
+          <div
+            style={
+              expandAdvanced
+                ? { height: 'auto' }
+                : { height: 0, overflow: 'hidden' }
+            }
+          >
+            {
+              getProjRelationShowInDevopsAdvanced() && allowLinkForm
+            }
+            <Alert
+              message="DevOps组件编码将用于GitLab Group中的URL片段、Harbor Project的名称片段、SonarQube projectKey前缀、
+          以及Helm仓库编码。"
+              type="info"
+              showIcon
+              style={{ marginBottom: 20 }}
+            />
+            <Form columns={100} record={record}>
+              <TextField
+                name="devopsComponentCode"
+                colSpan={50}
+                style={{ width: 340, position: 'relative', left: -5 }}
+              />
+            </Form>
+          </div>
+        </div>
+      )}
     </div>
   );
 });
