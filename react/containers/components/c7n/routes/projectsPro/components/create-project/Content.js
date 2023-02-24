@@ -23,6 +23,7 @@ import {
 } from 'lodash';
 import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import { fileServer, prompt } from '@/utils';
 import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
@@ -48,7 +49,12 @@ const CreateProject = observer(() => {
     intl: { formatMessage },
     intlPrefix,
     AppState: {
-      currentMenuType: { organizationId },
+      currentMenuType: {
+        organizationId,
+      },
+      userInfo: {
+        currentRoleLabels,
+      },
     },
     projectId: currentProjectId,
     createProjectStore,
@@ -62,6 +68,8 @@ const CreateProject = observer(() => {
   const [hasConfiged, setHasConfiged] = useState(false);
   const [showDevopsAdvanced, setShowDevopsAdvanced] = useState(false);
   const [expandAdvanced, setExpandAdvanced] = useState(true);
+
+  const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
 
   const record = useMemo(() => formDs.current, [formDs.current]);
 
@@ -440,82 +448,48 @@ const CreateProject = observer(() => {
         labelLayout="float"
       >
         <TextField name="name" colSpan={50} style={{ width: 340 }} />
-        <TextField
-          name="code"
-          colSpan={50}
-          style={{ width: 340, position: 'relative', left: 10 }}
-          disabled={isModify}
-        />
-        {isModify && (
+        <TextField name="code" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled={isModify} />
+        {
+          isModify && (
+            <>
+              <Select
+                name="statusId"
+                colSpan={25}
+                style={{ width: 161 }}
+                onOption={({ record: record1 }) => ({
+                  disabled: !record1?.get('enable'),
+                })}
+              />
+              <TreeSelect name="workGroupId" colSpan={25} style={{ width: 161, position: 'relative', left: 3 }} searchable optionRenderer={renderTreeSelect} />
+              <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 161, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+              {
+                func && func.default(!currentRoleLabels?.includes('TENANT_ADMIN'))
+              }
+            </>
+          )
+        }
+        {
+          !isModify
+          && (
           <>
-            <Select
-              name="statusId"
-              colSpan={25}
-              style={{ width: 161 }}
-              onOption={({ record: record1 }) => ({
-                disabled: !record1?.get('enable'),
-              })}
-            />
-            <TreeSelect
-              name="workGroupId"
-              colSpan={25}
-              style={{ width: 161, position: 'relative', left: 3 }}
-              searchable
-              optionRenderer={renderTreeSelect}
-            />
-            <TreeSelect
-              name="projectClassficationId"
-              colSpan={50}
-              style={{ width: 340, position: 'relative', left: 10 }}
-              searchable
-              onOption={nodeCover}
-              optionRenderer={renderTreeSelect}
-            />
+            <TreeSelect name="workGroupId" colSpan={50} style={{ width: 340 }} searchable optionRenderer={renderTreeSelect} />
+            <TreeSelect name="projectClassficationId" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} searchable onOption={nodeCover} optionRenderer={renderTreeSelect} />
+            {
+              func && func.default(!currentRoleLabels?.includes('TENANT_ADMIN'))
+            }
           </>
-        )}
-        {!isModify && (
-          <>
-            <TreeSelect
-              name="workGroupId"
-              colSpan={50}
-              style={{ width: 340 }}
-              searchable
-              optionRenderer={renderTreeSelect}
-            />
-            <TreeSelect
-              name="projectClassficationId"
-              colSpan={50}
-              style={{ width: 340, position: 'relative', left: 10 }}
-              searchable
-              onOption={nodeCover}
-              optionRenderer={renderTreeSelect}
-            />
-          </>
-        )}
-
-        <TextArea
-          newLine
-          rows={3}
-          colSpan={100}
-          name="description"
-          resize="vertical"
-        />
-        {isModify && (
-          <>
-            <TextField
-              name="creationDate"
-              colSpan={50}
-              style={{ width: 340 }}
-              disabled
-            />
-            <TextField
-              name="createUserName"
-              colSpan={50}
-              style={{ width: 340, position: 'relative', left: 10 }}
-              disabled
-            />
-          </>
-        )}
+          )
+        }
+        <TextArea newLine rows={3} colSpan={100} name="description" resize="vertical" />
+        {
+          isModify
+           && (
+           <>
+             <TextField name="creationDate" colSpan={50} style={{ width: 340 }} disabled />
+             <TextField name="createUserName" colSpan={50} style={{ width: 340, position: 'relative', left: 10 }} disabled />
+           </>
+           )
+        }
       </Form>
       <div className={`${prefixCls}-category-label`}>项目类型</div>
       <div className={`${prefixCls}-category`}>

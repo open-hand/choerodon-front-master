@@ -3,6 +3,7 @@ import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { DataSet } from 'choerodon-ui/pro';
 import { injectIntl } from 'react-intl';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import useStore from './useStore';
 import ListDataSet from './ListDataSet';
 import CategoryDataSet from './CategoryDataSet';
@@ -30,10 +31,12 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore
     history,
   } = props;
 
+  const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
+
   const ProjectsProUseStore = useStore(AppState, history);
   const categoryDs = useMemo(() => new DataSet(CategoryDataSet(AppState, history)), [type, id, organizationId]);
   const dataSet = useMemo(() => new DataSet(ListDataSet(AppState, history, categoryDs)), [type, id, organizationId]);
-  const projectListDataSet = useMemo(() => new DataSet(ProjectListDataSet({ organizationId, userId: getUserId })), [type, id, organizationId]);
+  const projectListDataSet = useMemo(() => new DataSet(ProjectListDataSet({ organizationId, userId: getUserId, func })), [type, id, organizationId, func]);
 
   const categoryCodes = useMemo(() => ({
     devops: 'N_DEVOPS',

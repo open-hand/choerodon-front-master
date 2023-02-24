@@ -37,7 +37,7 @@ function trimSpecial(string) {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({
-  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs, setFlags,
+  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs, func, setFlags
 }) => {
   const codeValidator = async (value, name, record) => {
     if (record.status !== 'add') {
@@ -87,6 +87,12 @@ export default ({
       name: '全流程示例项目',
       code: 'proj-demo',
     };
+  }
+
+  let extraFields = [];
+
+  if (func) {
+    extraFields = func.default();
   }
 
   return {
@@ -256,6 +262,7 @@ export default ({
       {
         name: 'allowLink', type: 'boolean', label: '允许其他项目关联此项目工作项/需求', defaultValue: false,
       },
+      ...extraFields,
     ],
     events: {
       load: ({ dataSet }) => {
