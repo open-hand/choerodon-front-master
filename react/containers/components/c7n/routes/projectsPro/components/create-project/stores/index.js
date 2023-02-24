@@ -1,5 +1,5 @@
 import React, {
-  createContext, useContext, useEffect, useMemo,
+  createContext, useContext, useEffect, useMemo, useState,
 } from 'react';
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
@@ -32,14 +32,15 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     categoryCodes,
     inNewUserGuideStepOne,
   } = props;
-
   const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
 
+  const [flags, setFlags] = useState(false);
+  
   const standardDisable = useMemo(() => [categoryCodes.require, categoryCodes.program, categoryCodes.operations], []);
 
   const createProjectStore = useStore();
   const categoryDs = useMemo(() => new DataSet(CategoryDataSet({
-    organizationId, categoryCodes, createProjectStore, inNewUserGuideStepOne,
+    organizationId, categoryCodes, createProjectStore, inNewUserGuideStepOne, setFlags,
   })), [organizationId]);
 
   const statusDs = useMemo(() => new DataSet(StatusDataSet({
@@ -154,6 +155,13 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
         categoryDs.forEach(async (categoryRecord) => {
           const currentCode = categoryRecord.get('code');
           if (some(projectData.categories, ['code', currentCode])) {
+            if (currentCode === categoryCodes.agile) {
+              if (isBeforeProgram) {
+                categoryDs.unselect(categoryRecord);
+              } else {
+                categoryDs.select(categoryRecord);
+              }
+            }
             categoryDs.select(categoryRecord);
           }
           switch (currentCode) {
@@ -206,6 +214,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     formDs,
     categoryDs,
     createProjectStore,
+    setFlags,
+    flags,
   };
 
   return (

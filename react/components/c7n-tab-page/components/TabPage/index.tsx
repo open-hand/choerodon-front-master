@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import { get } from '@choerodon/inject';
 import { Permission } from '@/components/permission';
 import NoAccess from '@/components/c7n-error-pages/403';

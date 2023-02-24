@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import * as dd from 'dingtalk-jsapi';
 import Cookies from 'universal-cookie';
 import { get } from '@choerodon/inject';

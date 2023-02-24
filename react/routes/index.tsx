@@ -11,7 +11,7 @@ import { observer } from 'mobx-react-lite';
 import { ModalProvider } from 'choerodon-ui/pro';
 import { inject } from 'mobx-react';
 import { mount, get } from '@choerodon/inject';
-import { Loading } from '@choerodon/components';
+import { C7NLoading as Loading } from '@zknow/components';
 import useDatafluxRum from '@/hooks/useDatafluxRum';
 import Skeleton from '@/components/skeleton';
 import PermissionRoute from '@/components/permission-route';
@@ -26,16 +26,17 @@ const ProjectsPro = React.lazy(() => import('@/containers/components/c7n/routes/
 const ProjectOverview = React.lazy(() => import('@/containers/components/c7n/routes/projectOverview'));
 
 // this is child services routes collections page
-const AutoRouter = React.lazy(() => import('./routesCollections'));
+// const AutoRouter = React.lazy(() => import('./routesCollections'));
 
 let timer: any;
 
 const RouteIndex = (props: any) => {
   const {
     AppState,
+    AutoRouter,
   } = props;
 
-  const [remoteAllSet, setRemoteAllSet] = useState(false);
+  const [remoteAllSet, setRemoteAllSet] = useState(true);
 
   const match = useRouteMatch();
 
@@ -48,26 +49,26 @@ const RouteIndex = (props: any) => {
     window.___choeordonHistory__ = history;
   }, [history]);
 
-  useEffect(() => {
-    timer = setInterval(() => {
-      // eslint-disable-next-line no-underscore-dangle
-      const envList = window._env_;
-      const flag = Object.keys(envList).filter((i) => i.startsWith('remote_')).every((key: any) => {
-        const item = key.split('_')[1];
-        if (window[item]) {
-          return true;
-        }
-        return false;
-      });
-      if (flag) {
-        setRemoteAllSet(true);
-        // 监控 在base-pro注入成功后 调用setUser方法
-        setUser(AppState.userInfo);
-        setGlobalContext(AppState);
-        clearInterval(timer);
-      }
-    }, 1000);
-  }, []);
+  // useEffect(() => {
+  //   timer = setInterval(() => {
+  //     // eslint-disable-next-line no-underscore-dangle
+  //     const envList = window._env_;
+  //     const flag = Object.keys(envList).filter((i) => i.startsWith('remote_')).every((key: any) => {
+  //       const item = key.split('_')[1];
+  //       if (window[item]) {
+  //         return true;
+  //       }
+  //       return false;
+  //     });
+  //     if (flag) {
+  //       setRemoteAllSet(true);
+  //       // 监控 在base-pro注入成功后 调用setUser方法
+  //       setUser(AppState.userInfo);
+  //       setGlobalContext(AppState);
+  //       clearInterval(timer);
+  //     }
+  //   }, 1000);
+  // }, []);
 
   useEffect(() => {
     setGlobalContext(AppState);

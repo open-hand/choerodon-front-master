@@ -7,7 +7,7 @@ import React, {
 import {
   Droppable, DragDropContext, DropResult, Draggable, DraggingStyle, NotDraggingStyle,
 } from 'react-beautiful-dnd';
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn } from 'ahooks';
 import { observer } from 'mobx-react-lite';
 import { cloneDeep, orderBy, remove } from 'lodash';
 
@@ -91,7 +91,7 @@ const Content: React.FC<any> = observer((props) => {
   }, [columnsSetConfig]);
 
   // DropResult
-  const onDragEnd = usePersistFn((result: any) => {
+  const onDragEnd = useMemoizedFn((result: any) => {
     if (result.source && result.destination) {
       const { source: { index: sourceIndex }, destination: { index: destinationIndex } } = result;
       const [moved] = columnsSet.splice(sourceIndex, 1) ?? [];

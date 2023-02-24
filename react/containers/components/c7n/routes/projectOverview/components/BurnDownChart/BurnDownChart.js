@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import { get as choerodonGet } from '@choerodon/inject';
 import { get } from 'lodash';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import { useIntl } from 'react-intl';
 import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 import { useBurnDownChartStore } from './stores';

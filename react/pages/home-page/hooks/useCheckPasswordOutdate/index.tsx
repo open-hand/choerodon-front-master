@@ -2,7 +2,7 @@ import { useEffect, useCallback } from 'react';
 import { useSessionStorageState } from 'ahooks';
 import { Modal } from 'choerodon-ui/pro';
 import { useHistory } from 'react-router';
-import { useQueryString } from '@choerodon/components';
+import { useQueryString } from '@zknow/components';
 import { useGetUserInfo } from '@/hooks/useUserInfo';
 import { USERINFO_PATH } from '@/constants';
 

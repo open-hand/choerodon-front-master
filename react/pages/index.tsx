@@ -22,8 +22,12 @@ import { ENTERPRISE_ADDRESS } from '@/constants';
 
 import '@/containers/components/style';
 
+import useDynamicScript from './dynamicScript';
+
+// import './dynamicScript';
+
 // injects modules entry
-import './moduleInjects';
+// import './moduleInjects';
 
 import {
   C7NReactQueryContainer, UIConfigInitContainer,
@@ -46,9 +50,12 @@ const cookies = new Cookies();
 
 let ERROR: any = '';
 
-const MasterIndex = () => {
+const MasterIndex = (props: any) => {
   const location = useLocation();
   const history = useHistory();
+  const { AutoRouter } = props;
+
+  useDynamicScript();
 
   const {
     pathname,
@@ -135,10 +142,10 @@ const MasterIndex = () => {
     }
   }, [pathname, loading, isInOutward]);
 
-  const getContainer = useMemo(() => {
-    const content: any = isInOutward ? Outward : Master;
-    return React.createElement(content);
-  }, [isInOutward]);
+  const getContainer = useMemo(() => (isInOutward ? <Outward AutoRouter={AutoRouter} /> : <Master AutoRouter={AutoRouter} />),
+  // const content: any = isInOutward ? Outward : Master;
+  // return React.createElement(content);
+    [isInOutward]);
 
   if (loading && !isInOutward) {
     return (<div />);

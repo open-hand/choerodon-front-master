@@ -1,10 +1,10 @@
 // @ts-nocheck
 import React, {
-  FC, CSSProperties, useMemo, useCallback,
+  FC, CSSProperties, useMemo, useCallback, useEffect,
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui/pro';
-import { OverflowWrap } from '@choerodon/components';
+import { OverflowWrap } from '@zknow/components';
 import { Menu } from 'choerodon-ui';
 import map from 'lodash/map';
 import { useHistory } from 'react-router';
@@ -192,6 +192,11 @@ const SubMenus:FC<SubMenuProps> = () => {
 
   if (!currentRootChildrenMenu?.length) {
     return null;
+  }
+
+  // 这里是如果在切换项目时 是重新设置了openkeys 所以再次判断如果还是收起状态 就把openkeys设置为空
+  if (!isExpanded && savedOpenKeys?.length > 0) {
+    MenuStore.setOpenKeys([]);
   }
 
   return (

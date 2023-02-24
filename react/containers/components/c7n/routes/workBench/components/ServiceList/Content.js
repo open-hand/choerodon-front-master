@@ -3,7 +3,7 @@ import { Icon } from 'choerodon-ui';
 import { observer } from 'mobx-react-lite';
 import { get } from '@choerodon/inject';
 
-import { Loading, TimePopover } from '@choerodon/components';
+import { Loading, TimePopover } from '@zknow/components';
 
 import './index.less';
 import { useRecentAppStore } from './stores';
