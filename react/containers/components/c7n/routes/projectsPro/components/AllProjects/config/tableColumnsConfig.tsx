@@ -120,7 +120,7 @@ const renderHealthState = (record: Record, prefix:string) => {
   return <HealthStatus color={color} name={name} description={description} className={`${prefix}-healthStatus`} />;
 };
 
-export const getAdjustableColumns = (formatMessage:any, prefix:string) => [
+export const getAdjustableColumns = (formatMessage:any, prefix:string, fieldFunc: any) => [
   {
     name: 'code',
     tooltip: 'overflow' as any,
@@ -196,4 +196,5 @@ export const getAdjustableColumns = (formatMessage:any, prefix:string) => [
     lock: false,
     sortable: true,
   },
+  ...fieldFunc ? fieldFunc.default() : [],
 ];

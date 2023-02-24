@@ -7,6 +7,7 @@ import { DataSet } from 'choerodon-ui/pro';
 import forEach from 'lodash/forEach';
 import some from 'lodash/some';
 import { injectIntl } from 'react-intl';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import FormDataSet from './FormDataSet';
 import StatusDataSet from './StatusDataSet';
 import CategoryDataSet from './CategoryDataSet';
@@ -31,7 +32,10 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     categoryCodes,
     inNewUserGuideStepOne,
   } = props;
+  const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
+
   const [flags, setFlags] = useState(false);
+  
   const standardDisable = useMemo(() => [categoryCodes.require, categoryCodes.program, categoryCodes.operations], []);
 
   const createProjectStore = useStore();
@@ -44,8 +48,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   })), [projectId]);
 
   const formDs = useMemo(() => new DataSet(FormDataSet({
-    organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne, statusDs,
-  })), [organizationId, projectId, statusDs, inNewUserGuideStepOne]);
+    organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne, statusDs, func,
+  })), [organizationId, projectId, statusDs, inNewUserGuideStepOne, func]);
 
   useEffect(() => {
     if (projectId) {
@@ -54,7 +58,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       formDs.create();
       loadCategory();
     }
-  }, [projectId, organizationId]);
+  }, [projectId, organizationId, func]);
 
   const loadCategory = async () => {
     await axios.all([
