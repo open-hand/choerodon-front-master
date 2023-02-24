@@ -569,7 +569,7 @@ const CreateProject = observer(() => {
                     启用敏捷管理
                   </span>
                   <NewTips
-                    helpText="启用敏捷管理适用于敏捷项目群， 启用后可使用任务看板，工作列表等功能，注意使用过启用敏捷管理不能修改成单一的敏捷项目群。"
+                    helpText="启用敏捷管理适用于敏捷项目群， 启用可使用任务看板，工作列表等功能，一旦使用过敏捷管理勾选将不可取消。"
                     style={{
                       marginLeft: 3.17,
                       position: 'relative',
