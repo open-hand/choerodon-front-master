@@ -94,18 +94,16 @@ function handleDisabled({
   }
 }
 
-function setRequireModule({
-  dataSet, selected, categoryCodes,
-}) {
+function setRequireModule({ dataSet, selected, categoryCodes }) {
   const findRecord = dataSet.find(
-    (eachRecord) => eachRecord.get('code') === categoryCodes.require && eachRecord.get('code') !== categoryCodes.agile,
+    (eachRecord) => eachRecord.get('code') === categoryCodes.require,
   );
   if (!findRecord) {
     return;
   }
   if (selected) {
     findRecord.setState('disabled', false);
-    if (findRecord.getState('isRequire')) {
+    if (findRecord.getState('isRequire') && !findRecord.getState('isEdit')) {
       dataSet.select(findRecord);
     }
   } else {
@@ -113,7 +111,6 @@ function setRequireModule({
     const hasSelected = dataSet.some(
       (eachRecord) => codeArr.includes(eachRecord.get('code')) && eachRecord.isSelected,
     );
-
     if (!hasSelected) {
       dataSet.unSelect(findRecord);
     }
