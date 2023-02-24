@@ -215,12 +215,13 @@ const CreateProject = observer(() => {
     [record],
   );
   const getChecked = () => {
-    if (categoryDs.getState('isProgram') && categoryDs.getState('isAgile')) {
+    if (categoryDs.getState('isProgram') && categoryDs.getState('isAgile') && disabled === false) {
       return true;
     }
     return check;
   };
   const sprintCheckboxOnChanges = (value) => {
+    setDisabled(true);
     if (value === true) {
       setCheck(true);
     } else {
@@ -351,9 +352,6 @@ const CreateProject = observer(() => {
             code === categoryCodes.agile
             && ((categoryDs.getState('isBeforeProgram') || categoryDs.getState('isBeforeWaterfall')))
           ) {
-            if (categoryDs.getState('isProgram') && categoryDs.getState('isAgile')) {
-              return '敏捷管理项目已加入敏捷项目群，且无法移除';
-            }
             return '已添加或添加过【敏捷项目群】/ 【瀑布管理】项目类型，不可添加【敏捷管理】项目类型';
           }
         }
@@ -549,6 +547,7 @@ const CreateProject = observer(() => {
                 <div
                   role="none"
                   className={`${prefixCls}-category-exception`}
+                  style={{ disabled: false }}
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
@@ -556,7 +555,6 @@ const CreateProject = observer(() => {
                   <CheckBox
                     checked={getChecked()}
                     onChange={sprintCheckboxOnChanges}
-                    disabled={isModify && categoryDs.getState('isProgram') && categoryDs.getState('isAgile')}
                   />
                   <span
                     style={{
@@ -569,7 +567,7 @@ const CreateProject = observer(() => {
                     启用敏捷管理
                   </span>
                   <NewTips
-                    helpText="启用敏捷管理适用于敏捷项目群， 启用可使用任务看板，工作列表等功能，一旦使用过敏捷管理勾选将不可取消。"
+                    helpText="启用后菜单中将新增任务看板、工作列表、版本列表，适用于项目群下管理故事、缺陷等场景。启用后可以取消。"
                     style={{
                       marginLeft: 3.17,
                       position: 'relative',
