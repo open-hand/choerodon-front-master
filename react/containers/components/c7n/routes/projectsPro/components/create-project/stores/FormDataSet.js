@@ -1,4 +1,5 @@
 import { DataSet } from 'choerodon-ui/pro';
+import { setEmitFlags } from 'typescript';
 import { organizationsApiConfig } from '@/apis';
 import axios from '@/components/axios';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
@@ -36,7 +37,7 @@ function trimSpecial(string) {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({
-  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs,
+  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs, setFlags,
 }) => {
   const codeValidator = async (value, name, record) => {
     if (record.status !== 'add') {
@@ -227,6 +228,12 @@ export default ({
       },
       {
         name: 'agileWaterfall',
+        type: 'boolean',
+        label: '启用冲刺',
+        defaultValue: false,
+      },
+      {
+        name: 'agileProgram',
         type: 'boolean',
         label: '启用冲刺',
         defaultValue: false,

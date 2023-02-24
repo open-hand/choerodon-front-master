@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
@@ -54,6 +55,8 @@ const CreateProject = observer(() => {
     standardDisable,
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
+  const [check, setCheck] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [templateTabsKey, setTemplateTabsKey] = useState([]);
   const [hasConfiged, setHasConfiged] = useState(false);
@@ -67,7 +70,6 @@ const CreateProject = observer(() => {
   if (isModify) {
     record.getField('createUserName').set('required', true);
   }
-
   useEffect(() => {
     modal.update({
       okProps: { loading: isLoading },
@@ -117,6 +119,15 @@ const CreateProject = observer(() => {
         id: selectedRecord.get('id'),
         code: selectedRecord.get('code'),
       }));
+      if (check === true) {
+        const findRecord = categoryDs.find(
+          (eachRecord) => eachRecord.get('code') === categoryCodes.agile,
+        );
+        categories.push({
+          id: findRecord.get('id'),
+          code: findRecord.get('code'),
+        });
+      }
       if (typeof formDs?.current?.get('statusId') === 'object') {
         formDs?.current?.set('statusId', formDs?.current?.get('statusId')?.id);
         formDs?.current?.set(
@@ -203,7 +214,19 @@ const CreateProject = observer(() => {
     },
     [record],
   );
-
+  const getChecked = () => {
+    if (categoryDs.getState('isProgram') && categoryDs.getState('isAgile')) {
+      return true;
+    }
+    return check;
+  };
+  const sprintCheckboxOnChanges = (value) => {
+    if (value === true) {
+      setCheck(true);
+    } else {
+      setCheck(false);
+    }
+  };
   const handleCategoryClick = useCallback((categoryRecord) => {
     if (categoryRecord.getState('disabled')) {
       return;
@@ -281,6 +304,9 @@ const CreateProject = observer(() => {
       [`${prefixCls}-category-container-waterfall-selected`]:
           categoryRecord.isSelected
           && categoryRecord.get('code') === 'N_WATERFALL',
+      [`${prefixCls}-category-container-agileProgram-selected`]:
+          categoryRecord.isSelected
+          && categoryRecord.get('code') === 'N_PROGRAM',
     }),
     [],
   );
@@ -323,10 +349,11 @@ const CreateProject = observer(() => {
           }
           if (
             code === categoryCodes.agile
-            && ((categoryDs.getState('isBeforeProgram')
-              && !categoryDs.getState('isProgram'))
-              || categoryDs.getState('isBeforeWaterfall'))
+            && ((categoryDs.getState('isBeforeProgram') || categoryDs.getState('isBeforeWaterfall')))
           ) {
+            if (categoryDs.getState('isProgram') && categoryDs.getState('isAgile')) {
+              return '敏捷管理项目已加入敏捷项目群，且无法移除';
+            }
             return '已添加或添加过【敏捷项目群】/ 【瀑布管理】项目类型，不可添加【敏捷管理】项目类型';
           }
         }
@@ -337,7 +364,7 @@ const CreateProject = observer(() => {
             categoryCodes.agile,
           ].indexOf(code) !== -1
         ) {
-          return '不可同时选择敏捷管理/敏捷项目群与瀑布管理项目类型';
+          return '敏捷管理、敏捷项目群、瀑布管理不能同时选择';
         }
         return '不可同时选择【敏捷管理】与【规模化敏捷项目群】项目类型';
       }
@@ -508,6 +535,39 @@ const CreateProject = observer(() => {
                 </div>
               </div>
             </Tooltip>
+            {categoryRecord.get('code') === 'N_PROGRAM'
+              && categoryRecord.isSelected && (
+                <div
+                  role="none"
+                  className={`${prefixCls}-category-exception`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <CheckBox
+                    checked={getChecked()}
+                    onChange={sprintCheckboxOnChanges}
+                    disabled={isModify && categoryDs.getState('isProgram') && categoryDs.getState('isAgile')}
+                  />
+                  <span
+                    style={{
+                      marginLeft: 4.25,
+                      fontSize: 12,
+                      position: 'relative',
+                      top: -1,
+                    }}
+                  >
+                    启用冲刺
+                  </span>
+                  <NewTips
+                    helpText="启用冲刺适用于敏捷项目群， 启用后可使用任务看板，工作列表等功能，注意使用过冲刺不能修改成单一的敏捷项目群。"
+                    style={{
+                      marginLeft: 3.17,
+                      position: 'relative',
+                    }}
+                  />
+                </div>
+            )}
             {categoryRecord.get('code') === 'N_WATERFALL'
               && categoryRecord.isSelected && (
                 <div
@@ -532,7 +592,7 @@ const CreateProject = observer(() => {
                     启用冲刺
                   </span>
                   <NewTips
-                    helpText="启用冲刺适用于敏捷项目群， 启用后可使用任务看板，工作列表等功能，注意使用过冲刺不能修改成单一的敏捷项目群。"
+                    helpText="启用冲刺适用于大瀑布小敏捷场景， 启用后可使用任务看板，故事地图等功能。"
                     style={{
                       marginLeft: 3.17,
                       position: 'relative',
