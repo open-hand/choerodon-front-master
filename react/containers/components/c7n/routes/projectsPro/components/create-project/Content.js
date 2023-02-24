@@ -423,6 +423,15 @@ const CreateProject = observer(() => {
     return false;
   };
 
+  const allowLinkForm = (
+    <Form record={record} labelLayout="horizontal" labelWidth={300} labelAlign="left">
+      <SelectBox name="allowLink" style={{ width: 340, position: 'relative', top: -3 }}>
+        <SelectBox.Option value>允许</SelectBox.Option>
+        <SelectBox.Option value={false}>禁止</SelectBox.Option>
+      </SelectBox>
+    </Form>
+  );
+
   return (
     <div className={`${prefixCls}-body`}>
       {renderAvatar()}
@@ -630,12 +639,7 @@ const CreateProject = observer(() => {
           <div className={`${prefixCls}-projRelation`}>
             <div className={`${prefixCls}-projRelation-divided`} />
             <p>高级设置</p>
-            <Form record={record} labelLayout="horizontal" labelWidth={300} labelAlign="left">
-              <SelectBox name="abc" style={{ width: 340, position: 'relative', top: -3 }}>
-                <SelectBox.Option value>允许</SelectBox.Option>
-                <SelectBox.Option value={false}>禁止</SelectBox.Option>
-              </SelectBox>
-            </Form>
+            {allowLinkForm}
           </div>
         )
       }
@@ -660,14 +664,7 @@ const CreateProject = observer(() => {
             }
           >
             {
-              getProjRelationShowInDevopsAdvanced() && (
-                <Form record={record} labelLayout="horizontal" labelWidth={300} labelAlign="left">
-                  <SelectBox name="abc" style={{ width: 340, position: 'relative', top: -3 }}>
-                    <SelectBox.Option value>允许</SelectBox.Option>
-                    <SelectBox.Option value={false}>禁止</SelectBox.Option>
-                  </SelectBox>
-                </Form>
-              )
+              getProjRelationShowInDevopsAdvanced() && allowLinkForm
             }
             <Alert
               message="DevOps组件编码将用于GitLab Group中的URL片段、Harbor Project的名称片段、SonarQube projectKey前缀、
