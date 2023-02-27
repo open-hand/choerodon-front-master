@@ -590,7 +590,7 @@ const CreateProject = observer(() => {
           && includes(templateTabsKey, 'statusMachineTemplate') && (
             <>
               <div>
-                <span className={`${prefixCls}-template-checkbox-text`}> </span>
+                <span className={`${prefixCls}-template-checkbox-text`}>使用组织预置的状态机及看板模板</span>
                 <span
                   role="none"
                   onClick={handleOpenTemplate}
