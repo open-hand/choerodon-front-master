@@ -10,6 +10,7 @@ import { injectIntl } from 'react-intl';
 import FormDataSet from './FormDataSet';
 import StatusDataSet from './StatusDataSet';
 import CategoryDataSet from './CategoryDataSet';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import axios from '@/components/axios';
 import useStore from './useStore';
 
@@ -47,19 +48,23 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne, statusDs,
   })), [organizationId, projectId, statusDs, inNewUserGuideStepOne]);
 
-  useEffect(() => {
-    if (projectId) {
-      loadData();
-    } else {
-      formDs.create();
-      loadCategory();
-    }
-  }, [projectId, organizationId]);
+  const { loading, func: checkSenior } = useExternalFunc('saas', 'base-saas:checkSaaSSenior');
 
-  const loadCategory = async () => {
+  useEffect(() => {
+    if (!loading) {
+      if (projectId) {
+        loadData(checkSenior);
+      } else {
+        formDs.create();
+        loadCategory(checkSenior);
+      }
+    }
+  }, [projectId, organizationId, checkSenior, loading]);
+
+  const loadCategory = async (checkSeniorFunc) => {
     await axios.all([
       categoryDs.query(),
-      createProjectStore.checkSenior(organizationId),
+      createProjectStore.checkSenior(organizationId, checkSeniorFunc),
     ]);
     const isSenior = createProjectStore.getIsSenior; // saas高级版
 
@@ -89,24 +94,12 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     }
   };
 
-  const loadData = async () => {
+  const loadData = async (checkSeniorFunc) => {
     try {
-      // const res = await axios.all([
-      //   categoryDs.query(),
-      //   formDs.query(),
-      //   createProjectStore.checkSenior(organizationId),
-      // ]);
-      // console.log(res);
-      // const [, projectData] = await axios.all([
-      //   categoryDs.query(),
-      //   formDs.query(),
-      //   createProjectStore.checkSenior(organizationId),
-      // ]);
-
       await statusDs.query();
       await categoryDs.query();
       const projectData = await formDs.query();
-      await createProjectStore.checkSenior(organizationId);
+      await createProjectStore.checkSenior(organizationId, checkSeniorFunc);
 
       const isSenior = createProjectStore.getIsSenior;
       if (projectData && projectData.categories && projectData.categories.length) {

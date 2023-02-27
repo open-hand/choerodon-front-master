@@ -11,6 +11,7 @@ import { Loading } from '@zknow/components';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import useUpgrade from '@/hooks/useUpgrade';
 import EmptyPage from '../../list/components/empty-page';
 import StarTargetPro from '../StarTargetPro';
@@ -131,8 +132,11 @@ const WorkBenchDashboard = (props) => {
     }
   }, [props.dashboardId]);
 
+  const { func: checkUpgrade } = useExternalFunc('saas', 'base-saas:checkUpgrade');
+
   const { data: needUpgrade } = useUpgrade({
     organizationId: AppState.currentMenuType?.organizationId,
+    checkUpgrade,
   });
 
   useEffect(() => {

@@ -1,17 +1,15 @@
+/* eslint-disable react/require-default-props */
 import React, {
   useEffect, FC, useMemo,
 } from 'react';
 import { observer } from 'mobx-react-lite';
-import { get } from '@choerodon/inject';
 import { inject } from 'mobx-react';
 import map from 'lodash/map';
 import { SERVICE_KNOWLEDGE, SERVICE_MARKET } from '@/constants';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import {
   KNOWLEDGE_CONFIG, MARKET_CONFIG, WORKBENCH_CONFIG, WORKCALENDAR_CONFIG,
 } from './CONSTANTS';
-import {} from 'choerodon-ui/pro';
-import {} from '@zknow/components';
-
 import './index.less';
 import ListItem from './components/list-item';
 
@@ -46,18 +44,25 @@ const HeaderMiddleLists:FC<HeaderMiddleListsProps> = (props) => {
   // 获取后端服务codelists
   const serviceCodeLists = map(currentServices, 'serviceCode');
 
+  const { loading, func: getIsSaas }:any = useExternalFunc('saas', 'base-saas:getIsSaas');
+
   // todo....这里可以拆出去
   // 组织改变 重新查询getIsSaas
   useEffect(() => {
-    if (isSaas && !Object.keys(isSaas).includes(organizationId)) {
-      get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState, isSaas);
+    if (!loading) {
+      if (isSaas && !Object.keys(isSaas).includes(organizationId)) {
+        getIsSaas && getIsSaas(AppState, isSaas);
+      }
     }
-  }, [organizationId]);
+  }, [organizationId, loading, getIsSaas]);
 
-  // todo....
-  useEffect(() => {
-    get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState, isSaas);
-  }, []);
+  // // todo....
+  // useEffect(() => {
+  //   if(!loading) {
+
+  //   }
+  //   get('base-saas:getIsSaas') && get('base-saas:getIsSaas')(AppState, isSaas);
+  // }, []);
 
   const getLists = useMemo(() => {
     const tempLists: ItemProps[] = [
