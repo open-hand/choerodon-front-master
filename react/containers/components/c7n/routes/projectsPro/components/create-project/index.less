@@ -117,6 +117,7 @@
       text-align: center;
       margin-bottom: 12px;
       display: flex;
+      cursor: auto;
       align-items: center;
 
       .c7n-pro-checkbox-inner {
@@ -148,8 +149,11 @@
       &-disabled {
         cursor: not-allowed;
         background: #ffffff;
-        opacity: 0.45;
+        // opacity: 0.45;
         border: 1px solid #d9e6f2;
+        .category-item {
+          opacity: 0.45;
+        }
       }
 
       &-selected {
