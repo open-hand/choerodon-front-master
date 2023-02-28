@@ -548,7 +548,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojType(id?:string) {
     return this.request({
       method: 'get',
-      url: `/cbase/v1/organizations/${id || this.orgId}/project_categories`,
+      url: `/cbase/v1/organizations/${id || this.orgId}/project_categories?search=true`,
     });
   }
 
