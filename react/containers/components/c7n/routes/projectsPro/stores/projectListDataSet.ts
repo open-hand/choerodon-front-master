@@ -1,4 +1,6 @@
-export default (({ organizationId, userId, func }:{organizationId:string, userId:string, func: any}) => {
+export default (({
+  organizationId, userId, func, formatProject,
+}:{organizationId:string, userId:string, func: any, formatProject: any}) => {
   let extraFields = [];
   if (func) {
     extraFields = func.default();
@@ -16,40 +18,40 @@ export default (({ organizationId, userId, func }:{organizationId:string, userId
     fields: [
       {
         name: 'name',
-        label: '项目',
+        label: formatProject({ id: 'c7ncd.project.project' }),
       },
       {
         name: 'code',
-        label: '项目编码',
+        label: formatProject({ id: 'c7ncd.project.code' }),
       },
       {
         name: 'enabled',
-        label: '项目状态',
+        label: formatProject({ id: 'c7ncd.project.status' }),
         type: 'boolean',
       },
       {
         name: 'rank',
-        label: '健康状态',
+        label: formatProject({ id: 'c7ncd.project.health.status' }),
       },
       {
         name: 'workGroup',
-        label: '工作组',
+        label: formatProject({ id: 'c7ncd.project.work.group' }),
       },
       {
         name: 'projectClassfication',
-        label: '项目分类',
+        label: formatProject({ id: 'c7ncd.project.Classify' }),
       },
       {
         name: 'programName',
-        label: '所属项目群',
+        label: formatProject({ id: 'c7ncd.project.project.group' }),
       },
       {
         name: 'categories',
-        label: '项目类型',
+        label: formatProject({ id: 'c7ncd.project.project.type' }),
       },
       {
         name: 'description',
-        label: '项目描述',
+        label: formatProject({ id: 'c7ncd.project.project.des' }),
       },
       {
         name: 'devopsComponentCode',
