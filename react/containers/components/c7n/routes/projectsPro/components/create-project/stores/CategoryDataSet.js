@@ -5,6 +5,7 @@ function handleDisabled({
   categoryCodes,
   isSelected,
   createProjectStore,
+  setFlag,
 }) {
   const isSenior = createProjectStore.getIsSenior;
 
@@ -19,7 +20,9 @@ function handleDisabled({
       categoryCodes.waterfall,
     ].indexOf(record.get('code')) !== -1
   ) {
-    setRequireModule({ dataSet, selected: isSelected, categoryCodes });
+    setRequireModule({
+      dataSet, selected: isSelected, categoryCodes,
+    });
     const agileRecord = dataSet.find(
       (eachRecord) => eachRecord.get('code') === categoryCodes.agile,
     );
@@ -36,19 +39,32 @@ function handleDisabled({
       }
       waterfallRecord.setState('disabled', isSelected);
     }
-    // 项目是 敏捷或项目群 不能选瀑布
-    // 项目是瀑布 不能再选敏捷和项目群
+    //  敏捷,项目群,瀑布三种项目类型互斥
     if (record === waterfallRecord) {
       agileRecord.setState('disabled', isSelected);
       programRecord.setState('disabled', isSelected);
     }
+    if (record === agileRecord) {
+      waterfallRecord.setState('disabled', isSelected);
+      programRecord.setState('disabled', isSelected);
+    }
+    if (record === programRecord) {
+      agileRecord.setState('disabled', isSelected);
+      waterfallRecord.setState('disabled', isSelected);
+    }
 
-    const bool = dataSet.getState('isBeforeAgile') || dataSet.getState('isBeforeProgram');
+    const bool = dataSet.getState('isBeforeAgile');
+    const bool1 = dataSet.getState('isBeforeProgram');
     const bool2 = dataSet.getState('isBeforeWaterfall');
 
     const isEdit = dataSet.getState('isEdit');
     if (isEdit && bool) {
       waterfallRecord.setState('disabled', true);
+      programRecord.setState('disabled', true);
+    }
+    if (isEdit && bool1) {
+      waterfallRecord.setState('disabled', true);
+      agileRecord.setState('disabled', true);
     }
     if (isEdit && bool2) {
       agileRecord.setState('disabled', true);
@@ -66,16 +82,21 @@ function handleDisabled({
       const findRecord = dataSet.find(
         (eachRecord) => eachRecord.get('code') === categoryCodes.agile,
       );
-      findRecord && findRecord.setState('disabled', !isSelected);
-      if (!isSelected && findRecord?.isSelected) {
-        findRecord.isSelected = false;
-      }
+      // findRecord && findRecord.setState('disabled', isSelected);
+      // if (!isSelected && findRecord?.isSelected) {
+      //   findRecord.isSelected = false;
+      // }
+
+      // 修改这里的逻辑为只要选择过敏捷项目群不可以改变为单独的一个敏捷类型 所以在这里直接禁用敏捷项目
+      findRecord && findRecord.setState('disabled', true);
     }
     setRequireModule({ dataSet, selected: isSelected, categoryCodes });
   }
 }
 
-function setRequireModule({ dataSet, selected, categoryCodes }) {
+function setRequireModule({
+  dataSet, selected, categoryCodes,
+}) {
   const findRecord = dataSet.find(
     (eachRecord) => eachRecord.get('code') === categoryCodes.require,
   );
@@ -92,6 +113,7 @@ function setRequireModule({ dataSet, selected, categoryCodes }) {
     const hasSelected = dataSet.some(
       (eachRecord) => codeArr.includes(eachRecord.get('code')) && eachRecord.isSelected,
     );
+
     if (!hasSelected) {
       dataSet.unSelect(findRecord);
     }
