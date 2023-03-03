@@ -1,11 +1,11 @@
 function loadComponent(scope, module, onError) {
-
   return async () => {
     // Initializes the share scope. This fills it with known provided modules from this build and all remotes
     await __webpack_init_sharing__('default');
     const container = window[scope]; // or get the container somewhere else
     // Initialize the container, it may provide shared modules
     if (!container) {
+      console.log('loadComponent');
       throw new Error('加载了错误的importManifest.js，请检查服务版本');
     }
     try {

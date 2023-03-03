@@ -23,6 +23,7 @@ const AutoRouter = () => {
       const container = window[scope]; // or get the container somewhere else
       // Initialize the container, it may provide shared modules
       if (!container) {
+        console.log('routecollection')
         throw new Error('加载了错误的importManifest.js，请检查服务版本');
       }
       try {
