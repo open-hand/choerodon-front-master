@@ -29,7 +29,7 @@ const Index:React.FC<IProps> = (props) => {
     intlPrefix, prefixCls, registerFormDs, mainStore: { setPageType, setUserEmail },
   } = useStore();
 
-  const { search } = useLocation();
+  const search = window.location.href.split('?')[1] ? `?${window.location.href.split('?')[1]}` : '';
 
   const pagePrefixCls = `${prefixCls}-register-form-content`;
 
