@@ -98,8 +98,9 @@ const MainMenu:FC<MainMenuProps> = () => {
         // 匹配菜单的svg string
         const svgLink = ICON_MAP?.[menuCode] || 'xiezuo';
         return (
+          // eslint-disable-next-line jsx-a11y/interactive-supports-focus, jsx-a11y/click-events-have-key-events
           <div
-            role="none"
+            role="button"
             className={cls}
             key={menuCode}
             onClick={() => handleMenuLink(item)}
