@@ -128,9 +128,10 @@ const StarTargetPro = observer(() => {
                 </div>
               </Tooltip>
 
+              {/* eslint-disable-next-line jsx-a11y/interactive-supports-focus, jsx-a11y/click-events-have-key-events */}
               <div
                 className={`${prefixCls}-proContainer-items-extra`}
-                role="none"
+                role="button"
                 style={{ background: isActive ? '#ECF0FC' : 'rgba(104, 135, 232, 0.12)' }}
                 onClick={(e) => {
                   e.stopPropagation();
