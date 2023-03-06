@@ -59,7 +59,9 @@ const Index:React.FC<IProps> = (props) => {
       ['refid', 'refId'],
     ]);
 
-    const paramsObj = queryString.parse(search);
+    const paramsObj = queryString.parse(search, {
+      decode: false,
+    });
     map.forEach((value, key) => {
       if (paramsObj[key]) {
         obj[value] = paramsObj[key];
