@@ -53,10 +53,10 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   useEffect(() => {
     if (!loading) {
       if (projectId) {
-        loadData(checkSenior);
+        loadData(checkSenior.default);
       } else {
         formDs.create();
-        loadCategory(checkSenior);
+        loadCategory(checkSenior.default);
       }
     }
   }, [projectId, organizationId, checkSenior, loading]);
