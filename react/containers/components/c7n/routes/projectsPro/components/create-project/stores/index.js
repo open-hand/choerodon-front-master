@@ -148,13 +148,12 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           const currentCode = categoryRecord.get('code');
           if (some(projectData.categories, ['code', currentCode])) {
             if (currentCode === categoryCodes.agile) {
-              if (isBeforeProgram) {
-                categoryDs.unselect(categoryRecord);
-              } else {
+              if (isBeforeProgram === false) {
                 categoryDs.select(categoryRecord);
               }
+            } else {
+              categoryDs.select(categoryRecord);
             }
-            categoryDs.select(categoryRecord);
           }
           switch (currentCode) {
             case categoryCodes.program:
