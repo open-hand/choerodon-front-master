@@ -2,12 +2,12 @@ import React, { Component, Suspense } from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import './style';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import { get } from '@choerodon/inject';
 import AppState from '../../../../stores/c7n/AppState';
 
 const Unauthorized = React.lazy(() => import('../unauthorized'));
-const AutoRouter = React.lazy(() => import('@/routes/routesCollections'));
+// const AutoRouter = React.lazy(() => import('@/routes/routesCollections'));
 const DingTalkTransition = React.lazy(() => import('../dingTalkTransition'));
 const AuthenticationFailurenotLogin = React.lazy(() => import('../authenticationFailure/notLogin'));
 const AuthenticationFailurenotExistUser = React.lazy(() => import('../authenticationFailure/notExistUser'));
@@ -56,7 +56,7 @@ class Outward extends Component {
   }
 
   render() {
-    const { history, match } = this.props;
+    const { history, match, AutoRouter } = this.props;
     if (this.isInOutward(this.props.location.pathname)) {
       return (
         <div className="page-wrapper">

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { difference } from 'lodash';
+import { useSessionStorageState } from 'ahooks';
+
 import { useMenuStore } from '../../../../stores';
 import UnfoldImg from './assets/unfold.svg';
 import FoldImg from './assets/folding.svg';
@@ -16,7 +18,14 @@ function CollapsedBtn() {
     MenuStore,
   } = useMenuStore();
 
-  const [savedOpenkeys, setSavedKeys] = useState();
+  // const [savedOpenkeys, setSavedKeys] = useState([]);
+
+  const [savedOpenkeys, setSavedKeys] = useSessionStorageState<any>(
+    'use-session-storage-state-savedOpenkeys',
+    {
+      defaultValue: [],
+    },
+  );
 
   const {
     isExpanded,

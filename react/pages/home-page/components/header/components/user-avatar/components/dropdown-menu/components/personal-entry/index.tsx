@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui/pro';
-import { useQueryString } from '@choerodon/components';
+import { useQueryString } from '@zknow/components';
 
 import './index.less';
 import { inject } from 'mobx-react';
@@ -44,7 +44,12 @@ const PersonalEntry:FC<PersonalEntryProps> = (props:any) => {
   };
 
   return (
-    <div className={prefixCls} onClick={goUserPage} role="none">
+    // eslint-disable-next-line
+    <div
+      className={prefixCls}
+      onClick={goUserPage}
+      role="button"
+    >
       <Icon type="account_circle-o" />
       <span>{formatCommon({ id: 'personalInfo' })}</span>
     </div>

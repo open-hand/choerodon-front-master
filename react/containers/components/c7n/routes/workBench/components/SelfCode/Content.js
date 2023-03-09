@@ -5,7 +5,7 @@ import { Tooltip } from 'choerodon-ui/pro';
 import { get } from '@choerodon/inject';
 
 import ScrollContext from 'react-infinite-scroll-component';
-import { Loading, TimePopover, UserInfo } from '@choerodon/components';
+import { Loading, TimePopover, UserInfo } from '@zknow/components';
 
 import { useSelfCodeStore } from './stores';
 

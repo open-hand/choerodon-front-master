@@ -2,7 +2,7 @@ import React, {
   FC,
 } from 'react';
 import { Icon, Modal } from 'choerodon-ui/pro';
-import {} from '@choerodon/components';
+import {} from '@zknow/components';
 
 import { mount, has } from '@choerodon/inject';
 import { useFormatMessage } from '@/hooks';

@@ -1,4 +1,6 @@
+import React from 'react';
 import { DataSet } from 'choerodon-ui/pro';
+import { NewTips } from '@zknow/components';
 import { organizationsApiConfig } from '@/apis';
 import axios from '@/components/axios';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
@@ -36,7 +38,7 @@ function trimSpecial(string) {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({
-  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs, func,
+  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs, func, setFlags,
 }) => {
   const codeValidator = async (value, name, record) => {
     if (record.status !== 'add') {
@@ -238,6 +240,12 @@ export default ({
         defaultValue: false,
       },
       {
+        name: 'agileProgram',
+        type: 'boolean',
+        label: '启用冲刺',
+        defaultValue: false,
+      },
+      {
         name: 'description',
         type: 'string',
         label: '项目描述',
@@ -252,6 +260,17 @@ export default ({
       { name: 'imageUrl', type: 'string' },
       { name: 'creationDate', type: 'date', label: '创建时间' },
       { name: 'useTemplate', defaultValue: true },
+      {
+        name: 'allowLink',
+        type: 'boolean',
+        label: (
+          <div>
+            允许其他项目关联此项目工作项/需求
+            <NewTips helpText="开启后，组织内其他项目的工作项（或需求）可关联当前项目的工作项（或需求）" />
+          </div>
+        ),
+        defaultValue: false,
+      },
       ...extraFields,
     ],
     events: {

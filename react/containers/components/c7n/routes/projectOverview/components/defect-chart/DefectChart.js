@@ -3,7 +3,7 @@ import { Button, Tooltip, Spin } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
 import Echart from 'echarts-for-react';
 import { useIntl } from 'react-intl';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import { get } from '@choerodon/inject';
 
 import OverviewWrap from '../OverviewWrap';

@@ -21,7 +21,7 @@ export default observer(() => {
 
   const workbenchIntlPrefix = 'workbench';
 
-  const formatWorkbench = useFormatMessage(workbenchIntlPrefix);
+  const format = useFormatMessage();
   const formatCommon = useFormatCommon();
 
   const [rencentArrsForshow, setRencentArrsForshow] = useState([]);
@@ -68,7 +68,7 @@ export default observer(() => {
     <div className="recentProjects">
       <div className="recentProjects-title-wrap">
         <p className="recentProjects-title">
-          <span>最近使用项目</span>
+          <span>{format({ id: 'c7ncd.project.recentUse' })}</span>
           <span>
             {ProjectsProUseStore.getRecentProjects.length ? <Button icon={!expand ? 'expand_more' : 'expand_less'} size="small" onClick={handleExpandClick} /> : ''}
           </span>

@@ -6,7 +6,7 @@ import { inject } from 'mobx-react';
 import { Menu, Popover, Icon } from 'choerodon-ui';
 import { useUserAvatarStore } from './stores';
 
-import {} from '@choerodon/components';
+import {} from '@zknow/components';
 import Avatar from './components/avatar';
 import DropdownMenu from './components/dropdown-menu';
 
@@ -36,7 +36,7 @@ const UserAvatar = (props:any) => {
       placement="bottomRight"
       onVisibleChange={setMeneVisible}
     >
-      <Avatar src={imageUrl} prefixCls={prefixCls}>
+      <Avatar role="button" src={imageUrl} prefixCls={prefixCls}>
         {realName && realName.charAt(0)}
       </Avatar>
     </Popover>

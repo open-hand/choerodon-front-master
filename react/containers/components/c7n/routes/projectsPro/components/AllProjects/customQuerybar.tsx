@@ -3,7 +3,7 @@
 import React, {
   useEffect, useMemo, useRef, useState, useImperativeHandle,
 } from 'react';
-import { FlatSelect, FlatTreeSelect } from '@choerodon/components';
+import { FlatSelect, FlatTreeSelect } from '@zknow/components';
 import {
   Button, TextField, Icon, DataSet, Tooltip, DateTimePicker, Select, DatePicker,
 } from 'choerodon-ui/pro';

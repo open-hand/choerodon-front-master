@@ -108,7 +108,7 @@ export default observer(() => {
     return (
       <>
         <p>
-          {formatProject({ id: 'allProject' }, { name: org.name })}
+          {formatMessage({ id: 'c7ncd.project.allProject' }, { name: org.name })}
         </p>
         <div className="allProjects-title-right">
           <Button icon="refresh" onClick={() => { refresh('0'); }} />
@@ -134,7 +134,7 @@ export default observer(() => {
                   marginLeft: 16,
                 }}
               >
-                {formatProject({ id: 'createProject' })}
+                {formatMessage({ id: 'c7ncd.project.createProject' })}
               </Button>
             </Tooltip>
           </Permission>

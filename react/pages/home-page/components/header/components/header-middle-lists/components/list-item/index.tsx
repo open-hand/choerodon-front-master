@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 import classNames from 'classnames';
-import { OverflowWrap, useQueryString } from '@choerodon/components';
+import { OverflowWrap, useQueryString } from '@zknow/components';
 import { Permission } from '@/components/permission';
 import { PermissionService } from '@/components/permission/interface';
 import getSearchString from '@/utils/gotoSome';
@@ -45,7 +45,13 @@ const ListItem:React.FC<ListItemProps> = (props) => {
   }
 
   const itemContent = (
-    <div className={itemCls} role="none" onClick={goto}>
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+    <div
+      className={itemCls}
+      role="button"
+      onClick={goto}
+      tabIndex={0}
+    >
       <OverflowWrap width="auto">
         {itemName}
       </OverflowWrap>

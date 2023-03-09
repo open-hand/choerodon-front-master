@@ -4,7 +4,7 @@ import React, {
 import map from 'lodash/map';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
-// import { useIntervalTrigger } from '@choerodon/components';
+// import { useIntervalTrigger } from '@zknow/components';
 import './index.less';
 import { Icon } from 'choerodon-ui/pro';
 import useIntervalTrigger from '@/hooks/useIntervalTrigger';

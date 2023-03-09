@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Form, TextField, UrlField, CheckBox, Button, Select,
 } from 'choerodon-ui/pro';
-import { CaptchaField } from '@choerodon/components/lib/index.js';
+import { CaptchaField } from '@zknow/components/lib/index.js';
 import { observer } from 'mobx-react-lite';
 import { notification } from 'choerodon-ui';
 // eslint-disable-next-line import/order

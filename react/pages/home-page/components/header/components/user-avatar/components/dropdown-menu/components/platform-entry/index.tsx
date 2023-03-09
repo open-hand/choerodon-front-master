@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon } from 'choerodon-ui/pro';
-import { useQueryString } from '@choerodon/components';
+import { useQueryString } from '@zknow/components';
 import { useHistory } from 'react-router';
 
 import './index.less';
@@ -59,7 +59,8 @@ const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
   }
 
   return (
-    <div className={prefixCls} onClick={getGlobalMenuData} role="none">
+    // eslint-disable-next-line
+    <div className={prefixCls} onClick={getGlobalMenuData} role="button">
       <Icon type="settings-o" />
       <span>{formatUserAvater({ id: 'plateEntry' })}</span>
     </div>

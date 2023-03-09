@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { get, mount } from '@choerodon/inject';
 
 import Echart from 'echarts-for-react';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import { useCustomChartStore } from './stores';
 import './index.less';
 import OverviewWrap from '../OverviewWrap';

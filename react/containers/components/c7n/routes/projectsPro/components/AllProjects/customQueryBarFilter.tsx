@@ -4,6 +4,7 @@ import {
 } from 'choerodon-ui/pro';
 import React, { useState, useImperativeHandle } from 'react';
 import { useSafeState, useClickAway } from 'ahooks';
+import { useFormatMessage } from '@/hooks';
 
 export interface IProps {
   dataSet: DataSet
@@ -24,6 +25,8 @@ const Index: React.FC<IProps> = (props) => {
   const [searchValue, setSearchValue] = useState('');
   // const [indeterminate, setindeterminate] = useState(false);
   const [checkedAll, setcheckedAll] = useState(false);
+
+  const format = useFormatMessage('c7ncd.project');
 
   useImperativeHandle(cRef, () => ({
     reset: cleanAll,
@@ -171,7 +174,7 @@ const Index: React.FC<IProps> = (props) => {
               setHidden(false);
             }}
           >
-            添加筛选
+            {format({ id: 'add.filter' })}
             <Icon type="arrow_drop_down" />
           </div>
         </Button>

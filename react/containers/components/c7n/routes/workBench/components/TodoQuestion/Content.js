@@ -10,7 +10,7 @@ import { Spin } from 'choerodon-ui';
 import { merge } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import queryString from 'query-string';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import { getRandomBackground } from '@/utils';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
@@ -436,12 +436,12 @@ const TodoQuestion = observer(() => {
         defaultValue="all"
         value={switchCode.code}
         options={[{ value: 'all', text: '所有待办' },
-          {
-            value: 'myStarBeacon',
-            text: (<Dropdown overlay={HAS_BACKLOG ? renderStarMenu() : undefined}><span>{formatWorkbench({ id: 'myAttention' })}</span></Dropdown>),
-          },
-          { value: 'reportedBug', text: '已提缺陷' },
-          { value: 'myBug', text: '待修复缺陷' }]}
+        {
+          value: 'myStarBeacon',
+          text: (<Dropdown overlay={HAS_BACKLOG ? renderStarMenu() : undefined}><span>{formatWorkbench({ id: 'myAttention' })}</span></Dropdown>),
+        },
+        { value: 'reportedBug', text: '已提缺陷' },
+        { value: 'myBug', text: '待修复缺陷' }]}
         onChange={(v) => (!HAS_BACKLOG || v !== 'myStarBeacon' ? setSwitchCode({ type: 'change', code: v }) : false)}
       />
     </div>

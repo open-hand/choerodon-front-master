@@ -7,7 +7,7 @@ import NoMacth from '@/components/c7n-error-pages/404';
 import Skeleton from '@/components/skeleton';
 
 // @ts-expect-error
-const routes:[string, React.ComponentType][] = __ROUTES__ || [];
+const routes:[string, React.ComponentType][] = [];
 
 const AutoRouter = () => {
   const [allRoutes, setAllRoutes] = useState(routes);
@@ -23,6 +23,7 @@ const AutoRouter = () => {
       const container = window[scope]; // or get the container somewhere else
       // Initialize the container, it may provide shared modules
       if (!container) {
+        console.log('routecollection')
         throw new Error('加载了错误的importManifest.js，请检查服务版本');
       }
       try {
@@ -61,7 +62,7 @@ const AutoRouter = () => {
   const asyncGetRemoteEntry = async (path, remoteEntry) => new Promise((resolve) => {
     loadScrip(remoteEntry, () => {
       if (window[path]) {
-        const lazyComponent = loadComponent(path, './index');
+        const lazyComponent = loadComponent(path, `./${path}`);
         resolve([`/${path}`, React.lazy(lazyComponent)])
       } else {
         resolve();
@@ -84,7 +85,7 @@ const AutoRouter = () => {
       const remoteEntry = env[`remote_${path}`];
       if (remoteEntry) {
         if (window[path]) {
-          const lazyComponent = loadComponent(path, './index');
+          const lazyComponent = loadComponent(path, `./${path}`);
           arr.push([`/${path}`, React.lazy(lazyComponent)]);
           setAllRoutes([].concat(arr));
         } else {

@@ -1,5 +1,5 @@
 import { ModalProvider } from 'choerodon-ui/pro/lib';
-import { TooltipProvider } from '@choerodon/components';
+import { TooltipProvider } from '@zknow/components';
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import moment from 'moment';

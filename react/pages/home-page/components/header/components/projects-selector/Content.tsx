@@ -4,7 +4,7 @@ import { Icon, Select } from 'choerodon-ui/pro';
 import { useHistory } from 'react-router';
 import { get } from '@choerodon/inject';
 
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import RecentUseProjectsLists from './components/recent-use-projects-lists';
 import StarProjectsLists from './components/star-projects-lists';
 

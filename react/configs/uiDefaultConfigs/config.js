@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Loading, useLoading } from '@choerodon/components';
+import { Loading, useLoading } from '@zknow/components';
 import { uniqueId } from 'lodash';
 import { get } from '@choerodon/inject';
 import { uiAxiosInstance } from '@/components/axios';

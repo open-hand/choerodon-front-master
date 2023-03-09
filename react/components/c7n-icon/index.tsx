@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { C7NBaseIcon } from '@choerodon/components';
+import { C7NBaseIcon } from '@zknow/components';
 
 export interface IconProps extends HTMLElement {
   type: string;
@@ -8,7 +8,7 @@ export interface IconProps extends HTMLElement {
 
 /**
 
- * @deprecated 废弃 使用 `import { C7NBaseIcon } from '@choerodon/components';` 替代此导入
+ * @deprecated 废弃 使用 `import { C7NBaseIcon } from '@zknow/components';` 替代此导入
  * @param {IconProps} props
  * @return {*}
  */
