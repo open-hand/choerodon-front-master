@@ -111,7 +111,7 @@ const Index: React.FC<IProps> = (props) => {
       });
     });
     return ds;
-  }, [searchFieldsConfig, onchange]);
+  }, [searchFieldsConfig, onChange]);
 
   const searchFilterDataSet = useMemo(() => {
     const ds = new DataSet({
