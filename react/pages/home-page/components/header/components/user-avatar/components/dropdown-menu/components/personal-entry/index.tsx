@@ -44,7 +44,12 @@ const PersonalEntry:FC<PersonalEntryProps> = (props:any) => {
   };
 
   return (
-    <div className={prefixCls} onClick={goUserPage} role="none">
+    // eslint-disable-next-line
+    <div
+      className={prefixCls}
+      onClick={goUserPage}
+      role="button"
+    >
       <Icon type="account_circle-o" />
       <span>{formatCommon({ id: 'personalInfo' })}</span>
     </div>

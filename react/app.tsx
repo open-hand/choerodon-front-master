@@ -9,6 +9,7 @@ import { Modal } from 'choerodon-ui/pro';
 import PageEntry from './pages';
 import './utils/iframeStorage';
 import autoRefresh from './utils/autoRefresh';
+import '@/styles/index.less';
 
 const getConfirmation = (message:string, callback:CallableFunction) => {
   const restFunction = (m: any, func: any) => {

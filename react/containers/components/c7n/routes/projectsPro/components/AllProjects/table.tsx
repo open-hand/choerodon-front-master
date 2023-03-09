@@ -41,8 +41,8 @@ export const startProjChange = async (pid: string, enable: boolean, organization
   ProjectsProUseStore.axiosGetRecentProjects();
 };
 
-const Index: React.FC<IProps> = (props) => {
-  const { columnsSetConfig, onColumnResize: columnResize } = props;
+const Index: React.FC<any> = (props) => {
+  const { columnsSetConfig, onColumnResize: columnResize, fieldFunc } = props;
 
   const {
     categoryCodes,
@@ -70,7 +70,7 @@ const Index: React.FC<IProps> = (props) => {
 
   });
 
-  const displayColumn = useGetDisplayColumn(columnsSetConfig, getAdjustableColumns(formatMessage, prefix));
+  const displayColumn = useGetDisplayColumn(columnsSetConfig, getAdjustableColumns(formatMessage, prefix, fieldFunc));
 
   const renderName = ({ record }: { record: Record }) => {
     const projData: any = record?.toData();

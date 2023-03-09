@@ -29,7 +29,7 @@ const Index:React.FC<IProps> = (props) => {
     intlPrefix, prefixCls, registerFormDs, mainStore: { setPageType, setUserEmail },
   } = useStore();
 
-  const { search } = useLocation();
+  const search = window.location.href.split('?')[1] ? `?${window.location.href.split('?')[1]}` : '';
 
   const pagePrefixCls = `${prefixCls}-register-form-content`;
 
@@ -47,12 +47,34 @@ const Index:React.FC<IProps> = (props) => {
     toLoginAddress();
   };
 
+  function getPostData() {
+    const obj:any = {};
+
+    const map = new Map([
+      ['inviter_info', 'inviterInfo'],
+      ['source', 'source'],
+      ['zk', 'zk'],
+      ['source_type', 'sourceType'],
+      ['channel', 'sourceChannel'],
+      ['refid', 'refId'],
+    ]);
+
+    const paramsObj = queryString.parse(search, {
+      decode: false,
+    });
+    map.forEach((value, key) => {
+      if (paramsObj[key]) {
+        obj[value] = paramsObj[key];
+      }
+    });
+    return obj;
+  }
+
   const handleSubmit = async () => {
     const validateRes = await registerFormDs.validate();
     const postData:any = registerFormDs.toData()[0];
-    if (search.indexOf('inviter_info') !== -1) {
-      postData.inviterInfo = queryString.parse(search).inviter_info;
-    }
+    const obj = getPostData();
+    Object.assign(postData, obj);
     if (validateRes) {
       if (!cookies.get('captchaKey')) {
         notification.warning({

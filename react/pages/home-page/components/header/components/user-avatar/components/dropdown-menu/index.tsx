@@ -60,8 +60,10 @@ const DropdownMenu:FC<DropdownMenuProps> = () => {
       </div>
       <div className="divider" />
       <div className={`${prefixCls}-popover-logout`}>
+        {/* eslint-disable-next-line */}
         <li
-          role="none"
+        // eslint-disable-next-line
+        role="button"
           onClick={logout}
         >
           <Icon type="exit_to_app" />
