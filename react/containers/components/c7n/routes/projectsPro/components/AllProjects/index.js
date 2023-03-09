@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useState, useRef, useMemo,
+  useEffect, useState, useRef, useMemo, useCallback,
 } from 'react';
 import {
   Button,
@@ -212,28 +212,31 @@ export default observer(() => {
     }
   };
 
-  const customQuerybarChange = async (data) => {
-    forIn(projectListDataSet.queryParameter, (value, key) => {
-      projectListDataSet.setQueryParameter(key, null);
-    });
+  const customQuerybarChange = useCallback(
+    async (data) => {
+      forIn(projectListDataSet.queryParameter, (value, key) => {
+        projectListDataSet.setQueryParameter(key, null);
+      });
 
-    Object.keys(data).forEach((key) => {
-      const value = data[key];
-      if (isNil(value) || (Array.isArray(value) && !value.length)) {
-        return;
-      }
-      if (key === 'updateTime') {
-        projectListDataSet.setQueryParameter('lastUpdateDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
-        projectListDataSet.setQueryParameter('lastUpdateDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
-      } else if (key === 'createTime') {
-        projectListDataSet.setQueryParameter('creationDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
-        projectListDataSet.setQueryParameter('creationDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
-      } else {
-        projectListDataSet.setQueryParameter(key, value);
-      }
-    });
-    projectListDataSet.query();
-  };
+      Object.keys(data).forEach((key) => {
+        const value = data[key];
+        if (isNil(value) || (Array.isArray(value) && !value.length)) {
+          return;
+        }
+        if (key === 'updateTime') {
+          projectListDataSet.setQueryParameter('lastUpdateDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
+          projectListDataSet.setQueryParameter('lastUpdateDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
+        } else if (key === 'createTime') {
+          projectListDataSet.setQueryParameter('creationDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
+          projectListDataSet.setQueryParameter('creationDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
+        } else {
+          projectListDataSet.setQueryParameter(key, value);
+        }
+      });
+      projectListDataSet.query();
+    },
+    [projectListDataSet],
+  );
 
   function transformColumnData(columnsData) {
     const listLayoutColumnRelVOS = [];
