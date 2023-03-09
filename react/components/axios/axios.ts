@@ -1,4 +1,5 @@
 import axios from 'axios';
+import JSONbig from 'json-bigint';
 import { API_HOST } from '@/utils/constants';
 import paramsSerializer from './utils/paramsSerializer';
 import handleRequestError from './interceptors/requestErrorInterceptor';
@@ -25,6 +26,7 @@ function choerodonAxios({
   const instance = axios.create({
     timeout: 30000,
     baseURL: API_HOST,
+    transformResponse: [(data) => JSONbig.parse(data)],
   });
   // 这里配置一个切换路由取消全部pending请求的标识
   instance.defaults.enabledCancelRoute = true;
