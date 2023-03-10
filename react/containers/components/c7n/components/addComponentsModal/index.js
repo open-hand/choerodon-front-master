@@ -26,9 +26,11 @@ const AddModal = (props) => {
   const [dis, setDis] = useState(0);
   const [seletedComponents, setSelectedComponents] = useState(existTypes);
   const { func: checkUpgrade } = useExternalFunc('saas', 'base-saas:checkUpgrade');
+
   const { isFetching, data: needUpgrade } = useUpgrade({
     organizationId: AppState.currentMenuType?.organizationId,
-    checkUpgrade,
+    checkUpgrade: checkUpgrade?.default?.checkSaaSUpgrade,
+    key: `useUpgrade-${checkUpgrade?.default?.checkSaaSUpgrade}-${AppState.currentMenuType?.organizationId}`,
   });
 
   function handleClick(key, index) {
