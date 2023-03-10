@@ -84,6 +84,9 @@ const CreateProject = observer(() => {
       cancelProps: { disabled: isLoading },
     });
   }, [isLoading]);
+  useEffect(() => {
+    getChecked();
+  }, []);
 
   useEffect(() => {
     const loadTemplateConfig = async () => {
@@ -521,7 +524,6 @@ const CreateProject = observer(() => {
                 <div
                   role="none"
                   className={`${prefixCls}-category-exception`}
-                  style={{ disabled: false }}
                   onClick={(e) => {
                     e.stopPropagation();
                   }}

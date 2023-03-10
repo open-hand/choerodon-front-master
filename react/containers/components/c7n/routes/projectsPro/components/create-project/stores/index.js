@@ -56,10 +56,10 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   useEffect(() => {
     if (!baseSaasLoading) {
       if (projectId) {
-        loadData(checkSenior);
+        loadData(checkSenior?.default);
       } else {
         formDs.create();
-        loadCategory(checkSenior);
+        loadCategory(checkSenior?.default);
       }
     }
   }, [projectId, organizationId, checkSenior, baseSaasLoading, func]);
@@ -148,19 +148,19 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           const currentCode = categoryRecord.get('code');
           if (some(projectData.categories, ['code', currentCode])) {
             if (currentCode === categoryCodes.agile) {
-              if (isBeforeProgram) {
-                categoryDs.unselect(categoryRecord);
-              } else {
+              if (isBeforeProgram === false) {
                 categoryDs.select(categoryRecord);
               }
+            } else {
+              categoryDs.select(categoryRecord);
             }
-            categoryDs.select(categoryRecord);
           }
           switch (currentCode) {
             case categoryCodes.program:
               categoryRecord.setState({
                 isProgram: isBeforeProgram,
               });
+              categoryRecord.setState('agilePro', true);
               if (!isSenior || (isBeforeAgile && !isBeforeProgram) || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId)) || isBeforeWaterfall) {
                 categoryRecord.setState('disabled', true);
               }
@@ -170,6 +170,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
                 isAgile: isBeforeAgile,
                 disabled: isProgramProject || (isBeforeProgram && !isProgram) || isBeforeWaterfall,
               });
+              categoryRecord.setState('agile', true);
               break;
             case categoryCodes.require:
               categoryRecord.setState({
