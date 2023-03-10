@@ -51,7 +51,7 @@ const HeaderMiddleLists:FC<HeaderMiddleListsProps> = (props) => {
   useEffect(() => {
     if (!loading) {
       if (isSaas && !Object.keys(isSaas).includes(organizationId)) {
-        getIsSaas && getIsSaas(AppState, isSaas);
+        getIsSaas && getIsSaas.default(AppState, isSaas);
       }
     }
   }, [organizationId, loading, getIsSaas]);
