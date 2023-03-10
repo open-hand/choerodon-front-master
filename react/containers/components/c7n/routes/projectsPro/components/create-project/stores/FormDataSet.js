@@ -193,7 +193,7 @@ export default ({
             if (value.length > 40) {
               return '编码长度不能超过40！';
             }
-            const reg = /^[a-z](?!.*--)[a-z0-9-]*[^-]$/g;
+            const reg = /[a-z]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/g;
             if (!reg.test(value)) {
               return '只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"';
             }
