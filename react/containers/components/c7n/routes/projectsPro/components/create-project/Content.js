@@ -130,7 +130,7 @@ const CreateProject = observer(() => {
         id: selectedRecord.get('id'),
         code: selectedRecord.get('code'),
       }));
-      if (check === true) {
+      if (getChecked() === true) {
         const findRecord = categoryDs.find(
           (eachRecord) => eachRecord.get('code') === categoryCodes.agile,
         );
