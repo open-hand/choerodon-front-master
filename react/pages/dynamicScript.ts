@@ -1,6 +1,6 @@
 /* eslint-disable */
 // @ts-nocheck
-import { useDynamicScript } from "@zknow/utils";
+import { useDynamicScript, loadComponent } from "@zknow/utils";
 const env: any = window._env_;
 
 export default function loadDynamicScript() {
