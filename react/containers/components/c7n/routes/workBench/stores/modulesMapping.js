@@ -11,7 +11,7 @@ const modulesMapping = {
   agile: [
     'todoQustions', 'myStar', 'myDefect', 'myReport', 'myExecution', 'myhandler', 'userIssue', 'projectProgress',
     // 二开的组件，原版后端不会有 这里不用做判断
-    'projectVersionProgress', 'teamLeaderOrder',
+    'projectVersionProgress', 'teamLeaderOrder', 'developerRank',
   ],
   backlog: [
     'backlogApprove',

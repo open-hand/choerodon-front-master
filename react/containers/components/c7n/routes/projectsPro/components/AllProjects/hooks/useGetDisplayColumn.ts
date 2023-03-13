@@ -12,14 +12,19 @@ const useGetDisplayColumn = (columnsSetConfig:IColumnSetConfig[], adjustableColu
     } else {
       columnsSetConfig.forEach((item:IColumnSetConfig) => {
         if (item.isSelected) {
-          const found = adjustableColumns.find((i) => i.name === item.name);
-          if (found) {
-            if (item?.width) {
-              // eslint-disable-next-line no-param-reassign
-              delete item?.minWidth;
-              found.width = item.width;
+          if (item.isConfig) {
+            // isConfig参数代表是第三方配置项 如果有 可直接插入
+            arr.push(item);
+          } else {
+            const found = adjustableColumns.find((i) => i.name === item.name);
+            if (found) {
+              if (item?.width) {
+                // eslint-disable-next-line no-param-reassign
+                delete item?.minWidth;
+                found.width = item.width;
+              }
+              arr.push(found);
             }
-            arr.push(found);
           }
         }
       });

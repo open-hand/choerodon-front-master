@@ -21,6 +21,17 @@ const project = {
   'c7ncd.project.saga.des.updating.update': '正在更新项目，该过程可能会持续几分钟。待修改成功，进入项目刷新页面后即可见到项目的新菜单。',
   'c7ncd.project.saga.des.success.create': 'Create Project Successfully',
   'c7ncd.project.saga.des.success.update': '项目更新成功，进入项目后刷新即可。',
+
+  'c7ncd.project.project': 'Project',
+  'c7ncd.project.code': 'Code',
+  'c7ncd.project.status': 'Status',
+  'c7ncd.project.health.status': 'Health Status',
+  'c7ncd.project.work.group': 'Organization',
+  'c7ncd.project.Classify': 'Classify',
+  'c7ncd.project.project.group': 'Project Group',
+  'c7ncd.project.project.type': 'Project Type',
+  'c7ncd.project.project.des': 'Description',
+  'c7ncd.project.add.filter': 'Add',
 };
 
 export {

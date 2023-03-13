@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useState, useRef, useMemo,
+  useEffect, useState, useRef, useMemo, useCallback,
 } from 'react';
 import {
   Button,
@@ -17,6 +17,7 @@ import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import CreateProject from '../create-project';
 import CustomQuerybar from './customQuerybar';
 import { organizationsApi } from '@/apis';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import AllProjectTable from './table';
 import {
   getSearchFieldsConfig, getFilterFieldsConfig,
@@ -44,6 +45,8 @@ export default observer(() => {
     projectListDataSet,
   } = useProjectsProStore();
 
+  const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
+
   const customQuerybarCRef = useRef();
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
@@ -65,11 +68,25 @@ export default observer(() => {
 
   useEffect(() => {
     initTableColumnsSet();
-  }, []);
+  }, [func, projectListDataSet]);
 
   const initTableColumnsSet = async () => {
     const res = await organizationsApi.getAllProjectsTableColumns();
-    setTableColumnsSet(initColumnSetData(res?.listLayoutColumnRelVOS, HAS_BASE_BUSINESS ? defaultBusinessColumnSetConfig : defaultColumnSetConfig, projectListDataSet));
+    let extraColumns = [];
+    let columnBusinessSetConfig = defaultBusinessColumnSetConfig;
+    let columnConfig = defaultColumnSetConfig;
+    if (func) {
+      extraColumns = func.default();
+      columnBusinessSetConfig = [
+        ...defaultBusinessColumnSetConfig, {
+          ...extraColumns[0], isSelected: true, order: 4.1, width: 140,
+        }];
+      columnConfig = [
+        ...defaultColumnSetConfig, {
+          ...extraColumns[0], isSelected: true, order: 4.1, width: 140,
+        }];
+    }
+    setTableColumnsSet(initColumnSetData(res?.listLayoutColumnRelVOS, HAS_BASE_BUSINESS ? columnBusinessSetConfig : columnConfig, projectListDataSet));
   };
 
   const refresh = (projectId) => {
@@ -91,7 +108,7 @@ export default observer(() => {
     return (
       <>
         <p>
-          {formatProject({ id: 'allProject' }, { name: org.name })}
+          {formatMessage({ id: 'c7ncd.project.allProject' }, { name: org.name })}
         </p>
         <div className="allProjects-title-right">
           <Button icon="refresh" onClick={() => { refresh('0'); }} />
@@ -117,7 +134,7 @@ export default observer(() => {
                   marginLeft: 16,
                 }}
               >
-                {formatProject({ id: 'createProject' })}
+                {formatMessage({ id: 'c7ncd.project.createProject' })}
               </Button>
             </Tooltip>
           </Permission>
@@ -195,28 +212,31 @@ export default observer(() => {
     }
   };
 
-  const customQuerybarChange = async (data) => {
-    forIn(projectListDataSet.queryParameter, (value, key) => {
-      projectListDataSet.setQueryParameter(key, null);
-    });
+  const customQuerybarChange = useCallback(
+    async (data) => {
+      forIn(projectListDataSet.queryParameter, (value, key) => {
+        projectListDataSet.setQueryParameter(key, null);
+      });
 
-    Object.keys(data).forEach((key) => {
-      const value = data[key];
-      if (isNil(value) || (Array.isArray(value) && !value.length)) {
-        return;
-      }
-      if (key === 'updateTime') {
-        projectListDataSet.setQueryParameter('lastUpdateDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
-        projectListDataSet.setQueryParameter('lastUpdateDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
-      } else if (key === 'createTime') {
-        projectListDataSet.setQueryParameter('creationDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
-        projectListDataSet.setQueryParameter('creationDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
-      } else {
-        projectListDataSet.setQueryParameter(key, value);
-      }
-    });
-    projectListDataSet.query();
-  };
+      Object.keys(data).forEach((key) => {
+        const value = data[key];
+        if (isNil(value) || (Array.isArray(value) && !value.length)) {
+          return;
+        }
+        if (key === 'updateTime') {
+          projectListDataSet.setQueryParameter('lastUpdateDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
+          projectListDataSet.setQueryParameter('lastUpdateDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
+        } else if (key === 'createTime') {
+          projectListDataSet.setQueryParameter('creationDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
+          projectListDataSet.setQueryParameter('creationDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
+        } else {
+          projectListDataSet.setQueryParameter(key, value);
+        }
+      });
+      projectListDataSet.query();
+    },
+    [projectListDataSet],
+  );
 
   function transformColumnData(columnsData) {
     const listLayoutColumnRelVOS = [];
@@ -262,6 +282,8 @@ export default observer(() => {
   const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId, HAS_BASE_BUSINESS), [organizationId]);
   const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
 
+  console.log('tableColumnsSet', tableColumnsSet);
+
   return (
     <div className="allProjects">
       <div className="allProjects-title">{renderTitle()}</div>
@@ -277,7 +299,7 @@ export default observer(() => {
             <TableColumnSet columnsSetConfig={tableColumnsSet} handleOk={handleEditColumnOk} />
           </div>
         </div>
-        <AllProjectTable columnsSetConfig={tableColumnsSet} onColumnResize={run} />
+        <AllProjectTable columnsSetConfig={tableColumnsSet} onColumnResize={run} fieldFunc={func} />
       </div>
     </div>
   );

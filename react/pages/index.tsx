@@ -22,7 +22,7 @@ import { ENTERPRISE_ADDRESS } from '@/constants';
 
 import '@/containers/components/style';
 
-import useDynamicScript from './dynamicScript';
+import loadDynamicScript from './dynamicScript';
 
 // import './dynamicScript';
 
@@ -55,7 +55,7 @@ const MasterIndex = (props: any) => {
   const history = useHistory();
   const { AutoRouter } = props;
 
-  useDynamicScript();
+  loadDynamicScript();
 
   const {
     pathname,

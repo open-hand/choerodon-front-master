@@ -59,7 +59,8 @@ const PlatformEntry:FC<PlatformEntryProps> = (props:any) => {
   }
 
   return (
-    <div className={prefixCls} onClick={getGlobalMenuData} role="none">
+    // eslint-disable-next-line
+    <div className={prefixCls} onClick={getGlobalMenuData} role="button">
       <Icon type="settings-o" />
       <span>{formatUserAvater({ id: 'plateEntry' })}</span>
     </div>

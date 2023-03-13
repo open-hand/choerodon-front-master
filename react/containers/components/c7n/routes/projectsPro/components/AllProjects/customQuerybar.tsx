@@ -18,6 +18,7 @@ export interface IProps {
   filterFieldsConfig: ICheckBoxFields[]
   onChange: (data: { [key: string]: any }, name?:string, record?:Record) => void
   showResetButton?: boolean
+  showSearchInput?: boolean
   dateFieldsArr?: string[]
   cRef?: any
 }
@@ -43,7 +44,7 @@ const fieldsMap = new Map(
 
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, onChange, cRef, showResetButton = true, dateFieldsArr = [],
+    searchFieldsConfig, filterFieldsConfig, onChange, cRef, showResetButton = true, showSearchInput = true, dateFieldsArr = [],
   } = props;
   const [visibleOptionalFieldsNum, setVisibleOptionalFieldsNum] = useState(0);
   const [recordExistedValue, setRecordExistedValue] = useState(false);
@@ -110,7 +111,7 @@ const Index: React.FC<IProps> = (props) => {
       });
     });
     return ds;
-  }, [searchFieldsConfig]);
+  }, [searchFieldsConfig, onChange]);
 
   const searchFilterDataSet = useMemo(() => {
     const ds = new DataSet({
@@ -271,9 +272,13 @@ const Index: React.FC<IProps> = (props) => {
     <>
       <div className="searchField-container">
         <div className="searchField-container-left">
-          <div className="searchField-item">
-            <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={queryBarDataSet} name="searchContent" />
-          </div>
+          {
+            showSearchInput && (
+            <div className="searchField-item">
+              <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={queryBarDataSet} name="searchContent" />
+            </div>
+            )
+          }
           <div className="searchField-container-left-block1">
             <div className="searchField-container-left-block1-inner">
               {

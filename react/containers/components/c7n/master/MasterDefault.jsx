@@ -399,7 +399,9 @@ class Masters extends Component {
   render() {
     const { AppState, AutoRouter } = this.props;
     return (
-      <Spin spinning={AppState.getIsLoadMenu}>
+      // <Spin spinning={AppState.getIsLoadMenu}>
+      // 这里是进入系统 偶尔会出现一直转圈的问题 先修改为false
+      <Spin spinning={false}>
         <div className="page-wrapper">
           <div
             className="page-header"

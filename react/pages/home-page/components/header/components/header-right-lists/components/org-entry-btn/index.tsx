@@ -71,7 +71,13 @@ const OrgEntryBtn:FC<OrgEntryBtnProps> = (props:any) => {
   if ((currentSelectedOrg && currentSelectedOrg?.into) || admin) {
     return (
       <div className="c7ncd-header-right-lists-item">
-        <Icon onClick={gotoOrganizationManager} type="settings-o" className={prefixCls} />
+        <Icon
+          onClick={gotoOrganizationManager}
+          type="settings-o"
+          className={prefixCls}
+          // @ts-ignore
+          role="button"
+        />
       </div>
     );
   }

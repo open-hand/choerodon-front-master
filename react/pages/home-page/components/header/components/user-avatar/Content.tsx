@@ -36,7 +36,7 @@ const UserAvatar = (props:any) => {
       placement="bottomRight"
       onVisibleChange={setMeneVisible}
     >
-      <Avatar src={imageUrl} prefixCls={prefixCls}>
+      <Avatar role="button" src={imageUrl} prefixCls={prefixCls}>
         {realName && realName.charAt(0)}
       </Avatar>
     </Popover>
