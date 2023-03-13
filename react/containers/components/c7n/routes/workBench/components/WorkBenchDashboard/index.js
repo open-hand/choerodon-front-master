@@ -138,7 +138,8 @@ const WorkBenchDashboard = (props) => {
 
   const { data: needUpgrade } = useUpgrade({
     organizationId: AppState.currentMenuType?.organizationId,
-    checkUpgrade,
+    checkUpgrade: checkUpgrade?.default?.checkSaaSUpgrade,
+    key: `useUpgrade-${checkUpgrade?.default?.checkSaaSUpgrade}-${AppState.currentMenuType?.organizationId}`,
   });
 
   useEffect(() => {

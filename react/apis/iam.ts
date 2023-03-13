@@ -5,6 +5,14 @@ class IamApi extends Api<IamApi> {
     return '/cbase/choerodon/v1';
   }
 
+  checkSaaSUpgrade(orgId:string) {
+    return this.request({
+      method: 'get',
+      url: `${this.prefix}/register_saas/check_upgrade`,
+      params: { tenantId: orgId },
+    });
+  }
+
   createTenant(registerId:string) {
     return this.request({
       method: 'get',
