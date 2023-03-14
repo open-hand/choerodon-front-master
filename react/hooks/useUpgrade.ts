@@ -9,7 +9,7 @@ export interface UpgradeConfig {
 export default function useUpgrade(config: UpgradeConfig, options?: UseQueryOptions<{ failed: boolean } | boolean>) {
   const { key } = config;
   // @ts-ignore
-  return useQuery(key, () => config.checkUpgrade(config.organizationId), {
+  return useQuery(key, () => (config.checkUpgrade ? config.checkUpgrade(config.organizationId) : null), {
     enabled: config.checkUpgrade && !!config.organizationId,
     initialData: false,
     ...options,
