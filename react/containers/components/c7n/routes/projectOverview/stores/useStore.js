@@ -94,6 +94,19 @@ export default function useStore(projectId) {
       return this.customData.get(customFlag).get(i);
     },
 
+    getCustomChartConfig(i, customFlag = 'agile') {
+      if (!this.customData.has(customFlag)) {
+        return undefined;
+      }
+      if (!this.customData.get(customFlag).has(i)) {
+        return {
+          layout: { customFlag: 'agile' },
+          groupId: 'agile',
+        };
+      }
+      return this.customData.get(customFlag).get(i);
+    },
+
     saveConfig(value) {
       const tempObj = map(value, (item) => {
         const temp = pick(mappings[item.i] || this.getCustomChart(item.i), ['type', 'name', 'layout']);

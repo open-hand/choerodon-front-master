@@ -298,7 +298,7 @@ const ProjectOverview = () => {
     if (hasOwnProperty && hasType) {
       tempComponent = tempComponent || ComponetsObjs[type];
     } else {
-      const componentConfig = mappings[type] || projectOverviewStore.getCustomChart(type) || { layout: {} };
+      const componentConfig = mappings[type] || projectOverviewStore.getCustomChartConfig(type) || { layout: {} };
       tempComponent = (
         <EmptyCard
           title={title}
