@@ -71,12 +71,17 @@ interface Props {
    * @description 默认 2 秒后自动关闭，配置为 null 则不自动关闭
    */
   closeDuration?: number | null
+  /**
+   * ws方式下：自定义ws数据中的进度字段名
+   * @default process
+   */
+  customProgressKey?: string
 }
 
 const CreateNotification = ({
   // @ts-ignore
   notificationKey, afterSuccess, textObject, messageKey, loadStatus: propsLoadStatus, type = 'polling', loadProgress = new Promise(noop),
-  duration = 1500, closeDuration = 2000,
+  duration = 1500, closeDuration = 2000, customProgressKey = 'process',
 }: Props) => {
   useWhyDidYouUpdate('CreateNotification', [textObject, propsLoadStatus, afterSuccess, notificationKey, duration, closeDuration]);
 
@@ -236,12 +241,12 @@ const CreateNotification = ({
       const { status, process } = data;
       switch (status) {
         case 'succeed': {
-          onSuccess(process);
+          onSuccess(data[customProgressKey]);
           setWsData(data);
           break;
         }
         case 'doing': {
-          setProgress(Number(process));
+          setProgress(Number(data[customProgressKey]));
           break;
         }
         case 'failed': {
