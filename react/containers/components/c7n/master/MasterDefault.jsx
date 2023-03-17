@@ -11,6 +11,7 @@ import {
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import { mount, get as cherodonGet, has } from '@choerodon/inject';
+import ExternalComponent from '@/components/external-component';
 import { Permission } from '@/components/permission';
 import getSearchString from '@/utils/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
@@ -434,6 +435,7 @@ class Masters extends Component {
             </div>
           </div>
         </div>
+        <ExternalComponent system={{ scope: 'baseBusiness', module: 'InviteEnterSystemModal' }} fallback={<span />} />
       </Spin>
     );
   }

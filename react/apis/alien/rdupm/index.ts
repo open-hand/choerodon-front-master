@@ -47,12 +47,14 @@ class RdupmAlienApi extends Api<RdupmAlienApi> {
     });
   }
 
-  getImageTag(repoName: string) {
+  getImageTag(repoName: string, params: any) {
     return this.request({
       url: `${this.prefix}/v1/harbor-image-tag/list/${this.projectId}`,
       method: 'get',
       params: {
         repoName,
+        withInfo: false,
+        ...params,
       },
     });
   }

@@ -15,6 +15,12 @@ const MARKET_PATH = '/market/app-market' as const;
 // 知识库页面
 const KNOWLEDGE_ORG_PATH = '/knowledge/organization' as const;
 
+// 组织层知识库模板预览页面
+const KNOWLEDGE_ORG_TEMPLATE_PREVIEW_PATH = '/knowledge/organization/template/preview' as const;
+
+// 项目层知识库模板预览页面
+const KNOWLEDGE_PROJECT_TEMPLATE_PREVIEW_PATH = '/knowledge/project/template/preview' as const;
+
 // 这也是敏捷那边的不晓得啥
 const ENTERPRISE_ADDRESS = '/iam/enterprise' as const;
 
@@ -35,4 +41,6 @@ export {
   PROJECTS_HOME_PATH,
   AGILE_WORK_CALENDAR_PATH,
   USERINFO_PATH,
+  KNOWLEDGE_ORG_TEMPLATE_PREVIEW_PATH,
+  KNOWLEDGE_PROJECT_TEMPLATE_PREVIEW_PATH,
 };

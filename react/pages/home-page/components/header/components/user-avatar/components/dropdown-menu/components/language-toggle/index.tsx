@@ -51,7 +51,7 @@ const LanguageToggle:FC<LanguageToggleProps> = (props) => {
   );
 
   return (
-    <Popover overlayClassName={`${prefixCls}-overlay`} placement={'left' as any} trigger={['click'] as any} content={renderLanguageMenu}>
+    <Popover overlayClassName={`${prefixCls}-overlay`} placement={'left' as any} trigger={['hover'] as any} content={renderLanguageMenu}>
       <div role="button" className={prefixCls}>
         <Icon type="language" />
         <span>{formatUserAvater({ id: 'languageSwicth' })}</span>

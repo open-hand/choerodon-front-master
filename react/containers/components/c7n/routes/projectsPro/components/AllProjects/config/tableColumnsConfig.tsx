@@ -11,6 +11,9 @@ const colorMap = new Map([
 
 const getStatusName = (record: Record, formatMessage:any) => {
   const pData = record.toData();
+  if (pData.projectStatus === 'failed') {
+    return '创建失败';
+  }
   if (pData.statusName) {
     return pData.statusName;
   }
