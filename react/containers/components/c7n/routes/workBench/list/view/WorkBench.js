@@ -8,7 +8,6 @@ import { useWorkBenchStore } from '../../stores';
 import WorkBenchHeader from './components/WorkBenchHeader';
 import WorkBenchPage from '../../components/work-bench-page';
 import WorkBenchDashboard from '../../components/WorkBenchDashboard';
-import ExternalComponent from '@/components/external-component';
 import './WorkBench.less';
 
 const WorkBench = () => {
@@ -55,7 +54,6 @@ const WorkBench = () => {
           />
         )}
       {mount('base-pro:newUserGuidePage', {})}
-      <ExternalComponent system={{ scope: 'baseBusiness', module: 'InviteEnterSystemModal' }} fallback={<span />} />
     </Page>
   );
 };
