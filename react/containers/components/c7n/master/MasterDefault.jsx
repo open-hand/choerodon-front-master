@@ -24,6 +24,7 @@ import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
 import Header from '@/pages/home-page/components/header';
 import MenusPro from '@/pages/home-page/components/menu';
+import handleGetHelpDocUrl from './handleGetHelpDocUrl';
 
 import './index.less';
 import './style';
@@ -126,12 +127,10 @@ class Masters extends Component {
       }
     });
     this.initMenuType(this.props);
-    cherodonGet('base-pro:handleGetHelpDocUrl')
-      && cherodonGet('base-pro:handleGetHelpDocUrl')(
-        this.props,
-        routeWithNoMenu,
-        this.setDocUrl,
-      );
+    C7NHasModule('@choerodon/base-pro')
+    && handleGetHelpDocUrl(this.props,
+      routeWithNoMenu,
+      this.setDocUrl);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -160,12 +159,10 @@ class Masters extends Component {
         this.cRef?.current?.setguideOpen(false);
       }
       this.cRef?.current?.handleSetGuideContent(newProps);
-      cherodonGet('base-pro:handleGetHelpDocUrl')
-        && cherodonGet('base-pro:handleGetHelpDocUrl')(
-          this.props,
-          routeWithNoMenu,
-          this.setDocUrl,
-        );
+      C7NHasModule('@choerodon/base-pro')
+      && handleGetHelpDocUrl(this.props,
+        routeWithNoMenu,
+        this.setDocUrl);
     }
   };
 
