@@ -53,7 +53,7 @@ const WorkBench = () => {
             onOpenCardModal={redirectToEdit}
           />
         )}
-      {mount('base-pro:newUserGuidePage', {})}
+      {/* {mount('base-pro:newUserGuidePage', {})} */}
     </Page>
   );
 };
