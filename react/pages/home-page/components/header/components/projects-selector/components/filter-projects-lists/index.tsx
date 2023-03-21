@@ -57,7 +57,7 @@ const FilterProjectsLists:FC<FilterProjectsListsProps> = (props:any) => {
   });
 
   function getData() {
-    return organizationsApi.getProjectsIds(userId, searchData);
+    return organizationsApi.getProjectsIds(userId, searchData, true);
   }
 
   const renderLists = () => (

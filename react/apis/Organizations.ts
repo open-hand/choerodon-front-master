@@ -378,12 +378,13 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
-  getProjectsIds(userId:any, filerData?:string) {
+  getProjectsIds(userId:any, filerData?:string, onlyEnable = false) {
     return this.request({
       url: `${this.prefix}/${this.orgId}/users/${userId}/projects/paging`,
       method: 'post',
       data: {
         name: filerData,
+        enable: onlyEnable,
       },
     });
   }
