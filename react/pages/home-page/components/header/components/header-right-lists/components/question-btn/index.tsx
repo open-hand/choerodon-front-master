@@ -1,11 +1,13 @@
 import React from 'react';
-import { mount, get } from '@choerodon/inject';
+import ExternalComponent from '@/components/external-component';
+
+const HASBASEPRO = C7NHasModule('@choerodon/base-pro');
 
 const QuestionBtn = () => {
-  if (get('base-pro:headQuestionBtn')) {
+  if (HASBASEPRO) {
     return (
       <div className="c7ncd-header-right-lists-item">
-        {mount('base-pro:headQuestionBtn', {})}
+        <ExternalComponent system={{ scope: 'basePro', module: 'base-pro:headQuestionBtn' }} />
       </div>
     );
   }

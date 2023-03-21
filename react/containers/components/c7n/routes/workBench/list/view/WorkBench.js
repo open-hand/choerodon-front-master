@@ -8,6 +8,7 @@ import { useWorkBenchStore } from '../../stores';
 import WorkBenchHeader from './components/WorkBenchHeader';
 import WorkBenchPage from '../../components/work-bench-page';
 import WorkBenchDashboard from '../../components/WorkBenchDashboard';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import './WorkBench.less';
 
 const WorkBench = () => {
@@ -19,7 +20,9 @@ const WorkBench = () => {
     getUserId,
   } = useWorkBenchStore();
 
-  const method = get('base-pro:useRegisterCompleteInfoModal') || function Tentative() {};
+  const { func: useRegisterCompleteInfoModal } = useExternalFunc('basePro', 'base-pro:useRegisterCompleteInfoModal');
+
+  const method = useRegisterCompleteInfoModal || function Tentative() {};
   method({
     userId: getUserId,
   });

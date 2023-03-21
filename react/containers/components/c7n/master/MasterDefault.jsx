@@ -24,11 +24,10 @@ import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
 import Header from '@/pages/home-page/components/header';
 import MenusPro from '@/pages/home-page/components/menu';
-import handleGetHelpDocUrl from './handleGetHelpDocUrl';
-
+import headerStore from '@/containers/stores/c7n/HeaderStore';
+import withHooksHOC from './withHookHOC';
 import './index.less';
 import './style';
-import headerStore from '@/containers/stores/c7n/HeaderStore';
 
 // 这里是没有菜单的界面合集
 // 记录下route和code 为了方便查询该界面的文档地址
@@ -127,13 +126,27 @@ class Masters extends Component {
       }
     });
     this.initMenuType(this.props);
-    C7NHasModule('@choerodon/base-pro')
-    && handleGetHelpDocUrl(this.props,
-      routeWithNoMenu,
-      this.setDocUrl);
   }
 
   componentWillReceiveProps(nextProps) {
+    // 获取适用天数in the base-pro, only applied in the hand version
+    if (nextProps.getSaaSUserRestDays && !this.props.getSaaSUserRestDays) {
+      const {
+        location,
+      } = this.props;
+      const { search } = location;
+      const menuType = parseQueryToMenuType(search);
+      nextProps.getSaaSUserRestDays.default(menuType?.orgId, this);
+    }
+
+    if (nextProps.handleGetHelpDocUrl && !this.props.handleGetHelpDocUrl) {
+      nextProps.handleGetHelpDocUrl.default(
+        this.props,
+        routeWithNoMenu,
+        this.setDocUrl,
+      );
+    }
+
     this.saaSUserRestDaysAnewReq(nextProps, this.props);
     this.judgeIfGetUserCountCheck(nextProps, this.props);
     this.initMenuType(nextProps);
@@ -145,8 +158,8 @@ class Masters extends Component {
     const oldParams = new URLSearchParams(oldProps.location.search);
     if (newParams.get('organizationId') !== oldParams.get('organizationId')) {
       headerStore.deleteAnnouncement('saas_restdays_announcement');
-      if (has('base-pro:getSaaSUserRestDays')) {
-        cherodonGet('base-pro:getSaaSUserRestDays')(newParams.get('organizationId'), this);
+      if (newProps.getSaaSUserRestDays) {
+        newProps.getSaaSUserRestDays.default(newParams.get('organizationId'), this);
       }
     }
   }
@@ -159,10 +172,13 @@ class Masters extends Component {
         this.cRef?.current?.setguideOpen(false);
       }
       this.cRef?.current?.handleSetGuideContent(newProps);
-      C7NHasModule('@choerodon/base-pro')
-      && handleGetHelpDocUrl(this.props,
-        routeWithNoMenu,
-        this.setDocUrl);
+      if (newProps.handleGetHelpDocUrl) {
+        newProps.handleGetHelpDocUrl.default(
+          this.props,
+          routeWithNoMenu,
+          this.setDocUrl,
+        );
+      }
     }
   };
 
@@ -229,19 +245,9 @@ class Masters extends Component {
   }
 
   componentDidMount() {
-    const {
-      location, MenuStore, HeaderStore, history, AppState,
-    } = this.props;
-    const { pathname, search } = location;
-    const menuType = parseQueryToMenuType(search);
     this.initFavicon();
-
     // 获取系统公告
     this.getPlatformAnnouncement();
-    // 获取适用天数in the base-pro, only applied in the hand version
-    if (has('base-pro:getSaaSUserRestDays')) {
-      cherodonGet('base-pro:getSaaSUserRestDays')(menuType?.orgId, this);
-    }
   }
 
   /**
@@ -420,12 +426,13 @@ class Masters extends Component {
                 popoverHead,
                 cRef: this.cRef,
               })} */}
-              {mount('base-pro:UserCheck', {
-                ...this.props,
-                MasterServices,
-                MasterApis,
-                cRef: this.userRef,
-              })}
+              <ExternalComponent
+                system={{ scope: 'basePro', module: 'base-pro:UserCheck' }}
+                {...this.props}
+                MasterServices={MasterServices}
+                MasterApis={MasterApis}
+                cRef={this.userRef}
+              />
               <div id="autoRouter" className="content">
                 <RouteIndex AutoRouter={AutoRouter} />
               </div>
@@ -438,4 +445,4 @@ class Masters extends Component {
   }
 }
 
-export default Masters;
+export default withHooksHOC(Masters);
