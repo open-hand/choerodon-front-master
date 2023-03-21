@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 
 import queryString from 'query-string';
 import { mount, get } from '@choerodon/inject';
+import { iamApi } from '@/apis';
 import { Page } from '@/components/c7n-page';
 import { useWorkBenchStore } from '../../stores';
 import WorkBenchHeader from './components/WorkBenchHeader';
@@ -10,6 +11,8 @@ import WorkBenchPage from '../../components/work-bench-page';
 import WorkBenchDashboard from '../../components/WorkBenchDashboard';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import './WorkBench.less';
+
+const HASBASEPRO = C7NHasModule('@choerodon/base-pro');
 
 const WorkBench = () => {
   const {
@@ -20,12 +23,21 @@ const WorkBench = () => {
     getUserId,
   } = useWorkBenchStore();
 
-  const { func: useRegisterCompleteInfoModal } = useExternalFunc('basePro', 'base-pro:useRegisterCompleteInfoModal');
+  const { loading: openRegisterCompleteInfoModalLoading, func: openRegisterCompleteInfoModal } = useExternalFunc('basePro', 'base-pro:openRegisterCompleteInfoModal');
 
-  const method = useRegisterCompleteInfoModal || function Tentative() {};
-  method({
-    userId: getUserId,
-  });
+  useEffect(() => {
+    async function asyncFunc() {
+      if (HASBASEPRO) {
+        const res = await iamApi.getIfCompleteRegisterInfo(getUserId);
+        if (res) {
+          openRegisterCompleteInfoModal();
+        }
+      }
+    }
+    if (!openRegisterCompleteInfoModalLoading) {
+      asyncFunc();
+    }
+  }, [openRegisterCompleteInfoModalLoading, openRegisterCompleteInfoModal]);
 
   useEffect(() => {
     // 这个是是否有重定向工作台 有就跳转到传入的重定向地址
@@ -34,6 +46,7 @@ const WorkBench = () => {
       window.location.replace(`${window.location.origin}/#${redirectWorkBench}`);
     }
   }, []);
+
   const redirectToEdit = () => {
     const { dashboardId, dashboardName } = viewDs.current.toData();
     let searchParams = queryString.parse(search);
