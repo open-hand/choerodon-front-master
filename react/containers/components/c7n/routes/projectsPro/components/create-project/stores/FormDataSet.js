@@ -278,6 +278,14 @@ export default ({
         if (dataSet && dataSet?.current?.get('devopsComponentCode')) {
           dataSet?.current?.getField('devopsComponentCode').set('disabled', true);
         }
+        if (dataSet && dataSet?.current?.get('code') && !dataSet?.current?.get('devopsComponentCode')) {
+          const devopsCode = trimSpecial(dataSet?.current?.get('code'));
+          const lowerCode = devopsCode?.toLowerCase();
+          const finalCode = lowerCode.replace(/^(\s|[0-9]+.{0,1}[0-9]{0,2})/g, '');
+          const reg = /[\u4e00-\u9fa5]/g;
+          const removeChinese = finalCode.replace(reg, '');
+          dataSet.current?.set('devopsComponentCode', removeChinese);
+        }
       },
       update: ({
         dataSet, record, name, value, oldValue,
@@ -288,7 +296,6 @@ export default ({
           const finalCode = lowerCode.replace(/^(\s|[0-9]+.{0,1}[0-9]{0,2})/g, '');
           const reg = /[\u4e00-\u9fa5]/g;
           const removeChinese = finalCode.replace(reg, '');
-
           record?.set('devopsComponentCode', removeChinese);
         }
       },
