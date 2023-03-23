@@ -8,7 +8,7 @@ import { map } from 'lodash';
 import './index.less';
 import classNames from 'classnames';
 import { Tooltip } from 'choerodon-ui';
-import { OverflowWrap } from '@choerodon/components';
+import { OverflowWrap } from '@zknow/components';
 import { useMenuStore } from '../../stores';
 import { DEFAULT_THEME_COLOR } from '@/constants';
 import MenuBgImg from '../../assets/MenuBgImg.svg';
@@ -29,6 +29,7 @@ const MainMenu:FC<MainMenuProps> = () => {
       getActiveMenuRoot,
       getMenuData,
     },
+    mainStore,
     MenuStore,
     AppState: {
       getSiteInfo,
@@ -67,7 +68,9 @@ const MainMenu:FC<MainMenuProps> = () => {
       tempMenuRoot[menuType.type] = item;
       runInAction(() => {
       // 设置默认展开的子menu
-        MenuStore.setOpenkeysBaseonRoot(item);
+        if (mainStore.isExpanded) {
+          MenuStore.setOpenkeysBaseonRoot(item);
+        }
         // 设置menu的root
         MenuStore.setActiveMenuRoot(tempMenuRoot);
       });
@@ -95,8 +98,9 @@ const MainMenu:FC<MainMenuProps> = () => {
         // 匹配菜单的svg string
         const svgLink = ICON_MAP?.[menuCode] || 'xiezuo';
         return (
+          // eslint-disable-next-line jsx-a11y/interactive-supports-focus, jsx-a11y/click-events-have-key-events
           <div
-            role="none"
+            role="button"
             className={cls}
             key={menuCode}
             onClick={() => handleMenuLink(item)}

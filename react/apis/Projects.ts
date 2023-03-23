@@ -2,7 +2,7 @@ import Api from './Api';
 
 class ProjectsApi extends Api<ProjectsApi> {
   get prefix() {
-    return `/iam/choerodon/v1/projects/${this.projectId}`;
+    return `/cbase/choerodon/v1/projects/${this.projectId}`;
   }
 
   enableUsersPage(name: any) {
@@ -21,7 +21,7 @@ class ProjectsApi extends Api<ProjectsApi> {
    */
   loadBasicInfo(projectId?: string) {
     return this.request({
-      url: `/iam/choerodon/v1/projects/${projectId}/basic_info`,
+      url: `/cbase/choerodon/v1/projects/${projectId}/basic_info`,
       method: 'get',
     });
   }

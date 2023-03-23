@@ -111,14 +111,13 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     width: 100%;
-
     &-exception {
       position: absolute;
       bottom: -40px;
-      width: 0.9rem;
       text-align: center;
       margin-bottom: 12px;
       display: flex;
+      cursor: auto;
       align-items: center;
 
       .c7n-pro-checkbox-inner {
@@ -150,8 +149,11 @@
       &-disabled {
         cursor: not-allowed;
         background: #ffffff;
-        opacity: 0.45;
+        // opacity: 0.45;
         border: 1px solid #d9e6f2;
+        .category-item {
+          opacity: 0.45;
+        }
       }
 
       &-selected {
@@ -176,27 +178,27 @@
             width: 0.4rem;
             height: 0.4rem;
             line-height: 0.4rem;
-            background: url("./images/devops.svg");
+            background: url('./images/devops.svg');
             background-repeat: no-repeat !important;
             margin-right: 15px;
             &-N_DEVOPS {
-              background: url("./images/devops.svg");
+              background: url('./images/devops.svg');
             }
             &-N_AGILE,
             &-N_PROGRAM {
-              background: url("./images/agile.svg");
+              background: url('./images/agile.svg');
             }
             &-N_TEST {
-              background: url("./images/test.svg");
+              background: url('./images/test.svg');
             }
             &-N_REQUIREMENT {
-              background: url("./images/require.svg");
+              background: url('./images/require.svg');
             }
             &-N_OPERATIONS {
-              background: url("./images/operations.svg");
+              background: url('./images/operations.svg');
             }
             &-N_WATERFALL {
-              background: url("./images/waterfall.svg");
+              background: url('./images/waterfall.svg');
             }
           }
           &-name {
@@ -208,6 +210,9 @@
     }
 
     &-container-waterfall-selected {
+      margin-bottom: 40px;
+    }
+    &-container-agileProgram-selected {
       margin-bottom: 40px;
     }
 
@@ -227,7 +232,7 @@
         font-family: SimSun, sans-serif;
         line-height: 1;
         vertical-align: middle;
-        content: "*";
+        content: '*';
         position: relative;
         top: -2px;
       }
@@ -249,6 +254,24 @@
       cursor: pointer;
     }
   }
+
+  &-projRelation {
+    &-title {
+      margin-bottom: 13px;
+      font-size: 7px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    &-divided {
+      margin-top: 8px;
+      margin-bottom: 16px;
+      width: 100%;
+      height: 1px;
+      background: #d9e6f2;
+    }
+  }
+
   &-advanced {
     &-divided {
       margin-top: 8px;

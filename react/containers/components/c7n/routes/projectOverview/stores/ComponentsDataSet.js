@@ -13,7 +13,7 @@ export default ({ projectId, availableServiceList, projectOverviewStore }) => ({
   autoQuery: true,
   transport: {
     read: ({ data }) => ({
-      url: `iam/choerodon/v1/projects/${projectId}/project_overview_config`,
+      url: `cbase/choerodon/v1/projects/${projectId}/project_overview_config`,
       method: 'get',
       transformResponse: (value) => {
         const defaultValues = getInitProjectOverviewLayout(availableServiceList);

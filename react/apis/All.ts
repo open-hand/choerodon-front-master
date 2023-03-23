@@ -2,7 +2,7 @@ import Api from './Api';
 
 class AllApi extends Api<AllApi> {
   get prefix() {
-    return '/iam/choerodon/v1/all';
+    return '/cbase/choerodon/v1/all';
   }
 
   getAllUser(data: object) {

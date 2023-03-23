@@ -94,13 +94,26 @@ export default function useStore(projectId) {
       return this.customData.get(customFlag).get(i);
     },
 
+    getCustomChartConfig(i, customFlag = 'agile') {
+      if (!this.customData.has(customFlag)) {
+        return undefined;
+      }
+      if (!this.customData.get(customFlag).has(i)) {
+        return {
+          layout: { customFlag: 'agile' },
+          groupId: 'agile',
+        };
+      }
+      return this.customData.get(customFlag).get(i);
+    },
+
     saveConfig(value) {
       const tempObj = map(value, (item) => {
         const temp = pick(mappings[item.i] || this.getCustomChart(item.i), ['type', 'name', 'layout']);
         temp.layout = merge(temp.layout, item);
         return temp;
       });
-      axios.post(`iam/choerodon/v1/projects/${this.projectId}/project_overview_config`, JSON.stringify({
+      axios.post(`cbase/choerodon/v1/projects/${this.projectId}/project_overview_config`, JSON.stringify({
         data: JSON.stringify(tempObj),
       }));
     },

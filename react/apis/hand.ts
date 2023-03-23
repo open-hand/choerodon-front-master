@@ -8,7 +8,7 @@ class HandApi extends Api<HandApi> {
    * @return {*}
    */
   get prefix() {
-    return `/iam/choerodon/v1/hand/${this.orgId}`;
+    return `/cbase/choerodon/v1/hand/${this.orgId}`;
   }
 
   getOrgOrigin() {

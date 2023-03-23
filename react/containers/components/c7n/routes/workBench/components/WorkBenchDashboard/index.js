@@ -7,10 +7,11 @@ import { get, noop } from 'lodash';
 import { has as hasInject, mount, get as choerodonGet } from '@choerodon/inject';
 import ResizeObserver from 'resize-observer-polyfill';
 
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import useUpgrade from '@/hooks/useUpgrade';
 import EmptyPage from '../../list/components/empty-page';
 import StarTargetPro from '../StarTargetPro';
@@ -43,6 +44,7 @@ const UserIssue = () => (hasInject('agilePro:workbenchUserIssue') ? mount('agile
 const ProjectProgress = () => (hasInject('agilePro:workbenchProjectStatistics') ? mount('agilePro:workbenchProjectStatistics', {}) : <></>);
 const ProjectReleaseSchedule = <ExternalComponent system={{ scope: 'haitianMaster', module: 'project-release-schedule' }} />;
 const TeamLeaderOrder = <ExternalComponent system={{ scope: 'haitianMaster', module: 'technical-director-schedule' }} />;
+const DevoperSchedule = <ExternalComponent system={{ scope: 'haitianMaster', module: 'devoper-schedule' }} />;
 /** 临时兼容性操作 */
 // eslint-disable-next-line no-underscore-dangle
 window.___choeordonWorkbenchComponent__ = window.___choeordonWorkbenchComponent__ || {};
@@ -73,6 +75,7 @@ Object.assign(ComponetsObjs, {
   projectProgress: <ProjectProgress />,
   projectVersionProgress: ProjectReleaseSchedule,
   teamLeaderOrder: TeamLeaderOrder,
+  developerRank: DevoperSchedule,
 });
 const componentCodeMapInJectCode = {
   backlogApprove: 'backlog:workBenchApprove',
@@ -131,8 +134,12 @@ const WorkBenchDashboard = (props) => {
     }
   }, [props.dashboardId]);
 
+  const { func: checkUpgrade } = useExternalFunc('saas', 'base-saas:checkUpgrade');
+
   const { data: needUpgrade } = useUpgrade({
     organizationId: AppState.currentMenuType?.organizationId,
+    checkUpgrade: checkUpgrade?.default?.checkSaaSUpgrade,
+    key: `useUpgrade-${checkUpgrade?.default?.checkSaaSUpgrade}-${AppState.currentMenuType?.organizationId}`,
   });
 
   useEffect(() => {
@@ -153,19 +160,23 @@ const WorkBenchDashboard = (props) => {
   });
 
   function onLayoutChange(layouts) {
-    layouts.map((card) => {
-      dashboardDs.map((record) => {
+    const data = layouts.map((card) => {
+      let newCard = card;
+      dashboardDs.forEach((record) => {
         if (record.get('i') === card.i) {
           record.set('x', card.x);
           record.set('y', card.y);
           record.set('w', card.w);
           record.set('h', card.h);
+          newCard = {
+            ...record?.toData(),
+            ...card,
+          };
         }
-        return null;
       });
-      return null;
+      return newCard;
     });
-    // dashboardDs.loadData(layouts);
+    dashboardDs.loadData(data);
   }
 
   function handleDelete(record) {

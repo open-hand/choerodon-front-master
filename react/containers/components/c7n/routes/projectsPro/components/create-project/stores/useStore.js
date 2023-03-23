@@ -1,6 +1,6 @@
 import { useLocalStore } from 'mobx-react-lite';
-import { axios } from '@/index';
 import { has as hasInject, get as getInject } from '@choerodon/inject';
+import { axios } from '@/index';
 
 export default function useStore() {
   return useLocalStore(() => ({
@@ -14,7 +14,7 @@ export default function useStore() {
 
     async hasProgramProjects(organizationId, projectId) {
       try {
-        const res = await axios.get(`/iam/choerodon/v1/organizations/${organizationId}/project_relations/${projectId}/${projectId}`);
+        const res = await axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/project_relations/${projectId}/${projectId}`);
         if (res && !res.failed && res.length) {
           return true;
         }
@@ -24,9 +24,9 @@ export default function useStore() {
       }
     },
 
-    async checkSenior(organizationId) {
-      if (hasInject('base-saas:checkSaaSSenior')) {
-        const res = await getInject('base-saas:checkSaaSSenior')(organizationId);
+    async checkSenior(organizationId, func) {
+      if (func) {
+        const res = await func(organizationId);
         this.setIsSenior(res);
       } else {
         this.setIsSenior(true);

@@ -22,7 +22,7 @@ export function StoreProvider({ children }:{children:React.ReactNode}) {
   const fetchData = async () => {
     let res;
     try {
-      res = (await axios.get('/iam/choerodon/v1/guides/all', {
+      res = (await axios.get('/cbase/choerodon/v1/guides/all', {
         params: {
           organization_id: AppState.currentMenuType?.organizationId,
         },
@@ -37,7 +37,7 @@ export function StoreProvider({ children }:{children:React.ReactNode}) {
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
   }, []);
 
   const value = {

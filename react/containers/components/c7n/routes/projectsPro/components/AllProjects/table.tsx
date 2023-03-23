@@ -1,64 +1,54 @@
 import {
   Icon, Modal, Table, TextField, Tooltip,
 } from 'choerodon-ui/pro';
-import { Tag } from 'choerodon-ui';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
-import { StatusTag, UserInfo, HealthStatus } from '@choerodon/components';
 import { some, throttle } from 'lodash';
 import isOverflow from 'choerodon-ui/pro/lib/overflow-tip/util';
 import moment from 'moment';
 import { get } from '@choerodon/inject';
 import { useRequest } from 'ahooks';
 import classNames from 'classnames';
+import type { ColumnProps } from 'choerodon-ui/pro/lib/table/Column';
 import { getRandomBackground } from '@/utils';
 import { useProjectsProStore } from '../../stores';
 import { axios } from '@/index';
 import CreateProject from '../create-project';
 import handleClickProject from '@/utils/gotoProject';
-import {
-  MODAL_WIDTH,
-} from '@/constants/MODAL';
 import Action from '@/components/action';
 import { IColumnSetConfig } from './tableColumnSet';
 import './table.less';
 
 import { organizationsApi } from '@/apis';
-// TODO: 把column的代码拆出去
-
-const { MIDDLE } = MODAL_WIDTH;
+import useGetDisplayColumn from './hooks/useGetDisplayColumn';
+import { getAdjustableColumns } from './config/tableColumnsConfig';
 
 const modalkey2 = Modal.key();
 
-const colorMap = new Map([
-  ['failed', 'failed'],
-  ['creating', 'operating'],
-  ['updating', 'operating'],
-]);
 // 是否存在base的商业版本
 const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
 export interface IProps {
-  columnsConfig: IColumnSetConfig[] | []
+  columnsSetConfig: IColumnSetConfig[] | []
   onColumnResize: ({ column, width, index }:any)=> void
 }
 
 export const startProjChange = async (pid: string, enable: boolean, organizationId: string, ProjectsProUseStore: any) => {
-  enable ? await axios.post(`/iam/choerodon/v1/organizations/${organizationId}/star_projects`, {
+  enable ? await axios.post(`/cbase/choerodon/v1/organizations/${organizationId}/star_projects`, {
     projectId: pid,
-  }) : await axios.delete(`/iam/choerodon/v1/organizations/${organizationId}/star_projects?project_id=${pid}`);
+  }) : await axios.delete(`/cbase/choerodon/v1/organizations/${organizationId}/star_projects?project_id=${pid}`);
   ProjectsProUseStore.axiosGetStarProjects();
   ProjectsProUseStore.axiosGetRecentProjects();
 };
 
-const Index: React.FC<IProps> = (props) => {
-  const { columnsConfig, onColumnResize: columnResize } = props;
+const Index: React.FC<any> = (props) => {
+  const { columnsSetConfig, onColumnResize: columnResize, fieldFunc } = props;
 
   const {
     categoryCodes,
     history,
     AppState,
-    AppState: { getUserId, currentMenuType: { organizationId } },
+    AppState: { currentMenuType: { organizationId } },
     projectListDataSet,
     intl: { formatMessage },
     ProjectsProUseStore,
@@ -79,6 +69,77 @@ const Index: React.FC<IProps> = (props) => {
     },
 
   });
+
+  const displayColumn = useGetDisplayColumn(columnsSetConfig, getAdjustableColumns(formatMessage, prefix, fieldFunc));
+
+  const renderName = ({ record }: { record: Record }) => {
+    const projData: any = record?.toData();
+    const unix = String(moment(projData.creationDate).unix());
+    projData.background = getRandomBackground(unix.substring(unix.length - 3));
+    const disabled = projData.projectStatus === 'creating' || !projData.enabled;
+    const projectNameCls = classNames({
+      'project-name': true,
+      'project-name-disable': disabled,
+    });
+    return (
+      <div className="c7ncd-allprojectslist-table-field-name">
+        <div className="c7ncd-allprojectslist-table-field-name-left">
+          <span
+            className="project-icon"
+            style={{
+              backgroundImage: projData.imageUrl
+                ? `url("${projData.imageUrl}")`
+                : projData.background,
+            }}
+          >
+            <span>
+              {!projData.imageUrl && projData.name && projData.name.slice(0, 1).toUpperCase()}
+            </span>
+          </span>
+
+          <span
+            style={{
+              cursor: disabled ? 'not-allowed' : 'pointer',
+              color: disabled ? '#0F1358' : 'rgba(83, 101, 234, 1)',
+            }}
+            role="none"
+            className={projectNameCls}
+            onMouseEnter={(e) => { handleMouseEnter(e, record.get('name')); }}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => { handleProjClick(projData); }}
+          >
+            {record.get('name')}
+          </span>
+
+          {checkOperation(projData) ? (
+            <Icon
+              type={projData.starFlag ? 'stars' : 'star_border'}
+              style={{
+                color: projData.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
+                fontSize: '20px',
+                cursor: 'pointer',
+              }}
+              onClick={() => { handleStarClick(projData); }}
+            />
+          ) : null}
+        </div>
+        <div className="c7ncd-allprojectslist-table-field-name-right">
+          {renderAction({ record })}
+        </div>
+      </div>
+    );
+  };
+
+  const alwaysShowColumns:ColumnProps[] = [
+    {
+      name: 'name',
+      renderer: renderName,
+      sortable: true,
+      resizable: false,
+      width: 265,
+      lock: true,
+    },
+  ];
 
   const checkOperation = useCallback(
     (projData) => projData
@@ -108,13 +169,13 @@ const Index: React.FC<IProps> = (props) => {
   };
 
   const handleEnabledProj = async (pid: string) => {
-    if (await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${pid}/enable`)) {
+    if (await axios.put(`/cbase/choerodon/v1/organizations/${organizationId}/projects/${pid}/enable`)) {
       refresh();
     }
   };
 
   const handleDisableProj = async (pid: Record) => {
-    if (await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${pid}/disable`)) {
+    if (await axios.put(`/cbase/choerodon/v1/organizations/${organizationId}/projects/${pid}/disable`)) {
       refresh();
     }
   };
@@ -213,7 +274,7 @@ const Index: React.FC<IProps> = (props) => {
   };
 
   const handleDelete = async (pid: string) => {
-    if (await axios.delete(`/iam/choerodon/v1/projects/${pid}`)) {
+    if (await axios.delete(`/cbase/choerodon/v1/projects/${pid}`)) {
       refresh();
     }
   };
@@ -243,64 +304,6 @@ const Index: React.FC<IProps> = (props) => {
 
   const handleMouseLeave = () => {
     Tooltip.hide();
-  };
-
-  const renderName = ({ record }: { record: Record }) => {
-    const projData: any = record?.toData();
-    const unix = String(moment(projData.creationDate).unix());
-    projData.background = getRandomBackground(unix.substring(unix.length - 3));
-    const disabled = projData.projectStatus === 'creating' || !projData.enabled;
-    const projectNameCls = classNames({
-      'project-name': true,
-      'project-name-disable': disabled,
-    });
-    return (
-      <div className="c7ncd-allprojectslist-table-field-name">
-        <div className="c7ncd-allprojectslist-table-field-name-left">
-          <span
-            className="project-icon"
-            style={{
-              backgroundImage: projData.imageUrl
-                ? `url("${projData.imageUrl}")`
-                : projData.background,
-            }}
-          >
-            <span>
-              {!projData.imageUrl && projData.name && projData.name.slice(0, 1).toUpperCase()}
-            </span>
-          </span>
-
-          <span
-            style={{
-              cursor: disabled ? 'not-allowed' : 'pointer',
-              color: disabled ? '#0F1358' : 'rgba(83, 101, 234, 1)',
-            }}
-            role="none"
-            className={projectNameCls}
-            onMouseEnter={(e) => { handleMouseEnter(e, record.get('name')); }}
-            onMouseLeave={handleMouseLeave}
-            onClick={() => { handleProjClick(projData); }}
-          >
-            {record.get('name')}
-          </span>
-
-          {checkOperation(projData) ? (
-            <Icon
-              type={projData.starFlag ? 'stars' : 'star_border'}
-              style={{
-                color: projData.starFlag ? '#faad14' : 'rgba(15, 19, 88, 0.45)',
-                fontSize: '20px',
-                cursor: 'pointer',
-              }}
-              onClick={() => { handleStarClick(projData); }}
-            />
-          ) : null}
-        </div>
-        <div className="c7ncd-allprojectslist-table-field-name-right">
-          {renderAction({ record })}
-        </div>
-      </div>
-    );
   };
 
   const openHealthModal = (record:Record) => {
@@ -369,230 +372,8 @@ const Index: React.FC<IProps> = (props) => {
     ) : null;
   };
 
-  const getStatusName = (record: Record) => {
-    const pData = record.toData();
-    if (pData.statusName) {
-      return pData.statusName;
-    }
-    const getName = (p: any) => (
-      // eslint-disable-next-line no-nested-ternary
-      !p.projectStatus || p.projectStatus === 'success'
-        ? p.enabled
-          ? '启用'
-          : '停用'
-        : formatMessage({
-          id: `c7ncd.project.${p.projectStatus}${p.projectStatus === 'failed'
-            ? `.${p.operateType}`
-            : ''
-          }`,
-        }));
-    return getName(pData);
-  };
-
-  const getColor = (record: Record) => {
-    const p = record.toData();
-    if (['creating', 'updating', 'failed'].includes(p.projectStatus)) {
-      return '';
-    }
-    return record?.get('color') || '';
-  };
-
-  const getStatusColorCode = (record: Record) => {
-    const p = record.toData();
-    if (!p.projectStatus || p.projectStatus === 'success') {
-      return p.enabled ? 'success' : 'failed';
-    }
-    return colorMap.get(p.projectStatus);
-  };
-
-  const renderEnabled = ({ value, record }: { value: boolean, record: Record }) => (
-    <div style={{
-      display: 'flex', justifyContent: 'left', height: '100%', alignItems: 'center',
-    }}
-    >
-      <StatusTag
-        color={getColor(record)}
-      // @ts-ignore
-        colorCode={getStatusColorCode(record)}
-        name={getStatusName(record)}
-      />
-    </div>
-  );
-
-  const renderWorkGroup = ({ value, record }: { value: string, record: Record }) => {
-    if (value) {
-      if (value.indexOf('-') === -1) {
-        return (
-          <Tooltip title={value}>
-            {value}
-          </Tooltip>
-        );
-      }
-      const strEnd = value.split('-').pop();
-      return (
-        <Tooltip title={value}>
-          {strEnd}
-        </Tooltip>
-      );
-    }
-    return '';
-  };
-
-  const renderCategories = ({ value }: { value: any }) => {
-    if (!value) {
-      return '';
-    }
-    let title = '';
-    value.forEach((i:any) => {
-      title += `${i.name}，`;
-    });
-    return (
-      <Tooltip title={title.substring(0, title.length - 1)}>
-        <Tag
-          key={value[0].name}
-          className="categories-tag"
-          color="rgba(15, 19, 88, 0.06)"
-        >
-          {value[0].name}
-        </Tag>
-        {
-          value.length > 1
-          && (
-          <Tag
-            key={value[1].name}
-            className="categories-tag"
-            color="rgba(15, 19, 88, 0.06)"
-          >
-            {`+${value.length - 1}`}
-          </Tag>
-          )
-        }
-      </Tooltip>
-    );
-  };
-
-  const renderCreater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('createUserName')} avatar={record?.get('createUserImageUrl')} />;
-
-  const renderUpdater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('updateUserName')} avatar={record?.get('updateUserImageUrl')} />;
-
-  const renderHealthState = ({ record }: { record: Record }) => {
-    const { color, name, description } = record.get('healthStateDTO') || {};
-    return <HealthStatus color={color} name={name} description={description} className={`${prefix}-healthStatus`} />;
-  };
-
-  const onColumnResize = ({ column, width, index }:any) => {
-    columnResize({ column, width, index });
-  };
-
-  const getColumns = useMemo(() => {
-    if (!columnsConfig.length) {
-      return [];
-    }
-    const adjustableColumns = [
-      {
-        name: 'code',
-        tooltip: 'overflow',
-        sortable: true,
-        align: 'left',
-        minWidth: 120,
-      },
-      {
-        name: 'enabled',
-        renderer: renderEnabled,
-        sortable: true,
-        align: 'left',
-        minWidth: 110,
-      },
-      {
-        name: 'workGroup',
-        renderer: renderWorkGroup,
-        align: 'left',
-      },
-      {
-        name: 'projectClassfication',
-        tooltip: 'overflow',
-        align: 'left',
-      },
-      {
-        name: 'programName',
-        tooltip: 'overflow',
-        align: 'left',
-      },
-      {
-        name: 'categories',
-        renderer: renderCategories,
-        align: 'left',
-        minWidth: 140,
-      },
-      {
-        name: 'description',
-        tooltip: 'overflow',
-        align: 'left',
-      },
-      {
-        name: 'devopsComponentCode',
-        tooltip: 'overflow',
-        align: 'left',
-        minWidth: 140,
-      },
-      {
-        name: 'createUserName',
-        renderer: renderCreater,
-        align: 'left',
-      },
-      {
-        name: 'creationDate',
-        tooltip: 'overflow',
-        align: 'left',
-        width: 155,
-      },
-      {
-        name: 'updateUserName',
-        renderer: renderUpdater,
-        align: 'left',
-      },
-      {
-        name: 'lastUpdateDate',
-        tooltip: 'overflow',
-        align: 'left',
-        width: 155,
-      },
-      {
-        name: 'rank',
-        renderer: renderHealthState,
-        width: 155,
-        lock: false,
-        sortable: true,
-      },
-    ];
-    const displayColumn: any = [
-      {
-        name: 'name',
-        renderer: renderName,
-        sortable: true,
-        resizable: false,
-        width: 265,
-        lock: true,
-      },
-    ];
-    columnsConfig.forEach((item:IColumnSetConfig) => {
-      if (item.isSelected) {
-        const found = adjustableColumns.find((i) => i.name === item.name);
-        if (found) {
-          if (item?.width) {
-            // eslint-disable-next-line no-param-reassign
-            delete item?.minWidth;
-            found.width = item.width;
-          }
-          displayColumn.push(found);
-        }
-      }
-    });
-    return displayColumn;
-  }, [columnsConfig]);
-
   return (
-    <Table columns={getColumns} columnResizable onColumnResize={onColumnResize} dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table" />
+    <Table columns={alwaysShowColumns.concat(displayColumn)} columnResizable onColumnResize={columnResize} dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table" />
   );
 };
 

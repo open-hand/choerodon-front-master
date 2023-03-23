@@ -7,7 +7,7 @@ class EnterprisesApi extends Api<EnterprisesApi> {
    * @return {*}
    */
   get prefix() {
-    return '/iam/choerodon/v1/enterprises';
+    return '/cbase/choerodon/v1/enterprises';
   }
 
   checkEnterpriseInfo() {

@@ -1,5 +1,6 @@
 import { action, computed, observable } from 'mobx';
 import { get as getInject, has as hasInject } from '@choerodon/inject';
+// import { usersApi } from '@/apis';
 import axios from '@/components/axios';
 import jsonStringifySafty from '@/utils/jsonStringifySafty';
 
@@ -61,13 +62,13 @@ class AppState {
     if (this.currentMenuType?.organizationId) {
       try {
         const recentProjectPromise = axios.get(
-          `/iam/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
+          `/cbase/choerodon/v1/organizations/${this.currentMenuType.organizationId}/projects/latest_visit`,
           {
             enabledCancelRoute: false,
           },
         );
         const starProjectPromise = axios.get(
-          `/iam/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`,
+          `/cbase/choerodon/v1/organizations/${this.menuType.organizationId}/star_projects`,
           {
             enabledCancelRoute: false,
           },
@@ -283,6 +284,11 @@ class AppState {
     sessionStorage.selectData = jsonStringifySafty(newType);
     sessionStorage.type = newType.type;
     sessionStorage.category = newType.category;
+    if (newType?.id !== this.menuType?.id) {
+      if (newType?.type === 'project') {
+        axios.post(`/devops/v1/users/sync_group_permission?project_id=${newType?.id}`);
+      }
+    }
     this.menuType = newType;
 
     if (func) {
@@ -323,7 +329,7 @@ class AppState {
       };
       this.setUserInfo(res);
       if (setUserId) {
-        sessionStorage.setItem('userId', res.id);
+        sessionStorage.setItem('userId', res.loginName);
       }
       return res;
     });
@@ -349,7 +355,7 @@ class AppState {
     enabledCancelRoute: false,
   });
 
-  checkEnterpriseInfo = () => axios.get('/iam/choerodon/v1/enterprises/default', {
+  checkEnterpriseInfo = () => axios.get('/cbase/choerodon/v1/enterprises/default', {
     enabledCancelRoute: false,
   });
 

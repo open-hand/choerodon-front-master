@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-plusplus */
 import React, { useState, useEffect } from 'react';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import { set } from '@choerodon/inject';
 import loadComponent from '@/utils/loadComponent';
 import loadScrip from '@/utils/loadScript';
@@ -38,14 +38,14 @@ const Index:React.FC<IProps> = (props) => {
         const resourceType = str.split(':')[1].split('_')[0];
         const resourceName = str;
 
-        if (!(window as any)[serviceName]) {
-          const remoteUrl = env[`remote_${serviceName}`];
-          loadScrip(remoteUrl.replace('$MINIO_URL', env.MINIO_URL), () => {
-            fillInject(serviceName, resourceName, resourceType);
-          });
-        } else {
-          fillInject(serviceName, resourceName, resourceType);
-        }
+        // if (!(window as any)[serviceName]) {
+        //   const remoteUrl = env[`remote_${serviceName}`];
+        //   loadScrip(remoteUrl.replace('$STATIC_URL', `${env['STATIC_URL']}/${serviceName}`), () => {
+        //     fillInject(serviceName, resourceName, resourceType);
+        //   });
+        // } else {
+        //   fillInject(serviceName, resourceName, resourceType);
+        // }
       }
 
       setLoading(false);

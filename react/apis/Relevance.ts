@@ -2,12 +2,12 @@ import Api from './Api';
 
 class RelevanceApi extends Api<RelevanceApi> {
   get prefix() {
-    return '/iam/choerodon/v1/relevance';
+    return '/cbase/choerodon/v1/relevance';
   }
 
   getCaptcha = (phone: string) => this.request({
     method: 'get',
-    url: `${this.prefix}/send_captcha`,
+    url: '/iam/choerodon/v1/relevance/send_captcha',
     params: {
       param: phone,
     },
@@ -24,7 +24,7 @@ class RelevanceApi extends Api<RelevanceApi> {
   unbindUser(params:any) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/unbind_user`,
+      url: '/iam/choerodon/v1/relevance/unbind_user',
       params,
     });
   }
@@ -32,7 +32,7 @@ class RelevanceApi extends Api<RelevanceApi> {
   bindUser(params:any) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/bind_user`,
+      url: '/iam/choerodon/v1/relevance/bind_user',
       params,
     });
   }
@@ -40,7 +40,7 @@ class RelevanceApi extends Api<RelevanceApi> {
   checkOpenApp(params:any) {
     return this.request({
       method: 'get',
-      url: `${this.prefix}/check_open_app`,
+      url: '/iam/choerodon/v1/relevance/check_open_app',
       params,
     });
   }

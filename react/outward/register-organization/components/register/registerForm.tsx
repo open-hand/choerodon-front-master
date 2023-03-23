@@ -1,9 +1,10 @@
+/* eslint-disable camelcase */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import {
   Form, TextField, CheckBox, Button, Select, EmailField,
 } from 'choerodon-ui/pro';
-import { CaptchaField } from '@choerodon/components/lib/index.js';
+import { CaptchaField } from '@zknow/components/lib/index.js';
 import { observer } from 'mobx-react-lite';
 // @ts-ignore
 import queryString from 'query-string';
@@ -28,7 +29,7 @@ const Index:React.FC<IProps> = (props) => {
     intlPrefix, prefixCls, registerFormDs, mainStore: { setPageType, setUserEmail },
   } = useStore();
 
-  const { search } = useLocation();
+  const search = window.location.href.split('?')[1] ? `?${window.location.href.split('?')[1]}` : '';
 
   const pagePrefixCls = `${prefixCls}-register-form-content`;
 
@@ -46,12 +47,34 @@ const Index:React.FC<IProps> = (props) => {
     toLoginAddress();
   };
 
+  function getPostData() {
+    const obj:any = {};
+
+    const map = new Map([
+      ['inviter_info', 'inviterInfo'],
+      ['source', 'source'],
+      ['zk', 'zk'],
+      ['source_type', 'sourceType'],
+      ['channel', 'sourceChannel'],
+      ['refid', 'refId'],
+    ]);
+
+    const paramsObj = queryString.parse(search, {
+      decode: false,
+    });
+    map.forEach((value, key) => {
+      if (paramsObj[key]) {
+        obj[value] = paramsObj[key];
+      }
+    });
+    return obj;
+  }
+
   const handleSubmit = async () => {
     const validateRes = await registerFormDs.validate();
     const postData:any = registerFormDs.toData()[0];
-    if (search.indexOf('inviter_info') !== -1) {
-      postData.inviterInfo = queryString.parse(search).inviter_info;
-    }
+    const obj = getPostData();
+    Object.assign(postData, obj);
     if (validateRes) {
       if (!cookies.get('captchaKey')) {
         notification.warning({
@@ -89,9 +112,9 @@ const Index:React.FC<IProps> = (props) => {
   return (
     <div className={`${pagePrefixCls} ${prefixCls}-children-content`}>
       <h4 className={`${pagePrefixCls}-title-1`}>
-        注册14天免费试用
+        预约DEMO体验
       </h4>
-      <p className={`${pagePrefixCls}-title-2`}>注册后您将立即开始在试用环境下体验产品</p>
+      <p className={`${pagePrefixCls}-title-2`}>留下联系方式获得更多信息</p>
       <Form dataSet={registerFormDs} columns={2}>
         <TextField name="userName" colSpan={2} />
         <TextField name="orgName" colSpan={2} />
@@ -109,30 +132,35 @@ const Index:React.FC<IProps> = (props) => {
           ajaxRequest={registerOrganizationApi.getCaptcha}
           maxAge={600}
         />
-        <CheckBox name="isAgree" colSpan={1}>
-          <span>我同意</span>
-          <a
-            onClick={(e) => {
-              handleJump(e, 'serviceAgreement');
-            }}
-            role="none"
-            rel="noopener noreferrer"
-          >
-            服务协议
-          </a>
-          与
-          <a
-            role="none"
-            onClick={(e) => {
-              handleJump(e, 'agreement');
-            }}
-            rel="noopener noreferrer"
-          >
-            隐私条款
-          </a>
-        </CheckBox>
+        {/*  @ts-ignore */}
+        <div colSpan={2} className="row-notice">
+          <CheckBox name="isAgree" colSpan={1}>
+            <span>我同意</span>
+          </CheckBox>
+          <span className="row-notice-right">
+            <a
+              onClick={(e) => {
+                handleJump(e, 'serviceAgreement');
+              }}
+              role="none"
+              rel="noopener noreferrer"
+            >
+              服务协议
+            </a>
+            与
+            <a
+              role="none"
+              onClick={(e) => {
+                handleJump(e, 'agreement');
+              }}
+              rel="noopener noreferrer"
+            >
+              隐私条款
+            </a>
+          </span>
+        </div>
       </Form>
-      <Button disabled={!registerFormDs?.current?.get('isAgree')} className="submit-btn" block color={'primary' as any} onClick={handleSubmit}>免费试用</Button>
+      <Button disabled={!registerFormDs?.current?.get('isAgree')} className="submit-btn" block color={'primary' as any} onClick={handleSubmit}>预约DEMO体验</Button>
       <div className="row-tologin"><a href="" onClick={(e) => { toLogin(e); }}>已有账号，立即登录</a></div>
     </div>
   );

@@ -34,11 +34,13 @@ const LanguageToggle:FC<LanguageToggleProps> = (props) => {
             [`${prefixCls}-menu-item-selected`]: currentLang === language,
           });
           return (
+            // eslint-disable-next-line
             <div
               onClick={() => handleChangeLanguage(language)}
-              role="none"
+              role="button"
               className={cls}
               key={language}
+              tabIndex={0}
             >
               {format({ id: language })}
             </div>
@@ -50,7 +52,7 @@ const LanguageToggle:FC<LanguageToggleProps> = (props) => {
 
   return (
     <Popover overlayClassName={`${prefixCls}-overlay`} placement={'left' as any} trigger={['hover'] as any} content={renderLanguageMenu}>
-      <div className={prefixCls}>
+      <div role="button" className={prefixCls}>
         <Icon type="language" />
         <span>{formatUserAvater({ id: 'languageSwicth' })}</span>
       </div>

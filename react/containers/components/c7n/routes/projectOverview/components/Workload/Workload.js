@@ -9,7 +9,7 @@ import { useIntl } from 'react-intl';
 import { observer } from 'mobx-react-lite';
 import { get } from '@choerodon/inject';
 
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import OverviewWrap from '../OverviewWrap';
 import DateTable from './components/DateTable';
 import { useWorkloadStore } from './stores';

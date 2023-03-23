@@ -6,7 +6,7 @@ export default (() => ({
   pageSize: 40,
   transport: {
     read: ({ data }) => ({
-      url: 'iam/v1/dashboard-cards',
+      url: 'cbase/v1/dashboard-cards',
       method: 'get',
       transformResponse: (value) => {
         try {

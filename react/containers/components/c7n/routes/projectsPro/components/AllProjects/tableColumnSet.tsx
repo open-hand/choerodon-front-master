@@ -2,14 +2,12 @@ import {
   CheckBox, Icon, Modal, Button, DataSet,
 } from 'choerodon-ui/pro';
 import React, {
-  useState, useEffect, useImperativeHandle, useMemo,
+  useState, useEffect,
 } from 'react';
-
 import {
   Droppable, DragDropContext, DropResult, Draggable, DraggingStyle, NotDraggingStyle,
-  // @ts-ignore
 } from 'react-beautiful-dnd';
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn } from 'ahooks';
 import { observer } from 'mobx-react-lite';
 import { cloneDeep, orderBy, remove } from 'lodash';
 
@@ -21,7 +19,8 @@ export interface IColumnSetConfig {
   isSelected: boolean,
   order: number
   width?: number
-  minWidth?: number
+  minWidth?: number,
+  isConfig?: any,
 }
 
 export interface IRemoteColumnSetConfig {
@@ -32,10 +31,8 @@ export interface IRemoteColumnSetConfig {
 }
 
 export interface IProps {
-  columnsConfig: IColumnSetConfig[]
+  columnsSetConfig: IColumnSetConfig[]
   handleOk: (columnsData: IColumnSetConfig[]) => boolean
-  cRef: any
-  tableDs: DataSet
 }
 // TODO: 有时间优化一下
 const grid = 0;
@@ -46,34 +43,72 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
   ...draggableStyle,
 } as const);
 
+export const initColumnSetData = (remoteData:IRemoteColumnSetConfig[] | null, defaultData:IColumnSetConfig[], tableDs:DataSet) => {
+  if (remoteData) {
+    let columnArr:IColumnSetConfig[] = [];
+    const newArr:IColumnSetConfig[] = [];
+    defaultData.forEach((defaultItem) => { // 本地新增字段
+      const foundIndex = remoteData.findIndex((i) => i.columnCode === defaultItem.name);
+      if (foundIndex === -1) {
+        newArr.push(defaultItem);
+      }
+    });
+
+    remove(remoteData, (i) => { // 本地删除字段
+      const found = defaultData.find((defaultItem) => defaultItem.name === i.columnCode);
+      if (!found) {
+        return true;
+      }
+      return false;
+    });
+
+    const exceptDeleteArr = remoteData;
+    exceptDeleteArr.forEach((i) => {
+      const found = defaultData.find((defaultItem) => defaultItem.name === i.columnCode);
+      if (!i.width && found) { // 如果远程没有width数据(为0) default有，用default的
+        // eslint-disable-next-line no-param-reassign
+        i.width = found.width || 0;
+      }
+      columnArr.push({
+        name: i.columnCode,
+        isSelected: i.display,
+        label: tableDs?.getField(i.columnCode)?.get('label'),
+        order: i.sort,
+        width: i.width,
+      });
+    });
+    columnArr = orderBy(columnArr.concat(newArr), ['order']);
+    return columnArr;
+  }
+  return orderBy(defaultData, ['order']);
+};
+
 const Content: React.FC<any> = observer((props) => {
-  const { modal, columnsConfig, handleOk } = props;
-  const [columns, setColumns] = useState<any>([]);
+  const { modal, columnsSetConfig, handleOk } = props;
+  const [columnsSet, setColumnsSet] = useState<any>([]);
   useEffect(() => {
-    setColumns(columnsConfig);
-  }, [columnsConfig]);
+    setColumnsSet(columnsSetConfig);
+  }, [columnsSetConfig]);
 
   // DropResult
-  const onDragEnd = usePersistFn((result: any) => {
-    // console.log(result, 'result');
+  const onDragEnd = useMemoizedFn((result: any) => {
     if (result.source && result.destination) {
       const { source: { index: sourceIndex }, destination: { index: destinationIndex } } = result;
-      const [moved] = columns.splice(sourceIndex, 1) ?? [];
+      const [moved] = columnsSet.splice(sourceIndex, 1) ?? [];
       if (moved) {
-        columns.splice(destinationIndex, 0, moved);
+        columnsSet.splice(destinationIndex, 0, moved);
       }
-      // console.log(columns);
-      setColumns([...columns]);
+      setColumnsSet([...columnsSet]);
     }
   });
 
   const handleCheckChange = (value: boolean, index: number) => {
-    const cloneColumns = cloneDeep(columns);
+    const cloneColumns = cloneDeep(columnsSet);
     cloneColumns[index].isSelected = value;
-    setColumns(cloneColumns);
+    setColumnsSet(cloneColumns);
   };
 
-  modal.handleOk(() => handleOk(columns));
+  modal.handleOk(() => handleOk(columnsSet));
 
   return (
     <div>
@@ -90,53 +125,47 @@ const Content: React.FC<any> = observer((props) => {
                 width: '100%',
               }}
             >
-              {columns.map((item: any, index: any) =>
-              //   const selected = selectedKeys.includes(item.code);
-              // eslint-disable-next-line implicit-arrow-linebreak
-              // eslint-disable-next-line indent
-        // eslint-disable-next-line
-        (
-          <Draggable
-            index={index}
-            draggableId={item.name}
-            key={item.name}
-          >
-            {(provided: any, snapshot: any) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                style={getItemStyle(
-                  snapshot.isDragging,
-                  provided.draggableProps.style,
-                )}
-              >
-                <div style={{
-                  height: 37,
-                  borderBottom: '1px solid #D9E6F2',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '0 10px',
-                }}
+              {columnsSet.map((item: any, index: any) => (
+                <Draggable
+                  index={index}
+                  draggableId={item.name}
+                  key={item.name}
                 >
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                  >
-                    <Icon type="baseline-drag_indicator" style={{ marginRight: '10px' }} />
-                    <span>{item.label}</span>
-                  </div>
-                  <div>
-                    <CheckBox checked={item.isSelected} onChange={(value: boolean) => { handleCheckChange(value, index); }} />
-                  </div>
-                </div>
-              </div>
-            )}
-          </Draggable>
-          // eslint-disable-next-line
-        ))}
+                  {(provided: any, snapshot: any) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style,
+                      )}
+                    >
+                      <div style={{
+                        height: 37,
+                        borderBottom: '1px solid #D9E6F2',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '0 10px',
+                      }}
+                      >
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                        >
+                          <Icon type="baseline-drag_indicator" style={{ marginRight: '10px' }} />
+                          <span>{item.label}</span>
+                        </div>
+                        <div>
+                          <CheckBox checked={item.isSelected} onChange={(value: boolean) => { handleCheckChange(value, index); }} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </Draggable>
+              ))}
               {droppableProvided.placeholder}
             </div>
           )}
@@ -149,53 +178,8 @@ const Content: React.FC<any> = observer((props) => {
 const Index: React.FC<IProps> = (props) => {
   const {
     // @ts-ignore
-    handleOk, columnsConfig, tableDs, cRef,
+    handleOk, columnsSetConfig,
   } = props;
-
-  useImperativeHandle(cRef, () => ({
-    initData,
-  }));
-
-  const initData = (remoteData:IRemoteColumnSetConfig[] | null, defaultData:IColumnSetConfig[]) => {
-    if (remoteData) {
-      let columnArr:IColumnSetConfig[] = [];
-      const newArr:IColumnSetConfig[] = [];
-
-      defaultData.forEach((defaultItem) => { // 新增
-        const foundIndex = remoteData.findIndex((i) => i.columnCode === defaultItem.name);
-        if (foundIndex === -1) {
-          newArr.push(defaultItem);
-        }
-      });
-
-      remove(remoteData, (i) => { // 删除
-        const found = defaultData.find((defaultItem) => defaultItem.name === i.columnCode);
-        if (!found) {
-          return true;
-        }
-        return false;
-      });
-
-      const exceptDeleteArr = remoteData;
-      exceptDeleteArr.forEach((i) => {
-        const found = defaultData.find((defaultItem) => defaultItem.name === i.columnCode);
-        if (!i.width && found) { // 如果远程没有数据(为0) default有，用default的
-          // eslint-disable-next-line no-param-reassign
-          i.width = found.width || 0;
-        }
-        columnArr.push({
-          name: i.columnCode,
-          isSelected: i.display,
-          label: tableDs?.getField(i.columnCode)?.get('label'),
-          order: i.sort,
-          width: i.width,
-        });
-      });
-      columnArr = orderBy(columnArr.concat(newArr), ['order']);
-      return columnArr;
-    }
-    return defaultData;
-  };
 
   const openEditColumnModal = () => {
     Modal.open({
@@ -205,7 +189,7 @@ const Index: React.FC<IProps> = (props) => {
       style: {
         width: 380,
       },
-      children: <Content columnsConfig={columnsConfig} handleOk={handleOk} />,
+      children: <Content columnsSetConfig={columnsSetConfig} handleOk={handleOk} />,
       bodyStyle: {
         paddingTop: 10,
       },

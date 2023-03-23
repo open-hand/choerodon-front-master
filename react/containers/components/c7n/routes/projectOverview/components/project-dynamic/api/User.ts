@@ -4,7 +4,7 @@ import { User } from '@/types';
 
 class UserApi extends Api<UserApi> {
   get prefix() {
-    return `/iam/choerodon/v1/projects/${this.projectId}`;
+    return `/cbase/choerodon/v1/projects/${this.projectId}`;
   }
 
   /**
@@ -35,7 +35,7 @@ class UserApi extends Api<UserApi> {
     // @ts-ignore
     return this.request({
       method: 'get',
-      url: `/iam/choerodon/v1/projects/${projectId || AppState.currentMenuType.id}/users`,
+      url: `/cbase/choerodon/v1/projects/${projectId || AppState.currentMenuType.id}/users`,
       params: {
         param,
         id: userId,

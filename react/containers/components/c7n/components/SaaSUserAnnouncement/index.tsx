@@ -7,7 +7,7 @@ const prefixCls = 'c7ncd-saasUser-announcement';
 
 function getSaaSUserAvilableDays(orgId:string) {
   if (orgId) {
-    return axios.get(`/iam/choerodon/v1/organizations/trial_due?organization_id=${orgId}`);
+    return axios.get(`/cbase/choerodon/v1/organizations/trial_due?organization_id=${orgId}`);
   }
   return new Promise((resolve) => {
     resolve(undefined);

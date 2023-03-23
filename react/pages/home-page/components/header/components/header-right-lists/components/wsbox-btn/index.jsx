@@ -14,7 +14,7 @@ import {
   Button as ButtonPro, Modal, Icon, Spin,
 } from 'choerodon-ui/pro';
 import JSONBig from 'json-bigint';
-import { TimePopover } from '@choerodon/components';
+import { TimePopover } from '@zknow/components';
 import WSHandler from '@/components/ws/WSHandler';
 import defaultAvatar from '@/assets/images/favicon.png';
 import './index.less';

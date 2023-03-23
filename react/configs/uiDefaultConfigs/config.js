@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Loading, useLoading } from '@choerodon/components';
+import { Loading, useLoading } from '@zknow/components';
 import { uniqueId } from 'lodash';
 import { get } from '@choerodon/inject';
 import { uiAxiosInstance } from '@/components/axios';
@@ -80,7 +80,7 @@ const useUiConfigs = () => {
     tableVirtualCell: false,
     tableColumnResizeTrigger: 'hover',
     tooltipPlacement: (target) => (target === 'table-cell' ? 'top' : undefined),
-    lovQueryUrl: (code) => `/iam/choerodon/v1/lov/code?code=${code}`,
+    lovQueryUrl: (code) => `/cbase/choerodon/v1/lov/code?code=${code}`,
     generatePageQuery: ({
       page, pageSize, sortName, sortOrder, sort,
     }) => ({
@@ -92,7 +92,7 @@ const useUiConfigs = () => {
       indicator: <TableSpin />,
     }),
     lovDefineAxiosConfig: (code) => ({
-      url: `/iam/choerodon/v1/lov/code?code=${code}`,
+      url: `/cbase/choerodon/v1/lov/code?code=${code}`,
       method: 'GET',
       transformResponse: [
         (data) => {

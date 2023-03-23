@@ -6,6 +6,7 @@ import {
 } from 'lodash';
 import { Icon, Spin } from 'choerodon-ui';
 import classnames from 'classnames';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import useUpgrade from '@/hooks/useUpgrade';
 import groupMappings from './groupMappings';
 import EmptyPage from '../empty-page';
@@ -24,8 +25,12 @@ const AddModal = (props) => {
   const [activeItem, setActiveItem] = useState(groupMappings(mappings)[0]);
   const [dis, setDis] = useState(0);
   const [seletedComponents, setSelectedComponents] = useState(existTypes);
+  const { func: checkUpgrade } = useExternalFunc('saas', 'base-saas:checkUpgrade');
+
   const { isFetching, data: needUpgrade } = useUpgrade({
     organizationId: AppState.currentMenuType?.organizationId,
+    checkUpgrade: checkUpgrade?.default?.checkSaaSUpgrade,
+    key: `useUpgrade-${checkUpgrade?.default?.checkSaaSUpgrade}-${AppState.currentMenuType?.organizationId}`,
   });
 
   function handleClick(key, index) {

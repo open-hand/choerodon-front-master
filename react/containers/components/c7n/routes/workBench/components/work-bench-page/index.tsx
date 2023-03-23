@@ -5,12 +5,11 @@ import { get as choerodonGet, has, mount } from '@choerodon/inject';
 
 import { get, noop } from 'lodash';
 
-import { Loading, EmptyPage } from '@choerodon/components';
+import { Loading, EmptyPage } from '@zknow/components';
 
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
-import useUpgrade from '@/hooks/useUpgrade';
 import defaultImg from '../../img/empty.svg';
 
 import { useWorkBenchStore } from '../../stores';
@@ -58,15 +57,6 @@ const WorkBenchPage: React.FC<WorkBenchPageProps> = (props) => {
     dashboardDs.query();
   };
   const { organizationId } = AppState.currentMenuType || {};
-  // useEffect(() => {
-  //   if (props.dashboardId) {
-  //     loadLayout();
-  //   }
-  // }, [props.dashboardId]);
-
-  // const { data: needUpgrade } = useUpgrade({
-  //   organizationId: AppState.currentMenuType?.organizationId,
-  // });
 
   const renderContent = () => {
     if (dashboardDs.status === 'loading' || addCardDs.status === 'loading') {

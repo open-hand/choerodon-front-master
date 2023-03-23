@@ -1,4 +1,6 @@
+import React from 'react';
 import { DataSet } from 'choerodon-ui/pro';
+import { NewTips } from '@zknow/components';
 import { organizationsApiConfig } from '@/apis';
 import axios from '@/components/axios';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
@@ -36,7 +38,7 @@ function trimSpecial(string) {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({
-  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs,
+  organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs, func, setFlags,
 }) => {
   const codeValidator = async (value, name, record) => {
     if (record.status !== 'add') {
@@ -61,8 +63,8 @@ export default ({
     }
     try {
       const url = name === 'code'
-        ? `/iam/choerodon/v1/organizations/${organizationId}/projects/check`
-        : `/iam/choerodon/v1/organizations/${organizationId}/applications/check/${value}`;
+        ? `/cbase/choerodon/v1/organizations/${organizationId}/projects/check`
+        : `/cbase/choerodon/v1/organizations/${organizationId}/applications/check/${value}`;
       const params = { code: value };
       const res = await axios({
         method: name === 'code' ? 'post' : 'get',
@@ -88,6 +90,12 @@ export default ({
     };
   }
 
+  let extraFields = [];
+
+  if (func) {
+    extraFields = func.default();
+  }
+
   return {
     autoQuery: false,
     selection: false,
@@ -99,16 +107,16 @@ export default ({
     },
     transport: {
       read: () => ({
-        url: `/iam/choerodon/v1/projects/${projectId}`,
+        url: `/cbase/choerodon/v1/projects/${projectId}`,
         method: 'get',
       }),
       create: ({ data: [data] }) => ({
-        url: `/iam/choerodon/v1/organizations/${organizationId}/projects`,
+        url: `/cbase/choerodon/v1/organizations/${organizationId}/projects`,
         method: 'post',
         data: { ...data, operateType: 'create' },
       }),
       update: ({ data: [data] }) => ({
-        url: `/iam/choerodon/v1/organizations/${organizationId}/projects/${data.id}`,
+        url: `/cbase/choerodon/v1/organizations/${organizationId}/projects/${data.id}`,
         method: 'put',
         data: { ...data, operateType: 'update' },
       }),
@@ -189,19 +197,22 @@ export default ({
         validator: async (value, name, record) => {
           const values = ['N_DEVOPS', 'N_OPERATIONS'];
           const flag1 = categoryDs.selected.some((categoryRecord) => values.includes(categoryRecord.get('code')));
-          if (flag1 && record?.status === 'add') {
+          if (flag1) {
             if (value.length > 40) {
               return '编码长度不能超过40！';
             }
-            const reg = /^[a-z](?!.*--)[a-z0-9-]*[^-]$/g;
+            const reg = /[a-z]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/g;
             if (!reg.test(value)) {
               return '只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"';
             }
             try {
               const flag = await axios({
-                url: `/iam/choerodon/v1/organizations/${organizationId}/projects/check_devops_code_exist`,
+                url: `/cbase/choerodon/v1/organizations/${organizationId}/projects/check_devops_code_exist`,
                 params: {
                   devops_component_code: value,
+                  ...record?.get('id') ? {
+                    project_id: record?.get('id'),
+                  } : {},
                 },
               });
               if (flag) {
@@ -229,6 +240,12 @@ export default ({
         defaultValue: false,
       },
       {
+        name: 'agileProgram',
+        type: 'boolean',
+        label: '启用冲刺',
+        defaultValue: false,
+      },
+      {
         name: 'description',
         type: 'string',
         label: '项目描述',
@@ -243,11 +260,31 @@ export default ({
       { name: 'imageUrl', type: 'string' },
       { name: 'creationDate', type: 'date', label: '创建时间' },
       { name: 'useTemplate', defaultValue: true },
+      {
+        name: 'allowLink',
+        type: 'boolean',
+        label: (
+          <div>
+            允许其他项目关联此项目工作项/需求
+            <NewTips helpText="开启后，组织内其他项目的工作项（或需求）可关联当前项目的工作项（或需求）" />
+          </div>
+        ),
+        defaultValue: false,
+      },
+      ...extraFields,
     ],
     events: {
       load: ({ dataSet }) => {
         if (dataSet && dataSet?.current?.get('devopsComponentCode')) {
           dataSet?.current?.getField('devopsComponentCode').set('disabled', true);
+        }
+        if (dataSet && dataSet?.current?.get('code') && !dataSet?.current?.get('devopsComponentCode')) {
+          const devopsCode = trimSpecial(dataSet?.current?.get('code'));
+          const lowerCode = devopsCode?.toLowerCase();
+          const finalCode = lowerCode.replace(/^(\s|[0-9]+.{0,1}[0-9]{0,2})/g, '');
+          const reg = /[\u4e00-\u9fa5]/g;
+          const removeChinese = finalCode.replace(reg, '');
+          dataSet.current?.set('devopsComponentCode', removeChinese);
         }
       },
       update: ({
@@ -259,7 +296,6 @@ export default ({
           const finalCode = lowerCode.replace(/^(\s|[0-9]+.{0,1}[0-9]{0,2})/g, '');
           const reg = /[\u4e00-\u9fa5]/g;
           const removeChinese = finalCode.replace(reg, '');
-
           record?.set('devopsComponentCode', removeChinese);
         }
       },

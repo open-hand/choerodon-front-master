@@ -7,7 +7,7 @@ import { get } from '@choerodon/inject';
 
 import './index.less';
 
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import OverviewWrap from '../OverviewWrap';
 import WaterWave from './components/WaterWave';
 import { useProjectOverviewStore } from '../../stores';

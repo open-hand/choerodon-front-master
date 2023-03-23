@@ -22,8 +22,12 @@ import { ENTERPRISE_ADDRESS } from '@/constants';
 
 import '@/containers/components/style';
 
+import loadDynamicScript from './dynamicScript';
+
+// import './dynamicScript';
+
 // injects modules entry
-import './moduleInjects';
+// import './moduleInjects';
 
 import {
   C7NReactQueryContainer, UIConfigInitContainer,
@@ -44,9 +48,14 @@ const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 
 const cookies = new Cookies();
 
-const MasterIndex = () => {
+let ERROR: any = '';
+
+const MasterIndex = (props: any) => {
   const location = useLocation();
   const history = useHistory();
+  const { AutoRouter } = props;
+
+  loadDynamicScript();
 
   const {
     pathname,
@@ -54,10 +63,10 @@ const MasterIndex = () => {
 
   useEffect(() => {
     window.addEventListener('error', (event) => {
-      console.log(event);
+      ERROR = event;
     }, true);
     window.addEventListener('unhandledrejection', (event) => {
-      console.log(event);
+      ERROR = event;
     });
   }, []);
 
@@ -133,10 +142,10 @@ const MasterIndex = () => {
     }
   }, [pathname, loading, isInOutward]);
 
-  const getContainer = useMemo(() => {
-    const content: any = isInOutward ? Outward : Master;
-    return React.createElement(content);
-  }, [isInOutward]);
+  const getContainer = useMemo(() => (isInOutward ? <Outward AutoRouter={AutoRouter} /> : <Master AutoRouter={AutoRouter} />),
+  // const content: any = isInOutward ? Outward : Master;
+  // return React.createElement(content);
+    [isInOutward]);
 
   if (loading && !isInOutward) {
     return (<div />);
@@ -156,6 +165,7 @@ const MasterIndex = () => {
         <img style={{ width: 471 }} src={ErrorImage} alt="" />
         <p
           style={{
+            marginTop: '32px',
             fontSize: 24,
             fontFamily: 'PingFangSC-Regular, PingFang SC',
             fontWeight: 400,
@@ -177,6 +187,30 @@ const MasterIndex = () => {
             【刷新】
 
           </span>
+          或
+          <span
+            role="none"
+            style={{
+              color: '#5365EA',
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              const input = document.createElement('input');
+              document.body.appendChild(input);
+              console.log('ERROR', ERROR);
+              console.log('error', error);
+              input.setAttribute('value', error?.stack || error?.message || ERROR?.error?.stack);
+              input.select();
+              if (document.execCommand('copy')) {
+                document.execCommand('copy');
+                message.success('复制成功');
+              }
+              document.body.removeChild(input);
+            }}
+          >
+            【复制】
+          </span>
+          报错信息
         </p>
       </div>
 

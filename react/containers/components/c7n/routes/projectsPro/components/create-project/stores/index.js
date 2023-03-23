@@ -1,5 +1,5 @@
 import React, {
-  createContext, useContext, useEffect, useMemo,
+  createContext, useContext, useEffect, useMemo, useState,
 } from 'react';
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { DataSet } from 'choerodon-ui/pro';
 import forEach from 'lodash/forEach';
 import some from 'lodash/some';
 import { injectIntl } from 'react-intl';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import FormDataSet from './FormDataSet';
 import StatusDataSet from './StatusDataSet';
 import CategoryDataSet from './CategoryDataSet';
@@ -31,12 +32,15 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     categoryCodes,
     inNewUserGuideStepOne,
   } = props;
+  const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
+
+  const [flags, setFlags] = useState(false);
 
   const standardDisable = useMemo(() => [categoryCodes.require, categoryCodes.program, categoryCodes.operations], []);
 
   const createProjectStore = useStore();
   const categoryDs = useMemo(() => new DataSet(CategoryDataSet({
-    organizationId, categoryCodes, createProjectStore, inNewUserGuideStepOne,
+    organizationId, categoryCodes, createProjectStore, inNewUserGuideStepOne, setFlags,
   })), [organizationId]);
 
   const statusDs = useMemo(() => new DataSet(StatusDataSet({
@@ -44,22 +48,26 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   })), [projectId]);
 
   const formDs = useMemo(() => new DataSet(FormDataSet({
-    organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne, statusDs,
-  })), [organizationId, projectId, statusDs, inNewUserGuideStepOne]);
+    organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne, statusDs, func,
+  })), [organizationId, projectId, statusDs, inNewUserGuideStepOne, func]);
+
+  const { loading: baseSaasLoading, func: checkSenior } = useExternalFunc('saas', 'base-saas:checkSaaSSenior');
 
   useEffect(() => {
-    if (projectId) {
-      loadData();
-    } else {
-      formDs.create();
-      loadCategory();
+    if (!baseSaasLoading) {
+      if (projectId) {
+        loadData(checkSenior?.default);
+      } else {
+        formDs.create();
+        loadCategory(checkSenior?.default);
+      }
     }
-  }, [projectId, organizationId]);
+  }, [projectId, organizationId, checkSenior, baseSaasLoading, func]);
 
-  const loadCategory = async () => {
+  const loadCategory = async (checkSeniorFunc) => {
     await axios.all([
       categoryDs.query(),
-      createProjectStore.checkSenior(organizationId),
+      createProjectStore.checkSenior(organizationId, checkSeniorFunc),
     ]);
     const isSenior = createProjectStore.getIsSenior; // saas高级版
 
@@ -89,24 +97,12 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     }
   };
 
-  const loadData = async () => {
+  const loadData = async (checkSeniorFunc) => {
     try {
-      // const res = await axios.all([
-      //   categoryDs.query(),
-      //   formDs.query(),
-      //   createProjectStore.checkSenior(organizationId),
-      // ]);
-      // console.log(res);
-      // const [, projectData] = await axios.all([
-      //   categoryDs.query(),
-      //   formDs.query(),
-      //   createProjectStore.checkSenior(organizationId),
-      // ]);
-
       await statusDs.query();
       await categoryDs.query();
       const projectData = await formDs.query();
-      await createProjectStore.checkSenior(organizationId);
+      await createProjectStore.checkSenior(organizationId, checkSeniorFunc);
 
       const isSenior = createProjectStore.getIsSenior;
       if (projectData && projectData.categories && projectData.categories.length) {
@@ -151,13 +147,20 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
         categoryDs.forEach(async (categoryRecord) => {
           const currentCode = categoryRecord.get('code');
           if (some(projectData.categories, ['code', currentCode])) {
-            categoryDs.select(categoryRecord);
+            if (currentCode === categoryCodes.agile) {
+              if (isBeforeProgram === false) {
+                categoryDs.select(categoryRecord);
+              }
+            } else {
+              categoryDs.select(categoryRecord);
+            }
           }
           switch (currentCode) {
             case categoryCodes.program:
               categoryRecord.setState({
                 isProgram: isBeforeProgram,
               });
+              categoryRecord.setState('agilePro', true);
               if (!isSenior || (isBeforeAgile && !isBeforeProgram) || (isProgram && await createProjectStore.hasProgramProjects(organizationId, projectId)) || isBeforeWaterfall) {
                 categoryRecord.setState('disabled', true);
               }
@@ -167,6 +170,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
                 isAgile: isBeforeAgile,
                 disabled: isProgramProject || (isBeforeProgram && !isProgram) || isBeforeWaterfall,
               });
+              categoryRecord.setState('agile', true);
               break;
             case categoryCodes.require:
               categoryRecord.setState({
@@ -203,6 +207,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     formDs,
     categoryDs,
     createProjectStore,
+    setFlags,
+    flags,
   };
 
   return (

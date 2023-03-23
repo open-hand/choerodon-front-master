@@ -1,4 +1,4 @@
-import { useQueryString } from '@choerodon/components';
+import { useQueryString } from '@zknow/components';
 
 /**
  * 判断当前的路由是否存在fullPage字段，这里主要用在menu和header的显示上面

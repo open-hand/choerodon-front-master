@@ -54,7 +54,7 @@ export default function useStore(AppState, history) {
       this.allProjects = data;
     },
     axiosGetRecentProjects() {
-      axios.get(`/iam/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/projects/latest_visit`, {
+      axios.get(`/cbase/choerodon/v1/organizations/${AppState.currentMenuType.organizationId}/projects/latest_visit`, {
         enabledCancelRoute: false,
       }).then((res) => {
         this.setRecentProjects(res);
@@ -65,7 +65,7 @@ export default function useStore(AppState, history) {
       this.projectLoading = true;
       const hasOrgId = queryString.parse(history.location.search).organizationId;
       const func = () => {
-        axios.post(hasOrgId ? `/iam/choerodon/v1/organizations/${hasOrgId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
+        axios.post(hasOrgId ? `/cbase/choerodon/v1/organizations/${hasOrgId}/users/${AppState.getUserId}/projects/paging?page=${page}&size=${size}${this.getAllProjectsParams && `&params=${this.getAllProjectsParams}`}` : '').then((res) => {
           const tempContent = get(res, 'content') ? res.content.map((r) => {
             const unix = String(moment(r.creationDate).unix());
             r.background = getRandomBackground(unix.substring(unix.length - 3));
@@ -98,7 +98,7 @@ export default function useStore(AppState, history) {
     async checkCreate(organizationId) {
       if (organizationId) {
         try {
-          const res = await axios.get(`iam/choerodon/v1/organizations/${organizationId}/projects/check_enable_create`);
+          const res = await axios.get(`cbase/choerodon/v1/organizations/${organizationId}/projects/check_enable_create`);
           this.setCanCreate(res && !res.failed);
         } catch (e) {
           this.setCanCreate(false);
@@ -133,11 +133,11 @@ export default function useStore(AppState, history) {
 
     deleteStar(data) {
       const orgId = AppState.currentMenuType.organizationId;
-      return orgId && axios.delete(`/iam/choerodon/v1/organizations/${orgId}/star_projects?project_id=${data.id}`);
+      return orgId && axios.delete(`/cbase/choerodon/v1/organizations/${orgId}/star_projects?project_id=${data.id}`);
     },
     starProject(data) {
       const orgId = AppState.currentMenuType.organizationId;
-      return orgId && axios.post(`/iam/choerodon/v1/organizations/${orgId}/star_projects`, {
+      return orgId && axios.post(`/cbase/choerodon/v1/organizations/${orgId}/star_projects`, {
         projectId: data.id,
       });
     },
@@ -185,7 +185,7 @@ export default function useStore(AppState, history) {
     axiosGetStarProjects() {
       const orgId = AppState.currentMenuType.organizationId;
       if (orgId) {
-        axios.get(`/iam/choerodon/v1/organizations/${orgId}/star_projects`, {
+        axios.get(`/cbase/choerodon/v1/organizations/${orgId}/star_projects`, {
           enabledCancelRoute: false,
         }).then((res) => {
           this.setStarProjectsList(get(res, 'length') ? res.map((r) => {
@@ -199,7 +199,7 @@ export default function useStore(AppState, history) {
       const orgId = AppState.currentMenuType.organizationId;
       if (orgId) {
         try {
-          const res = axios.put(`/iam/choerodon/v1/organizations/${orgId}/star_projects`, JSON.stringify(arr));
+          const res = axios.put(`/cbase/choerodon/v1/organizations/${orgId}/star_projects`, JSON.stringify(arr));
           if (res && res.failed) {
             return res;
           }
@@ -224,7 +224,7 @@ export default function useStore(AppState, history) {
 
     async deleteProject(projectId) {
       try {
-        const res = await axios.delete(`/iam/choerodon/v1/projects/${projectId}`);
+        const res = await axios.delete(`/cbase/choerodon/v1/projects/${projectId}`);
         if (res && res.failed) {
           return false;
         }
@@ -235,7 +235,7 @@ export default function useStore(AppState, history) {
     },
     async handleEnable({ organizationId, projectId, type }) {
       try {
-        const res = await axios.put(`/iam/choerodon/v1/organizations/${organizationId}/projects/${projectId}/${type}`);
+        const res = await axios.put(`/cbase/choerodon/v1/organizations/${organizationId}/projects/${projectId}/${type}`);
         if (res && res.failed) {
           return false;
         }

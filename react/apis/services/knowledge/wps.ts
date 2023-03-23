@@ -2,11 +2,11 @@ import Api from '../../Api';
 
 class WpsApi extends Api<WpsApi> {
   get prefix() {
-    return `/iam/choerodon/v1/projects/${this.projectId}/wps`;
+    return `/cbase/choerodon/v1/projects/${this.projectId}/wps`;
   }
 
   get orgPrefix() {
-    return `/iam/choerodon/v1/organizations/${this.orgId}/wps`;
+    return `/cbase/choerodon/v1/organizations/${this.orgId}/wps`;
   }
 
   // 知识库查询连接数

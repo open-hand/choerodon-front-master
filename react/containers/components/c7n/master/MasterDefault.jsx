@@ -11,6 +11,7 @@ import {
 } from 'choerodon-ui/pro';
 import get from 'lodash/get';
 import { mount, get as cherodonGet, has } from '@choerodon/inject';
+import ExternalComponent from '@/components/external-component';
 import { Permission } from '@/components/permission';
 import getSearchString from '@/utils/gotoSome';
 import MasterServices from '@/containers/components/c7n/master/services';
@@ -23,10 +24,10 @@ import MasterApis from '@/containers/components/c7n/master/apis';
 import AnnouncementBannerPro from '../components/AnnouncementBannerPro';
 import Header from '@/pages/home-page/components/header';
 import MenusPro from '@/pages/home-page/components/menu';
-
+import headerStore from '@/containers/stores/c7n/HeaderStore';
+import withHooksHOC from './withHookHOC';
 import './index.less';
 import './style';
-import headerStore from '@/containers/stores/c7n/HeaderStore';
 
 // 这里是没有菜单的界面合集
 // 记录下route和code 为了方便查询该界面的文档地址
@@ -125,28 +126,40 @@ class Masters extends Component {
       }
     });
     this.initMenuType(this.props);
-    cherodonGet('base-pro:handleGetHelpDocUrl')
-      && cherodonGet('base-pro:handleGetHelpDocUrl')(
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // 获取适用天数in the base-pro, only applied in the hand version
+    if (nextProps.getSaaSUserRestDays && !this.props.getSaaSUserRestDays) {
+      const {
+        location,
+      } = this.props;
+      const { search } = location;
+      const menuType = parseQueryToMenuType(search);
+      nextProps.getSaaSUserRestDays.default(menuType?.orgId, this);
+    }
+
+    if (nextProps.handleGetHelpDocUrl && !this.props.handleGetHelpDocUrl) {
+      nextProps.handleGetHelpDocUrl.default(
         this.props,
         routeWithNoMenu,
         this.setDocUrl,
       );
-  }
+    }
 
-  componentWillReceiveProps(nextProps) {
     this.saaSUserRestDaysAnewReq(nextProps, this.props);
     this.judgeIfGetUserCountCheck(nextProps, this.props);
     this.initMenuType(nextProps);
     this.getGuideContentByLocationChange(nextProps, this.props);
   }
 
-  saaSUserRestDaysAnewReq=(newProps, oldProps) => {
+  saaSUserRestDaysAnewReq = (newProps, oldProps) => {
     const newParams = new URLSearchParams(newProps.location.search);
     const oldParams = new URLSearchParams(oldProps.location.search);
     if (newParams.get('organizationId') !== oldParams.get('organizationId')) {
       headerStore.deleteAnnouncement('saas_restdays_announcement');
-      if (has('base-pro:getSaaSUserRestDays')) {
-        cherodonGet('base-pro:getSaaSUserRestDays')(newParams.get('organizationId'), this);
+      if (newProps.getSaaSUserRestDays) {
+        newProps.getSaaSUserRestDays.default(newParams.get('organizationId'), this);
       }
     }
   }
@@ -159,12 +172,13 @@ class Masters extends Component {
         this.cRef?.current?.setguideOpen(false);
       }
       this.cRef?.current?.handleSetGuideContent(newProps);
-      cherodonGet('base-pro:handleGetHelpDocUrl')
-        && cherodonGet('base-pro:handleGetHelpDocUrl')(
+      if (newProps.handleGetHelpDocUrl) {
+        newProps.handleGetHelpDocUrl.default(
           this.props,
           routeWithNoMenu,
           this.setDocUrl,
         );
+      }
     }
   };
 
@@ -231,19 +245,9 @@ class Masters extends Component {
   }
 
   componentDidMount() {
-    const {
-      location, MenuStore, HeaderStore, history, AppState,
-    } = this.props;
-    const { pathname, search } = location;
-    const menuType = parseQueryToMenuType(search);
     this.initFavicon();
-
     // 获取系统公告
     this.getPlatformAnnouncement();
-    // 获取适用天数in the base-pro, only applied in the hand version
-    if (has('base-pro:getSaaSUserRestDays')) {
-      cherodonGet('base-pro:getSaaSUserRestDays')(menuType?.orgId, this);
-    }
   }
 
   /**
@@ -314,7 +318,7 @@ class Masters extends Component {
     } else if (!menuType.type) {
       menuType.type = 'site';
     }
-
+    // eslint-disable-next-line
     async function checkUrl() {
       async function goSafty(data) {
         if (!HeaderStore.getOrgData) {
@@ -350,7 +354,7 @@ class Masters extends Component {
         ) {
           try {
             res = await axios.get(
-              `/iam/choerodon/v1/projects/${menuType.projectId}/basic_info`,
+              `/cbase/choerodon/v1/projects/${menuType.projectId}/basic_info`,
             );
             if (!res.enabled) {
               goSafty(res);
@@ -392,15 +396,16 @@ class Masters extends Component {
         return true;
       }
     }
-
     AppState.setTypeUser(isUser);
     AppState.changeMenuType(menuType, checkUrl);
   }
 
   render() {
-    const { AppState } = this.props;
+    const { AppState, AutoRouter } = this.props;
     return (
-      <Spin spinning={AppState.getIsLoadMenu}>
+      // <Spin spinning={AppState.getIsLoadMenu}>
+      // 这里是进入系统 偶尔会出现一直转圈的问题 先修改为false
+      <Spin spinning={false}>
         <div className="page-wrapper">
           <div
             className="page-header"
@@ -411,7 +416,7 @@ class Masters extends Component {
           <div className="page-body">
             <div className="content-wrapper">
               <MenusPro />
-              <Permission service={['choerodon.code.site.setting.general-setting.ps.feedback']}>
+              <Permission service={['choerodon.code.project.setting.general-setting.ps.feedback']}>
                 {mount('base-business:yqFeedback', {})}
                 {/* <YqFeedback /> */}
               </Permission>
@@ -421,21 +426,23 @@ class Masters extends Component {
                 popoverHead,
                 cRef: this.cRef,
               })} */}
-              {mount('base-pro:UserCheck', {
-                ...this.props,
-                MasterServices,
-                MasterApis,
-                cRef: this.userRef,
-              })}
+              <ExternalComponent
+                system={{ scope: 'basePro', module: 'base-pro:UserCheck' }}
+                {...this.props}
+                MasterServices={MasterServices}
+                MasterApis={MasterApis}
+                cRef={this.userRef}
+              />
               <div id="autoRouter" className="content">
-                <RouteIndex />
+                <RouteIndex AutoRouter={AutoRouter} />
               </div>
             </div>
           </div>
         </div>
+        <ExternalComponent system={{ scope: 'baseBusiness', module: 'InviteEnterSystemModal' }} fallback={<span />} />
       </Spin>
     );
   }
 }
 
-export default Masters;
+export default withHooksHOC(Masters);

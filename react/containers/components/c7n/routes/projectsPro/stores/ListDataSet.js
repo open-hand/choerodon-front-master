@@ -65,8 +65,8 @@ export default (AppState, history, categoryDs) => {
         apiOrgId = organizationId;
       }
       const url = name === 'code'
-        ? `/iam/choerodon/v1/organizations/${apiOrgId}/projects/check`
-        : `/iam/choerodon/v1/organizations/${apiOrgId}/applications/check/${value}`;
+        ? `/cbase/choerodon/v1/organizations/${apiOrgId}/projects/check`
+        : `/cbase/choerodon/v1/organizations/${apiOrgId}/applications/check/${value}`;
       const params = { code: value };
       const res = await axios({
         method: name === 'code' ? 'post' : 'get',
@@ -93,7 +93,7 @@ export default (AppState, history, categoryDs) => {
         method: 'get',
       },
       submit: ({ dataSet }) => ({
-        url: `/iam/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/projects/${dataSet.current.get('id')}`,
+        url: `/cbase/choerodon/v1/organizations/${queryString.parse(history.location.search).organizationId}/projects/${dataSet.current.get('id')}`,
         method: 'put',
         data: dataSet.current.toData(),
       }),

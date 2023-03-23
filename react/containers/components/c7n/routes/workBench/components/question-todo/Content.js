@@ -8,7 +8,7 @@ import {
   omit,
   get,
 } from 'lodash';
-import { Loading } from '@choerodon/components';
+import { Loading } from '@zknow/components';
 import ScrollContext from 'react-infinite-scroll-component';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
 import Card from '@/containers/components/c7n/routes/workBench/components/card';
@@ -66,10 +66,10 @@ const TodoQuestion = observer(() => {
           describe={(
             <span style={{ whiteSpace: 'nowrap' }}>
               {
-                  formatWorkbench({ id: 'noTodo.desc' })
-                }
+                formatWorkbench({ id: 'noTodo.desc' })
+              }
             </span>
-    )}
+          )}
         />
       );
     }
@@ -88,7 +88,7 @@ const TodoQuestion = observer(() => {
             >
               {questionStore.getHasMore ? '到底了' : ''}
             </span>
-      )}
+          )}
         >
           <QuestionTree
             treeData={questionStore.getTreeData}

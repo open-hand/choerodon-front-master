@@ -13,7 +13,7 @@ export default function useStore() {
 
     async checkCreate(organizationId) {
       try {
-        const res = await axios.get(`iam/choerodon/v1/organizations/${organizationId}/projects/check_enable_create`);
+        const res = await axios.get(`cbase/choerodon/v1/organizations/${organizationId}/projects/check_enable_create`);
         this.setCanCreate(res && !res.failed);
       } catch (e) {
         this.setCanCreate(false);
