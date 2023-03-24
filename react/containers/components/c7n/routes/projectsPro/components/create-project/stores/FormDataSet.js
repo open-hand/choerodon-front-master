@@ -5,6 +5,16 @@ import { organizationsApiConfig } from '@/apis';
 import axios from '@/components/axios';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
 
+function cleanString(inputString) {
+  // 将所有非数字、字母和-的字符替换为空字符串
+  let outputString = inputString.replace(/[^a-zA-Z0-9-]/g, '');
+  // 将大写字母转换为小写字母
+  outputString = outputString.toLowerCase();
+  // 如果以数字开头，则删除数字直到出现字母为止
+  outputString = outputString.replace(/^\d+/, '');
+  return outputString;
+}
+
 // 项目编码只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"  /^[a-z](([a-z0-9]|-(?!-))*[a-z0-9])*$/
 // 项目名称只能由汉字、字母、数字、"_"、"."、"-"、"——"和空格组成   /^[-—\.\w\s\u4e00-\u9fa5]{1,32}$/
 // 瀑布项目 结项时间最小为今天+1， 立项时间与结项时间最小间隔一天
@@ -201,7 +211,7 @@ export default ({
             if (value.length > 40) {
               return '编码长度不能超过40！';
             }
-            const reg = /[a-z]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/g;
+            const reg = /^[a-z](?!.*--)[a-z0-9-]*[a-z0-9]$/g;
             if (!reg.test(value)) {
               return '只能由小写字母、数字、"-"组成，且以小写字母开头，不能以"-"结尾且不能连续出现两个"-"';
             }
@@ -279,24 +289,26 @@ export default ({
           dataSet?.current?.getField('devopsComponentCode').set('disabled', true);
         }
         if (dataSet && dataSet?.current?.get('code') && !dataSet?.current?.get('devopsComponentCode')) {
-          const devopsCode = trimSpecial(dataSet?.current?.get('code'));
-          const lowerCode = devopsCode?.toLowerCase();
-          const finalCode = lowerCode.replace(/^(\s|[0-9]+.{0,1}[0-9]{0,2})/g, '');
-          const reg = /[\u4e00-\u9fa5]/g;
-          const removeChinese = finalCode.replace(reg, '');
-          dataSet.current?.set('devopsComponentCode', removeChinese);
+          const output = cleanString(dataSet?.current?.get('code'));
+          // const devopsCode = trimSpecial(dataSet?.current?.get('code'));
+          // const lowerCode = devopsCode?.toLowerCase();
+          // const finalCode = lowerCode.replace(/^(\s|[0-9]+.{0,1}[0-9]{0,2})/g, '');
+          // const reg = /[\u4e00-\u9fa5]/g;
+          // const removeChinese = finalCode.replace(reg, '');
+          dataSet.current?.set('devopsComponentCode', output);
         }
       },
       update: ({
         dataSet, record, name, value, oldValue,
       }) => {
         if (name === 'code') {
-          const devopsCode = trimSpecial(value);
-          const lowerCode = devopsCode?.toLowerCase();
-          const finalCode = lowerCode.replace(/^(\s|[0-9]+.{0,1}[0-9]{0,2})/g, '');
-          const reg = /[\u4e00-\u9fa5]/g;
-          const removeChinese = finalCode.replace(reg, '');
-          record?.set('devopsComponentCode', removeChinese);
+          const output = cleanString(value);
+          // const devopsCode = trimSpecial(dataSet?.current?.get('code'));
+          // const lowerCode = devopsCode?.toLowerCase();
+          // const finalCode = lowerCode.replace(/^(\s|[0-9]+.{0,1}[0-9]{0,2})/g, '');
+          // const reg = /[\u4e00-\u9fa5]/g;
+          // const removeChinese = finalCode.replace(reg, '');
+          dataSet.current?.set('devopsComponentCode', output);
         }
       },
     },
