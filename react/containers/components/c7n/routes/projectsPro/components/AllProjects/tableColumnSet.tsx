@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import {
   CheckBox, Icon, Modal, Button, DataSet,
 } from 'choerodon-ui/pro';
@@ -16,11 +17,13 @@ const modalkey = Modal.key();
 export interface IColumnSetConfig {
   name: string,
   label: string,
+  /**
+   * 是否展示列
+   */
   isSelected: boolean,
   order: number
   width?: number
   minWidth?: number,
-  isConfig?: any,
 }
 
 export interface IRemoteColumnSetConfig {
@@ -43,44 +46,73 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
   ...draggableStyle,
 } as const);
 
-export const initColumnSetData = (remoteData:IRemoteColumnSetConfig[] | null, defaultData:IColumnSetConfig[], tableDs:DataSet) => {
+export const initColumnSetData = (remoteData:IRemoteColumnSetConfig[] | null, defaultData:IColumnSetConfig[], customFields:any, tableDs:DataSet) => {
+  const columnArr:IColumnSetConfig[] = [];
   if (remoteData) {
-    let columnArr:IColumnSetConfig[] = [];
-    const newArr:IColumnSetConfig[] = [];
-    defaultData.forEach((defaultItem) => { // 本地新增字段
+    console.log(remoteData, 'remoteData');
+    const newlocalFieldsArr:IColumnSetConfig[] = [];
+
+    defaultData.forEach((defaultItem) => { // 本地新增系统字段
       const foundIndex = remoteData.findIndex((i) => i.columnCode === defaultItem.name);
       if (foundIndex === -1) {
-        newArr.push(defaultItem);
+        newlocalFieldsArr.push(defaultItem);
       }
     });
+    // TODO 需要一个字段来说明是不是系统字段 那么保存的时候也要存一下这个东西
+    // 加了之后放开下面的注释
+    // 如果是自定义字段 应该怎么给width
 
-    remove(remoteData, (i) => { // 本地删除字段
-      const found = defaultData.find((defaultItem) => defaultItem.name === i.columnCode);
-      if (!found) {
-        return true;
-      }
-      return false;
-    });
+    // remove(remoteData, (i) => { // 本地删除系统字段
+    //   const found = defaultData.find((defaultItem) => defaultItem.name === i.columnCode);
+    //   return !found;
+    // });
 
     const exceptDeleteArr = remoteData;
+
     exceptDeleteArr.forEach((i) => {
       const found = defaultData.find((defaultItem) => defaultItem.name === i.columnCode);
       if (!i.width && found) { // 如果远程没有width数据(为0) default有，用default的
-        // eslint-disable-next-line no-param-reassign
         i.width = found.width || 0;
       }
       columnArr.push({
         name: i.columnCode,
         isSelected: i.display,
-        label: tableDs?.getField(i.columnCode)?.get('label'),
+        label: tableDs?.getField(i.columnCode)?.get('label'), // TODO 存数据的时候给一个label字段,后端需要返回来
         order: i.sort,
         width: i.width,
       });
     });
-    columnArr = orderBy(columnArr.concat(newArr), ['order']);
-    return columnArr;
+
+    const returnArr = columnArr.concat(newlocalFieldsArr);
+
+    const newCustomFieldsArr:IColumnSetConfig[] = []; // 相较于上次保存新增的自定义字段
+    customFields.forEach((customItem:any, index:number) => {
+      const found = returnArr.find((returnItem) => returnItem.name === customItem.code);
+      if (!found) {
+        newCustomFieldsArr.push({
+          name: customItem.code,
+          isSelected: false,
+          label: customItem.name,
+          order: 100 + index,
+        });
+      }
+    });
+    return orderBy(returnArr.concat(newCustomFieldsArr), ['order']);
   }
-  return orderBy(defaultData, ['order']);
+
+  // 还没编辑过的时候,把远程数据放到最后默认不选中
+
+  if (customFields.length) {
+    customFields.forEach((item:any, index:any) => {
+      columnArr.push({
+        name: item.code,
+        isSelected: false,
+        label: item.name,
+        order: 100 + index,
+      });
+    });
+  }
+  return orderBy(columnArr.concat(defaultData), ['order']);
 };
 
 const Content: React.FC<any> = observer((props) => {

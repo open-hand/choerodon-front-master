@@ -62,12 +62,10 @@ const Index: React.FC<any> = (props) => {
   const {
     data, error, loading, run,
   } = useRequest((paramData:any) => organizationsApi.setHealthStatus(paramData), {
-
     manual: true,
     onSuccess: (result, params) => {
       refresh();
     },
-
   });
 
   const displayColumn = useGetDisplayColumn(columnsSetConfig, getAdjustableColumns(formatMessage, prefix, fieldFunc));
@@ -371,7 +369,8 @@ const Index: React.FC<any> = (props) => {
       />
     ) : null;
   };
-
+  console.log(alwaysShowColumns.concat(displayColumn), 'alwaysShowColumns.concat(displayColumn)');
+  console.log(C7NHasModule('@choerodon/agile-pro'), 'www');
   return (
     <Table columns={alwaysShowColumns.concat(displayColumn)} columnResizable onColumnResize={columnResize} dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table" />
   );

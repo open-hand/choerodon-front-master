@@ -1,11 +1,11 @@
 import React, {
-  useEffect, useState, useRef, useMemo, useCallback,
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
 } from 'react';
-import {
-  Button,
-  Tooltip,
-  Modal,
-} from 'choerodon-ui/pro';
+import { Button, Tooltip, Modal } from 'choerodon-ui/pro';
 import { forIn, isNil } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
@@ -20,10 +20,20 @@ import { organizationsApi } from '@/apis';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import AllProjectTable from './table';
 import {
-  getSearchFieldsConfig, getFilterFieldsConfig,
+  getSearchFieldsConfig,
+  getFilterFieldsConfig,
 } from './config/querybarConfig';
-import { defaultColumnSetConfig, defaultBusinessColumnSetConfig } from './config/tableColumnsSetConfig';
+
+import {
+  defaultColumnSetConfig,
+  defaultBusinessColumnSetConfig,
+} from './config/tableColumnsSetConfig';
 import TableColumnSet, { initColumnSetData } from './tableColumnSet';
+import {
+  transformColumnDataToSubmit,
+  transformToSearchFieldsConfig,
+  transformToFilterFieldsConfig,
+} from './untils';
 import './index.less';
 
 // 是否存在base的商业版本
@@ -45,13 +55,17 @@ export default observer(() => {
     projectListDataSet,
   } = useProjectsProStore();
 
-  const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
+  const { loading: haitianFuncLoading, func } = useExternalFunc(
+    'haitianMaster',
+    'haitianMaster:createProjectExtraFields',
+  );
 
   const customQuerybarCRef = useRef();
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
   const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
   const [tableColumnsSet, setTableColumnsSet] = useState([]);
+  const [customFields, setCustomFields] = useState(undefined);
 
   useEffect(() => {
     if (
@@ -66,9 +80,35 @@ export default observer(() => {
     }
   }, [AppState.getUserWizardStatus]);
 
+  // 获取系统自定义字段
   useEffect(() => {
-    initTableColumnsSet();
-  }, [func, projectListDataSet]);
+    async function asyncFunc() {
+      // 获取系统预定义字段  并且给 projectListDataSet 加上field
+      // const res = await xxxxxx
+      // setCustomFields(res)
+      const res = [
+        {
+          id: '123',
+          name: '是否为项目定制',
+          code: 'test',
+          fieldType: 'single',
+        },
+      ];
+      setCustomFields(res);
+      res.forEach((item) => {
+        projectListDataSet.addField(item.code, {
+          label: item.name,
+        });
+      });
+    }
+    asyncFunc();
+  }, []);
+
+  useEffect(() => {
+    if (!haitianFuncLoading && customFields) {
+      initTableColumnsSet();
+    }
+  }, [haitianFuncLoading, func, projectListDataSet, customFields]);
 
   const initTableColumnsSet = async () => {
     const res = await organizationsApi.getAllProjectsTableColumns();
@@ -78,15 +118,32 @@ export default observer(() => {
     if (func) {
       extraColumns = func.default();
       columnBusinessSetConfig = [
-        ...defaultBusinessColumnSetConfig, {
-          ...extraColumns[0], isSelected: true, order: 4.1, width: 140,
-        }];
+        ...defaultBusinessColumnSetConfig,
+        {
+          ...extraColumns[0],
+          isSelected: true,
+          order: 4.1,
+          width: 140,
+        },
+      ];
       columnConfig = [
-        ...defaultColumnSetConfig, {
-          ...extraColumns[0], isSelected: true, order: 4.1, width: 140,
-        }];
+        ...defaultColumnSetConfig,
+        {
+          ...extraColumns[0],
+          isSelected: true,
+          order: 4.1,
+          width: 140,
+        },
+      ];
     }
-    setTableColumnsSet(initColumnSetData(res?.listLayoutColumnRelVOS, HAS_BASE_BUSINESS ? columnBusinessSetConfig : columnConfig, projectListDataSet));
+    setTableColumnsSet(
+      initColumnSetData(
+        res?.listLayoutColumnRelVOS,
+        HAS_BASE_BUSINESS ? columnBusinessSetConfig : columnConfig,
+        customFields,
+        projectListDataSet,
+      ),
+    );
   };
 
   const refresh = (projectId) => {
@@ -108,16 +165,26 @@ export default observer(() => {
     return (
       <>
         <p>
-          {formatMessage({ id: 'c7ncd.project.allProject' }, { name: org.name })}
+          {formatMessage(
+            { id: 'c7ncd.project.allProject' },
+            { name: org.name },
+          )}
         </p>
         <div className="allProjects-title-right">
-          <Button icon="refresh" onClick={() => { refresh('0'); }} />
+          <Button
+            icon="refresh"
+            onClick={() => {
+              refresh('0');
+            }}
+          />
           <Permission
             service={['choerodon.code.organization.project.ps.create']}
           >
             <Tooltip
               popupClassName={
-                inNewUserGuideStepOne ? 'c7n-pro-popup-projects-create-guide' : ''
+                inNewUserGuideStepOne
+                  ? 'c7n-pro-popup-projects-create-guide'
+                  : ''
               }
               hidden={createBtnToolTipHidden}
               onHiddenBeforeChange={onHiddenBeforeChange}
@@ -166,10 +233,7 @@ export default observer(() => {
   };
 
   const toHelpDoc = () => {
-    window.open(
-      `${AppState?.getUserWizardStatus[0]?.helpDocs[0]}`,
-      '_blank',
-    );
+    window.open(`${AppState?.getUserWizardStatus[0]?.helpDocs[0]}`, '_blank');
   };
 
   const getCreatBtnTitle = () => {
@@ -213,7 +277,7 @@ export default observer(() => {
   };
 
   const customQuerybarChange = useCallback(
-    async (data) => {
+    (data) => {
       forIn(projectListDataSet.queryParameter, (value, key) => {
         projectListDataSet.setQueryParameter(key, null);
       });
@@ -224,11 +288,23 @@ export default observer(() => {
           return;
         }
         if (key === 'updateTime') {
-          projectListDataSet.setQueryParameter('lastUpdateDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
-          projectListDataSet.setQueryParameter('lastUpdateDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
+          projectListDataSet.setQueryParameter(
+            'lastUpdateDateStart',
+            value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null,
+          );
+          projectListDataSet.setQueryParameter(
+            'lastUpdateDateEnd',
+            value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null,
+          );
         } else if (key === 'createTime') {
-          projectListDataSet.setQueryParameter('creationDateStart', value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null);
-          projectListDataSet.setQueryParameter('creationDateEnd', value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null);
+          projectListDataSet.setQueryParameter(
+            'creationDateStart',
+            value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null,
+          );
+          projectListDataSet.setQueryParameter(
+            'creationDateEnd',
+            value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null,
+          );
         } else {
           projectListDataSet.setQueryParameter(key, value);
         }
@@ -238,23 +314,8 @@ export default observer(() => {
     [projectListDataSet],
   );
 
-  function transformColumnData(columnsData) {
-    const listLayoutColumnRelVOS = [];
-    columnsData.forEach((item, index) => {
-      const iObj = {
-        columnCode: item.name, display: item.isSelected, sort: index, width: item.width || 0,
-      };
-      listLayoutColumnRelVOS.push(iObj);
-    });
-    const postObj = {
-      applyType: 'projectView',
-      listLayoutColumnRelVOS,
-    };
-    return postObj;
-  }
-
   const handleEditColumnOk = async (columnsData) => {
-    const postObj = transformColumnData(columnsData);
+    const postObj = transformColumnDataToSubmit(columnsData);
     try {
       await organizationsApi.editAllProjectsTableColumns(postObj);
       initTableColumnsSet();
@@ -268,7 +329,7 @@ export default observer(() => {
     const columnsData = [...tableColumnsSet];
     const found = columnsData.find((item) => item.name === column.name);
     found.width = width;
-    const postObj = transformColumnData(columnsData);
+    const postObj = transformColumnDataToSubmit(columnsData);
     try {
       organizationsApi.editAllProjectsTableColumns(postObj);
       return true;
@@ -279,10 +340,20 @@ export default observer(() => {
 
   const { run } = useDebounceFn(handleColumnResize, { wait: 500 });
 
-  const searchFieldsConfig = useMemo(() => getSearchFieldsConfig(organizationId, HAS_BASE_BUSINESS), [organizationId]);
-  const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(organizationId), [organizationId]);
+  const searchFieldsConfig = useMemo(
+    () => transformToSearchFieldsConfig(
+      getSearchFieldsConfig(organizationId, HAS_BASE_BUSINESS),
+      customFields,
+    ),
+    [organizationId, customFields],
+  );
 
-  console.log('tableColumnsSet', tableColumnsSet);
+  const filterFieldsConfig = useMemo(() => getFilterFieldsConfig(), []);
+
+  const customfilterFieldsConfig = useMemo(
+    () => transformToFilterFieldsConfig(customFields || []),
+    [customFields],
+  );
 
   return (
     <div className="allProjects">
@@ -292,14 +363,23 @@ export default observer(() => {
           <CustomQuerybar
             searchFieldsConfig={searchFieldsConfig}
             filterFieldsConfig={filterFieldsConfig}
+            customfilterFieldsConfig={customfilterFieldsConfig}
+            dateFieldsArr={['createTime', 'updateTime']}
             onChange={customQuerybarChange}
             cRef={customQuerybarCRef}
           />
           <div className="tableColumnSet-content">
-            <TableColumnSet columnsSetConfig={tableColumnsSet} handleOk={handleEditColumnOk} />
+            <TableColumnSet
+              columnsSetConfig={tableColumnsSet}
+              handleOk={handleEditColumnOk}
+            />
           </div>
         </div>
-        <AllProjectTable columnsSetConfig={tableColumnsSet} onColumnResize={run} fieldFunc={func} />
+        <AllProjectTable
+          columnsSetConfig={tableColumnsSet}
+          onColumnResize={run}
+          fieldFunc={func}
+        />
       </div>
     </div>
   );

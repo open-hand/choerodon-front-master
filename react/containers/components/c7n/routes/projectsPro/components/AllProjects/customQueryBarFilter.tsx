@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 import {
   Button, CheckBox, Dropdown, Icon, TextField, DataSet,
@@ -32,23 +33,47 @@ const Index: React.FC<IProps> = (props) => {
     reset: cleanAll,
   }));
 
-  const getFields = () => [...dataSet?.fields].map((arr) => {
-    const fieldName = arr[0];
-    const state = dataSet?.getState(fieldName);
-    if (!state) {
-      return <span />;
-    }
-    const {
-      visible, label,
-    } = state;
-    return visible ? (
-      <div className="c7n-agile-choose-field-list-item">
-        <CheckBox name={fieldName} dataSet={dataSet}>
-          {label}
-        </CheckBox>
-      </div>
-    ) : '';
-  });
+  const getFields = () => {
+    const systemArr:JSX.Element[] = [];
+    const customArr:JSX.Element[] = [];
+
+    [...dataSet?.fields].forEach((arr) => {
+      const fieldName = arr[0];
+      const state = dataSet?.getState(fieldName);
+      if (!state) {
+        return <span />;
+      }
+      const {
+        visible, label, isSystem,
+      } = state;
+
+      const result = visible ? (
+        <div className="c7n-agile-choose-field-list-item">
+          <CheckBox name={fieldName} dataSet={dataSet}>
+            {label}
+          </CheckBox>
+        </div>
+      ) : <span />;
+
+      isSystem ? systemArr.push(result) : customArr.push(result);
+    });
+    return (
+      <>
+        <div className="c7n-agile-choose-field-list-section">
+          <div className="c7n-agile-choose-field-list-title">预定义字段</div>
+          <div className="c7n-agile-choose-field-list-list">
+            {[...systemArr]}
+          </div>
+        </div>
+        <div className="c7n-agile-choose-field-list-section">
+          <div className="c7n-agile-choose-field-list-title">自定义字段</div>
+          <div className="c7n-agile-choose-field-list-list">
+            {[...customArr]}
+          </div>
+        </div>
+      </>
+    );
+  };
 
   const handleAllChange = (value: boolean) => {
     const record = dataSet?.current;
@@ -130,14 +155,7 @@ const Index: React.FC<IProps> = (props) => {
         <Button onClick={cleanAll}>清除筛选项</Button>
       </div>
       <div className="c7n-agile-choose-field-list-content">
-        <div className="c7n-agile-choose-field-list-section">
-          <div className="c7n-agile-choose-field-list-title">预定义字段</div>
-          <div className="c7n-agile-choose-field-list-list">
-            {
-              getFields()
-            }
-          </div>
-        </div>
+        {getFields()}
       </div>
     </div>
   );

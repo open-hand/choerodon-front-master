@@ -7,6 +7,7 @@ import { FlatSelect, FlatTreeSelect } from '@zknow/components';
 import {
   Button, TextField, Icon, DataSet, Tooltip, DateTimePicker, Select, DatePicker,
 } from 'choerodon-ui/pro';
+
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { forIn, isNil, omit } from 'lodash';
 import { observer } from 'mobx-react-lite';
@@ -14,8 +15,18 @@ import SearchFilterBtn, { ICheckBoxFields } from './customQueryBarFilter';
 import './customQuerybar.less';
 
 export interface IProps {
+  /**
+   * 外面搜索条config，包含系统预定义字段、系统自定义字段的config
+   */
   searchFieldsConfig: ISearchFields[]
+  /**
+   * 系统预定义字段
+   */
   filterFieldsConfig: ICheckBoxFields[]
+  /**
+   * 系统自定义字段
+   */
+  customfilterFieldsConfig: ICheckBoxFields[]
   onChange: (data: { [key: string]: any }, name?:string, record?:Record) => void
   showResetButton?: boolean
   showSearchInput?: boolean
@@ -25,6 +36,9 @@ export interface IProps {
 
 export interface ISearchFields {
   type: string,
+  /**
+   * 是否初始化展示
+   */
   initial: boolean
   dsProps: { [key: string]: any }
   eleProps: { [key: string]: any }
@@ -44,7 +58,7 @@ const fieldsMap = new Map(
 
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, onChange, cRef, showResetButton = true, showSearchInput = true, dateFieldsArr = [],
+    searchFieldsConfig, filterFieldsConfig, customfilterFieldsConfig, onChange, cRef, showResetButton = true, showSearchInput = true, dateFieldsArr = [],
   } = props;
   const [visibleOptionalFieldsNum, setVisibleOptionalFieldsNum] = useState(0);
   const [recordExistedValue, setRecordExistedValue] = useState(false);
@@ -56,6 +70,34 @@ const Index: React.FC<IProps> = (props) => {
   useImperativeHandle(cRef, () => ({
     reset: handleReset,
   }));
+
+  function queryBarDsInit(ds:DataSet, config:ISearchFields[]) {
+    config.forEach((item: ISearchFields) => {
+      ds.addField(item.dsProps.name as string, {
+        ...item.dsProps,
+      });
+      ds.setState(item.dsProps.name as string, {
+        initial: item.initial,
+        type: item.type,
+        visible: item.initial,
+        width: item.width,
+        eleProps: item.eleProps,
+      });
+    });
+  }
+
+  function searchFilterDsInit(ds:DataSet, config:ICheckBoxFields[], isSystem:boolean) {
+    config.forEach((item: ICheckBoxFields) => {
+      ds.addField(item.name, {
+        type: 'boolean' as any,
+      });
+      ds.setState(item.name, {
+        visible: true,
+        label: item.label,
+        isSystem,
+      });
+    });
+  }
 
   const queryBarDataSet = useMemo(() => {
     const ds = new DataSet({
@@ -98,20 +140,9 @@ const Index: React.FC<IProps> = (props) => {
         },
       },
     });
-    searchFieldsConfig.forEach((item: ISearchFields) => {
-      ds.addField(item.dsProps.name as string, {
-        ...item.dsProps,
-      });
-      ds.setState(item.dsProps.name as string, {
-        initial: item.initial,
-        type: item.type,
-        visible: item.initial,
-        width: item.width,
-        eleProps: item.eleProps,
-      });
-    });
+    queryBarDsInit(ds, searchFieldsConfig);
     return ds;
-  }, [searchFieldsConfig, onChange]);
+  }, [dateFieldsArr, searchFieldsConfig, onChange]);
 
   const searchFilterDataSet = useMemo(() => {
     const ds = new DataSet({
@@ -132,17 +163,10 @@ const Index: React.FC<IProps> = (props) => {
         },
       },
     });
-    filterFieldsConfig.forEach((item: ICheckBoxFields) => {
-      ds.addField(item.name, {
-        type: 'boolean' as any,
-      });
-      ds.setState(item.name, {
-        visible: true,
-        label: item.label,
-      });
-    });
+    searchFilterDsInit(ds, filterFieldsConfig, true);
+    searchFilterDsInit(ds, customfilterFieldsConfig, false);
     return ds;
-  }, [filterFieldsConfig]);
+  }, [filterFieldsConfig, customfilterFieldsConfig, queryBarDataSet]);
 
   useEffect(() => {
     const ele = document.getElementsByClassName('searchField-container-left-block1-inner')[0];
