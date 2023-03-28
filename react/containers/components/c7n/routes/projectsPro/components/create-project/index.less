@@ -83,10 +83,20 @@
   }
 
   &-form {
+    .form-item-offset {
+      position: relative;
+      left: 10px;
+    }
+    .form-item-offset + .c7n-pro-validation-message {
+      position: relative;
+      left: 10px;
+    }
+
     .form-row {
       display: flex;
       justify-content: space-between;
     }
+
     .c7n-pro-validation-message {
       white-space: unset;
     }

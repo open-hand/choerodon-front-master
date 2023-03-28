@@ -11,12 +11,10 @@ const useGetDisplayColumn = (columnsSetConfig:IColumnSetConfig[], adjustableColu
     if (!columnsSetConfig.length) {
       arr = [];
     } else {
-      console.log(columnsSetConfig, 'columnsSetConfig');
       columnsSetConfig.forEach((item:IColumnSetConfig) => {
         if (item.isSelected) {
-          //  还没调整过列宽的时候,后端返回数据为0，系统字段用默认的列宽
           const found = adjustableColumns.find((i) => i.name === item.name);
-          if (found) {
+          if (found) { // 处理width、minWidth属性
             if (item?.width) {
               delete item?.minWidth;
               found.width = item.width;
@@ -24,11 +22,13 @@ const useGetDisplayColumn = (columnsSetConfig:IColumnSetConfig[], adjustableColu
             arr.push(found);
             return;
           }
+          if (!item.width) { // 去掉width为 0
+            delete item.width;
+          }
           arr.push(item);
         }
       });
       setDisplayColumn(arr);
-      console.log(arr, 'arr');
     }
   }, [columnsSetConfig]);
 

@@ -29,7 +29,7 @@ const defaultOptionConfig = {
   autoQuery: true,
 };
 
-const defaultSelectEleConfig = {
+export const defaultSelectEleConfig = {
   searchable: true,
   multiple: true,
   optionTooltip: 'overflow',

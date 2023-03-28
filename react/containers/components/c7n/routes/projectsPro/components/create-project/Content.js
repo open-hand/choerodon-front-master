@@ -19,7 +19,7 @@ import {
   TreeSelect,
 } from 'choerodon-ui/pro';
 import {
-  includes, map, get, some,
+  includes, map, get,
 } from 'lodash';
 import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
@@ -29,10 +29,9 @@ import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
-
+import { getDataSetProps } from './untils/getDataSetProps';
+import handleGetFormContent from './untils/getFormContent';
 import './index.less';
-
-const { Option } = Select;
 
 const projectRelationshipCodes = ['N_WATERFALL', 'N_AGILE', 'N_REQUIREMENT'];
 
@@ -68,8 +67,9 @@ const CreateProject = observer(() => {
   const [hasConfiged, setHasConfiged] = useState(false);
   const [showDevopsAdvanced, setShowDevopsAdvanced] = useState(false);
   const [expandAdvanced, setExpandAdvanced] = useState(true);
+  const [fieldsConfig, setFieldsConfig] = useState([]);
 
-  const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
+  const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
 
   const record = useMemo(() => formDs.current, [formDs.current]);
 
@@ -78,15 +78,44 @@ const CreateProject = observer(() => {
   if (isModify) {
     record.getField('createUserName').set('required', true);
   }
+
   useEffect(() => {
     modal.update({
       okProps: { loading: isLoading },
       cancelProps: { disabled: isLoading },
     });
   }, [isLoading]);
+
   useEffect(() => {
     getChecked();
+    initFormDs();
   }, []);
+
+  const initFormDs = async () => {
+    const res = await axios.get(
+      `/cbase/choerodon/v1/organizations/${organizationId}/project_field/list_by_action?pageAction=${isModify ? 'edit' : 'create'}`,
+    );
+    res.forEach((item) => {
+      if (!formDs?.getField(item.fieldCode)) {
+        formDs?.addField(item.fieldCode, {
+          label: item.fieldName,
+          required: item.requireFlag,
+          ...getDataSetProps(item),
+        });
+      }
+    });
+    setFieldsConfig(res);
+  };
+
+  const getFormContent = useCallback(
+    () => {
+      if (haitianMasterLoading) {
+        return [];
+      }
+      return handleGetFormContent(fieldsConfig, func, currentRoleLabels);
+    },
+    [fieldsConfig, haitianMasterLoading, func, currentRoleLabels],
+  );
 
   useEffect(() => {
     const loadTemplateConfig = async () => {
@@ -225,12 +254,14 @@ const CreateProject = observer(() => {
     },
     [record],
   );
+
   const getChecked = () => {
     if (categoryDs.getState('isProgram') && categoryDs.getState('isAgile') && disabled === false) {
       return true;
     }
     return check;
   };
+
   const sprintCheckboxOnChanges = (value) => {
     setDisabled(true);
     if (value === true) {
@@ -239,6 +270,7 @@ const CreateProject = observer(() => {
       setCheck(false);
     }
   };
+
   const handleCategoryClick = useCallback((categoryRecord) => {
     if (categoryRecord.getState('disabled')) {
       return;
@@ -401,14 +433,6 @@ const CreateProject = observer(() => {
   const selectedRecords = categoryDs.selected;
   const selectedCategoryCodes = map(selectedRecords, (selectedRecord) => selectedRecord.get('code'));
 
-  const nodeCover = ({ record: iRecord }) => ({
-    disabled: iRecord?.get('hasChildren') || iRecord?.get('children'),
-  });
-
-  const renderTreeSelect = ({ text }) => (
-    <span className="tree-select-text">{text}</span>
-  );
-
   const getProjRelationShowInDevopsAdvanced = () => {
     if (!isModify) {
       return false;
@@ -445,6 +469,14 @@ const CreateProject = observer(() => {
     <div className={`${prefixCls}-body`}>
       {renderAvatar()}
       <Form
+        columns={100}
+        record={record}
+        className={`${prefixCls}-form`}
+        labelLayout="float"
+      >
+        {[...getFormContent()]}
+      </Form>
+      {/* <Form
         columns={100}
         record={record}
         className={`${prefixCls}-form`}
@@ -493,7 +525,7 @@ const CreateProject = observer(() => {
            </>
            )
         }
-      </Form>
+      </Form> */}
       <div className={`${prefixCls}-category-label`}>项目类型</div>
       <div className={`${prefixCls}-category`}>
         {categoryDs.map((categoryRecord, index) => (

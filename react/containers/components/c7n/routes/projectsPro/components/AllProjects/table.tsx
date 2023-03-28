@@ -370,7 +370,6 @@ const Index: React.FC<any> = (props) => {
     ) : null;
   };
   console.log(alwaysShowColumns.concat(displayColumn), 'alwaysShowColumns.concat(displayColumn)');
-  console.log(C7NHasModule('@choerodon/agile-pro'), 'www');
   return (
     <Table columns={alwaysShowColumns.concat(displayColumn)} columnResizable onColumnResize={columnResize} dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table" />
   );

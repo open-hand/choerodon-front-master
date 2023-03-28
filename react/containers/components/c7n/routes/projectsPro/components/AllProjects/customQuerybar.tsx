@@ -5,7 +5,7 @@ import React, {
 } from 'react';
 import { FlatSelect, FlatTreeSelect } from '@zknow/components';
 import {
-  Button, TextField, Icon, DataSet, Tooltip, DateTimePicker, Select, DatePicker,
+  Button, TextField, Icon, DataSet, Tooltip, DateTimePicker, Select, DatePicker, TimePicker, NumberField,
 } from 'choerodon-ui/pro';
 
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
@@ -50,6 +50,8 @@ const fieldsMap = new Map(
     ['TextField', TextField],
     ['FlatSelect', FlatSelect],
     ['Select', Select],
+    ['TimePicker', TimePicker],
+    ['NumberField', NumberField],
     ['FlatTreeSelect', FlatTreeSelect],
     ['DateTimePicker', DateTimePicker],
     ['DatePicker', DatePicker],

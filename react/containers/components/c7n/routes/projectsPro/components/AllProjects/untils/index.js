@@ -1,4 +1,43 @@
-import { DataSet } from 'choerodon-ui/pro';
+import { getDataSetFieldsOptions } from '@/containers/components/c7n/routes/projectsPro/components/create-project/untils/getDataSetProps';
+import { defaultSelectEleConfig } from '../config/querybarConfig';
+
+const searchFieldsTypeMap = new Map([
+  // 文本框（多行）
+  ['text', 'TextField'],
+
+  // 单选框
+  ['radio', 'FlatSelect'],
+
+  // 复选框
+  ['checkbox', 'FlatSelect'],
+
+  // 时间选择器
+  ['time', 'TimePicker'],
+
+  // 日期时间选择器
+  ['datetime', 'DateTimePicker'],
+
+  // 数字输入框
+  ['number', 'NumberField'],
+
+  // 文本框（单行）
+  ['input', 'TextField'],
+
+  // 选择器（单选）
+  ['single', 'FlatSelect'],
+
+  //  选择器（多选）
+  ['multiple', 'FlatSelect'],
+
+  // 人员
+  ['member', 'FlatSelect'],
+
+  // 日期选择器
+  ['date', 'DatePicker'],
+
+  // 人员(多选)
+  ['multiMember', 'FlatSelect'],
+]);
 
 function transformColumnDataToSubmit(columnsData) {
   const listLayoutColumnRelVOS = [];
@@ -20,32 +59,26 @@ function transformColumnDataToSubmit(columnsData) {
 }
 
 function transformToSearchFieldsConfig(systemConfig, customFields) {
-  // 根据fieldType 来看给什么ds的配置
-  const arr = [
-    {
-      type: 'FlatSelect',
+  const arr = [];
+
+  customFields.forEach((item) => {
+    const obj = {
+      type: searchFieldsTypeMap.get(item.fieldType),
       initial: false,
       dsProps: {
-        name: 'test',
-        options: new DataSet({
-          data: [
-            {
-              meaning: '是',
-              value: '是',
-            },
-            {
-              meaning: '否',
-              value: '否',
-            },
-          ],
-        }),
+        name: item.fieldCode,
+        options: getDataSetFieldsOptions(item),
+        textField: 'value', // 针对下拉
+        valueField: 'id',
       },
       eleProps: {
-        multiple: false,
-        placeholder: '是否为项目定制',
+        placeholder: item.fieldName,
+        ...defaultSelectEleConfig, // 筛选的select都可以多选
+        searchMatcher: 'searchValue',
       },
-    },
-  ];
+    };
+    arr.push(obj);
+  });
   return systemConfig.concat(arr);
 }
 
@@ -53,8 +86,8 @@ function transformToFilterFieldsConfig(data) {
   const newData = [];
   data.forEach((item) => {
     newData.push({
-      name: item.code,
-      label: item.name,
+      name: item.fieldCode,
+      label: item.fieldName,
     });
   });
   return newData;

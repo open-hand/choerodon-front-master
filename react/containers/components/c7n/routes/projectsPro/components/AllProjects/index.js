@@ -19,6 +19,7 @@ import CustomQuerybar from './customQuerybar';
 import { organizationsApi } from '@/apis';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import AllProjectTable from './table';
+import axios from '@/components/axios';
 import {
   getSearchFieldsConfig,
   getFilterFieldsConfig,
@@ -84,21 +85,16 @@ export default observer(() => {
   useEffect(() => {
     async function asyncFunc() {
       // 获取系统预定义字段  并且给 projectListDataSet 加上field
-      // const res = await xxxxxx
-      // setCustomFields(res)
-      const res = [
-        {
-          id: '123',
-          name: '是否为项目定制',
-          code: 'test',
-          fieldType: 'single',
-        },
-      ];
+      const res = await axios.get(
+        `/cbase/choerodon/v1/organizations/${organizationId}/project_field/list_by_action?pageAction=&buildInFlag=false`,
+      );
       setCustomFields(res);
       res.forEach((item) => {
-        projectListDataSet.addField(item.code, {
-          label: item.name,
-        });
+        if (!projectListDataSet.getField(item.code)) {
+          projectListDataSet.addField(item.fieldCode, {
+            label: item.fieldName,
+          });
+        }
       });
     }
     asyncFunc();
@@ -343,7 +339,7 @@ export default observer(() => {
   const searchFieldsConfig = useMemo(
     () => transformToSearchFieldsConfig(
       getSearchFieldsConfig(organizationId, HAS_BASE_BUSINESS),
-      customFields,
+      customFields || [],
     ),
     [organizationId, customFields],
   );
