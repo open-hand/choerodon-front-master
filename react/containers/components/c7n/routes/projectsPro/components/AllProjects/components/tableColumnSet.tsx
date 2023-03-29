@@ -55,8 +55,6 @@ export const initColumnSetData = (remoteData: IRemoteColumnSetConfig[] | null, d
   const columnArr: IColumnSetConfig[] = [];
 
   if (remoteData) {
-    console.log(remoteData, 'remoteData');
-
     defaultData.forEach((defaultItem) => {
       const found = remoteData.find((remoteItem) => remoteItem.columnCode === defaultItem.name);
       let width = 0;
@@ -67,7 +65,7 @@ export const initColumnSetData = (remoteData: IRemoteColumnSetConfig[] | null, d
         name: defaultItem.name,
         isSelected: found ? found.display : defaultItem.isSelected,
         label: tableDs?.getField(defaultItem.name)?.get('label'),
-        order: found ? found.sort : defaultItem.order,
+        order: found ? found.sort : 100 + defaultItem.order, // 编辑过了 新增的放到最后
         width,
       });
     });

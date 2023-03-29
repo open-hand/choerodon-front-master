@@ -1,4 +1,4 @@
-import { getDataSetFieldsOptions } from '@/containers/components/c7n/routes/projectsPro/components/create-project/untils/getDataSetProps';
+import { getCustomFieldDsOptions, getCustomFieldDsType } from '@/containers/components/c7n/routes/projectsPro/components/create-project/untils/getCustomFieldDsProps';
 import { defaultSelectEleConfig } from '../config/querybarConfig';
 
 const searchFieldsTypeMap = new Map([
@@ -67,7 +67,8 @@ function transformToSearchFieldsConfig(systemConfig, customFields) {
       initial: false,
       dsProps: {
         name: item.fieldCode,
-        options: getDataSetFieldsOptions(item),
+        options: getCustomFieldDsOptions(item),
+        type: getCustomFieldDsType(item),
         textField: 'value', // 针对下拉
         valueField: 'id',
       },

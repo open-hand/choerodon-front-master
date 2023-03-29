@@ -48,7 +48,12 @@ const specialFormContentMap: any = new Map([
   ['projectClassficationId',
     <TreeSelect name="projectClassficationId" onOption={nodeCover} optionRenderer={renderTreeSelect} />,
   ],
-  // creationDate   createUserName 是不是也要加上
+  ['creationDate',
+    <TextField name="creationDate" disabled />,
+  ],
+  ['createUserName',
+    <TextField name="createUserName" disabled />,
+  ],
 ]);
 
 const getEleProps = (fieldConfig: any, preFieldConfig: any, index: number) => {
@@ -81,7 +86,7 @@ const getEleProps = (fieldConfig: any, preFieldConfig: any, index: number) => {
 };
 
 const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any) => {
-  if (func && !specialFormContentMap.get('totalDay')) { // 海天加的字段
+  if (func && !specialFormContentMap.get('totalDay')) { // 海天加的字段 后面升级后端需要返回
     specialFormContentMap.set('totalDay', func.default(!currentRoleLabels?.includes('TENANT_ADMIN')));
   }
 

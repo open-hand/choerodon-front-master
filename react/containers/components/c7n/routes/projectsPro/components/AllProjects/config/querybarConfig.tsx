@@ -44,6 +44,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: true,
       dsProps: {
         name: 'statusIds',
+        type: 'object',
         ...defaultDsConfig,
         options: new DataSet({
           ...defaultOptionConfig,
@@ -66,6 +67,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: true,
       dsProps: {
         name: 'workGroupIds',
+        type: 'object',
         ...defaultDsConfig,
         optionRenderer: ({ text }: { text: string }) => <span className="tree-select-text">{text}</span>,
         options: new DataSet({
@@ -92,6 +94,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: true,
       dsProps: {
         name: 'projectClassficationIds',
+        type: 'object',
         ...defaultDsConfig,
         onOption: nodeCover,
         optionRenderer: ({ text }: { text: string }) => <span className="tree-select-text">{text}</span>,
@@ -119,6 +122,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: true,
       dsProps: {
         name: 'programIds',
+        type: 'object',
         ...defaultDsConfig,
         options: new DataSet({
           ...defaultOptionConfig,
@@ -141,6 +145,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: true,
       dsProps: {
         name: 'categoryIds',
+        type: 'object',
         ...defaultDsConfig,
         options: new DataSet({
           ...defaultOptionConfig,
@@ -163,6 +168,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: false,
       dsProps: {
         name: 'createdBys',
+        type: 'object',
         textField: 'realName',
         valueField: 'id',
         options: new DataSet({
@@ -188,6 +194,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: false,
       dsProps: {
         name: 'createTime',
+        type: 'dateTime',
         range: true,
         isFlat: true,
       },
@@ -201,6 +208,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: false,
       dsProps: {
         name: 'lastUpdatedBys',
+        type: 'object',
         textField: 'realName',
         valueField: 'id',
         options: new DataSet({
@@ -226,6 +234,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: false,
       dsProps: {
         name: 'updateTime',
+        type: 'dateTime',
         range: true,
       },
       eleProps: {
@@ -240,6 +249,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
     initial: true,
     dsProps: {
       name: 'healthSateIds',
+      type: 'object',
       ...defaultDsConfig,
       options: new DataSet({
         ...defaultOptionConfig,

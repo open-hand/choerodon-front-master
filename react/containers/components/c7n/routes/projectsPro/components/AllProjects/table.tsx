@@ -18,11 +18,10 @@ import CreateProject from '../create-project';
 import handleClickProject from '@/utils/gotoProject';
 import Action from '@/components/action';
 import { IColumnSetConfig } from './components/tableColumnSet';
-import './table.less';
-
 import { organizationsApi } from '@/apis';
 import useGetDisplayColumn from './hooks/useGetDisplayColumn';
 import { getAdjustableColumns } from './config/tableColumnsConfig';
+import './table.less';
 
 const modalkey2 = Modal.key();
 

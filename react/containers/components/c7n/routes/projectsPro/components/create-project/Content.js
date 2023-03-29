@@ -30,7 +30,7 @@ import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
-import { getDataSetProps } from './untils/getDataSetProps';
+import { getCustomFieldDsProps } from './untils/getCustomFieldDsProps';
 import handleGetFormContent from './untils/getFormContent';
 import './index.less';
 
@@ -101,7 +101,9 @@ const CreateProject = observer(() => {
         formDs?.addField(item.fieldCode, {
           label: item.fieldName,
           required: item.requireFlag,
-          ...getDataSetProps(item),
+          ...getCustomFieldDsProps(item),
+          textField: 'value',
+          valueField: 'id',
         });
       }
     });

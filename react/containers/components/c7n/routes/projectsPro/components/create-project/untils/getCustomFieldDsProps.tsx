@@ -44,11 +44,11 @@ export const singleSelectArr = ['radio', 'single', 'member'];
 export const multipleSelectArr = ['checkbox', 'multiple', 'multiMember'];
 export const selectTypeArr = singleSelectArr.concat(multipleSelectArr);
 
-const getDataSetFieldsType = (fieldConfig:any) => fieldTypeMap.get(fieldConfig.fieldType);
+export const getCustomFieldDsType = (fieldConfig:any) => fieldTypeMap.get(fieldConfig.fieldType);
 
-const getDataSetFieldsMultiple = (fieldConfig:any) => ['multiple', 'multiMember', 'checkbox'].includes(fieldConfig.fieldType);
+const getCustomFieldDsMultiple = (fieldConfig:any) => multipleSelectArr.includes(fieldConfig.fieldType);
 
-const getDataSetFieldsOptions = (fieldConfig:any) => {
+const getCustomFieldDsOptions = (fieldConfig:any) => {
   const { fieldType, id } = fieldConfig;
   if (selectTypeArr.includes(fieldType)) {
     return new DataSet({
@@ -67,10 +67,10 @@ const getDataSetFieldsOptions = (fieldConfig:any) => {
   return null;
 };
 
-const getDataSetProps = (fieldConfig:any) => ({
-  type: getDataSetFieldsType(fieldConfig),
-  multiple: getDataSetFieldsMultiple(fieldConfig),
-  options: getDataSetFieldsOptions(fieldConfig),
+const getCustomFieldDsProps = (fieldConfig:any) => ({
+  type: getCustomFieldDsType(fieldConfig),
+  multiple: getCustomFieldDsMultiple(fieldConfig),
+  options: getCustomFieldDsOptions(fieldConfig),
 });
 
-export { getDataSetProps, getDataSetFieldsOptions };
+export { getCustomFieldDsProps, getCustomFieldDsOptions };
