@@ -19,7 +19,7 @@ import CustomQuerybar from './customQuerybar';
 import { organizationsApi } from '@/apis';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import AllProjectTable from './table';
-import axios from '@/components/axios';
+import { cbaseApi } from '@/api';
 import {
   getSearchFieldsConfig,
   getFilterFieldsConfig,
@@ -85,9 +85,10 @@ export default observer(() => {
   useEffect(() => {
     async function asyncFunc() {
       // 获取系统预定义字段  并且给 projectListDataSet 加上field
-      const res = await axios.get(
-        `/cbase/choerodon/v1/organizations/${organizationId}/project_field/list_by_action?pageAction=&buildInFlag=false`,
-      );
+      const res = await cbaseApi.getFields({
+        pageAction: '',
+        buildInFlag: false,
+      });
       setCustomFields(res);
       res.forEach((item) => {
         if (!projectListDataSet.getField(item.code)) {

@@ -25,6 +25,7 @@ import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import { fileServer, prompt } from '@/utils';
+import { cbaseApi } from '@/api';
 import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
@@ -92,9 +93,9 @@ const CreateProject = observer(() => {
   }, []);
 
   const initFormDs = async () => {
-    const res = await axios.get(
-      `/cbase/choerodon/v1/organizations/${organizationId}/project_field/list_by_action?pageAction=${isModify ? 'edit' : 'create'}`,
-    );
+    const res = await cbaseApi.getFields({
+      pageAction: isModify ? 'edit' : 'create',
+    });
     res.forEach((item) => {
       if (!formDs?.getField(item.fieldCode)) {
         formDs?.addField(item.fieldCode, {
