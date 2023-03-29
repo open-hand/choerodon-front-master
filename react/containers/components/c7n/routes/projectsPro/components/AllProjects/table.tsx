@@ -17,7 +17,7 @@ import { axios } from '@/index';
 import CreateProject from '../create-project';
 import handleClickProject from '@/utils/gotoProject';
 import Action from '@/components/action';
-import { IColumnSetConfig } from './tableColumnSet';
+import { IColumnSetConfig } from './components/tableColumnSet';
 import './table.less';
 
 import { organizationsApi } from '@/apis';

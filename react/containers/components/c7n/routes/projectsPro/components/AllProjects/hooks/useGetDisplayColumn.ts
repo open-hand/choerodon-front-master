@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { useEffect, useState } from 'react';
 import type { ColumnProps } from 'choerodon-ui/pro/lib/table/Column';
-import { IColumnSetConfig } from '../tableColumnSet';
+import { IColumnSetConfig } from '../components/tableColumnSet';
 
 const useGetDisplayColumn = (columnsSetConfig:IColumnSetConfig[], adjustableColumns:ColumnProps[]) => {
   const [displayColumn, setDisplayColumn] = useState<ColumnProps[]>([]);

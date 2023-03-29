@@ -15,11 +15,11 @@ import { Permission } from '@/components/permission';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import CreateProject from '../create-project';
-import CustomQuerybar from './customQuerybar';
-import { organizationsApi } from '@/apis';
+import CustomQuerybar from './components/customQuerybar';
+import { organizationsApi, cbaseApi } from '@/apis';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import AllProjectTable from './table';
-import { cbaseApi } from '@/api';
+
 import {
   getSearchFieldsConfig,
   getFilterFieldsConfig,
@@ -29,7 +29,7 @@ import {
   defaultColumnSetConfig,
   defaultBusinessColumnSetConfig,
 } from './config/tableColumnsSetConfig';
-import TableColumnSet, { initColumnSetData } from './tableColumnSet';
+import TableColumnSet, { initColumnSetData } from './components/tableColumnSet';
 import {
   transformColumnDataToSubmit,
   transformToSearchFieldsConfig,

@@ -4,7 +4,7 @@ import { UserInfo } from '@zknow/components';
 import { DataSet } from 'choerodon-ui/pro';
 import { organizationsApiConfig, iamApiConfig } from '@/apis';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
-import { ISearchFields } from '../customQuerybar';
+import { ISearchFields } from '../components/customQuerybar';
 
 const userOptionRender = ({ record }: { record: Record }) => (
   <UserInfo

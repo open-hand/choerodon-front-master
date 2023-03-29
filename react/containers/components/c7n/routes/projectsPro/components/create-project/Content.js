@@ -25,7 +25,7 @@ import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import { fileServer, prompt } from '@/utils';
-import { cbaseApi } from '@/api';
+import { cbaseApi } from '@/apis';
 import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
