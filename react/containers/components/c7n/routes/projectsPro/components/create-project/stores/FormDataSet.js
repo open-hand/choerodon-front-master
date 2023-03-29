@@ -12,6 +12,7 @@ function cleanString(inputString) {
   outputString = outputString.toLowerCase();
   // 如果以数字开头，则删除数字直到出现字母为止
   outputString = outputString.replace(/^\d+/, '');
+  outputString = outputString.replace(/--/g, '-');
   return outputString;
 }
 
