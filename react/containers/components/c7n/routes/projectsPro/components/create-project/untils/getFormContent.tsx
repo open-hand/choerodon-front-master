@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  TextField, TextArea, DateTimePicker, Select, TreeSelect, NumberField, TimePicker, DatePicker, SelectBox,
+  TextField, TextArea, DateTimePicker, Select, TreeSelect, NumberField, TimePicker, DatePicker,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 
@@ -18,17 +18,17 @@ const nodeCover = ({ record: iRecord }: { record: Record }) => ({
 
 const specialFormFieldsArr = ['statusId', 'workGroupId', 'projectClassficationId'];
 
-const formContentMap = new Map([
-  ['text', TextArea],
-  ['radio', SelectBox], // TODO
-  ['checkbox', SelectBox], // TODO
+export const formContentMap:any = new Map([
+  ['input', TextField],
+  ['member', Select],
+  ['radio', Select],
+  ['checkbox', Select],
   ['time', TimePicker],
   ['datetime', DateTimePicker],
   ['number', NumberField],
-  ['input', TextField],
   ['single', Select],
   ['multiple', Select],
-  ['member', Select],
+  ['text', TextArea],
   ['date', DatePicker],
   ['multiMember', Select],
 ]);

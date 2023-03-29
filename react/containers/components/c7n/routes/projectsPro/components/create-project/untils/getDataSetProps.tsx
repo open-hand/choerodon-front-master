@@ -1,21 +1,22 @@
 import { DataSet } from 'choerodon-ui/pro';
 import { getOrganizationId } from '@/utils/getId';
+import { cbaseApiConfig } from '@/apis';
 
-const fieldTypeMap = new Map([
+export const fieldTypeMap = new Map([
   // 文本框（多行）
   ['text', 'string'],
 
   // 单选框
-  ['radio', 'string'],
+  ['radio', 'object'],
 
   // 复选框
-  ['checkbox', 'string'], // 这个啥类型
+  ['checkbox', 'object'],
 
   // 时间选择器
-  ['time', 'string'],
+  ['time', 'time'],
 
   // 日期时间选择器
-  ['datetime', 'string'],
+  ['datetime', 'dateTime'],
 
   // 数字输入框
   ['number', 'number'],
@@ -33,11 +34,15 @@ const fieldTypeMap = new Map([
   ['member', 'object'],
 
   // 日期选择器
-  ['date', 'string'],
+  ['date', 'date'],
 
   // 人员(多选)
   ['multiMember', 'object'],
 ]);
+
+export const singleSelectArr = ['radio', 'single', 'member'];
+export const multipleSelectArr = ['checkbox', 'multiple', 'multiMember'];
+export const selectTypeArr = singleSelectArr.concat(multipleSelectArr);
 
 const getDataSetFieldsType = (fieldConfig:any) => fieldTypeMap.get(fieldConfig.fieldType);
 
@@ -45,22 +50,17 @@ const getDataSetFieldsMultiple = (fieldConfig:any) => ['multiple', 'multiMember'
 
 const getDataSetFieldsOptions = (fieldConfig:any) => {
   const { fieldType, id } = fieldConfig;
-  const isSelect = ['single', 'multiple'];
-  const isUser = ['member', 'multiMember'];
-  if (isSelect.includes(fieldType) || isUser.includes(fieldType)) {
+  if (selectTypeArr.includes(fieldType)) {
     return new DataSet({
       autoQuery: true,
       autoCreate: true,
       transport: {
         // 看下prd 禁用的要展示吗，这里的onlyEnabled暂时写成true
-        read: ({ params, data }) => {
-          console.log(data, 'xxxxx');
-          return {
-            url: `/cbase/choerodon/v1/organizations/${getOrganizationId()}/project_field/${id}/options?page=0&size=50&onlyEnabled=&searchValue=${data.searchValue || ''}`,
-            method: 'post',
-            data: [],
-          };
-        },
+        read: ({ params, data }) => ({
+          url: cbaseApiConfig.getCustomFieldsOptions(getOrganizationId(), id, data.searchValue).url,
+          method: 'post',
+          data: [],
+        }),
       },
     });
   }
