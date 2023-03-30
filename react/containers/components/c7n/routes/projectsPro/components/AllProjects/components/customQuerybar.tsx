@@ -108,10 +108,8 @@ const Index: React.FC<IProps> = (props) => {
       fields: [],
       events: {
         update: ({
-          record, name, value, oldValue,
-        }: { record: Record, name: string, value: any, oldValue: any }) => {
-          // console.log(oldValue, 'oldValue');
-          // console.log(omit(record?.toData()));
+          dataSet, record, name, value, oldValue,
+        }: { dataSet:DataSet, record: Record, name: string, value: any, oldValue: any }) => {
           if (isNil(oldValue) && Array.isArray(value) && !value.length) {
             return;
           }
@@ -137,7 +135,6 @@ const Index: React.FC<IProps> = (props) => {
             }
           });
           returnData = omit(returnData, omitArr); // 防止settimeout 期间请求
-
           onChange(returnData, name, record);
         },
       },

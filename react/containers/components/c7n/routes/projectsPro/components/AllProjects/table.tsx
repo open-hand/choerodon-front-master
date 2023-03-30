@@ -314,6 +314,7 @@ const Index: React.FC<any> = (props) => {
     openStatusSettingModal?.default && openStatusSettingModal?.default({ onOk, value: record.get('healthStateDTO')?.id, valueKey: 'id' });
     // get('base-business:openStatusSettingModal')();
   };
+
   const renderAction = ({ record }: { record: Record }) => {
     const projData = record.toData();
     const {

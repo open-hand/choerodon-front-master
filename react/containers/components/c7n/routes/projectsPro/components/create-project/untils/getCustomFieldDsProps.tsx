@@ -13,10 +13,10 @@ export const fieldTypeMap = new Map([
   ['checkbox', 'object'],
 
   // 时间选择器
-  ['time', 'time'],
+  ['time', 'string'],
 
   // 日期时间选择器
-  ['datetime', 'dateTime'],
+  ['datetime', 'string'],
 
   // 数字输入框
   ['number', 'number'],
@@ -34,7 +34,7 @@ export const fieldTypeMap = new Map([
   ['member', 'object'],
 
   // 日期选择器
-  ['date', 'date'],
+  ['date', 'string'],
 
   // 人员(多选)
   ['multiMember', 'object'],
@@ -43,6 +43,7 @@ export const fieldTypeMap = new Map([
 export const singleSelectArr = ['radio', 'single', 'member'];
 export const multipleSelectArr = ['checkbox', 'multiple', 'multiMember'];
 export const selectTypeArr = singleSelectArr.concat(multipleSelectArr);
+export const timeTypeArr = ['time', 'datetime', 'date'];
 
 export const getCustomFieldDsType = (fieldConfig:any) => fieldTypeMap.get(fieldConfig.fieldType);
 

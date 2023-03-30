@@ -30,6 +30,7 @@ import {
   defaultBusinessColumnSetConfig,
 } from './config/tableColumnsSetConfig';
 import TableColumnSet, { initColumnSetData } from './components/tableColumnSet';
+import { timeTypeArr } from '../create-project/untils/getCustomFieldDsProps';
 import {
   transformColumnDataToSubmit,
   transformToSearchFieldsConfig,
@@ -94,7 +95,7 @@ export default observer(() => {
         if (!projectListDataSet.getField(item.code)) {
           projectListDataSet.addField(item.fieldCode, {
             label: item.fieldName,
-            // bind?
+            bind: `customFieldValue.${item.fieldCode}`,
           });
         }
       });
@@ -143,6 +144,16 @@ export default observer(() => {
       ),
     );
   };
+
+  const getDateFieldsArr = useMemo(() => {
+    const arr = ['createTime', 'updateTime'];
+    customFields?.forEach((item) => {
+      if (timeTypeArr.includes(item.fieldType)) {
+        arr.push(item.fieldCode);
+      }
+    });
+    return arr;
+  }, [customFields]);
 
   const refresh = (projectId) => {
     ProjectsProUseStore.checkCreate(organizationId);
@@ -276,40 +287,82 @@ export default observer(() => {
 
   const customQuerybarChange = useCallback(
     (data) => {
-      forIn(projectListDataSet.queryParameter, (value, key) => {
-        projectListDataSet.setQueryParameter(key, null);
-      });
+      const normalContrastMap = new Map([
+        ['input', 'string'],
+        ['text', 'text'],
+        ['number', 'number'],
+      ]);
+      const dateContrastMap = new Map([
+        ['date', 'date'],
+        ['datetime', 'dateHms'],
+        ['time', 'dateHms'],
+      ]);
 
+      const queryObj = {
+        projectCustomFieldSearchVO: {
+          option: [],
+        },
+      };
+      const customFieldsKeysArr = [];
+      customFields.forEach((item) => {
+        const { fieldType, fieldId, fieldCode } = item;
+        const value = data[fieldCode];
+        customFieldsKeysArr.push(fieldCode);
+        if (value) {
+          const normalKey = normalContrastMap.get(fieldType);
+          const dateKey = dateContrastMap.get(fieldType);
+          console.log(fieldType);
+          if (normalKey) {
+            queryObj.projectCustomFieldSearchVO[normalKey] = [
+              {
+                fieldId,
+                startDate: value[0],
+                endDate: value[1],
+              },
+            ];
+          } else if (dateKey) {
+            console.log(444);
+            queryObj.projectCustomFieldSearchVO[dateKey] = [
+              {
+                fieldId,
+                value,
+              },
+            ];
+          } else {
+            // 有option的类型 是一个[{}]
+            const arr = [];
+            value.forEach((valueItem) => {
+              arr.push(valueItem.id);
+            });
+            queryObj.projectCustomFieldSearchVO.option.push({
+              fieldId,
+              value: arr,
+            });
+          }
+        }
+      });
       Object.keys(data).forEach((key) => {
+        if (customFieldsKeysArr.includes(key)) {
+          return;
+        }
         const value = data[key];
         if (isNil(value) || (Array.isArray(value) && !value.length)) {
           return;
         }
         if (key === 'updateTime') {
-          projectListDataSet.setQueryParameter(
-            'lastUpdateDateStart',
-            value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null,
-          );
-          projectListDataSet.setQueryParameter(
-            'lastUpdateDateEnd',
-            value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null,
-          );
+          queryObj.lastUpdateDateStart = moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
+          queryObj.lastUpdateDateEnd = moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
         } else if (key === 'createTime') {
-          projectListDataSet.setQueryParameter(
-            'creationDateStart',
-            value ? moment(value[0]).format('YYYY-MM-DD HH:mm:ss') : null,
-          );
-          projectListDataSet.setQueryParameter(
-            'creationDateEnd',
-            value ? moment(value[1]).format('YYYY-MM-DD HH:mm:ss') : null,
-          );
+          queryObj.creationDateStart = moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
+          queryObj.creationDateEnd = moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
         } else {
-          projectListDataSet.setQueryParameter(key, value);
+          queryObj[key] = value;
         }
       });
-      projectListDataSet.query();
+      console.log(queryObj, 'queryObj');
+      projectListDataSet.query(0, queryObj);
     },
-    [projectListDataSet],
+    [projectListDataSet, customFields],
   );
 
   const handleEditColumnOk = async (columnsData) => {
@@ -362,7 +415,7 @@ export default observer(() => {
             searchFieldsConfig={searchFieldsConfig}
             filterFieldsConfig={filterFieldsConfig}
             customfilterFieldsConfig={customfilterFieldsConfig}
-            dateFieldsArr={['createTime', 'updateTime']}
+            dateFieldsArr={getDateFieldsArr}
             onChange={customQuerybarChange}
             cRef={customQuerybarCRef}
           />
