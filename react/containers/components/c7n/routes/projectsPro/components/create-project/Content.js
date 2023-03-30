@@ -39,6 +39,7 @@ const projectRelationshipCodes = ['N_WATERFALL', 'N_AGILE', 'N_REQUIREMENT'];
 
 const CreateProject = observer(() => {
   const {
+    projectId: propsProjectId,
     formDs,
     categoryDs,
     AppState,
@@ -74,12 +75,7 @@ const CreateProject = observer(() => {
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
 
   const record = useMemo(() => formDs.current, [formDs.current]);
-
-  const isModify = useMemo(() => record && record.status !== 'add', [record]);
-
-  if (isModify) {
-    record.getField('createUserName').set('required', true);
-  }
+  const isModify = !!propsProjectId;
 
   useEffect(() => {
     modal.update({
@@ -90,8 +86,11 @@ const CreateProject = observer(() => {
 
   useEffect(() => {
     getChecked();
-    initFormDs();
   }, []);
+
+  useEffect(() => {
+    formDs.current && initFormDs();
+  }, [formDs.current]);
 
   const initFormDs = async () => {
     const res = await cbaseApi.getFields({

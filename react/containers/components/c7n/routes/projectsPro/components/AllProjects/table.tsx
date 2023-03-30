@@ -158,7 +158,6 @@ const Index: React.FC<any> = (props) => {
           refresh={refresh}
           projectId={pid}
           categoryCodes={categoryCodes}
-        // inNewUserGuideStepOne={inNewUserGuideStepOne}
         />
       ),
       okText: '保存',
