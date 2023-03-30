@@ -5,10 +5,11 @@ class CbaseApi extends Api<CbaseApi> {
     return '/cbase/choerodon/v1';
   }
 
-  getCustomFieldsOptions(orgId:string, fieldId: string, searchValue: string) {
+  getCustomFieldsOptions(orgId:string, fieldId: string, params: any) {
     return this.request({
       method: 'post',
-      url: `${this.prefix}/organizations/${orgId}/project_field/${fieldId}/options?page=0&size=50&onlyEnabled=&searchValue=${searchValue || ''}`,
+      url: `${this.prefix}/organizations/${orgId}/project_field/${fieldId}/options`,
+      params,
       data: [],
     });
   }
@@ -30,7 +31,7 @@ class CbaseApi extends Api<CbaseApi> {
   getFields(params:any) {
     return this.request({
       method: 'get',
-      url: `/cbase/choerodon/v1/organizations/${this.orgId}/project_field/list_by_action?pageAction=&buildInFlag=false`,
+      url: `/cbase/choerodon/v1/organizations/${this.orgId}/project_field/list_by_action`,
       params,
     });
   }

@@ -311,7 +311,6 @@ export default observer(() => {
         if (value) {
           const normalKey = normalContrastMap.get(fieldType);
           const dateKey = dateContrastMap.get(fieldType);
-          console.log(fieldType);
           if (normalKey) {
             queryObj.projectCustomFieldSearchVO[normalKey] = [
               {
@@ -321,7 +320,6 @@ export default observer(() => {
               },
             ];
           } else if (dateKey) {
-            console.log(444);
             queryObj.projectCustomFieldSearchVO[dateKey] = [
               {
                 fieldId,
@@ -329,10 +327,10 @@ export default observer(() => {
               },
             ];
           } else {
-            // 有option的类型 是一个[{}]
+            // 有option的类型 是一个[]
             const arr = [];
-            value.forEach((valueItem) => {
-              arr.push(valueItem.id);
+            value.forEach((v) => {
+              arr.push(v);
             });
             queryObj.projectCustomFieldSearchVO.option.push({
               fieldId,

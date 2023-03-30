@@ -557,7 +557,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getprojUsers(id?:string) {
     return this.request({
       method: 'get',
-      url: `iam/choerodon/v1/organizations/${id || this.orgId}/users/search`,
+      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/users/search`,
     });
   }
 

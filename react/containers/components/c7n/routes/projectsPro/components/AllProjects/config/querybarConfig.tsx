@@ -6,7 +6,7 @@ import { organizationsApiConfig, iamApiConfig } from '@/apis';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
 import { ISearchFields } from '../components/customQuerybar';
 
-const userOptionRender = ({ record }: { record: Record }) => (
+export const userOptionRender = ({ record }: { record: Record }) => (
   <UserInfo
     className="c7ncd-waterfall-deliverables-table-search-line-userinfo"
     loginName={record?.get('ldap') ? record?.get('loginName') : record?.get('email')}
@@ -76,7 +76,10 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
             read({ dataSet, record, params: { page } }) {
               return {
                 ...organizationsApiConfig.getprojWorkGroup(orgId),
-                transformResponse: (res: any) => transformResponseTreeData(res, 'workGroupVOS'),
+                transformResponse: (res: any) => {
+                  console.log('yyyy');
+                  return transformResponseTreeData(res, 'workGroupVOS');
+                },
               };
             },
           },

@@ -1,16 +1,17 @@
 import { DataSet } from 'choerodon-ui/pro';
+import JSONbig from 'json-bigint';
 import { getOrganizationId } from '@/utils/getId';
-import { cbaseApiConfig } from '@/apis';
+import { cbaseApiConfig, organizationsApiConfig } from '@/apis';
 
 export const fieldTypeMap = new Map([
   // 文本框（多行）
   ['text', 'string'],
 
   // 单选框
-  ['radio', 'object'],
+  ['radio', 'string'],
 
   // 复选框
-  ['checkbox', 'object'],
+  ['checkbox', 'string'],
 
   // 时间选择器
   ['time', 'string'],
@@ -25,23 +26,24 @@ export const fieldTypeMap = new Map([
   ['input', 'string'],
 
   // 选择器（单选）
-  ['single', 'object'],
+  ['single', 'string'],
 
   //  选择器（多选）
-  ['multiple', 'object'],
+  ['multiple', 'string'],
 
   // 人员
-  ['member', 'object'],
+  ['member', 'string'],
 
   // 日期选择器
   ['date', 'string'],
 
   // 人员(多选)
-  ['multiMember', 'object'],
+  ['multiMember', 'string'],
 ]);
 
 export const singleSelectArr = ['radio', 'single', 'member'];
 export const multipleSelectArr = ['checkbox', 'multiple', 'multiMember'];
+export const userSelectArr = ['member', 'multiMember'];
 export const selectTypeArr = singleSelectArr.concat(multipleSelectArr);
 export const timeTypeArr = ['time', 'datetime', 'date'];
 
@@ -50,28 +52,60 @@ export const getCustomFieldDsType = (fieldConfig:any) => fieldTypeMap.get(fieldC
 const getCustomFieldDsMultiple = (fieldConfig:any) => multipleSelectArr.includes(fieldConfig.fieldType);
 
 const getCustomFieldDsOptions = (fieldConfig:any) => {
-  const { fieldType, id } = fieldConfig;
+  const { fieldType, fieldId } = fieldConfig;
+  if (userSelectArr.includes(fieldType)) {
+    return new DataSet({
+      autoQuery: true,
+      autoCreate: true,
+      transport: {
+        read: ({ params, data }) => ({
+          url: organizationsApiConfig.getprojUsers().url,
+          method: 'get',
+          transformResponse: (res) => {
+            const newData = JSONbig.parse(res);
+            return newData;
+          },
+        }),
+      },
+    });
+  }
   if (selectTypeArr.includes(fieldType)) {
     return new DataSet({
       autoQuery: true,
       autoCreate: true,
       transport: {
-        // 看下prd 禁用的要展示吗，这里的onlyEnabled暂时写成true
-        read: ({ params, data }) => ({
-          url: cbaseApiConfig.getCustomFieldsOptions(getOrganizationId(), id, data.searchValue).url,
-          method: 'post',
-          data: [],
-        }),
+        // 创建、修改不展示禁用选项
+        read: ({ dataSet, params, data }) =>
+          // TODO 这里咋传值给data[]
+          ({
+            url: cbaseApiConfig.getCustomFieldsOptions(getOrganizationId(), fieldId, {
+              searchValue: data.searchValue,
+              onlyEnabled: true,
+            }).url,
+            method: 'post',
+            data: [],
+            transformResponse: (res) => {
+              const newData = JSONbig.parse(res);
+              return newData;
+            },
+          })
+        ,
       },
     });
   }
   return null;
 };
 
+const getCustomFieldDsTextField = (fieldConfig:any) => (userSelectArr.includes(fieldConfig.fieldType) ? 'realName' : 'value');
+
+const getCustomFieldDsValueField = (fieldConfig:any) => (userSelectArr.includes(fieldConfig.fieldType) ? 'id' : 'id');
+
 const getCustomFieldDsProps = (fieldConfig:any) => ({
   type: getCustomFieldDsType(fieldConfig),
   multiple: getCustomFieldDsMultiple(fieldConfig),
   options: getCustomFieldDsOptions(fieldConfig),
+  textField: getCustomFieldDsTextField(fieldConfig),
+  valueField: getCustomFieldDsValueField(fieldConfig),
 });
 
 export { getCustomFieldDsProps, getCustomFieldDsOptions };

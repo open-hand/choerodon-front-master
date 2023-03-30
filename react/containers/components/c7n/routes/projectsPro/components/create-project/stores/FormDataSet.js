@@ -134,6 +134,9 @@ export default ({
     },
     fields: [
       {
+        name: 'customFields', label: '自定义字段',
+      },
+      {
         name: 'name',
         type: 'string',
         label: '项目名称',
@@ -165,41 +168,14 @@ export default ({
         name: 'workGroupId',
         type: 'string',
         label: '工作组',
-        textField: 'name',
-        valueField: 'id',
-        options: new DataSet({
-          autoCreate: true,
-          autoQuery: true,
-          idField: 'id',
-          parentField: 'parentId',
-          transport: {
-            read: ({ data }) => ({
-              method: 'get',
-              url: organizationsApiConfig.getprojWorkGroup('', true).url,
-              transformResponse: (res) => transformResponseTreeData(res, 'workGroupVOS'),
-            }),
-          },
-        }),
       },
       {
         name: 'projectClassficationId',
         type: 'string',
         label: '项目分类',
-        textField: 'name',
-        valueField: 'id',
-        options: new DataSet({
-          autoCreate: true,
-          autoQuery: true,
-          idField: 'id',
-          parentField: 'parentId',
-          transport: {
-            read: ({ data }) => ({
-              method: 'post',
-              url: organizationsApiConfig.getprojClassification('').url,
-              transformResponse: (res) => transformResponseTreeData(res, 'treeProjectClassfication'),
-            }),
-          },
-        }),
+      },
+      {
+        name: 'categories', label: '项目类型',
       },
       {
         name: 'devopsComponentCode',
@@ -264,9 +240,6 @@ export default ({
         defaultValue: newUserGuideDefaultValue.description,
       },
       { name: 'enabled', type: 'boolean', label: '项目状态' },
-      {
-        name: 'categories', label: '项目类型', required: true,
-      },
       { name: 'createUserName', type: 'string', label: '创建人' },
       { name: 'imageUrl', type: 'string' },
       { name: 'creationDate', type: 'date', label: '创建时间' },

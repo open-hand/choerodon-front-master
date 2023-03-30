@@ -1,8 +1,10 @@
 import React from 'react';
 import {
-  TextField, TextArea, DateTimePicker, Select, TreeSelect, NumberField, TimePicker, DatePicker,
+  TextField, TextArea, DateTimePicker, Select, TreeSelect, NumberField, TimePicker, DatePicker, SelectBox,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
+import { selectTypeArr, userSelectArr } from './getCustomFieldDsProps';
+import { userOptionRender } from '../../AllProjects/config/querybarConfig';
 
 const renderTreeSelect = ({ text }: { text: string }) => (
   <span className="tree-select-text">{text}</span>
@@ -12,17 +14,11 @@ const nodeCover = ({ record: iRecord }: { record: Record }) => ({
   disabled: iRecord?.get('hasChildren') || iRecord?.get('children'),
 });
 
-/**
- * 需要特殊处理的form字段
- */
-
-const specialFormFieldsArr = ['statusId', 'workGroupId', 'projectClassficationId'];
-
 export const formContentMap:any = new Map([
   ['input', TextField],
   ['member', Select],
-  ['radio', Select],
-  ['checkbox', Select],
+  ['radio', SelectBox],
+  ['checkbox', SelectBox],
   ['time', TimePicker],
   ['datetime', DateTimePicker],
   ['number', NumberField],
@@ -33,7 +29,7 @@ export const formContentMap:any = new Map([
   ['multiMember', Select],
 ]);
 
-const specialFormContentMap: any = new Map([
+const specialFormContentMap: any = new Map([ // 系统字段原本的逻辑
   ['statusId',
     <Select
       name="statusId"
@@ -42,23 +38,23 @@ const specialFormContentMap: any = new Map([
       })}
     />,
   ],
-  ['workGroupId',
-    <TreeSelect name="workGroupId" optionRenderer={renderTreeSelect} />,
+  ['workGroup',
+    <TreeSelect name="workGroup" optionRenderer={renderTreeSelect} />,
   ],
-  ['projectClassficationId',
-    <TreeSelect name="projectClassficationId" onOption={nodeCover} optionRenderer={renderTreeSelect} />,
+  ['classify',
+    <TreeSelect name="classify" onOption={nodeCover} optionRenderer={renderTreeSelect} />,
   ],
   ['creationDate',
     <TextField name="creationDate" disabled />,
   ],
-  ['createUserName',
-    <TextField name="createUserName" disabled />,
+  ['creator',
+    <TextField name="creator" disabled />,
   ],
 ]);
 
 const getEleProps = (fieldConfig: any, preFieldConfig: any, index: number) => {
   const { fieldType } = fieldConfig;
-  const obj: any = {};
+  let obj: any = {};
 
   if (['text'].includes(fieldType)) {
     obj.colSpan = 100;
@@ -75,11 +71,16 @@ const getEleProps = (fieldConfig: any, preFieldConfig: any, index: number) => {
     };
   }
 
-  if (['single', 'multiple'].includes(fieldType)) {
+  if (selectTypeArr.includes(fieldType) && !['radio', 'checkbox'].includes(fieldType)) {
     obj.searchable = true;
   }
-  if (['multiMember', 'multiple'].includes(fieldType)) {
-    obj.multiple = true;
+
+  if (userSelectArr.includes(fieldType)) {
+    obj = {
+      ...obj,
+      optionRenderer: userOptionRender,
+      searchMatcher: 'params',
+    };
   }
 
   return obj;
@@ -91,14 +92,16 @@ const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any) =>
   }
 
   const arr: JSX.Element[] = [];
-
   fieldsConfig.forEach((item: any, index: number) => {
-    let Ele;
-    if (specialFormFieldsArr.includes(item.fieldType)) {
-      Ele = specialFormContentMap.get(item.fieldType)!;
-    } else {
-      Ele = formContentMap.get(item.fieldType)!;
+    if ([...specialFormContentMap.keys()].includes(item.fieldCode)) {
+      const SpecialEle = specialFormContentMap.get(item.fieldCode)!;
+      arr.push(
+        React.cloneElement(SpecialEle, { ...getEleProps(item, fieldsConfig[index - 1], index) }),
+      );
+      return;
     }
+
+    const Ele = formContentMap.get(item.fieldType)!;
     arr.push(<Ele name={item.fieldCode} {...getEleProps(item, fieldsConfig[index - 1], index)} />);
   });
 

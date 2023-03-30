@@ -32,7 +32,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     categoryCodes,
     inNewUserGuideStepOne,
   } = props;
-  const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
+  const { loading: haitianMasterLoading, func: createProjectExtraFields } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
+  const { loading: baseSaasLoading, func: checkSenior } = useExternalFunc('saas', 'base-saas:checkSaaSSenior');
 
   const [flags, setFlags] = useState(false);
 
@@ -48,13 +49,11 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   })), [projectId]);
 
   const formDs = useMemo(() => new DataSet(FormDataSet({
-    organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne, statusDs, func,
-  })), [organizationId, projectId, statusDs, inNewUserGuideStepOne, func]);
-
-  const { loading: baseSaasLoading, func: checkSenior } = useExternalFunc('saas', 'base-saas:checkSaaSSenior');
+    organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne, statusDs, func: createProjectExtraFields,
+  })), [organizationId, projectId, statusDs, inNewUserGuideStepOne, createProjectExtraFields]);
 
   useEffect(() => {
-    if (!baseSaasLoading) {
+    if (!baseSaasLoading && !haitianMasterLoading) {
       if (projectId) {
         loadData(checkSenior?.default);
       } else {
@@ -62,7 +61,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
         loadCategory(checkSenior?.default);
       }
     }
-  }, [projectId, organizationId, checkSenior, baseSaasLoading, func]);
+  }, [projectId, organizationId, checkSenior, baseSaasLoading, haitianMasterLoading, createProjectExtraFields]);
 
   const loadCategory = async (checkSeniorFunc) => {
     await axios.all([

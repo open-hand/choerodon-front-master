@@ -1,6 +1,6 @@
 import { getCustomFieldDsOptions, getCustomFieldDsType } from '@/containers/components/c7n/routes/projectsPro/components/create-project/untils/getCustomFieldDsProps';
-import { defaultSelectEleConfig } from '../config/querybarConfig';
-import { selectTypeArr, timeTypeArr } from '../../create-project/untils/getCustomFieldDsProps';
+import { defaultSelectEleConfig, userOptionRender } from '../config/querybarConfig';
+import { selectTypeArr, timeTypeArr, userSelectArr } from '../../create-project/untils/getCustomFieldDsProps';
 
 const searchFieldsTypeMap = new Map([
   // 文本框（多行）
@@ -82,6 +82,19 @@ function transformToSearchFieldsConfig(systemConfig, customFields) {
         isFlat: timeTypeArr.includes(item.fieldType),
       },
     };
+
+    if (userSelectArr.includes(item.fieldType)) {
+      obj.dsProps = {
+        ...obj.dsProps,
+        textField: 'realName',
+        valueField: 'id',
+      };
+      obj.eleProps = {
+        ...obj.eleProps,
+        optionRenderer: userOptionRender,
+        searchMatcher: 'params',
+      };
+    }
     arr.push(obj);
   });
   return systemConfig.concat(arr);

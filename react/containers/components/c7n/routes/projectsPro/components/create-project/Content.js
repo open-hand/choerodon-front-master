@@ -32,6 +32,7 @@ import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
 import { getCustomFieldDsProps } from './untils/getCustomFieldDsProps';
 import handleGetFormContent from './untils/getFormContent';
+import { getSystemFieldDsProps, contrastMapToFormDsMap, contrastMapToQueryDsMap } from './untils/getSystemFieldDsProps';
 import './index.less';
 
 const projectRelationshipCodes = ['N_WATERFALL', 'N_AGILE', 'N_REQUIREMENT'];
@@ -98,13 +99,27 @@ const CreateProject = observer(() => {
     });
     res.forEach((item) => {
       if (!formDs?.getField(item.fieldCode)) {
-        formDs?.addField(item.fieldCode, {
-          label: item.fieldName,
-          required: item.requireFlag,
-          ...getCustomFieldDsProps(item),
-          textField: 'value',
-          valueField: 'id',
-        });
+        if (contrastMapToQueryDsMap.get(item.fieldCode)) {
+          formDs?.addField(item.fieldCode, {
+            label: item.fieldName,
+            required: item.requireFlag,
+            ...getSystemFieldDsProps(item.fieldCode),
+          });
+        } else {
+          formDs?.addField(item.fieldCode, {
+            label: item.fieldName,
+            required: item.requireFlag,
+            ...getCustomFieldDsProps(item),
+          });
+          formDs.setState(item.fieldCode, {
+            fieldType: item.fieldType,
+            fieldId: item.fieldId,
+            fieldCode: item.fieldCode,
+          }); // 给自定义字段一个标记，用于提交数据处理
+        }
+        if (item.defaultValue) {
+          formDs.current.set(item.fieldCode, item.defaultValue);
+        }
       }
     });
     setFieldsConfig(res);
@@ -171,6 +186,7 @@ const CreateProject = observer(() => {
           code: findRecord.get('code'),
         });
       }
+
       if (typeof formDs?.current?.get('statusId') === 'object') {
         formDs?.current?.set('statusId', formDs?.current?.get('statusId')?.id);
         formDs?.current?.set(
@@ -189,11 +205,24 @@ const CreateProject = observer(() => {
         }
       }
       record.set('categories', categories);
-      // if (some(categories, ['code', 'N_WATERFALL'])) {
-      //   record.set('useTemplate', false);
-      // }
       const flag = await formDs.validate();
       if (flag) {
+        //  改成自定义后 后端给的自定义字段 放到数据里面
+        const data = formDs.current.toData();
+        const customFields = [];
+        Object.keys(data).forEach((key) => {
+          if (contrastMapToFormDsMap.get(key)) {
+            record.set(contrastMapToFormDsMap.get(key), data[key]);
+          }
+          if (formDs.getState(key)) {
+            customFields.push({
+              ...formDs.getState(key),
+              value: data[key],
+            });
+          }
+        });
+        record.set('customFields', customFields);
+
         const res = await formDs.forceSubmit();
         if (res && !res.failed && res.list && res.list.length) {
           const projectId = get(res.list[0], 'id');

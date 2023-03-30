@@ -102,6 +102,8 @@ const Index: React.FC<IProps> = (props) => {
   }
 
   const queryBarDataSet = useMemo(() => {
+    console.log(9999);
+    // TODO 重复请求是因为 searchFieldsConfig 变化了 看看怎么改
     const ds = new DataSet({
       autoCreate: true,
       autoQuery: false,
@@ -139,7 +141,7 @@ const Index: React.FC<IProps> = (props) => {
         },
       },
     });
-    queryBarDsInit(ds, searchFieldsConfig);
+    // queryBarDsInit(ds, searchFieldsConfig);
     return ds;
   }, [dateFieldsArr, searchFieldsConfig, onChange]);
 
