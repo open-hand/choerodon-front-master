@@ -4,6 +4,7 @@ import React, {
 import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
 import { useLocation } from 'react-router';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import { useHeaderStore } from './stores';
 import HeaderLogo from './components/header-logo';
 import ProjectsSelector from './components/projects-selector';
@@ -29,6 +30,8 @@ const Header = (props:any) => {
   const shouldHiddenHead = useShouldHiddenHead();
   const isFullPage = useIsFullPage();
 
+  const { loading, func: loadWatermarkInfo }: any = useExternalFunc('baseBusiness', 'base-business:loadWatermarkInfo');
+
   useEffect(() => {
     AppState.setCurrentDropDown(AppState.getStarProject, AppState.getRecentUse);
   }, [location]);
@@ -40,8 +43,10 @@ const Header = (props:any) => {
   // TODO 使用useLoadWatermakInfo
   useEffect(() => {
     // 请求组织水印信息
-    AppState.loadWatermarkInfo();
-  }, [AppState?.currentMenuType?.organizationId]);
+    if (loadWatermarkInfo) {
+      AppState.loadWatermarkInfo(undefined, loadWatermarkInfo.default);
+    }
+  }, [AppState?.currentMenuType?.organizationId, loadWatermarkInfo]);
 
   // 这块需要拆出去放到主页面的逻辑里头,等主页面重构完
   useEffect(() => {

@@ -396,11 +396,11 @@ class AppState {
   }
 
   // 请求组织水印信息
-  loadWatermarkInfo = async (orgId) => {
-    const key = 'base-business:loadWatermarkInfo';
+  loadWatermarkInfo = async (orgId, injectFunc) => {
+    // const key = 'base-business:loadWatermarkInfo';
     const organizationId = orgId ?? this.menuType?.organizationId;
-    if (hasInject(key) && organizationId) {
-      const res = await getInject(key)(organizationId);
+    if (injectFunc && organizationId) {
+      const res = await injectFunc(organizationId);
       this.setWatermarkInfo(res);
     } else {
       this.setWatermarkInfo(null);
