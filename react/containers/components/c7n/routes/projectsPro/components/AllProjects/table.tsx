@@ -310,6 +310,7 @@ const Index: React.FC<any> = (props) => {
     };
     get('base-business:openStatusSettingModal')({ onOk, value: record.get('healthStateDTO')?.id, valueKey: 'id' });
   };
+
   const renderAction = ({ record }: { record: Record }) => {
     const projData = record.toData();
     const {

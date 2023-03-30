@@ -44,7 +44,6 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: true,
       dsProps: {
         name: 'statusIds',
-        type: 'object',
         ...defaultDsConfig,
         options: new DataSet({
           ...defaultOptionConfig,
@@ -67,7 +66,6 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: true,
       dsProps: {
         name: 'workGroupIds',
-        type: 'object',
         ...defaultDsConfig,
         optionRenderer: ({ text }: { text: string }) => <span className="tree-select-text">{text}</span>,
         options: new DataSet({
@@ -94,7 +92,6 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: true,
       dsProps: {
         name: 'projectClassficationIds',
-        type: 'object',
         ...defaultDsConfig,
         onOption: nodeCover,
         optionRenderer: ({ text }: { text: string }) => <span className="tree-select-text">{text}</span>,
@@ -122,7 +119,6 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: true,
       dsProps: {
         name: 'programIds',
-        type: 'object',
         ...defaultDsConfig,
         options: new DataSet({
           ...defaultOptionConfig,
@@ -145,7 +141,6 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: true,
       dsProps: {
         name: 'categoryIds',
-        type: 'object',
         ...defaultDsConfig,
         options: new DataSet({
           ...defaultOptionConfig,
@@ -249,7 +244,6 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
     initial: true,
     dsProps: {
       name: 'healthSateIds',
-      type: 'object',
       ...defaultDsConfig,
       options: new DataSet({
         ...defaultOptionConfig,

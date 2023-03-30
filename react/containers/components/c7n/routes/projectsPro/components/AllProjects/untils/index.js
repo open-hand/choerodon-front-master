@@ -1,5 +1,6 @@
 import { getCustomFieldDsOptions, getCustomFieldDsType } from '@/containers/components/c7n/routes/projectsPro/components/create-project/untils/getCustomFieldDsProps';
 import { defaultSelectEleConfig } from '../config/querybarConfig';
+import { selectTypeArr, timeTypeArr } from '../../create-project/untils/getCustomFieldDsProps';
 
 const searchFieldsTypeMap = new Map([
   // 文本框（多行）
@@ -71,11 +72,14 @@ function transformToSearchFieldsConfig(systemConfig, customFields) {
         type: getCustomFieldDsType(item),
         textField: 'value', // 针对下拉
         valueField: 'id',
+        range: timeTypeArr.includes(item.fieldType),
       },
       eleProps: {
         placeholder: item.fieldName,
         ...defaultSelectEleConfig, // 筛选的select都可以多选
         searchMatcher: 'searchValue',
+        multiple: selectTypeArr.includes(item.fieldType),
+        isFlat: timeTypeArr.includes(item.fieldType),
       },
     };
     arr.push(obj);
