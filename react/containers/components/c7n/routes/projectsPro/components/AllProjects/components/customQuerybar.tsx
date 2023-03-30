@@ -141,7 +141,7 @@ const Index: React.FC<IProps> = (props) => {
         },
       },
     });
-    // queryBarDsInit(ds, searchFieldsConfig);
+    queryBarDsInit(ds, searchFieldsConfig);
     return ds;
   }, [dateFieldsArr, searchFieldsConfig, onChange]);
 
