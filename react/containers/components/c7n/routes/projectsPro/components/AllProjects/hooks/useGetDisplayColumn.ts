@@ -22,6 +22,8 @@ const useGetDisplayColumn = (columnsSetConfig:IColumnSetConfig[], adjustableColu
             arr.push(found);
             return;
           }
+          // @ts-ignore
+          item.tooltip = 'overflow';
           if (!item.width) { // 去掉width为 0
             delete item.width;
           }
@@ -29,6 +31,7 @@ const useGetDisplayColumn = (columnsSetConfig:IColumnSetConfig[], adjustableColu
         }
       });
       setDisplayColumn(arr);
+      console.log(arr, arr);
     }
   }, [columnsSetConfig]);
 

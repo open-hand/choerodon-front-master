@@ -23,7 +23,7 @@ export interface IColumnSetConfig {
   isSelected: boolean,
   order: number
   width?: number
-  minWidth?: number,
+  minWidth?: number
 }
 
 export interface IRemoteColumnSetConfig {

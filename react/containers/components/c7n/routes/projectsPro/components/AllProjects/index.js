@@ -95,7 +95,7 @@ export default observer(() => {
         if (!projectListDataSet.getField(item.code)) {
           projectListDataSet.addField(item.fieldCode, {
             label: item.fieldName,
-            // bind?
+            bind: `customFieldValue.${item.fieldCode}`,
           });
         }
       });

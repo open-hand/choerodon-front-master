@@ -100,6 +100,9 @@ export default (AppState, history, categoryDs) => {
     },
     fields: [
       {
+        name: 'customFieldValue', label: '项目的自定义字段值对象obj',
+      },
+      {
         name: 'name', type: 'string', label: '项目名称', required: true, validator: nameValidator,
       },
       {
