@@ -11,6 +11,7 @@ import { get } from '@choerodon/inject';
 import { useRequest } from 'ahooks';
 import classNames from 'classnames';
 import type { ColumnProps } from 'choerodon-ui/pro/lib/table/Column';
+import useExternalFunc from '@/hooks/useExternalFunc';
 import { getRandomBackground } from '@/utils';
 import { useProjectsProStore } from '../../stores';
 import { axios } from '@/index';
@@ -57,6 +58,8 @@ const Index: React.FC<any> = (props) => {
   const refresh = () => {
     projectListDataSet.query();
   };
+
+  const { loading: openStatusSettingModalLoading, func: openStatusSettingModal }: any = useExternalFunc('baseBusiness', 'base-business:openStatusSettingModal');
 
   const {
     data, error, loading, run,
@@ -308,7 +311,8 @@ const Index: React.FC<any> = (props) => {
       const param = { projectId: record.get('id'), healthStateId: value };
       run(param);
     };
-    get('base-business:openStatusSettingModal')({ onOk, value: record.get('healthStateDTO')?.id, valueKey: 'id' });
+    openStatusSettingModal?.default && openStatusSettingModal?.default({ onOk, value: record.get('healthStateDTO')?.id, valueKey: 'id' });
+    // get('base-business:openStatusSettingModal')();
   };
 
   const renderAction = ({ record }: { record: Record }) => {
