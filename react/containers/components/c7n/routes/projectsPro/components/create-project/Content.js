@@ -110,7 +110,6 @@ const CreateProject = observer(() => {
 
       if (!formDs?.getField(fieldCode)) {
         const dsProps = getCustomFieldDsProps(item);
-        const customValuesObj = recordData.customFieldValue;
         if (dsProps.options && defaultValue && !isModify) {
           dsProps.options.setState('selectids', Array.isArray(defaultValue) ? [...defaultValue] : [defaultValue]);
         }
