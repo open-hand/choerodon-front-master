@@ -1,7 +1,9 @@
 import React from 'react';
 import { Tag, Tooltip } from 'choerodon-ui';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
-import { StatusTag, UserInfo, HealthStatus } from '@zknow/components';
+import {
+  StatusTag, UserInfo, HealthStatus, UserTag,
+} from '@zknow/components';
 
 const colorMap = new Map([
   ['failed', 'failed'],
@@ -114,14 +116,36 @@ const renderCategories = ({ value }: { value: any }) => {
   );
 };
 
-const renderCreater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('createUserName')} avatar={record?.get('createUserImageUrl')} />;
+const renderCreater = ({ record }: { record: Record }) => (
+  <UserTag
+    data={[
+      {
+        imageUrl: record?.get('createUserImageUrl'),
+        realName: record?.get('createUserName'),
+      },
+    ]}
+    style={{ maxWidth: '100%' }}
+  />
+);
 
-const renderUpdater = ({ record }: { record: Record }) => <UserInfo realName={record?.get('updateUserName')} avatar={record?.get('updateUserImageUrl')} />;
+const renderUpdater = ({ record }: { record: Record }) => (
+  <UserTag
+    data={[
+      {
+        imageUrl: record?.get('updateUserImageUrl'),
+        realName: record?.get('updateUserName'),
+      },
+    ]}
+    style={{ maxWidth: '100%' }}
+  />
+);
 
 const renderHealthState = (record: Record, prefix:string) => {
   const { color, name, description } = record.get('healthStateDTO') || {};
   return <HealthStatus color={color} name={name} description={description} className={`${prefix}-healthStatus`} />;
 };
+
+export const renderUsers = ({ value }: { value:any }) => <UserTag data={value} style={{ maxWidth: '100%' }} />;
 
 export const getAdjustableColumns = (formatMessage:any, prefix:string, fieldFunc: any) => [
   {

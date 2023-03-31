@@ -10,7 +10,8 @@ import {
 } from 'react-beautiful-dnd';
 import { useMemoizedFn } from 'ahooks';
 import { observer } from 'mobx-react-lite';
-import { cloneDeep, orderBy, remove } from 'lodash';
+import { cloneDeep, orderBy } from 'lodash';
+import { userSelectArr } from '../../create-project/untils/getCustomFieldDsProps';
 
 const modalkey = Modal.key();
 
@@ -24,6 +25,7 @@ export interface IColumnSetConfig {
   order: number
   width?: number
   minWidth?: number
+  isUser?: boolean
 }
 
 export interface IRemoteColumnSetConfig {
@@ -36,6 +38,7 @@ export interface IRemoteColumnSetConfig {
 export interface ICustomFieldItem {
   fieldCode: string
   fieldName: string
+  fieldType: string
 }
 
 export interface IProps {
@@ -78,6 +81,7 @@ export const initColumnSetData = (remoteData: IRemoteColumnSetConfig[] | null, d
         label: tableDs?.getField(customItem.fieldCode)?.get('label'),
         order: found ? found.sort : 100 + index,
         width: found?.width || 0,
+        isUser: userSelectArr.includes(customItem.fieldType),
       });
     });
 

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import type { ColumnProps } from 'choerodon-ui/pro/lib/table/Column';
 import { IColumnSetConfig } from '../components/tableColumnSet';
+import { renderUsers } from '../config/tableColumnsConfig';
 
 const useGetDisplayColumn = (columnsSetConfig:IColumnSetConfig[], adjustableColumns:ColumnProps[]) => {
   const [displayColumn, setDisplayColumn] = useState<ColumnProps[]>([]);
@@ -27,11 +28,14 @@ const useGetDisplayColumn = (columnsSetConfig:IColumnSetConfig[], adjustableColu
           if (!item.width) { // 去掉width为 0
             delete item.width;
           }
+          if (item.isUser) {
+            // @ts-ignore
+            item.renderer = renderUsers;
+          }
           arr.push(item);
         }
       });
       setDisplayColumn(arr);
-      console.log(arr, arr);
     }
   }, [columnsSetConfig]);
 

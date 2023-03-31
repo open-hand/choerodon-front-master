@@ -13,7 +13,6 @@ const contrastMapToQueryDsMap = new Map([ // 列表返回字段code 和 项目�
 
 const contrastMapToFormDsMap = new Map([ // 后端返回字段code 和 创建修改表单 ds 不一样
   ['creator', 'createUserName'],
-  ['type', 'categories'], // 项目类型
   ['classify', 'projectClassficationId'],
   ['workGroup', 'workGroupId'],
 ]);

@@ -52,7 +52,7 @@ const specialFormContentMap: any = new Map([ // 系统字段原本的逻辑
   ],
 ]);
 
-const getEleProps = (fieldConfig: any, preFieldConfig: any, index: number, formDs :DataSet) => {
+const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, formDs :DataSet) => {
   const { fieldType, fieldCode } = fieldConfig;
   let obj: any = {};
 
@@ -62,7 +62,7 @@ const getEleProps = (fieldConfig: any, preFieldConfig: any, index: number, formD
     obj.rows = 3;
     obj.resize = 'vertical';
   } else {
-    if (preFieldConfig?.fieldType !== 'text' && index % 2 !== 0) {
+    if (calculateIndex % 2 === 0) {
       obj.className = 'form-item-offset';
     }
     obj.colSpan = 50;
@@ -100,11 +100,20 @@ const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, fo
   }
 
   const arr: JSX.Element[] = [];
+  let calculateIndex:number;
   fieldsConfig.forEach((item: any, index: number) => {
+    if (fieldsConfig[index - 1]?.fieldType === 'text') {
+      calculateIndex = 1;
+    } else {
+      calculateIndex += 1;
+    }
     if ([...specialFormContentMap.keys()].includes(item.fieldCode)) {
       const SpecialEle = specialFormContentMap.get(item.fieldCode)!;
       arr.push(
-        React.cloneElement(SpecialEle, { ...getEleProps(item, fieldsConfig[index - 1], index, formDs) }),
+        React.cloneElement(SpecialEle, {
+          ...getEleProps(item, calculateIndex,
+            index, formDs),
+        }),
       );
       return;
     }
@@ -113,7 +122,7 @@ const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, fo
     arr.push(
       <Ele
         name={item.fieldCode}
-        {...getEleProps(item, fieldsConfig[index - 1], index, formDs)}
+        {...getEleProps(item, calculateIndex, index, formDs)}
       />,
     );
   });

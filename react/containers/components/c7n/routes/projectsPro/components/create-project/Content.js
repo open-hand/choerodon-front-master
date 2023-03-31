@@ -20,6 +20,7 @@ import {
 } from 'choerodon-ui/pro';
 import {
   includes, map, get,
+  remove,
 } from 'lodash';
 import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
@@ -96,6 +97,7 @@ const CreateProject = observer(() => {
     const res = await cbaseApi.getFields({
       pageAction: isModify ? 'edit' : 'create',
     });
+    remove(res, (item) => item.fieldCode === 'type');
     res.forEach((item) => {
       const {
         fieldCode, fieldType, fieldId, fieldName, requireFlag, defaultValue,
@@ -116,6 +118,7 @@ const CreateProject = observer(() => {
             label: fieldName,
             required: requireFlag,
             ...dsProps,
+            ignore: 'always',
           });
           // 给自定义字段一个标记，用于提交数据处理
           formDs.setState(fieldCode, {
