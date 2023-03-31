@@ -105,18 +105,17 @@ const CreateProject = observer(() => {
       }
 
       const {
-        fieldCode, fieldType, fieldId, fieldName, requireFlag, defaultValue,
+        fieldCode, fieldType, fieldId, fieldName, requireFlag, defaultValue, value,
       } = item;
 
       if (!formDs?.getField(fieldCode)) {
         const dsProps = getCustomFieldDsProps(item);
         const customValuesObj = recordData.customFieldValue;
-        if (dsProps.options && defaultValue) {
+        if (dsProps.options && defaultValue && !isModify) {
           dsProps.options.setState('selectids', Array.isArray(defaultValue) ? [...defaultValue] : [defaultValue]);
         }
-        if (dsProps.options && customValuesObj) {
-          const existValue = customValuesObj[fieldCode];
-          existValue && dsProps.options.setState('selectids', Array.isArray(existValue) ? [...existValue] : [existValue]);
+        if (dsProps.options && value && isModify) {
+          dsProps.options.setState('selectids', Array.isArray(value) ? [...value] : [value]);
         }
           formDs?.addField(fieldCode, {
             label: fieldName,
@@ -131,13 +130,11 @@ const CreateProject = observer(() => {
             fieldCode,
           });
           // 初始化表单值
-          if (defaultValue) {
+          if (defaultValue && !isModify) {
             record.set(fieldCode, defaultValue);
           }
-          if (isModify) {
-            if (customValuesObj && customValuesObj[fieldCode]) {
-              record.set(fieldCode, customValuesObj[fieldCode]);
-            }
+          if (value && isModify) {
+            record.set(fieldCode, value);
           }
       }
     });
