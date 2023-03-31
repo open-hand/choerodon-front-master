@@ -6,6 +6,12 @@ import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { selectTypeArr, userSelectArr } from './getCustomFieldDsProps';
 import { userOptionRender } from '../../AllProjects/config/querybarConfig';
 
+export const contrastMapToFormDsMap = new Map([ // 后端返回字段code 和 创建修改表单 ds 不一样
+  ['creator', 'createUserName'],
+  ['classify', 'projectClassficationId'],
+  ['workGroup', 'workGroupId'],
+]);
+
 const renderTreeSelect = ({ text }: { text: string }) => (
   <span className="tree-select-text">{text}</span>
 );
@@ -38,17 +44,17 @@ const specialFormContentMap: any = new Map([ // 系统字段原本的逻辑
       })}
     />,
   ],
-  ['workGroup',
-    <TreeSelect name="workGroup" optionRenderer={renderTreeSelect} />,
+  ['workGroupId',
+    <TreeSelect name="workGroupId" optionRenderer={renderTreeSelect} />,
   ],
-  ['classify',
-    <TreeSelect name="classify" onOption={nodeCover} optionRenderer={renderTreeSelect} />,
+  ['projectClassficationId',
+    <TreeSelect name="projectClassficationId" onOption={nodeCover} optionRenderer={renderTreeSelect} />,
   ],
   ['creationDate',
     <TextField name="creationDate" disabled />,
   ],
-  ['creator',
-    <TextField name="creator" disabled />,
+  ['createUserName',
+    <TextField name="createUserName" disabled />,
   ],
 ]);
 

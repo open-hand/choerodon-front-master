@@ -2,7 +2,7 @@ import React from 'react';
 import { Tag, Tooltip } from 'choerodon-ui';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import {
-  StatusTag, UserInfo, HealthStatus, UserTag,
+  StatusTag, HealthStatus, UserTag,
 } from '@zknow/components';
 
 const colorMap = new Map([

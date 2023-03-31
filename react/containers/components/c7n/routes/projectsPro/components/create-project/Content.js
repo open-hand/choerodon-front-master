@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-expressions */
 import React, {
   useCallback, useEffect, useMemo, useState,
@@ -32,8 +33,7 @@ import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
 import { getCustomFieldDsProps } from './untils/getCustomFieldDsProps';
-import handleGetFormContent from './untils/getFormContent';
-import { getSystemFieldDsProps, contrastMapToFormDsMap, contrastMapToQueryDsMap } from './untils/getSystemFieldDsProps';
+import handleGetFormContent, { contrastMapToFormDsMap } from './untils/getFormContent';
 import './index.less';
 
 const projectRelationshipCodes = ['N_WATERFALL', 'N_AGILE', 'N_REQUIREMENT'];
@@ -90,30 +90,29 @@ const CreateProject = observer(() => {
   }, []);
 
   useEffect(() => {
-    formDs.current && initFormDs();
-  }, [formDs.current]);
+    record && initFormDs();
+  }, [record]);
 
   const initFormDs = async () => {
     const res = await cbaseApi.getFields({
       pageAction: isModify ? 'edit' : 'create',
     });
     remove(res, (item) => item.fieldCode === 'type');
+    const recordData = record.toData();
     res.forEach((item) => {
+      if (contrastMapToFormDsMap.get(item.fieldCode)) {
+        item.fieldCode = contrastMapToFormDsMap.get(item.fieldCode);
+      }
+
       const {
         fieldCode, fieldType, fieldId, fieldName, requireFlag, defaultValue,
       } = item;
+
       if (!formDs?.getField(fieldCode)) {
-        if (contrastMapToQueryDsMap.get(fieldCode)) {
-          formDs?.addField(fieldCode, {
-            label: fieldName,
-            required: item.requireFlag,
-            ...getSystemFieldDsProps(fieldCode),
-          });
-        } else {
-          const dsProps = getCustomFieldDsProps(item);
-          if (dsProps.options && defaultValue) {
-            dsProps.options.setState('selectids', Array.isArray(defaultValue) ? [...defaultValue] : [defaultValue]);
-          }
+        const dsProps = getCustomFieldDsProps(item);
+        if (dsProps.options && defaultValue) {
+          dsProps.options.setState('selectids', Array.isArray(defaultValue) ? [...defaultValue] : [defaultValue]);
+        }
           formDs?.addField(fieldCode, {
             label: fieldName,
             required: requireFlag,
@@ -126,10 +125,17 @@ const CreateProject = observer(() => {
             fieldId,
             fieldCode,
           });
-        }
-        if (defaultValue) {
-          formDs.current.set(fieldCode, defaultValue);
-        }
+          if (defaultValue) {
+            record.set(fieldCode, defaultValue);
+          }
+          if (isModify) {
+            const customValuesObj = recordData.customFieldValue;
+            if (customValuesObj) {
+              Object.keys(customValuesObj).forEach((key) => {
+                record.set(key, customValuesObj[key]);
+              });
+            }
+          }
       }
     });
     setFieldsConfig(res);
@@ -221,9 +227,6 @@ const CreateProject = observer(() => {
         const data = formDs.current.toData();
         const customFields = [];
         Object.keys(data).forEach((key) => {
-          if (contrastMapToFormDsMap.get(key)) {
-            record.set(contrastMapToFormDsMap.get(key), data[key]);
-          }
           if (formDs.getState(key)) {
             customFields.push({
               ...formDs.getState(key),
