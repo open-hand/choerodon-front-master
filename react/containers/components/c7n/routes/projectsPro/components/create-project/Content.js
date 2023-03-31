@@ -98,7 +98,6 @@ const CreateProject = observer(() => {
       pageAction: isModify ? 'edit' : 'create',
     });
     remove(res, (item) => item.fieldCode === 'type');
-    const recordData = record.toData();
     res.forEach((item) => {
       if (item.builtInFlag && contrastMapToFormDsMap.get(item.fieldCode)) {
         item.fieldCode = contrastMapToFormDsMap.get(item.fieldCode);
