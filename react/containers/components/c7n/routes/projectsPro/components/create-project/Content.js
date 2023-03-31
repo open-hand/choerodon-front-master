@@ -100,7 +100,7 @@ const CreateProject = observer(() => {
     remove(res, (item) => item.fieldCode === 'type');
     const recordData = record.toData();
     res.forEach((item) => {
-      if (contrastMapToFormDsMap.get(item.fieldCode)) {
+      if (item.builtInFlag && contrastMapToFormDsMap.get(item.fieldCode)) {
         item.fieldCode = contrastMapToFormDsMap.get(item.fieldCode);
       }
 
@@ -110,8 +110,13 @@ const CreateProject = observer(() => {
 
       if (!formDs?.getField(fieldCode)) {
         const dsProps = getCustomFieldDsProps(item);
+        const customValuesObj = recordData.customFieldValue;
         if (dsProps.options && defaultValue) {
           dsProps.options.setState('selectids', Array.isArray(defaultValue) ? [...defaultValue] : [defaultValue]);
+        }
+        if (dsProps.options && customValuesObj) {
+          const existValue = customValuesObj[fieldCode];
+          existValue && dsProps.options.setState('selectids', Array.isArray(existValue) ? [...existValue] : [existValue]);
         }
           formDs?.addField(fieldCode, {
             label: fieldName,
@@ -125,15 +130,13 @@ const CreateProject = observer(() => {
             fieldId,
             fieldCode,
           });
+          // 初始化表单值
           if (defaultValue) {
             record.set(fieldCode, defaultValue);
           }
           if (isModify) {
-            const customValuesObj = recordData.customFieldValue;
-            if (customValuesObj) {
-              Object.keys(customValuesObj).forEach((key) => {
-                record.set(key, customValuesObj[key]);
-              });
+            if (customValuesObj && customValuesObj[fieldCode]) {
+              record.set(fieldCode, customValuesObj[fieldCode]);
             }
           }
       }
