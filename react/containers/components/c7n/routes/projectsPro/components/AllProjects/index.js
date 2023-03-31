@@ -315,15 +315,15 @@ export default observer(() => {
             queryObj.projectCustomFieldSearchVO[normalKey] = [
               {
                 fieldId,
-                startDate: value[0],
-                endDate: value[1],
+                value,
               },
             ];
           } else if (dateKey) {
             queryObj.projectCustomFieldSearchVO[dateKey] = [
               {
                 fieldId,
-                value,
+                startDate: value[0],
+                endDate: value[1],
               },
             ];
           } else {

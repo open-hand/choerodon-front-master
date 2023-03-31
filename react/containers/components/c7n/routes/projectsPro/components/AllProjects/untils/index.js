@@ -68,7 +68,10 @@ function transformToSearchFieldsConfig(systemConfig, customFields) {
       initial: false,
       dsProps: {
         name: item.fieldCode,
-        options: getCustomFieldDsOptions(item),
+        onOption: ({ record }) => ({
+          disabled: !record?.get('enableFlag'),
+        }),
+        options: getCustomFieldDsOptions(item, false),
         type: getCustomFieldDsType(item),
         textField: 'value', // 针对下拉
         valueField: 'id',

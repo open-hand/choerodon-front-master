@@ -97,27 +97,35 @@ const CreateProject = observer(() => {
       pageAction: isModify ? 'edit' : 'create',
     });
     res.forEach((item) => {
-      if (!formDs?.getField(item.fieldCode)) {
-        if (contrastMapToQueryDsMap.get(item.fieldCode)) {
-          formDs?.addField(item.fieldCode, {
-            label: item.fieldName,
+      const {
+        fieldCode, fieldType, fieldId, fieldName, requireFlag, defaultValue,
+      } = item;
+      if (!formDs?.getField(fieldCode)) {
+        if (contrastMapToQueryDsMap.get(fieldCode)) {
+          formDs?.addField(fieldCode, {
+            label: fieldName,
             required: item.requireFlag,
-            ...getSystemFieldDsProps(item.fieldCode),
+            ...getSystemFieldDsProps(fieldCode),
           });
         } else {
-          formDs?.addField(item.fieldCode, {
-            label: item.fieldName,
-            required: item.requireFlag,
-            ...getCustomFieldDsProps(item),
+          const dsProps = getCustomFieldDsProps(item);
+          if (dsProps.options && defaultValue) {
+            dsProps.options.setState('selectids', Array.isArray(defaultValue) ? [...defaultValue] : [defaultValue]);
+          }
+          formDs?.addField(fieldCode, {
+            label: fieldName,
+            required: requireFlag,
+            ...dsProps,
           });
-          formDs.setState(item.fieldCode, {
-            fieldType: item.fieldType,
-            fieldId: item.fieldId,
-            fieldCode: item.fieldCode,
-          }); // 给自定义字段一个标记，用于提交数据处理
+          // 给自定义字段一个标记，用于提交数据处理
+          formDs.setState(fieldCode, {
+            fieldType,
+            fieldId,
+            fieldCode,
+          });
         }
-        if (item.defaultValue) {
-          formDs.current.set(item.fieldCode, item.defaultValue);
+        if (defaultValue) {
+          formDs.current.set(fieldCode, defaultValue);
         }
       }
     });
@@ -125,11 +133,11 @@ const CreateProject = observer(() => {
   };
 
   const getFormContent = useCallback(
-    () => {
+    (ds) => {
       if (haitianMasterLoading) {
         return [];
       }
-      return handleGetFormContent(fieldsConfig, func, currentRoleLabels);
+      return handleGetFormContent(fieldsConfig, func, currentRoleLabels, formDs);
     },
     [fieldsConfig, haitianMasterLoading, func, currentRoleLabels],
   );
@@ -505,7 +513,7 @@ const CreateProject = observer(() => {
         className={`${prefixCls}-form`}
         labelLayout="float"
       >
-        {[...getFormContent()]}
+        {[...getFormContent(formDs)]}
       </Form>
       {/* <Form
         columns={100}

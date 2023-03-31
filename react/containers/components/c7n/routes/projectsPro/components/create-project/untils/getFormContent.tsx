@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  TextField, TextArea, DateTimePicker, Select, TreeSelect, NumberField, TimePicker, DatePicker, SelectBox,
+  TextField, TextArea, DateTimePicker, Select, TreeSelect, NumberField, TimePicker, DatePicker, SelectBox, DataSet,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { selectTypeArr, userSelectArr } from './getCustomFieldDsProps';
@@ -52,8 +52,8 @@ const specialFormContentMap: any = new Map([ // 系统字段原本的逻辑
   ],
 ]);
 
-const getEleProps = (fieldConfig: any, preFieldConfig: any, index: number) => {
-  const { fieldType } = fieldConfig;
+const getEleProps = (fieldConfig: any, preFieldConfig: any, index: number, formDs :DataSet) => {
+  const { fieldType, fieldCode } = fieldConfig;
   let obj: any = {};
 
   if (['text'].includes(fieldType)) {
@@ -71,8 +71,16 @@ const getEleProps = (fieldConfig: any, preFieldConfig: any, index: number) => {
     };
   }
 
-  if (selectTypeArr.includes(fieldType) && !['radio', 'checkbox'].includes(fieldType)) {
-    obj.searchable = true;
+  if (selectTypeArr.includes(fieldType)) {
+    if (!['radio', 'checkbox'].includes(fieldType)) {
+      obj.searchable = true;
+    }
+    const option = formDs?.getField(fieldCode)?.options;
+    if (option) {
+      obj.onChange = (v:any) => {
+        option.setState('selectids', Array.isArray(v) ? [...v] : [v]);
+      };
+    }
   }
 
   if (userSelectArr.includes(fieldType)) {
@@ -86,7 +94,7 @@ const getEleProps = (fieldConfig: any, preFieldConfig: any, index: number) => {
   return obj;
 };
 
-const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any) => {
+const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, formDs:DataSet) => {
   if (func && !specialFormContentMap.get('totalDay')) { // 海天加的字段 后面升级后端需要返回
     specialFormContentMap.set('totalDay', func.default(!currentRoleLabels?.includes('TENANT_ADMIN')));
   }
@@ -96,13 +104,18 @@ const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any) =>
     if ([...specialFormContentMap.keys()].includes(item.fieldCode)) {
       const SpecialEle = specialFormContentMap.get(item.fieldCode)!;
       arr.push(
-        React.cloneElement(SpecialEle, { ...getEleProps(item, fieldsConfig[index - 1], index) }),
+        React.cloneElement(SpecialEle, { ...getEleProps(item, fieldsConfig[index - 1], index, formDs) }),
       );
       return;
     }
 
     const Ele = formContentMap.get(item.fieldType)!;
-    arr.push(<Ele name={item.fieldCode} {...getEleProps(item, fieldsConfig[index - 1], index)} />);
+    arr.push(
+      <Ele
+        name={item.fieldCode}
+        {...getEleProps(item, fieldsConfig[index - 1], index, formDs)}
+      />,
+    );
   });
 
   return arr;

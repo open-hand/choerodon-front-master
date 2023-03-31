@@ -51,7 +51,7 @@ export const getCustomFieldDsType = (fieldConfig:any) => fieldTypeMap.get(fieldC
 
 const getCustomFieldDsMultiple = (fieldConfig:any) => multipleSelectArr.includes(fieldConfig.fieldType);
 
-const getCustomFieldDsOptions = (fieldConfig:any) => {
+const getCustomFieldDsOptions = (fieldConfig:any, onlyEnabled = true) => {
   const { fieldType, fieldId } = fieldConfig;
   if (userSelectArr.includes(fieldType)) {
     return new DataSet({
@@ -74,21 +74,19 @@ const getCustomFieldDsOptions = (fieldConfig:any) => {
       autoQuery: true,
       autoCreate: true,
       transport: {
-        // 创建、修改不展示禁用选项
-        read: ({ dataSet, params, data }) =>
-          // TODO 这里咋传值给data[]
-          ({
-            url: cbaseApiConfig.getCustomFieldsOptions(getOrganizationId(), fieldId, {
-              searchValue: data.searchValue,
-              onlyEnabled: true,
-            }).url,
-            method: 'post',
-            data: [],
-            transformResponse: (res) => {
-              const newData = JSONbig.parse(res);
-              return newData;
-            },
-          })
+        // 创建、修改不展示禁用选项, 筛选的时候要展示禁用选项
+        read: ({ dataSet, params, data }) => ({
+          url: cbaseApiConfig.getCustomFieldsOptions(getOrganizationId(), fieldId, {
+            searchValue: data.searchValue,
+            onlyEnabled,
+          }).url,
+          method: 'post',
+          data: dataSet?.getState('selectids') || [],
+          transformResponse: (res) => {
+            const newData = JSONbig.parse(res);
+            return newData;
+          },
+        })
         ,
       },
     });
