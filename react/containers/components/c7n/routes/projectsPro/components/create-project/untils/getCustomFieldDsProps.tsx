@@ -61,11 +61,11 @@ export const getCustomFieldDsType = (fieldConfig:any) => fieldTypeMap.get(fieldC
 
 const getCustomFieldDsMultiple = (fieldConfig:any) => multipleSelectArr.includes(fieldConfig.fieldType);
 
-const getCustomFieldDsOptions = (fieldConfig:any, onlyEnabled = true) => {
+const getCustomFieldDsOptions = (fieldConfig:any, onlyEnabled = true, autoQuery = true) => {
   const { fieldType, fieldId } = fieldConfig;
   if (userSelectArr.includes(fieldType)) {
     return new DataSet({
-      autoQuery: true,
+      autoQuery,
       autoCreate: true,
       transport: {
         read: ({ dataSet, params, data }) => ({
@@ -82,7 +82,7 @@ const getCustomFieldDsOptions = (fieldConfig:any, onlyEnabled = true) => {
   }
   if (selectTypeArr.includes(fieldType)) {
     return new DataSet({
-      autoQuery: true,
+      autoQuery,
       autoCreate: true,
       transport: {
         // 创建、修改不展示禁用选项, 筛选的时候要展示禁用选项
@@ -109,10 +109,10 @@ const getCustomFieldDsTextField = (fieldConfig:any) => (userSelectArr.includes(f
 
 const getCustomFieldDsValueField = (fieldConfig:any) => (userSelectArr.includes(fieldConfig.fieldType) ? 'id' : 'id');
 
-const getCustomFieldDsProps = (fieldConfig:any) => ({
+const getCustomFieldDsProps = (fieldConfig:any, onlyEnabled = true, autoQuery = true) => ({
   type: getCustomFieldDsType(fieldConfig),
   multiple: getCustomFieldDsMultiple(fieldConfig),
-  options: getCustomFieldDsOptions(fieldConfig),
+  options: getCustomFieldDsOptions(fieldConfig, onlyEnabled, autoQuery),
   textField: getCustomFieldDsTextField(fieldConfig),
   valueField: getCustomFieldDsValueField(fieldConfig),
 });
