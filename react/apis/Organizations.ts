@@ -553,11 +553,12 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
-  // 项目创建人和更新人
-  getprojUsers(id?:string) {
+  // 项目创建人和更新人  需要换成post
+  getprojUsers(id?:string, data = []) {
     return this.request({
       method: 'get',
       url: `/iam/choerodon/v1/organizations/${id || this.orgId}/users/search`,
+      data,
     });
   }
 

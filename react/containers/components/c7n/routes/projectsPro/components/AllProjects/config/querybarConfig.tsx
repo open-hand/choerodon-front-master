@@ -67,7 +67,6 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       dsProps: {
         name: 'workGroupIds',
         ...defaultDsConfig,
-        optionRenderer: ({ text }: { text: string }) => <span className="tree-select-text">{text}</span>,
         options: new DataSet({
           ...defaultOptionConfig,
           idField: 'id',
@@ -87,6 +86,8 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       },
       eleProps: {
         ...defaultSelectEleConfig,
+        optionRenderer: ({ text }: { text: string }) => <span className="tree-select-text">{text}</span>,
+        onOption: nodeCover,
         placeholder: '工作组',
       },
     },
@@ -96,8 +97,6 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       dsProps: {
         name: 'projectClassficationIds',
         ...defaultDsConfig,
-        onOption: nodeCover,
-        optionRenderer: ({ text }: { text: string }) => <span className="tree-select-text">{text}</span>,
         options: new DataSet({
           ...defaultOptionConfig,
           idField: 'id',
@@ -114,6 +113,8 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       },
       eleProps: {
         ...defaultSelectEleConfig,
+        onOption: nodeCover,
+        optionRenderer: ({ text }: { text: string }) => <span className="tree-select-text">{text}</span>,
         placeholder: '项目分类',
       },
     },
@@ -166,7 +167,6 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: false,
       dsProps: {
         name: 'createdBys',
-        type: 'object',
         textField: 'realName',
         valueField: 'id',
         options: new DataSet({
@@ -174,7 +174,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
           transport: {
             read({ dataSet, record, params: { page } }) {
               return {
-                ...organizationsApiConfig.getprojUsers(orgId),
+                ...organizationsApiConfig.getprojUsers(orgId, dataSet?.getState('selectids') || []),
               };
             },
           },
@@ -206,7 +206,6 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
       initial: false,
       dsProps: {
         name: 'lastUpdatedBys',
-        type: 'object',
         textField: 'realName',
         valueField: 'id',
         options: new DataSet({
@@ -214,7 +213,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
           transport: {
             read({ dataSet, record, params: { page } }) {
               return {
-                ...organizationsApiConfig.getprojUsers(orgId),
+                ...organizationsApiConfig.getprojUsers(orgId, dataSet?.getState('selectids') || []),
               };
             },
           },

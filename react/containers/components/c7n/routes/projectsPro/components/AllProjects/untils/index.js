@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { getCustomFieldDsOptions, getCustomFieldDsType } from '@/containers/components/c7n/routes/projectsPro/components/create-project/untils/getCustomFieldDsProps';
 import { defaultSelectEleConfig, userOptionRender } from '../config/querybarConfig';
 import { selectTypeArr, timeTypeArr, userSelectArr } from '../../create-project/untils/getCustomFieldDsProps';
@@ -68,9 +69,6 @@ function transformToSearchFieldsConfig(systemConfig, customFields) {
       initial: false,
       dsProps: {
         name: item.fieldCode,
-        onOption: ({ record }) => ({
-          disabled: !record?.get('enableFlag'),
-        }),
         options: getCustomFieldDsOptions(item, false),
         type: getCustomFieldDsType(item),
         textField: 'value', // 针对下拉
@@ -80,6 +78,9 @@ function transformToSearchFieldsConfig(systemConfig, customFields) {
       eleProps: {
         placeholder: item.fieldName,
         ...defaultSelectEleConfig, // 筛选的select都可以多选
+        onOption: ({ record }) => ({
+          disabled: !record?.get('enableFlag'),
+        }),
         searchMatcher: 'searchValue',
         multiple: selectTypeArr.includes(item.fieldType),
         isFlat: timeTypeArr.includes(item.fieldType),
@@ -114,8 +115,27 @@ function transformToFilterFieldsConfig(data) {
   return newData;
 }
 
+const getSearchDateValue = (value, fieldType) => {
+  if (fieldType === 'time') {
+    return {
+      startDate: moment(value[0]).format('HH:mm:ss'),
+      endDate: moment(value[1]).format('HH:mm:ss'),
+    };
+  } if (fieldType === 'date') {
+    return {
+      startDate: moment(value[0]).format('YYYY-MM-DD'),
+      endDate: moment(value[1]).format('YYYY-MM-DD'),
+    };
+  }
+  return {
+    startDate: value[0],
+    endDate: value[1],
+  };
+};
+
 export {
   transformColumnDataToSubmit,
   transformToSearchFieldsConfig,
   transformToFilterFieldsConfig,
+  getSearchDateValue,
 };

@@ -32,7 +32,8 @@ import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
-import { getCustomFieldDsProps } from './untils/getCustomFieldDsProps';
+import { getCustomFieldDsProps, timeTypeArr } from './untils/getCustomFieldDsProps';
+import { getDisplayDateTypeValue, getsubmitDateTypeValue } from './untils';
 import handleGetFormContent, { contrastMapToFormDsMap } from './untils/getFormContent';
 import './index.less';
 
@@ -96,6 +97,7 @@ const CreateProject = observer(() => {
   const initFormDs = async () => {
     const res = await cbaseApi.getFields({
       pageAction: isModify ? 'edit' : 'create',
+      projectId: isModify ? propsProjectId : '',
     });
     remove(res, (item) => item.fieldCode === 'type');
     res.forEach((item) => {
@@ -104,7 +106,7 @@ const CreateProject = observer(() => {
       }
 
       const {
-        fieldCode, fieldType, fieldId, fieldName, requireFlag, defaultValue, value,
+        fieldCode, fieldType, fieldId, fieldName, requireFlag, defaultValue, value, valueStr,
       } = item;
 
       if (!formDs?.getField(fieldCode)) {
@@ -129,10 +131,14 @@ const CreateProject = observer(() => {
           });
           // 初始化表单值
           if (defaultValue && !isModify) {
-            record.set(fieldCode, defaultValue);
+            if (timeTypeArr.includes(fieldType)) {
+              record.set(fieldCode, getDisplayDateTypeValue(defaultValue, fieldType));
+            } else {
+              record.set(fieldCode, defaultValue);
+            }
           }
           if (value && isModify) {
-            record.set(fieldCode, value);
+            record.set(fieldCode, valueStr || value); // valueStr用于时间类型
           }
       }
     });
@@ -225,7 +231,15 @@ const CreateProject = observer(() => {
         const data = formDs.current.toData();
         const customFields = [];
         Object.keys(data).forEach((key) => {
-          if (formDs.getState(key)) {
+          const customFieldState = formDs.getState(key);
+          if (customFieldState) {
+            if (timeTypeArr.includes(customFieldState.fieldType)) {
+              customFields.push({
+                ...formDs.getState(key),
+                value: getsubmitDateTypeValue(data[key], customFieldState.fieldType),
+              });
+              return;
+            }
             customFields.push({
               ...formDs.getState(key),
               value: data[key],

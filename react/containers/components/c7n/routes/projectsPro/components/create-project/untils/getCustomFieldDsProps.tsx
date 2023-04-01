@@ -1,5 +1,6 @@
 import { DataSet } from 'choerodon-ui/pro';
 import JSONbig from 'json-bigint';
+import moment from 'moment';
 import { getOrganizationId } from '@/utils/getId';
 import { cbaseApiConfig, organizationsApiConfig } from '@/apis';
 
@@ -47,6 +48,15 @@ export const userSelectArr = ['member', 'multiMember'];
 export const selectTypeArr = singleSelectArr.concat(multipleSelectArr);
 export const timeTypeArr = ['time', 'datetime', 'date'];
 
+export const getDateTypeValue = (value:any, fieldType:any) => {
+  if (fieldType === 'time') {
+    return moment(value).format('HH:mm:ss');
+  } if (fieldType === 'date') {
+    return moment(value).format('YYYY-MM-DD');
+  }
+  return value;
+};
+
 export const getCustomFieldDsType = (fieldConfig:any) => fieldTypeMap.get(fieldConfig.fieldType);
 
 const getCustomFieldDsMultiple = (fieldConfig:any) => multipleSelectArr.includes(fieldConfig.fieldType);
@@ -58,9 +68,10 @@ const getCustomFieldDsOptions = (fieldConfig:any, onlyEnabled = true) => {
       autoQuery: true,
       autoCreate: true,
       transport: {
-        read: ({ params, data }) => ({
+        read: ({ dataSet, params, data }) => ({
           url: organizationsApiConfig.getprojUsers().url,
           method: 'get',
+          data: dataSet?.getState('selectids') || [],
           transformResponse: (res) => {
             const newData = JSONbig.parse(res);
             return newData;

@@ -3,7 +3,7 @@ import {
   TextField, TextArea, DateTimePicker, Select, TreeSelect, NumberField, TimePicker, DatePicker, SelectBox, DataSet,
 } from 'choerodon-ui/pro';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
-import { selectTypeArr, userSelectArr } from './getCustomFieldDsProps';
+import { selectTypeArr, userSelectArr, multipleSelectArr } from './getCustomFieldDsProps';
 import { userOptionRender } from '../../AllProjects/config/querybarConfig';
 
 export const contrastMapToFormDsMap = new Map([ // 后端返回字段code 和 创建修改表单 ds 不一样
@@ -87,6 +87,13 @@ const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, fo
         option.setState('selectids', Array.isArray(v) ? [...v] : [v]);
       };
     }
+  }
+
+  if (multipleSelectArr.includes(fieldType)) {
+    obj = {
+      ...obj,
+      maxTagCount: 3,
+    };
   }
 
   if (userSelectArr.includes(fieldType)) {

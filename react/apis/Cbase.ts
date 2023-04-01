@@ -26,6 +26,9 @@ class CbaseApi extends Api<CbaseApi> {
     - 为空查系统字段和自定义字段
     - true查系统字段
     - false查自定义字段
+
+    projectId是可选字段
+更新时需要传过来，获取当前项目的自定义字段值
    */
 
   getFields(params:any) {

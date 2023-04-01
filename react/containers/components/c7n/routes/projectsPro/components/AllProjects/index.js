@@ -35,6 +35,7 @@ import {
   transformColumnDataToSubmit,
   transformToSearchFieldsConfig,
   transformToFilterFieldsConfig,
+  getSearchDateValue,
 } from './untils';
 import './index.less';
 
@@ -322,8 +323,7 @@ export default observer(() => {
             queryObj.projectCustomFieldSearchVO[dateKey] = [
               {
                 fieldId,
-                startDate: value[0],
-                endDate: value[1],
+                value: getSearchDateValue(value, fieldType),
               },
             ];
           } else {

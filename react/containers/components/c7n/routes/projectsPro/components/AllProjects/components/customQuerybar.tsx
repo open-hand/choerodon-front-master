@@ -244,6 +244,9 @@ const Index: React.FC<IProps> = (props) => {
           name={fieldName}
           style={{ width: width || 'auto' }}
           dataSet={queryBarDataSet}
+          onChange={(v:any) => {
+            queryBarDataSet.getField(fieldName)?.options?.setState('selectids', v);
+          }}
           {...eleProps}
         />
         {
