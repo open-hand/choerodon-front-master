@@ -41,6 +41,13 @@ const searchFieldsTypeMap = new Map([
   ['multiMember', 'FlatSelect'],
 ]);
 
+const getDisable = (fieldType, record) => {
+  if (userSelectArr.includes(fieldType)) {
+    return !record?.get('enabled');
+  }
+  return !record?.get('enableFlag');
+};
+
 function transformColumnDataToSubmit(columnsData) {
   const listLayoutColumnRelVOS = [];
   columnsData.forEach((item, index) => {
@@ -79,7 +86,7 @@ function transformToSearchFieldsConfig(systemConfig, customFields) {
         placeholder: item.fieldName,
         ...defaultSelectEleConfig, // 筛选的select都可以多选
         onOption: ({ record }) => ({
-          disabled: !record?.get('enableFlag'),
+          disabled: getDisable(item.fieldType, record),
         }),
         searchMatcher: 'searchValue',
         multiple: selectTypeArr.includes(item.fieldType),
