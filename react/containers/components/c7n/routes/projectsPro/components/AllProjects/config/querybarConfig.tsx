@@ -172,9 +172,14 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
         options: new DataSet({
           ...defaultOptionConfig,
           transport: {
-            read({ dataSet, record, params: { page } }) {
+            read({
+              dataSet, record, data, params: { page },
+            }) {
               return {
-                ...organizationsApiConfig.getprojUsers(orgId, dataSet?.getState('selectids') || []),
+                ...organizationsApiConfig.getOrgUsers({
+                  selectedUserIds: dataSet?.getState('selectids') || [],
+                  params: data.params,
+                }, orgId),
               };
             },
           },
@@ -211,9 +216,14 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
         options: new DataSet({
           ...defaultOptionConfig,
           transport: {
-            read({ dataSet, record, params: { page } }) {
+            read({
+              dataSet, record, data, params: { page },
+            }) {
               return {
-                ...organizationsApiConfig.getprojUsers(orgId, dataSet?.getState('selectids') || []),
+                ...organizationsApiConfig.getOrgUsers({
+                  selectedUserIds: dataSet?.getState('selectids') || [],
+                  params: data.params,
+                }, orgId),
               };
             },
           },

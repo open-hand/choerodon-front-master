@@ -69,9 +69,10 @@ const getCustomFieldDsOptions = (fieldConfig:any, onlyEnabled = true, autoQuery 
       autoCreate: true,
       transport: {
         read: ({ dataSet, params, data }) => ({
-          url: organizationsApiConfig.getprojUsers().url,
-          method: 'get',
-          data: dataSet?.getState('selectids') || [],
+          ...organizationsApiConfig.getOrgUsers({
+            selectedUserIds: dataSet?.getState('selectids') || [],
+            params: data.params,
+          }, getOrganizationId()),
           transformResponse: (res) => {
             const newData = JSONbig.parse(res);
             return newData;
