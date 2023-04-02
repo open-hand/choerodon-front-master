@@ -138,7 +138,7 @@ const CreateProject = observer(() => {
             }
           }
           if (value && isModify) {
-            record.set(fieldCode, valueStr || value); // valueStr用于时间类型
+            record.set(fieldCode, timeTypeArr.includes(fieldType) ? valueStr : value); // valueStr用于时间类型
           }
       }
     });
