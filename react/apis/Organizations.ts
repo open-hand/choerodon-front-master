@@ -566,7 +566,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   getOrgUsers(data:any, id?:string) {
     return this.request({
       method: 'post',
-      url: `/iam/choerodon/v1/organizations/${id || this.orgId}/users/search`,
+      url: `/cbase/choerodon/v1/organizations/${id || this.orgId}/users/search`,
       data,
     });
   }
