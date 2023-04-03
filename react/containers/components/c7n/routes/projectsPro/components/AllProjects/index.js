@@ -323,7 +323,7 @@ export default observer(() => {
             queryObj.projectCustomFieldSearchVO[dateKey] = [
               {
                 fieldId,
-                value: getSearchDateValue(value, fieldType),
+                ...getSearchDateValue(value, fieldType),
               },
             ];
           } else {
