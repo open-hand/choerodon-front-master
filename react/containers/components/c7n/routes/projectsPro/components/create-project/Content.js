@@ -140,6 +140,8 @@ const CreateProject = observer(() => {
           if (value && isModify) {
             record.set(fieldCode, timeTypeArr.includes(fieldType) ? valueStr : value); // valueStr用于时间类型
           }
+      } else {
+        formDs?.getField(fieldCode).set('required', requireFlag);
       }
     });
     setFieldsConfig(res);
