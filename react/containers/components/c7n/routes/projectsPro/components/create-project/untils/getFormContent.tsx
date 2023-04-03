@@ -114,6 +114,7 @@ const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, fo
 
 const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, formDs:DataSet, isModify:boolean) => {
   const healthState = formDs?.current?.get('healthState');
+  const healthStateDto = formDs?.current?.get('healthStateDTO');
   if (func && !specialFormContentMap.get('totalDay')) { // 海天加的字段 后面升级后端需要返回
     specialFormContentMap.set('totalDay', func.default(!currentRoleLabels?.includes('TENANT_ADMIN')));
   }
@@ -134,10 +135,10 @@ const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, fo
             <div
               className="ring"
               style={{
-                border: `2px solid ${healthState?.color}`,
+                border: `2px solid ${healthState?.color || healthStateDto?.color}`,
               }}
             />
-            <span className="text">{healthState?.name}</span>
+            <span className="text">{healthState?.name || healthStateDto?.name}</span>
           </div>
         </div>,
       );
