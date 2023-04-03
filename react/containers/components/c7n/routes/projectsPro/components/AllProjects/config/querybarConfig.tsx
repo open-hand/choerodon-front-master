@@ -6,6 +6,13 @@ import { organizationsApiConfig, iamApiConfig } from '@/apis';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
 import { ISearchFields } from '../components/customQuerybar';
 
+export const getSelectids = (v:any) => {
+  if (!v) {
+    return [];
+  }
+  return Array.isArray(v) ? [...v] : [v];
+};
+
 export const userOptionRender = ({ record }: { record: Record }) => (
   <UserInfo
     className="c7ncd-waterfall-deliverables-table-search-line-userinfo"
@@ -177,7 +184,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
             }) {
               return {
                 ...organizationsApiConfig.getOrgUsers({
-                  selectedUserIds: dataSet?.getState('selectids') || [],
+                  selectedUserIds: getSelectids(dataSet?.getState('selectids')),
                   params: data.params,
                 }, orgId),
               };
@@ -221,7 +228,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
             }) {
               return {
                 ...organizationsApiConfig.getOrgUsers({
-                  selectedUserIds: dataSet?.getState('selectids') || [],
+                  selectedUserIds: getSelectids(dataSet?.getState('selectids')),
                   params: data.params,
                 }, orgId),
               };

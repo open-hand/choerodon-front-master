@@ -3,6 +3,7 @@ import JSONbig from 'json-bigint';
 import moment from 'moment';
 import { getOrganizationId } from '@/utils/getId';
 import { cbaseApiConfig, organizationsApiConfig } from '@/apis';
+import { getSelectids } from '../../AllProjects/config/querybarConfig';
 
 export const fieldTypeMap = new Map([
   // 文本框（多行）
@@ -70,7 +71,7 @@ const getCustomFieldDsOptions = (fieldConfig:any, onlyEnabled = true, autoQuery 
       transport: {
         read: ({ dataSet, params, data }) => ({
           ...organizationsApiConfig.getOrgUsers({
-            selectedUserIds: dataSet?.getState('selectids') || [],
+            selectedUserIds: getSelectids(dataSet?.getState('selectids')),
             params: data.params,
           }, getOrganizationId()),
           transformResponse: (res) => {
@@ -93,7 +94,7 @@ const getCustomFieldDsOptions = (fieldConfig:any, onlyEnabled = true, autoQuery 
             onlyEnabled,
           }).url,
           method: 'post',
-          data: dataSet?.getState('selectids') || [],
+          selectedUserIds: getSelectids(dataSet?.getState('selectids')),
           transformResponse: (res) => {
             const newData = JSONbig.parse(res);
             return newData;
