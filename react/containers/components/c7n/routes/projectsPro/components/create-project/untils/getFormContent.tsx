@@ -56,6 +56,9 @@ const specialFormContentMap: any = new Map([ // 系统字段原本的逻辑
   ['createUserName',
     <TextField name="createUserName" disabled />,
   ],
+  ['healthSateId',
+    <TextField name="healthSateId" disabled />,
+  ],
 ]);
 
 const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, formDs :DataSet, isModify:boolean) => {
