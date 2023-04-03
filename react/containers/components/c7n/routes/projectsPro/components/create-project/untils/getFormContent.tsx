@@ -58,7 +58,7 @@ const specialFormContentMap: any = new Map([ // 系统字段原本的逻辑
   ],
 ]);
 
-const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, formDs :DataSet) => {
+const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, formDs :DataSet, isModify:boolean) => {
   const { fieldType, fieldCode } = fieldConfig;
   let obj: any = {};
 
@@ -75,6 +75,10 @@ const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, fo
     obj.style = {
       width: 340,
     };
+  }
+
+  if (isModify && fieldCode === 'code') {
+    obj.disabled = true;
   }
 
   if (selectTypeArr.includes(fieldType)) {
@@ -107,7 +111,7 @@ const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, fo
   return obj;
 };
 
-const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, formDs:DataSet) => {
+const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, formDs:DataSet, isModify:boolean) => {
   if (func && !specialFormContentMap.get('totalDay')) { // 海天加的字段 后面升级后端需要返回
     specialFormContentMap.set('totalDay', func.default(!currentRoleLabels?.includes('TENANT_ADMIN')));
   }
@@ -124,8 +128,13 @@ const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, fo
       const SpecialEle = specialFormContentMap.get(item.fieldCode)!;
       arr.push(
         React.cloneElement(SpecialEle, {
-          ...getEleProps(item, calculateIndex,
-            index, formDs),
+          ...getEleProps(
+            item,
+            calculateIndex,
+            index,
+            formDs,
+            isModify,
+          ),
         }),
       );
       return;
@@ -135,7 +144,7 @@ const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, fo
     arr.push(
       <Ele
         name={item.fieldCode}
-        {...getEleProps(item, calculateIndex, index, formDs)}
+        {...getEleProps(item, calculateIndex, index, formDs, isModify)}
       />,
     );
   });

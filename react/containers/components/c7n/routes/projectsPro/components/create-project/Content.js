@@ -150,9 +150,9 @@ const CreateProject = observer(() => {
       if (haitianMasterLoading) {
         return [];
       }
-      return handleGetFormContent(fieldsConfig, func, currentRoleLabels, formDs);
+      return handleGetFormContent(fieldsConfig, func, currentRoleLabels, formDs, isModify);
     },
-    [fieldsConfig, haitianMasterLoading, func, currentRoleLabels],
+    [fieldsConfig, haitianMasterLoading, func, currentRoleLabels, isModify],
   );
 
   useEffect(() => {
