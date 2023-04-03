@@ -57,9 +57,6 @@ const specialFormContentMap: any = new Map([ // 系统字段原本的逻辑
   ['createUserName',
     <TextField name="createUserName" disabled />,
   ],
-  ['healthSateId',
-    <TextField name="healthSateId" disabled />,
-  ],
 ]);
 
 const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, formDs :DataSet, isModify:boolean) => {
@@ -116,17 +113,35 @@ const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, fo
 };
 
 const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, formDs:DataSet, isModify:boolean) => {
+  const healthState = formDs?.current?.get('healthState');
   if (func && !specialFormContentMap.get('totalDay')) { // 海天加的字段 后面升级后端需要返回
     specialFormContentMap.set('totalDay', func.default(!currentRoleLabels?.includes('TENANT_ADMIN')));
   }
-
   const arr: JSX.Element[] = [];
-  let calculateIndex:number;
+  let calculateIndex = 0;
   fieldsConfig.forEach((item: any, index: number) => {
     if (fieldsConfig[index - 1]?.fieldType === 'text') {
       calculateIndex = 1;
     } else {
       calculateIndex += 1;
+    }
+    if (item.fieldCode === 'healthStatus') {
+      arr.push(
+        // @ts-ignore
+        <div className="c7ncd-operation-form-item-healthStatus" colSpan={50}>
+          <div className="c7ncd-operation-form-item-healthStatus-label">健康状态:</div>
+          <div className="c7ncd-operation-form-item-healthStatus-content">
+            <div
+              className="ring"
+              style={{
+                border: `2px solid ${healthState?.color}`,
+              }}
+            />
+            <span className="text">{healthState?.name}</span>
+          </div>
+        </div>,
+      );
+      return;
     }
     if ([...specialFormContentMap.keys()].includes(item.fieldCode)) {
       const SpecialEle = specialFormContentMap.get(item.fieldCode)!;

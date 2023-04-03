@@ -137,7 +137,7 @@ export default ({
         name: 'customFields', label: '自定义字段',
       },
       {
-        name: 'healthSateId',
+        name: 'healthStatus',
         label: '健康状态',
       },
       {

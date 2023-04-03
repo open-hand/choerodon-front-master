@@ -295,7 +295,7 @@ export default observer(() => {
       ]);
       const dateContrastMap = new Map([
         ['date', 'date'],
-        ['datetime', 'dateHms'],
+        ['datetime', 'date'],
         ['time', 'dateHms'],
       ]);
 

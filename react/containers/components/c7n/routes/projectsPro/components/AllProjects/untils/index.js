@@ -120,8 +120,8 @@ const getSearchDateValue = (value, fieldType) => {
     };
   } if (fieldType === 'date') {
     return {
-      startDate: moment(value[0]).format('YYYY-MM-DD'),
-      endDate: moment(value[1]).format('YYYY-MM-DD'),
+      startDate: `${moment(value[0]).format('YYYY-MM-DD')} 00:00:00`,
+      endDate: `${moment(value[1]).format('YYYY-MM-DD')} 00:00:00`,
     };
   }
   return {
