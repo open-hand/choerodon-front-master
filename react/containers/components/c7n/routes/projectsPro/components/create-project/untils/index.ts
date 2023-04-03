@@ -20,6 +20,9 @@ export const getsubmitDateTypeValue = (value:any, fieldType:any) => {
     }
     return value;
   } if (fieldType === 'date') {
+    if (!value) {
+      return null;
+    }
     return moment(value).format('YYYY-MM-DD HH:mm:ss');
   }
   return value;
