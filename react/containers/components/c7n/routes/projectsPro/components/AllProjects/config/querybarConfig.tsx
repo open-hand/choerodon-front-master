@@ -10,7 +10,7 @@ export const getSelectids = (v:any) => {
   if (!v) {
     return [];
   }
-  return Array.isArray(v) ? [...v] : [v];
+  return typeof v === 'string' ? [v] : [...v];
 };
 
 export const userOptionRender = ({ record }: { record: Record }) => (

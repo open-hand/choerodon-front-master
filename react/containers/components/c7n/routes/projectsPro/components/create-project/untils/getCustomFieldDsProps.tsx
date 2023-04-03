@@ -70,10 +70,13 @@ const getCustomFieldDsOptions = (fieldConfig:any, onlyEnabled = true, autoQuery 
       autoCreate: true,
       transport: {
         read: ({ dataSet, params, data }) => ({
-          ...organizationsApiConfig.getOrgUsers({
-            selectedUserIds: getSelectids(dataSet?.getState('selectids')),
-            params: data.params,
-          }, getOrganizationId()),
+          ...organizationsApiConfig.getOrgUsers(
+            {
+              selectedUserIds: getSelectids(dataSet?.getState('selectids')),
+              params: data.params,
+            },
+            getOrganizationId(),
+          ),
           transformResponse: (res) => {
             const newData = JSONbig.parse(res);
             return newData;
@@ -89,12 +92,15 @@ const getCustomFieldDsOptions = (fieldConfig:any, onlyEnabled = true, autoQuery 
       transport: {
         // 创建、修改不展示禁用选项, 筛选的时候要展示禁用选项
         read: ({ dataSet, params, data }) => ({
-          url: cbaseApiConfig.getCustomFieldsOptions(getOrganizationId(), fieldId, {
-            searchValue: data.searchValue,
-            onlyEnabled,
-          }).url,
-          method: 'post',
-          selectedUserIds: getSelectids(dataSet?.getState('selectids')),
+          ...cbaseApiConfig.getCustomFieldsOptions(
+            getOrganizationId(),
+            fieldId,
+            {
+              searchValue: data.searchValue,
+              onlyEnabled,
+            },
+            getSelectids(dataSet?.getState('selectids')),
+          ),
           transformResponse: (res) => {
             const newData = JSONbig.parse(res);
             return newData;

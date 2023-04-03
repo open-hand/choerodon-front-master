@@ -5,12 +5,12 @@ class CbaseApi extends Api<CbaseApi> {
     return '/cbase/choerodon/v1';
   }
 
-  getCustomFieldsOptions(orgId:string, fieldId: string, params: any) {
+  getCustomFieldsOptions(orgId:string, fieldId: string, params: any, data:any) {
     return this.request({
       method: 'post',
       url: `${this.prefix}/organizations/${orgId}/project_field/${fieldId}/options`,
       params,
-      data: [],
+      data,
     });
   }
 
