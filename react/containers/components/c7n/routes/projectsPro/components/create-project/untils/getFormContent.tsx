@@ -10,6 +10,7 @@ export const contrastMapToFormDsMap = new Map([ // 后端返回字段code 和 �
   ['creator', 'createUserName'],
   ['classify', 'projectClassficationId'],
   ['workGroup', 'workGroupId'],
+  ['status', 'statusId'],
 ]);
 
 const renderTreeSelect = ({ text }: { text: string }) => (
