@@ -21,7 +21,7 @@ import {
 } from 'choerodon-ui/pro';
 import {
   includes, map, get,
-  remove,
+  remove, isNil,
 } from 'lodash';
 import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
@@ -130,14 +130,14 @@ const CreateProject = observer(() => {
             fieldCode,
           });
           // 初始化表单值
-          if (defaultValue && !isModify) {
+          if (!isNil(defaultValue) && !isModify) {
             if (timeTypeArr.includes(fieldType)) {
               record.set(fieldCode, getDisplayDateTypeValue(defaultValue, fieldType));
             } else {
               record.set(fieldCode, defaultValue);
             }
           }
-          if (value && isModify) {
+          if (!isNil(value) && isModify) {
             record.set(fieldCode, timeTypeArr.includes(fieldType) ? valueStr : value); // valueStr用于时间类型
           }
       } else {

@@ -357,7 +357,6 @@ export default observer(() => {
           queryObj[key] = value;
         }
       });
-      console.log(queryObj, 'queryObj');
       projectListDataSet.query(0, queryObj);
     },
     [projectListDataSet, customFields],
