@@ -390,7 +390,10 @@ export default observer(() => {
 
   const searchFieldsConfig = useMemo(
     () => transformToSearchFieldsConfig(
-      getSearchFieldsConfig(organizationId, HAS_BASE_BUSINESS),
+      getSearchFieldsConfig({
+        orgId: organizationId,
+        hasBusiness: HAS_BASE_BUSINESS,
+      }),
       customFields || [],
     ),
     [organizationId, customFields],

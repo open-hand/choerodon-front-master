@@ -118,7 +118,9 @@ const getCustomFieldDsTextField = (fieldConfig:any) => (userSelectArr.includes(f
 
 const getCustomFieldDsValueField = (fieldConfig:any) => (userSelectArr.includes(fieldConfig.fieldType) ? 'id' : 'id');
 
-const getCustomFieldDsProps = (fieldConfig:any, onlyEnabled = true, autoQuery = true) => ({
+const getCustomFieldDsProps = ({
+  fieldConfig, onlyEnabled = true, autoQuery = true,
+}:{fieldConfig:any, onlyEnabled:boolean, autoQuery :boolean}) => ({
   type: getCustomFieldDsType(fieldConfig),
   multiple: getCustomFieldDsMultiple(fieldConfig),
   options: getCustomFieldDsOptions(fieldConfig, onlyEnabled, autoQuery),

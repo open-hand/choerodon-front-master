@@ -110,7 +110,9 @@ const CreateProject = observer(() => {
       } = item;
 
       if (!formDs?.getField(fieldCode)) {
-        const dsProps = getCustomFieldDsProps(item);
+        const dsProps = getCustomFieldDsProps({
+          fieldConfig: item,
+        });
 
         if (numberTypeArr.includes(fieldType) && !decimalFlag) {
           dsProps.validator = numberValidator;

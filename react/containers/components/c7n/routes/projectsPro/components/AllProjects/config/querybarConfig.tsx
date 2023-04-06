@@ -44,7 +44,7 @@ export const defaultSelectEleConfig = {
   maxTagCount: 3,
 };
 
-export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean, excludeUnassigned = false) => {
+export const getSearchFieldsConfig = ({ orgId, hasBusiness, excludeUnassigned = false }: {orgId: string, hasBusiness: boolean, excludeUnassigned:boolean }) => {
   const searchFieldsConfig: ISearchFields[] = [
     {
       type: 'FlatSelect',
