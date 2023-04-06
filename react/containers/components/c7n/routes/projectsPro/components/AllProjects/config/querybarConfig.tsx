@@ -44,7 +44,7 @@ export const defaultSelectEleConfig = {
   maxTagCount: 3,
 };
 
-export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
+export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean, excludeUnassigned = false) => {
   const searchFieldsConfig: ISearchFields[] = [
     {
       type: 'FlatSelect',
@@ -81,7 +81,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
           transport: {
             read({ dataSet, record, params: { page } }) {
               return {
-                ...organizationsApiConfig.getprojWorkGroup(orgId),
+                ...organizationsApiConfig.getprojWorkGroup(orgId, excludeUnassigned),
                 transformResponse: (res: any) => {
                   console.log('yyyy');
                   return transformResponseTreeData(res, 'workGroupVOS');
@@ -111,7 +111,7 @@ export const getSearchFieldsConfig = (orgId: string, hasBusiness: boolean) => {
           transport: {
             read({ dataSet, record, params: { page } }) {
               return {
-                ...organizationsApiConfig.getprojClassification(orgId, true),
+                ...organizationsApiConfig.getprojClassification(orgId, !excludeUnassigned),
                 transformResponse: (res: any) => transformResponseTreeData(res, 'treeProjectClassfication'),
               };
             },

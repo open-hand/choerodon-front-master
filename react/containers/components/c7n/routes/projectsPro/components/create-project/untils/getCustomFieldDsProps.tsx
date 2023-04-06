@@ -48,6 +48,7 @@ export const multipleSelectArr = ['checkbox', 'multiple', 'multiMember'];
 export const userSelectArr = ['member', 'multiMember'];
 export const selectTypeArr = singleSelectArr.concat(multipleSelectArr);
 export const timeTypeArr = ['time', 'datetime', 'date'];
+export const numberTypeArr = ['number'];
 
 export const getDateTypeValue = (value:any, fieldType:any) => {
   if (fieldType === 'time') {

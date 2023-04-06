@@ -21,7 +21,7 @@ import {
 } from 'choerodon-ui/pro';
 import {
   includes, map, get,
-  remove, isNil,
+  remove,
 } from 'lodash';
 import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
@@ -32,8 +32,8 @@ import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
-import { getCustomFieldDsProps, timeTypeArr } from './untils/getCustomFieldDsProps';
-import { getDisplayDateTypeValue, getsubmitDateTypeValue } from './untils';
+import { getCustomFieldDsProps, timeTypeArr, numberTypeArr } from './untils/getCustomFieldDsProps';
+import { getDisplayDateTypeValue, getsubmitDateTypeValue, numberValidator } from './untils';
 import handleGetFormContent, { contrastMapToFormDsMap } from './untils/getFormContent';
 import './index.less';
 
@@ -106,17 +106,24 @@ const CreateProject = observer(() => {
       }
 
       const {
-        fieldCode, fieldType, fieldId, fieldName, requireFlag, defaultValue, value, valueStr,
+        fieldCode, fieldType, fieldId, fieldName, requireFlag, defaultValue, value, valueStr, decimalFlag,
       } = item;
 
       if (!formDs?.getField(fieldCode)) {
         const dsProps = getCustomFieldDsProps(item);
+
+        if (numberTypeArr.includes(fieldType) && !decimalFlag) {
+          dsProps.validator = numberValidator;
+        }
+
         if (dsProps.options && defaultValue && !isModify) {
           dsProps.options.setState('selectids', Array.isArray(defaultValue) ? [...defaultValue] : [defaultValue]);
         }
+
         if (dsProps.options && value && isModify) {
           dsProps.options.setState('selectids', Array.isArray(value) ? [...value] : [value]);
         }
+
           formDs?.addField(fieldCode, {
             label: fieldName,
             required: requireFlag,
@@ -130,18 +137,18 @@ const CreateProject = observer(() => {
             fieldCode,
           });
           // 初始化表单值
-          if (!isNil(defaultValue) && !isModify) {
+          if ((defaultValue || defaultValue === 0) && !isModify) {
             if (timeTypeArr.includes(fieldType)) {
               record.set(fieldCode, getDisplayDateTypeValue(defaultValue, fieldType));
             } else {
               record.set(fieldCode, defaultValue);
             }
           }
-          if (!isNil(value) && isModify) {
+          if ((value || value === 0) && isModify) {
             record.set(fieldCode, timeTypeArr.includes(fieldType) ? valueStr : value); // valueStr用于时间类型
           }
       } else {
-        defaultValue && formDs?.current?.set(fieldCode, defaultValue);
+        (defaultValue || defaultValue === 0) && formDs?.current?.set(fieldCode, defaultValue);
         formDs?.getField(fieldCode).set('required', requireFlag);
       }
     });

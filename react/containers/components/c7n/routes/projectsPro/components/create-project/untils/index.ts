@@ -27,3 +27,10 @@ export const getsubmitDateTypeValue = (value:any, fieldType:any) => {
   }
   return value;
 };
+
+export const numberValidator = (value: string) => {
+  if (String(value).indexOf('.') !== -1) {
+    return '此属性不支持小数输入';
+  }
+  return true;
+};

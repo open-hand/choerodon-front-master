@@ -98,6 +98,7 @@ const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, fo
     obj = {
       ...obj,
       maxTagCount: 3,
+      maxTagTextLength: 3,
     };
   }
 
