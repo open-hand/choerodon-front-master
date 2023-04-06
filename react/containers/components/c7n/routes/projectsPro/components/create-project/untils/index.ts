@@ -33,17 +33,31 @@ export const getsubmitDateTypeValue = (value:any, fieldType:any) => {
   return value;
 };
 
-export const getNumberTypeDynamicProps = (fieldType:any, decimalFlag:boolean) => ({
-  max: () => {
+export const getNumberTypeDynamicProps = (fieldType:any, decimalFlag:boolean) => {
+  const max = () => {
     if (fieldType === 'number') {
       return MAX_NUMBER_VALUE;
     }
     return undefined;
-  },
-  step: () => {
-    if (fieldType === 'number') {
-      return decimalFlag ? MAX_NUMBER_STEP : 1;
-    }
-    return undefined;
-  },
-});
+  };
+  if (decimalFlag) {
+    return {
+      max,
+      step: () => {
+        if (fieldType === 'number') {
+          return MAX_NUMBER_STEP;
+        }
+        return undefined;
+      },
+    };
+  }
+  return {
+    max,
+    step: () => {
+      if (fieldType === 'number') {
+        return 1;
+      }
+      return undefined;
+    },
+  };
+};
