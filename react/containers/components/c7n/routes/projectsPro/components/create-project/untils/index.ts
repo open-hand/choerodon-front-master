@@ -1,6 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import moment from 'moment';
 
+export const MAX_NUMBER_VALUE = 99999999;
+// 两位小数
+export const MAX_FLOAT_BITE = 2;
+export const MAX_NUMBER_STEP = Math.pow(10, -MAX_FLOAT_BITE);
+
 export const getDisplayDateTypeValue = (value:any, fieldType:any) => {
   if (fieldType === 'time') {
     return moment(value).format('HH:mm:ss');
@@ -28,9 +33,17 @@ export const getsubmitDateTypeValue = (value:any, fieldType:any) => {
   return value;
 };
 
-export const numberValidator = (value: string) => {
-  if (String(value).indexOf('.') !== -1) {
-    return '此属性不支持小数输入';
-  }
-  return true;
-};
+export const getNumberTypeDynamicProps = (fieldType:any, decimalFlag:boolean) => ({
+  max: () => {
+    if (fieldType === 'number') {
+      return MAX_NUMBER_VALUE;
+    }
+    return undefined;
+  },
+  step: () => {
+    if (fieldType === 'number') {
+      return decimalFlag ? MAX_NUMBER_STEP : 1;
+    }
+    return undefined;
+  },
+});

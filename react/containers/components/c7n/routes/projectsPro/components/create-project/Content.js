@@ -33,7 +33,7 @@ import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
 import { getCustomFieldDsProps, timeTypeArr, numberTypeArr } from './untils/getCustomFieldDsProps';
-import { getDisplayDateTypeValue, getsubmitDateTypeValue, numberValidator } from './untils';
+import { getDisplayDateTypeValue, getsubmitDateTypeValue, getNumberTypeDynamicProps } from './untils';
 import handleGetFormContent, { contrastMapToFormDsMap } from './untils/getFormContent';
 import './index.less';
 
@@ -114,8 +114,8 @@ const CreateProject = observer(() => {
           fieldConfig: item,
         });
 
-        if (numberTypeArr.includes(fieldType) && !decimalFlag) {
-          dsProps.validator = numberValidator;
+        if (numberTypeArr.includes(fieldType)) {
+          dsProps.dynamicProps = getNumberTypeDynamicProps(fieldType, decimalFlag);
         }
 
         if (dsProps.options && defaultValue && !isModify) {
