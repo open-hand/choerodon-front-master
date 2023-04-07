@@ -48,7 +48,7 @@ const Index:React.FC<IProps> = (props) => {
   };
 
   function getPostData() {
-    const obj:any = {};
+    let obj:any = {};
 
     const map = new Map([
       ['inviter_info', 'inviterInfo'],
@@ -67,6 +67,14 @@ const Index:React.FC<IProps> = (props) => {
         obj[value] = paramsObj[key];
       }
     });
+    if (obj.keys().every((item:string) => !['source', 'zk', 'source_type', 'channel', 'refid'].includes(item))) {
+      obj = {
+        ...obj,
+        sourceType: 'default',
+        sourceChannel: 'default',
+        refId: document.referrer,
+      };
+    }
     return obj;
   }
 
