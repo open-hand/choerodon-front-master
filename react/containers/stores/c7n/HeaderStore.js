@@ -1,6 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import omit from 'object.omit';
 import sortBy from 'lodash/sortBy';
+import { isNil } from 'lodash';
 import findIndex from 'lodash/findIndex';
 import pick from 'lodash/pick';
 import queryString from 'query-string';
@@ -34,6 +35,17 @@ function saveRecent(collection = [], value, number) {
 
 @store('HeaderStore')
 class HeaderStore {
+  @observable unReadStatus = false;
+
+  @action setUnReadStatus(unReadStatus) {
+    this.unReadStatus = unReadStatus;
+  }
+
+  @computed
+  get getUnReadStatus() {
+    return this.unReadStatus;
+  }
+
   @observable roles = [];
 
   @observable announcementLists = new Map([]);
@@ -279,14 +291,19 @@ class HeaderStore {
       .catch(handleResponseError);
   }
 
-  axiosGetUserMsg(userId) {
+  axiosGetUserMsg(userId, readFlag) {
     const params = new URLSearchParams();
     params.append('user_id', userId);
     params.append('page', 0);
     params.append('size', this.userMsgcurrentSize);
-    params.append('sort', 'read_flag,asc');
-    params.append('sort', 'creationDate,desc');
     params.append('withContent', 1);
+    if (readFlag) {
+      params.append('read_flag', 0);
+      params.append('userMessageTypeCode', 'MSG');
+    } else {
+      params.append('sort', 'read_flag,asc');
+      params.append('sort', 'creationDate,desc');
+    }
     const request = {
       params,
     };

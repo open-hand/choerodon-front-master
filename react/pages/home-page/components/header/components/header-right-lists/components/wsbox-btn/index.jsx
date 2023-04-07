@@ -11,12 +11,15 @@ import {
   Badge, Button, Tabs, Avatar, Tooltip, notification,
 } from 'choerodon-ui';
 import {
-  Button as ButtonPro, Modal, Icon, Spin,
+  Button as ButtonPro, Modal, Icon, Spin, Switch,
 } from 'choerodon-ui/pro';
 import JSONBig from 'json-bigint';
 import { TimePopover } from '@zknow/components';
+import axios from '@/components/axios';
+import Action from '@/components/action';
 import WSHandler from '@/components/ws/WSHandler';
 import defaultAvatar from '@/assets/images/favicon.png';
+import styles from './styles.less';
 import './index.less';
 import headerStore from '@/containers/stores/c7n/HeaderStore';
 
@@ -36,6 +39,21 @@ const orgReg = /\${orgString}/;
 @onClickOutside
 @observer
 class RenderPopoverContentClass extends Component {
+  handleGetUnreadStatus = async () => {
+    const {
+      HeaderStore,
+    } = this.props;
+    const res = await axios({
+      method: 'get',
+      url: '/hmsg/choerodon/v1/messages/unread/setting',
+    });
+    HeaderStore.setUnReadStatus(res);
+  }
+
+  componentDidMount() {
+    this.handleGetUnreadStatus();
+  }
+
   handleClickOutside = () => {
     const { HeaderStore } = this.props;
     if (HeaderStore.inboxVisible) {
@@ -46,6 +64,19 @@ class RenderPopoverContentClass extends Component {
       }, 700);
     }
   };
+
+  handleChangeUnreadStatus = async (value) => {
+    const {
+      HeaderStore,
+      AppState,
+    } = this.props;
+    await axios({
+      method: 'post',
+      url: `/hmsg/choerodon/v1/messages/unread/setting?only_unread_flag=${value}`,
+    });
+    HeaderStore.setUnReadStatus(value);
+    HeaderStore.axiosGetUserMsg(AppState.getUserId, value);
+  }
 
   render() {
     const {
@@ -61,15 +92,35 @@ class RenderPopoverContentClass extends Component {
     });
     const operations = (
       <>
-        <Tooltip title="全部已读"><ButtonPro funcType="flat" icon="all_read" color="primary" onClick={readAllMsg} /></Tooltip>
+        <span className={styles.c7ncd_onlyUnread}>
+          仅显示未读
+        </span>
+        <Switch
+          checked={HeaderStore.getUnReadStatus}
+          onChange={this.handleChangeUnreadStatus}
+        />
+        <Action
+          className={styles.c7ncd_operationAction}
+          data={[{
+            text: '全部已读',
+            action: readAllMsg,
+          }, {
+            text: '接收设置',
+            action: handleSettingReceive,
+          }, {
+            text: '全部清除',
+            action: openCleanAllModal,
+          }]}
+        />
+        {/* <Tooltip title="全部已读"><ButtonPro funcType="flat" icon="all_read" color="primary" onClick={readAllMsg} /></Tooltip>
         <Tooltip title="接收设置"><ButtonPro funcType="flat" icon="settings" color="primary" onClick={handleSettingReceive} style={{ marginLeft: '.04rem' }} /></Tooltip>
-        {HeaderStore.getInboxActiveKey === '1' && (<Tooltip title="全部清除"><ButtonPro funcType="flat" icon="delete_sweep" color="primary" onClick={openCleanAllModal} style={{ marginLeft: '.04rem' }} /></Tooltip>)}
+        {HeaderStore.getInboxActiveKey === '1' && (<Tooltip title="全部清除"><ButtonPro funcType="flat" icon="delete_sweep" color="primary" onClick={openCleanAllModal} style={{ marginLeft: '.04rem' }} /></Tooltip>)} */}
       </>
     );
 
     const loadMore = () => {
       headerStore.setUserMsgcurrentSize(headerStore.userMsgcurrentSize + 200);
-      headerStore.axiosGetUserMsg(AppState.getUserId);
+      headerStore.axiosGetUserMsg(AppState.getUserId, headerStore.getUnReadStatus);
     };
 
     return (
@@ -89,7 +140,12 @@ class RenderPopoverContentClass extends Component {
                   }}
                 />
               </div>
-              <Tabs defaultActiveKey="1" activeKey={HeaderStore.getInboxActiveKey} onChange={(flag) => HeaderStore.setInboxActiveKey(flag)} tabBarExtraContent={operations}>
+              <Tabs
+                defaultActiveKey="1"
+                activeKey={HeaderStore.getInboxActiveKey}
+                onChange={(flag) => HeaderStore.setInboxActiveKey(flag)}
+                tabBarExtraContent={operations}
+              >
                 <TabPane
                   tab={<span><Badge count={getUnreadMsg.filter((v) => !v.read).length} style={{ transform: 'scale(.75)' }}>消息</Badge></span>}
                   key="1"
@@ -270,7 +326,7 @@ export default class Inbox extends Component {
 
   getUnreadMsg() {
     const { AppState, HeaderStore } = this.props;
-    HeaderStore.axiosGetUserMsg(AppState.getUserId);
+    HeaderStore.axiosGetUserMsg(AppState.getUserId, HeaderStore.getUnReadStatus);
     HeaderStore.axiosGetStick();
   }
 
