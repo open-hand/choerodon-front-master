@@ -35,6 +35,17 @@ function saveRecent(collection = [], value, number) {
 
 @store('HeaderStore')
 class HeaderStore {
+  @observable inboxUrl = '';
+
+  @action setInboxUrl(inboxUrl) {
+    this.inboxUrl = inboxUrl;
+  }
+
+  @computed
+  get getInboxUrl() {
+    return this.inboxUrl;
+  }
+
   @observable unReadStatus = false;
 
   @action setUnReadStatus(unReadStatus) {
@@ -298,7 +309,7 @@ class HeaderStore {
     params.append('size', this.userMsgcurrentSize);
     params.append('withContent', 1);
     if (readFlag) {
-      params.append('read_flag', 0);
+      params.append('readFlag', 0);
       params.append('userMessageTypeCode', 'MSG');
     } else {
       params.append('sort', 'read_flag,asc');

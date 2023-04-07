@@ -10,6 +10,8 @@ import ScrollContext from 'react-infinite-scroll-component';
 import {
   Badge, Button, Tabs, Avatar, Tooltip, notification,
 } from 'choerodon-ui';
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 import {
   Button as ButtonPro, Modal, Icon, Spin, Switch,
 } from 'choerodon-ui/pro';
@@ -22,6 +24,8 @@ import defaultAvatar from '@/assets/images/favicon.png';
 import styles from './styles.less';
 import './index.less';
 import headerStore from '@/containers/stores/c7n/HeaderStore';
+
+let globalClick;
 
 const { TabPane } = Tabs;
 const PREFIX_CLS = 'c7n';
@@ -54,7 +58,12 @@ class RenderPopoverContentClass extends Component {
     this.handleGetUnreadStatus();
   }
 
-  handleClickOutside = () => {
+  handleClickOutside = (e) => {
+    if (document.querySelector('.ReactModal__Content')) {
+      if (document.querySelector('.ReactModal__Content').contains(e.target)) {
+        return;
+      }
+    }
     const { HeaderStore } = this.props;
     if (HeaderStore.inboxVisible) {
       HeaderStore.setInboxVisible(false);
@@ -211,8 +220,18 @@ class RenderPopoverContentDetailClass extends Component {
     const realSendTime = 'sendDate' in HeaderStore.inboxDetail ? HeaderStore.inboxDetail.sendDate : HeaderStore.inboxDetail.sendTime;
     const isMsg = 'backlogFlag' in HeaderStore.inboxDetail;
     if (!inboxDetailVisible) {
+      document.removeEventListener('click', globalClick);
+      globalClick = null;
       return null;
     }
+    globalClick = function (event) {
+      const clickedElement = event.target;
+      if (clickedElement.tagName === 'IMG') {
+        HeaderStore.setInboxUrl(clickedElement.src);
+      }
+    };
+    document.addEventListener('click', globalClick);
+
     return (
       <div className={siderClasses}>
         <div className={`${prefixCls}-sider-header-wrap`}>
@@ -488,7 +507,15 @@ export default class Inbox extends Component {
                       ) : null}
                     </div>
                     {showPicUrl ? (
-                      <img style={{ maxWidth: '100%', marginTop: 10 }} src={showPicUrl.replace(/&amp;/g, '&')} />
+                      <img
+                        role="none"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          HeaderStore.setInboxUrl(showPicUrl.replace(/&amp;/g, '&'));
+                        }}
+                        style={{ maxWidth: '100%', marginTop: 10 }}
+                        src={showPicUrl.replace(/&amp;/g, '&')}
+                      />
                     ) : null}
                   </div>
                 </li>
@@ -508,9 +535,11 @@ export default class Inbox extends Component {
   render() {
     const {
       HeaderStore: {
-        inboxData, inboxLoading, getUnreadMessageCount, notificationKeyList,
+        inboxData, inboxLoading, getUnreadMessageCount, notificationKeyList, inboxDetailVisible,
       },
+      HeaderStore,
     } = this.props;
+    console.log('inboxDetailVisible', inboxDetailVisible);
     const popOverContent = { inboxData, inboxLoading };
     return (
       <div className="c7ncd-header-right-lists-item">
@@ -541,6 +570,14 @@ export default class Inbox extends Component {
           readAllMsg={this.readAllMsg}
           openCleanAllModal={this.openCleanAllModal}
         />
+        {
+          HeaderStore.getInboxUrl && (
+            <Lightbox
+              mainSrc={HeaderStore.getInboxUrl}
+              onCloseRequest={() => HeaderStore.setInboxUrl('')}
+            />
+          )
+        }
         {notificationKeyList?.size > 2 ? createPortal((
           <div className={`${prefixCls}-notification-all`}>
             <span>
