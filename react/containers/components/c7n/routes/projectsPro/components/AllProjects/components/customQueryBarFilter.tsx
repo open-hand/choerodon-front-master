@@ -152,7 +152,11 @@ const Index: React.FC<IProps> = (props) => {
       <div className="c7n-agile-choose-field-list-header">
         {/* indeterminate={indeterminate} */}
         <CheckBox checked={checkedAll} onChange={handleAllChange}>全选</CheckBox>
-        <Button onClick={cleanAll}>清除筛选项</Button>
+        {
+          dataSet?.getState('checkedNum') && (
+            <Button onClick={cleanAll}>清除筛选项</Button>
+          )
+        }
       </div>
       <div className="c7n-agile-choose-field-list-content">
         {getFields()}

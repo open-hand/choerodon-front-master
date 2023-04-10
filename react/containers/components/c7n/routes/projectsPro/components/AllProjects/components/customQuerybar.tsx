@@ -222,6 +222,7 @@ const Index: React.FC<IProps> = (props) => {
         num += 1;
       }
     });
+    searchFilterDataSet.setState('checkedNum', num);
     return num;
   };
 
