@@ -67,7 +67,7 @@ const Index:React.FC<IProps> = (props) => {
         obj[value] = paramsObj[key];
       }
     });
-    if (obj.keys().every((item:string) => !['source', 'zk', 'source_type', 'channel', 'refid'].includes(item))) {
+    if (Object.keys(obj).every((item:string) => !['source', 'zk', 'source_type', 'channel', 'refid'].includes(item))) {
       obj = {
         ...obj,
         sourceType: 'default',
