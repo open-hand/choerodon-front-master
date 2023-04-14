@@ -173,7 +173,15 @@ const Index: React.FC<IProps> = (props) => {
     </div>
   );
 
-  useClickAway(() => { setHidden(true); }, () => document.getElementById('c7ncd-customQueryBarFilter-overlay'));
+  useClickAway(
+    (e) => {
+      if (e.target === document.getElementById('c7ncd-customQueryBarFilter-btn')) {
+        return;
+      }
+      setHidden(true);
+    },
+    () => document.getElementById('c7ncd-customQueryBarFilter-overlay'),
+  );
 
   return (
     <div>
