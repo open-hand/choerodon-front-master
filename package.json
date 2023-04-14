@@ -2,7 +2,7 @@
   "name": "@choerodon/master",
   "routeName": "master",
   "nonExpose": true,
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "A package of Master for Choerodon platform.",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
