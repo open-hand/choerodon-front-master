@@ -194,7 +194,7 @@ const Index: React.FC<IProps> = (props) => {
   }, [filterFieldsConfig, customfilterFieldsConfig, queryBarDataSet]);
 
   useEffect(() => {
-    const d = LocalCacheStore.getItem(cacheKey);
+    const d = cacheKey ? LocalCacheStore.getItem(cacheKey) : '';
     const selectedData = d ? JSON.parse(d) : {};
     Object.keys(selectedData).forEach((key) => {
       searchFilterDataSet?.current?.set(key, true);
