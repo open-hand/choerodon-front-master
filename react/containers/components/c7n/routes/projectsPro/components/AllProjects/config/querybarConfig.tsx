@@ -82,10 +82,7 @@ export const getSearchFieldsConfig = ({ orgId, hasBusiness, excludeUnassigned = 
             read({ dataSet, record, params: { page } }) {
               return {
                 ...organizationsApiConfig.getprojWorkGroup(orgId, excludeUnassigned),
-                transformResponse: (res: any) => {
-                  console.log('yyyy');
-                  return transformResponseTreeData(res, 'workGroupVOS');
-                },
+                transformResponse: (res: any) => transformResponseTreeData(res, 'workGroupVOS'),
               };
             },
           },

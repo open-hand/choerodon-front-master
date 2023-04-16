@@ -5,8 +5,10 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { Button, Tooltip, Modal } from 'choerodon-ui/pro';
-import { forIn, isNil } from 'lodash';
+import {
+  Button, Tooltip, Modal, Spin,
+} from 'choerodon-ui/pro';
+import { isNil } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import moment from 'moment';
@@ -67,6 +69,7 @@ export default observer(() => {
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
   const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
+  const [pageLoading, setPageloading] = useState(true);
   const [tableColumnsSet, setTableColumnsSet] = useState([]);
   const [customFields, setCustomFields] = useState(undefined);
 
@@ -91,7 +94,7 @@ export default observer(() => {
         pageAction: '',
         buildInFlag: false,
       });
-      setCustomFields(res);
+      setCustomFields(res || []);
       res.forEach((item) => {
         if (!projectListDataSet.getField(item.code)) {
           projectListDataSet.addField(item.fieldCode, {
@@ -107,6 +110,7 @@ export default observer(() => {
   useEffect(() => {
     if (!haitianFuncLoading && customFields) {
       initTableColumnsSet();
+      setPageloading(false);
     }
   }, [haitianFuncLoading, func, projectListDataSet, customFields]);
 
@@ -288,6 +292,10 @@ export default observer(() => {
 
   const customQuerybarChange = useCallback(
     (data) => {
+      console.log(data, 'data');
+      if (!customFields) {
+        return;
+      }
       const normalContrastMap = new Map([
         ['input', 'string'],
         ['text', 'text'],
@@ -410,27 +418,34 @@ export default observer(() => {
     <div className="allProjects">
       <div className="allProjects-title">{renderTitle()}</div>
       <div className="allProjects-content">
-        <div className="allProjects-table-header">
-          <CustomQuerybar
-            searchFieldsConfig={searchFieldsConfig}
-            filterFieldsConfig={filterFieldsConfig}
-            customfilterFieldsConfig={customfilterFieldsConfig}
-            dateFieldsArr={getDateFieldsArr}
-            onChange={customQuerybarChange}
-            cRef={customQuerybarCRef}
-          />
-          <div className="tableColumnSet-content">
-            <TableColumnSet
-              columnsSetConfig={tableColumnsSet}
-              handleOk={handleEditColumnOk}
-            />
-          </div>
-        </div>
-        <AllProjectTable
-          columnsSetConfig={tableColumnsSet}
-          onColumnResize={run}
-          fieldFunc={func}
-        />
+        {
+          pageLoading ? <Spin /> : (
+            <>
+              <div className="allProjects-table-header">
+                <CustomQuerybar
+                  searchFieldsConfig={searchFieldsConfig}
+                  filterFieldsConfig={filterFieldsConfig}
+                  customfilterFieldsConfig={customfilterFieldsConfig}
+                  dateFieldsArr={getDateFieldsArr}
+                  onChange={customQuerybarChange}
+                  cacheKey="projects.list.selected"
+                  cRef={customQuerybarCRef}
+                />
+                <div className="tableColumnSet-content">
+                  <TableColumnSet
+                    columnsSetConfig={tableColumnsSet}
+                    handleOk={handleEditColumnOk}
+                  />
+                </div>
+              </div>
+              <AllProjectTable
+                columnsSetConfig={tableColumnsSet}
+                onColumnResize={run}
+                fieldFunc={func}
+              />
+            </>
+          )
+        }
       </div>
     </div>
   );

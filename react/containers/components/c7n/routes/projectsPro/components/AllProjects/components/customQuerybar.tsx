@@ -12,6 +12,7 @@ import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { forIn, isNil, omit } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import SearchFilterBtn, { ICheckBoxFields } from './customQueryBarFilter';
+import LocalCacheStore, { LocalCacheStoreIssueTypeKeys } from '@/stores/cacheStore/LocalCacheStore';
 import './customQuerybar.less';
 
 export interface IProps {
@@ -27,7 +28,11 @@ export interface IProps {
    * 系统自定义字段
    */
   customfilterFieldsConfig: ICheckBoxFields[]
-  onChange: (data: { [key: string]: any }, name?:string, record?:Record) => void
+  /**
+   * 缓存key
+   */
+  cacheKey?: LocalCacheStoreIssueTypeKeys
+  onChange: (data: { [key: string]: any }, name?: string, record?: Record) => void
   showResetButton?: boolean
   showSearchInput?: boolean
   dateFieldsArr?: string[]
@@ -60,7 +65,7 @@ const fieldsMap = new Map(
 
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, customfilterFieldsConfig, onChange, cRef, showResetButton = true, showSearchInput = true, dateFieldsArr = [],
+    cacheKey, searchFieldsConfig, filterFieldsConfig, customfilterFieldsConfig, onChange, cRef, showResetButton = true, showSearchInput = true, dateFieldsArr = [],
   } = props;
   const [visibleOptionalFieldsNum, setVisibleOptionalFieldsNum] = useState(0);
   const [recordExistedValue, setRecordExistedValue] = useState(false);
@@ -73,37 +78,41 @@ const Index: React.FC<IProps> = (props) => {
     reset: handleReset,
   }));
 
-  function queryBarDsInit(ds:DataSet, config:ISearchFields[]) {
+  function queryBarDsInit(ds: DataSet, config: ISearchFields[]) {
     config.forEach((item: ISearchFields) => {
-      ds.addField(item.dsProps.name as string, {
-        ...item.dsProps,
-      });
-      ds.setState(item.dsProps.name as string, {
-        initial: item.initial,
-        type: item.type,
-        visible: item.initial,
-        width: item.width,
-        eleProps: item.eleProps,
-      });
+      if (!ds.getField(item.dsProps.name as string)) {
+        ds.addField(item.dsProps.name as string, {
+          ...item.dsProps,
+        });
+        ds.setState(item.dsProps.name as string, {
+          initial: item.initial,
+          type: item.type,
+          visible: item.initial,
+          width: item.width,
+          eleProps: item.eleProps,
+        });
+      }
     });
   }
 
-  function searchFilterDsInit(ds:DataSet, config:ICheckBoxFields[], isSystem:boolean) {
+  function searchFilterDsInit(ds: DataSet, config: ICheckBoxFields[], isSystem: boolean) {
     config.forEach((item: ICheckBoxFields) => {
-      ds.addField(item.name, {
-        type: 'boolean' as any,
-      });
-      ds.setState(item.name, {
-        visible: true,
-        label: item.label,
-        isSystem,
-      });
+      if (!ds.getField(item.name as string)) {
+        ds.addField(item.name, {
+          type: 'boolean' as any,
+        });
+        ds.setState(item.name, {
+          visible: true,
+          label: item.label,
+          isSystem,
+        });
+      }
     });
   }
 
   const queryBarDataSet = useMemo(() => {
-    console.log(9999);
-    // TODO 重复请求是因为 searchFieldsConfig 变化了 看看怎么改
+    console.log(searchFieldsConfig, 'searchFieldsConfig');
+    // TODO 重复请求是因为 searchFieldsConfig 变化了 看看怎么改 ？ 改好了
     const ds = new DataSet({
       autoCreate: true,
       autoQuery: false,
@@ -111,7 +120,15 @@ const Index: React.FC<IProps> = (props) => {
       events: {
         update: ({
           dataSet, record, name, value, oldValue,
-        }: { dataSet:DataSet, record: Record, name: string, value: any, oldValue: any }) => {
+        }: { dataSet: DataSet, record: Record, name: string, value: any, oldValue: any }) => {
+          if (name === 'component-initData') {
+            const arr = Object.keys(value);
+            arr.forEach((key, index) => {
+              record?.set(key, value[key]);
+            });
+            // TODO 这里去给用的地方 数据， 让table去请求
+            return;
+          }
           if (isNil(oldValue) && Array.isArray(value) && !value.length) {
             return;
           }
@@ -130,13 +147,14 @@ const Index: React.FC<IProps> = (props) => {
 
           let returnData = omit(record?.toData(), '__dirty');
 
-          const omitArr:string[] = [];
+          const omitArr: string[] = ['component-initData'];
           Object.keys(returnData).forEach((key) => {
             if (dateFieldsArr.includes(key) && returnData[key] && (!returnData[key][0] || !returnData[key][1])) {
               omitArr.push(key);
             }
           });
           returnData = omit(returnData, omitArr); // 防止settimeout 期间请求
+          // TODO 这里改一下 storeage
           onChange(returnData, name, record);
         },
       },
@@ -152,7 +170,13 @@ const Index: React.FC<IProps> = (props) => {
       fields: [],
       events: {
         update: ({ record, name, value }: { record: Record, name: string, value: any }) => {
+          // TODO 这里新增之后要存一下 storeage
+          console.log('update');
           const state = queryBarDataSet?.getState(name);
+          if (!state) {
+            return;
+          }
+          console.log(state, 'state');
           queryBarDataSet?.setState(name, {
             ...state,
             visible: value,
@@ -168,6 +192,15 @@ const Index: React.FC<IProps> = (props) => {
     searchFilterDsInit(ds, customfilterFieldsConfig, false);
     return ds;
   }, [filterFieldsConfig, customfilterFieldsConfig, queryBarDataSet]);
+
+  useEffect(() => {
+    const d = LocalCacheStore.getItem(cacheKey);
+    const selectedData = d ? JSON.parse(d) : {};
+    Object.keys(selectedData).forEach((key) => {
+      searchFilterDataSet?.current?.set(key, true);
+    });
+    queryBarDataSet?.current?.set('component-initData', selectedData);
+  }, [cacheKey, queryBarDataSet, searchFilterDataSet]);
 
   useEffect(() => {
     const ele = document.getElementsByClassName('searchField-container-left-block1-inner')[0];
@@ -212,7 +245,7 @@ const Index: React.FC<IProps> = (props) => {
 
     setVisibleOptionalFieldsNum(getVisibleOptionalFieldsNum());
   };
-
+  // TODO 这里好像不对
   const getVisibleOptionalFieldsNum = () => {
     let num = 0;
     [...queryBarDataSet.fields].map((arr) => {
@@ -245,7 +278,7 @@ const Index: React.FC<IProps> = (props) => {
           name={fieldName}
           style={{ width: width || 'auto' }}
           dataSet={queryBarDataSet}
-          onChange={(v:any) => {
+          onChange={(v: any) => {
             queryBarDataSet.getField(fieldName)?.options?.setState('selectids', v);
           }}
           {...eleProps}
@@ -278,13 +311,6 @@ const Index: React.FC<IProps> = (props) => {
     onChange({});
   };
 
-  //  useCallback ???
-  // const querybarDsCurrentExistValue = useMemo(
-  //   () => {
-  //   },
-  //   [queryBarDataSet?.current?.toData()],
-  // );
-
   const handleExpandClick = () => {
     if (expandBtnType === 'expand_less') {
       document.getElementsByClassName('searchField-container-left-block1')[0].classList
@@ -303,9 +329,9 @@ const Index: React.FC<IProps> = (props) => {
         <div className="searchField-container-left">
           {
             showSearchInput && (
-            <div className="searchField-item">
-              <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={queryBarDataSet} name="searchContent" />
-            </div>
+              <div className="searchField-item">
+                <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={queryBarDataSet} name="searchContent" />
+              </div>
             )
           }
           <div className="searchField-container-left-block1">
