@@ -31,15 +31,22 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore
     history,
   } = props;
 
-  const { loading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
+  const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
   const formatProject = useFormatMessage(intlPrefix);
 
   const ProjectsProUseStore = useStore(AppState, history);
   const categoryDs = useMemo(() => new DataSet(CategoryDataSet(AppState, history)), [type, id, organizationId]);
   const dataSet = useMemo(() => new DataSet(ListDataSet(AppState, history, categoryDs)), [type, id, organizationId]);
-  const projectListDataSet = useMemo(() => new DataSet(ProjectListDataSet({
-    organizationId, userId: getUserId, func, formatProject,
-  })), [type, id, organizationId, func]);
+  const projectListDataSet = useMemo(() => {
+    if (haitianMasterLoading) {
+      return new DataSet({
+        autoCreate: true,
+      });
+    }
+    return new DataSet(ProjectListDataSet({
+      organizationId, userId: getUserId, func, formatProject,
+    }));
+  }, [type, id, organizationId, func, haitianMasterLoading]);
 
   const categoryCodes = useMemo(() => ({
     devops: 'N_DEVOPS',

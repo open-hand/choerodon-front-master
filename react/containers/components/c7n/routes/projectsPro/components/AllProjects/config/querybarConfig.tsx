@@ -175,6 +175,7 @@ export const getSearchFieldsConfig = ({ orgId, hasBusiness, excludeUnassigned = 
         valueField: 'id',
         options: new DataSet({
           ...defaultOptionConfig,
+          autoQuery: false,
           transport: {
             read({
               dataSet, record, data, params: { page },
@@ -219,6 +220,7 @@ export const getSearchFieldsConfig = ({ orgId, hasBusiness, excludeUnassigned = 
         valueField: 'id',
         options: new DataSet({
           ...defaultOptionConfig,
+          autoQuery: false,
           transport: {
             read({
               dataSet, record, data, params: { page },
