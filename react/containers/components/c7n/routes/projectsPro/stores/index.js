@@ -25,6 +25,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore
         type,
         id,
         organizationId,
+        projectId,
       },
       getUserId,
     },
@@ -67,6 +68,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore
     formatCommon,
     projectListDataSet,
     prefix,
+    projectId,
   };
 
   return (
