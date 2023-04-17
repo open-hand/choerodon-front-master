@@ -6,7 +6,7 @@ export default (({
     extraFields = func.default();
   }
   return ({
-    autoQuery: true,
+    autoQuery: false,
     autoCreate: true,
     selection: false as any,
     transport: {
