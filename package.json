@@ -115,6 +115,7 @@
     "timeago-react": "^3.0.2",
     "typescript": "4.7.4",
     "universal-cookie": "^4.0.4",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "react-image-lightbox": "^5.1.4"
   }
 }
