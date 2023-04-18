@@ -378,12 +378,13 @@ const Index: React.FC<any> = (props) => {
             text: '删除',
             action: () => handleDelete(projData.id),
           });
-        } else {
-          // @ts-ignore
-          actionData.unshift(editData);
-          // @ts-ignore
-          actionData.push(disableData);
         }
+        // else {
+        //   // @ts-ignore
+        //   actionData.unshift(editData);
+        //   // @ts-ignore
+        //   actionData.push(disableData);
+        // }
         break;
       default:
         break;
