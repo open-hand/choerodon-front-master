@@ -9,7 +9,7 @@ import './index.less';
 
 const ProjectNotification = observer(({
   organizationId, projectId, notificationKey, operateType,
-  intlPrefix, formatMessage, refresh,
+  intlPrefix, formatMessage, refresh, isRetry,
 }) => {
   let interval;
   const prefixCls = 'c7ncd-project-create-notification';
@@ -45,6 +45,9 @@ const ProjectNotification = observer(({
   }, [window.location.hash]);
 
   const loadData = useCallback(async () => {
+    if (isRetry) {
+      await axios.put(`cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}/retry?operateType=${operateType}`);
+    }
     try {
       const res = await axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
       if (res && !res.failed) {

@@ -271,7 +271,7 @@ const Index: React.FC<any> = (props) => {
     notification.open({
       key: notificationKey,
       message: (
-        <span className={`${prefix}-notification-title`}>
+        <span className="c7ncd-project-create-notification-title">
           {operateType === 'create' ? '创建项目' : '修改项目'}
         </span>
       ),
@@ -285,11 +285,12 @@ const Index: React.FC<any> = (props) => {
           formatMessage={formatMessage}
           intlPrefix={intlPrefix}
           refresh={refresh}
+          isRetry
         />
       ),
       duration: null,
       placement: 'bottomLeft',
-      className: `${prefix}-notification`,
+      className: 'c7ncd-project-create-notification',
     });
   };
 
