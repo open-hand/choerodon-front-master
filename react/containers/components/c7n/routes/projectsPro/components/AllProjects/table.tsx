@@ -1,13 +1,14 @@
 import {
   Icon, Modal, Table, TextField, Tooltip,
 } from 'choerodon-ui/pro';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { observer } from 'mobx-react';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { some, throttle } from 'lodash';
 import isOverflow from 'choerodon-ui/pro/lib/overflow-tip/util';
 import moment from 'moment';
 import { get } from '@choerodon/inject';
+import { notification } from 'choerodon-ui';
 import { useRequest } from 'ahooks';
 import classNames from 'classnames';
 import type { ColumnProps } from 'choerodon-ui/pro/lib/table/Column';
@@ -20,6 +21,7 @@ import handleClickProject from '@/utils/gotoProject';
 import Action from '@/components/action';
 import { IColumnSetConfig } from './components/tableColumnSet';
 import { organizationsApi } from '@/apis';
+import ProjectNotification from '../create-project/components/project-notification';
 import useGetDisplayColumn from './hooks/useGetDisplayColumn';
 import { getAdjustableColumns } from './config/tableColumnsConfig';
 import './table.less';
@@ -53,11 +55,13 @@ const Index: React.FC<any> = (props) => {
     intl: { formatMessage },
     ProjectsProUseStore,
     prefix,
+    intlPrefix,
+    projectId: projectIds,
   } = useProjectsProStore();
-
   const refresh = () => {
     projectListDataSet.query();
   };
+  console.log('ahaa', prefix);
 
   const { loading: openStatusSettingModalLoading, func: openStatusSettingModal }: any = useExternalFunc('baseBusiness', 'base-business:openStatusSettingModal');
 
@@ -71,7 +75,6 @@ const Index: React.FC<any> = (props) => {
   });
 
   const displayColumn = useGetDisplayColumn(columnsSetConfig, getAdjustableColumns(formatMessage, prefix, fieldFunc));
-
   const renderName = ({ record }: { record: Record }) => {
     const projData: any = record?.toData();
     const unix = String(moment(projData.creationDate).unix());
@@ -264,12 +267,32 @@ const Index: React.FC<any> = (props) => {
     return false;
   }, []);
 
-  const handleRetry = async (projectId: string, sagaInstanceIds: string) => {
-    if (
-      await axios.put(`/hagd/v1/sagas/projects/${projectId}/tasks/instances/retry`, sagaInstanceIds)
-    ) {
-      refresh();
-    }
+  const handleRetry = async (projectId: string, sagaInstanceIds: string, operateType:string) => {
+    const notificationKey = `${organizationId}-${projectId}`;
+    notification.open({
+      key: notificationKey,
+      message: (
+        <span className="c7ncd-project-create-notification-title">
+          {operateType === 'create' ? '创建项目' : '修改项目'}
+        </span>
+      ),
+      description: (
+        <ProjectNotification
+         // @ts-ignore
+          notificationKey={notificationKey}
+          organizationId={organizationId}
+          projectId={projectId}
+          operateType={operateType}
+          formatMessage={formatMessage}
+          intlPrefix={intlPrefix}
+          refresh={refresh}
+          isRetry
+        />
+      ),
+      duration: null,
+      placement: 'bottomLeft',
+      className: 'c7ncd-project-create-notification',
+    });
   };
 
   const handleDelete = async (pid: string) => {
@@ -348,7 +371,7 @@ const Index: React.FC<any> = (props) => {
         actionData = [
           {
             text: '重试',
-            action: () => handleRetry(projData.id, projData.sagaInstanceIds),
+            action: () => handleRetry(projData.id, projData.sagaInstanceIds, projData.operateType),
           },
         ];
         if (projData.operateType === 'create') {
