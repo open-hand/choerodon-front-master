@@ -141,7 +141,7 @@ class RenderPopoverContentClass extends Component {
           )
         }
         <Action
-          className={styles.c7ncd_operationAction}
+          className="c7ncd_operationAction"
           data={actionData}
         />
         {/* <Tooltip title="全部已读"><ButtonPro funcType="flat" icon="all_read" color="primary" onClick={readAllMsg} /></Tooltip>

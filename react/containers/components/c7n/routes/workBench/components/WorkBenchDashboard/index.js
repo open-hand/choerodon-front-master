@@ -252,7 +252,7 @@ const WorkBenchDashboard = (props) => {
       className: `${prefixCls}-layout`,
       onLayoutChange,
       margin: [18, 18],
-      layouts: { lg: layoutData },
+      layouts: { lg: layoutData, md: layoutData, sm: layoutData },
       breakpoints: { lg: 1200 },
       resizeHandles: ['se'],
       cols: { lg: 12 },
