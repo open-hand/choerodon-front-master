@@ -15,6 +15,14 @@ import SearchFilterBtn, { ICheckBoxFields } from './customQueryBarFilter';
 import LocalCacheStore, { LocalCacheStoreIssueTypeKeys } from '@/stores/cacheStore/LocalCacheStore';
 import './customQuerybar.less';
 
+window.onunload = () => {
+  LocalCacheStore.clear();
+};
+
+window.onbeforeunload = () => {
+  LocalCacheStore.clear();
+};
+
 export interface IProps {
   /**
    * 外面搜索条config，包含系统预定义字段、系统自定义字段的config
