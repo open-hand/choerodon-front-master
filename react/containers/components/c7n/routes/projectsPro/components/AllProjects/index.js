@@ -1,7 +1,6 @@
 import React, {
   useEffect,
   useState,
-  useRef,
   useMemo,
   useCallback,
 } from 'react';
@@ -67,8 +66,6 @@ export default observer(() => {
     'haitianMaster:createProjectExtraFields',
   );
 
-  const customQuerybarCRef = useRef();
-
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
   const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
   const [pageLoading, setPageloading] = useState(true);
@@ -113,7 +110,8 @@ export default observer(() => {
     if (!haitianFuncLoading && customFields) {
       initTableColumnsSet();
       setPageloading(false);
-      projectListDataSet.query(0, getQueryObj(getCacheData(cacheKey), customFields));
+      projectListDataSet.setState('queryParams', getQueryObj(getCacheData(cacheKey), customFields));
+      projectListDataSet.query(1, projectListDataSet.getState('queryParams'));
     }
   }, [haitianFuncLoading, func, projectListDataSet, customFields]);
 
@@ -165,7 +163,7 @@ export default observer(() => {
 
   const refresh = (projectId) => {
     ProjectsProUseStore.checkCreate(organizationId);
-    customQuerybarCRef?.current?.reset();
+    projectListDataSet.query(1, projectListDataSet.getState('queryParams'));
     if (projectId) {
       MenuStore.menuGroup.project = {};
     }
@@ -298,7 +296,8 @@ export default observer(() => {
       if (!customFields) {
         return;
       }
-      projectListDataSet.query(0, getQueryObj(data, customFields));
+      projectListDataSet.setState('queryParams', getQueryObj(data, customFields));
+      projectListDataSet.query(0, projectListDataSet.getState('queryParams'));
     },
     [projectListDataSet, customFields],
   );
@@ -362,7 +361,6 @@ export default observer(() => {
                   dateFieldsArr={getDateFieldsArr}
                   cacheKey={cacheKey}
                   onChange={customQuerybarChange}
-                  cRef={customQuerybarCRef}
                 />
                 <div className="tableColumnSet-content">
                   <TableColumnSet

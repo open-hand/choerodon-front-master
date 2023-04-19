@@ -58,8 +58,9 @@ const Index: React.FC<any> = (props) => {
     intlPrefix,
     projectId: projectIds,
   } = useProjectsProStore();
+
   const refresh = () => {
-    projectListDataSet.query();
+    projectListDataSet.query(1, projectListDataSet.getState('queryParams'));
   };
 
   const { loading: openStatusSettingModalLoading, func: openStatusSettingModal }: any = useExternalFunc('baseBusiness', 'base-business:openStatusSettingModal');
