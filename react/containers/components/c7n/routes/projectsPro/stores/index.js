@@ -38,16 +38,10 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState', 'MenuStore
   const ProjectsProUseStore = useStore(AppState, history);
   const categoryDs = useMemo(() => new DataSet(CategoryDataSet(AppState, history)), [type, id, organizationId]);
   const dataSet = useMemo(() => new DataSet(ListDataSet(AppState, history, categoryDs)), [type, id, organizationId]);
-  const projectListDataSet = useMemo(() => {
-    if (haitianMasterLoading) {
-      return new DataSet({
-        autoCreate: true,
-      });
-    }
-    return new DataSet(ProjectListDataSet({
-      organizationId, userId: getUserId, func, formatProject,
-    }));
-  }, [type, id, organizationId, func, haitianMasterLoading]);
+  const projectListDataSet = useMemo(() => new DataSet(ProjectListDataSet({
+    organizationId, userId: getUserId, func, formatProject,
+  })),
+  [type, id, organizationId, func]);
 
   const categoryCodes = useMemo(() => ({
     devops: 'N_DEVOPS',

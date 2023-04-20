@@ -206,7 +206,6 @@ const Index: React.FC<IProps> = (props) => {
           if (cacheKey) {
             const d = LocalCacheStore.getItem(cacheKey);
             const cacheData = d ? JSON.parse(d) : {};
-            console.log(cacheData, 'cacheData');
 
             if (!Object.keys(cacheData).includes(name) && value) {
               const obj = {
