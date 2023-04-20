@@ -258,7 +258,7 @@ const WorkBenchDashboard = (props) => {
       cols: { lg: 12 },
       measureBeforeMount: true,
       containerPadding: [0, 0],
-      useCSSTransforms: true,
+      useCSSTransforms: false,
       isDraggable: isEdit,
       isResizable: isEdit,
     };
