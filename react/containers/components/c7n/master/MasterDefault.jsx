@@ -427,7 +427,11 @@ class Masters extends Component {
                 cRef: this.cRef,
               })} */}
               <ExternalComponent
-                system={{ scope: 'basePro', module: 'base-pro:UserCheck' }}
+                system={{
+                  scope: 'basePro',
+                  module: 'base-pro:UserCheck',
+                  noFallback: true,
+                }}
                 {...this.props}
                 MasterServices={MasterServices}
                 MasterApis={MasterApis}
