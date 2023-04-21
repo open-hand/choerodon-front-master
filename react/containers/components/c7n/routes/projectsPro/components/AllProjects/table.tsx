@@ -1,10 +1,10 @@
 import {
   Icon, Modal, Table, TextField, Tooltip,
 } from 'choerodon-ui/pro';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { observer } from 'mobx-react';
 import Record from 'choerodon-ui/pro/lib/data-set/Record';
-import { some, throttle } from 'lodash';
+import { some, throttle, remove } from 'lodash';
 import isOverflow from 'choerodon-ui/pro/lib/overflow-tip/util';
 import moment from 'moment';
 import { get } from '@choerodon/inject';
@@ -59,7 +59,7 @@ const Index: React.FC<any> = (props) => {
     projectId: projectIds,
   } = useProjectsProStore();
   const refresh = () => {
-    projectListDataSet.query();
+    projectListDataSet.query(1);
   };
   console.log('ahaa', prefix);
 
@@ -133,16 +133,27 @@ const Index: React.FC<any> = (props) => {
     );
   };
 
-  const alwaysShowColumns:ColumnProps[] = [
-    {
-      name: 'name',
-      renderer: renderName,
-      sortable: true,
-      resizable: false,
-      width: 265,
-      lock: true,
-    },
-  ];
+  const columns = useMemo(() => {
+    const found = displayColumn.find((item) => item.name === 'name');
+    if (!found) {
+      return [];
+    }
+
+    const nameColumnWidth = found.width || 265;
+    remove(displayColumn, (item) => item.name === 'name');
+
+    return [
+      {
+        name: 'name',
+        renderer: renderName,
+        sortable: true,
+        resizable: true,
+        width: nameColumnWidth,
+        lock: true,
+      },
+      ...displayColumn,
+    ];
+  }, [displayColumn]);
 
   const checkOperation = useCallback(
     (projData) => projData
@@ -379,12 +390,13 @@ const Index: React.FC<any> = (props) => {
             text: '删除',
             action: () => handleDelete(projData.id),
           });
-        } else {
-          // @ts-ignore
-          actionData.unshift(editData);
-          // @ts-ignore
-          actionData.push(disableData);
         }
+        // else {
+        //   // @ts-ignore
+        //   actionData.unshift(editData);
+        //   // @ts-ignore
+        //   actionData.push(disableData);
+        // }
         break;
       default:
         break;
@@ -396,7 +408,7 @@ const Index: React.FC<any> = (props) => {
     ) : null;
   };
   return (
-    <Table columns={alwaysShowColumns.concat(displayColumn)} columnResizable onColumnResize={columnResize} dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table" />
+    <Table columns={columns} columnResizable onColumnResize={columnResize} dataSet={projectListDataSet} queryBar={'none' as any} className="c7ncd-allprojectslist-table" />
   );
 };
 

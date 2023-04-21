@@ -713,7 +713,7 @@ const CreateProject = observer(() => {
         getProjRelationShow() && (
           <div className={`${prefixCls}-projRelation`}>
             <div className={`${prefixCls}-projRelation-divided`} />
-            <p>高级设置</p>
+            <p style={{ fontWeight: 500, fontSize: 14 }}>高级设置</p>
             {allowLinkForm}
           </div>
         )

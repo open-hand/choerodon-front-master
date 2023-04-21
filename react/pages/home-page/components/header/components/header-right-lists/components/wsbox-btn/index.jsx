@@ -64,6 +64,14 @@ class RenderPopoverContentClass extends Component {
         return;
       }
     }
+    const dropDownList = document.querySelectorAll('.c7n-dropdown');
+    if (dropDownList.length > 0) {
+      for (let i = 0; i < dropDownList.length; i += 1) {
+        if (dropDownList[i].contains(e.target)) {
+          return;
+        }
+      }
+    }
     const { HeaderStore } = this.props;
     if (HeaderStore.inboxVisible) {
       HeaderStore.setInboxVisible(false);
@@ -99,27 +107,42 @@ class RenderPopoverContentClass extends Component {
       [`${prefixCls}-sider-visible`]: inboxVisible,
       // [`${prefixCls}-sider-move-down`]: !announcementClosed,
     });
+    let actionData = [];
+    if (HeaderStore.getInboxActiveKey === '1') {
+      actionData = [{
+        text: '全部已读',
+        action: readAllMsg,
+      }, {
+        text: '接收设置',
+        action: handleSettingReceive,
+      }, {
+        text: '全部清除',
+        action: openCleanAllModal,
+      }];
+    } else {
+      actionData = [{
+        text: '接收设置',
+        action: handleSettingReceive,
+      }];
+    }
     const operations = (
       <>
-        <span className={styles.c7ncd_onlyUnread}>
-          仅显示未读
-        </span>
-        <Switch
-          checked={HeaderStore.getUnReadStatus}
-          onChange={this.handleChangeUnreadStatus}
-        />
+        {
+          HeaderStore.getInboxActiveKey === '1' && (
+            <>
+              <span className={styles.c7ncd_onlyUnread}>
+                仅显示未读
+              </span>
+              <Switch
+                checked={HeaderStore.getUnReadStatus}
+                onChange={this.handleChangeUnreadStatus}
+              />
+            </>
+          )
+        }
         <Action
-          className={styles.c7ncd_operationAction}
-          data={[{
-            text: '全部已读',
-            action: readAllMsg,
-          }, {
-            text: '接收设置',
-            action: handleSettingReceive,
-          }, {
-            text: '全部清除',
-            action: openCleanAllModal,
-          }]}
+          className="c7ncd_operationAction"
+          data={actionData}
         />
         {/* <Tooltip title="全部已读"><ButtonPro funcType="flat" icon="all_read" color="primary" onClick={readAllMsg} /></Tooltip>
         <Tooltip title="接收设置"><ButtonPro funcType="flat" icon="settings" color="primary" onClick={handleSettingReceive} style={{ marginLeft: '.04rem' }} /></Tooltip>
@@ -539,7 +562,6 @@ export default class Inbox extends Component {
       },
       HeaderStore,
     } = this.props;
-    console.log('inboxDetailVisible', inboxDetailVisible);
     const popOverContent = { inboxData, inboxLoading };
     return (
       <div className="c7ncd-header-right-lists-item">

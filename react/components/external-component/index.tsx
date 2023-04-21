@@ -30,7 +30,8 @@ interface SystemProps {
   /**
    * 组件名
    */
-  module: string
+  module: string,
+  noFallback?: boolean
 }
 
 function getComponent({ scope, module }: SystemProps, ErrorComponent = null) {
@@ -41,11 +42,9 @@ function getComponent({ scope, module }: SystemProps, ErrorComponent = null) {
     return component;
   }
   const lazyComponent = React.lazy(
-    loadComponent(scope, module, (error: Error) => {
-      return {
-        default: () => ErrorComponent,
-      };
-    }),
+    loadComponent(scope, module, (error: Error) => ({
+      default: () => ErrorComponent,
+    })),
   );
   scopeItem.set(module, lazyComponent);
   return lazyComponent;
@@ -72,7 +71,7 @@ function ExternalComponent(props: Props) {
   }
 
   return (
-    <React.Suspense fallback={fallback}>
+    <React.Suspense fallback={system?.noFallback ? null : fallback}>
       <Component {...props} />
     </React.Suspense>
   );

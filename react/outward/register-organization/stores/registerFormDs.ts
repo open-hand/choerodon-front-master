@@ -15,7 +15,7 @@ export default ({ }: {}): object => ({
       required: true,
       maxLength: 120,
       validator: (value:string) => {
-        if (!/^[A-Za-z0-9\u4e00-\u9fa5_\-\.——\(\)\（） ]+$/.test(value)) {
+        if (!/^[（）_()-—\.\w\s\u4e00-\u9fa5]{1,32}$/.test(value)) {
           return '公司名称由汉字、字母、数字、"_"、"."、"-"、"——"、空格、中英文括号组成';
         }
         return true;

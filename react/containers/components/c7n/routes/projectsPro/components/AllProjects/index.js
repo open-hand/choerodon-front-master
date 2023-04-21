@@ -1,12 +1,13 @@
 import React, {
   useEffect,
   useState,
-  useRef,
   useMemo,
   useCallback,
 } from 'react';
-import { Button, Tooltip, Modal } from 'choerodon-ui/pro';
-import { forIn, isNil } from 'lodash';
+import {
+  Button, Tooltip, Modal, Spin,
+} from 'choerodon-ui/pro';
+import { isNil } from 'lodash';
 import queryString from 'query-string';
 import { observer } from 'mobx-react-lite';
 import moment from 'moment';
@@ -15,7 +16,7 @@ import { Permission } from '@/components/permission';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import CreateProject from '../create-project';
-import CustomQuerybar from './components/customQuerybar';
+import CustomQuerybar, { getCacheData } from './components/customQuerybar';
 import { organizationsApi, cbaseApi } from '@/apis';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import AllProjectTable from './table';
@@ -35,12 +36,14 @@ import {
   transformColumnDataToSubmit,
   transformToSearchFieldsConfig,
   transformToFilterFieldsConfig,
-  getSearchDateValue,
+  getQueryObj,
 } from './untils';
 import './index.less';
 
 // 是否存在base的商业版本
 const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
+const cacheKey = 'projects.list.selected';
+
 export default observer(() => {
   const {
     ProjectsProUseStore,
@@ -63,10 +66,9 @@ export default observer(() => {
     'haitianMaster:createProjectExtraFields',
   );
 
-  const customQuerybarCRef = useRef();
-
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
   const [inNewUserGuideStepOne, setInNewUserGuideStepOne] = useState(false);
+  const [pageLoading, setPageloading] = useState(true);
   const [tableColumnsSet, setTableColumnsSet] = useState([]);
   const [customFields, setCustomFields] = useState(undefined);
 
@@ -91,7 +93,7 @@ export default observer(() => {
         pageAction: '',
         buildInFlag: false,
       });
-      setCustomFields(res);
+      setCustomFields(res || []);
       res.forEach((item) => {
         if (!projectListDataSet.getField(item.code)) {
           projectListDataSet.addField(item.fieldCode, {
@@ -107,6 +109,9 @@ export default observer(() => {
   useEffect(() => {
     if (!haitianFuncLoading && customFields) {
       initTableColumnsSet();
+      setPageloading(false);
+      projectListDataSet.setState('queryData', getQueryObj(getCacheData(cacheKey), customFields));
+      projectListDataSet.query(1);
     }
   }, [haitianFuncLoading, func, projectListDataSet, customFields]);
 
@@ -158,7 +163,7 @@ export default observer(() => {
 
   const refresh = (projectId) => {
     ProjectsProUseStore.checkCreate(organizationId);
-    customQuerybarCRef?.current?.reset();
+    projectListDataSet.query(1);
     if (projectId) {
       MenuStore.menuGroup.project = {};
     }
@@ -288,76 +293,11 @@ export default observer(() => {
 
   const customQuerybarChange = useCallback(
     (data) => {
-      const normalContrastMap = new Map([
-        ['input', 'string'],
-        ['text', 'text'],
-        ['number', 'number'],
-      ]);
-      const dateContrastMap = new Map([
-        ['date', 'date'],
-        ['datetime', 'date'],
-        ['time', 'dateHms'],
-      ]);
-
-      const queryObj = {
-        projectCustomFieldSearchVO: {
-          option: [],
-        },
-      };
-      const customFieldsKeysArr = [];
-      customFields.forEach((item) => {
-        const { fieldType, fieldId, fieldCode } = item;
-        const value = data[fieldCode];
-        customFieldsKeysArr.push(fieldCode);
-        if (value) {
-          const normalKey = normalContrastMap.get(fieldType);
-          const dateKey = dateContrastMap.get(fieldType);
-          if (normalKey) {
-            queryObj.projectCustomFieldSearchVO[normalKey] = [
-              {
-                fieldId,
-                value,
-              },
-            ];
-          } else if (dateKey) {
-            queryObj.projectCustomFieldSearchVO[dateKey] = [
-              {
-                fieldId,
-                ...getSearchDateValue(value, fieldType),
-              },
-            ];
-          } else {
-            // 有option的类型 是一个[]
-            const arr = [];
-            value.forEach((v) => {
-              arr.push(v);
-            });
-            queryObj.projectCustomFieldSearchVO.option.push({
-              fieldId,
-              value: arr,
-            });
-          }
-        }
-      });
-      Object.keys(data).forEach((key) => {
-        if (customFieldsKeysArr.includes(key)) {
-          return;
-        }
-        const value = data[key];
-        if (isNil(value) || (Array.isArray(value) && !value.length)) {
-          return;
-        }
-        if (key === 'updateTime') {
-          queryObj.lastUpdateDateStart = moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
-          queryObj.lastUpdateDateEnd = moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
-        } else if (key === 'createTime') {
-          queryObj.creationDateStart = moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
-          queryObj.creationDateEnd = moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
-        } else {
-          queryObj[key] = value;
-        }
-      });
-      projectListDataSet.query(0, queryObj);
+      if (!customFields) {
+        return;
+      }
+      projectListDataSet.setState('queryData', getQueryObj(data, customFields));
+      projectListDataSet.query(1);
     },
     [projectListDataSet, customFields],
   );
@@ -410,27 +350,34 @@ export default observer(() => {
     <div className="allProjects">
       <div className="allProjects-title">{renderTitle()}</div>
       <div className="allProjects-content">
-        <div className="allProjects-table-header">
-          <CustomQuerybar
-            searchFieldsConfig={searchFieldsConfig}
-            filterFieldsConfig={filterFieldsConfig}
-            customfilterFieldsConfig={customfilterFieldsConfig}
-            dateFieldsArr={getDateFieldsArr}
-            onChange={customQuerybarChange}
-            cRef={customQuerybarCRef}
-          />
-          <div className="tableColumnSet-content">
-            <TableColumnSet
-              columnsSetConfig={tableColumnsSet}
-              handleOk={handleEditColumnOk}
-            />
-          </div>
-        </div>
-        <AllProjectTable
-          columnsSetConfig={tableColumnsSet}
-          onColumnResize={run}
-          fieldFunc={func}
-        />
+        {
+          pageLoading ? <Spin /> : (
+            <>
+              <div className="allProjects-table-header">
+                <CustomQuerybar
+                  searchFieldsConfig={searchFieldsConfig}
+                  filterFieldsConfig={filterFieldsConfig}
+                  customfilterFieldsConfig={customfilterFieldsConfig}
+                  dateFieldsArr={getDateFieldsArr}
+                  cacheKey={cacheKey}
+                  onChange={customQuerybarChange}
+                />
+                <div className="tableColumnSet-content">
+                  <TableColumnSet
+                    columnsSetConfig={tableColumnsSet}
+                    handleOk={handleEditColumnOk}
+                    alawaysDisplayCodes={['name']}
+                  />
+                </div>
+              </div>
+              <AllProjectTable
+                columnsSetConfig={tableColumnsSet}
+                onColumnResize={run}
+                fieldFunc={func}
+              />
+            </>
+          )
+        }
       </div>
     </div>
   );

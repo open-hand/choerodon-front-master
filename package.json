@@ -2,7 +2,7 @@
   "name": "@choerodon/master",
   "routeName": "master",
   "nonExpose": true,
-  "version": "2.5.0",
+  "version": "2.4.0",
   "description": "A package of Master for Choerodon platform.",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -115,6 +115,7 @@
     "timeago-react": "^3.0.2",
     "typescript": "4.7.4",
     "universal-cookie": "^4.0.4",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "react-image-lightbox": "^5.1.4"
   }
 }

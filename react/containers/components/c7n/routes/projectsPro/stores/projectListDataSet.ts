@@ -6,14 +6,18 @@ export default (({
     extraFields = func.default();
   }
   return ({
-    autoQuery: true,
+    autoQuery: false,
     autoCreate: true,
     selection: false as any,
     transport: {
-      read: ({ dataSet, params, data }:any) => ({
-        url: `/cbase/choerodon/v1/organizations/${organizationId}/users/${userId}/projects/paging`,
-        method: 'post',
-      }),
+      read: ({ dataSet, params, data }:any) => {
+        const queryData = dataSet?.getState('queryData');
+        return {
+          url: `/cbase/choerodon/v1/organizations/${organizationId}/users/${userId}/projects/paging`,
+          method: 'post',
+          data: queryData,
+        };
+      },
     },
     fields: [
       {

@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react/require-default-props */
 import React, {
-  useEffect, useMemo, useRef, useState, useImperativeHandle,
+  useEffect, useMemo, useRef, useState, useImperativeHandle, useCallback,
 } from 'react';
 import { FlatSelect, FlatTreeSelect } from '@zknow/components';
 import {
@@ -12,7 +12,16 @@ import Record from 'choerodon-ui/pro/lib/data-set/Record';
 import { forIn, isNil, omit } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import SearchFilterBtn, { ICheckBoxFields } from './customQueryBarFilter';
+import LocalCacheStore, { LocalCacheStoreIssueTypeKeys } from '@/stores/cacheStore/LocalCacheStore';
 import './customQuerybar.less';
+
+window.onunload = () => {
+  LocalCacheStore.clear();
+};
+
+window.onbeforeunload = () => {
+  LocalCacheStore.clear();
+};
 
 export interface IProps {
   /**
@@ -27,7 +36,11 @@ export interface IProps {
    * 系统自定义字段
    */
   customfilterFieldsConfig: ICheckBoxFields[]
-  onChange: (data: { [key: string]: any }, name?:string, record?:Record) => void
+  /**
+   * 缓存key
+   */
+  cacheKey?: LocalCacheStoreIssueTypeKeys
+  onChange: (data: { [key: string]: any }, name?: string, record?: Record) => void
   showResetButton?: boolean
   showSearchInput?: boolean
   dateFieldsArr?: string[]
@@ -58,9 +71,15 @@ const fieldsMap = new Map(
   ],
 );
 
+export const getCacheData = (cacheKey: LocalCacheStoreIssueTypeKeys) => {
+  const d = cacheKey ? LocalCacheStore.getItem(cacheKey) : '';
+  const cacheData = d ? JSON.parse(d) : {};
+  return cacheData;
+};
+
 const Index: React.FC<IProps> = (props) => {
   const {
-    searchFieldsConfig, filterFieldsConfig, customfilterFieldsConfig, onChange, cRef, showResetButton = true, showSearchInput = true, dateFieldsArr = [],
+    cacheKey, searchFieldsConfig, filterFieldsConfig, customfilterFieldsConfig, onChange, cRef, showResetButton = true, showSearchInput = true, dateFieldsArr = [],
   } = props;
   const [visibleOptionalFieldsNum, setVisibleOptionalFieldsNum] = useState(0);
   const [recordExistedValue, setRecordExistedValue] = useState(false);
@@ -68,42 +87,62 @@ const Index: React.FC<IProps> = (props) => {
   const [expandBtnType, setExpandBtnType] = useState<'expand_less' | 'expand_more'>('expand_less');
 
   const childRef = useRef<any>();
+  const divRef1 = useRef<any>();
+  const divRef2 = useRef<any>();
 
   useImperativeHandle(cRef, () => ({
     reset: handleReset,
   }));
 
-  function queryBarDsInit(ds:DataSet, config:ISearchFields[]) {
+  function queryBarDsInit(ds: DataSet, config: ISearchFields[]) {
     config.forEach((item: ISearchFields) => {
-      ds.addField(item.dsProps.name as string, {
-        ...item.dsProps,
-      });
-      ds.setState(item.dsProps.name as string, {
-        initial: item.initial,
-        type: item.type,
-        visible: item.initial,
-        width: item.width,
-        eleProps: item.eleProps,
-      });
+      if (!ds.getField(item.dsProps.name as string)) {
+        ds.addField(item.dsProps.name as string, {
+          ...item.dsProps,
+        });
+        ds.setState(item.dsProps.name as string, {
+          initial: item.initial,
+          type: item.type,
+          visible: item.initial,
+          width: item.width,
+          eleProps: item.eleProps,
+        });
+      }
     });
   }
 
-  function searchFilterDsInit(ds:DataSet, config:ICheckBoxFields[], isSystem:boolean) {
+  function searchFilterDsInit(ds: DataSet, config: ICheckBoxFields[], isSystem: boolean) {
     config.forEach((item: ICheckBoxFields) => {
-      ds.addField(item.name, {
-        type: 'boolean' as any,
-      });
-      ds.setState(item.name, {
-        visible: true,
-        label: item.label,
-        isSystem,
-      });
+      if (!ds.getField(item.name as string)) {
+        ds.addField(item.name, {
+          type: 'boolean' as any,
+        });
+        ds.setState(item.name, {
+          visible: true,
+          label: item.label,
+          isSystem,
+        });
+      }
     });
   }
+
+  const getVisibleOptionalFieldsNum = useCallback(
+    () => {
+      let num = 0;
+      [...queryBarDataSet.fields].map((arr) => {
+        const fieldName = arr[0];
+        const state = queryBarDataSet?.getState(fieldName);
+        if (state?.visible && !state?.initial) { // 第一个input框没有
+          num += 1;
+        }
+      });
+      searchFilterDataSet.setState('checkedNum', num);
+      return num;
+    },
+    [],
+  );
 
   const queryBarDataSet = useMemo(() => {
-    console.log(9999);
-    // TODO 重复请求是因为 searchFieldsConfig 变化了 看看怎么改
     const ds = new DataSet({
       autoCreate: true,
       autoQuery: false,
@@ -111,7 +150,7 @@ const Index: React.FC<IProps> = (props) => {
       events: {
         update: ({
           dataSet, record, name, value, oldValue,
-        }: { dataSet:DataSet, record: Record, name: string, value: any, oldValue: any }) => {
+        }: { dataSet: DataSet, record: Record, name: string, value: any, oldValue: any }) => {
           if (isNil(oldValue) && Array.isArray(value) && !value.length) {
             return;
           }
@@ -130,14 +169,26 @@ const Index: React.FC<IProps> = (props) => {
 
           let returnData = omit(record?.toData(), '__dirty');
 
-          const omitArr:string[] = [];
+          const omitArr: string[] = [];
           Object.keys(returnData).forEach((key) => {
             if (dateFieldsArr.includes(key) && returnData[key] && (!returnData[key][0] || !returnData[key][1])) {
               omitArr.push(key);
             }
           });
           returnData = omit(returnData, omitArr); // 防止settimeout 期间请求
-          onChange(returnData, name, record);
+
+          if (cacheKey) {
+            const d = LocalCacheStore.getItem(cacheKey);
+            const cacheData = d ? JSON.parse(d) : {};
+            LocalCacheStore.setItem(cacheKey as any, JSON.stringify({
+              ...cacheData,
+              ...returnData,
+            }));
+          }
+
+          if (dataSet.getState('initFinish')) {
+            onChange(returnData, name, record);
+          }
         },
       },
     });
@@ -152,13 +203,33 @@ const Index: React.FC<IProps> = (props) => {
       fields: [],
       events: {
         update: ({ record, name, value }: { record: Record, name: string, value: any }) => {
+          if (cacheKey) {
+            const d = LocalCacheStore.getItem(cacheKey);
+            const cacheData = d ? JSON.parse(d) : {};
+
+            if (!Object.keys(cacheData).includes(name) && value) {
+              const obj = {
+                ...cacheData,
+                [name]: null,
+              };
+
+              LocalCacheStore.setItem(cacheKey as any, JSON.stringify(
+                obj,
+              ));
+            }
+          }
           const state = queryBarDataSet?.getState(name);
+          if (!state) {
+            return;
+          }
           queryBarDataSet?.setState(name, {
             ...state,
             visible: value,
           });
           if (!value) {
             queryBarDataSet?.current?.set(name, null);
+          } else {
+            queryBarDataSet?.current?.getField(name)?.options?.query();
           }
           setVisibleOptionalFieldsNum(getVisibleOptionalFieldsNum());
         },
@@ -167,10 +238,26 @@ const Index: React.FC<IProps> = (props) => {
     searchFilterDsInit(ds, filterFieldsConfig, true);
     searchFilterDsInit(ds, customfilterFieldsConfig, false);
     return ds;
-  }, [filterFieldsConfig, customfilterFieldsConfig, queryBarDataSet]);
+  }, [filterFieldsConfig, customfilterFieldsConfig, queryBarDataSet, getVisibleOptionalFieldsNum]);
 
   useEffect(() => {
-    const ele = document.getElementsByClassName('searchField-container-left-block1-inner')[0];
+    const d = cacheKey ? LocalCacheStore.getItem(cacheKey) : '';
+    const cacheData = d ? JSON.parse(d) : {};
+    const arr = Object.keys(cacheData);
+    arr.forEach((key, index) => {
+      searchFilterDataSet?.current?.set(key, true);
+      queryBarDataSet?.current?.set(key, cacheData[key]);
+      if (index === arr.length - 1) {
+        queryBarDataSet.setState('initFinish', true);
+      }
+    });
+    if (!arr.length) {
+      queryBarDataSet.setState('initFinish', true);
+    }
+  }, [cacheKey, queryBarDataSet, searchFilterDataSet]);
+
+  useEffect(() => {
+    const ele = divRef2?.current;
     const height = +(window.getComputedStyle(ele).height.split('px')[0]);
     const num = height / 42;
     if (num > 1) {
@@ -182,7 +269,7 @@ const Index: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     const record = queryBarDataSet?.current;
-    const obj = omit(record?.toData(), '__dirty');
+    const obj = omit(record?.toData(), ['__dirty']);
     let bool = false;
     forIn(obj, (value, key) => {
       if (Array.isArray(value)) {
@@ -213,19 +300,6 @@ const Index: React.FC<IProps> = (props) => {
     setVisibleOptionalFieldsNum(getVisibleOptionalFieldsNum());
   };
 
-  const getVisibleOptionalFieldsNum = () => {
-    let num = 0;
-    [...queryBarDataSet.fields].map((arr) => {
-      const fieldName = arr[0];
-      const state = queryBarDataSet?.getState(fieldName);
-      if (state?.visible && !state?.initial) { // 第一个input框没有
-        num += 1;
-      }
-    });
-    searchFilterDataSet.setState('checkedNum', num);
-    return num;
-  };
-
   const getFields = (arr: Array<any>) => {
     const field = arr[1];
     const fieldName = field.name;
@@ -245,7 +319,7 @@ const Index: React.FC<IProps> = (props) => {
           name={fieldName}
           style={{ width: width || 'auto' }}
           dataSet={queryBarDataSet}
-          onChange={(v:any) => {
+          onChange={(v: any) => {
             queryBarDataSet.getField(fieldName)?.options?.setState('selectids', v);
           }}
           {...eleProps}
@@ -276,24 +350,16 @@ const Index: React.FC<IProps> = (props) => {
     setVisibleOptionalFieldsNum(0);
     childRef?.current?.reset();
     onChange({});
+    LocalCacheStore.setItem(cacheKey as any, JSON.stringify({}));
   };
-
-  //  useCallback ???
-  // const querybarDsCurrentExistValue = useMemo(
-  //   () => {
-  //   },
-  //   [queryBarDataSet?.current?.toData()],
-  // );
 
   const handleExpandClick = () => {
     if (expandBtnType === 'expand_less') {
-      document.getElementsByClassName('searchField-container-left-block1')[0].classList
-        .add('searchField-container-left-block1-only1line');
+      divRef1?.current.classList.add('searchField-container-left-block1-only1line');
       setExpandBtnType('expand_more');
       return;
     }
-    document.getElementsByClassName('searchField-container-left-block1')[0].classList
-      .remove('searchField-container-left-block1-only1line');
+    divRef1?.current.classList.remove('searchField-container-left-block1-only1line');
     setExpandBtnType('expand_less');
   };
 
@@ -303,13 +369,13 @@ const Index: React.FC<IProps> = (props) => {
         <div className="searchField-container-left">
           {
             showSearchInput && (
-            <div className="searchField-item">
-              <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={queryBarDataSet} name="searchContent" />
-            </div>
+              <div className="searchField-item">
+                <TextField prefix={<Icon type="search" />} placeholder="请输入搜索内容" dataSet={queryBarDataSet} name="searchContent" />
+              </div>
             )
           }
-          <div className="searchField-container-left-block1">
-            <div className="searchField-container-left-block1-inner">
+          <div ref={divRef1} className="searchField-container-left-block1">
+            <div ref={divRef2} className="searchField-container-left-block1-inner">
               {
                 [...queryBarDataSet.fields].map((item) => getFields(item))
               }

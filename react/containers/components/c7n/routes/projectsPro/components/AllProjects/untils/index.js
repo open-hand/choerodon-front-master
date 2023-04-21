@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { isNil } from 'lodash';
 import { getCustomFieldDsOptions, getCustomFieldDsType } from '@/containers/components/c7n/routes/projectsPro/components/create-project/untils/getCustomFieldDsProps';
 import { defaultSelectEleConfig, userOptionRender } from '../config/querybarConfig';
 import { selectTypeArr, timeTypeArr, userSelectArr } from '../../create-project/untils/getCustomFieldDsProps';
@@ -41,6 +42,18 @@ const searchFieldsTypeMap = new Map([
   ['multiMember', 'FlatSelect'],
 ]);
 
+const normalContrastMap = new Map([
+  ['input', 'string'],
+  ['text', 'text'],
+  ['number', 'number'],
+]);
+
+const dateContrastMap = new Map([
+  ['date', 'date'],
+  ['datetime', 'date'],
+  ['time', 'dateHms'],
+]);
+
 function transformColumnDataToSubmit(columnsData) {
   const listLayoutColumnRelVOS = [];
   columnsData.forEach((item, index) => {
@@ -69,7 +82,7 @@ function transformToSearchFieldsConfig(systemConfig, customFields) {
       initial: false,
       dsProps: {
         name: item.fieldCode,
-        options: getCustomFieldDsOptions(item, false),
+        options: getCustomFieldDsOptions(item, false, false),
         type: getCustomFieldDsType(item),
         textField: 'value', // 针对下拉
         valueField: 'id',
@@ -130,9 +143,75 @@ const getSearchDateValue = (value, fieldType) => {
   };
 };
 
+const getQueryObj = (data, customFields) => {
+  const queryObj = {
+    projectCustomFieldSearchVO: {
+      option: [],
+    },
+  };
+  const customFieldsKeysArr = [];
+
+  customFields.forEach((item) => {
+    const { fieldType, fieldId, fieldCode } = item;
+    const value = data[fieldCode];
+    customFieldsKeysArr.push(fieldCode);
+    if (value) {
+      const normalKey = normalContrastMap.get(fieldType);
+      const dateKey = dateContrastMap.get(fieldType);
+      if (normalKey) {
+        queryObj.projectCustomFieldSearchVO[normalKey] = [
+          {
+            fieldId,
+            value,
+          },
+        ];
+      } else if (dateKey) {
+        queryObj.projectCustomFieldSearchVO[dateKey] = [
+          {
+            fieldId,
+            ...getSearchDateValue(value, fieldType),
+          },
+        ];
+      } else {
+        // 有option的类型 是一个[]
+        const arr = [];
+        value.forEach((v) => {
+          arr.push(v);
+        });
+        queryObj.projectCustomFieldSearchVO.option.push({
+          fieldId,
+          value: arr,
+        });
+      }
+    }
+  });
+
+  Object.keys(data).forEach((key) => {
+    if (customFieldsKeysArr.includes(key)) {
+      return;
+    }
+    const value = data[key];
+    if (isNil(value) || (Array.isArray(value) && !value.length)) {
+      return;
+    }
+    if (key === 'updateTime') {
+      queryObj.lastUpdateDateStart = moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
+      queryObj.lastUpdateDateEnd = moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
+    } else if (key === 'createTime') {
+      queryObj.creationDateStart = moment(value[0]).format('YYYY-MM-DD HH:mm:ss');
+      queryObj.creationDateEnd = moment(value[1]).format('YYYY-MM-DD HH:mm:ss');
+    } else {
+      queryObj[key] = value;
+    }
+  });
+
+  return queryObj;
+};
+
 export {
   transformColumnDataToSubmit,
   transformToSearchFieldsConfig,
   transformToFilterFieldsConfig,
   getSearchDateValue,
+  getQueryObj,
 };

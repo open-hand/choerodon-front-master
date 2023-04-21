@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable no-param-reassign */
 import {
   CheckBox, Icon, Modal, Button, DataSet,
@@ -44,6 +45,7 @@ export interface ICustomFieldItem {
 export interface IProps {
   columnsSetConfig: IColumnSetConfig[]
   handleOk: (columnsData: IColumnSetConfig[]) => boolean
+  alawaysDisplayCodes?: string[]
 }
 // TODO: 有时间优化一下
 const grid = 0;
@@ -61,8 +63,12 @@ export const initColumnSetData = (remoteData: IRemoteColumnSetConfig[] | null, d
     defaultData.forEach((defaultItem) => {
       const found = remoteData.find((remoteItem) => remoteItem.columnCode === defaultItem.name);
       let width = 0;
-      if (found && !found.width && defaultItem.width) { // 如果远程没有width数据(为0) default有，用default的
-        width = defaultItem.width;
+      if (found) { // 如果远程没有width数据(为0) default有，用default的
+        if (!found.width && defaultItem.width) {
+          width = defaultItem.width;
+        } else {
+          width = found.width;
+        }
       }
       columnArr.push({
         name: defaultItem.name,
@@ -104,7 +110,9 @@ export const initColumnSetData = (remoteData: IRemoteColumnSetConfig[] | null, d
 };
 
 const Content: React.FC<any> = observer((props) => {
-  const { modal, columnsSetConfig, handleOk } = props;
+  const {
+    modal, columnsSetConfig, handleOk, alawaysDisplayCodes,
+  } = props;
   const [columnsSet, setColumnsSet] = useState<any>([]);
   useEffect(() => {
     setColumnsSet(columnsSetConfig);
@@ -145,47 +153,52 @@ const Content: React.FC<any> = observer((props) => {
                 width: '100%',
               }}
             >
-              {columnsSet.map((item: any, index: any) => (
-                <Draggable
-                  index={index}
-                  draggableId={item.name}
-                  key={item.name}
-                >
-                  {(provided: any, snapshot: any) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style,
-                      )}
-                    >
-                      <div style={{
-                        height: 37,
-                        borderBottom: '1px solid #D9E6F2',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '0 10px',
-                      }}
+              {columnsSet.map((item: any, index: any) => {
+                if (alawaysDisplayCodes.includes(item.name)) {
+                  return '';
+                }
+                return (
+                  <Draggable
+                    index={index}
+                    draggableId={item.name}
+                    key={item.name}
+                  >
+                    {(provided: any, snapshot: any) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style,
+                        )}
                       >
                         <div style={{
+                          height: 37,
+                          borderBottom: '1px solid #D9E6F2',
                           display: 'flex',
                           alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '0 10px',
                         }}
                         >
-                          <Icon type="baseline-drag_indicator" style={{ marginRight: '10px' }} />
-                          <span>{item.label}</span>
-                        </div>
-                        <div>
-                          <CheckBox checked={item.isSelected} onChange={(value: boolean) => { handleCheckChange(value, index); }} />
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                          >
+                            <Icon type="baseline-drag_indicator" style={{ marginRight: '10px' }} />
+                            <span>{item.label}</span>
+                          </div>
+                          <div>
+                            <CheckBox checked={item.isSelected} onChange={(value: boolean) => { handleCheckChange(value, index); }} />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                </Draggable>
-              ))}
+                    )}
+                  </Draggable>
+                );
+              })}
               {droppableProvided.placeholder}
             </div>
           )}
@@ -198,7 +211,7 @@ const Content: React.FC<any> = observer((props) => {
 const Index: React.FC<IProps> = (props) => {
   const {
     // @ts-ignore
-    handleOk, columnsSetConfig,
+    handleOk, columnsSetConfig, alawaysDisplayCodes = [],
   } = props;
 
   const openEditColumnModal = () => {
@@ -209,7 +222,7 @@ const Index: React.FC<IProps> = (props) => {
       style: {
         width: 380,
       },
-      children: <Content columnsSetConfig={columnsSetConfig} handleOk={handleOk} />,
+      children: <Content columnsSetConfig={columnsSetConfig} handleOk={handleOk} alawaysDisplayCodes={alawaysDisplayCodes} />,
       bodyStyle: {
         paddingTop: 10,
       },

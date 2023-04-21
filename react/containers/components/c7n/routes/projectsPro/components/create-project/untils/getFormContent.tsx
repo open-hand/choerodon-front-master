@@ -98,7 +98,7 @@ const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, fo
     obj = {
       ...obj,
       maxTagCount: 3,
-      maxTagTextLength: 3,
+      maxTagTextLength: 4,
     };
   }
 
@@ -131,15 +131,19 @@ const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, fo
       arr.push(
         // @ts-ignore
         <div className="c7ncd-operation-form-item-healthStatus" colSpan={50}>
-          <div className="c7ncd-operation-form-item-healthStatus-label">健康状态:</div>
+          <div className="c7ncd-operation-form-item-healthStatus-label">健康状态</div>
           <div className="c7ncd-operation-form-item-healthStatus-content">
-            <div
-              className="ring"
-              style={{
-                border: `2px solid ${healthState?.color || healthStateDto?.color}`,
-              }}
-            />
-            <span className="text">{healthState?.name || healthStateDto?.name}</span>
+            {
+              (healthState?.name || healthStateDto?.name) && (
+                <div
+                  className="ring"
+                  style={{
+                    border: `2px solid ${healthState?.color || healthStateDto?.color}`,
+                  }}
+                />
+              )
+            }
+            <span className="text">{healthState?.name || healthStateDto?.name || '-'}</span>
           </div>
         </div>,
       );
