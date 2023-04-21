@@ -58,10 +58,10 @@ const Index: React.FC<any> = (props) => {
     intlPrefix,
     projectId: projectIds,
   } = useProjectsProStore();
-
   const refresh = () => {
     projectListDataSet.query(1);
   };
+  console.log('ahaa', prefix);
 
   const { loading: openStatusSettingModalLoading, func: openStatusSettingModal }: any = useExternalFunc('baseBusiness', 'base-business:openStatusSettingModal');
 
@@ -75,7 +75,6 @@ const Index: React.FC<any> = (props) => {
   });
 
   const displayColumn = useGetDisplayColumn(columnsSetConfig, getAdjustableColumns(formatMessage, prefix, fieldFunc));
-
   const renderName = ({ record }: { record: Record }) => {
     const projData: any = record?.toData();
     const unix = String(moment(projData.creationDate).unix());
