@@ -149,6 +149,10 @@ export const renderUsers = ({ value }: { value:any }) => <UserTag data={value} s
 
 export const getAdjustableColumns = (formatMessage:any, prefix:string, fieldFunc: any) => [
   {
+    name: 'name',
+    sortable: true,
+  },
+  {
     name: 'code',
     tooltip: 'overflow' as any,
     sortable: true,

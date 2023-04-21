@@ -1,5 +1,11 @@
 export const defaultColumnSetConfig = [
   {
+    name: 'name',
+    label: '项目',
+    isSelected: true,
+    order: -1,
+  },
+  {
     name: 'code',
     label: '项目编码',
     isSelected: true,

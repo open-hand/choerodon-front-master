@@ -110,8 +110,8 @@ export default observer(() => {
     if (!haitianFuncLoading && customFields) {
       initTableColumnsSet();
       setPageloading(false);
-      projectListDataSet.setState('queryParams', getQueryObj(getCacheData(cacheKey), customFields));
-      projectListDataSet.query(1, projectListDataSet.getState('queryParams'));
+      projectListDataSet.setState('queryData', getQueryObj(getCacheData(cacheKey), customFields));
+      projectListDataSet.query(1);
     }
   }, [haitianFuncLoading, func, projectListDataSet, customFields]);
 
@@ -163,7 +163,7 @@ export default observer(() => {
 
   const refresh = (projectId) => {
     ProjectsProUseStore.checkCreate(organizationId);
-    projectListDataSet.query(1, projectListDataSet.getState('queryParams'));
+    projectListDataSet.query(1);
     if (projectId) {
       MenuStore.menuGroup.project = {};
     }
@@ -296,8 +296,8 @@ export default observer(() => {
       if (!customFields) {
         return;
       }
-      projectListDataSet.setState('queryParams', getQueryObj(data, customFields));
-      projectListDataSet.query(0, projectListDataSet.getState('queryParams'));
+      projectListDataSet.setState('queryData', getQueryObj(data, customFields));
+      projectListDataSet.query(1);
     },
     [projectListDataSet, customFields],
   );
@@ -366,6 +366,7 @@ export default observer(() => {
                   <TableColumnSet
                     columnsSetConfig={tableColumnsSet}
                     handleOk={handleEditColumnOk}
+                    alawaysDisplayCodes={['name']}
                   />
                 </div>
               </div>
