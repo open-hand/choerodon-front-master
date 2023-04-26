@@ -417,7 +417,13 @@ class Masters extends Component {
             <div className="content-wrapper">
               <MenusPro />
               <Permission service={['choerodon.code.project.setting.general-setting.ps.feedback']}>
-                {mount('base-business:yqFeedback', {})}
+                <ExternalComponent
+                  system={{
+                    scope: 'baseBusiness',
+                    module: 'base-business:yqFeedback',
+                  }}
+                />
+                {/* {mount('base-business:yqFeedback', {})} */}
                 {/* <YqFeedback /> */}
               </Permission>
               {/* {mount('base-pro:Guide', {
