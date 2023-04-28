@@ -122,12 +122,12 @@ export default ({
         method: 'get',
       }),
       create: ({ data: [data] }) => ({
-        url: `/cbase/choerodon/v1/organizations/${organizationId}/projects`,
+        url: `/cbase/choerodon/v1/organizations/${organizationId}/project_template`,
         method: 'post',
         data: { ...data, operateType: 'create' },
       }),
       update: ({ data: [data] }) => ({
-        url: `/cbase/choerodon/v1/organizations/${organizationId}/projects/${data.id}`,
+        url: `/cbase/choerodon/v1/organizations/${organizationId}/project_template/${data.id}`,
         method: 'put',
         data: { ...data, operateType: 'update' },
       }),
@@ -143,7 +143,7 @@ export default ({
       {
         name: 'name',
         type: 'string',
-        label: '项目名称',
+        label: '名称',
         required: true,
         validator: nameValidator,
         defaultValue: newUserGuideDefaultValue.name,
@@ -172,7 +172,7 @@ export default ({
         name: 'templateClassficationId',
         label: '模板分类',
         textField: 'name',
-        valueField: 'id',
+        valueField: 'code',
         options: templateDs,
       },
       {
@@ -282,7 +282,7 @@ export default ({
       {
         name: 'description',
         type: 'string',
-        label: '项目描述',
+        label: '描述',
         maxLength: 1000,
         defaultValue: newUserGuideDefaultValue.description,
       },

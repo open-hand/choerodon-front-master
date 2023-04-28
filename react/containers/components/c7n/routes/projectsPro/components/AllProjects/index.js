@@ -245,10 +245,10 @@ export default observer(() => {
       className: 'c7n-projects-modal-create-project',
       children: (
         <CreateProjectTemplate
-          refresh={refresh}
-          projectId={currentProjectId}
+          // refresh={refresh}
+          // projectId={currentProjectId}
           categoryCodes={categoryCodes}
-          inNewUserGuideStepOne={inNewUserGuideStepOne}
+          inNewUserGuideStepOne={false}
         />
       ),
       okText: currentProjectId ? '保存' : '创建',

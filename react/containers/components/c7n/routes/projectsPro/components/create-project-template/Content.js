@@ -356,25 +356,26 @@ const CreateProject = observer(() => {
           }
         });
         record.set('customFields', customFields);
-
-        const res = await formDs.forceSubmit();
-        if (res && !res.failed && res.list && res.list.length) {
-          const projectId = get(res.list[0], 'id');
-          if (projectId) {
-            openNotification({
-              projectId,
-              operateType: isModify ? 'update' : 'create',
-            });
-          }
-          refresh(projectId);
-          return true;
-        }
-        if (res.failed) {
-          message.error(res.message);
-        }
-        setIsLoading(false);
+        // const res = await formDs.forceSubmit();
+        // if (res && !res.failed && res.list && res.list.length) {
+        //   const projectId = get(res.list[0], 'id');
+        //   if (projectId) {
+        //     openNotification({
+        //       projectId,
+        //       operateType: isModify ? 'update' : 'create',
+        //     });
+        //   }
+        //   refresh(projectId);
+        //   return true;
+        // }
+        // if (res.failed) {
+        //   message.error(res.message);
+        // }
+        // setIsLoading(false);
         return false;
       }
+      console.log('falg', flag);
+      console.log('result', record.toData());
       setIsLoading(false);
       return false;
     } catch (e) {
@@ -389,7 +390,7 @@ const CreateProject = observer(() => {
       key: notificationKey,
       message: (
         <span className={`${prefixCls}-notification-title`}>
-          {isModify ? '修改项目' : '创建项目'}
+          {isModify ? '修改项目模板' : '创建项目模板'}
         </span>
       ),
       description: (
