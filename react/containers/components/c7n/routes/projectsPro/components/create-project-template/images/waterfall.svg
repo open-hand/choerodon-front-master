@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>瀑布类型备份</title>
+    <g id="项目列表" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="瀑布类型备份">
+            <rect id="矩形" x="0" y="0" width="40" height="40"></rect>
+            <g id="编组-4" transform="translate(5.000000, 4.000000)" fill-rule="nonzero">
+                <polygon id="路径" fill="#3FD1F5" points="9.21836966 5.50561128 14.2181235 5.50561128 14.2181235 18.3049811 9.21836966 18.3049811"></polygon>
+                <polygon id="路径" fill="#686FFF" points="16.0533273 0 21.0530811 0 21.0530811 15.3992418 16.0533273 15.3992418"></polygon>
+                <polygon id="路径" fill="#4C36B5" points="16.0533273 0 21.0530811 0 21.0530811 2.9998523 16.0533273 2.9998523"></polygon>
+                <polygon id="路径" fill="#3FD1F5" points="22.8882849 0 27.8880387 0 27.8880387 25.1987593 22.8882849 25.1987593"></polygon>
+                <polygon id="路径" fill="#686FFF" points="2.38341206 5.50561128 7.3831659 5.50561128 7.3831659 25.5046266 2.38341206 25.5046266"></polygon>
+                <polygon id="路径" fill="#4C36B5" points="2.38341206 22.5047743 7.3831659 22.5047743 7.3831659 25.5046266 2.38341206 25.5046266"></polygon>
+                <polygon id="路径" fill="#4C36B5" points="0 30.1378626 30.96 30.1378626 30.96 31.8578626 5.05478012e-16 31.8578626"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

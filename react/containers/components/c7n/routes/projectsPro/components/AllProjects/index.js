@@ -16,6 +16,7 @@ import { Permission } from '@/components/permission';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import CreateProject from '../create-project';
+import CreateProjectTemplate from '../create-project-template';
 import CustomQuerybar, { getCacheData } from './components/customQuerybar';
 import { organizationsApi, cbaseApi } from '@/apis';
 import useExternalFunc from '@/hooks/useExternalFunc';
@@ -209,6 +210,17 @@ export default observer(() => {
               <Button
                 funcType="raised"
                 color="primary"
+                onClick={() => handleAddProjectTemplate()}
+                style={{
+                  height: 30,
+                  marginLeft: 16,
+                }}
+              >
+                创建项目模板
+              </Button>
+              <Button
+                funcType="raised"
+                color="primary"
                 disabled={!getCanCreate}
                 onClick={() => handleAddProject()}
                 style={{
@@ -224,7 +236,27 @@ export default observer(() => {
       </>
     );
   };
-
+  const handleAddProjectTemplate = (currentProjectId) => {
+    setCreateBtnToolTipHidden(true);
+    Modal.open({
+      key: Modal.key(),
+      drawer: true,
+      title: currentProjectId ? '项目设置' : '创建项目',
+      className: 'c7n-projects-modal-create-project',
+      children: (
+        <CreateProjectTemplate
+          refresh={refresh}
+          projectId={currentProjectId}
+          categoryCodes={categoryCodes}
+          inNewUserGuideStepOne={inNewUserGuideStepOne}
+        />
+      ),
+      okText: currentProjectId ? '保存' : '创建',
+      style: {
+        width: 744,
+      },
+    });
+  };
   const handleAddProject = (currentProjectId) => {
     setCreateBtnToolTipHidden(true);
     Modal.open({
