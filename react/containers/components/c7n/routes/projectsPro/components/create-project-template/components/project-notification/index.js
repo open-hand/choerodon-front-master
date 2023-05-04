@@ -9,7 +9,7 @@ import './index.less';
 
 const ProjectNotification = observer(({
   organizationId, projectId, notificationKey, operateType,
-  intlPrefix, formatMessage, refresh, isRetry,
+  intlPrefix, formatMessage, refresh, isRetry, setSuccess,
 }) => {
   let interval;
   const prefixCls = 'c7ncd-project-create-notification';
@@ -55,9 +55,10 @@ const ProjectNotification = observer(({
         if (res.status === 'success') {
           handleClearInterval();
           refreshList();
+          setSuccess(true);
           setTimeout(() => {
             notification.close(notificationKey);
-          }, 3000);
+          }, 1000);
           return;
         }
         if (res.status === 'failed') {

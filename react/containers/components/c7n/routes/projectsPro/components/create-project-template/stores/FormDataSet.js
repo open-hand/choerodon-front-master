@@ -118,7 +118,7 @@ export default ({
     },
     transport: {
       read: () => ({
-        url: `/cbase/choerodon/v1/projects/${projectId}`,
+        url: `/cbase/choerodon/v1/project_template/${projectId}`,
         method: 'get',
       }),
       create: ({ data: [data] }) => ({
@@ -134,7 +134,7 @@ export default ({
     },
     fields: [
       {
-        name: 'customFields', label: '自定义字段',
+        name: 'customFields', label: '自定义字段', defaultValue: [],
       },
       {
         name: 'healthStatus',
@@ -152,8 +152,8 @@ export default ({
         name: 'code',
         type: 'string',
         label: '项目编码',
-        required: true,
-        validator: codeValidator,
+        // required: true,
+        // validator: codeValidator,
         maxLength: 40,
         defaultValue: newUserGuideDefaultValue.code,
       },
@@ -172,7 +172,7 @@ export default ({
         name: 'templateClassficationId',
         label: '模板分类',
         textField: 'name',
-        valueField: 'code',
+        valueField: 'id',
         options: templateDs,
       },
       {

@@ -44,6 +44,7 @@ const CreateProject = observer(() => {
   const {
     projectId: propsProjectId,
     formDs,
+    templateDs,
     categoryDs,
     AppState,
     intl,
@@ -65,6 +66,7 @@ const CreateProject = observer(() => {
     createProjectStore,
     standardDisable,
     isTemplate,
+    setSuccess,
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
   const [check, setCheck] = useState(false);
@@ -334,7 +336,24 @@ const CreateProject = observer(() => {
         }
       }
       record.set('categories', categories);
-      const flag = await formDs.validate();
+      // 项目模板字段
+      const records = templateDs.filter((item, index) => index === templateDs.length - 1);
+      const postData = {
+        previousRank: records[0].get('rank'),
+      };
+      if (!isModify) {
+        const temolateRank = await axios.post(`cbase/choerodon/v1/organizations/${organizationId}/project_template/rank`, postData);
+        const info = {
+          organizationId: organizationId,
+          builtIn: false,
+          rank: temolateRank,
+          // templateClassficationId: record.get('templateClassficationId'),
+          templateClassficationId: 1,
+          publishStatus: 'unpublished',
+        };
+        record.set('projectTemplateInfo', info);
+      }
+      const flag = await formDs?.current.validate();
       if (flag) {
         //  改成自定义后 后端给的自定义字段 放到数据里面
         const data = formDs.current.toData();
@@ -356,26 +375,25 @@ const CreateProject = observer(() => {
           }
         });
         record.set('customFields', customFields);
-        // const res = await formDs.forceSubmit();
-        // if (res && !res.failed && res.list && res.list.length) {
-        //   const projectId = get(res.list[0], 'id');
-        //   if (projectId) {
-        //     openNotification({
-        //       projectId,
-        //       operateType: isModify ? 'update' : 'create',
-        //     });
-        //   }
-        //   refresh(projectId);
-        //   return true;
-        // }
-        // if (res.failed) {
-        //   message.error(res.message);
-        // }
-        // setIsLoading(false);
+        const res = await formDs.submit();
+        if (res && !res.failed && res.list && res.list.length) {
+          const projectId = get(res.list[0], 'id');
+          if (projectId) {
+            openNotification({
+              projectId,
+              setSuccess,
+              operateType: isModify ? 'update' : 'create',
+            });
+          }
+          refresh(projectId);
+          return true;
+        }
+        if (res.failed) {
+          message.error(res.message);
+        }
+        setIsLoading(false);
         return false;
       }
-      console.log('falg', flag);
-      console.log('result', record.toData());
       setIsLoading(false);
       return false;
     } catch (e) {
@@ -384,7 +402,7 @@ const CreateProject = observer(() => {
     }
   });
 
-  const openNotification = useCallback(({ projectId, operateType }) => {
+  const openNotification = useCallback(({ projectId, setSuccesss, operateType }) => {
     const notificationKey = `${organizationId}-${projectId}`;
     notification.open({
       key: notificationKey,
@@ -401,6 +419,7 @@ const CreateProject = observer(() => {
           operateType={operateType}
           formatMessage={formatMessage}
           intlPrefix={intlPrefix}
+          setSuccess={setSuccesss}
           refresh={refresh}
         />
       ),
