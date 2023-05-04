@@ -20,6 +20,7 @@ import CreateProjectTemplate from '../create-project-template';
 import CustomQuerybar, { getCacheData } from './components/customQuerybar';
 import { organizationsApi, cbaseApi } from '@/apis';
 import useExternalFunc from '@/hooks/useExternalFunc';
+import ButtonGroup from '@/components/btn-group';
 import AllProjectTable from './table';
 
 import {
@@ -65,6 +66,11 @@ export default observer(() => {
   const { loading: haitianFuncLoading, func } = useExternalFunc(
     'haitianMaster',
     'haitianMaster:createProjectExtraFields',
+  );
+
+  const { loading: baseBusinessFuncLoading, func: openCreateProjectByTemplateModal } = useExternalFunc(
+    'baseBusiness',
+    'base-business:openCreateProjectByTemplateModal',
   );
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
@@ -170,6 +176,12 @@ export default observer(() => {
     }
   };
 
+  const handleAddProjectByTemplate = () => {
+    openCreateProjectByTemplateModal?.default && openCreateProjectByTemplateModal.default({
+      onClickUse: handleAddProject,
+    });
+  };
+
   const renderTitle = () => {
     const { organizationId: searchOrgId } = queryString.parse(
       history.location.search,
@@ -207,7 +219,7 @@ export default observer(() => {
               title={getCreatBtnTitle}
               placement={inNewUserGuideStepOne ? 'bottomRight' : 'bottom'}
             >
-              <Button
+              {/* <Button
                 funcType="raised"
                 color="primary"
                 onClick={() => handleAddProjectTemplate()}
@@ -217,19 +229,22 @@ export default observer(() => {
                 }}
               >
                 创建项目模板
-              </Button>
+              </Button> */}
               <Button
                 funcType="raised"
                 color="primary"
+                btnItems={[{
+                  name: '创建空白项目',
+                  permissions: ['choerodon.code.organization.project.ps.create'],
+                  handler: () => handleAddProject(),
+                }, {
+                  name: '基于模板创建',
+                  permissions: ['choerodon.code.organization.project.ps.create'],
+                  handler: handleAddProjectByTemplate,
+                }]}
+                name={formatMessage({ id: 'c7ncd.project.createProject' })}
                 disabled={!getCanCreate}
-                onClick={() => handleAddProject()}
-                style={{
-                  height: 30,
-                  marginLeft: 16,
-                }}
-              >
-                {formatMessage({ id: 'c7ncd.project.createProject' })}
-              </Button>
+              />
             </Tooltip>
           </Permission>
         </div>
