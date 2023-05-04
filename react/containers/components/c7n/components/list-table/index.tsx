@@ -5,16 +5,14 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
-  Action,
-  axios,
-  Choerodon,
-} from '@choerodon/master';
-import {
+  DataSet,
   Modal,
 } from 'choerodon-ui/pro';
 import { Tag, message } from 'choerodon-ui';
-import { DataSet, Record } from '@/interface';
-import iconSvg from '@/images/icon.svg';
+import Choerodon from '@/utils/choerodon';
+import axios from '@/components/axios';
+import Action from '@/components/action';
+import iconSvg from './images/icon.svg';
 import DeleteModal from './components/delete-modal';
 import './index.less';
 
