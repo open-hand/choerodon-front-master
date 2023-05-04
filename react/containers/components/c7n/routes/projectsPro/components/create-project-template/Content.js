@@ -385,7 +385,6 @@ const CreateProject = observer(() => {
               operateType: isModify ? 'update' : 'create',
             });
           }
-          refresh(projectId);
           return true;
         }
         if (res.failed) {

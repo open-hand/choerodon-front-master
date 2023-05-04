@@ -207,7 +207,7 @@ export default observer(() => {
               title={getCreatBtnTitle}
               placement={inNewUserGuideStepOne ? 'bottomRight' : 'bottom'}
             >
-              {/* <Button
+              <Button
                 funcType="raised"
                 color="primary"
                 onClick={() => handleAddProjectTemplate()}
@@ -217,7 +217,7 @@ export default observer(() => {
                 }}
               >
                 创建项目模板
-              </Button> */}
+              </Button>
               <Button
                 funcType="raised"
                 color="primary"
