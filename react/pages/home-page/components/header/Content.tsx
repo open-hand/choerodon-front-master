@@ -37,7 +37,7 @@ const Header = (props:any) => {
   const { loading, func: loadWatermarkInfo }: any = useExternalFunc('baseBusiness', 'base-business:loadWatermarkInfo');
 
   const { isTemplate, isEdit } = useProjectTemplate();
-
+  
   useEffect(() => {
     AppState.setCurrentDropDown(AppState.getStarProject, AppState.getRecentUse);
   }, [location]);
