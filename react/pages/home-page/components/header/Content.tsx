@@ -4,7 +4,10 @@ import React, {
 import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
 import { useLocation } from 'react-router';
+import { Alert } from 'choerodon-ui';
+import { Button } from 'choerodon-ui/pro';
 import useExternalFunc from '@/hooks/useExternalFunc';
+import useProjectTemplate from '@/hooks/useProjectTemplate';
 import { useHeaderStore } from './stores';
 import HeaderLogo from './components/header-logo';
 import ProjectsSelector from './components/projects-selector';
@@ -15,6 +18,7 @@ import UserEntry from './components/user-avatar';
 import useShouldHiddenHead from '@/hooks/useShouldHiddenHead';
 import ExtraButton from './components/extra-button';
 import useIsFullPage from '@/hooks/useIsFullPage';
+import styles from './styles.less';
 
 const Header = (props:any) => {
   const {
@@ -31,6 +35,8 @@ const Header = (props:any) => {
   const isFullPage = useIsFullPage();
 
   const { loading, func: loadWatermarkInfo }: any = useExternalFunc('baseBusiness', 'base-business:loadWatermarkInfo');
+
+  const [isTemplate, isEdit] = useProjectTemplate(AppState);
 
   useEffect(() => {
     AppState.setCurrentDropDown(AppState.getStarProject, AppState.getRecentUse);
@@ -59,7 +65,34 @@ const Header = (props:any) => {
     return null;
   }
 
-  return (
+  const renderTemplate = () => (
+    <div className={styles.c7ncd_template_header}>
+      <span className={styles.c7ncd_template_header_name}>{AppState?.currentProject?.name}</span>
+      <Alert
+        message={isEdit ? '模板编辑中' : '预览项目模板'}
+        type="info"
+        showIcon
+      />
+      <div>
+        {
+          isEdit ? (
+            <>
+              <Button
+                icon="exit_to_app"
+              >
+                返回
+              </Button>
+              <Button icon="send-o" color={'primary' as any}>
+                发布
+              </Button>
+            </>
+          ) : undefined
+        }
+      </div>
+    </div>
+  );
+
+  return isTemplate ? renderTemplate() : (
     <div className={prefixCls}>
       {/* logo */}
       <HeaderLogo />

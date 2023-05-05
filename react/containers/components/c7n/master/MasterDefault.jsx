@@ -406,14 +406,24 @@ class Masters extends Component {
       // <Spin spinning={AppState.getIsLoadMenu}>
       // 这里是进入系统 偶尔会出现一直转圈的问题 先修改为false
       <Spin spinning={false}>
-        <div className="page-wrapper">
+        <div
+          className="page-wrapper"
+          style={{
+            background: AppState?.currentProject?.templateFlag ? '#f5f6fa' : 'white',
+          }}
+        >
           <div
             className="page-header"
           >
             <AnnouncementBannerPro />
             <Header appState={AppState} />
           </div>
-          <div className="page-body">
+          <div 
+            className="page-body"
+            style={{
+              padding: AppState?.currentProject?.templateFlag ? '0 12px' : 'unset',
+            }}
+          >
             <div className="content-wrapper">
               <MenusPro />
               <Permission service={['choerodon.code.project.setting.general-setting.ps.feedback']}>
