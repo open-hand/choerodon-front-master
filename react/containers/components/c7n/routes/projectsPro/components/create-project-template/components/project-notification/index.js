@@ -44,10 +44,7 @@ const ProjectNotification = observer(({
   }, [interval]);
 
   const refreshList = useCallback(() => {
-    const pathname = window.location.hash.match(/#(\S*)\?/)[1];
-    if (pathname === '/projects') {
-      refresh();
-    }
+    refresh();
   }, [window.location.hash]);
   // 控制下次创建是否还提示
   const handleChange = (value) => {
