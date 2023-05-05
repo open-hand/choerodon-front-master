@@ -25,6 +25,13 @@ class ProjectsApi extends Api<ProjectsApi> {
       method: 'get',
     });
   }
+
+  getProjectInfo(projectId: string) {
+    return this.request({
+      url: `/cbase/choerodon/v1/projects/${projectId}`,
+      method: 'get',
+    });
+  }
 }
 
 const projectsApi = new ProjectsApi();
