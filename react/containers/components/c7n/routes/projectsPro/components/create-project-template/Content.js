@@ -96,6 +96,10 @@ const CreateProject = observer(() => {
 
   useEffect(() => {
     record && initFormDs();
+    if (propsProjectId) {
+      const ids = formDs?.current?.get('projectTemplateInfo').projectTemplateClassfication;
+       record?.set('templateClassficationId', ids);
+    }
   }, [record]);
 
   const initFormDs = async () => {

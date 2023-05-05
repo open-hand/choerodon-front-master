@@ -16,6 +16,7 @@ import useExternalFunc from '@/hooks/useExternalFunc';
 import { getRandomBackground } from '@/utils';
 import { useProjectsProStore } from '../../stores';
 import { axios } from '@/index';
+// import CreateProject from '../create-project-template';
 import CreateProject from '../create-project';
 import handleClickProject from '@/utils/gotoProject';
 import Action from '@/components/action';
@@ -61,8 +62,6 @@ const Index: React.FC<any> = (props) => {
   const refresh = () => {
     projectListDataSet.query(1);
   };
-  console.log('ahaa', prefix);
-
   const { loading: openStatusSettingModalLoading, func: openStatusSettingModal }: any = useExternalFunc('baseBusiness', 'base-business:openStatusSettingModal');
 
   const {

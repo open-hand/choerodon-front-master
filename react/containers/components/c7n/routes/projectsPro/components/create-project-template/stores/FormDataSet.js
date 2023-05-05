@@ -118,7 +118,7 @@ export default ({
     },
     transport: {
       read: () => ({
-        url: `/cbase/choerodon/v1/project_template/${projectId}`,
+        url: `/cbase/choerodon/v1/organizations/${organizationId}/project_template/${projectId}`,
         method: 'get',
       }),
       create: ({ data: [data] }) => ({

@@ -74,9 +74,6 @@ const ProjectNotification = observer(({
               okText: '关闭',
               style: { width: 600 },
               bodyStyle: { background: '#f5f6fa' },
-              // onOk: () => {
-              //   setSuccess();
-              // },
               footer: (okBtn, cancelBtn) => (
                 <div className={`${prefixCls}-modal-footer`}>
                   <div className={`${prefixCls}-modal-footer-check`}>
@@ -89,12 +86,12 @@ const ProjectNotification = observer(({
               ),
             });
           }
-          setSuccess();
           handleClearInterval();
           refreshList();
+          // setSuccess();
           setTimeout(() => {
             notification.close(notificationKey);
-          }, 1000);
+          }, 3000);
           return;
         }
         if (res.status === 'failed') {
