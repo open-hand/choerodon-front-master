@@ -54,4 +54,6 @@ export enum TEMPLATE_CODE {
   'agile/issueType.create' = 'agile/issueType.create',
   'agile/issueType.action' = 'agile/issueType.action',
   'agile/issueType.drag' = 'agile/issueType.drag',
+  'agile/issue-detail.workLog' = 'agile/issue-detail.workLog',
+  'agile/issue-detail.comment' = 'agile/issue-detail.comment',
 }
