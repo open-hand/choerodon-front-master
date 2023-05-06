@@ -283,6 +283,16 @@ const templateCodeObj = [{
   code: TEMPLATE_CODE['agile/issueType.drag'],
   display: true,
   previewDisplay: false,
+}, {
+  name: '工作项详情-工作日志',
+  code: TEMPLATE_CODE['agile/issue-detail.workLog'],
+  display: false,
+  previewDisplay: false,
+}, {
+  name: '工作项详情-评论',
+  code: TEMPLATE_CODE['agile/issue-detail.comment'],
+  display: false,
+  previewDisplay: false,
 }];
 
 function useProjectTemplate(codes?: any) {
