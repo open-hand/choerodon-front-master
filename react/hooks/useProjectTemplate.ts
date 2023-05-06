@@ -301,13 +301,13 @@ function useProjectTemplate(codes?: any) {
         } else {
           const item = templateCodeObj?.find((i) => i.code === code);
           if (item) {
-            list[code] = item.display;
+            list[code] = isEdit ? item.display : item.previewDisplay;
           }
         }
       });
       setDisplayList(list);
     }
-  }, [isTemplate]);
+  }, [isTemplate, isEdit]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -318,6 +318,10 @@ function useProjectTemplate(codes?: any) {
   }, [location.pathname + location.search]);
 
   useEffect(() => {
+    if (AppState?.menuType?.type !== 'project') {
+      setIsTemplate(false);
+      return;
+    }
     let flag = false;
     if (AppState?.currentProject?.templateFlag) {
       flag = true;
@@ -325,7 +329,7 @@ function useProjectTemplate(codes?: any) {
     if (flag !== isTemplate) {
       setIsTemplate(flag);
     }
-  }, [AppState?.currentProject, AppState?.currentProject?.templateFlag]);
+  }, [AppState?.currentProject, AppState?.currentProject?.templateFlag, AppState?.menuType?.type]);
 
   return {
     isTemplate, isEdit, displayList,
