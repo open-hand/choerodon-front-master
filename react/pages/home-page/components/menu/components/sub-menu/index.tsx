@@ -87,10 +87,10 @@ const SubMenus:FC<SubMenuProps> = () => {
       handleStatisticCount(menuCode, level, menuName);
       // 项目模板edit的url保存
       const params = new URLSearchParams(search);
-      const edit = params.get('edit');
+      const edit = params.get('templateEdit');
       history.push({
         pathname: getCurrentQuerystring()?.pathname,
-        search: `${getCurrentQuerystring()?.search}${edit ? `&edit=${edit}` : ''}`,
+        search: `${getCurrentQuerystring()?.search}${edit ? `&templateEdit=${edit}` : ''}`,
       });
     };
 
