@@ -346,11 +346,11 @@ const CreateProject = observer(() => {
         previousRank: records[0].get('rank'),
       };
       if (!isModify) {
-        const temolateRank = await axios.post(`cbase/choerodon/v1/organizations/${organizationId}/project_template/rank`, postData);
+        // const temolateRank = await axios.post(`cbase/choerodon/v1/organizations/${organizationId}/project_template/rank`, postData);
         const info = {
           organizationId: organizationId,
           builtIn: false,
-          rank: temolateRank,
+          // rank: temolateRank,
           // templateClassficationId: record.get('templateClassficationId'),
           templateClassficationId: 1,
           publishStatus: 'unpublished',
