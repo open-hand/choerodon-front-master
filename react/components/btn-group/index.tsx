@@ -21,7 +21,7 @@ const prefixCls = 'c7ncd-btnGroup';
  * @param {CustomBtnGroupProps} props
  * @return {*}
  */
-const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
+const BtnGroup:FC<any> = (props) => {
   const {
     color = 'default',
     icon,
@@ -34,6 +34,7 @@ const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
     renderCustomDropDownPanel,
     tooltipsConfig,
     popoverVisibleChange,
+    noHiddenChange,
   } = props;
 
   const {
@@ -155,7 +156,11 @@ const BtnGroup:FC<CustomBtnGroupProps> = (props) => {
     <Permission service={btnItems?.every((item) => item?.permissions?.length) ? flatten(btnItems?.map((item) => item?.permissions || [])) : []}>
       <Tooltip
         {...tooltipsConfigRestProps}
-        hidden={getHidden()}
+        {
+          ...noHiddenChange ? {} : {
+            hidden: getHidden(),
+          }
+        }
         onHiddenChange={handleOnHiddenChange}
       >
         <Popover
