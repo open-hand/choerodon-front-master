@@ -18,6 +18,8 @@ export enum TEMPLATE_CODE {
   'agile/wbs.modifySummary' = 'agile/wbs.modifySummary',
   'agile/wbs.createSubIssue' = 'agile/wbs.createSubIssue',
   'agile/wbs.setRelation' = 'agile/wbs.setRelation',
+  'agile/wbs.deliverable' = 'agile/wbs.deliverable',
+  'agile/wbs.linkIssueOrSprint' = 'agile/wbs.linkIssueOrSprint',
   'agile/pro-risk.register' = 'agile/pro-risk.register',
   'agile/pro-risk.personalFilter' = 'agile/pro-risk.personalFilter',
   'agile/pro-risk.refresh' = 'agile/pro-risk.refresh',
@@ -49,4 +51,9 @@ export enum TEMPLATE_CODE {
   'agile/demand-setting.modify' = 'agile/demand-setting.modify',
   'agile/demand-setting.createDemandType' = 'agile/demand-setting.createDemandType',
   'agile/demand-setting.modifyDemandType' = 'agile/demand-setting.modifyDemandType',
+  'agile/issueType.create' = 'agile/issueType.create',
+  'agile/issueType.action' = 'agile/issueType.action',
+  'agile/issueType.drag' = 'agile/issueType.drag',
+  'agile/issue-detail.workLog' = 'agile/issue-detail.workLog',
+  'agile/issue-detail.comment' = 'agile/issue-detail.comment',
 }
