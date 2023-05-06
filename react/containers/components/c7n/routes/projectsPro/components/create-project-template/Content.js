@@ -351,8 +351,7 @@ const CreateProject = observer(() => {
           organizationId: organizationId,
           builtIn: false,
           // rank: temolateRank,
-          // templateClassficationId: record.get('templateClassficationId'),
-          templateClassficationId: 1,
+          templateClassficationId: record.get('templateClassficationId'),
           publishStatus: 'unpublished',
         };
         record.set('projectTemplateInfo', info);
