@@ -311,7 +311,7 @@ function useProjectTemplate(codes?: any) {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const edit = urlParams.get('edit');
+    const edit = urlParams.get('templateEdit');
     if (edit === 'true' && edit !== String(isEdit)) {
       setIsEdit(true);
     }
