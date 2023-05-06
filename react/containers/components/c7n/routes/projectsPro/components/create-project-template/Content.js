@@ -67,6 +67,7 @@ const CreateProject = observer(() => {
     standardDisable,
     isTemplate,
     setSuccess,
+    classId,
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
   const [check, setCheck] = useState(false);
@@ -141,6 +142,9 @@ const CreateProject = observer(() => {
           requireFlag: false,
         },
       ];
+      if (!propsProjectId && classId) {
+        formDs?.current?.set('templateClassficationId', classId);
+      }
       res.forEach((item) => {
         if (item.builtInFlag && contrastMapToFormDsMap.get(item.fieldCode)) {
           item.fieldCode = contrastMapToFormDsMap.get(item.fieldCode);
@@ -345,17 +349,15 @@ const CreateProject = observer(() => {
       const postData = {
         previousRank: records[0].get('rank'),
       };
-      if (!isModify) {
         // const temolateRank = await axios.post(`cbase/choerodon/v1/organizations/${organizationId}/project_template/rank`, postData);
-        const info = {
-          organizationId: organizationId,
-          builtIn: false,
-          // rank: temolateRank,
-          templateClassficationId: record.get('templateClassficationId'),
-          publishStatus: 'unpublished',
-        };
-        record.set('projectTemplateInfo', info);
-      }
+      const info = {
+        organizationId: organizationId,
+        builtIn: propsProjectId ? record?.get('builtIn')?.builtIn : false,
+        // rank: temolateRank,
+        templateClassficationId: record.get('templateClassficationId'),
+        publishStatus: propsProjectId ? record?.get('projectTemplateInfo')?.publishStatus : 'unpublished',
+      };
+      record.set('projectTemplateInfo', info);
       const flag = await formDs?.current.validate();
       if (flag) {
         //  改成自定义后 后端给的自定义字段 放到数据里面
