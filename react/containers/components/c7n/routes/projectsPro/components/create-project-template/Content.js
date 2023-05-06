@@ -781,7 +781,7 @@ const CreateProject = observer(() => {
             </>
         )}
       </div>
-      {
+      {/* {
         getProjRelationShow() && (
           <div className={`${prefixCls}-projRelation`}>
             <div className={`${prefixCls}-projRelation-divided`} />
@@ -789,7 +789,7 @@ const CreateProject = observer(() => {
             {allowLinkForm}
           </div>
         )
-      }
+      } */}
       {showDevopsAdvanced && (
         <div className={`${prefixCls}-advanced`}>
           <div className={`${prefixCls}-advanced-divided`} />
