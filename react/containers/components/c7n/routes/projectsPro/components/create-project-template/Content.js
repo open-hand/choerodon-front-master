@@ -361,7 +361,6 @@ const CreateProject = observer(() => {
       const flag = await formDs?.current.validate();
       if (flag) {
         //  改成自定义后 后端给的自定义字段 放到数据里面
-        setSuccess(true);
         const data = formDs.current.toData();
         const customFields = [];
         Object.keys(data).forEach((key) => {
@@ -383,6 +382,7 @@ const CreateProject = observer(() => {
         record.set('customFields', customFields);
         const res = await formDs.submit();
         if (res && !res.failed && res.list && res.list.length) {
+          setSuccess(true);
           const projectId = get(res.list[0], 'id');
           if (projectId) {
             openNotification({
