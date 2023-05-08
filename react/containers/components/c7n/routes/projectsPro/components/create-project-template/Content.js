@@ -361,6 +361,7 @@ const CreateProject = observer(() => {
       const flag = await formDs?.current.validate();
       if (flag) {
         //  改成自定义后 后端给的自定义字段 放到数据里面
+        setSuccess(true);
         const data = formDs.current.toData();
         const customFields = [];
         Object.keys(data).forEach((key) => {
