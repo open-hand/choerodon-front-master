@@ -23,7 +23,6 @@ const ProjectNotification = observer(({
     failed: 'cancel',
   }), []);
   const [progress, setProgress] = useState(0);
-  const [check, setCheck] = useState(true);
   const [status, setStatus] = useState(operateType === 'create' ? 'creating' : 'updating');
   const [sagaInstanceIds, setSagaInstanceIds] = useState();
 
@@ -46,13 +45,6 @@ const ProjectNotification = observer(({
   const refreshList = useCallback(() => {
     refresh();
   }, [window.location.hash]);
-  // 控制下次创建是否还提示
-  const handleChange = (value) => {
-    setCheck(value);
-    if (value) {
-      sessionStorage.setItem('checkFlag', 'check');
-    }
-  };
   const loadData = useCallback(async () => {
     if (isRetry) {
       await axios.put(`cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}/retry?operateType=${operateType}`);
@@ -62,27 +54,6 @@ const ProjectNotification = observer(({
       if (res && !res.failed) {
         setStatus(res.status);
         if (res.status === 'success') {
-          if (operateType === 'create') {
-            !sessionStorage.getItem('checkFlag') && Modal.open({
-              key: Modal.key(),
-              title: '项目模板指引',
-              children: <NotifitionModal />,
-              okCancel: false,
-              okText: '关闭',
-              style: { width: 600 },
-              bodyStyle: { background: '#f5f6fa' },
-              footer: (okBtn, cancelBtn) => (
-                <div className={`${prefixCls}-modal-footer`}>
-                  <div className={`${prefixCls}-modal-footer-check`}>
-                    <CheckBox value={check} onChange={handleChange}>
-                      关闭游览器前不再提示
-                    </CheckBox>
-                  </div>
-                  {okBtn}
-                </div>
-              ),
-            });
-          }
           handleClearInterval();
           refreshList();
           // setSuccess();
