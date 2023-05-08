@@ -74,7 +74,7 @@ const Header = (props:any) => {
     const params = new URLSearchParams(location.search);
     history.push({
       pathname: '/baseBusiness/project-template',
-      search: `type=organization&id=${params.get('organizationId')}&name=${AppState.currentProject?.organizationName}&category=${params.get('category')}`,
+      search: `type=organization&id=${params.get('organizationId')}&organizationId=${params.get('organizationId')}&name=${AppState.currentProject?.organizationName}&category=${params.get('category')}`,
     });
   };
 
