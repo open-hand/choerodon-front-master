@@ -70,4 +70,7 @@ export enum TEMPLATE_CODE {
   'agile/page-config.config.action' = 'agile/page-config.config.action',
   'agile/page-config.config.add' = 'agile/page-config.config.add',
   'agile/page-config.template.action' = 'agile/page-config.template.action',
+  'agile/trigger.create' = 'agile/trigger.create',
+  'agile/trigger.action' = 'agile/trigger.action',
+  'agile/trigger.log' = 'agile/trigger.log',
 }

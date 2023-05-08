@@ -363,6 +363,21 @@ const templateCodeObj = [{
   code: TEMPLATE_CODE['agile/page-config.template.action'],
   display: true,
   previewDisplay: false,
+}, {
+  name: '触发器-创建',
+  code: TEMPLATE_CODE['agile/trigger.create'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '触发器-查看执行日志',
+  code: TEMPLATE_CODE['agile/trigger.log'],
+  display: true,
+  previewDisplay: true,
+}, {
+  name: '触发器-列表操作',
+  code: TEMPLATE_CODE['agile/trigger.action'],
+  display: true,
+  previewDisplay: false,
 }];
 
 function useProjectTemplate(codes?: any) {
