@@ -13,6 +13,7 @@ import {
   Tooltip,
   Spin,
   Icon,
+  Modal,
   Button,
   TextArea,
   CheckBox,
@@ -31,6 +32,7 @@ import { fileServer, prompt } from '@/utils';
 import { cbaseApi } from '@/apis';
 import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
+import NotifitionModal from './components/notifition-modal';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
 import { getCustomFieldDsProps, timeTypeArr, numberTypeArr } from './untils/getCustomFieldDsProps';
@@ -78,6 +80,7 @@ const CreateProject = observer(() => {
   const [showDevopsAdvanced, setShowDevopsAdvanced] = useState(false);
   const [expandAdvanced, setExpandAdvanced] = useState(true);
   const [fieldsConfig, setFieldsConfig] = useState([]);
+  const [checkModal, setCheckModal] = useState();
 
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
 
@@ -302,7 +305,14 @@ const CreateProject = observer(() => {
 
     loadTemplateConfig();
   }, [currentProjectId, organizationId]);
-
+  // 控制下次创建是否还提示
+  const handleChanges = (value) => {
+    console.log('value', value);
+    setCheckModal(value);
+    if (value) {
+      sessionStorage.setItem('checkFlag', 'check');
+    }
+  };
   modal.handleOk(async () => {
     try {
       setIsLoading(true);
@@ -382,7 +392,25 @@ const CreateProject = observer(() => {
         record.set('customFields', customFields);
         const res = await formDs.submit();
         if (res && !res.failed && res.list && res.list.length) {
-          setSuccess(true);
+          !sessionStorage.getItem('checkFlag') && Modal.open({
+            key: Modal.key(),
+            title: '项目模板指引',
+            children: <NotifitionModal />,
+            okCancel: false,
+            okText: '关闭',
+            style: { width: 600 },
+            bodyStyle: { background: '#f5f6fa' },
+            footer: (okBtn, cancelBtn) => (
+              <div className={`${prefixCls}-modal-footer`}>
+                <div className={`${prefixCls}-modal-footer-check`}>
+                  <CheckBox value={checkModal} defaultValue={false} onChange={handleChanges}>
+                    关闭游览器前不再提示
+                  </CheckBox>
+                </div>
+                {okBtn}
+              </div>
+            ),
+          });
           const projectId = get(res.list[0], 'id');
           if (projectId) {
             openNotification({

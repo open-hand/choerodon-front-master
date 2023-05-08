@@ -29,8 +29,8 @@ const project = {
   'c7ncd.project.template.saga.title.failed.update': '更新项目模板失败',
   'c7ncd.project.template.saga.des.creating.create': '正在创建项目模板，该过程可能会持续几分钟。待以下步骤成功后，才能进入项目模板。',
   'c7ncd.project.template.saga.des.updating.update': '正在更新项目模板，该过程可能会持续几分钟。待修改成功，进入项目刷新页面后即可见到项目模板的新菜单。',
-  'c7ncd.project.template.saga.des.success.create': '项目模板创建成功，开启您的项目之旅吧！',
-  'c7ncd.project.template.saga.des.success.update': '项目模板更新成功，进入项目后刷新即可。',
+  'c7ncd.project.template.saga.des.success.create': '项目模板创建成功，开启您的项目模板之旅吧！',
+  'c7ncd.project.template.saga.des.success.update': '项目模板更新成功，进入项目模板后刷新即可。',
 
   'c7ncd.project.project': '项目',
   'c7ncd.project.code': '项目编码',
