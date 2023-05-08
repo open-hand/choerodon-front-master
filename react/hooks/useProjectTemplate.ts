@@ -9,12 +9,12 @@ const {
 } = stores;
 
 const templateCodeObj = [{
-  name: '项目概览配置',
+  name: '项目概览-配置',
   code: TEMPLATE_CODE['agile/project-overview.config'],
   display: true,
   previewDisplay: false,
 }, {
-  name: '刷新',
+  name: '项目概览-刷新',
   code: TEMPLATE_CODE['agile/project-overview.refresh'],
   display: true,
   previewDisplay: true,
@@ -292,6 +292,76 @@ const templateCodeObj = [{
   name: '工作项详情-评论',
   code: TEMPLATE_CODE['agile/issue-detail.comment'],
   display: false,
+  previewDisplay: false,
+}, {
+  name: '模块管理-创建',
+  code: TEMPLATE_CODE['agile/component.create'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '模块管理-修改/删除',
+  code: TEMPLATE_CODE['agile/component.action'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '快速筛选-创建',
+  code: TEMPLATE_CODE['agile/fast-search.create'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '快速筛选-修改/删除',
+  code: TEMPLATE_CODE['agile/fast-search.action'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '工作项链接-创建',
+  code: TEMPLATE_CODE['agile/issue-link.create'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '工作项链接-修改/删除',
+  code: TEMPLATE_CODE['agile/issue-link.action'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '状态机-状态-创建',
+  code: TEMPLATE_CODE['agile/state-machine.state.create'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '状态机-状态-修改/删除',
+  code: TEMPLATE_CODE['agile/state-machine.state.action'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '页面配置-字段-创建',
+  code: TEMPLATE_CODE['agile/page-config.field.create'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '页面配置-字段-导入',
+  code: TEMPLATE_CODE['agile/page-config.field.import'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '页面配置-字段-列表操作',
+  code: TEMPLATE_CODE['agile/page-config.field.action'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '页面配置-字段配置-列表操作',
+  code: TEMPLATE_CODE['agile/page-config.config.action'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '页面配置-字段配置-添加已有字段',
+  code: TEMPLATE_CODE['agile/page-config.config.add'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '页面配置-字段模板-列表操作',
+  code: TEMPLATE_CODE['agile/page-config.template.action'],
+  display: true,
   previewDisplay: false,
 }];
 
