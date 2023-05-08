@@ -91,12 +91,12 @@ const ProjectNotification = observer(({
 
   const getDescription = useMemo(() => {
     if (status !== 'failed') {
-      return formatMessage({ id: `${intlPrefix}.saga.des.${status}.${operateType}` });
+      return formatMessage({ id: `${intlPrefix}.template.saga.des.${status}.${operateType}` });
     }
     return (
       <div>
         <span>
-          项目
+          项目模板
           {operateType === 'create' ? '创建' : '更新'}
           失败, 您可在此
         </span>
@@ -121,7 +121,7 @@ const ProjectNotification = observer(({
       <Icon type={iconType[status] || 'info'} className={`${prefixCls}-icon-${status} c7n-notification-notice-icon`} />
       <div className={`${prefixCls}-content`}>
         <div className={`${prefixCls}-title c7n-notification-notice-message`}>
-          {formatMessage({ id: `${intlPrefix}.saga.title.${status}.${operateType}` })}
+          {formatMessage({ id: `${intlPrefix}.template.saga.title.${status}.${operateType}` })}
         </div>
         <div className={`${prefixCls}-des`}>
           {getDescription}
