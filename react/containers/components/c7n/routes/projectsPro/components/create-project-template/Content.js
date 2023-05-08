@@ -307,7 +307,6 @@ const CreateProject = observer(() => {
   }, [currentProjectId, organizationId]);
   // 控制下次创建是否还提示
   const handleChanges = (value) => {
-    console.log('value', value);
     setCheckModal(value);
     if (value) {
       sessionStorage.setItem('checkFlag', 'check');
@@ -392,25 +391,27 @@ const CreateProject = observer(() => {
         record.set('customFields', customFields);
         const res = await formDs.submit();
         if (res && !res.failed && res.list && res.list.length) {
-          !sessionStorage.getItem('checkFlag') && Modal.open({
-            key: Modal.key(),
-            title: '项目模板指引',
-            children: <NotifitionModal />,
-            okCancel: false,
-            okText: '关闭',
-            style: { width: 600 },
-            bodyStyle: { background: '#f5f6fa' },
-            footer: (okBtn, cancelBtn) => (
-              <div className={`${prefixCls}-modal-footer`}>
-                <div className={`${prefixCls}-modal-footer-check`}>
-                  <CheckBox value={checkModal} defaultValue={false} onChange={handleChanges}>
-                    关闭游览器前不再提示
-                  </CheckBox>
+          if (!propsProjectId) {
+            !sessionStorage.getItem('checkFlag') && Modal.open({
+              key: Modal.key(),
+              title: '项目模板指引',
+              children: <NotifitionModal />,
+              okCancel: false,
+              okText: '关闭',
+              style: { width: 600 },
+              bodyStyle: { background: '#f5f6fa' },
+              footer: (okBtn, cancelBtn) => (
+                <div className={`${prefixCls}-modal-footer`}>
+                  <div className={`${prefixCls}-modal-footer-check`}>
+                    <CheckBox value={checkModal} defaultValue={false} onChange={handleChanges}>
+                      关闭游览器前不再提示
+                    </CheckBox>
+                  </div>
+                  {okBtn}
                 </div>
-                {okBtn}
-              </div>
-            ),
-          });
+              ),
+            });
+          }
           const projectId = get(res.list[0], 'id');
           if (projectId) {
             openNotification({
