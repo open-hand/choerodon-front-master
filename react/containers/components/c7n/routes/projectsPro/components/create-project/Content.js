@@ -287,6 +287,7 @@ const CreateProject = observer(() => {
         record.set('customFields', customFields);
         if (templateData) {
           record.set('fromTemplateId', templateData.id);
+          record.set('useTemplate', undefined);
         }
 
         const res = await formDs.forceSubmit();
@@ -727,7 +728,7 @@ const CreateProject = observer(() => {
       <div className={`${prefixCls}-template`}>
         {(!currentProjectId || (currentProjectId && !hasConfiged))
           && selectedCategoryCodes.find((item) => includes([categoryCodes.agile, categoryCodes.waterfall], item))
-          && includes(templateTabsKey, 'statusMachineTemplate') && (
+          && includes(templateTabsKey, 'statusMachineTemplate') && !templateData && (
             <>
               <div>
                 <span className={`${prefixCls}-template-checkbox-text`}>使用组织预置的状态机及看板模板</span>
