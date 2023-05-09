@@ -400,6 +400,7 @@ const CreateProject = observer(() => {
               okText: '关闭',
               style: { width: 600 },
               bodyStyle: { background: '#f5f6fa' },
+              className: `${prefixCls}-notifyModal`,
               footer: (okBtn, cancelBtn) => (
                 <div className={`${prefixCls}-modal-footer`}>
                   <div className={`${prefixCls}-modal-footer-check`}>
