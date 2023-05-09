@@ -246,7 +246,7 @@ class OrganizationsApi extends Api<OrganizationsApi> {
 
   thirdPartyAppHMSync(params:any) {
     return this.request({
-      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/sync_user`,
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/sync_user_and_group`,
       method: 'get',
       params,
     });
@@ -255,14 +255,6 @@ class OrganizationsApi extends Api<OrganizationsApi> {
   thirdPartyAppSyncBindUser(params:any) {
     return this.request({
       url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/sync_bind_user`,
-      method: 'get',
-      params,
-    });
-  }
-
-  thirdPartyAppWorkGroupHMSync(params:any) {
-    return this.request({
-      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/sync_work_group`,
       method: 'get',
       params,
     });
