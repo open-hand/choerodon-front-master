@@ -378,6 +378,21 @@ const templateCodeObj = [{
   code: TEMPLATE_CODE['agile/trigger.action'],
   display: true,
   previewDisplay: false,
+}, {
+  name: '设置-基础信息-修改项目',
+  code: TEMPLATE_CODE['base/project-setting.edit'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '设置-基础信息-停用项目',
+  code: TEMPLATE_CODE['base/project-setting.stop'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '设置-基础信息-设置健康状态',
+  code: TEMPLATE_CODE['base/project-setting.setHealth'],
+  display: true,
+  previewDisplay: false,
 }];
 
 function useProjectTemplate(codes?: any) {

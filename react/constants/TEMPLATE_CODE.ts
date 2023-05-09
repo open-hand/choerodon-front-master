@@ -73,4 +73,7 @@ export enum TEMPLATE_CODE {
   'agile/trigger.create' = 'agile/trigger.create',
   'agile/trigger.action' = 'agile/trigger.action',
   'agile/trigger.log' = 'agile/trigger.log',
+  'base/project-setting.edit' = 'base/project-setting.edit',
+  'base/project-setting.stop' = 'base/project-setting.stop',
+  'base/project-setting.setHealth' = 'base/project-setting.setHealth',
 }
