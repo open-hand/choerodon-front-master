@@ -405,7 +405,7 @@ const CreateProject = observer(() => {
                 <div className={`${prefixCls}-modal-footer`}>
                   <div className={`${prefixCls}-modal-footer-check`}>
                     <CheckBox value={checkModal} defaultValue={false} onChange={handleChanges}>
-                      关闭游览器前不再提示
+                      关闭浏览器前不再提示
                     </CheckBox>
                   </div>
                   {okBtn}
