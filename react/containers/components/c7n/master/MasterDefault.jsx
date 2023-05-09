@@ -409,7 +409,7 @@ class Masters extends Component {
         <div
           className="page-wrapper"
           style={{
-            background: AppState?.currentProject?.templateFlag ? '#f5f6fa' : 'white',
+            background: (AppState?.currentProject?.templateFlag && AppState?.menuType?.type === 'project') ? '#f5f6fa' : 'white',
           }}
         >
           <div
@@ -418,10 +418,10 @@ class Masters extends Component {
             <AnnouncementBannerPro />
             <Header appState={AppState} />
           </div>
-          <div 
+          <div
             className="page-body"
             style={{
-              padding: AppState?.currentProject?.templateFlag ? '0 12px' : 'unset',
+              padding: (AppState?.currentProject?.templateFlag && AppState?.menuType?.type === 'project') ? '0 12px' : 'unset',
             }}
           >
             <div className="content-wrapper">
