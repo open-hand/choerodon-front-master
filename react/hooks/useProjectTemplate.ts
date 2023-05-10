@@ -393,6 +393,36 @@ const templateCodeObj = [{
   code: TEMPLATE_CODE['base/project-setting.setHealth'],
   display: true,
   previewDisplay: false,
+}, {
+  name: '设置-通知-协作消息-列表操作',
+  code: TEMPLATE_CODE['notify/project-notify.agile.action'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '设置-通知-DevOps消息-列表操作',
+  code: TEMPLATE_CODE['notify/project-notify.devops.action'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '设置-通知-资源删除验证-列表操作',
+  code: TEMPLATE_CODE['notify/project-notify.resource.action'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '设置-通知-webhook配置-创建',
+  code: TEMPLATE_CODE['notify/project-notify.webhook.create'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '设置-通知-webhook配置-列表操作',
+  code: TEMPLATE_CODE['notify/project-notify.webhook.action'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '设置-通知-webhook配置-执行记录',
+  code: TEMPLATE_CODE['notify/project-notify.webhook.log'],
+  display: true,
+  previewDisplay: true,
 }];
 
 function useProjectTemplate(codes?: any) {
