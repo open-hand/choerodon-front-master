@@ -758,7 +758,7 @@ const CreateProject = observer(() => {
                 </div>
             )}
             {/* 瀑布类型暂时不要冲刺 */}
-            {/* {categoryRecord.get('code') === 'N_WATERFALL'
+            {categoryRecord.get('code') === 'N_WATERFALL'
               && categoryRecord.isSelected && (
                 <div
                   role="none"
@@ -766,6 +766,7 @@ const CreateProject = observer(() => {
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
+                  style={{ display: 'none' }}
                 >
                   <CheckBox
                     checked={record?.get('agileWaterfall')}
@@ -789,7 +790,7 @@ const CreateProject = observer(() => {
                     }}
                   />
                 </div>
-            )} */}
+            )}
           </div>
         ))}
       </div>
