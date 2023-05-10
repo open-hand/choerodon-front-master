@@ -76,4 +76,10 @@ export enum TEMPLATE_CODE {
   'base/project-setting.edit' = 'base/project-setting.edit',
   'base/project-setting.stop' = 'base/project-setting.stop',
   'base/project-setting.setHealth' = 'base/project-setting.setHealth',
+  'notify/project-notify.agile.action' = 'notify/project-notify.agile.action',
+  'notify/project-notify.devops.action' = 'notify/project-notify.devops.action',
+  'notify/project-notify.resource.action' = 'notify/project-notify.resource.action',
+  'notify/project-notify.webhook.create' = 'notify/project-notify.webhook.create',
+  'notify/project-notify.webhook.action' = 'notify/project-notify.webhook.action',
+  'notify/project-notify.webhook.log' = 'notify/project-notify.webhook.log',
 }
