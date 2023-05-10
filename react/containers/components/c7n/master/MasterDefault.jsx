@@ -408,9 +408,6 @@ class Masters extends Component {
       <Spin spinning={false}>
         <div
           className="page-wrapper"
-          style={{
-            background: (AppState?.currentProject?.templateFlag && AppState?.menuType?.type === 'project') ? '#f5f6fa' : 'white',
-          }}
         >
           <div
             className="page-header"
@@ -421,7 +418,7 @@ class Masters extends Component {
           <div
             className="page-body"
             style={{
-              padding: (AppState?.currentProject?.templateFlag && AppState?.menuType?.type === 'project') ? '0 12px' : 'unset',
+              border: (AppState?.currentProject?.templateFlag && AppState?.menuType?.type === 'project') ? '1px solid #D9E6F2' : 'unset',
             }}
           >
             <div className="content-wrapper">
