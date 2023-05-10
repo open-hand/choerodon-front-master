@@ -32,6 +32,7 @@ import { fileServer, prompt } from '@/utils';
 import { cbaseApi } from '@/apis';
 import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
+import ImageUpload from './components/imageUpload';
 import NotifitionModal from './components/notifition-modal';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
@@ -524,36 +525,12 @@ const CreateProject = observer(() => {
     return (
       <>
         <div className={`${prefixCls}-template-avatar`}>
-          <div
-            className={`${prefixCls}-template-avatar-wrap`}
-            style={{
-              backgroundColor: '#c5cbe8',
-              backgroundImage: imageUrl ? `url('${fileServer(imageUrl)}')` : '',
-            }}
-          >
-            {!imageUrl && name && name.charAt(0)}
-            <Button
-              className={classnames(
-                `${prefixCls}-template-avatar-button`,
-                `${prefixCls}-template-avatar-button-edit`,
-              )}
-              onClick={() => changeAvatarUploader(true)}
-            >
-              <div className={`${prefixCls}-template-avatar-button-icon`}>
-                <Icon type="photo_camera" />
-              </div>
-            </Button>
-            <AvatarUploader
-              AppState={AppState}
-              intl={intl}
-              isTemplate
-              title="上传项目模板图标"
-              visible={isShowAvatar}
-              intlPrefix="organization.project.avatar.edit"
-              onVisibleChange={() => changeAvatarUploader(false)}
-              onUploadOk={handleUploadOk}
-            />
-          </div>
+          <ImageUpload
+            formDs={formDs}
+            prefixCls={prefixCls}
+            AppState={AppState}
+            organizationId={organizationId}
+          />
         </div>
         <div style={{ margin: '.06rem 0 .2rem 0', textAlign: 'center' }}>
           项目模板封面
