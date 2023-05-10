@@ -391,6 +391,7 @@ const CreateProject = observer(() => {
         record.set('customFields', customFields);
         const res = await formDs.submit();
         if (res && !res.failed && res.list && res.list.length) {
+          refresh();
           if (!propsProjectId) {
             !sessionStorage.getItem('checkFlag') && Modal.open({
               key: Modal.key(),
