@@ -20,6 +20,8 @@ import { TimePopover } from '@zknow/components';
 import axios from '@/components/axios';
 import Action from '@/components/action';
 import WSHandler from '@/components/ws/WSHandler';
+import msg from './assets/msg.png';
+import report from './assets/report.png';
 import defaultAvatar from '@/assets/images/favicon.png';
 import styles from './styles.less';
 import './index.less';
@@ -76,9 +78,9 @@ class RenderPopoverContentClass extends Component {
     if (HeaderStore.inboxVisible) {
       HeaderStore.setInboxVisible(false);
       HeaderStore.axiosGetUnreadMessageCount();
-      setTimeout(() => {
-        HeaderStore.setInboxDetailVisible(false);
-      }, 700);
+      // setTimeout(() => {
+      //   HeaderStore.setInboxDetailVisible(false);
+      // }, 700);
     }
   };
 
@@ -158,7 +160,12 @@ class RenderPopoverContentClass extends Component {
     return (
       createPortal(
         <div className={siderClasses}>
-          <div className={`${prefixCls}-sider-header-wrap no-mr ${!inboxData.length ? 'is-empty' : null}`} style={{ disable: 'flex', flexDirection: 'column' }}>
+          <div
+            style={{ disable: 'flex', flexDirection: 'column', paddingLeft: 0 }}
+            className={classNames({
+              [`${prefixCls}-sider-header-wrap no-mr ${!inboxData.length ? 'is-empty' : null}`]: true,
+            })}
+          >
             <div className={`${prefixCls}-sider-header`}>
               <div className={`${prefixCls}-sider-header-title`}>
                 <span className="msgTitle">消息通知</span>
@@ -172,37 +179,45 @@ class RenderPopoverContentClass extends Component {
                   }}
                 />
               </div>
-              <Tabs
-                defaultActiveKey="1"
-                activeKey={HeaderStore.getInboxActiveKey}
-                onChange={(flag) => HeaderStore.setInboxActiveKey(flag)}
-                tabBarExtraContent={operations}
-              >
-                <TabPane
-                  tab={<span><Badge count={getUnreadMsg.filter((v) => !v.read).length} style={{ transform: 'scale(.75)' }}>消息</Badge></span>}
-                  key="1"
-                  className={`${prefixCls}-sider-pane-usermsg`}
+              <div className={`${prefixCls}-sider-header-title-divided`} />
+              <div style={{ display: 'flex', height: '100%' }}>
+                <Tabs
+                  defaultActiveKey="1"
+                  activeKey={HeaderStore.getInboxActiveKey}
+                  onChange={(flag) => HeaderStore.setInboxActiveKey(flag)}
+                  tabBarExtraContent={operations}
+                  style={{
+                    // width: HeaderStore.getInboxDetailVisible ? '330px' : 'unset',
+                    width: 330,
+                  }}
                 >
-                  <ScrollContext
-                    dataLength={HeaderStore.userMsgCount}
-                    next={loadMore}
-                    hasMore={HeaderStore.userMsghaveMore}
-                    height="100%"
+                  <TabPane
+                    tab={<span><Badge count={getUnreadMsg.filter((v) => !v.read).length} style={{ transform: 'scale(.75)' }}>消息</Badge></span>}
+                    key="1"
+                    className={`${prefixCls}-sider-pane-usermsg`}
                   >
-                    {renderMessages(getUnreadMsg)}
-                  </ScrollContext>
-                </TabPane>
-                <TabPane tab="公告" key="3">
-                  <Spin spinning={inboxLoading} className={`${prefixCls}-sider-header-loading`}>
-                    {renderMessages(getUnreadOther)}
-                  </Spin>
-                </TabPane>
-              </Tabs>
+                    <ScrollContext
+                      dataLength={HeaderStore.userMsgCount}
+                      next={loadMore}
+                      hasMore={HeaderStore.userMsghaveMore}
+                      height="100%"
+                    >
+                      {renderMessages(getUnreadMsg)}
+                    </ScrollContext>
+                  </TabPane>
+                  <TabPane tab="公告" key="3">
+                    <Spin spinning={inboxLoading} className={`${prefixCls}-sider-header-loading`}>
+                      {renderMessages(getUnreadOther)}
+                    </Spin>
+                  </TabPane>
+                </Tabs>
+                <RenderPopoverContentDetailClass
+                  handleVisibleChange={this.handleVisibleChange}
+                />
+              </div>
             </div>
           </div>
-          <RenderPopoverContentDetailClass
-            handleVisibleChange={this.handleVisibleChange}
-          />
+
         </div>,
         document.body,
       )
@@ -217,9 +232,9 @@ class RenderPopoverContentDetailClass extends Component {
   handleClickOutside = () => {
     const { HeaderStore } = this.props;
     HeaderStore.setInboxVisible(false);
-    setTimeout(() => {
-      HeaderStore.setInboxDetailVisible(false);
-    }, 700);
+    // setTimeout(() => {
+    //   HeaderStore.setInboxDetailVisible(false);
+    // }, 700);
   };
 
   render() {
@@ -234,44 +249,55 @@ class RenderPopoverContentDetailClass extends Component {
     // eslint-disable-next-line no-underscore-dangle
     const realSystemName = systemName || window._env_.HEADER_TITLE_NAME || 'Choerodon猪齿鱼平台';
     const siderClasses = classNames({
-      [`${prefixCls}-sider-no-animate`]: true,
+      // [`${prefixCls}-sider-no-animate`]: true,
       [`${prefixCls}-sider`]: true,
+      [`${prefixCls}-siderDetail`]: true,
       [`${prefixCls}-sider-visible`]: inboxDetailVisible,
       // [`${prefixCls}-sider-move-down`]: !announcementClosed,
     });
-    if (!inboxDetail) return null;
-    const realSendTime = 'sendDate' in HeaderStore.inboxDetail ? HeaderStore.inboxDetail.sendDate : HeaderStore.inboxDetail.sendTime;
-    const isMsg = 'backlogFlag' in HeaderStore.inboxDetail;
-    if (!inboxDetailVisible) {
-      document.removeEventListener('click', globalClick);
-      globalClick = null;
-      return null;
-    }
-    globalClick = function (event) {
-      const clickedElement = event.target;
-      if (clickedElement.tagName === 'IMG') {
-        HeaderStore.setInboxUrl(clickedElement.src);
+    let realSendTime;
+    let isMsg;
+    if (inboxDetail) {
+      realSendTime = 'sendDate' in HeaderStore.inboxDetail ? HeaderStore.inboxDetail.sendDate : HeaderStore.inboxDetail.sendTime;
+      isMsg = 'backlogFlag' in HeaderStore.inboxDetail;
+      if (!inboxDetailVisible) {
+        document.removeEventListener('click', globalClick);
+        globalClick = null;
+        return null;
       }
-    };
-    document.addEventListener('click', globalClick);
+      globalClick = function (event) {
+        const clickedElement = event.target;
+        if (clickedElement.tagName === 'IMG') {
+          HeaderStore.setInboxUrl(clickedElement.src);
+        }
+      };
+      document.addEventListener('click', globalClick);
+    }
 
     return (
-      <div className={siderClasses}>
-        <div className={`${prefixCls}-sider-header-wrap`}>
-          <div className="header">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <ButtonPro
-                funcType="flat"
-                icon="keyboard_backspace"
-                color="primary"
-                style={{ marginLeft: '-5px', marginRight: '2px' }}
-                onClick={() => {
-                  HeaderStore.setInboxDetailVisible(false);
-                }}
-              />
-              <span className="title">通知详情</span>
-            </div>
-            <ButtonPro
+      <div
+        className={siderClasses}
+        style={{
+          width: HeaderStore.inboxDetailVisible ? '550px' : '0px',
+        }}
+      >
+        {
+          inboxDetail && (
+          <div className={`${prefixCls}-sider-header-wrap`}>
+            <div className="header">
+              {/* <div style={{ display: 'flex', alignItems: 'center' }}>
+                <ButtonPro
+                  funcType="flat"
+                  icon="keyboard_backspace"
+                  color="primary"
+                  style={{ marginLeft: '-5px', marginRight: '2px' }}
+                  onClick={() => {
+                    HeaderStore.setInboxDetailVisible(false);
+                  }}
+                />
+                <span className="title">通知详情</span>
+              </div> */}
+              {/* <ButtonPro
               funcType="flat"
               icon="close"
               className="close-button"
@@ -281,41 +307,53 @@ class RenderPopoverContentDetailClass extends Component {
                   HeaderStore.setInboxDetailVisible(false);
                 }, 700);
               }}
-            />
+            /> */}
+            </div>
+            <div className="body">
+              <div className="title">
+                <span>
+                  {/* <Icon type={isMsg ? 'textsms' : 'volume_up'} style={{ marginRight: 10 }} /> */}
+                  {HeaderStore.inboxDetail.title}
+                </span>
+              </div>
+              <div className="info">
+                <div style={{ marginRight: 60 }}>
+                  <span className={`${prefixCls}-sider-header-wrap-info-name`}>
+                    发送人:
+                  </span>
+                  <Avatar src={HeaderStore.inboxDetail.sendByUser ? HeaderStore.inboxDetail.sendByUser.imageUrl : realSystemLogo} size={18}>
+                    {HeaderStore.inboxDetail.sendByUser
+                      ? HeaderStore.inboxDetail.sendByUser.realName && HeaderStore.inboxDetail.sendByUser.realName.charAt(0)
+                      : realSystemName && realSystemName.charAt(0)}
+                  </Avatar>
+                  <span style={{ marginLeft: 8, marginRight: 8 }}>
+                    {HeaderStore.inboxDetail.sendByUser ? HeaderStore.inboxDetail.sendByUser.realName : realSystemName}
+                  </span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span className={`${prefixCls}-sider-header-wrap-info-name`}>
+                    发送时间:
+                  </span>
+                  {
+                  new Date() - new Date(realSendTime) >= 172800000 ? (
+                    <span>{realSendTime}</span>
+                  ) : (
+                    <TimePopover content={realSendTime} />
+                  )
+                }
+                </div>
+
+              </div>
+              <div className="content c7n-boot-header-inbox-wrap">
+                <div
+                  className="c7n-boot-header-inbox-content"
+                  dangerouslySetInnerHTML={{ __html: `${HeaderStore.inboxDetail.content}` }}
+                />
+              </div>
+            </div>
           </div>
-          <div className="body">
-            <div className="title">
-              <span>
-                <Icon type={isMsg ? 'textsms' : 'volume_up'} style={{ marginRight: 10 }} />
-                <a>{HeaderStore.inboxDetail.title}</a>
-              </span>
-            </div>
-            <div className="info">
-              <Avatar src={HeaderStore.inboxDetail.sendByUser ? HeaderStore.inboxDetail.sendByUser.imageUrl : realSystemLogo} size={18}>
-                {HeaderStore.inboxDetail.sendByUser
-                  ? HeaderStore.inboxDetail.sendByUser.realName && HeaderStore.inboxDetail.sendByUser.realName.charAt(0)
-                  : realSystemName && realSystemName.charAt(0)}
-              </Avatar>
-              <span style={{ marginLeft: 8, marginRight: 8 }}>
-                {HeaderStore.inboxDetail.sendByUser ? HeaderStore.inboxDetail.sendByUser.realName : realSystemName}
-              </span>
-              <span style={{ marginRight: 8 }}>·</span>
-              {
-                new Date() - new Date(realSendTime) >= 172800000 ? (
-                  <span>{realSendTime}</span>
-                ) : (
-                  <TimePopover content={realSendTime} />
-                )
-              }
-            </div>
-            <div className="content c7n-boot-header-inbox-wrap">
-              <div
-                className="c7n-boot-header-inbox-content"
-                dangerouslySetInnerHTML={{ __html: `${HeaderStore.inboxDetail.content}` }}
-              />
-            </div>
-          </div>
-        </div>
+          )
+        }
       </div>
     );
   }
@@ -353,6 +391,7 @@ export default class Inbox extends Component {
   cleanAllMsg = () => {
     const { AppState, HeaderStore } = this.props;
     HeaderStore.cleanAllMsg(AppState.userInfo.id);
+    HeaderStore.setInboxDetail(undefined);
   };
 
   openCleanAllModal = () => {
@@ -453,6 +492,7 @@ export default class Inbox extends Component {
   };
 
   handleMessageTitleClick = (e, data) => {
+    e.stopPropagation();
     this.cleanMsg(e, data);
     const { HeaderStore } = this.props;
     HeaderStore.setInboxDetailVisible(true);
@@ -462,9 +502,9 @@ export default class Inbox extends Component {
   handleVisibleChange = (visible) => {
     const { HeaderStore } = this.props;
     HeaderStore.setInboxVisible(visible);
-    if (!visible) {
-      HeaderStore.setInboxDetailVisible(visible);
-    }
+    // if (!visible) {
+    //   HeaderStore.setInboxDetailVisible(visible);
+    // }
   };
 
   renderMessages = (inboxData) => {
@@ -480,16 +520,29 @@ export default class Inbox extends Component {
               } = data;
               const realSendTime = 'sendDate' in data ? sendDate : sendTime;
               const isMsg = 'messageId' in data;
-              const icon = <Icon type={isMsg ? 'textsms' : 'volume_up'} className="color-blue" />;
+              const icon = <img style={{ width: 24 }} src={isMsg ? msg : report} alt="" />;
               const iconWithBadge = read || !isMsg ? icon : <Badge dot>{icon}</Badge>;
               const imageMatch = content.match(imgreg);
               const showPicUrl = imageMatch && imageMatch.length > 0 ? imageMatch[2] : undefined;
               return (
-                <li className={`${prefixCls}-sider-content-list`} key={data.id}>
+                <li
+                  className={`${prefixCls}-sider-content-list`}
+                  key={data.id}
+                  style={{
+                    background: data?.messageId === HeaderStore.inboxDetail?.messageId ? 'rgba(83,101,234,0.06)' : 'unset',
+                  }}
+                  role="none"
+                  onClick={(e) => this.handleMessageTitleClick(e, data)}
+                >
+                  <div
+                    className={classNames({
+                      [`${prefixCls}-sider-content-list-focus`]: data?.messageId === HeaderStore.inboxDetail?.messageId,
+                    })}
+                  />
                   <div className={`${prefixCls}-sider-content-list-title`}>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {iconWithBadge}
-                      <a role="none" onClick={(e) => this.handleMessageTitleClick(e, data)} style={{ marginLeft: 10 }}>{title}</a>
+                      <a role="none" style={{ marginLeft: 10 }}>{title}</a>
                     </span>
                     <div style={{
                       display: 'flex', alignItems: 'center', flexShrink: 0, color: 'var(--text-color4)',
@@ -505,8 +558,10 @@ export default class Inbox extends Component {
                       {
                         isMsg ? (
                           <Icon
-                            type="close"
-                            style={{ cursor: 'pointer', marginLeft: 12, fontSize: '20px' }}
+                            type="delete_black-o"
+                            style={{
+                              cursor: 'pointer', marginLeft: 12, fontSize: '20px', color: '#5365EA',
+                            }}
                             onClick={(e) => this.deleteMsg(e, data)}
                           />
                         ) : null

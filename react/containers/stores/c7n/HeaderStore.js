@@ -73,7 +73,7 @@ class HeaderStore {
 
   @observable inboxVisible = false;
 
-  @observable inboxDetailVisible = false;
+  @observable inboxDetailVisible = true;
 
   @observable inboxDetail = null;
 
@@ -337,6 +337,10 @@ class HeaderStore {
         this.inboxData = list || [];
         this.inboxLoading = false;
         this.inboxLoaded = true;
+        if (!this.inboxDetail) {
+          this.setInboxDetailVisible(true);
+          this.setInboxDetail(list[0]);
+        }
       }))
       .catch(handleResponseError).finally(() => {
         this.inboxLoading = false;
