@@ -411,6 +411,9 @@ class Masters extends Component {
         >
           <div
             className="page-header"
+            style={{
+              background: '#F5F6FA',
+            }}
           >
             <AnnouncementBannerPro />
             <Header appState={AppState} />
