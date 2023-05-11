@@ -279,6 +279,10 @@ const WorkBenchDashboard = (props) => {
 
   const renderContent = () => {
     if (dashboardDs.status === 'loading' || addCardDs.status === 'loading' || mountedComponentFromDashboardId.current !== currentDashboardId) {
+      console.log('dashboardDs', dashboardDs);
+      console.log('addCardDs', addCardDs);
+      console.log('mountedComponentFromDashboardId', mountedComponentFromDashboardId);
+      console.log('currentDashboardId', currentDashboardId);
       return (
         <div style={{ marginTop: '10%' }}>
           <Loading display type={choerodonGet('configuration.master-global:loadingType') || 'c7n'} />

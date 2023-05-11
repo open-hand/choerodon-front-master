@@ -76,7 +76,12 @@ function useC7NAuth(autoAuth?:boolean) {
           window.location.href = `${window.location.href.replace(/[&?]redirectFlag.*/g, '').split('/#/')[0]}/#/workbench?`
           + `id=${res.tenantId}&name=${res.tenantName}&organizationId=${res.tenantId}&type=organization`;
         }
-        window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
+        if (window.location.href?.includes('redirectFlag')) {
+          window.location.href = window.location.href.replace(/[&?]redirectFlag.*/g, '');
+        } else {
+          window.location.href = `${window.location.href.replace(/[&?]redirectFlag.*/g, '').split('/#/')[0]}/#/workbench?`
+          + `id=${res.tenantId}&name=${res.tenantName}&organizationId=${res.tenantId}&type=organization`;
+        }
       } else if (!getAccessToken()) {
         if (isShanghaiElectric) {
           if (!shanghaiElectricToken) {
