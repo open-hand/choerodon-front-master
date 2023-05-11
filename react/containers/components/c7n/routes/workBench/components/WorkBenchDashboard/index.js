@@ -69,7 +69,8 @@ Object.assign(ComponetsObjs, {
   myhandler: <MyHandler />, // 我经手的
   resourceOverview: <ResourceOverview />,
   resourceMonitoring: <ResourceMonitoring />,
-  beginnerGuide: <BeginnerGuide />,
+  // beginnerGuide: <BeginnerGuide />,
+  beginnerGuide: '',
   notice: <Notice />,
   userIssue: <UserIssue />,
   projectProgress: <ProjectProgress />,

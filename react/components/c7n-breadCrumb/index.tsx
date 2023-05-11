@@ -22,6 +22,7 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
 
     // ---to do ---
     MenuStore,
+    backParams,
   } = props;
 
   // 如果当前的路由匹配到了需要隐藏菜单的路由页面
@@ -50,7 +51,15 @@ const Breadcrumb:FunctionComponent<BreadcrumbProps> = (props) => {
       <Item className={`${prefixCls}-menu`}>
         {
           currentRoute && title
-            ? <Link to={currentLink}>{menuName}</Link>
+            ? (
+              <Link to={{
+                pathname: currentLink?.pathname,
+                search: `${currentLink?.search}${backParams || ''}`,
+              }}
+              >
+                {menuName}
+              </Link>
+            )
             : <span>{menuName}</span>
         }
       </Item>

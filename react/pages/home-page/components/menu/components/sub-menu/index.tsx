@@ -8,6 +8,7 @@ import { OverflowWrap } from '@zknow/components';
 import { Menu } from 'choerodon-ui';
 import map from 'lodash/map';
 import { useHistory } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import pick from 'lodash/pick';
 import classNames from 'classnames';
 import { difference } from 'lodash';
@@ -58,6 +59,12 @@ const SubMenus:FC<SubMenuProps> = () => {
 
   const history = useHistory();
 
+  const location = useLocation();
+
+  const {
+    search,
+  } = location;
+
   const renderMenuItem = useCallback(({
     subMenus = [],
     route,
@@ -78,7 +85,13 @@ const SubMenus:FC<SubMenuProps> = () => {
     // Link click函数
     const handleLink = () => {
       handleStatisticCount(menuCode, level, menuName);
-      history.push(getCurrentQuerystring());
+      // 项目模板edit的url保存
+      const params = new URLSearchParams(search);
+      const edit = params.get('templateEdit');
+      history.push({
+        pathname: getCurrentQuerystring()?.pathname,
+        search: `${getCurrentQuerystring()?.search}${edit ? `&templateEdit=${edit}` : ''}`,
+      });
     };
 
     const renderMenuLink = () => {

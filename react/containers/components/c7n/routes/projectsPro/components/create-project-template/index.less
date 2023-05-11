@@ -1,0 +1,374 @@
+.c7ncd-project-create-template {
+  &-avatar {
+    display: flex;
+    justify-content: center;
+    .text-title {
+      color: rgba(15, 19, 88, 0.65);
+      font-size: 13px;
+      line-height: 0.3rem;
+    }
+    .img-container {
+      position: relative;
+      width: 222px;
+      height: 82px;
+      background: #f5f6fa;
+      border: 1px solid #d9e6f2;
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      .mask {
+        border-radius: 4px;
+        position: absolute;
+        width: 220px;
+        height: 80px;
+        z-index: 99;
+        opacity: 0;
+        left: 0;
+        top: 0;
+        transition: 0.2s;
+        background: rgba(15, 19, 88, 0.26);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        .imageload-div {
+          width: 220px;
+          height: 80px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .icon {
+          font-size: 30px;
+          color: #fff;
+        }
+        .icon-delete_forever {
+          margin-left: 10px;
+          font-size: 21px;
+        }
+      }
+      .img-logo {
+        width: 220px;
+        height: 80px;
+      }
+      .img-illustration {
+        width: 468px;
+        height: 399px;
+      }
+    }
+    .img-container:hover {
+      .mask {
+        opacity: 1;
+      }
+    }
+    .img-container1 {
+      height: 82px;
+      justify-content: flex-start;
+    }
+    .img-container2 {
+      height: 415px;
+    }
+  }
+  .c7n-pro-input-suffix {
+    height: 50px !important;
+    border-left: 1px solid #d9e6f2 !important;
+  }
+  .c7n-pro-input-suffix-button .c7n-pro-input-intl.icon-language {
+    color: #abbccf;
+  }
+  &-IntlField {
+    tr:nth-child(2) {
+      display: none;
+    }
+  }
+}
+
+.c7ncd-project-create {
+  &-body {
+    .c7n-pro-form-float-label {
+      margin: 0 !important;
+    }
+    td {
+      padding: 0 !important;
+    }
+    .c7n-pro-select-box {
+      margin-left: 1px !important;
+    }
+  }
+
+  &-form {
+    .form-item-offset {
+      position: relative;
+      left: 10px;
+    }
+    .form-item-offset + .c7n-pro-validation-message {
+      position: relative;
+      left: 10px;
+    }
+    .c7n-pro-select-box-wrapper {
+      margin-top: 0 !important;
+    }
+
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .c7n-pro-validation-message {
+      white-space: unset;
+    }
+
+    .c7n-pro-select-box-wrapper {
+      margin-top: 0.2rem;
+
+      .c7n-pro-radio-label {
+        display: inline-block;
+        min-width: 1rem;
+      }
+    }
+
+    .c7n-pro-field-wrapper {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+  }
+
+  &-category {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+    &-exception {
+      position: absolute;
+      bottom: -40px;
+      text-align: center;
+      margin-bottom: 12px;
+      display: flex;
+      cursor: auto;
+      align-items: center;
+
+      .c7n-pro-checkbox-inner {
+        width: 14px !important;
+        height: 14px !important;
+      }
+
+      .c7n-pro-checkbox-inner::after {
+        top: -0.0242857rem !important;
+        width: 0.04714286rem !important;
+        height: 0.11428571rem !important;
+      }
+    }
+
+    &-container {
+      position: relative;
+      height: 60px;
+      width: calc((100% - 60px) / 4);
+      margin-bottom: 12px;
+      flex: 1;
+      margin: 0 20px 20px 0;
+      min-width: 156px;
+      max-width: calc((100% - 60px) / 4);
+      border-radius: 6px;
+      border: 1px solid #d9e6f2;
+      &:nth-child(4n) {
+        margin-right: 0;
+      }
+      &-disabled {
+        cursor: not-allowed;
+        background: #ffffff;
+        // opacity: 0.45;
+        border: 1px solid #d9e6f2;
+        .category-item {
+          opacity: 0.45;
+        }
+      }
+
+      &-selected {
+        background: rgba(83, 101, 234, 0.08);
+        border-radius: 6px;
+        border: 1px solid #5365ea;
+      }
+
+      .category-item {
+        display: inline-block;
+        text-align: center;
+        padding: 0.09rem 0;
+        cursor: pointer;
+        line-height: 20px;
+
+        &-content {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          padding-left: 20px;
+          &-icon {
+            width: 0.4rem;
+            height: 0.4rem;
+            line-height: 0.4rem;
+            background: url('./images/devops.svg');
+            background-repeat: no-repeat !important;
+            margin-right: 15px;
+            &-N_DEVOPS {
+              background: url('./images/devops.svg');
+            }
+            &-N_AGILE,
+            &-N_PROGRAM {
+              background: url('./images/agile.svg');
+            }
+            &-N_TEST {
+              background: url('./images/test.svg');
+            }
+            &-N_REQUIREMENT {
+              background: url('./images/require.svg');
+            }
+            &-N_OPERATIONS {
+              background: url('./images/operations.svg');
+            }
+            &-N_WATERFALL {
+              background: url('./images/waterfall.svg');
+            }
+          }
+          &-name {
+            text-align: center;
+            font-size: 13px;
+          }
+        }
+      }
+    }
+    // 暂时修改
+    // &-container-waterfall-selected {
+    //   margin-bottom: 40px;
+    // }
+    &-container-agileProgram-selected {
+      margin-bottom: 40px;
+    }
+
+    &-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(15, 19, 88, 0.6);
+      line-height: 15px;
+      margin-top: 0.1rem;
+      margin-bottom: 0.14rem;
+
+      &::after {
+        display: inline-block;
+        width: 0.08rem;
+        margin-left: 0.04rem;
+        color: #d50000;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
+        vertical-align: middle;
+        content: '*';
+        position: relative;
+        top: -2px;
+      }
+    }
+  }
+
+  &-template {
+    margin-top: 6px;
+    &-checkbox-text {
+      color: rgba(74, 92, 144, 0.65);
+      display: inline-block;
+      margin-right: 12px;
+      font-size: 12px;
+    }
+    &-btn {
+      font-weight: 500;
+      color: #5365ea;
+      font-size: 12px;
+      cursor: pointer;
+    }
+  }
+
+  &-projRelation {
+    &-title {
+      margin-bottom: 13px;
+      font-size: 7px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    &-divided {
+      margin-top: 8px;
+      margin-bottom: 16px;
+      width: 100%;
+      height: 1px;
+      background: #d9e6f2;
+    }
+  }
+
+  &-advanced {
+    &-divided {
+      margin-top: 8px;
+      margin-bottom: 16px;
+      width: 100%;
+      height: 1px;
+      background: #d9e6f2;
+    }
+    &-title {
+      margin-bottom: 13px;
+      font-size: 14px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: var(--text-color);
+      i {
+        margin-left: 5px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+        top: -2px;
+      }
+      .btn-expand {
+        border-radius: 16px !important;
+        text-align: center !important;
+        width: 24px !important;
+        height: 24px !important;
+        margin-left: 8px !important;
+        .icon {
+          margin-left: 0;
+          position: relative;
+          top: 0.5px;
+        }
+      }
+    }
+  }
+}
+
+.tree-select-text {
+  color: #0f1358 !important;
+}
+
+.c7ncd-operation-form-item-healthStatus {
+  position: relative;
+  left: 10px;
+  &-label {
+    color: rgba(15, 19, 88, 0.65);
+    font-size: 12px;
+    position: relative;
+    top: 5px;
+  }
+  &-content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    top: 9px;
+    .ring {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+    .text {
+      position: relative;
+      top: -1px;
+    }
+  }
+}

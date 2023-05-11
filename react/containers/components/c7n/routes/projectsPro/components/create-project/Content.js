@@ -21,13 +21,13 @@ import {
 } from 'choerodon-ui/pro';
 import {
   includes, map, get,
-  remove,
+  remove, find,
 } from 'lodash';
 import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import { fileServer, prompt } from '@/utils';
-import { cbaseApi } from '@/apis';
+import { cbaseApi, projectsApi } from '@/apis';
 import axios from '@/components/axios';
 import AvatarUploader from '../avatarUploader';
 import { useCreateProjectProStore } from './stores';
@@ -38,6 +38,7 @@ import handleGetFormContent, { contrastMapToFormDsMap } from './untils/getFormCo
 import './index.less';
 
 const projectRelationshipCodes = ['N_WATERFALL', 'N_AGILE', 'N_REQUIREMENT'];
+const excludeTemplateFieldCodes = ['name', 'code'];
 
 const CreateProject = observer(() => {
   const {
@@ -63,6 +64,7 @@ const CreateProject = observer(() => {
     projectId: currentProjectId,
     createProjectStore,
     standardDisable,
+    templateData,
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
   const [check, setCheck] = useState(false);
@@ -78,6 +80,13 @@ const CreateProject = observer(() => {
 
   const record = useMemo(() => formDs.current, [formDs.current]);
   const isModify = !!propsProjectId;
+
+  const templateCategoryName = useMemo(() => {
+    if (templateData?.categoryCodes?.includes(categoryCodes.waterfall)) {
+      return ['瀑布管理', '敏捷管理、敏捷项目群'];
+    }
+    return ['敏捷管理', '瀑布管理、敏捷项目群'];
+  }, [templateData]);
 
   useEffect(() => {
     modal.update({
@@ -95,14 +104,31 @@ const CreateProject = observer(() => {
   }, [record]);
 
   const initFormDs = async () => {
-    const res = await cbaseApi.getFields({
+    const [res, templateRes, templateInfo] = await Promise.all([cbaseApi.getFields({
       pageAction: isModify ? 'edit' : 'create',
-      projectId: isModify ? propsProjectId : '',
-    });
+      // eslint-disable-next-line no-nested-ternary
+      projectId: templateData ? templateData.id : (isModify ? propsProjectId : ''),
+    }), templateData ? cbaseApi.getFields({
+      pageAction: 'edit',
+      projectId: templateData.id,
+    }) : null,
+    templateData ? projectsApi.getProjectInfo(templateData.id) : null,
+    ]);
+
     remove(res, (item) => item.fieldCode === 'type');
     res.forEach((item) => {
+      // 基于模板创建项目时，模板项目数据赋值
+      const templateItem = find(templateRes || [], ['fieldId', item.fieldId]);
+      if (templateItem) {
+        item.value = templateItem.value;
+        item.valueStr = templateItem.valueStr;
+      }
       if (item.builtInFlag && contrastMapToFormDsMap.get(item.fieldCode)) {
         item.fieldCode = contrastMapToFormDsMap.get(item.fieldCode);
+      }
+
+      if (item.builtInFlag && !excludeTemplateFieldCodes.includes(item.fieldCode) && (templateInfo?.[item.fieldCode] || templateInfo?.[item.fieldCode] === 0)) {
+        formDs.current?.init(item.fieldCode, templateInfo[item.fieldCode]);
       }
 
       const {
@@ -122,7 +148,7 @@ const CreateProject = observer(() => {
           dsProps.options.setState('selectids', Array.isArray(defaultValue) ? [...defaultValue] : [defaultValue]);
         }
 
-        if (dsProps.options && value && isModify) {
+        if (dsProps.options && value && (isModify || templateItem)) {
           dsProps.options.setState('selectids', Array.isArray(value) ? [...value] : [value]);
         }
 
@@ -146,7 +172,7 @@ const CreateProject = observer(() => {
               record.set(fieldCode, defaultValue);
             }
           }
-          if ((value || value === 0) && isModify) {
+          if ((value || value === 0) && (isModify || templateItem)) {
             record.set(fieldCode, timeTypeArr.includes(fieldType) ? valueStr : value); // valueStr用于时间类型
           }
       } else {
@@ -259,6 +285,10 @@ const CreateProject = observer(() => {
           }
         });
         record.set('customFields', customFields);
+        if (templateData) {
+          record.set('fromTemplateId', templateData.id);
+          record.set('useTemplate', undefined);
+        }
 
         const res = await formDs.forceSubmit();
         if (res && !res.failed && res.list && res.list.length) {
@@ -596,6 +626,14 @@ const CreateProject = observer(() => {
         }
       </Form> */}
       <div className={`${prefixCls}-category-label`}>项目类型</div>
+      {templateData && (
+        <Alert
+          message={`由于项目模板限制已选择${templateCategoryName[0]}项目类型，此类型与${templateCategoryName[1]}类型管理模式互斥，不可选择`}
+          type="info"
+          showIcon
+          style={{ margin: '12px 0 16px' }}
+        />
+      )}
       <div className={`${prefixCls}-category`}>
         {categoryDs.map((categoryRecord, index) => (
           <div className={getCategoryClassNames(categoryRecord)}>
@@ -690,7 +728,7 @@ const CreateProject = observer(() => {
       <div className={`${prefixCls}-template`}>
         {(!currentProjectId || (currentProjectId && !hasConfiged))
           && selectedCategoryCodes.find((item) => includes([categoryCodes.agile, categoryCodes.waterfall], item))
-          && includes(templateTabsKey, 'statusMachineTemplate') && (
+          && includes(templateTabsKey, 'statusMachineTemplate') && !templateData && (
             <>
               <div>
                 <span className={`${prefixCls}-template-checkbox-text`}>使用组织预置的状态机及看板模板</span>

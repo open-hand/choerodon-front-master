@@ -73,7 +73,7 @@ class HeaderStore {
 
   @observable inboxVisible = false;
 
-  @observable inboxDetailVisible = false;
+  @observable inboxDetailVisible = true;
 
   @observable inboxDetail = null;
 
@@ -187,7 +187,9 @@ class HeaderStore {
 
   @computed
   get getUnreadMsg() {
-    return sortBy(this.inboxData.filter((item) => !this.isTodo || item.backlogFlag), ['read']);
+    // 这里有排序 先注释
+    // return sortBy(this.inboxData.filter((item) => !this.isTodo || item.backlogFlag), ['read']);
+    return this.inboxData;
   }
 
   @computed
@@ -337,6 +339,10 @@ class HeaderStore {
         this.inboxData = list || [];
         this.inboxLoading = false;
         this.inboxLoaded = true;
+        if (!this.inboxDetail) {
+          this.setInboxDetailVisible(true);
+          this.setInboxDetail(list[0]);
+        }
       }))
       .catch(handleResponseError).finally(() => {
         this.inboxLoading = false;

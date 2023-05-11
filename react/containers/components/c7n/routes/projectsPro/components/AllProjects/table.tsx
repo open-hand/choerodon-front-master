@@ -16,6 +16,7 @@ import useExternalFunc from '@/hooks/useExternalFunc';
 import { getRandomBackground } from '@/utils';
 import { useProjectsProStore } from '../../stores';
 import { axios } from '@/index';
+// import CreateProject from '../create-project-template';
 import CreateProject from '../create-project';
 import handleClickProject from '@/utils/gotoProject';
 import Action from '@/components/action';
@@ -58,11 +59,9 @@ const Index: React.FC<any> = (props) => {
     intlPrefix,
     projectId: projectIds,
   } = useProjectsProStore();
-
   const refresh = () => {
     projectListDataSet.query(1);
   };
-
   const { loading: openStatusSettingModalLoading, func: openStatusSettingModal }: any = useExternalFunc('baseBusiness', 'base-business:openStatusSettingModal');
 
   const {
@@ -75,7 +74,6 @@ const Index: React.FC<any> = (props) => {
   });
 
   const displayColumn = useGetDisplayColumn(columnsSetConfig, getAdjustableColumns(formatMessage, prefix, fieldFunc));
-
   const renderName = ({ record }: { record: Record }) => {
     const projData: any = record?.toData();
     const unix = String(moment(projData.creationDate).unix());

@@ -10,6 +10,9 @@ import {
   get, forEach, map, includes, filter,
 } from 'lodash';
 import { useIntl } from 'react-intl';
+import ExternalComponent from '@/components/external-component';
+import useProjectTemplate from '@/hooks/useProjectTemplate';
+import { TEMPLATE_CODE } from '@/constants/TEMPLATE_CODE';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import AddModal from '@/containers/components/c7n/components/addComponentsModal';
@@ -53,6 +56,9 @@ const ComponentMountMap = {
   backlogDeliveryCycle: 'backlog:backlogDeliveryCycle',
 };
 
+const buttonCodes = ['config', 'refresh'];
+const getTemplateCode = (code) => TEMPLATE_CODE[`agile/project-overview.${code}`];
+
 const ProjectOverview = () => {
   const { formatMessage } = useIntl();
   const {
@@ -70,6 +76,8 @@ const ProjectOverview = () => {
   } = projectOverviewStore;
 
   const [layOutWidth, setWidth] = useState(0);
+
+  const { displayList } = useProjectTemplate(buttonCodes.map((code) => (getTemplateCode(code))));
 
   useEffect(() => {
     if (!observerLayout) {
@@ -117,8 +125,15 @@ const ProjectOverview = () => {
     return <CustomChart customChartConfig={chartConfig} />;
   }, [customChartAvailableList, projectOverviewStore]);
   const renderInjectComponent = useCallback((type) => {
-    if (!Object.keys(ComponentMountMap).includes(type) || !injectHas(ComponentMountMap[type])) {
+    if (!Object.keys(ComponentMountMap).includes(type)) {
       return undefined;
+    }
+    if (type === 'overviewCard') {
+      return (
+        <ExternalComponent
+          system={{ scope: 'agile', module: 'waterfall:overviewCard' }}
+        />
+      );
     }
     return injectMount(ComponentMountMap[type]);
   }, []);
@@ -202,7 +217,7 @@ const ProjectOverview = () => {
   };
 
   const renderBtns = () => {
-    let btnGroups;
+    let btnGroups = [];
     if (isEdit) {
       btnGroups = [
         <Button
@@ -232,7 +247,7 @@ const ProjectOverview = () => {
           取消
         </Button>,
       ];
-    } else {
+    } else if (displayList[getTemplateCode('config')]) {
       btnGroups = [
         <Button
           onClick={handleEditable}
@@ -244,11 +259,13 @@ const ProjectOverview = () => {
         </Button>,
       ];
     }
-    btnGroups.unshift(<Button
-      onClick={() => handleRefresh()}
-      key="1"
-      icon="refresh"
-    />);
+    if (displayList[getTemplateCode('refresh')]) {
+      btnGroups.unshift(<Button
+        onClick={() => handleRefresh()}
+        key="1"
+        icon="refresh"
+      />);
+    }
     return (
       <div
         className={`${prefixCls}-btnGroups`}
@@ -264,7 +281,7 @@ const ProjectOverview = () => {
   function renderEmptyTitle({
     groupId, type, injectGroupId, layout: { customFlag },
   }) {
-    if (injectGroupId && !injectHas(ComponentMountMap[type])) {
+    if (injectGroupId && !window.agile) {
       switch (injectGroupId) {
         case 'agilePro':
           return '安装部署【敏捷模块】模块后，才能使用此卡片';

@@ -406,18 +406,34 @@ class Masters extends Component {
       // <Spin spinning={AppState.getIsLoadMenu}>
       // 这里是进入系统 偶尔会出现一直转圈的问题 先修改为false
       <Spin spinning={false}>
-        <div className="page-wrapper">
+        <div
+          className="page-wrapper"
+        >
           <div
             className="page-header"
+            style={{
+              background: '#F5F6FA',
+            }}
           >
             <AnnouncementBannerPro />
             <Header appState={AppState} />
           </div>
-          <div className="page-body">
+          <div
+            className="page-body"
+            style={{
+              border: (AppState?.currentProject?.templateFlag && AppState?.menuType?.type === 'project') ? '1px solid #D9E6F2' : 'unset',
+            }}
+          >
             <div className="content-wrapper">
               <MenusPro />
               <Permission service={['choerodon.code.project.setting.general-setting.ps.feedback']}>
-                {mount('base-business:yqFeedback', {})}
+                <ExternalComponent
+                  system={{
+                    scope: 'baseBusiness',
+                    module: 'base-business:yqFeedback',
+                  }}
+                />
+                {/* {mount('base-business:yqFeedback', {})} */}
                 {/* <YqFeedback /> */}
               </Permission>
               {/* {mount('base-pro:Guide', {

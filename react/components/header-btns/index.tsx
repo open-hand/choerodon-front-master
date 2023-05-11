@@ -129,7 +129,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
     const minGroupKey = Math.min.apply(null, displayBtn.map((value) => value.group));
     const btnGroups = map(groupBy(displayBtn, 'group'), (value, key) => {
       const Split = <Divider key={Math.random()} type="vertical" className="c7ncd-header-split" />;
-      const btns = map(value as ItemInnerProps[], ({
+      const btns = map(value as any[], ({
         name,
         handler,
         iconOnly: propsIconOnly = false,
@@ -143,6 +143,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
         element,
         preElement,
         groupBtnItems,
+        noHiddenChange,
         key: propsKey,
         ...props
       }, index: number) => {
@@ -181,6 +182,7 @@ const HeaderButtons = ({ items, children, showClassName = false }: {
               icon={icon}
               name={name}
               disabled={disabled}
+              noHiddenChange={noHiddenChange}
             />
           );
         } else if (iconOnly) {

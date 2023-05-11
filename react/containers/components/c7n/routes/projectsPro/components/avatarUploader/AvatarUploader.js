@@ -382,16 +382,16 @@ export default class AvatarUploader extends Component {
 
   renderContainer() {
     const { img } = this.state;
-    const { intlPrefix } = this.props;
+    const { intlPrefix ,isTemplate} = this.props;
     const props = this.getUploadProps();
     return img ? (this.renderEditor(props))
       : (
-        <Dragger className="c7n-base-avatar-dragger" {...props}>
+        <Dragger className={`c7n-base-avatar-dragger c7n-base-avatar-${isTemplate}-dragger` }{...props}>
           <Icon type="inbox" />
-          <h3 className="c7n-base-avatar-dragger-text">
+          <h3 className={`c7n-base-avatar-dragger-text c7n-base-avatar-${isTemplate}-dragger-text` }>
             点击或将图片拖到此区域上传图片
           </h3>
-          <h4 className="c7n-base-avatar-dragger-hint">
+          <h4 className={`c7n-base-avatar-dragger-hint c7n-base-avatar-${isTemplate}-dragger-hint` }>
             {/* <FormattedMessage id={`${intlPrefix}.dragger.hint`} values={{ size: `${limitSize / 1024}M`, access: 'PNG、JPG、JPEG' }} /> */}
             图片支持PNG、JPG、JPEG格式，且不能大于1M
           </h4>
@@ -400,7 +400,7 @@ export default class AvatarUploader extends Component {
   }
 
   render() {
-    const { visible, intlPrefix } = this.props;
+    const { visible, intlPrefix ,isTemplate} = this.props;
     const { img, submitting } = this.state;
     const modalFooter = [
       <Button disabled={submitting} key="cancel" onClick={this.handleCancel}>

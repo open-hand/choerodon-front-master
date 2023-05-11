@@ -16,9 +16,11 @@ import { Permission } from '@/components/permission';
 import { useProjectsProStore } from '../../stores';
 import HeaderStore from '../../../../../../stores/c7n/HeaderStore';
 import CreateProject from '../create-project';
+// import CreateProject from '../create-project-template';
 import CustomQuerybar, { getCacheData } from './components/customQuerybar';
 import { organizationsApi, cbaseApi } from '@/apis';
 import useExternalFunc from '@/hooks/useExternalFunc';
+import ButtonGroup from '@/components/btn-group';
 import AllProjectTable from './table';
 
 import {
@@ -64,6 +66,11 @@ export default observer(() => {
   const { loading: haitianFuncLoading, func } = useExternalFunc(
     'haitianMaster',
     'haitianMaster:createProjectExtraFields',
+  );
+
+  const { loading: baseBusinessFuncLoading, func: openCreateProjectByTemplateModal } = useExternalFunc(
+    'baseBusiness',
+    'base-business:openCreateProjectByTemplateModal',
   );
 
   const [createBtnToolTipHidden, setCreateBtnToolTipHidden] = useState(true);
@@ -169,6 +176,12 @@ export default observer(() => {
     }
   };
 
+  const handleAddProjectByTemplate = () => {
+    openCreateProjectByTemplateModal?.default && openCreateProjectByTemplateModal.default({
+      onClickUse: handleAddProject,
+    });
+  };
+
   const renderTitle = () => {
     const { organizationId: searchOrgId } = queryString.parse(
       history.location.search,
@@ -206,18 +219,23 @@ export default observer(() => {
               title={getCreatBtnTitle}
               placement={inNewUserGuideStepOne ? 'bottomRight' : 'bottom'}
             >
-              <Button
-                funcType="raised"
+              <ButtonGroup
+                trigger="hover"
                 color="primary"
+                style={{ height: 30, marginLeft: 16 }}
+                btnItems={[{
+                  name: '创建空白项目',
+                  permissions: ['choerodon.code.organization.project.ps.create'],
+                  handler: () => handleAddProject(),
+                }, {
+                  name: '基于模板创建',
+                  permissions: ['choerodon.code.organization.project.ps.create'],
+                  handler: handleAddProjectByTemplate,
+                }]}
+                name={formatMessage({ id: 'c7ncd.project.createProject' })}
                 disabled={!getCanCreate}
                 onClick={() => handleAddProject()}
-                style={{
-                  height: 30,
-                  marginLeft: 16,
-                }}
-              >
-                {formatMessage({ id: 'c7ncd.project.createProject' })}
-              </Button>
+              />
             </Tooltip>
           </Permission>
         </div>
@@ -225,12 +243,20 @@ export default observer(() => {
     );
   };
 
-  const handleAddProject = (currentProjectId) => {
+  const handleAddProject = (currentProjectId, templateData) => {
     setCreateBtnToolTipHidden(true);
     Modal.open({
       key: Modal.key(),
       drawer: true,
-      title: currentProjectId ? '项目设置' : '创建项目',
+      // eslint-disable-next-line no-nested-ternary
+      title: templateData ? (
+        <div className="c7n-projects-modal-template-title">
+          <span>基于模板创建项目</span>
+          <div className="c7n-projects-modal-template-title-tag">
+            <span>{templateData?.name}</span>
+          </div>
+        </div>
+      ) : (currentProjectId ? '项目设置' : '创建项目'),
       className: 'c7n-projects-modal-create-project',
       children: (
         <CreateProject
@@ -238,6 +264,7 @@ export default observer(() => {
           projectId={currentProjectId}
           categoryCodes={categoryCodes}
           inNewUserGuideStepOne={inNewUserGuideStepOne}
+          templateData={templateData}
         />
       ),
       okText: currentProjectId ? '保存' : '创建',

@@ -3,8 +3,14 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import { inject } from 'mobx-react';
-import { useLocation } from 'react-router';
+import { useLocation, useHistory } from 'react-router';
+import { Alert, message } from 'choerodon-ui';
+import { Button } from 'choerodon-ui/pro';
+import { Choerodon } from '@/index';
+import { Permission } from '@/components/permission';
 import useExternalFunc from '@/hooks/useExternalFunc';
+import useProjectTemplate from '@/hooks/useProjectTemplate';
+import { projectTemplateApi } from '@/apis/ProjectsTemplate';
 import { useHeaderStore } from './stores';
 import HeaderLogo from './components/header-logo';
 import ProjectsSelector from './components/projects-selector';
@@ -15,6 +21,7 @@ import UserEntry from './components/user-avatar';
 import useShouldHiddenHead from '@/hooks/useShouldHiddenHead';
 import ExtraButton from './components/extra-button';
 import useIsFullPage from '@/hooks/useIsFullPage';
+import styles from './styles.less';
 
 const Header = (props:any) => {
   const {
@@ -27,10 +34,14 @@ const Header = (props:any) => {
 
   const location = useLocation();
 
+  const history = useHistory();
+
   const shouldHiddenHead = useShouldHiddenHead();
   const isFullPage = useIsFullPage();
 
   const { loading, func: loadWatermarkInfo }: any = useExternalFunc('baseBusiness', 'base-business:loadWatermarkInfo');
+
+  const { isTemplate, isEdit } = useProjectTemplate();
 
   useEffect(() => {
     AppState.setCurrentDropDown(AppState.getStarProject, AppState.getRecentUse);
@@ -59,7 +70,68 @@ const Header = (props:any) => {
     return null;
   }
 
-  return (
+  const handleBack = () => {
+    const params = new URLSearchParams(location.search);
+    history.push({
+      pathname: '/baseBusiness/project-template',
+      search: `type=organization&id=${params.get('organizationId')}&organizationId=${params.get('organizationId')}&name=${AppState.currentProject?.organizationName}&category=${params.get('category')}`,
+    });
+  };
+
+  const handlePublish = async () => {
+    const params = new URLSearchParams(location.search);
+
+    const ids: any = params.get('id');
+    const status = 'published';
+    try {
+      const res = await projectTemplateApi.publishTemplate(ids, status);
+      if (res && res.failed !== true) {
+        message.success('发布成功');
+        handleBack();
+      }
+    } catch (error) {
+      Choerodon.handleResponseError(error);
+    }
+  };
+
+  const renderTemplate = () => (
+    <div className={styles.c7ncd_template_header}>
+      <span className={styles.c7ncd_template_header_name}>{AppState?.currentProject?.name}</span>
+      <Alert
+        message={isEdit ? '模板编辑中' : '预览项目模板'}
+        type="info"
+        showIcon
+      />
+      <div>
+        {
+          isEdit ? (
+            <>
+              <Button
+                icon="exit_to_app"
+                onClick={handleBack}
+              >
+                返回
+              </Button>
+              <Permission
+                service={['choerodon.code.organization.project-template.ps.publish-template']}
+              >
+                <Button
+                  icon="send-o"
+                  color={'primary' as any}
+                  onClick={handlePublish}
+                >
+                  发布
+                </Button>
+              </Permission>
+
+            </>
+          ) : undefined
+        }
+      </div>
+    </div>
+  );
+
+  return isTemplate ? renderTemplate() : (
     <div className={prefixCls}>
       {/* logo */}
       <HeaderLogo />

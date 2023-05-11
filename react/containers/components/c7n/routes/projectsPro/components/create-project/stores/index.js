@@ -4,8 +4,7 @@ import React, {
 import { inject } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import { DataSet } from 'choerodon-ui/pro';
-import forEach from 'lodash/forEach';
-import some from 'lodash/some';
+import { some, forEach } from 'lodash';
 import { injectIntl } from 'react-intl';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import FormDataSet from './FormDataSet';
@@ -31,6 +30,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     projectId,
     categoryCodes,
     inNewUserGuideStepOne,
+    templateData,
   } = props;
   const { loading: haitianMasterLoading, func: createProjectExtraFields } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
   const { loading: baseSaasLoading, func: checkSenior } = useExternalFunc('saas', 'base-saas:checkSaaSSenior');
@@ -82,6 +82,18 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           // eslint-disable-next-line no-param-reassign
           record.isSelected = true;
         } else {
+          record.setState('disabled', true);
+        }
+      });
+    } else if (templateData) {
+      categoryDs.forEach((record) => {
+        if (templateData?.categoryCodes?.indexOf(record.get('code')) !== -1) {
+          // eslint-disable-next-line no-param-reassign
+          record.isSelected = true;
+          if (record.get('code') !== categoryCodes.require) {
+            record.setState('disabled', true);
+          }
+        } else if ([categoryCodes.agile, categoryCodes.program, categoryCodes.waterfall].includes(record.get('code'))) {
           record.setState('disabled', true);
         }
       });
