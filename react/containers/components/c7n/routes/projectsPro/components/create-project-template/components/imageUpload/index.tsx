@@ -60,7 +60,7 @@ const CropModal = (p: any) => {
     <div className={`${p.prefixCls}-container-Cropper`}>
       <Cropper
         style={{ height: 420, width: 702 }}
-        // aspectRatio={aspectRatio}
+        aspectRatio={aspectRatio}
         guides={false}
         src={url}
         ref={cropperRef}
@@ -126,7 +126,7 @@ const Index:React.FC<IProps> = (props:IProps) => {
           url={url}
           prefixCls={prefixCls}
           handleCrop={handleCrop}
-          // aspectRatio={width / height}
+          aspectRatio={220 / 80}
         />,
         style: {
           width: 750,
