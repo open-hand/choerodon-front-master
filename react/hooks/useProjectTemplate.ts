@@ -114,6 +114,11 @@ const templateCodeObj = [{
   display: true,
   previewDisplay: false,
 }, {
+  name: '项目计划-行内编辑/拖拽/时间设置',
+  code: TEMPLATE_CODE['agile/wbs.action'],
+  display: true,
+  previewDisplay: false,
+}, {
   name: '登记风险',
   code: TEMPLATE_CODE['agile/pro-risk.register'],
   display: true,
