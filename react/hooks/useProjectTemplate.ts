@@ -11,7 +11,7 @@ const {
 const templateCodeObj = [{
   name: '项目概览-配置',
   code: TEMPLATE_CODE['agile/project-overview.config'],
-  display: true,
+  display: false,
   previewDisplay: false,
 }, {
   name: '项目概览-刷新',
