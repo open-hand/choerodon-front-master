@@ -135,6 +135,13 @@ const ProjectOverview = () => {
         />
       );
     }
+    if (type === 'milestoneCard') {
+      return (
+        <ExternalComponent
+          system={{ scope: 'agile', module: 'waterfall:milestoneCard' }}
+        />
+      );
+    }
     return injectMount(ComponentMountMap[type]);
   }, []);
 
