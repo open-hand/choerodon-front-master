@@ -128,19 +128,15 @@ const ProjectOverview = () => {
     if (!Object.keys(ComponentMountMap).includes(type)) {
       return undefined;
     }
-    if (type === 'overviewCard') {
+    if (['featureProgress', 'issueProgress', 'overviewCard', 'milestoneCard'].includes(type)) {
       return (
         <ExternalComponent
-          system={{ scope: 'agile', module: 'waterfall:overviewCard' }}
+          system={{ scope: 'agile', module: ComponentMountMap[type] }}
         />
       );
     }
-    if (type === 'milestoneCard') {
-      return (
-        <ExternalComponent
-          system={{ scope: 'agile', module: 'waterfall:milestoneCard' }}
-        />
-      );
+    if (!injectHas(ComponentMountMap[type])) {
+      return undefined;
     }
     return injectMount(ComponentMountMap[type]);
   }, []);
