@@ -17,6 +17,14 @@ class UsersApi extends Api<UsersApi> {
     });
   }
 
+  // 获取企微 appid、agengid
+  getEnterpriseWechatInfo() {
+    return this.request({
+      method: 'get',
+      url: `/iam/choerodon/v1/relevance/open_app_config?organization_id=${this.orgId}`,
+    });
+  }
+
   // 获取第三方应用可以绑定的组织
 
   openAppGetCanBindOrgs(type:string) {
