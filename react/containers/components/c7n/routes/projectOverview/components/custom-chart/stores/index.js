@@ -1,19 +1,16 @@
 import React, {
-  createContext, useContext, useEffect, useState,
+  createContext, useContext, useEffect, useState, useMemo,
 } from 'react';
 import { inject } from 'mobx-react';
 import { observer } from 'mobx-react-lite';
 
-import { get } from '@choerodon/inject';
 import { toJS } from 'mobx';
 import { isEmpty, noop, uniqueId } from 'lodash';
 import { useProjectOverviewStore } from '../../../stores';
+import useExternalFunc from '@/hooks/useExternalFunc';
 
 const Store = createContext();
-// 需提供一个能返回echarts图表配置数据的方法
-const loadOptionDataMaps = {
-  agile: get('agile:AgileCustomChartLoadData') || noop,
-};
+
 export function useCustomChartStore() {
   return useContext(Store);
 }
@@ -28,6 +25,14 @@ export const StoreProvider = inject('AppState')(observer((props) => {
   const [searchVO, setSearchVO] = useState();
   const [searchId, setSearchId] = useState();
   const [initData, setInitData] = useState();
+
+  const { func: loadAgileCustomChart } = useExternalFunc('agile', 'agile:AgileCustomChartLoadData');
+
+  // 需提供一个能返回echarts图表配置数据的方法
+  const loadOptionDataMaps = useMemo(() => ({
+    agile: loadAgileCustomChart?.default || noop,
+  }), [loadAgileCustomChart]);
+
   // TODO:后续需要假如其他服务，请使用使用customChartAvailableList 进行判断是否有服务
   useEffect(() => {
     async function loadOptionData() {
@@ -43,7 +48,8 @@ export const StoreProvider = inject('AppState')(observer((props) => {
       setSearchId(uniqueId('overview-search'));
     }
     loadOptionData();
-  }, [customChartConfig, searchVO]);
+  }, [customChartConfig, searchVO, loadOptionDataMaps]);
+
   const value = {
     ...props,
     customData,

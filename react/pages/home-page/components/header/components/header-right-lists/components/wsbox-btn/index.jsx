@@ -542,7 +542,7 @@ export default class Inbox extends Component {
                   <div className={`${prefixCls}-sider-content-list-title`}>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {iconWithBadge}
-                      <a role="none" style={{ marginLeft: 10 }}>{title}</a>
+                      <span className={`${prefixCls}-sider-content-list-title-name`} role="none" style={{ marginLeft: 10 }}>{title}</span>
                     </span>
                     <div style={{
                       display: 'flex', alignItems: 'center', flexShrink: 0, color: 'var(--text-color4)',

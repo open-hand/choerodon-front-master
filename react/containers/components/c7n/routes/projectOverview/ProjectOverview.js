@@ -10,6 +10,7 @@ import {
   get, forEach, map, includes, filter,
 } from 'lodash';
 import { useIntl } from 'react-intl';
+import ExternalComponent from '@/components/external-component';
 import useProjectTemplate from '@/hooks/useProjectTemplate';
 import { TEMPLATE_CODE } from '@/constants/TEMPLATE_CODE';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
@@ -124,7 +125,17 @@ const ProjectOverview = () => {
     return <CustomChart customChartConfig={chartConfig} />;
   }, [customChartAvailableList, projectOverviewStore]);
   const renderInjectComponent = useCallback((type) => {
-    if (!Object.keys(ComponentMountMap).includes(type) || !injectHas(ComponentMountMap[type])) {
+    if (!Object.keys(ComponentMountMap).includes(type)) {
+      return undefined;
+    }
+    if (['featureProgress', 'issueProgress', 'overviewCard', 'milestoneCard'].includes(type)) {
+      return (
+        <ExternalComponent
+          system={{ scope: 'agile', module: ComponentMountMap[type] }}
+        />
+      );
+    }
+    if (!injectHas(ComponentMountMap[type])) {
       return undefined;
     }
     return injectMount(ComponentMountMap[type]);
@@ -273,7 +284,7 @@ const ProjectOverview = () => {
   function renderEmptyTitle({
     groupId, type, injectGroupId, layout: { customFlag },
   }) {
-    if (injectGroupId && !injectHas(ComponentMountMap[type])) {
+    if (injectGroupId && !window.agile) {
       switch (injectGroupId) {
         case 'agilePro':
           return '安装部署【敏捷模块】模块后，才能使用此卡片';

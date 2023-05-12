@@ -11,7 +11,7 @@ const {
 const templateCodeObj = [{
   name: '项目概览-配置',
   code: TEMPLATE_CODE['agile/project-overview.config'],
-  display: true,
+  display: false,
   previewDisplay: false,
 }, {
   name: '项目概览-刷新',
@@ -111,6 +111,11 @@ const templateCodeObj = [{
 }, {
   name: '列表-拆解为冲刺或敏捷工作项',
   code: TEMPLATE_CODE['agile/wbs.linkIssueOrSprint'],
+  display: true,
+  previewDisplay: false,
+}, {
+  name: '项目计划-行内编辑/拖拽/时间设置',
+  code: TEMPLATE_CODE['agile/wbs.action'],
   display: true,
   previewDisplay: false,
 }, {

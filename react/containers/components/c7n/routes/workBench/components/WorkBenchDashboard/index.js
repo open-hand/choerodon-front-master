@@ -40,8 +40,8 @@ import './index.less';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const UserIssue = () => (hasInject('agilePro:workbenchUserIssue') ? mount('agilePro:workbenchUserIssue', {}) : <></>);
-const ProjectProgress = () => (hasInject('agilePro:workbenchProjectStatistics') ? mount('agilePro:workbenchProjectStatistics', {}) : <></>);
+const UserIssue = () => <ExternalComponent system={{ scope: 'agile', module: 'agilePro:workbenchUserIssue' }} notFound={<></>} />;
+const ProjectProgress = () => <ExternalComponent system={{ scope: 'agile', module: 'agilePro:workbenchProjectStatistics' }} notFound={<></>} />;
 const ProjectReleaseSchedule = <ExternalComponent system={{ scope: 'haitianMaster', module: 'project-release-schedule' }} />;
 const TeamLeaderOrder = <ExternalComponent system={{ scope: 'haitianMaster', module: 'technical-director-schedule' }} />;
 const DevoperSchedule = <ExternalComponent system={{ scope: 'haitianMaster', module: 'devoper-schedule' }} />;
@@ -279,6 +279,10 @@ const WorkBenchDashboard = (props) => {
 
   const renderContent = () => {
     if (dashboardDs.status === 'loading' || addCardDs.status === 'loading' || mountedComponentFromDashboardId.current !== currentDashboardId) {
+      console.log('dashboardDs', dashboardDs);
+      console.log('addCardDs', addCardDs);
+      console.log('mountedComponentFromDashboardId', mountedComponentFromDashboardId);
+      console.log('currentDashboardId', currentDashboardId);
       return (
         <div style={{ marginTop: '10%' }}>
           <Loading display type={choerodonGet('configuration.master-global:loadingType') || 'c7n'} />

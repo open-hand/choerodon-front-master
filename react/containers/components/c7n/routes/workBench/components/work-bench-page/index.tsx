@@ -6,6 +6,7 @@ import { get as choerodonGet, has, mount } from '@choerodon/inject';
 import { get, noop } from 'lodash';
 
 import { Loading, EmptyPage } from '@zknow/components';
+import ExternalComponent from '@/components/external-component';
 
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
@@ -68,10 +69,16 @@ const WorkBenchPage: React.FC<WorkBenchPageProps> = (props) => {
     }
 
     const emptyDescription = `安装部署【${groupMap.get('agile')}】模块后，才能使用此视图。`;
-    if (!Object.keys(ComponentMountMap).includes(dashboardId) || !has(ComponentMountMap[dashboardId as ComponentMountMapKey])) {
+    if (!Object.keys(ComponentMountMap).includes(dashboardId)) {
       return <EmptyPage image={defaultImg} description={emptyDescription} />;
     }
-    return mount(ComponentMountMap[dashboardId as ComponentMountMapKey], { organizationId });
+    return (
+      <ExternalComponent
+        system={{ scope: 'agile', module: ComponentMountMap[dashboardId as ComponentMountMapKey] }}
+        organizationId={organizationId}
+        notFound={<EmptyPage image={defaultImg} description={emptyDescription} />}
+      />
+    );
   };
 
   return (

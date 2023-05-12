@@ -187,7 +187,9 @@ class HeaderStore {
 
   @computed
   get getUnreadMsg() {
-    return sortBy(this.inboxData.filter((item) => !this.isTodo || item.backlogFlag), ['read']);
+    // 这里有排序 先注释
+    // return sortBy(this.inboxData.filter((item) => !this.isTodo || item.backlogFlag), ['read']);
+    return this.inboxData;
   }
 
   @computed

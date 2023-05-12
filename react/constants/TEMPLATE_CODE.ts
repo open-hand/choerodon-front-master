@@ -20,6 +20,7 @@ export enum TEMPLATE_CODE {
   'agile/wbs.setRelation' = 'agile/wbs.setRelation',
   'agile/wbs.deliverable' = 'agile/wbs.deliverable',
   'agile/wbs.linkIssueOrSprint' = 'agile/wbs.linkIssueOrSprint',
+  'agile/wbs.action' = 'agile/wbs.action',
   'agile/pro-risk.register' = 'agile/pro-risk.register',
   'agile/pro-risk.personalFilter' = 'agile/pro-risk.personalFilter',
   'agile/pro-risk.refresh' = 'agile/pro-risk.refresh',
