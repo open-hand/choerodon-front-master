@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import sortBy from 'lodash/sortBy';
 import { inject } from 'mobx-react';
-import { mount } from '@choerodon/inject';
 import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Content, Header, Page } from '@/components/c7n-page';
 import Breadcrumb from '@/components/c7n-breadCrumb';
 import axios from '@/components/axios';
+import ExternalComponent from '@/components/external-component';
 
 import './style/index.less';
 
@@ -52,9 +52,9 @@ const Home = (props) => {
     <Page service={service}>
       <Header>
         {showCreate && (
-        <>
-          {mount('agile:AgileChartHeaderButtons', {})}
-        </>
+          <ExternalComponent
+            system={{ scope: 'agile', module: 'agile:AgileChartHeaderButtons' }}
+          />
         )}
       </Header>
       <Breadcrumb />

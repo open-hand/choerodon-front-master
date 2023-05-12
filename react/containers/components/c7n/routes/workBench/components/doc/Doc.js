@@ -8,6 +8,7 @@ import { get as injectGet } from '@choerodon/inject';
 import { TimePopover } from '@zknow/components';
 import { getRandomBackground } from '@/utils';
 import EmptyPage from '@/containers/components/c7n/components/empty-page';
+import { linkTo } from '@/utils/to';
 import Switch from './components/SwitchTabs';
 import EmptyImg from './image/empty.svg';
 import './index.less';
@@ -43,7 +44,7 @@ const Doc = () => {
       return;
     }
     // 敏捷跳转方法 知识库有部分内容依赖敏捷内容，故若无敏捷内的方法，则说明敏捷基础服务未安装 ，则不进行跳转
-    injectGet('agile:to') && injectGet('agile:to')(`/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}`, {
+    linkTo(`/knowledge/${orgFlag ? 'organization' : 'project'}/doc/${baseId}`, {
       type: orgFlag ? 'org' : 'project',
       id: orgFlag ? organizationId : projectId,
       params: {
