@@ -5,7 +5,7 @@ import {
   Spin,
 } from 'choerodon-ui/pro';
 import { observer } from 'mobx-react-lite';
-import { get, mount } from '@choerodon/inject';
+import { get } from '@choerodon/inject';
 
 import Echart from 'echarts-for-react';
 import { Loading } from '@zknow/components';
@@ -14,6 +14,7 @@ import './index.less';
 import OverviewWrap from '../OverviewWrap';
 // E:\hand\agile615\agile-service\react\routes\ReportHost\custom-report\components\ChartSearch\index.ts
 import EmptyPage from '../EmptyPage';
+import ExternalComponent from '@/components/external-component';
 
 // const ChartSearch =
 // console.log('ChartSearch...', ChartSearch);
@@ -66,7 +67,10 @@ const CustomChart = observer(() => {
         }}
       >
         <span className={`${clsPrefix}-search`}>
-          {mount('agile:CustomChartSearch', searchProps)}
+          <ExternalComponent
+            system={{ scope: 'agile', module: 'agile:CustomChartSearch' }}
+            {...searchProps}
+          />
         </span>
       </OverviewWrap.Header>
       <OverviewWrap.Content className={`${clsPrefix}-content`}>

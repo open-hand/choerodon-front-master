@@ -6,12 +6,12 @@ import { withRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { DataSet } from 'choerodon-ui/pro';
 import { forEach, get } from 'lodash';
-import { has } from '@choerodon/inject';
 import { localPageCacheStore } from '@/containers/stores/c7n/LocalPageCacheStore';
 import useStore from './useStore';
 import modulesMapping from './modulesMapping';
 import ComponentsDataset from './ComponentsDataSet';
 import StartSprintDataSet from './StartSprintDataSet';
+import useExternalFunc from '@/hooks/useExternalFunc';
 
 const Store = createContext();
 
@@ -26,6 +26,8 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
     MenuStore,
   } = props;
   localPageCacheStore.setProjectId(projectId); // 设置页面缓存项目id
+
+  const { func: loadAgileCustomChart } = useExternalFunc('agile', 'agile:AgileCustomChartLoadData');
 
   function getAllCode() {
     let allowedModules = [...modulesMapping.GENERAL];
@@ -54,11 +56,12 @@ export const StoreProvider = withRouter(inject('AppState', 'MenuStore')(observer
 
   const customChartAvailableList = useMemo(() => {
     // return ['agile'];
-    if (has('agile:AgileCustomChartLoadData')) {
+    if (loadAgileCustomChart?.default) {
       return ['agile'];
     }
     return [];
-  }, []);
+  }, [loadAgileCustomChart]);
+
   useEffect(() => {
     projectId && projectOverviewStore.loadAgileCustomData(projectId);
   }, [projectOverviewStore, projectId]);

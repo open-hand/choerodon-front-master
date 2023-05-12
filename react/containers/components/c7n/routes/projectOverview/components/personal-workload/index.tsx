@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { mount } from '@choerodon/inject';
+import ExternalComponent from '@/components/external-component';
 import { useProjectOverviewStore } from '../../stores';
 
 const PersonalWorkload = () => {
@@ -10,10 +11,11 @@ const PersonalWorkload = () => {
   } = useProjectOverviewStore();
   return (
     <div>
-      {mount('agile:PersonalWorkload', {
-        startSprintDs,
-        startedRecord,
-      })}
+      <ExternalComponent
+        system={{ scope: 'agile', module: 'agile:PersonalWorkload' }}
+        startSprintDs={startSprintDs}
+        startedRecord={startedRecord}
+      />
     </div>
   );
 };
