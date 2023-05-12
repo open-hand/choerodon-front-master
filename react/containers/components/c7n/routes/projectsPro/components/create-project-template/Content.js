@@ -546,7 +546,8 @@ const CreateProject = observer(() => {
         'disabled',
       ),
       [`${prefixCls}-category-container-selected`]: categoryRecord.isSelected,
-      [`${prefixCls}-category-container-waterfall-selected`]:
+      // 暂时修改样式
+      [`${prefixCls}-category-container-waterfall-templated-selected`]:
           categoryRecord.isSelected
           && categoryRecord.get('code') === 'N_WATERFALL',
       [`${prefixCls}-category-container-agileProgram-selected`]:
