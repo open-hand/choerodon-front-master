@@ -61,7 +61,7 @@ function ExternalComponent(props: Props) {
 
   // @ts-ignore
   if (!window[system.scope]) {
-    return notFound || <span />;
+    return notFound ?? <></>;
   }
 
   const Component = getComponent(system, ErrorComponent);

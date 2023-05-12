@@ -40,8 +40,8 @@ import './index.less';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const UserIssue = () => (hasInject('agilePro:workbenchUserIssue') ? mount('agilePro:workbenchUserIssue', {}) : <></>);
-const ProjectProgress = () => (hasInject('agilePro:workbenchProjectStatistics') ? mount('agilePro:workbenchProjectStatistics', {}) : <></>);
+const UserIssue = () => <ExternalComponent system={{ scope: 'agile', module: 'agilePro:workbenchUserIssue' }} notFound={<></>} />;
+const ProjectProgress = () => <ExternalComponent system={{ scope: 'agile', module: 'agilePro:workbenchProjectStatistics' }} notFound={<></>} />;
 const ProjectReleaseSchedule = <ExternalComponent system={{ scope: 'haitianMaster', module: 'project-release-schedule' }} />;
 const TeamLeaderOrder = <ExternalComponent system={{ scope: 'haitianMaster', module: 'technical-director-schedule' }} />;
 const DevoperSchedule = <ExternalComponent system={{ scope: 'haitianMaster', module: 'devoper-schedule' }} />;
