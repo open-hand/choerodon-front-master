@@ -43,7 +43,7 @@ import { PermissionProvider } from '@/components/permission';
 import { WEBSOCKET_SERVER } from '@/utils';
 import { MasterLocaleContainer } from '@/configs/masterLocaleConfigs';
 
-import useRegisterPath from '@/containers/components/c7n/master/initExternalizeFuncs/useRegisterPath';
+import useRegisterPath from '@/pages/initExternalizeFuncs/useRegisterPath';
 
 /** @type {boolean} 是否安装了敏捷模块 */
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
