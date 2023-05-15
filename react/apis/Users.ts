@@ -18,10 +18,10 @@ class UsersApi extends Api<UsersApi> {
   }
 
   // 获取企微 appid、agengid
-  getEnterpriseWechatInfo() {
+  getEnterpriseWechatInfo(id:any) {
     return this.request({
       method: 'get',
-      url: `/iam/choerodon/v1/relevance/open_app_config?organization_id=${this.orgId}`,
+      url: `/iam/choerodon/v1/relevance/open_app_config?organization_id=${id}`,
     });
   }
 
