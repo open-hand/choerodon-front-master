@@ -8,7 +8,7 @@ class MessageApi extends Api<MessageApi> {
   getMsgList() {
     return this.request({
       url: `/hmsg/choerodon/v1/mails/records/ding_talk/${this.orgId}`,
-      method: 'post',
+      method: 'get',
     });
   }
 
@@ -16,6 +16,13 @@ class MessageApi extends Api<MessageApi> {
     return this.request({
       url: `/hmsg/v1/${this.orgId}/messages/resend?transactionId=${id}`,
       method: 'post',
+    });
+  }
+
+  getEnterpriseWechatMsgList() {
+    return this.request({
+      url: `/hmsg/choerodon/v1/mails/records/wechat_enterprise/${this.orgId}`,
+      method: 'get',
     });
   }
 }
