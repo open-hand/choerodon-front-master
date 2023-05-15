@@ -43,6 +43,8 @@ import { PermissionProvider } from '@/components/permission';
 import { WEBSOCKET_SERVER } from '@/utils';
 import { MasterLocaleContainer } from '@/configs/masterLocaleConfigs';
 
+import useRegisterPath from '@/containers/components/c7n/master/initExternalizeFuncs/useRegisterPath';
+
 /** @type {boolean} 是否安装了敏捷模块 */
 const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 
@@ -86,6 +88,8 @@ const MasterIndex = (props: any) => {
 
   // 注入存储历史访问url的hook
   useSetHistoryPath();
+
+  useRegisterPath();
 
   /**
    * 判断当前pathname是否存在于环境变量outward中，表明是否需要认证

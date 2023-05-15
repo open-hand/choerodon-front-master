@@ -8,6 +8,8 @@ import { has as hasInject, mount, get as choerodonGet } from '@choerodon/inject'
 import ResizeObserver from 'resize-observer-polyfill';
 
 import { Loading } from '@zknow/components';
+import ExternalComponent from '@/components/external-component';
+
 import DragCard from '@/containers/components/c7n/components/dragCard';
 import EmptyCard from '@/containers/components/c7n/components/EmptyCard';
 import GridBg from '@/containers/components/c7n/components/gridBackground';
@@ -33,7 +35,6 @@ import ResourceOverview from '../ResourceOverview';
 import ResourceMonitoring from '../ResourceMonitoring';
 import BeginnerGuide from '../BeginnerGuide';
 import Notice from '../Notice';
-import ExternalComponent from '@/components/external-component';
 
 import { useWorkBenchStore } from '../../stores';
 import './index.less';
@@ -188,8 +189,17 @@ const WorkBenchDashboard = (props) => {
     type, title, permissionFlag = 1, emptyDiscribe, height,
   }) => {
     let tempComponent;
-    const injectComponentCode = componentCodeMapInJectCode[type] && hasInject(componentCodeMapInJectCode[type]) ? componentCodeMapInJectCode[type] : undefined;
-    const injectComponent = injectComponentCode ? mount(injectComponentCode) : null;
+    const injectComponentCode = componentCodeMapInJectCode[type] ? componentCodeMapInJectCode[type] : undefined;
+    let injectComponent;
+    if (type === 'backlogApprove') {
+      injectComponent = (
+        <ExternalComponent
+          system={{ scope: 'agile', module: 'backlog:workBenchApprove' }}
+        />
+      );
+    } else {
+      injectComponent = injectComponentCode ? mount(injectComponentCode) : null;
+    }
     const hasOwnProperty = Object.prototype.hasOwnProperty.call(ComponetsObjs, type) || Object.prototype.hasOwnProperty.call(injectWorkbenchComponent, type) || !!injectComponent;
     const hasType = allowedModules.includes(type);
 
