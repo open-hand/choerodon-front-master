@@ -140,11 +140,13 @@ const MasterIndex = (props: any): any => {
 
   useUpdateEffect(() => {
     if (!isInOutward) {
-      if (!loading) {
-        if (pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !window.agile) {
-          checkEnterprise();
+      if (!isInOutward) {
+        if (!loading) {
+          if (!pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !window.agile) {
+            checkEnterprise();
+          }
+          setReloginValue(true);
         }
-        setReloginValue(true);
       }
     }
   }, [pathname, loading, isInOutward]);
