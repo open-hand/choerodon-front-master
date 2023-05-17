@@ -88,6 +88,7 @@ const MasterIndex = () => {
    */
   async function checkEnterprise() {
     try {
+      debugger;
       const res = await enterprisesApi.checkEnterpriseInfo();
       if (res) {
         setEnterPriseConfirmed(true);
@@ -111,7 +112,7 @@ const MasterIndex = () => {
   useUpdateEffect(() => {
     if (!isInOutward) {
       if (!authStatus) {
-        if (pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !HAS_AGILE_PRO) {
+        if (!pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !HAS_AGILE_PRO) {
           checkEnterprise();
         }
         setReloginValue(true);
