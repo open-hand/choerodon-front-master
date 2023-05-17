@@ -23,7 +23,7 @@ const useExternalFunc = (scope: string, module: string) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [func, setFunc] = useState();
 
-  const { ready, failed } = useManifest(scope);
+  const { ready, failed, preLoad } = useManifest(scope);
 
   const loadFunc = useCallback(async () => {
     setLoading(true);
@@ -38,10 +38,10 @@ const useExternalFunc = (scope: string, module: string) => {
   }, []);
 
   useEffect(() => {
-    if (ready && !failed) {
+    if ((ready || preLoad) && !failed) {
       loadFunc();
     }
-  }, [ready]);
+  }, [ready, preLoad]);
 
   if (failed) {
     return { func: undefined, loading: false };
