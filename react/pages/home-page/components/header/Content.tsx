@@ -98,6 +98,7 @@ const Header = (props:any) => {
     <div className={styles.c7ncd_template_header}>
       <span className={styles.c7ncd_template_header_name}>{AppState?.currentProject?.name}</span>
       <Alert
+        className={styles.c7ncd_template_header_alert}
         message={isEdit ? '模板编辑中' : '预览项目模板'}
         type="info"
         showIcon

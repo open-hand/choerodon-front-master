@@ -267,7 +267,7 @@ class RenderPopoverContentDetailClass extends Component {
       }
       globalClick = function (event) {
         const clickedElement = event.target;
-        if (clickedElement.tagName === 'IMG') {
+        if (clickedElement.tagName === 'IMG' && clickedElement.className !== 'c7ncd-wsbox-msgIcon') {
           HeaderStore.setInboxUrl(clickedElement.src);
         }
       };
@@ -282,7 +282,7 @@ class RenderPopoverContentDetailClass extends Component {
         }}
       >
         {
-          inboxDetail && (
+          inboxDetail && ((HeaderStore.getInboxActiveKey === '1' && HeaderStore.getUnreadMsg?.length > 0) || (HeaderStore.getInboxActiveKey === '3' && HeaderStore.getUnreadOther?.length > 0)) && (
           <div className={`${prefixCls}-sider-header-wrap`}>
             <div className="header">
               {/* <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -520,7 +520,7 @@ export default class Inbox extends Component {
               } = data;
               const realSendTime = 'sendDate' in data ? sendDate : sendTime;
               const isMsg = 'messageId' in data;
-              const icon = <img style={{ width: 24 }} src={isMsg ? msg : report} alt="" />;
+              const icon = <img className="c7ncd-wsbox-msgIcon" style={{ width: 24 }} src={isMsg ? msg : report} alt="" />;
               const iconWithBadge = read || !isMsg ? icon : <Badge dot>{icon}</Badge>;
               const imageMatch = content.match(imgreg);
               const showPicUrl = imageMatch && imageMatch.length > 0 ? imageMatch[2] : undefined;
@@ -529,14 +529,14 @@ export default class Inbox extends Component {
                   className={`${prefixCls}-sider-content-list`}
                   key={data.id}
                   style={{
-                    background: data?.messageId === HeaderStore.inboxDetail?.messageId ? 'rgba(83,101,234,0.06)' : 'unset',
+                    background: (data?.messageId || data?.id) === (HeaderStore.inboxDetail?.messageId || HeaderStore.inboxDetail?.id) ? 'rgba(83,101,234,0.06)' : 'unset',
                   }}
                   role="none"
                   onClick={(e) => this.handleMessageTitleClick(e, data)}
                 >
                   <div
                     className={classNames({
-                      [`${prefixCls}-sider-content-list-focus`]: data?.messageId === HeaderStore.inboxDetail?.messageId,
+                      [`${prefixCls}-sider-content-list-focus`]: HeaderStore.getInboxActiveKey === '1' ? data?.messageId === HeaderStore.inboxDetail?.messageId : data?.id === HeaderStore.inboxDetail?.id,
                     })}
                   />
                   <div className={`${prefixCls}-sider-content-list-title`}>
@@ -569,7 +569,13 @@ export default class Inbox extends Component {
                     </div>
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
-                    <div style={{ maxHeight: 84, overflow: 'hidden' }}>
+                    <div
+                      className={`${prefixCls}-sider-content-list-description-div`}
+                      style={{
+                        maxHeight: 84,
+                        overflow: 'hidden',
+                      }}
+                    >
                       {content && (
                         <p
                           id={`li-${id}`}
@@ -584,7 +590,8 @@ export default class Inbox extends Component {
                         </a>
                       ) : null}
                     </div>
-                    {showPicUrl ? (
+                    {/* 下面显示图片 目前不展示 上面文字最多展示两行 */}
+                    {/* {showPicUrl ? (
                       <img
                         role="none"
                         onClick={(e) => {
@@ -594,7 +601,7 @@ export default class Inbox extends Component {
                         style={{ maxWidth: '100%', marginTop: 10 }}
                         src={showPicUrl.replace(/&amp;/g, '&')}
                       />
-                    ) : null}
+                    ) : null} */}
                   </div>
                 </li>
               );

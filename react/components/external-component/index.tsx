@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Loading } from '@zknow/components';
 import loadComponent from '@/utils/loadComponent';
+import useManifest from '@/hooks/use-manifest';
 
 const cache = new Map();
 
@@ -52,23 +53,24 @@ function getComponent({ scope, module }: SystemProps, ErrorComponent = null) {
 
 function ExternalComponent(props: Props) {
   const {
-    system, notFound, ErrorComponent, fallback = <Loading />, type = 'component',
+    system, notFound, ErrorComponent, fallback = <Loading />,
   } = props;
+
+  const { ready, failed } = useManifest(system?.scope);
 
   if (!system || !system.scope || !system.module) {
     return <h2>Not system specified</h2>;
   }
 
-  // @ts-ignore
-  if (!window[system.scope]) {
+  if (failed) {
     return notFound ?? <></>;
   }
 
-  const Component = getComponent(system, ErrorComponent);
-
-  if (type === 'func') {
-    return Component;
+  if (!ready) {
+    return fallback || <Loading />;
   }
+
+  const Component = getComponent(system, ErrorComponent);
 
   return (
     <React.Suspense fallback={system?.noFallback ? null : fallback}>
