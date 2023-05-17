@@ -506,6 +506,14 @@ class OrganizationsApi extends Api<OrganizationsApi> {
     });
   }
 
+  getAppDisable(params:any) {
+    return this.request({
+      method: 'get',
+      url: `/iam/choerodon/v1/organizations/${this.orgId}/open_app/is_message_enabled`,
+      params,
+    });
+  }
+
   // 获取项目工作组
   getprojWorkGroup(id?:string, excludeUnassigned = false) {
     // ctyun偶尔会跳转到工作台请求agile接口 这里直接屏蔽
