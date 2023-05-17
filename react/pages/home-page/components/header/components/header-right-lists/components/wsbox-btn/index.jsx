@@ -569,7 +569,13 @@ export default class Inbox extends Component {
                     </div>
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
-                    <div style={{ maxHeight: 84, overflow: 'hidden' }}>
+                    <div
+                      className={`${prefixCls}-sider-content-list-description-div`}
+                      style={{
+                        maxHeight: 84,
+                        overflow: 'hidden',
+                      }}
+                    >
                       {content && (
                         <p
                           id={`li-${id}`}
@@ -584,7 +590,8 @@ export default class Inbox extends Component {
                         </a>
                       ) : null}
                     </div>
-                    {showPicUrl ? (
+                    {/* 下面显示图片 目前不展示 上面文字最多展示两行 */}
+                    {/* {showPicUrl ? (
                       <img
                         role="none"
                         onClick={(e) => {
@@ -594,7 +601,7 @@ export default class Inbox extends Component {
                         style={{ maxWidth: '100%', marginTop: 10 }}
                         src={showPicUrl.replace(/&amp;/g, '&')}
                       />
-                    ) : null}
+                    ) : null} */}
                   </div>
                 </li>
               );
