@@ -283,7 +283,7 @@ class RenderPopoverContentDetailClass extends Component {
       >
         {
           inboxDetail && ((HeaderStore.getInboxActiveKey === '1' && HeaderStore.getUnreadMsg?.length > 0) || (HeaderStore.getInboxActiveKey === '3' && HeaderStore.getUnreadOther?.length > 0)) && (
-          <div className={`${prefixCls}-sider-header-wrap`}>
+          <div style={{ overflow: 'auto' }} className={`${prefixCls}-sider-header-wrap`}>
             <div className="header">
               {/* <div style={{ display: 'flex', alignItems: 'center' }}>
                 <ButtonPro

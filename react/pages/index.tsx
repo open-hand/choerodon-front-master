@@ -58,7 +58,7 @@ const MasterIndex = (props: any) => {
   const history = useHistory();
   const { AutoRouter } = props;
 
-  loadDynamicScript();
+  // loadDynamicScript();
 
   const {
     pathname,

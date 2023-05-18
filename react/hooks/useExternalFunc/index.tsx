@@ -26,48 +26,25 @@ const useExternalFunc = (scope: string, module: string) => {
   const { ready, failed, preLoad } = useManifest(scope);
 
   const loadFunc = useCallback(async () => {
-    if (scope === 'haitianMaster') {
-      console.log('loadFunc1');
-    }
     setLoading(true);
     try {
       const funcComponent = await getFunc(scope, module);
       const newFunc = await funcComponent();
       setFunc(newFunc);
-      if (scope === 'haitianMaster') {
-        console.log('loadFunc');
-      }
       setLoading(false);
     } catch (e) {
-      if (scope === 'haitianMaster') {
-        console.log('loadFunc3');
-      }
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    if (scope === 'haitianMaster') {
-      console.log('useExternalFunc useEffect');
-      console.log('ready======', ready);
-      console.log('preLoad======', preLoad);
-      console.log('failed======', failed);
-    }
     if ((ready || preLoad) && !failed) {
-      console.log('loadFunc');
       loadFunc();
     }
   }, [ready, preLoad]);
 
   if (failed) {
-    if (scope === 'haitianMaster') {
-      console.log('loading1======', loading);
-    }
     return { func: undefined, loading: false };
-  }
-
-  if (scope === 'haitianMaster') {
-    console.log('loading2======', loading);
   }
 
   return { func, loading };

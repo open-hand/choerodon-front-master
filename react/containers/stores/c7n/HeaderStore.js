@@ -342,6 +342,14 @@ class HeaderStore {
         if (!this.inboxDetail) {
           this.setInboxDetailVisible(true);
           this.setInboxDetail(list[0]);
+        } else {
+          const findData = pick(this.inboxDetail, ['id']);
+          const findData2 = pick(this.inboxDetail, ['messageId']);
+          const index = findIndex(list, findData);
+          const index2 = findIndex(list, findData2);
+          if (index == -1 && index2 == -1) {
+            this.setInboxDetail(list[0]);
+          }
         }
       }))
       .catch(handleResponseError).finally(() => {

@@ -84,6 +84,7 @@ const CreateProject = observer(() => {
   const [checkModal, setCheckModal] = useState();
 
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
+  const { loading: openTemplateLoading, func: openTemplate } = useExternalFunc('agile', 'agile:openTemplate');
 
   const record = useMemo(() => formDs.current, [formDs.current]);
   const isModify = !!propsProjectId;
@@ -618,11 +619,11 @@ const CreateProject = observer(() => {
 
   const handleOpenTemplate = useCallback(() => {
     const currentCategoryCodes = map(categoryDs.selected, (selectedRecord) => selectedRecord.get('code'));
-    getInject('agile:openTemplate')({
+    openTemplate?.default({
       selectedCategoryCodes: currentCategoryCodes,
       agileWaterfall: formDs?.current?.get('agileWaterfall'),
     });
-  }, [categoryDs.selected]);
+  }, [categoryDs.selected, openTemplate]);
 
   if (!record) {
     return <Spin spinning />;

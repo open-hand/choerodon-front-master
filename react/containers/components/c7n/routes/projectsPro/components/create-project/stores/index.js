@@ -53,8 +53,6 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   })), [organizationId, projectId, statusDs, inNewUserGuideStepOne, createProjectExtraFields]);
 
   useEffect(() => {
-    console.log('baseSaasLoading======', baseSaasLoading);
-    console.log('haitianMasterLoading======', haitianMasterLoading);
     if (!baseSaasLoading && !haitianMasterLoading) {
       if (projectId) {
         loadData(checkSenior?.default);
