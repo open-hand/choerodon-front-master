@@ -21,6 +21,7 @@ import UserEntry from './components/user-avatar';
 import useShouldHiddenHead from '@/hooks/useShouldHiddenHead';
 import ExtraButton from './components/extra-button';
 import useIsFullPage from '@/hooks/useIsFullPage';
+import ExternalComponent from '@/components/external-component';
 import styles from './styles.less';
 
 const Header = (props:any) => {
@@ -146,6 +147,8 @@ const Header = (props:any) => {
       <OrgSelector />
       {/* 右侧Icon列表 */}
       <HeaderRightLists />
+      {/* 燕千云知识空间 */}
+      <ExternalComponent system={{ scope: 'baseBusiness', module: 'base-business:ycloudBtn' }} />
       {/* 用户头像 */}
       <UserEntry />
     </div>
