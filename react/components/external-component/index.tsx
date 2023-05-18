@@ -56,7 +56,7 @@ function ExternalComponent(props: Props) {
     system, notFound, ErrorComponent, fallback = <Loading />,
   } = props;
 
-  const { ready, failed } = useManifest(system?.scope);
+  const { ready, failed, preLoad } = useManifest(system?.scope);
 
   if (!system || !system.scope || !system.module) {
     return <h2>Not system specified</h2>;
@@ -66,7 +66,7 @@ function ExternalComponent(props: Props) {
     return notFound ?? <></>;
   }
 
-  if (!ready) {
+  if (!ready && !preLoad) {
     return fallback || <Loading />;
   }
 
