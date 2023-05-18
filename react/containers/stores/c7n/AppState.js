@@ -367,6 +367,10 @@ class AppState {
     enabledCancelRoute: false,
   });
 
+  loadYcloudSpace=(data) => {
+    this.setWatermarkInfo(data);
+  }
+
   checkEnterpriseInfo = () => axios.get('/cbase/choerodon/v1/enterprises/default', {
     enabledCancelRoute: false,
   });
