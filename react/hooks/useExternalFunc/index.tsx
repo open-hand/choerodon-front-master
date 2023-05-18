@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { noop } from 'lodash';
 import loadComponent from '@/utils/loadComponent';
+import useManifest from '@/hooks/use-manifest';
 
 const cache = new Map();
 
@@ -22,6 +23,8 @@ const useExternalFunc = (scope: string, module: string) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [func, setFunc] = useState();
 
+  const { ready, failed, preLoad } = useManifest(scope);
+
   const loadFunc = useCallback(async () => {
     setLoading(true);
     try {
@@ -35,8 +38,14 @@ const useExternalFunc = (scope: string, module: string) => {
   }, []);
 
   useEffect(() => {
-    loadFunc();
-  }, []);
+    if ((ready || preLoad) && !failed) {
+      loadFunc();
+    }
+  }, [ready, preLoad]);
+
+  if (failed) {
+    return { func: undefined, loading: false };
+  }
 
   return { func, loading };
 };
