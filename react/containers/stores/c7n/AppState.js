@@ -42,6 +42,9 @@ class AppState {
 
   @observable projectCategorys = {};
 
+  // 标识燕千云知识空间
+  @observable ycloudSpace = null;
+
   @observable watermarkInfo = null; // 组织水印配置信息；
 
   @observable isProjectsLoading = false;
@@ -50,6 +53,15 @@ class AppState {
 
   @action setIsLoadMenu(value) {
     this.isLoadMenu = value;
+  }
+
+  @action setYcloudSpace(value) {
+    this.ycloudSpace = value;
+  }
+
+  @computed
+  get getYcloudSpace() {
+    return this.ycloudSpace;
   }
 
   @computed
