@@ -55,14 +55,14 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   useEffect(() => {
     console.log('baseSaasLoading======', baseSaasLoading);
     console.log('haitianMasterLoading======', haitianMasterLoading);
-    if (!baseSaasLoading && !haitianMasterLoading) {
+    // if (!baseSaasLoading && !haitianMasterLoading) {
       if (projectId) {
         loadData(checkSenior?.default);
       } else {
         formDs.create();
         loadCategory(checkSenior?.default);
       }
-    }
+    // }
   }, [projectId, organizationId, checkSenior, baseSaasLoading, haitianMasterLoading, createProjectExtraFields]);
 
   const loadCategory = async (checkSeniorFunc) => {
