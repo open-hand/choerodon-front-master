@@ -368,7 +368,7 @@ class AppState {
   });
 
   loadYcloudSpace=(data) => {
-    this.setWatermarkInfo(data);
+    this.setYcloudSpace(data);
   }
 
   checkEnterpriseInfo = () => axios.get('/cbase/choerodon/v1/enterprises/default', {
