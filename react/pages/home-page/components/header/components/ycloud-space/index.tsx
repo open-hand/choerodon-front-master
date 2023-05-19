@@ -5,7 +5,7 @@ import './index.less';
 
 const QuestionBtn = () => {
   return (
-    <div className="c7ncd-header-ycloud-item">
+    <div>
       <ExternalComponent system={{ scope: 'baseBusiness', module: 'base-business:ycloudBtn' }} />
     </div>
   );
