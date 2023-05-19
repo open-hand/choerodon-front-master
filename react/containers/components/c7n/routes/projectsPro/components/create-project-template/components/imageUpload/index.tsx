@@ -12,7 +12,7 @@ import Cropper from 'react-cropper';
 import { DataSet } from 'choerodon-ui/pro/lib';
 import querystring from 'query-string';
 import axios from '@/components/axios';
-import imageEmpty from '../../images/template_card_empty.png';
+import imageEmpty from '../../images/card-pic.svg';
 
 import 'cropperjs/dist/cropper.css';
 
