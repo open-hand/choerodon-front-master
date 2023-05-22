@@ -322,7 +322,10 @@ const WorkBenchDashboard = (props) => {
       <div className={`${prefixCls}-container`}>
         {renderContent()}
       </div>
-      {mount('agile:DetailContainer', detailPropsCurrent)}
+      <ExternalComponent
+        system={{ scope: 'agile', module: 'agile:DetailContainer' }}
+        {...detailPropsCurrent}
+      />
     </div>
   );
 };

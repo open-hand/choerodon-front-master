@@ -33,13 +33,14 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     AppState: { currentMenuType: { organizationId, projectId }, currentModules, getUserId },
     AppState,
     history,
+    useDetail: propsUseDetail,
   } = props;
   const hasAgile = currentModules && currentModules.includes('agile');
   let detailPropsCurrent;
   let openCurrent;
   let closeCurrent;
 
-  const useDetail = getInject('agile:useDetail') || function Tentative() { return []; };
+  const useDetail = propsUseDetail || function Tentative() { return []; };
   const [detailProps] = useDetail();
   if (detailProps) {
     openCurrent = detailProps.open;
