@@ -96,6 +96,9 @@ const BurnDownChart = observer(() => {
         formatter(params) {
           let content = '';
           let unit = '';
+          let titleContent = '';
+          let remainingContent = '';
+          let estimatedContent = '';
           params.forEach((item) => {
             if (item.seriesName === '剩余值') {
               if (item.value && selectValue === 'remainingEstimatedTime') {
@@ -107,9 +110,25 @@ const BurnDownChart = observer(() => {
               if (item.value && selectValue === 'issueCount') {
                 unit = ' 个';
               }
-              content = `${item.axisValue || '冲刺开启'}<br />${item.marker}${item.seriesName} : ${(item.value || item.value === 0) ? item.value : '-'}${unit}`;
+              titleContent = `${item.axisValue || '冲刺开启'}<br />`;
+              remainingContent = `${item.marker}${item.seriesName} : ${(item.value || item.value === 0) ? item.value : '-'}${unit && unit}<br/>`;
+            }
+            if (item.seriesName === '期望值') {
+              if (item.value && selectValue === 'remainingEstimatedTime') {
+                unit = ' 小时';
+              }
+              if (item.value && selectValue === 'storyPoints') {
+                unit = ' 点';
+              }
+              if (item.value && selectValue === 'issueCount') {
+                unit = ' 个';
+              }
+              estimatedContent = `${item.marker}${item.seriesName} : ${(item.value || item.value === 0) ? (unit !== ' 个' ? item.value.toFixed(1) * 1 : Math.round(item.value)) : '-'}${unit && unit}`;
             }
           });
+          if (remainingContent.length !== 0 || estimatedContent.length !== 0) {
+            content = `${titleContent}${remainingContent}${estimatedContent}`;
+          }
           return content;
         },
       },
