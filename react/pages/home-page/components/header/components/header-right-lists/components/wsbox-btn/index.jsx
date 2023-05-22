@@ -507,6 +507,32 @@ export default class Inbox extends Component {
     // }
   };
 
+  renderTimeOrDelete = (data, isMsg, realSendTime) => {
+    if (isMsg) {
+      if (data?.isHover) {
+        return (
+          <Icon
+            type="delete_black-o"
+            style={{
+              cursor: 'pointer', marginLeft: 12, fontSize: '20px', color: '#5365EA',
+            }}
+            onClick={(e) => this.deleteMsg(e, data)}
+          />
+        );
+      }
+      return new Date() - new Date(realSendTime) >= 172800000 ? (
+        <span>{realSendTime}</span>
+      ) : (
+        <TimePopover content={realSendTime} />
+      );
+    }
+    return new Date() - new Date(realSendTime) >= 172800000 ? (
+      <span>{realSendTime}</span>
+    ) : (
+      <TimePopover content={realSendTime} />
+    );
+  }
+
   renderMessages = (inboxData) => {
     const { HeaderStore } = this.props;
     if (inboxData.length > 0) {
@@ -533,6 +559,32 @@ export default class Inbox extends Component {
                   }}
                   role="none"
                   onClick={(e) => this.handleMessageTitleClick(e, data)}
+                  onMouseEnter={() => {
+                    if (isMsg) {
+                      HeaderStore.inboxData = HeaderStore.inboxData.map((item) => {
+                        if (item?.messageId === data?.messageId) {
+                          return {
+                            ...item,
+                            isHover: true,
+                          };
+                        }
+                        return item;
+                      });
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if (isMsg) {
+                      HeaderStore.inboxData = HeaderStore.inboxData.map((item) => {
+                        if (item?.messageId === data?.messageId) {
+                          return {
+                            ...item,
+                            isHover: false,
+                          };
+                        }
+                        return item;
+                      });
+                    }
+                  }}
                 >
                   <div
                     className={classNames({
@@ -549,13 +601,10 @@ export default class Inbox extends Component {
                     }}
                     >
                       {
-                        new Date() - new Date(realSendTime) >= 172800000 ? (
-                          <span>{realSendTime}</span>
-                        ) : (
-                          <TimePopover content={realSendTime} />
-                        )
+                        this.renderTimeOrDelete(data, isMsg, realSendTime)
+
                       }
-                      {
+                      {/* {
                         isMsg ? (
                           <Icon
                             type="delete_black-o"
@@ -565,7 +614,7 @@ export default class Inbox extends Component {
                             onClick={(e) => this.deleteMsg(e, data)}
                           />
                         ) : null
-                      }
+                      } */}
                     </div>
                   </div>
                   <div className={`${prefixCls}-sider-content-list-description`}>
