@@ -44,7 +44,7 @@ import {
 import './index.less';
 
 // 是否存在base的商业版本
-const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
+const HAS_BASE_BUSINESS = window.baseBusiness;
 const cacheKey = 'projects.list.selected';
 
 export default observer(() => {

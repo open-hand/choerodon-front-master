@@ -30,7 +30,7 @@ import './table.less';
 const modalkey2 = Modal.key();
 
 // 是否存在base的商业版本
-const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
+const HAS_BASE_BUSINESS = (window as any).baseBusiness;
 export interface IProps {
   columnsSetConfig: IColumnSetConfig[] | []
   onColumnResize: ({ column, width, index }:any)=> void

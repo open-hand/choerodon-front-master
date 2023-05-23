@@ -47,7 +47,7 @@ import useRegisterPath from '@/pages/initExternalizeFuncs/useRegisterPath';
 import useRegisterMonitor from '@/pages/initExternalizeFuncs/useRegisterMonitor';
 
 /** @type {boolean} 是否安装了敏捷模块 */
-const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
+const HAS_AGILE_PRO = (window as any).agile;
 
 const cookies = new Cookies();
 

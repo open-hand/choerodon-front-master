@@ -1,4 +1,4 @@
-const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
+const HAS_AGILE_PRO = window.agile;
 const PROJECT_TYPE = HAS_AGILE_PRO ? {
   GENERAL: 'DevOps全流程项目',
   // LOWCODE: '低代码应用项目',

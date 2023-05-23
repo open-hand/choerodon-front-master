@@ -17,7 +17,7 @@ import AddCardDataSet from './AddCardDataSet';
 import { useFormatMessage, useFormatCommon } from '@/hooks';
 
 // eslint-disable-next-line no-undef
-const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
+const HAS_BACKLOG = window.agile;
 // eslint-disable-next-line no-underscore-dangle
 window.___choeordonWorkBenchContenxt__ = window.___choeordonWorkBenchContenxt__ || createContext();
 // eslint-disable-next-line no-underscore-dangle
