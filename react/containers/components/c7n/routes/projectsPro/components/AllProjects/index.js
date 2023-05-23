@@ -21,6 +21,7 @@ import CustomQuerybar, { getCacheData } from './components/customQuerybar';
 import { organizationsApi, cbaseApi } from '@/apis';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import ButtonGroup from '@/components/btn-group';
+import addAction from '@/utils/addAction';
 import AllProjectTable from './table';
 
 import {
@@ -177,6 +178,7 @@ export default observer(() => {
   };
 
   const handleAddProjectByTemplate = () => {
+    addAction('点击了基于模板创建');
     openCreateProjectByTemplateModal?.default && openCreateProjectByTemplateModal.default({
       onClickUse: handleAddProject,
     });

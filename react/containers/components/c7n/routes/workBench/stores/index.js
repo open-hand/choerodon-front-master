@@ -41,7 +41,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   let closeCurrent;
 
   const useDetail = propsUseDetail || function Tentative() { return []; };
-  const [detailProps] = useDetail();
+  const [detailProps] = useDetail() || [];
   if (detailProps) {
     openCurrent = detailProps.open;
     closeCurrent = detailProps.close;
