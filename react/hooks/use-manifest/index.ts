@@ -4,7 +4,7 @@ import { useDynamicScript } from '@zknow/utils';
 const env: any = window._env_;
 
 export default function useManifest(scope: string) {
-  const url = env[scope] || `${env.STATIC_URL}/${scope}/importManifest.js`;
+  const url = env[scope] ? `${env[scope]}/importManifest.js` : `${env.STATIC_URL}/${scope}/importManifest.js`;
 
   const script = useDynamicScript({
     url,
