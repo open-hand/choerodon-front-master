@@ -68,7 +68,7 @@ const HeaderMiddleLists:FC<HeaderMiddleListsProps> = (props) => {
     const tempLists: ItemProps[] = [
       WORKBENCH_CONFIG,
     ];
-    if (HAS_AGILE_PRO) {
+    if (window.agile) {
       tempLists.push(WORKCALENDAR_CONFIG);
     }
     // 知识库按钮
