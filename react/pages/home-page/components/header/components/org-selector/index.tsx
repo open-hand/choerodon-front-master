@@ -100,7 +100,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
         <span>
           {tenantName || '请选择组织'}
         </span>
-        {HAS_BASE_BUSINESS && (
+        {window.baseBusiness && (
           <Icon
             type="expand_more"
           />

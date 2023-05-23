@@ -436,13 +436,13 @@ const TodoQuestion = observer(() => {
         defaultValue="all"
         value={switchCode.code}
         options={[{ value: 'all', text: '所有待办' },
-        {
-          value: 'myStarBeacon',
-          text: (<Dropdown overlay={HAS_BACKLOG ? renderStarMenu() : undefined}><span>{formatWorkbench({ id: 'myAttention' })}</span></Dropdown>),
-        },
-        { value: 'reportedBug', text: '已提缺陷' },
-        { value: 'myBug', text: '待修复缺陷' }]}
-        onChange={(v) => (!HAS_BACKLOG || v !== 'myStarBeacon' ? setSwitchCode({ type: 'change', code: v }) : false)}
+          {
+            value: 'myStarBeacon',
+            text: (<Dropdown overlay={window.agile ? renderStarMenu() : undefined}><span>{formatWorkbench({ id: 'myAttention' })}</span></Dropdown>),
+          },
+          { value: 'reportedBug', text: '已提缺陷' },
+          { value: 'myBug', text: '待修复缺陷' }]}
+        onChange={(v) => (!window.agile || v !== 'myStarBeacon' ? setSwitchCode({ type: 'change', code: v }) : false)}
       />
     </div>
   );

@@ -27,7 +27,7 @@ const WorkBench = () => {
 
   useEffect(() => {
     async function asyncFunc() {
-      if (HASBASEPRO) {
+      if (window.basePro) {
         const res = await iamApi.getIfCompleteRegisterInfo(getUserId);
         if (res) {
           openRegisterCompleteInfoModal();

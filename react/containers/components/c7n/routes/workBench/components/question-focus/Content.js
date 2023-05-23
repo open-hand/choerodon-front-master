@@ -46,14 +46,14 @@ const TodoQuestion = observer(() => {
       return newFields;
     }
     const issueTypeField = find(questionSearchFields, { code: 'issueType' });
-    if (HAS_AGILEPRO) {
+    if (window.agile) {
       newFields.push({
         ...issueTypeField,
         selectConfig: {
           paging: false,
           ...issueTypeField.selectConfig,
           data: [...issueTypeField.selectConfig.data,
-          { meaning: '特性', value: 'feature' }],
+            { meaning: '特性', value: 'feature' }],
         },
       });
     } else {
@@ -134,7 +134,7 @@ const TodoQuestion = observer(() => {
       </div>
       <span className={`${prefixCls}-title-right`}>
         <QuestionSearch key={`QuestionSearch-${questionDs.id}`} onQuery={load} fields={searchField} />
-        {HAS_BACKLOG && (
+        {window.agile && (
           <Switch
             defaultValue="myStarBeacon"
             value={tabKey}
@@ -155,7 +155,7 @@ const TodoQuestion = observer(() => {
         title={renderTitle()}
         className={`${prefixCls}-issueContent`}
         style={{
-          paddingTop: HAS_BACKLOG ? '.13rem' : '.2rem',
+          paddingTop: window.agile ? '.13rem' : '.2rem',
         }}
       >
         {getContent()}

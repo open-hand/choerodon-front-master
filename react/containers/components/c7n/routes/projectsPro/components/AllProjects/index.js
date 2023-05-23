@@ -152,7 +152,7 @@ export default observer(() => {
     setTableColumnsSet(
       initColumnSetData(
         res?.listLayoutColumnRelVOS,
-        HAS_BASE_BUSINESS ? columnBusinessSetConfig : columnConfig,
+        window.baseBusiness ? columnBusinessSetConfig : columnConfig,
         customFields,
         projectListDataSet,
       ),
@@ -361,7 +361,7 @@ export default observer(() => {
     () => transformToSearchFieldsConfig(
       getSearchFieldsConfig({
         orgId: organizationId,
-        hasBusiness: HAS_BASE_BUSINESS,
+        hasBusiness: window.baseBusiness,
       }),
       customFields || [],
     ),

@@ -49,7 +49,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   }
 
   function getAllCode() {
-    let allowedModules = [...modulesMapping.common, ...hasAgile && HAS_BACKLOG ? modulesMapping.backlog : []];
+    let allowedModules = [...modulesMapping.common, ...hasAgile && window.agile ? modulesMapping.backlog : []];
     forEach(currentModules, (item) => {
       if (Object.prototype.hasOwnProperty.call(modulesMapping, item)) {
         allowedModules = allowedModules.concat(modulesMapping[item]);

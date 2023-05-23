@@ -375,7 +375,7 @@ const Index: React.FC<any> = (props) => {
     }
     switch (projectStatus) {
       case 'success':
-        actionData = HAS_BASE_BUSINESS ? [editData, disableData, healthData] : [editData, disableData];
+        actionData = window.baseBusiness ? [editData, disableData, healthData] : [editData, disableData];
         break;
       case 'failed':
         actionData = [

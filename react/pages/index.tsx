@@ -141,7 +141,7 @@ const MasterIndex = (props: any) => {
   useUpdateEffect(() => {
     if (!isInOutward) {
       if (!loading) {
-        if (pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !HAS_AGILE_PRO) {
+        if (pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !window.agile) {
           checkEnterprise();
         }
         setReloginValue(true);

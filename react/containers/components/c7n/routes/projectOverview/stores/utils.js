@@ -52,7 +52,7 @@ function getInitProjectOverviewLayout(availableServiceList) {
   };
   const getDefaultLayout = ((layout) => ({ ...layout, ...(defaultLayoutMap[layout.i]) }));
   const defaultValues = map(filter(mappings, (item) => {
-    if (!HAS_AGILEPRO) {
+    if (!window.agile) {
       return item.injectGroupId !== 'agilePro';
     }
     return ((isHasProService || isHasWaterfall || isHasAgile) ? includes(availableServiceList, item.groupId)

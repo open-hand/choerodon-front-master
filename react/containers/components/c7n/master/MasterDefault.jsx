@@ -431,6 +431,7 @@ class Masters extends Component {
                   system={{
                     scope: 'baseBusiness',
                     module: 'base-business:yqFeedback',
+                    noFallback: true,
                   }}
                 />
                 {/* {mount('base-business:yqFeedback', {})} */}
@@ -459,7 +460,7 @@ class Masters extends Component {
             </div>
           </div>
         </div>
-        <ExternalComponent system={{ scope: 'baseBusiness', module: 'InviteEnterSystemModal' }} fallback={<span />} />
+        <ExternalComponent system={{ scope: 'baseBusiness', module: 'InviteEnterSystemModal', noFallback: true }} />
       </Spin>
     );
   }
