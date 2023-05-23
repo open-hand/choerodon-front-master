@@ -5,8 +5,6 @@ import JsonBig from 'json-bigint';
 import mappings from './mappings';
 import { getInitProjectOverviewLayout } from './utils';
 
-const HAS_AGILEPRO = C7NHasModule('@choerodon/agile-pro');
-
 /* eslint-disable import/no-anonymous-default-export */
 export default ({ projectId, availableServiceList, projectOverviewStore }) => ({
   paging: false,

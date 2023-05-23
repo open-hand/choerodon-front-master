@@ -18,8 +18,8 @@ import QuestionCount from '../question-count';
 import './index.less';
 import { useWorkBenchStore } from '../../stores';
 
-const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
-const HAS_AGILEPRO = C7NHasModule('@choerodon/agile-pro');
+const HAS_BACKLOG = window.agile;
+const HAS_AGILEPRO = window.agile;
 const TodoQuestion = observer(() => {
   const {
     formatWorkbench,

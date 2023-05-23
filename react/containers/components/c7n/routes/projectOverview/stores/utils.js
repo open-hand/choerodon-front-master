@@ -3,7 +3,7 @@ import {
 } from 'lodash';
 import mappings from './mappings';
 
-const HAS_AGILEPRO = true || C7NHasModule('@choerodon/agile-pro');
+const HAS_AGILEPRO = true || window.agile;
 /**
  * 获取初始时项目概览数据
  * @param {*} availableServiceList

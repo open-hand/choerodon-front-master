@@ -21,7 +21,7 @@ import emptyImg from './image/empty.svg';
 import './index.less';
 import { useWorkBenchStore } from '../../stores';
 
-const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
+const HAS_BACKLOG = window.agile;
 
 function getFirst(str) {
   if (!str) {

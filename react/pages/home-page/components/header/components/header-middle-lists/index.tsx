@@ -26,7 +26,6 @@ interface ItemProps {
 
 const prefixCls = 'c7ncd-header-middle-lists';
 const intlPrefix = 'c7ncd.header.middle.lists';
-const HAS_AGILE_PRO = C7NHasModule('@choerodon/agile-pro');
 
 const HeaderMiddleLists:FC<HeaderMiddleListsProps> = (props) => {
   const {

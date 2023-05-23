@@ -18,7 +18,7 @@ const ExtraButton:FC<ExtraButtonProps> = (props) => {
   const [btnVisible, setBtnVisible] = useState(false);
 
   useEffect(() => {
-    if (AppState?.currentMenuType?.organizationId && window.basePro) {
+    if (AppState?.currentMenuType?.organizationId && (window as any).basePro) {
       axios.get(`/iam/v1/huawei/check_saas?tenant_id=${AppState?.currentMenuType?.organizationId}`).then((res) => {
         setBtnVisible(res);
       });

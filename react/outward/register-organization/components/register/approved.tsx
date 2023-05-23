@@ -27,7 +27,7 @@ const Index:React.FC<IProps> = (props) => {
           您的注册信息可直接进行系统登录，
         </p>
         <p>
-          返回登录页使用邮箱账号和密码或手机扫码进行登录。
+          返回登录页使用邮箱账号和密码或手机验证码进行登录。
         </p>
       </div>
       <div className={`${pagePrefixCls}-img-container`}>

@@ -14,7 +14,7 @@ import { HOMEPAGE_PATH } from '@/constants';
 import './index.less';
 
 // 是否存在base的商业版本
-const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
+const HAS_BASE_BUSINESS = (window as any).baseBusiness;
 
 const prefixCls = 'c7ncd-orgSelector';
 
