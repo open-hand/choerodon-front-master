@@ -174,7 +174,8 @@ class RenderPopoverContentClass extends Component {
                   icon="close"
                   shape="circle"
                   onClick={() => {
-                    handleVisibleChange(!inboxVisible);
+                    handleVisibleChange(false);
+                    HeaderStore.setInboxLoaded(false);
                     HeaderStore.axiosGetUnreadMessageCount();
                   }}
                 />
@@ -418,11 +419,12 @@ export default class Inbox extends Component {
 
   handleButtonClick = () => {
     const { HeaderStore } = this.props;
-    if (!HeaderStore.inboxLoaded) {
-      HeaderStore.setInboxLoading(true);
+    const { inboxLoaded } = HeaderStore;
+    if (!inboxLoaded) {
       this.getUnreadMsg();
     }
-    this.handleVisibleChange(!HeaderStore.inboxVisible);
+    HeaderStore.setInboxLoaded(!inboxLoaded);
+    this.handleVisibleChange(!inboxLoaded);
   };
 
   handleMessage = (data) => {
