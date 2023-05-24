@@ -125,6 +125,7 @@ export default ({
     { name: 'useTemplate', defaultValue: true },
   ];
 
+  // 合并时候改成window.baseBusiness
   if (HAS_BASE_BUSINESS) {
     fields.push({
       name: 'statusId',

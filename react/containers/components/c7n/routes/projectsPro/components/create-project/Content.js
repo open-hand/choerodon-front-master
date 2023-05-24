@@ -283,6 +283,8 @@ const CreateProject = observer(() => {
           <Option value="jack">敏肌修护镜湖水</Option>
           <Option value="jack">清痘调理水</Option>
         </Select> */}
+
+        {/*  合并时候改成window.baseBusiness */}
         {
           isModify && HAS_BASE_BUSINESS && <Select name="statusId" renderer={renderStatus} />
         }

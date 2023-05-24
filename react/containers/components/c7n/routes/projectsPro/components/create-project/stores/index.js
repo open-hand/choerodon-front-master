@@ -104,7 +104,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       //   createProjectStore.checkSenior(organizationId),
       // ]);
 
-      HAS_BASE_BUSINESS && await statusDs.query();
+      HAS_BASE_BUSINESS && await statusDs.query(); // 合并时候改成window.baseBusiness
       await categoryDs.query();
       const projectData = await formDs.query();
       await createProjectStore.checkSenior(organizationId);
