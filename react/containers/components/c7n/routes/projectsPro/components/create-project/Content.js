@@ -21,6 +21,8 @@ import ProjectNotification from './components/project-notification';
 import './index.less';
 
 const { Option } = Select;
+const HAS_AGILEPRO = C7NHasModule('@choerodon/agile-pro');
+const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
 
 const CreateProject = observer(() => {
   const {
@@ -53,6 +55,9 @@ const CreateProject = observer(() => {
 
   useEffect(() => {
     const loadTemplateConfig = async () => {
+      if (!HAS_AGILEPRO) {
+        return;
+      }
       let notConfigured = true;
       if (currentProjectId) {
         notConfigured = await axios.get(`/agile/v1/organizations/${organizationId}/organization_config/check_configured?projectId=${currentProjectId}`);
@@ -279,7 +284,7 @@ const CreateProject = observer(() => {
           <Option value="jack">清痘调理水</Option>
         </Select> */}
         {
-          isModify && <Select name="statusId" renderer={renderStatus} />
+          isModify && HAS_BASE_BUSINESS && <Select name="statusId" renderer={renderStatus} />
         }
 
         <TextArea name="description" resize="vertical" />

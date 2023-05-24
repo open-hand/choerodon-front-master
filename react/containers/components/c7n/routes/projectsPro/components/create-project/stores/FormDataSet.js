@@ -21,6 +21,8 @@ const nameValidator = (value) => {
   return true;
 };
 
+const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({
   organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne = false, statusDs,
@@ -71,6 +73,73 @@ export default ({
     };
   }
 
+  const fields = [
+    {
+      name: 'name',
+      type: 'string',
+      label: '项目名称',
+      required: true,
+      validator: nameValidator,
+      defaultValue: newUserGuideDefaultValue.name,
+    },
+    {
+      name: 'code',
+      type: 'string',
+      label: '项目编码',
+      required: true,
+      validator: codeValidator,
+      defaultValue: newUserGuideDefaultValue.code,
+    },
+    // {
+    //   name: 'aaa',
+    //   type: 'string',
+    //   label: '项目类型',
+    //   required: true,
+    // },
+    // {
+    //   name: 'bbb',
+    //   type: 'string',
+    //   label: '产品',
+    //   required: true,
+    // },
+    {
+      name: 'agileWaterfall',
+      type: 'boolean',
+      label: '启用冲刺',
+      defaultValue: false,
+    },
+    {
+      name: 'description',
+      type: 'string',
+      label: '项目描述',
+      maxLength: 1000,
+      defaultValue: newUserGuideDefaultValue.description,
+    },
+    { name: 'enabled', type: 'boolean', label: '项目状态' },
+    {
+      name: 'categories', label: '项目类型', required: true,
+    },
+    { name: 'createUserName', type: 'string', label: '创建人' },
+    { name: 'imageUrl', type: 'string' },
+    { name: 'creationDate', type: 'date', label: '创建时间' },
+    { name: 'useTemplate', defaultValue: true },
+  ];
+
+  if (HAS_BASE_BUSINESS) {
+    fields.push({
+      name: 'statusId',
+      type: 'object',
+      label: '项目状态',
+      textField: 'name',
+      valueField: 'id',
+      options: statusDs,
+      dynamicProps: {
+        required: ({ record }) => record?.status !== 'add'
+        ,
+      },
+    });
+  }
+
   return {
     autoQuery: false,
     selection: false,
@@ -96,68 +165,6 @@ export default ({
         data: { ...data, operateType: 'update' },
       }),
     },
-    fields: [
-      {
-        name: 'name',
-        type: 'string',
-        label: '项目名称',
-        required: true,
-        validator: nameValidator,
-        defaultValue: newUserGuideDefaultValue.name,
-      },
-      {
-        name: 'code',
-        type: 'string',
-        label: '项目编码',
-        required: true,
-        validator: codeValidator,
-        defaultValue: newUserGuideDefaultValue.code,
-      },
-      // {
-      //   name: 'aaa',
-      //   type: 'string',
-      //   label: '项目类型',
-      //   required: true,
-      // },
-      // {
-      //   name: 'bbb',
-      //   type: 'string',
-      //   label: '产品',
-      //   required: true,
-      // },
-      {
-        name: 'statusId',
-        type: 'object',
-        label: '项目状态',
-        textField: 'name',
-        valueField: 'id',
-        options: statusDs,
-        dynamicProps: {
-          required: ({ record }) => record?.status !== 'add'
-          ,
-        },
-      },
-      {
-        name: 'agileWaterfall',
-        type: 'boolean',
-        label: '启用冲刺',
-        defaultValue: false,
-      },
-      {
-        name: 'description',
-        type: 'string',
-        label: '项目描述',
-        maxLength: 1000,
-        defaultValue: newUserGuideDefaultValue.description,
-      },
-      { name: 'enabled', type: 'boolean', label: '项目状态' },
-      {
-        name: 'categories', label: '项目类型', required: true,
-      },
-      { name: 'createUserName', type: 'string', label: '创建人' },
-      { name: 'imageUrl', type: 'string' },
-      { name: 'creationDate', type: 'date', label: '创建时间' },
-      { name: 'useTemplate', defaultValue: true },
-    ],
+    fields,
   };
 };
