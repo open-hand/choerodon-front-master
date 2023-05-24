@@ -251,7 +251,7 @@ class RenderPopoverContentDetailClass extends Component {
     const realSystemName = systemName || window._env_.HEADER_TITLE_NAME || 'Choerodon猪齿鱼平台';
     const siderClasses = classNames({
       // [`${prefixCls}-sider-no-animate`]: true,
-      [`${prefixCls}-sider`]: true,
+      [`${prefixCls}-sider`]: false,
       [`${prefixCls}-siderDetail`]: true,
       [`${prefixCls}-sider-visible`]: inboxDetailVisible,
       // [`${prefixCls}-sider-move-down`]: !announcementClosed,
