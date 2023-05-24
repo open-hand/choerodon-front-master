@@ -17,6 +17,7 @@ import { projectsApi, projectsApiConfig } from '@/apis/Projects';
 import useStore from './useStore';
 
 const Store = createContext();
+const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
 
 export function useCreateProjectProStore() {
   return useContext(Store);
@@ -145,7 +146,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
 
   const loadData = async (checkSeniorFunc) => {
     try {
-      await statusDs.query();
+      HAS_BASE_BUSINESS && await statusDs.query();
       await categoryDs.query();
       const projectData = await formDs.query();
       await createProjectStore.checkSenior(organizationId, checkSeniorFunc);
