@@ -38,7 +38,7 @@ import handleGetFormContent, { contrastMapToFormDsMap } from './untils/getFormCo
 import './index.less';
 
 const projectRelationshipCodes = ['N_WATERFALL', 'N_AGILE', 'N_REQUIREMENT'];
-const excludeTemplateFieldCodes = ['name', 'code'];
+const excludeTemplateFieldCodes = ['name', 'code', 'description'];
 
 const CreateProject = observer(() => {
   const {
