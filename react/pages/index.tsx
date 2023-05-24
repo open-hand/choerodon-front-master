@@ -53,7 +53,7 @@ const cookies = new Cookies();
 
 let ERROR: any = '';
 
-const MasterIndex = (props: any) => {
+const MasterIndex = (props: any): any => {
   const location = useLocation();
   const history = useHistory();
   const { AutoRouter } = props;
@@ -224,7 +224,7 @@ const MasterIndex = (props: any) => {
     </div>
   );
 
-  return (
+  const defaultDom = () => (
     <ErrorBoundary
       FallbackComponent={handleFallBack}
     >
@@ -242,8 +242,22 @@ const MasterIndex = (props: any) => {
         </MasterLocaleContainer>
       </Provider>
     </ErrorBoundary>
-
   );
+
+  const renderDom = () => {
+    // 这里由于agile的部分路由是outward 但是在进入路由时 可能入口还没加载好 这里等待一下
+    if (isInOutward && pathname.includes('agile')) {
+      const splitList = pathname.split('/');
+      const path: any = splitList[0] !== '' ? splitList[0] : splitList[1];
+      if (window[path]) {
+        return defaultDom();
+      }
+      return '';
+    }
+    return defaultDom();
+  };
+
+  return renderDom();
 };
 
 export default observer(MasterIndex);
