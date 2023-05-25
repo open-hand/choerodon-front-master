@@ -30,7 +30,7 @@ const WorkBench = () => {
       if (window.basePro) {
         const res = await iamApi.getIfCompleteRegisterInfo(getUserId);
         if (res) {
-          openRegisterCompleteInfoModal();
+          openRegisterCompleteInfoModal.default();
         }
       }
     }
