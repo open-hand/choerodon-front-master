@@ -17,7 +17,7 @@ export default (({
     read: ({ dataSet, data }) => {
       const isRequire = type === 'myStarBeacon_backlog';
       return ({
-        url: `agile/v1/organizations/${organizationId}/${isRequire ? 'backlog/work_bench/personal/backlog_my_star_beacon' : 'work_bench/personal/backlog_issues'}?page=${questionStore.getPage || 1}&size=11${selectedProjectId ? `&projectId=${selectedProjectId}` : ''}`,
+        url: `agile/v1/organizations/${organizationId}/${isRequire ? 'backlog/work_bench/personal/backlog_my_star_beacon' : 'work_bench/personal/backlog_issues'}?page=${questionStore.getPage || 1}&size=20${selectedProjectId ? `&projectId=${selectedProjectId}` : ''}`,
         method: 'post',
         data: { searchVO: {}, ...(data.searchData || {}), type: isRequire ? undefined : 'myStarBeacon' },
         transformResponse(response) {
