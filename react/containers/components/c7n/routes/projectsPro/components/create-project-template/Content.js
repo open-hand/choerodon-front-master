@@ -577,7 +577,9 @@ const CreateProject = observer(() => {
     });
   }, []);
   const handleGotoDetail = () => {
-    handleGotToProject(tableDs?.current);
+    console.log('aaa', tableDs?.current.toData());
+    handleGotToProject(AppState.getProjectTemplateRecord);
+    console.log(123);
   };
   const handleRetry = useCallback(async () => {
     try {

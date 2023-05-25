@@ -45,6 +45,8 @@ class AppState {
   // 标识燕千云知识空间
   @observable ycloudSpace = null;
 
+  @observable projectTemplateRecord = null;
+
   @observable watermarkInfo = null; // 组织水印配置信息；
 
   @observable isProjectsLoading = false;
@@ -59,15 +61,24 @@ class AppState {
     this.ycloudSpace = value;
   }
 
+  @action setProjectTemplateRecord(value) {
+    this.projectTemplateRecord = value;
+  }
+
   @computed
+  get getProjectTemplateRecord() {
+    return this.projectTemplateRecord;
+  }
+
+    @computed
   get getYcloudSpace() {
     return this.ycloudSpace;
   }
 
   @computed
-  get getIsLoadMenu() {
-    return this.isLoadMenu;
-  }
+    get getIsLoadMenu() {
+      return this.isLoadMenu;
+    }
 
   getProjects = () => {
     this.isProjectsLoading = true;
@@ -369,6 +380,10 @@ class AppState {
 
   loadYcloudSpace=(data) => {
     this.setYcloudSpace(data);
+  }
+
+  loadProjectTemplateRecord=(data) => {
+    this.setProjectTemplateRecord(data);
   }
 
   checkEnterpriseInfo = () => axios.get('/cbase/choerodon/v1/enterprises/default', {
