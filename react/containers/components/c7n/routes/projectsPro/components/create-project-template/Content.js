@@ -487,13 +487,7 @@ const CreateProject = observer(() => {
     //   className: `${prefixCls}-notification`,
     // });
     const getIsRetryProgress = async () => {
-      if (isRetry) {
-        const res = await axios.put(`/hagd/v1/sagas/projects/${projectId}/tasks/instances/retry`, sagaInstanceIds);
-        if (res && res.failed) {
-          return '';
-        }
-        setIsRetry(false);
-      }
+      setIsRetry(false);
       try {
         await axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`).then((res) => {
           if (res.status === 'failed') {
@@ -505,7 +499,18 @@ const CreateProject = observer(() => {
       }
       return axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
     };
-    const getProgress = () => axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
+    const getProgress = async () => {
+      try {
+        await axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`).then((res) => {
+          if (res.status === 'failed') {
+            setSagaInstanceIds(res.sagaInstanceIds);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      return axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
+    };
     openCreateNotification({
       notificationKey: notificationKey,
       type: 'polling',
