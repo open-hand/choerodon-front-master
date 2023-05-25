@@ -9,7 +9,7 @@ export default ({
   quickLinkUseStore, organizationId, selectedProjectId, linkType,
 }) => ({
   autoQuery: true,
-  paging: true,
+  paging: false,
   pageSize: 10,
   axios,
   transport: {
