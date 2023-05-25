@@ -129,7 +129,7 @@ const CreateProject = observer(() => {
       }
 
       if (item.builtInFlag && !excludeTemplateFieldCodes.includes(item.fieldCode) && (templateInfo?.[item.fieldCode] || templateInfo?.[item.fieldCode] === 0)) {
-        formDs.current?.init(item.fieldCode, templateInfo[item.fieldCode]);
+        item.defaultValue = templateInfo[item.fieldCode];
       }
 
       const {
