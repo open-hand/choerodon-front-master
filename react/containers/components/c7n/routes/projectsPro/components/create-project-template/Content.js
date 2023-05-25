@@ -536,7 +536,7 @@ const CreateProject = observer(() => {
           ),
         },
         doing: {
-          title: !propsProjectId ? '创建项目模板' : '修改项目模板',
+          title: !propsProjectId ? '创建项目模板' : '修改项目模板基础信息',
           description: !propsProjectId ? (
             <span>
               正在创建项目模板，该过程可能会持续几分钟，成功结束后可以继续维护项目模板详细内容
