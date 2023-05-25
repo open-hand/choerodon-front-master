@@ -274,13 +274,8 @@ const CreateProject = observer(() => {
   };
 
   const getFormContent = useCallback(
-    (ds) => {
-      if (haitianMasterLoading) {
-        return [];
-      }
-      return handleGetFormContent(fieldsConfig, func, currentRoleLabels, formDs, isModify);
-    },
-    [fieldsConfig, haitianMasterLoading, func, currentRoleLabels, isModify],
+    (ds) => handleGetFormContent(fieldsConfig, currentRoleLabels, formDs, isModify),
+    [fieldsConfig, currentRoleLabels, isModify],
   );
 
   useEffect(() => {
