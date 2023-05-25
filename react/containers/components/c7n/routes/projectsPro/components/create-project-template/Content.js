@@ -31,9 +31,9 @@ import useExternalFunc from '@/hooks/useExternalFunc';
 import { fileServer, prompt } from '@/utils';
 import { cbaseApi } from '@/apis';
 import axios from '@/components/axios';
-import AvatarUploader from '../avatarUploader';
 import ImageUpload from './components/imageUpload';
 import NotifitionModal from './components/notifition-modal';
+import openCreateNotification from '@/components/notification';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
 import { getCustomFieldDsProps, timeTypeArr, numberTypeArr } from './untils/getCustomFieldDsProps';
@@ -82,6 +82,7 @@ const CreateProject = observer(() => {
   const [expandAdvanced, setExpandAdvanced] = useState(true);
   const [fieldsConfig, setFieldsConfig] = useState([]);
   const [checkModal, setCheckModal] = useState();
+  const [sagaInstanceIds, setSagaInstanceIds] = useState();
 
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
   const { loading: openTemplateLoading, func: openTemplate } = useExternalFunc('agile', 'agile:openTemplate');
@@ -442,43 +443,107 @@ const CreateProject = observer(() => {
 
   const openNotification = useCallback(({ projectId, setSuccesss, operateType }) => {
     const notificationKey = `${organizationId}-${projectId}`;
-    notification.open({
-      key: notificationKey,
-      message: (
-        <span className={`${prefixCls}-notification-title`}>
-          {isModify ? '修改项目模板' : '创建项目模板'}
-        </span>
-      ),
-      description: (
-        <ProjectNotification
-          notificationKey={notificationKey}
-          organizationId={organizationId}
-          projectId={projectId}
-          operateType={operateType}
-          formatMessage={formatMessage}
-          intlPrefix={intlPrefix}
-          setSuccess={setSuccesss}
-          refresh={refresh}
-        />
-      ),
-      duration: null,
-      placement: 'bottomLeft',
-      className: `${prefixCls}-notification`,
+    // const getProgress = () => new Promise((resolve, reject) => {
+    //   try {
+    //     axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`).then((res) => {
+    //       if (res && !res.failed) {
+    //         resolve({ status: res.status, progress: res.completedCount });
+    //       }
+    //       if (res.status === 'failed') {
+    //         setSagaInstanceIds(res.sagaInstanceIds);
+    //         refresh();
+    //         resolve({ status: res.status, progress: res.completedCount });
+    //       }
+    //       resolve({ status: 'doing', progress: res.completedCount });
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // });
+    // notification.open({
+    //   key: notificationKey,
+    //   message: (
+    //     <span className={`${prefixCls}-notification-title`}>
+    //       {isModify ? '修改项目模板' : '创建项目模板'}
+    //     </span>
+    //   ),
+    //   description: (
+    //     <ProjectNotification
+    //       notificationKey={notificationKey}
+    //       organizationId={organizationId}
+    //       projectId={projectId}
+    //       operateType={operateType}
+    //       formatMessage={formatMessage}
+    //       intlPrefix={intlPrefix}
+    //       setSuccess={setSuccesss}
+    //       refresh={refresh}
+    //     />
+    //   ),
+    //   duration: null,
+    //   placement: 'bottomLeft',
+    //   className: `${prefixCls}-notification`,
+    // });
+    openCreateNotification({
+      notificationKey: notificationKey,
+      type: 'polling',
+      closeDuration: 3000,
+      loadProgress: () => axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`),
+      afterSuccess: refresh(),
+      textObject: {
+        failed: {
+          title: propsProjectId ? '项目模板更新失败' : '项目模板创建失败',
+          description: (
+            <span>
+              <span
+                className={`${prefixCls}-retry`}
+                onClick={handleRetry}
+                role="none"
+              >
+                重试
+              </span>
+              此操作
+            </span>),
+        },
+        success: {
+          title: propsProjectId ? '修改项目模板基础信息成功' : '创建项目模板成功',
+          description: propsProjectId ? (
+            <span>
+              项目模板基础信息修改成功
+            </span>
+          ) : (
+            <span>
+              创建项目模板成功，点击立即
+              <span
+                className={`${prefixCls}-gotoDetail`}
+                onClick={handleGotoDetail}
+                role="none"
+              >
+                维护模板详细内容。
+              </span>
+            </span>
+          ),
+        },
+        doing: {
+          title: !propsProjectId ? '创建项目模板' : '修改项目模板',
+          description: !propsProjectId ? (
+            <span>
+              正在创建项目模板，该过程可能会持续几分钟，成功结束后可以继续维护项目模板详细内容
+            </span>
+          ) : (
+            <span>
+              正在更新项目模板基础信息，该过程可能会耗时几分钟，请稍后。
+            </span>
+          ),
+        },
+      },
     });
   }, []);
+  const handleGotoDetail = () => {
 
-  const changeAvatarUploader = useCallback((flag) => {
-    setIsShowAvatar(flag);
-  }, []);
+  };
+  const handleRetry = () => {
 
-  const handleUploadOk = useCallback(
-    (res) => {
-      record.set('imageUrl', res);
-      changeAvatarUploader(false);
-    },
-    [record],
-  );
-
+  };
   const getChecked = () => {
     if (categoryDs.getState('isProgram') && categoryDs.getState('isAgile') && disabled === false) {
       return true;
