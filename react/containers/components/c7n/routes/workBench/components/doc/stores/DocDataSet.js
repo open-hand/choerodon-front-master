@@ -8,7 +8,7 @@ export default (({
   selection: false,
   paging: true,
   dataKey: null,
-  pageSize: 10,
+  pageSize: 20,
   transport: {
     read: ({ dataSet }) => ({
       url: `/knowledge/v1/organizations/${organizationId}/work_space/recent_project_update_list${self ? '/self' : ''}${selectedProjectId ? `?projectId=${selectedProjectId}` : ''}`,

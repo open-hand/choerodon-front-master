@@ -15,7 +15,7 @@ export default (({
   parentField: 'parentId',
   transport: {
     read: ({ data }) => ({
-      url: `agile/v1/organizations/${organizationId}/work_bench/personal/my_reported?page=${questionStore.getPage || 1}&size=10${selectedProjectId ? `&projectId=${selectedProjectId}` : ''}`,
+      url: `agile/v1/organizations/${organizationId}/work_bench/personal/my_reported?page=${questionStore.getPage || 1}&size=20${selectedProjectId ? `&projectId=${selectedProjectId}` : ''}`,
       method: 'post',
       data: data.searchData || { searchVO: {} },
       transformResponse(response) {
