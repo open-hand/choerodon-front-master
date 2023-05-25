@@ -288,8 +288,7 @@ const WorkBenchDashboard = (props) => {
   };
 
   const renderContent = () => {
-    // if (dashboardDs.status === 'loading' || addCardDs.status === 'loading' || mountedComponentFromDashboardId.current !== currentDashboardId) {
-    if (String(props.dashboardId) !== String(currentDashboardId)) {
+    if (dashboardDs.status === 'loading' || addCardDs.status === 'loading' || String(props.dashboardId) !== String(currentDashboardId)) {
       // console.log('dashboardDs', dashboardDs);
       // console.log('addCardDs', addCardDs);
       // console.log('mountedComponentFromDashboardId', mountedComponentFromDashboardId);
