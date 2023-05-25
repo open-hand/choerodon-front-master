@@ -488,7 +488,7 @@ const CreateProject = observer(() => {
       type: 'polling',
       closeDuration: 3000,
       loadProgress: () => axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`),
-      afterSuccess: refresh(),
+      afterSuccess: refresh,
       textObject: {
         failed: {
           title: propsProjectId ? '项目模板更新失败' : '项目模板创建失败',

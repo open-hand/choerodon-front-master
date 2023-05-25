@@ -221,7 +221,6 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     setSuccess,
     classId,
     flags,
-    refresh,
   };
 
   return (
