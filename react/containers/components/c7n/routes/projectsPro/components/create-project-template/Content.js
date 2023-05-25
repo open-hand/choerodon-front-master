@@ -496,6 +496,12 @@ const CreateProject = observer(() => {
             <span>
               <span
                 className={`${prefixCls}-retry`}
+                style={{
+                  color: 'red',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  padding: '0.02rem',
+                }}
                 onClick={handleRetry}
                 role="none"
               >
@@ -515,6 +521,12 @@ const CreateProject = observer(() => {
               创建项目模板成功，点击立即
               <span
                 className={`${prefixCls}-gotoDetail`}
+                style={{
+                  color: '#3f51b5',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  padding: '0.02rem',
+                }}
                 onClick={handleGotoDetail}
                 role="none"
               >
