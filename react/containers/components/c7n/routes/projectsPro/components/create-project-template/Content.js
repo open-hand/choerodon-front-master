@@ -505,12 +505,12 @@ const CreateProject = observer(() => {
       }
       return axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
     };
-    const getProgress = async () => axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
+    const getProgress = () => axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
     openCreateNotification({
       notificationKey: notificationKey,
       type: 'polling',
       closeDuration: 3000,
-      loadProgress: isRetry ? getIsRetryProgress() : getProgress(),
+      loadProgress: isRetry ? getIsRetryProgress : getProgress,
       afterSuccess: refresh,
       textObject: {
         failed: {
@@ -518,7 +518,7 @@ const CreateProject = observer(() => {
           description: (
             <span>
               <span
-                className={`${prefixCls}-retry`}
+                className="c7ncd-project-create-template-retry"
                 style={{
                   color: 'red',
                   cursor: 'pointer',
@@ -542,9 +542,9 @@ const CreateProject = observer(() => {
             <span>
               创建项目模板成功，点击立即
               <span
-                className={`${prefixCls}-gotoDetail`}
+                className="c7ncd-project-create-template-gotoDetail"
                 style={{
-                  color: '#415bc9',
+                  color: 'rgb(83, 101, 234)',
                   cursor: 'pointer',
                   padding: '0.02rem',
                 }}
