@@ -139,7 +139,7 @@ const TodoQuestion = observer(() => {
             defaultValue="myStarBeacon"
             value={tabKey}
             options={[
-              { value: 'myStarBeacon', text: formatCommon({ id: 'issue' }) },
+              { value: 'myStarBeacon', text: '工作项' },
               { value: 'myStarBeacon_backlog', text: formatCommon({ id: 'demand' }) },
             ]}
             onChange={handleTabChange}
