@@ -71,6 +71,8 @@ const CreateProject = observer(() => {
     isTemplate,
     setSuccess,
     classId,
+    tableDs,
+    handleGotToProject,
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
   const [check, setCheck] = useState(false);
@@ -83,6 +85,7 @@ const CreateProject = observer(() => {
   const [fieldsConfig, setFieldsConfig] = useState([]);
   const [checkModal, setCheckModal] = useState();
   const [sagaInstanceIds, setSagaInstanceIds] = useState();
+  const [isRetry, setIsRetry] = useState(false);
 
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
   const { loading: openTemplateLoading, func: openTemplate } = useExternalFunc('agile', 'agile:openTemplate');
@@ -483,11 +486,31 @@ const CreateProject = observer(() => {
     //   placement: 'bottomLeft',
     //   className: `${prefixCls}-notification`,
     // });
+    const getIsRetryProgress = async () => {
+      if (isRetry) {
+        const res = await axios.put(`/hagd/v1/sagas/projects/${projectId}/tasks/instances/retry`, sagaInstanceIds);
+        if (res && res.failed) {
+          return '';
+        }
+        setIsRetry(false);
+      }
+      try {
+        await axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`).then((res) => {
+          if (res.status === 'failed') {
+            setSagaInstanceIds(res.sagaInstanceIds);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      return axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
+    };
+    const getProgress = async () => axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
     openCreateNotification({
       notificationKey: notificationKey,
       type: 'polling',
       closeDuration: 3000,
-      loadProgress: () => axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`),
+      loadProgress: isRetry ? getIsRetryProgress() : getProgress(),
       afterSuccess: refresh,
       textObject: {
         failed: {
@@ -498,7 +521,6 @@ const CreateProject = observer(() => {
                 className={`${prefixCls}-retry`}
                 style={{
                   color: 'red',
-                  textDecoration: 'underline',
                   cursor: 'pointer',
                   padding: '0.02rem',
                 }}
@@ -522,8 +544,7 @@ const CreateProject = observer(() => {
               <span
                 className={`${prefixCls}-gotoDetail`}
                 style={{
-                  color: '#3f51b5',
-                  textDecoration: 'underline',
+                  color: '#415bc9',
                   cursor: 'pointer',
                   padding: '0.02rem',
                 }}
@@ -551,11 +572,19 @@ const CreateProject = observer(() => {
     });
   }, []);
   const handleGotoDetail = () => {
-
+    handleGotToProject(tableDs?.current);
   };
-  const handleRetry = () => {
-
-  };
+  const handleRetry = useCallback(async () => {
+    try {
+      const res = await axios.put(`/hagd/v1/sagas/projects/${propsProjectId}/tasks/instances/retry`, sagaInstanceIds);
+      if (res && res.failed) {
+        return;
+      }
+      setIsRetry(true);
+    } catch (e) {
+      throw new Error(e);
+    }
+  }, [propsProjectId, sagaInstanceIds]);
   const getChecked = () => {
     if (categoryDs.getState('isProgram') && categoryDs.getState('isAgile') && disabled === false) {
       return true;

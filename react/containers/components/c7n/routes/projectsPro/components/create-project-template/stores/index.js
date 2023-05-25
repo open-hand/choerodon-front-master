@@ -35,7 +35,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     isTemplate = true,
     setSuccess,
     classId,
-    refresh,
+    tableDs,
+    handleGotToProject,
   } = props;
   const { loading: haitianMasterLoading, func: createProjectExtraFields } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectExtraFields');
   const { loading: baseSaasLoading, func: checkSenior } = useExternalFunc('saas', 'base-saas:checkSaaSSenior');
@@ -213,6 +214,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     standardDisable,
     organizationId,
     formDs,
+    tableDs,
     categoryDs,
     templateDs,
     createProjectStore,
@@ -221,6 +223,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     setSuccess,
     classId,
     flags,
+    handleGotToProject,
   };
 
   return (
