@@ -481,19 +481,6 @@ const CreateProject = observer(() => {
     //   placement: 'bottomLeft',
     //   className: `${prefixCls}-notification`,
     // });
-    const getIsRetryProgress = async () => {
-      setIsRetry(false);
-      try {
-        await axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`).then((res) => {
-          if (res.status === 'failed') {
-            setSagaInstanceIds(res.sagaInstanceIds);
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-      return axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
-    };
     const getProgress = async () => {
       try {
         await axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`).then((res) => {
@@ -510,26 +497,18 @@ const CreateProject = observer(() => {
       notificationKey: notificationKey,
       type: 'polling',
       closeDuration: 3000,
-      loadProgress: isRetry ? getIsRetryProgress : getProgress,
+      loadProgress: getProgress,
       afterSuccess: refresh,
       textObject: {
         failed: {
           title: propsProjectId ? '项目模板更新失败' : '项目模板创建失败',
           description: (
             <span>
-              <span
-                className="c7ncd-project-create-template-retry"
-                style={{
-                  color: 'red',
-                  cursor: 'pointer',
-                  padding: '0.02rem',
-                }}
-                onClick={handleRetry}
-                role="none"
-              >
-                重试
+              <span>
+                项目模板
+                {operateType === 'create' ? '创建' : '修改'}
+                失败, 请重试！
               </span>
-              此操作
             </span>),
         },
         success: {
@@ -574,17 +553,6 @@ const CreateProject = observer(() => {
   const handleGotoDetail = () => {
     handleGotToProject(AppState.getProjectTemplateRecord);
   };
-  const handleRetry = useCallback(async () => {
-    try {
-      const res = await axios.put(`/hagd/v1/sagas/projects/${propsProjectId}/tasks/instances/retry`, sagaInstanceIds);
-      if (res && res.failed) {
-        return;
-      }
-      setIsRetry(true);
-    } catch (e) {
-      throw new Error(e);
-    }
-  }, [propsProjectId, sagaInstanceIds]);
   const getChecked = () => {
     if (categoryDs.getState('isProgram') && categoryDs.getState('isAgile') && disabled === false) {
       return true;
