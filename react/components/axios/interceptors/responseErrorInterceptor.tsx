@@ -72,7 +72,11 @@ export default function handelResponseError(error: AxiosError) {
 
       default:
         if (Object.prototype.toString.call(response.data) !== '[object Blob]') {
-          prompt(response.data, 'error');
+          if (typeof response?.data !== 'string') {
+            prompt(response?.data?.detailsMessage || response?.data?.message || '程序错误请联系管理员', 'error');
+          } else {
+            prompt(response.data, 'error');
+          }
         }
         break;
     }
