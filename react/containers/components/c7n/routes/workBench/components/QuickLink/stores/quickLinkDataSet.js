@@ -8,12 +8,12 @@ export default ({
   quickLinkUseStore, organizationId, selectedProjectId, linkType,
 }) => ({
   autoQuery: true,
-  paging: true,
-  pageSize: 10,
+  paging: false,
+  // pageSize: 0,
   axios,
   transport: {
     read: ({ dataSet, data }) => ({
-      url: `/cbase/choerodon/v1/organizations/${organizationId}/quick_links/scope/${quickLinkUseStore?.type}${selectedProjectId ? `?project_id=${selectedProjectId}` : ''}`,
+      url: `/cbase/choerodon/v1/organizations/${organizationId}/quick_links/scope/${quickLinkUseStore?.type}${selectedProjectId ? `?project_id=${selectedProjectId}&page=0&size=0` : '?page=0&size=0'}`,
       method: 'get',
       transformResponse(res) {
         try {
