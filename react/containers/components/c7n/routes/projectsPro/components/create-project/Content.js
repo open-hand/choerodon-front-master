@@ -38,7 +38,7 @@ import handleGetFormContent, { contrastMapToFormDsMap } from './untils/getFormCo
 import './index.less';
 
 const projectRelationshipCodes = ['N_WATERFALL', 'N_AGILE', 'N_REQUIREMENT'];
-const excludeTemplateFieldCodes = ['name', 'code'];
+const excludeTemplateFieldCodes = ['name', 'code', 'description'];
 
 const CreateProject = observer(() => {
   const {
@@ -129,7 +129,7 @@ const CreateProject = observer(() => {
       }
 
       if (item.builtInFlag && !excludeTemplateFieldCodes.includes(item.fieldCode) && (templateInfo?.[item.fieldCode] || templateInfo?.[item.fieldCode] === 0)) {
-        formDs.current?.init(item.fieldCode, templateInfo[item.fieldCode]);
+        item.defaultValue = templateInfo[item.fieldCode];
       }
 
       const {

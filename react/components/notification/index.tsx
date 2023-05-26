@@ -35,7 +35,7 @@ interface Props {
   /**
    * 轮询模式下查询进度方法
    */
-  loadProgress?: () => Promise<{ status: 'success' | 'failed' | 'doing', progress: number }>
+  loadProgress?: () => Promise<{ status: 'success' | 'failed' | 'doing', progress?: number, completedCount?:number, allTask?:number }>
   /**
    * 轮询间隔时间
    * @default 1500
@@ -132,7 +132,8 @@ const CreateNotification = ({
     if (progressData?.status) {
       switch (progressData?.status) {
         case 'success': {
-          onSuccess(progressData.progress);
+          // @ts-ignore
+          onSuccess(progressData?.progress || (progressData?.completedCount / progressData?.allTask * 100));
           cancel();
           break;
         }
@@ -142,7 +143,8 @@ const CreateNotification = ({
           break;
         }
         default: {
-          setProgress(Number(progressData.progress || 0));
+          // @ts-ignore
+          setProgress(Number(progressData?.progress || (progressData?.completedCount / progressData?.allTask * 100) || 0));
         }
       }
     }

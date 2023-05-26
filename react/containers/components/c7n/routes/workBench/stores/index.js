@@ -17,7 +17,7 @@ import AddCardDataSet from './AddCardDataSet';
 import { useFormatMessage, useFormatCommon } from '@/hooks';
 
 // eslint-disable-next-line no-undef
-const HAS_BACKLOG = C7NHasModule('@choerodon/backlog');
+const HAS_BACKLOG = window.agile;
 // eslint-disable-next-line no-underscore-dangle
 window.___choeordonWorkBenchContenxt__ = window.___choeordonWorkBenchContenxt__ || createContext();
 // eslint-disable-next-line no-underscore-dangle
@@ -33,14 +33,15 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
     AppState: { currentMenuType: { organizationId, projectId }, currentModules, getUserId },
     AppState,
     history,
+    useDetail: propsUseDetail,
   } = props;
   const hasAgile = currentModules && currentModules.includes('agile');
   let detailPropsCurrent;
   let openCurrent;
   let closeCurrent;
 
-  const useDetail = getInject('agile:useDetail') || function Tentative() { return []; };
-  const [detailProps] = useDetail();
+  const useDetail = propsUseDetail || function Tentative() { return []; };
+  const [detailProps] = useDetail() || [];
   if (detailProps) {
     openCurrent = detailProps.open;
     closeCurrent = detailProps.close;
@@ -48,7 +49,7 @@ export const StoreProvider = withRouter(inject('AppState')(observer((props) => {
   }
 
   function getAllCode() {
-    let allowedModules = [...modulesMapping.common, ...hasAgile && HAS_BACKLOG ? modulesMapping.backlog : []];
+    let allowedModules = [...modulesMapping.common, ...hasAgile && window.agile ? modulesMapping.backlog : []];
     forEach(currentModules, (item) => {
       if (Object.prototype.hasOwnProperty.call(modulesMapping, item)) {
         allowedModules = allowedModules.concat(modulesMapping[item]);

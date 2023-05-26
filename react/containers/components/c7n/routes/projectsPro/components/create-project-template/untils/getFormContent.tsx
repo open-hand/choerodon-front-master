@@ -118,12 +118,12 @@ const getEleProps = (fieldConfig: any, calculateIndex: number, index: number, fo
   return obj;
 };
 
-const getFormContent = (fieldsConfig: any[], func:any, currentRoleLabels:any, formDs:DataSet, isModify:boolean) => {
+const getFormContent = (fieldsConfig: any[], currentRoleLabels:any, formDs:DataSet, isModify:boolean) => {
   const healthState = formDs?.current?.get('healthState');
   const healthStateDto = formDs?.current?.get('healthStateDTO');
-  if (func && !specialFormContentMap.get('totalDay')) { // 海天加的字段 后面升级后端需要返回
-    specialFormContentMap.set('totalDay', func.default(!currentRoleLabels?.includes('TENANT_ADMIN')));
-  }
+  // if (func && !specialFormContentMap.get('totalDay')) { // 海天加的字段 后面升级后端需要返回
+  //   specialFormContentMap.set('totalDay', func.default(!currentRoleLabels?.includes('TENANT_ADMIN')));
+  // }
   const arr: JSX.Element[] = [];
   let calculateIndex = 0;
   fieldsConfig.forEach((item: any, index: number) => {

@@ -19,7 +19,7 @@ const MyHandlerDataSet = ({
       params: {
         projectId: selectedProjectId,
         page: myHandlerStore.getPage || 1,
-        size: 10,
+        size: 20,
       },
       data: data.searchData || { searchVO: {} },
       transformResponse(response) {

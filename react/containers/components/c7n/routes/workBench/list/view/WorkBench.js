@@ -12,7 +12,7 @@ import WorkBenchDashboard from '../../components/WorkBenchDashboard';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import './WorkBench.less';
 
-const HASBASEPRO = C7NHasModule('@choerodon/base-pro');
+const HASBASEPRO = window.basePro;
 
 const WorkBench = () => {
   const {
@@ -27,10 +27,10 @@ const WorkBench = () => {
 
   useEffect(() => {
     async function asyncFunc() {
-      if (HASBASEPRO) {
+      if (window.basePro) {
         const res = await iamApi.getIfCompleteRegisterInfo(getUserId);
         if (res) {
-          openRegisterCompleteInfoModal();
+          openRegisterCompleteInfoModal.default();
         }
       }
     }

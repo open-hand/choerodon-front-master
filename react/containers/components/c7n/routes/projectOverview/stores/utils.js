@@ -3,7 +3,7 @@ import {
 } from 'lodash';
 import mappings from './mappings';
 
-const HAS_AGILEPRO = true || C7NHasModule('@choerodon/agile-pro');
+const HAS_AGILEPRO = true || window.agile;
 /**
  * 获取初始时项目概览数据
  * @param {*} availableServiceList
@@ -52,7 +52,7 @@ function getInitProjectOverviewLayout(availableServiceList) {
   };
   const getDefaultLayout = ((layout) => ({ ...layout, ...(defaultLayoutMap[layout.i]) }));
   const defaultValues = map(filter(mappings, (item) => {
-    if (!HAS_AGILEPRO) {
+    if (!window.agile) {
       return item.injectGroupId !== 'agilePro';
     }
     return ((isHasProService || isHasWaterfall || isHasAgile) ? includes(availableServiceList, item.groupId)

@@ -9,8 +9,6 @@ import ExternalComponent from '@/components/external-component';
 import { useFormatMessage } from '@/hooks';
 import { MODAL_WIDTH } from '@/constants';
 
-const HASBASEPRO = C7NHasModule('@choerodon/base-pro');
-
 export type PlatformEntryProps = {
 
 }
@@ -33,7 +31,7 @@ const PlatformEntry:FC<PlatformEntryProps> = () => {
     });
   };
 
-  return HASBASEPRO ? (
+  return window.basePro ? (
     <div className={prefixCls} onClick={handleInviteModalOpen} role="none">
       <Icon type="share" />
       <span>{formatClient({ id: 'invitation' })}</span>

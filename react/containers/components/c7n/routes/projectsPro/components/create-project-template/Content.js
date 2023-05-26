@@ -31,9 +31,9 @@ import useExternalFunc from '@/hooks/useExternalFunc';
 import { fileServer, prompt } from '@/utils';
 import { cbaseApi } from '@/apis';
 import axios from '@/components/axios';
-import AvatarUploader from '../avatarUploader';
 import ImageUpload from './components/imageUpload';
 import NotifitionModal from './components/notifition-modal';
+import openCreateNotification from '@/components/notification';
 import { useCreateProjectProStore } from './stores';
 import ProjectNotification from './components/project-notification';
 import { getCustomFieldDsProps, timeTypeArr, numberTypeArr } from './untils/getCustomFieldDsProps';
@@ -71,6 +71,8 @@ const CreateProject = observer(() => {
     isTemplate,
     setSuccess,
     classId,
+    tableDs,
+    handleGotToProject,
   } = useCreateProjectProStore();
   const [isShowAvatar, setIsShowAvatar] = useState(false);
   const [check, setCheck] = useState(false);
@@ -82,6 +84,8 @@ const CreateProject = observer(() => {
   const [expandAdvanced, setExpandAdvanced] = useState(true);
   const [fieldsConfig, setFieldsConfig] = useState([]);
   const [checkModal, setCheckModal] = useState();
+  const [sagaInstanceIds, setSagaInstanceIds] = useState();
+  const [isRetry, setIsRetry] = useState(false);
 
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
   const { loading: openTemplateLoading, func: openTemplate } = useExternalFunc('agile', 'agile:openTemplate');
@@ -270,13 +274,8 @@ const CreateProject = observer(() => {
   };
 
   const getFormContent = useCallback(
-    (ds) => {
-      if (haitianMasterLoading) {
-        return [];
-      }
-      return handleGetFormContent(fieldsConfig, func, currentRoleLabels, formDs, isModify);
-    },
-    [fieldsConfig, haitianMasterLoading, func, currentRoleLabels, isModify],
+    (ds) => handleGetFormContent(fieldsConfig, currentRoleLabels, formDs, isModify),
+    [fieldsConfig, currentRoleLabels, isModify],
   );
 
   useEffect(() => {
@@ -442,43 +441,118 @@ const CreateProject = observer(() => {
 
   const openNotification = useCallback(({ projectId, setSuccesss, operateType }) => {
     const notificationKey = `${organizationId}-${projectId}`;
-    notification.open({
-      key: notificationKey,
-      message: (
-        <span className={`${prefixCls}-notification-title`}>
-          {isModify ? '修改项目模板' : '创建项目模板'}
-        </span>
-      ),
-      description: (
-        <ProjectNotification
-          notificationKey={notificationKey}
-          organizationId={organizationId}
-          projectId={projectId}
-          operateType={operateType}
-          formatMessage={formatMessage}
-          intlPrefix={intlPrefix}
-          setSuccess={setSuccesss}
-          refresh={refresh}
-        />
-      ),
-      duration: null,
-      placement: 'bottomLeft',
-      className: `${prefixCls}-notification`,
+    // const getProgress = () => new Promise((resolve, reject) => {
+    //   try {
+    //     axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`).then((res) => {
+    //       if (res && !res.failed) {
+    //         resolve({ status: res.status, progress: res.completedCount });
+    //       }
+    //       if (res.status === 'failed') {
+    //         setSagaInstanceIds(res.sagaInstanceIds);
+    //         refresh();
+    //         resolve({ status: res.status, progress: res.completedCount });
+    //       }
+    //       resolve({ status: 'doing', progress: res.completedCount });
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // });
+    // notification.open({
+    //   key: notificationKey,
+    //   message: (
+    //     <span className={`${prefixCls}-notification-title`}>
+    //       {isModify ? '修改项目模板' : '创建项目模板'}
+    //     </span>
+    //   ),
+    //   description: (
+    //     <ProjectNotification
+    //       notificationKey={notificationKey}
+    //       organizationId={organizationId}
+    //       projectId={projectId}
+    //       operateType={operateType}
+    //       formatMessage={formatMessage}
+    //       intlPrefix={intlPrefix}
+    //       setSuccess={setSuccesss}
+    //       refresh={refresh}
+    //     />
+    //   ),
+    //   duration: null,
+    //   placement: 'bottomLeft',
+    //   className: `${prefixCls}-notification`,
+    // });
+    const getProgress = async () => {
+      try {
+        await axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`).then((res) => {
+          if (res.status === 'failed') {
+            setSagaInstanceIds(res.sagaInstanceIds);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      return axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`);
+    };
+    openCreateNotification({
+      notificationKey: notificationKey,
+      type: 'polling',
+      closeDuration: 3000,
+      loadProgress: getProgress,
+      afterSuccess: refresh,
+      textObject: {
+        failed: {
+          title: propsProjectId ? '项目模板更新失败' : '项目模板创建失败',
+          description: (
+            <span>
+              <span>
+                项目模板
+                {operateType === 'create' ? '创建' : '修改'}
+                失败, 请重试！
+              </span>
+            </span>),
+        },
+        success: {
+          title: propsProjectId ? '修改项目模板基础信息成功' : '创建项目模板成功',
+          description: propsProjectId ? (
+            <span>
+              项目模板基础信息修改成功
+            </span>
+          ) : (
+            <span>
+              创建项目模板成功，点击立即
+              <span
+                className="c7ncd-project-create-template-gotoDetail"
+                style={{
+                  color: 'rgb(83, 101, 234)',
+                  cursor: 'pointer',
+                  padding: '0.02rem',
+                }}
+                onClick={handleGotoDetail}
+                role="none"
+              >
+                维护模板详细内容。
+              </span>
+            </span>
+          ),
+        },
+        doing: {
+          title: !propsProjectId ? '创建项目模板' : '修改项目模板基础信息',
+          description: !propsProjectId ? (
+            <span>
+              正在创建项目模板，该过程可能会持续几分钟，成功结束后可以继续维护项目模板详细内容
+            </span>
+          ) : (
+            <span>
+              正在更新项目模板基础信息，该过程可能会耗时几分钟，请稍后。
+            </span>
+          ),
+        },
+      },
     });
   }, []);
-
-  const changeAvatarUploader = useCallback((flag) => {
-    setIsShowAvatar(flag);
-  }, []);
-
-  const handleUploadOk = useCallback(
-    (res) => {
-      record.set('imageUrl', res);
-      changeAvatarUploader(false);
-    },
-    [record],
-  );
-
+  const handleGotoDetail = () => {
+    handleGotToProject(AppState.getProjectTemplateRecord);
+  };
   const getChecked = () => {
     if (categoryDs.getState('isProgram') && categoryDs.getState('isAgile') && disabled === false) {
       return true;

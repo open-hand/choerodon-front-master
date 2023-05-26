@@ -288,12 +288,12 @@ const WorkBenchDashboard = (props) => {
   };
 
   const renderContent = () => {
-    // if (dashboardDs.status === 'loading' || addCardDs.status === 'loading' || mountedComponentFromDashboardId.current !== currentDashboardId) {
-    if (mountedComponentFromDashboardId.current !== currentDashboardId) {
-      console.log('dashboardDs', dashboardDs);
-      console.log('addCardDs', addCardDs);
-      console.log('mountedComponentFromDashboardId', mountedComponentFromDashboardId);
-      console.log('currentDashboardId', currentDashboardId);
+    if (dashboardDs.status === 'loading' || addCardDs.status === 'loading' || String(props.dashboardId) !== String(currentDashboardId)) {
+      // console.log('dashboardDs', dashboardDs);
+      // console.log('addCardDs', addCardDs);
+      // console.log('mountedComponentFromDashboardId', mountedComponentFromDashboardId);
+      // console.log('currentDashboardId', currentDashboardId);
+
       return (
         <div style={{ marginTop: '10%' }}>
           <Loading display type={choerodonGet('configuration.master-global:loadingType') || 'c7n'} />
@@ -322,7 +322,10 @@ const WorkBenchDashboard = (props) => {
       <div className={`${prefixCls}-container`}>
         {renderContent()}
       </div>
-      {mount('agile:DetailContainer', detailPropsCurrent)}
+      <ExternalComponent
+        system={{ scope: 'agile', module: 'agile:DetailContainer' }}
+        {...detailPropsCurrent}
+      />
     </div>
   );
 };

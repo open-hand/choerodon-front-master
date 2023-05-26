@@ -101,11 +101,11 @@ export default ({
     };
   }
 
-  let extraFields = [];
+  const extraFields = [];
 
-  if (func) {
-    extraFields = func.default();
-  }
+  // if (func) {
+  //   extraFields = func.default();
+  // }
 
   return {
     autoQuery: false,

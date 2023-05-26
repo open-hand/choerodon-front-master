@@ -4,7 +4,7 @@
 
 .c7n-boot-header-inbox-sider-header {
   .c7n-badge-dot {
-    top: -0.01rem;
+    top: 0rem !important;
   }
 }
 
@@ -263,8 +263,7 @@
     right: -910px;
     bottom: 0;
     background: #ffffff;
-    box-shadow: 0 9px 30px 1px rgba(0, 0, 0, 0.14),
-      0 3px 16px 2px rgba(0, 0, 0, 0.12), 0 5px 6px -3px;
+    box-shadow: -6px 0px 8px -10px rgba(31,35,41,0.06), -8px 0px 16px 0px rgba(31,35,41,0.04), -10px 0px 32px 10px rgba(31,35,41,0.04) !important;
     transition: transform 0.7s, width 0.7s;
     padding: 0;
     z-index: 999;
@@ -296,6 +295,9 @@
       position: relative;
       left: 0; /* 初始位置为0 */
       transition: transform 1s; /* 指定动画时间和要进行动画的属性 */
+      img {
+        max-width: 485px !important;
+      }
       .title {
         font-size: 16px;
         font-family: PingFangSC-Medium, PingFang SC;
@@ -315,6 +317,7 @@
         font-weight: 400;
         color: rgba(15,19,88,0.65);
         line-height: 18px;
+        margin-right: 8px;
       }
       &.no-mr {
         padding: 20px 0 0 24px;
@@ -322,11 +325,13 @@
       height: 100%;
       .c7n-tabs-extra-content {
         line-height: 0.44rem;
-        border-bottom: 1px solid rgb(217, 230, 242);
+        border-bottom: unset !important;
       }
       .c7n-tabs-bar {
         margin-bottom: 0;
+        box-shadow: 0px 2px 2px 0px rgba(9,30,66,0.04), 0px 0px 1px 0px rgba(9,30,66,0.08), 0px 2px 4px 0px rgba(31,35,41,0.04);
         // margin-right: 0.24rem;
+        border-bottom: unset;
       }
       .c7n-tabs-nav-container {
         padding: 0 !important;
@@ -375,6 +380,9 @@
           padding-bottom: 20px;
           margin-right: 0.24rem;
           padding-left: 16px;
+          i {
+            font-size: 20px;
+          }
           // border-bottom: 1px solid #d9e6f2;
           .msgTitle {
             font-size: 16px;
@@ -449,13 +457,13 @@
 
         &::after {
           content: "";
-          width: 4.72rem;
+          width: 2.98rem !important;
           height: 0.01rem;
           display: block;
           position: absolute;
-          left: 0;
+          left: 10px !important;
           bottom: 0;
-          border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+          border-bottom: 1px solid #D9E6F2 !important;
         }
 
         &-title {

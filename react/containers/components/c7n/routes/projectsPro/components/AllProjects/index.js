@@ -21,6 +21,7 @@ import CustomQuerybar, { getCacheData } from './components/customQuerybar';
 import { organizationsApi, cbaseApi } from '@/apis';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import ButtonGroup from '@/components/btn-group';
+import addAction from '@/utils/addAction';
 import AllProjectTable from './table';
 
 import {
@@ -43,7 +44,7 @@ import {
 import './index.less';
 
 // 是否存在base的商业版本
-const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
+const HAS_BASE_BUSINESS = window.baseBusiness;
 const cacheKey = 'projects.list.selected';
 
 export default observer(() => {
@@ -151,7 +152,7 @@ export default observer(() => {
     setTableColumnsSet(
       initColumnSetData(
         res?.listLayoutColumnRelVOS,
-        HAS_BASE_BUSINESS ? columnBusinessSetConfig : columnConfig,
+        window.baseBusiness ? columnBusinessSetConfig : columnConfig,
         customFields,
         projectListDataSet,
       ),
@@ -177,6 +178,7 @@ export default observer(() => {
   };
 
   const handleAddProjectByTemplate = () => {
+    addAction('点击了基于模板创建');
     openCreateProjectByTemplateModal?.default && openCreateProjectByTemplateModal.default({
       onClickUse: handleAddProject,
     });
@@ -359,7 +361,7 @@ export default observer(() => {
     () => transformToSearchFieldsConfig(
       getSearchFieldsConfig({
         orgId: organizationId,
-        hasBusiness: HAS_BASE_BUSINESS,
+        hasBusiness: window.baseBusiness,
       }),
       customFields || [],
     ),
