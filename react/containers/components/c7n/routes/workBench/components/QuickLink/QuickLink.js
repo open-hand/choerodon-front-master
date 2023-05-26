@@ -148,7 +148,7 @@ const QuickLink = observer(() => {
     );
   };
 
-  const renderLinks = () => quickLinkDs.toData().map((l, index) => (
+  const renderLinks = () => quickLinkUseStore.getQuickLinkList.map((l, index) => (
     (
       <div
         className="c7n-quickLink-newItem"
@@ -275,7 +275,10 @@ const QuickLink = observer(() => {
     quickLinkDs.queryMore(quickLinkDs.currentPage + 1);
   };
 
-  const handleChangeType = useCallback((tempType) => setType(tempType), [setType]);
+  const handleChangeType = useCallback((tempType) => {
+    setType(tempType);
+    quickLinkDs.currentPage = 1;
+  }, [setType]);
 
   const renderClassification = useCallback(() => (
     <div style={{ display: 'flex', alignItems: 'center' }}>
