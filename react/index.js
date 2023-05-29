@@ -101,5 +101,6 @@ export * from '@/utils/LocalPageCacheStore';
 export { Modal } from '@/components/modal';
 export { Route, Switch, withRouter } from 'react-router-dom';
 export { default as getEnv } from '@/utils/getEnv';
+export { default as addAction } from '@/utils/addAction';
 
 export { default } from './app';
