@@ -159,7 +159,7 @@ class RenderPopoverContentClass extends Component {
 
     return (
       createPortal(
-        <div style={{ width: 880 }} className={siderClasses}>
+        <div style={{ width: 880, right: '-910px' }} className={siderClasses}>
           <div
             style={{ disable: 'flex', flexDirection: 'column', paddingLeft: 0 }}
             className={classNames({
