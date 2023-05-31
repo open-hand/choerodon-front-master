@@ -63,7 +63,6 @@ function useC7NAuth(autoAuth?:boolean) {
     const shanghaiElectricToken = getCookie('LtpaToken', {
       domain: '.shanghai-electric.com',
     });
-
     try {
       if (accessToken) {
         // 单点登录界面过来的时候
