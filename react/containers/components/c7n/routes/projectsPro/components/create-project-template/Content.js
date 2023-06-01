@@ -899,7 +899,7 @@ const CreateProject = observer(() => {
             <CheckBox
               name="connectKnowledgeSpaceFlag"
             >
-              连接燕千云知识空间，使用此模板将同时基于此空间创建新的知识空间连接到项目内
+              连接燕千云知识空间，使用此模板时将同时基于此空间创建新的知识空间连接到项目内
             </CheckBox>
             )}
             <br />
