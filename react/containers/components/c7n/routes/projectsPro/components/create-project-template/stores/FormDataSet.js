@@ -299,7 +299,7 @@ export default ({
         label: '关联知识空间',
         options: new DataSet({
           selection: 'single',
-          autoQuery: true,
+          autoQuery: false,
           transport: {
             read: {
               // url: `/iam/choerodon/v1/organizations/${organizationId}/list_user_labels`,
