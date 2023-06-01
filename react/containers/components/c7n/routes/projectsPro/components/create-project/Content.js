@@ -75,7 +75,8 @@ const CreateProject = observer(() => {
   const [showDevopsAdvanced, setShowDevopsAdvanced] = useState(false);
   const [expandAdvanced, setExpandAdvanced] = useState(true);
   const [fieldsConfig, setFieldsConfig] = useState([]);
-
+  const [ycloudFlag, setYcloudFlag] = useState(false);
+  // const [ycloudValue, setYcloudValue] = useState(false);
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
   const { loading: openTemplateLoading, func: openTemplate } = useExternalFunc('agile', 'agile:openTemplate');
 
@@ -98,11 +99,22 @@ const CreateProject = observer(() => {
 
   useEffect(() => {
     getChecked();
+    getYcloudFlag();
   }, []);
 
   useEffect(() => {
     record && initFormDs();
   }, [record]);
+  const getYcloudFlag = async () => {
+    try {
+      const res = await axios.get(`/iam/choerodon/v1/organizations/${organizationId}/open_app/details_by_type?app_type=yqcloud`);
+      if (res && res.failed !== true) {
+        setYcloudFlag(res.linkKnowledgeFlag);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const initFormDs = async () => {
     const [res, templateRes, templateInfo] = await Promise.all([cbaseApi.getFields({
@@ -749,10 +761,27 @@ const CreateProject = observer(() => {
         )}
       </div>
       {
-        getProjRelationShow() && (
+        (getProjRelationShow() || (ycloudFlag && propsProjectId)) && (
           <div className={`${prefixCls}-projRelation`}>
             <div className={`${prefixCls}-projRelation-divided`} />
             <p style={{ fontWeight: 500, fontSize: 14 }}>高级设置</p>
+            {(ycloudFlag && propsProjectId)
+            && (
+            <CheckBox
+              name="connectKnowledgeSpaceFlag"
+            >
+              连接燕千云知识空间
+            </CheckBox>
+            )}
+            <br />
+            {
+             record?.get('connectKnowledgeSpaceFlag')
+             && (
+             <div style={{ marginTop: '15px' }}>
+               <Select name="knowledgeSpaceId" placeholder="关联知识空间" clearButton />
+             </div>
+)
+            }
             {allowLinkForm}
           </div>
         )
