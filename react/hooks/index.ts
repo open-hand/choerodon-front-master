@@ -11,3 +11,4 @@ export { default as useFormatCommon } from './useFormatCommon';
 export { default as useGetWatermarkInfo } from './useGetWatermarkInfo';
 export { default as useInject } from './useInject';
 export { default as useProjectTemplate } from './useProjectTemplate';
+export { default as useExternalFunc } from '@/hooks/useExternalFunc';

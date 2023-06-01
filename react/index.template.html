@@ -18,6 +18,51 @@
     }
   </script>
   <script><%= htmlWebpackPlugin.options.env %></script>
+  <script>
+    function getCookieValue(cookieName) {
+        var cookies = document.cookie.split("; ");
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].split("=");
+            if (cookie[0] === cookieName) {
+            return cookie[1];
+            }
+        }
+        return "";
+    }
+
+    var cookieToken = getCookieValue("access_token");
+    function auth() {
+        if (window._env_.SAAS === 'true') {
+            const params = new URLSearchParams(window.location.href);
+            const access_token = params.get('access_token');
+            if (access_token || cookieToken) {
+                return;
+            } else {
+                const AUTH_URL = `${true ? `${window._env_.API_HOST}/oauth/oauth/authorize?response_type=token&client_id=${window._env_.CLIENT_ID}&state=` : ''}`;
+
+                let historyPath = sessionStorage.getItem('historyPath');
+                const Reg = /=(.+?)==/gi;
+                const NO_NEED_HISTORYPATH = window._env_.NO_NEED_HISTORYPATH?.split(',') || [];
+                if (historyPath && (NO_NEED_HISTORYPATH.some((item) => historyPath.includes(item)) || Reg.test(historyPath))) {
+                    historyPath = '/';
+                    sessionStorage.setItem('historyPath', '/');
+                }
+                let uri = `${window.location.origin}/#${historyPath || '/'}`;
+                if (uri.indexOf('?') > 0) {
+                    uri += '&redirectFlag';
+                } else {
+                    uri += '?redirectFlag';
+                }
+                const redirect_uri = escape(uri);
+                window.localStorage.removeItem('lastClosedId');
+
+                // 这里是为了告诉oauth我要重定向的uri是什么，必须和client中对应，跳转到非client的页面会报错。
+                window.location = `${AUTH_URL}&redirect_uri=${redirect_uri}`;
+            }
+        }
+    }
+    auth();
+  </script>
 </head>
 
 <body>

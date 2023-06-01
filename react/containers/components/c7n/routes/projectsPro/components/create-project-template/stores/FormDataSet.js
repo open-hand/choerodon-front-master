@@ -286,6 +286,50 @@ export default ({
         maxLength: 1000,
         defaultValue: newUserGuideDefaultValue.description,
       },
+      {
+        name: 'connectKnowledgeSpaceFlag',
+        type: 'boolean',
+        label: '连接燕千知识空间',
+      },
+      {
+        name: 'knowledgeSpaceId',
+        type: 'string',
+        textField: 'text',
+        valueField: 'id',
+        label: '关联知识空间',
+        options: new DataSet({
+          selection: 'single',
+          autoQuery: false,
+          transport: {
+            read: {
+              // url: `/iam/choerodon/v1/organizations/${organizationId}/list_user_labels`,
+              // method: 'get',
+            },
+          },
+          data: [
+            {
+              text: '测试1',
+              id: '1',
+            },
+            {
+              text: '测试2',
+              id: '2',
+            },
+            {
+              text: '测试3',
+              id: '3',
+            },
+            {
+              text: '测试4',
+              id: '4',
+            },
+            {
+              text: '测试5',
+              id: '5',
+            },
+          ],
+        }),
+      },
       { name: 'enabled', type: 'boolean', label: '项目状态' },
       { name: 'createUserName', type: 'string', label: '创建人' },
       { name: 'imageUrl', type: 'string' },

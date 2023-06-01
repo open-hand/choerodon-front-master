@@ -86,6 +86,7 @@ const CreateProject = observer(() => {
   const [checkModal, setCheckModal] = useState();
   const [sagaInstanceIds, setSagaInstanceIds] = useState();
   const [isRetry, setIsRetry] = useState(false);
+  const [ycloudFlag, setYcloudFlag] = useState(false);
 
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
   const { loading: openTemplateLoading, func: openTemplate } = useExternalFunc('agile', 'agile:openTemplate');
@@ -102,6 +103,7 @@ const CreateProject = observer(() => {
 
   useEffect(() => {
     getChecked();
+    getYcloudFlag();
   }, []);
 
   useEffect(() => {
@@ -111,7 +113,16 @@ const CreateProject = observer(() => {
        record?.set('templateClassficationId', ids);
     }
   }, [record]);
-
+  const getYcloudFlag = async () => {
+    try {
+      const res = await axios.get(`/iam/choerodon/v1/organizations/${organizationId}/open_app/details_by_type?app_type=yqcloud`);
+      if (res && res.failed !== true) {
+        setYcloudFlag(res.linkKnowledgeFlag);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const initFormDs = async () => {
     // 创建项目模板自定义配置字段
     if (isTemplate) {
@@ -878,6 +889,31 @@ const CreateProject = observer(() => {
           </div>
         )
       } */}
+      {
+        ((ycloudFlag && propsProjectId)) && (
+          <div className={`${prefixCls}-projRelation`}>
+            <div className={`${prefixCls}-projRelation-divided`} />
+            <p style={{ fontWeight: 500, fontSize: 14 }}>高级设置</p>
+            {(ycloudFlag && propsProjectId)
+            && (
+            <CheckBox
+              name="connectKnowledgeSpaceFlag"
+            >
+              连接燕千云知识空间，使用此模板时将同时基于此空间创建新的知识空间连接到项目内
+            </CheckBox>
+            )}
+            <br />
+            {
+             record?.get('connectKnowledgeSpaceFlag')
+             && (
+             <div style={{ marginTop: '15px' }}>
+               <Select name="knowledgeSpaceId" placeholder="关联已有燕千云知识空间" clearButton />
+             </div>
+            )
+            }
+          </div>
+        )
+      }
       {showDevopsAdvanced && (
         <div className={`${prefixCls}-advanced`}>
           <div className={`${prefixCls}-advanced-divided`} />
