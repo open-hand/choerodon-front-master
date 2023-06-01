@@ -1,4 +1,4 @@
-export function downloadFile(url: string, name: string, callbackFunc: Function) {
+export function downloadFile(url: string, name?: string, callbackFunc?: Function) {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', url);
   // 设置返回数据的类型为blob

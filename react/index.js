@@ -103,4 +103,6 @@ export { Route, Switch, withRouter } from 'react-router-dom';
 export { default as getEnv } from '@/utils/getEnv';
 export { default as addAction } from '@/utils/addAction';
 
+export * from '@/utils/downloadFileRedirect';
+
 export { default } from './app';
