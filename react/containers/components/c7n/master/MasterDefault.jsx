@@ -234,7 +234,7 @@ class Masters extends Component {
       organizationId,
     } = this.props.AppState.currentMenuType || {};
     const reqOrgId = orgId || organizationId;
-    if (window._env_.BUSINESS || !organizationId) {
+    if (window._env_.BUSINESS || !organizationId || window._env_.OPEN_SOURCE == 'true') {
       return;
     }
     try {
