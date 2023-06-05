@@ -23,9 +23,11 @@ export function useDoc() {
 export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((props) => {
   const {
     children,
-    AppState: { currentMenuType: { organizationId } },
+    AppState: { currentMenuType: { organizationId }, currentServices },
     history,
   } = props;
+
+  const hasKnowledgeService = currentServices.some((i) => i?.serviceCode === 'knowledgebase-service');
 
   const docStore = useStore();
 
@@ -46,8 +48,8 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')(observer((
   } = docStore;
 
   const docDs = useMemo(() => new DataSet(DocDataSet({
-    organizationId, selectedProjectId, self: getSelfDoc, docStore, cacheStore,
-  })), [getSelfDoc, organizationId, selectedProjectId]);
+    organizationId, selectedProjectId, self: getSelfDoc, docStore, cacheStore, hasKnowledgeService,
+  })), [getSelfDoc, organizationId, selectedProjectId, hasKnowledgeService]);
 
   const opts = useMemo(() => [{ value: false, text: formatCommon({ id: 'project' }) }, { value: true, text: formatCommon({ id: 'personal' }) }], []);
 
