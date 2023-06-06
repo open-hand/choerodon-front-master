@@ -7,11 +7,13 @@ import { DataSet } from 'choerodon-ui/pro';
 import { some, forEach } from 'lodash';
 import { injectIntl } from 'react-intl';
 import fetchData$ from 'dingtalk-jsapi/api/biz/intent/fetchData';
+import Jsonbig from 'json-bigint';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import FormDataSet from './FormDataSet';
 import StatusDataSet from './StatusDataSet';
 import CategoryDataSet from './CategoryDataSet';
 import axios from '@/components/axios';
+import { projectsApi, projectsApiConfig } from '@/apis/Projects';
 import useStore from './useStore';
 
 const Store = createContext();
@@ -52,6 +54,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   const formDs = useMemo(() => new DataSet(FormDataSet({
     organizationId, categoryDs, projectId, categoryCodes, inNewUserGuideStepOne, statusDs, func: createProjectExtraFields,
   })), [organizationId, projectId, statusDs, inNewUserGuideStepOne, createProjectExtraFields]);
+
   useEffect(() => {
     if (!baseSaasLoading && !haitianMasterLoading) {
       if (projectId) {
@@ -63,10 +66,11 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       }
     }
   }, [projectId, organizationId, checkSenior, baseSaasLoading, haitianMasterLoading, createProjectExtraFields]);
+
   const fetchData = async () => {
     try {
-      const response = await axios.get(`/iam/choerodon/v1/organizations/${organizationId}/open_app/details_by_type?app_type=yqcloud`);
-      const res = await axios.get('/iam/choerodon/v1/users/list_organizations_bound_up_with_open_app? open_app_type=yqcloud');
+      const response = await projectsApi.getYcloudSpace(organizationId);
+      const res = await projectsApi.getYcloudUser();
       if (res && res.length > 0 && res !== []) {
         const selectFiled = formDs?.getField('openSpaceId');
         if (projectId && response.linkKnowledgeFlag === true) {
@@ -76,11 +80,13 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           autoCreate: true,
           autoQuery: true,
           paging: false,
-          // pageSize: 10,
           transport: {
             read: {
-              url: `/agile/v1/projects/${projectId}/yq_cloud/knowledge/list_space`,
-              method: 'get',
+              ...projectsApiConfig.getYcloudList(projectId),
+              transformResponse: (data) => {
+                const newRes = Jsonbig.parse(data);
+                return newRes;
+              },
             },
           },
         }),
@@ -91,6 +97,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       console.log(error);
     }
   };
+
   const loadCategory = async (checkSeniorFunc) => {
     await axios.all([
       categoryDs.query(),

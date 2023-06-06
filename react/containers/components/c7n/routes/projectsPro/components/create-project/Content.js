@@ -107,7 +107,7 @@ const CreateProject = observer(() => {
   }, [record]);
   const getYcloudFlag = async () => {
     try {
-      const res = await axios.get(`/iam/choerodon/v1/organizations/${organizationId}/open_app/details_by_type?app_type=yqcloud`);
+      const res = await projectsApi.getYcloudSpace(organizationId);
       if (res && res.failed !== true) {
         setYcloudFlag(res.linkKnowledgeFlag);
       }
@@ -315,7 +315,7 @@ const CreateProject = observer(() => {
           record.set('fromTemplateId', templateData.id);
           record.set('useTemplate', undefined);
         }
-
+        console.log('aaaaa', formDs?.current?.get('openSpaceId'));
         const res = await formDs.forceSubmit();
         if (res && !res.failed && res.list && res.list.length) {
           const projectId = get(res.list[0], 'id');

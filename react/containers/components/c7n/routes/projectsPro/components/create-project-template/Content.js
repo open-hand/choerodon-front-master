@@ -29,7 +29,7 @@ import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import { fileServer, prompt } from '@/utils';
-import { cbaseApi } from '@/apis';
+import { cbaseApi, projectsApi } from '@/apis';
 import axios from '@/components/axios';
 import ImageUpload from './components/imageUpload';
 import NotifitionModal from './components/notifition-modal';
@@ -115,7 +115,7 @@ const CreateProject = observer(() => {
   }, [record]);
   const getYcloudFlag = async () => {
     try {
-      const res = await axios.get(`/iam/choerodon/v1/organizations/${organizationId}/open_app/details_by_type?app_type=yqcloud`);
+      const res = await projectsApi.getYcloudSpace(organizationId);
       if (res && res.failed !== true) {
         setYcloudFlag(res.linkKnowledgeFlag);
       }
