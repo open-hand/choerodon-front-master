@@ -75,6 +75,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       }
     }
   }, [projectId, organizationId, checkSenior, baseSaasLoading]);
+
   const fetchData = async () => {
     try {
       const response = await projectsApi.getYcloudSpace(organizationId);
@@ -106,6 +107,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       console.log(error);
     }
   };
+
   const loadCategory = async (checkSeniorFunc) => {
     await axios.all([
       categoryDs.query(),
