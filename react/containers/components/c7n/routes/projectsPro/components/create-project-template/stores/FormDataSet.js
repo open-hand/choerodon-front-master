@@ -292,43 +292,22 @@ export default ({
         label: '连接燕千知识空间',
       },
       {
-        name: 'knowledgeSpaceId',
-        type: 'string',
-        textField: 'text',
+        name: 'openSpaceId',
+        textField: 'name',
         valueField: 'id',
         label: '关联知识空间',
-        options: new DataSet({
-          selection: 'single',
-          autoQuery: false,
-          transport: {
-            read: {
-              // url: `/iam/choerodon/v1/organizations/${organizationId}/list_user_labels`,
-              // method: 'get',
-            },
-          },
-          data: [
-            {
-              text: '测试1',
-              id: '1',
-            },
-            {
-              text: '测试2',
-              id: '2',
-            },
-            {
-              text: '测试3',
-              id: '3',
-            },
-            {
-              text: '测试4',
-              id: '4',
-            },
-            {
-              text: '测试5',
-              id: '5',
-            },
-          ],
-        }),
+        required: true,
+        type: 'object',
+        validator: async (value, name, record) => {
+          const res = await axios.get('/iam/choerodon/v1/users/list_organizations_bound_up_with_open_app? open_app_type=yqcloud');
+          if (res && res.length > 0 && res !== []) {
+            if (!value) {
+              return '请关联关联知识空间';
+            }
+            return true;
+          }
+          return '请先绑定燕千云账户';
+        },
       },
       { name: 'enabled', type: 'boolean', label: '项目状态' },
       { name: 'createUserName', type: 'string', label: '创建人' },

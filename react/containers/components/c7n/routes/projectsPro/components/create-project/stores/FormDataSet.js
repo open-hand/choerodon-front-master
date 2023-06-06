@@ -1,6 +1,7 @@
 import React from 'react';
 import { DataSet } from 'choerodon-ui/pro';
 import { NewTips } from '@zknow/components';
+import getPayUrl$ from 'dingtalk-jsapi/api/biz/store/getPayUrl';
 import { organizationsApiConfig } from '@/apis';
 import axios from '@/components/axios';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
@@ -279,43 +280,26 @@ export default ({
         label: '连接燕千知识空间',
       },
       {
-        name: 'knowledgeSpaceId',
-        type: 'string',
-        textField: 'text',
+        name: 'openSpaceId',
+        type: 'object',
+        textField: 'name',
         valueField: 'id',
         label: '关联知识空间',
-        options: new DataSet({
-          selection: 'single',
-          autoQuery: false,
-          transport: {
-            read: {
-              // url: `/iam/choerodon/v1/organizations/${organizationId}/list_user_labels`,
-              // method: 'get',
-            },
-          },
-          data: [
-            {
-              text: '测试1',
-              id: '1',
-            },
-            {
-              text: '测试2',
-              id: '2',
-            },
-            {
-              text: '测试3',
-              id: '3',
-            },
-            {
-              text: '测试4',
-              id: '4',
-            },
-            {
-              text: '测试5',
-              id: '5',
-            },
-          ],
-        }),
+        required: true,
+        validator: async (value, name, record) => {
+          console.log('bbb');
+          const res = await axios.get('/iam/choerodon/v1/users/list_organizations_bound_up_with_open_app? open_app_type=yqcloud');
+          if (res && res.length > 0 && res !== []) {
+            if (!value) {
+              console.log(1);
+              return '请关联关联知识空间';
+            }
+            console.log(2);
+            return true;
+          }
+          console.log(3);
+          return '请先绑定燕千云账户';
+        },
       },
       { name: 'enabled', type: 'boolean', label: '项目状态' },
       { name: 'createUserName', type: 'string', label: '创建人' },

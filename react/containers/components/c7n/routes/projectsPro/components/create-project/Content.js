@@ -18,6 +18,7 @@ import {
   Select,
   SelectBox,
   TreeSelect,
+  DataSet,
 } from 'choerodon-ui/pro';
 import {
   includes, map, get,
@@ -76,7 +77,6 @@ const CreateProject = observer(() => {
   const [expandAdvanced, setExpandAdvanced] = useState(true);
   const [fieldsConfig, setFieldsConfig] = useState([]);
   const [ycloudFlag, setYcloudFlag] = useState(false);
-  // const [ycloudValue, setYcloudValue] = useState(false);
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
   const { loading: openTemplateLoading, func: openTemplate } = useExternalFunc('agile', 'agile:openTemplate');
 
@@ -115,7 +115,6 @@ const CreateProject = observer(() => {
       console.log(error);
     }
   };
-
   const initFormDs = async () => {
     const [res, templateRes, templateInfo] = await Promise.all([cbaseApi.getFields({
       pageAction: isModify ? 'edit' : 'create',
@@ -768,21 +767,29 @@ const CreateProject = observer(() => {
             {(ycloudFlag && propsProjectId)
             && (
             <CheckBox
+              dataSet={formDs}
               name="connectKnowledgeSpaceFlag"
             >
               连接燕千云知识空间
             </CheckBox>
             )}
-            <br />
             {
              record?.get('connectKnowledgeSpaceFlag')
              && (
-             <div style={{ marginTop: '15px' }}>
-               <Select name="knowledgeSpaceId" placeholder="关联知识空间" clearButton />
+             <div style={{ marginTop: ycloudFlag ? '15px' : '0' }} className={`${prefixCls}-ycloud`}>
+               <Form dataSet={formDs} columns={100}>
+                 <Select
+                   name="openSpaceId"
+                   clearButton
+                   searchable
+                   colSpan={50}
+                   style={{ width: 340, position: 'relative', left: -5 }}
+                 />
+               </Form>
              </div>
-)
+             )
             }
-            {allowLinkForm}
+            {getProjRelationShow() && allowLinkForm}
           </div>
         )
       }
