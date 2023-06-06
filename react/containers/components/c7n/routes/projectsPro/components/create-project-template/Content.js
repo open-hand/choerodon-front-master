@@ -346,7 +346,10 @@ const CreateProject = observer(() => {
           code: findRecord.get('code'),
         });
       }
-
+      if (!record?.get('connectKnowledgeSpaceFlag')) {
+        const selectFiled = formDs?.getField('openSpaceId');
+        selectFiled?.set('required', false);
+      }
       if (typeof formDs?.current?.get('statusId') === 'object') {
         formDs?.current?.set('statusId', formDs?.current?.get('statusId')?.id);
         formDs?.current?.set(

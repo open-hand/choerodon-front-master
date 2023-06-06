@@ -256,7 +256,10 @@ const CreateProject = observer(() => {
           code: findRecord.get('code'),
         });
       }
-
+      if (!record?.get('connectKnowledgeSpaceFlag')) {
+        const selectFiled = formDs?.getField('openSpaceId');
+        selectFiled?.set('required', false);
+      }
       if (typeof formDs?.current?.get('statusId') === 'object') {
         formDs?.current?.set('statusId', formDs?.current?.get('statusId')?.id);
         formDs?.current?.set(
@@ -783,6 +786,13 @@ const CreateProject = observer(() => {
                    clearButton
                    searchable
                    colSpan={50}
+                  //  validator={async (value) => {
+                  //    console.log('bbb');
+                  //    const res = await axios.get('/iam/choerodon/v1/users/list_organizations_bound_up_with_open_app? open_app_type=yqcloud');
+                  //    if (res && res === []) {
+                  //      return '请先绑定燕千云账户';
+                  //    }
+                  //  }}
                    style={{ width: 340, position: 'relative', left: -5 }}
                  />
                </Form>
