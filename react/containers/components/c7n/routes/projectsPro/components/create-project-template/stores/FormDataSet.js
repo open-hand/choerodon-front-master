@@ -297,17 +297,7 @@ export default ({
         valueField: 'id',
         label: '关联知识空间',
         required: true,
-        type: 'object',
-        validator: async (value, name, record) => {
-          const res = await axios.get('/iam/choerodon/v1/users/list_organizations_bound_up_with_open_app? open_app_type=yqcloud');
-          if (res && res.length > 0 && res !== []) {
-            if (!value) {
-              return '请关联关联知识空间';
-            }
-            return true;
-          }
-          return '请先绑定燕千云账户';
-        },
+        type: 'string',
       },
       { name: 'enabled', type: 'boolean', label: '项目状态' },
       { name: 'createUserName', type: 'string', label: '创建人' },
