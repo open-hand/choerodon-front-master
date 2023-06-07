@@ -294,6 +294,11 @@ const CreateProject = observer(() => {
           formDs?.current?.set('projectEnable', statusItem?.projectEnable);
         }
       }
+      // 处理燕千云知识空间字段
+      if (propsProjectId) {
+        const ids = formDs?.current?.get('openSpaceId');
+        typeof ids === 'object' && formDs?.current?.set('openSpaceId', ids?.id);
+      }
       record.set('categories', categories);
       const flag = await formDs.validate();
       if (flag) {
