@@ -40,6 +40,9 @@ import './index.less';
 
 const projectRelationshipCodes = ['N_WATERFALL', 'N_AGILE', 'N_REQUIREMENT'];
 const excludeTemplateFieldCodes = ['name', 'code', 'description'];
+const { Option } = Select;
+const HAS_AGILEPRO = Boolean(window.agile);
+const HAS_BASE_BUSINESS = Boolean(window.baseBusiness);
 
 const CreateProject = observer(() => {
   const {
@@ -218,6 +221,9 @@ const CreateProject = observer(() => {
 
   useEffect(() => {
     const loadTemplateConfig = async () => {
+      if (!HAS_AGILEPRO) {
+        return;
+      }
       let notConfigured = true;
       if (currentProjectId) {
         notConfigured = await axios.get(

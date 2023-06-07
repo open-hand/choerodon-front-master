@@ -244,6 +244,38 @@ class Masters extends Component {
     }
   }
 
+  // 获取SaaS 新用户的免费使用天数提醒
+  getSaaSUserRestDays = async (orgId) => {
+    const {
+      organizationId,
+    } = this.props.AppState.currentMenuType || {};
+    const reqOrgId = orgId || organizationId;
+    if (window._env_.BUSINESS || !organizationId || window._env_.OPEN_SOURCE == 'true') {
+      return;
+    }
+    try {
+      const res = await getSaaSUserAvilableDays(reqOrgId);
+      if (res && res.failed) {
+        message.error(res?.message);
+        return;
+      }
+      const { HeaderStore } = this.props;
+
+      const identity = 'saas_restdays_announcement';
+      if (res && (!localStorage.saaslastClosedId || localStorage.saaslastClosedId !== res?.link)) {
+        HeaderStore.innsertAnnouncement(identity, {
+          data: res,
+          onCloseCallback: () => {
+            window.localStorage.setItem('saaslastClosedId', `${res?.link}`);
+          },
+          component: <SaaSUserAnnouncement data={res} />,
+        });
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   componentDidMount() {
     this.initFavicon();
     // 获取系统公告

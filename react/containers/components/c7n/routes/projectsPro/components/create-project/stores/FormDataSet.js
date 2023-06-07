@@ -47,6 +47,7 @@ function trimSpecial(string) {
   }
   return newString;
 }
+const HAS_BASE_BUSINESS = Boolean(window.baseBusiness);
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({
@@ -157,16 +158,14 @@ export default ({
         validator: codeValidator,
         maxLength: 40,
         defaultValue: newUserGuideDefaultValue.code,
-      },
-      {
+      }, {
         name: 'statusId',
         label: '项目状态',
         textField: 'name',
         valueField: 'id',
         options: statusDs,
         dynamicProps: {
-          required: ({ record }) => record?.status !== 'add'
-          ,
+          required: ({ record }) => (HAS_BASE_BUSINESS ? false : (record?.status !== 'add')),
         },
       },
       {

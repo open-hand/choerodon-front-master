@@ -2,7 +2,7 @@ import Jsonbig from 'json-bigint';
 
 /* eslint-disable import/no-anonymous-default-export */
 export default (({
-  organizationId, selectedProjectId, self, docStore, cacheStore,
+  organizationId, selectedProjectId, self, docStore, cacheStore, hasKnowledgeService,
 }) => ({
   autoQuery: false,
   selection: false,
@@ -10,7 +10,7 @@ export default (({
   dataKey: null,
   pageSize: 20,
   transport: {
-    read: ({ dataSet }) => ({
+    read: ({ dataSet }) => (hasKnowledgeService ? ({
       url: `/knowledge/v1/organizations/${organizationId}/work_space/recent_project_update_list${self ? '/self' : ''}${selectedProjectId ? `?projectId=${selectedProjectId}` : ''}`,
       method: 'get',
       transformResponse: (res) => {
@@ -41,7 +41,7 @@ export default (({
           throw new Error(error);
         }
       },
-    }),
+    }) : undefined),
   },
   fields: [],
 }));
