@@ -326,7 +326,6 @@ const CreateProject = observer(() => {
           record.set('fromTemplateId', templateData.id);
           record.set('useTemplate', undefined);
         }
-        console.log('aaaaa', formDs?.current?.get('openSpaceId'));
         const res = await formDs.forceSubmit();
         if (res && !res.failed && res.list && res.list.length) {
           const projectId = get(res.list[0], 'id');

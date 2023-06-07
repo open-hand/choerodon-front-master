@@ -84,10 +84,10 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
           transport: {
             read: {
               ...projectsApiConfig.getYcloudList(projectId),
-              transformResponse: (data) => {
-                const newRes = Jsonbig.parse(data);
-                return newRes;
-              },
+              // transformResponse: (data) => {
+              //   const newRes = Jsonbig.parse(data);
+              //   return newRes;
+              // },
             },
           },
         }),
