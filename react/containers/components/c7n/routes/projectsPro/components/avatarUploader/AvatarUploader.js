@@ -12,6 +12,7 @@ import {
 import PropTypes from 'prop-types';
 import querystring from 'query-string';
 import { prompt, handleResponseError, getCookie } from '@/utils';
+import { BUCKET_NAME_DIRECTORY_IAM } from '@/constants/BUCKET_NAME';
 
 import axios from '@/components/axios';
 import './AvatarUploader.less';
@@ -58,7 +59,7 @@ export default class AvatarUploader extends Component {
     const {
       x, y, size, rotate, file, imageStyle: { width, height }, img: { naturalWidth, naturalHeight },
     } = this.state;
-    const { organizationId, bucketName,AppState } = this.props;
+    const { organizationId, bucketName,AppState, directory } = this.props;
     const flag = rotateFlag(rotate);
     const scale = naturalWidth / width;
     const startX = flag ? x - ((width - height) / 2) : x;
@@ -69,7 +70,8 @@ export default class AvatarUploader extends Component {
       startY: round(startY * scale),
       endX: round(size * scale),
       endY: round(size * scale),
-      bucketName: bucketName || 'iam-service',
+      bucketName: bucketName || BUCKET_NAME_DIRECTORY_IAM,
+      directory,
     });
     const data = new FormData();
     data.append('file', file);
