@@ -285,7 +285,7 @@ export default ({
         valueField: 'id',
         label: '关联知识空间',
         required: true,
-        type: 'string',
+        // type: 'string',
       },
       { name: 'enabled', type: 'boolean', label: '项目状态' },
       { name: 'createUserName', type: 'string', label: '创建人' },

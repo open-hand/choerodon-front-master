@@ -126,18 +126,18 @@ const CreateProject = observer(() => {
     }) : null,
     templateData ? projectsApi.getProjectInfo(templateData.id) : null,
     ]);
-    // 燕千云知识空间关联的时候出现id不能回显的情况，type无效，在这里手动转一下
-    if (propsProjectId) {
-      const yloudId = record?.get('openSpaceId');
-      if (yloudId) {
-        const selectFiled = record?.getField('openSpaceId');
-        const field = selectFiled?.get('options')?.toData();
-        if (field?.length > 0) {
-          const result = field?.filter((i) => i?.id === yloudId);
-          result?.length > 0 && record?.set('openSpaceId', result[0]);
-        }
-      }
-    }
+    // // 燕千云知识空间关联的时候出现id不能回显的情况，type无效，在这里手动转一下
+    // if (propsProjectId) {
+    //   const yloudId = record?.get('openSpaceId');
+    //   if (yloudId) {
+    //     const selectFiled = record?.getField('openSpaceId');
+    //     const field = selectFiled?.get('options')?.toData();
+    //     if (field?.length > 0) {
+    //       const result = field?.filter((i) => i?.id === yloudId);
+    //       result?.length > 0 && record?.set('openSpaceId', result[0]);
+    //     }
+    //   }
+    // }
     remove(res, (item) => item.fieldCode === 'type');
     res.forEach((item) => {
       // 基于模板创建项目时，模板项目数据赋值
@@ -796,14 +796,7 @@ const CreateProject = observer(() => {
                    name="openSpaceId"
                    clearButton
                    searchable
-                   colSpan={50}
-                  //  validator={async (value) => {
-                  //    console.log('bbb');
-                  //    const res = await axios.get('/iam/choerodon/v1/users/list_organizations_bound_up_with_open_app? open_app_type=yqcloud');
-                  //    if (res && res === []) {
-                  //      return '请先绑定燕千云账户';
-                  //    }
-                  //  }}
+                   colSpan={(e) => { e.stopPropagation(); e.preventDefault(); }}
                    style={{ width: 340, position: 'relative', left: -5 }}
                  />
                </Form>

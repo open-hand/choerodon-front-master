@@ -166,17 +166,17 @@ const CreateProject = observer(() => {
         formDs?.current?.set('templateClassficationId', classId);
       }
       // 燕千云知识空间关联的时候出现id不能回显的情况，type无效，在这里手动转一下
-      if (propsProjectId) {
-        const yloudId = record?.get('openSpaceId');
-        if (yloudId) {
-          const selectFiled = record?.getField('openSpaceId');
-          const field = selectFiled?.get('options')?.toData();
-          if (field?.length > 0) {
-            const result = field?.filter((i) => i?.id === yloudId);
-          result?.length > 0 && record?.set('openSpaceId', result[0]);
-          }
-        }
-      }
+      // if (propsProjectId) {
+      //   const yloudId = record?.get('openSpaceId');
+      //   if (yloudId) {
+      //     const selectFiled = record?.getField('openSpaceId');
+      //     const field = selectFiled?.get('options')?.toData();
+      //     if (field?.length > 0) {
+      //       const result = field?.filter((i) => i?.id === yloudId);
+      //     result?.length > 0 && record?.set('openSpaceId', result[0]);
+      //     }
+      //   }
+      // }
       res.forEach((item) => {
         if (item.builtInFlag && contrastMapToFormDsMap.get(item.fieldCode)) {
           item.fieldCode = contrastMapToFormDsMap.get(item.fieldCode);
