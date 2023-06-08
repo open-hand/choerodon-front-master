@@ -6,14 +6,18 @@ import { withRouter } from 'react-router-dom';
 import { DataSet } from 'choerodon-ui/pro';
 import { some, forEach } from 'lodash';
 import { injectIntl } from 'react-intl';
+import fetchData$ from 'dingtalk-jsapi/api/biz/intent/fetchData';
+import Jsonbig from 'json-bigint';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import FormDataSet from './FormDataSet';
 import StatusDataSet from './StatusDataSet';
 import CategoryDataSet from './CategoryDataSet';
 import axios from '@/components/axios';
+import { projectsApi, projectsApiConfig } from '@/apis/Projects';
 import useStore from './useStore';
 
 const Store = createContext();
+const HAS_BASE_BUSINESS = C7NHasModule('@choerodon/base-business');
 
 export function useCreateProjectProStore() {
   return useContext(Store);
@@ -55,6 +59,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   useEffect(() => {
     if (!baseSaasLoading && !haitianMasterLoading) {
       if (projectId) {
+        fetchData();
         loadData(checkSenior?.default);
       } else {
         formDs.create();
@@ -62,6 +67,37 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       }
     }
   }, [projectId, organizationId, checkSenior, baseSaasLoading, haitianMasterLoading, createProjectExtraFields]);
+
+  const fetchData = async () => {
+    try {
+      const response = await projectsApi.getYcloudSpace(organizationId);
+      const res = await projectsApi.getYcloudUser();
+      if (res && res.length > 0 && res !== []) {
+        const selectFiled = formDs?.getField('openSpaceId');
+        if (projectId && response.linkKnowledgeFlag === true) {
+        selectFiled?.set('options',
+        new DataSet({
+          selection: 'single',
+          autoCreate: true,
+          autoQuery: true,
+          paging: false,
+          transport: {
+            read: {
+              ...projectsApiConfig.getYcloudList(projectId),
+              // transformResponse: (data) => {
+              //   const newRes = Jsonbig.parse(data);
+              //   return newRes;
+              // },
+            },
+          },
+        }),
+        );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const loadCategory = async (checkSeniorFunc) => {
     await axios.all([
@@ -110,7 +146,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
 
   const loadData = async (checkSeniorFunc) => {
     try {
-      await statusDs.query();
+      HAS_BASE_BUSINESS && await statusDs.query();
       await categoryDs.query();
       const projectData = await formDs.query();
       await createProjectStore.checkSenior(organizationId, checkSeniorFunc);
@@ -220,6 +256,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
     createProjectStore,
     setFlags,
     flags,
+    projectId,
   };
 
   return (

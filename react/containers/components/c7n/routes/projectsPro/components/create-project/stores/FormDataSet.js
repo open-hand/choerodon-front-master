@@ -1,6 +1,7 @@
 import React from 'react';
 import { DataSet } from 'choerodon-ui/pro';
 import { NewTips } from '@zknow/components';
+import getPayUrl$ from 'dingtalk-jsapi/api/biz/store/getPayUrl';
 import { organizationsApiConfig } from '@/apis';
 import axios from '@/components/axios';
 import transformResponseTreeData from '@/utils/transformResponseTreeData';
@@ -46,6 +47,7 @@ function trimSpecial(string) {
   }
   return newString;
 }
+const HAS_BASE_BUSINESS = Boolean(window.baseBusiness);
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default ({
@@ -156,16 +158,14 @@ export default ({
         validator: codeValidator,
         maxLength: 40,
         defaultValue: newUserGuideDefaultValue.code,
-      },
-      {
+      }, {
         name: 'statusId',
         label: '项目状态',
         textField: 'name',
         valueField: 'id',
         options: statusDs,
         dynamicProps: {
-          required: ({ record }) => record?.status !== 'add'
-          ,
+          required: ({ record }) => (HAS_BASE_BUSINESS ? false : (record?.status !== 'add')),
         },
       },
       {
@@ -272,6 +272,19 @@ export default ({
         label: '项目描述',
         maxLength: 1000,
         defaultValue: newUserGuideDefaultValue.description,
+      },
+      {
+        name: 'connectKnowledgeSpaceFlag',
+        type: 'boolean',
+        label: '连接燕千知识空间',
+      },
+      {
+        name: 'openSpaceId',
+        textField: 'name',
+        valueField: 'id',
+        label: '关联知识空间',
+        required: true,
+        // type: 'string',
       },
       { name: 'enabled', type: 'boolean', label: '项目状态' },
       { name: 'createUserName', type: 'string', label: '创建人' },

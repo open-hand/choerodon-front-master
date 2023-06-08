@@ -11,3 +11,4 @@ export * from './LANGUAGES_TYPES';
 export * from './DEFAUTL_SYSTEM_NAME';
 export * from './COMPONENT';
 export * from './TEMPLATE_CODE';
+export * from './BUCKET_NAME';

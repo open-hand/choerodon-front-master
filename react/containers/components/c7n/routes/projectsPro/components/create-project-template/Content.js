@@ -29,7 +29,7 @@ import { NewTips } from '@zknow/components';
 import { get as getInject } from '@choerodon/inject';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import { fileServer, prompt } from '@/utils';
-import { cbaseApi } from '@/apis';
+import { cbaseApi, projectsApi } from '@/apis';
 import axios from '@/components/axios';
 import ImageUpload from './components/imageUpload';
 import NotifitionModal from './components/notifition-modal';
@@ -86,6 +86,7 @@ const CreateProject = observer(() => {
   const [checkModal, setCheckModal] = useState();
   const [sagaInstanceIds, setSagaInstanceIds] = useState();
   const [isRetry, setIsRetry] = useState(false);
+  const [ycloudFlag, setYcloudFlag] = useState(false);
 
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
   const { loading: openTemplateLoading, func: openTemplate } = useExternalFunc('agile', 'agile:openTemplate');
@@ -102,6 +103,7 @@ const CreateProject = observer(() => {
 
   useEffect(() => {
     getChecked();
+    getYcloudFlag();
   }, []);
 
   useEffect(() => {
@@ -111,7 +113,16 @@ const CreateProject = observer(() => {
        record?.set('templateClassficationId', ids);
     }
   }, [record]);
-
+  const getYcloudFlag = async () => {
+    try {
+      const res = await projectsApi.getYcloudSpace(organizationId);
+      if (res && res.failed !== true) {
+        setYcloudFlag(res.linkKnowledgeFlag);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const initFormDs = async () => {
     // 创建项目模板自定义配置字段
     if (isTemplate) {
@@ -335,7 +346,10 @@ const CreateProject = observer(() => {
           code: findRecord.get('code'),
         });
       }
-
+      if (!record?.get('connectKnowledgeSpaceFlag')) {
+        const selectFiled = formDs?.getField('openSpaceId');
+        selectFiled?.set('required', false);
+      }
       if (typeof formDs?.current?.get('statusId') === 'object') {
         formDs?.current?.set('statusId', formDs?.current?.get('statusId')?.id);
         formDs?.current?.set(
@@ -390,6 +404,11 @@ const CreateProject = observer(() => {
           }
         });
         record.set('customFields', customFields);
+        // 处理燕千云知识空间字段
+        if (propsProjectId) {
+          const ids = formDs?.current?.get('openSpaceId');
+          typeof ids === 'object' && formDs?.current?.set('openSpaceId', ids?.id);
+        }
         const res = await formDs.submit();
         if (res && !res.failed && res.list && res.list.length) {
           refresh();
@@ -441,46 +460,6 @@ const CreateProject = observer(() => {
 
   const openNotification = useCallback(({ projectId, setSuccesss, operateType }) => {
     const notificationKey = `${organizationId}-${projectId}`;
-    // const getProgress = () => new Promise((resolve, reject) => {
-    //   try {
-    //     axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`).then((res) => {
-    //       if (res && !res.failed) {
-    //         resolve({ status: res.status, progress: res.completedCount });
-    //       }
-    //       if (res.status === 'failed') {
-    //         setSagaInstanceIds(res.sagaInstanceIds);
-    //         refresh();
-    //         resolve({ status: res.status, progress: res.completedCount });
-    //       }
-    //       resolve({ status: 'doing', progress: res.completedCount });
-    //     });
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // });
-    // notification.open({
-    //   key: notificationKey,
-    //   message: (
-    //     <span className={`${prefixCls}-notification-title`}>
-    //       {isModify ? '修改项目模板' : '创建项目模板'}
-    //     </span>
-    //   ),
-    //   description: (
-    //     <ProjectNotification
-    //       notificationKey={notificationKey}
-    //       organizationId={organizationId}
-    //       projectId={projectId}
-    //       operateType={operateType}
-    //       formatMessage={formatMessage}
-    //       intlPrefix={intlPrefix}
-    //       setSuccess={setSuccesss}
-    //       refresh={refresh}
-    //     />
-    //   ),
-    //   duration: null,
-    //   placement: 'bottomLeft',
-    //   className: `${prefixCls}-notification`,
-    // });
     const getProgress = async () => {
       try {
         await axios.get(`/cbase/choerodon/v1/organizations/${organizationId}/saga/${projectId}?operateType=${operateType}`).then((res) => {
@@ -593,26 +572,21 @@ const CreateProject = observer(() => {
     }
   }, [categoryDs.selected, showDevopsAdvanced]);
 
-  const renderAvatar = useCallback(() => {
-    const name = record.get('name');
-    const imageUrl = record.get('imageUrl');
-
-    return (
-      <>
-        <div className={`${prefixCls}-template-avatar`}>
-          <ImageUpload
-            formDs={formDs}
-            prefixCls={prefixCls}
-            AppState={AppState}
-            organizationId={organizationId}
-          />
-        </div>
-        <div style={{ margin: '.06rem 0 .2rem 0', textAlign: 'center' }}>
-          项目模板封面
-        </div>
-      </>
-    );
-  }, [record, isShowAvatar, AppState]);
+  const renderAvatar = useCallback(() => (
+    <>
+      <div className={`${prefixCls}-template-avatar`}>
+        <ImageUpload
+          formDs={formDs}
+          prefixCls={prefixCls}
+          AppState={AppState}
+          organizationId={organizationId}
+        />
+      </div>
+      <div style={{ margin: '.06rem 0 .2rem 0', textAlign: 'center' }}>
+        项目模板封面
+      </div>
+    </>
+  ), [record, isShowAvatar, AppState]);
 
   const getCategoryClassNames = useCallback(
     (categoryRecord) => classnames({
@@ -869,15 +843,39 @@ const CreateProject = observer(() => {
             </>
         )}
       </div>
-      {/* {
-        getProjRelationShow() && (
+      {
+        ((ycloudFlag && propsProjectId)) && (
           <div className={`${prefixCls}-projRelation`}>
             <div className={`${prefixCls}-projRelation-divided`} />
             <p style={{ fontWeight: 500, fontSize: 14 }}>高级设置</p>
-            {allowLinkForm}
+            {(ycloudFlag && propsProjectId)
+            && (
+            <CheckBox
+              dataSet={formDs}
+              name="connectKnowledgeSpaceFlag"
+            >
+              连接燕千云知识空间，使用此模板时将同时基于此空间创建新的知识空间连接到项目内
+            </CheckBox>
+            )}
+            {
+             record?.get('connectKnowledgeSpaceFlag')
+             && (
+             <div style={{ marginTop: ycloudFlag ? '15px' : '0' }} className={`${prefixCls}-ycloud`}>
+               <Form dataSet={formDs} columns={100}>
+                 <Select
+                   name="openSpaceId"
+                   clearButton
+                   searchable
+                   colSpan={50}
+                   style={{ width: 340, position: 'relative', left: -5 }}
+                 />
+               </Form>
+             </div>
+             )
+            }
           </div>
         )
-      } */}
+      }
       {showDevopsAdvanced && (
         <div className={`${prefixCls}-advanced`}>
           <div className={`${prefixCls}-advanced-divided`} />

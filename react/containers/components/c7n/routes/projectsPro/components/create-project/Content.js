@@ -18,6 +18,7 @@ import {
   Select,
   SelectBox,
   TreeSelect,
+  DataSet,
 } from 'choerodon-ui/pro';
 import {
   includes, map, get,
@@ -39,6 +40,9 @@ import './index.less';
 
 const projectRelationshipCodes = ['N_WATERFALL', 'N_AGILE', 'N_REQUIREMENT'];
 const excludeTemplateFieldCodes = ['name', 'code', 'description'];
+const { Option } = Select;
+const HAS_AGILEPRO = Boolean(window.agile);
+const HAS_BASE_BUSINESS = Boolean(window.baseBusiness);
 
 const CreateProject = observer(() => {
   const {
@@ -75,7 +79,7 @@ const CreateProject = observer(() => {
   const [showDevopsAdvanced, setShowDevopsAdvanced] = useState(false);
   const [expandAdvanced, setExpandAdvanced] = useState(true);
   const [fieldsConfig, setFieldsConfig] = useState([]);
-
+  const [ycloudFlag, setYcloudFlag] = useState(false);
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
   const { loading: openTemplateLoading, func: openTemplate } = useExternalFunc('agile', 'agile:openTemplate');
 
@@ -98,12 +102,22 @@ const CreateProject = observer(() => {
 
   useEffect(() => {
     getChecked();
+    getYcloudFlag();
   }, []);
 
   useEffect(() => {
     record && initFormDs();
   }, [record]);
-
+  const getYcloudFlag = async () => {
+    try {
+      const res = await projectsApi.getYcloudSpace(organizationId);
+      if (res && res.failed !== true) {
+        setYcloudFlag(res.linkKnowledgeFlag);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const initFormDs = async () => {
     const [res, templateRes, templateInfo] = await Promise.all([cbaseApi.getFields({
       pageAction: isModify ? 'edit' : 'create',
@@ -115,7 +129,18 @@ const CreateProject = observer(() => {
     }) : null,
     templateData ? projectsApi.getProjectInfo(templateData.id) : null,
     ]);
-
+    // // 燕千云知识空间关联的时候出现id不能回显的情况，type无效，在这里手动转一下
+    // if (propsProjectId) {
+    //   const yloudId = record?.get('openSpaceId');
+    //   if (yloudId) {
+    //     const selectFiled = record?.getField('openSpaceId');
+    //     const field = selectFiled?.get('options')?.toData();
+    //     if (field?.length > 0) {
+    //       const result = field?.filter((i) => i?.id === yloudId);
+    //       result?.length > 0 && record?.set('openSpaceId', result[0]);
+    //     }
+    //   }
+    // }
     remove(res, (item) => item.fieldCode === 'type');
     res.forEach((item) => {
       // 基于模板创建项目时，模板项目数据赋值
@@ -196,6 +221,9 @@ const CreateProject = observer(() => {
 
   useEffect(() => {
     const loadTemplateConfig = async () => {
+      if (!HAS_AGILEPRO) {
+        return;
+      }
       let notConfigured = true;
       if (currentProjectId) {
         notConfigured = await axios.get(
@@ -245,7 +273,10 @@ const CreateProject = observer(() => {
           code: findRecord.get('code'),
         });
       }
-
+      if (!record?.get('connectKnowledgeSpaceFlag')) {
+        const selectFiled = formDs?.getField('openSpaceId');
+        selectFiled?.set('required', false);
+      }
       if (typeof formDs?.current?.get('statusId') === 'object') {
         formDs?.current?.set('statusId', formDs?.current?.get('statusId')?.id);
         formDs?.current?.set(
@@ -262,6 +293,11 @@ const CreateProject = observer(() => {
         if (statusItem) {
           formDs?.current?.set('projectEnable', statusItem?.projectEnable);
         }
+      }
+      // 处理燕千云知识空间字段
+      if (propsProjectId) {
+        const ids = formDs?.current?.get('openSpaceId');
+        typeof ids === 'object' && formDs?.current?.set('openSpaceId', ids?.id);
       }
       record.set('categories', categories);
       const flag = await formDs.validate();
@@ -290,7 +326,6 @@ const CreateProject = observer(() => {
           record.set('fromTemplateId', templateData.id);
           record.set('useTemplate', undefined);
         }
-
         const res = await formDs.forceSubmit();
         if (res && !res.failed && res.list && res.list.length) {
           const projectId = get(res.list[0], 'id');
@@ -749,11 +784,36 @@ const CreateProject = observer(() => {
         )}
       </div>
       {
-        getProjRelationShow() && (
+        (getProjRelationShow() || (ycloudFlag && propsProjectId)) && (
           <div className={`${prefixCls}-projRelation`}>
             <div className={`${prefixCls}-projRelation-divided`} />
             <p style={{ fontWeight: 500, fontSize: 14 }}>高级设置</p>
-            {allowLinkForm}
+            {(ycloudFlag && propsProjectId)
+            && (
+            <CheckBox
+              dataSet={formDs}
+              name="connectKnowledgeSpaceFlag"
+            >
+              连接燕千云知识空间
+            </CheckBox>
+            )}
+            {
+             record?.get('connectKnowledgeSpaceFlag')
+             && (
+             <div style={{ marginTop: ycloudFlag ? '15px' : '0' }} className={`${prefixCls}-ycloud`}>
+               <Form dataSet={formDs} columns={100}>
+                 <Select
+                   name="openSpaceId"
+                   clearButton
+                   searchable
+                   colSpan={(e) => { e.stopPropagation(); e.preventDefault(); }}
+                   style={{ width: 340, position: 'relative', left: -5 }}
+                 />
+               </Form>
+             </div>
+             )
+            }
+            {getProjRelationShow() && allowLinkForm}
           </div>
         )
       }

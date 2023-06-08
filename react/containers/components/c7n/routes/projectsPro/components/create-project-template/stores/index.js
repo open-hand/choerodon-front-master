@@ -7,12 +7,14 @@ import { DataSet } from 'choerodon-ui/pro';
 import forEach from 'lodash/forEach';
 import some from 'lodash/some';
 import { injectIntl } from 'react-intl';
+import Jsonbig from 'json-bigint';
 import useExternalFunc from '@/hooks/useExternalFunc';
 import FormDataSet from './FormDataSet';
 import StatusDataSet from './StatusDataSet';
 import CategoryDataSet from './CategoryDataSet';
 import TemplateDataSet from './templateDataSet';
 import axios from '@/components/axios';
+import { projectsApi, projectsApiConfig } from '@/apis/Projects';
 import useStore from './useStore';
 
 const Store = createContext();
@@ -65,6 +67,7 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
   useEffect(() => {
     if (!baseSaasLoading) {
       if (projectId) {
+        fetchData();
         loadData(checkSenior?.default);
       } else {
         formDs.create();
@@ -72,6 +75,38 @@ export const StoreProvider = withRouter(injectIntl(inject('AppState')((props) =>
       }
     }
   }, [projectId, organizationId, checkSenior, baseSaasLoading]);
+
+  const fetchData = async () => {
+    try {
+      const response = await projectsApi.getYcloudSpace(organizationId);
+      const res = await projectsApi.getYcloudUser();
+      if (res && res.length > 0 && res !== []) {
+        const selectFiled = formDs?.getField('openSpaceId');
+        if (projectId && response.linkKnowledgeFlag === true) {
+        selectFiled?.set('options',
+        new DataSet({
+          selection: 'single',
+          autoCreate: true,
+          autoQuery: true,
+          paging: false,
+          // pageSize: 10,
+          transport: {
+            read: {
+              ...projectsApiConfig.getYcloudList(projectId),
+              // transformResponse: (data) => {
+              //   const newRes = Jsonbig.parse(data);
+              //   return newRes;
+              // },
+            },
+          },
+        }),
+        );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const loadCategory = async (checkSeniorFunc) => {
     await axios.all([
