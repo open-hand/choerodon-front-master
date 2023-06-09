@@ -611,6 +611,35 @@ const CreateProject = observer(() => {
       </SelectBox>
     </Form>
   );
+  const getYloudLink = () => (
+    <>
+      {(ycloudFlag && propsProjectId)
+            && (
+            <CheckBox
+              dataSet={formDs}
+              name="connectKnowledgeSpaceFlag"
+            >
+              连接燕千云知识空间
+            </CheckBox>
+            )}
+      {
+             record?.get('connectKnowledgeSpaceFlag')
+             && (
+             <div style={{ marginTop: ycloudFlag ? '15px' : '0' }} className={`${prefixCls}-ycloud`}>
+               <Form dataSet={formDs} columns={100}>
+                 <Select
+                   name={ycloudUser ? 'openSpaceId' : 'openSpaceName'}
+                   clearButton
+                   searchable
+                   colSpan={(e) => { e.stopPropagation(); e.preventDefault(); }}
+                   style={{ width: 340, position: 'relative', left: -5 }}
+                 />
+               </Form>
+             </div>
+             )
+            }
+    </>
+  );
 
   return (
     <div className={`${prefixCls}-body`}>
@@ -796,35 +825,11 @@ const CreateProject = observer(() => {
         )}
       </div>
       {
-        (getProjRelationShow() || (ycloudFlag && propsProjectId)) && (
+        (getProjRelationShow() || (ycloudFlag && propsProjectId && !showDevopsAdvanced)) && (
           <div className={`${prefixCls}-projRelation`}>
             <div className={`${prefixCls}-projRelation-divided`} />
             <p style={{ fontWeight: 500, fontSize: 14 }}>高级设置</p>
-            {(ycloudFlag && propsProjectId)
-            && (
-            <CheckBox
-              dataSet={formDs}
-              name="connectKnowledgeSpaceFlag"
-            >
-              连接燕千云知识空间
-            </CheckBox>
-            )}
-            {
-             record?.get('connectKnowledgeSpaceFlag')
-             && (
-             <div style={{ marginTop: ycloudFlag ? '15px' : '0' }} className={`${prefixCls}-ycloud`}>
-               <Form dataSet={formDs} columns={100}>
-                 <Select
-                   name={ycloudUser ? 'openSpaceId' : 'openSpaceName'}
-                   clearButton
-                   searchable
-                   colSpan={(e) => { e.stopPropagation(); e.preventDefault(); }}
-                   style={{ width: 340, position: 'relative', left: -5 }}
-                 />
-               </Form>
-             </div>
-             )
-            }
+            {getYloudLink()}
             {getProjRelationShow() && allowLinkForm}
           </div>
         )
@@ -849,6 +854,7 @@ const CreateProject = observer(() => {
                 : { height: 0, overflow: 'hidden' }
             }
           >
+            {getYloudLink()}
             {
               getProjRelationShowInDevopsAdvanced() && allowLinkForm
             }

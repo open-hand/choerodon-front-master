@@ -728,7 +728,35 @@ const CreateProject = observer(() => {
       </SelectBox>
     </Form>
   );
-
+  const getYloudLink = () => (
+    <>
+      {(ycloudFlag && propsProjectId)
+            && (
+            <CheckBox
+              dataSet={formDs}
+              name="connectKnowledgeSpaceFlag"
+            >
+              连接燕千云知识空间
+            </CheckBox>
+            )}
+      {
+             record?.get('connectKnowledgeSpaceFlag')
+             && (
+             <div style={{ marginTop: ycloudFlag ? '15px' : '0' }} className={`${prefixCls}-ycloud`}>
+               <Form dataSet={formDs} columns={100}>
+                 <Select
+                   name={ycloudUser ? 'openSpaceId' : 'openSpaceName'}
+                   clearButton
+                   searchable
+                   colSpan={(e) => { e.stopPropagation(); e.preventDefault(); }}
+                   style={{ width: 340, position: 'relative', left: -5 }}
+                 />
+               </Form>
+             </div>
+             )
+            }
+    </>
+  );
   return (
     <div className={`${prefixCls}-body`}>
       {renderAvatar()}
@@ -857,37 +885,7 @@ const CreateProject = observer(() => {
         )}
       </div>
       {
-        ((ycloudFlag && propsProjectId)) && (
-          <div className={`${prefixCls}-projRelation`}>
-            <div className={`${prefixCls}-projRelation-divided`} />
-            <p style={{ fontWeight: 500, fontSize: 14 }}>高级设置</p>
-            {(ycloudFlag && propsProjectId)
-            && (
-            <CheckBox
-              dataSet={formDs}
-              name="connectKnowledgeSpaceFlag"
-            >
-              连接燕千云知识空间，使用此模板时将同时基于此空间创建新的知识空间连接到项目内
-            </CheckBox>
-            )}
-            {
-             record?.get('connectKnowledgeSpaceFlag')
-             && (
-             <div style={{ marginTop: ycloudFlag ? '15px' : '0' }} className={`${prefixCls}-ycloud`}>
-               <Form dataSet={formDs} columns={100}>
-                 <Select
-                   name={ycloudUser ? 'openSpaceId' : 'openSpaceName'}
-                   clearButton
-                   searchable
-                   colSpan={50}
-                   style={{ width: 340, position: 'relative', left: -5 }}
-                 />
-               </Form>
-             </div>
-             )
-            }
-          </div>
-        )
+       !showDevopsAdvanced && getYloudLink()
       }
       {showDevopsAdvanced && (
         <div className={`${prefixCls}-advanced`}>
@@ -909,6 +907,7 @@ const CreateProject = observer(() => {
                 : { height: 0, overflow: 'hidden' }
             }
           >
+            {getYloudLink()}
             {
               getProjRelationShowInDevopsAdvanced() && allowLinkForm
             }
