@@ -142,7 +142,7 @@ const MasterIndex = (props: any): any => {
     if (!isInOutward) {
       if (!isInOutward) {
         if (!loading) {
-          if (!pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && !window.agile) {
+          if (!pathname.startsWith(ENTERPRISE_ADDRESS) && !hasEnterpriseConfirmed && window._env_.OPEN_SOURCE == 'true') {
             checkEnterprise();
           }
           setReloginValue(true);

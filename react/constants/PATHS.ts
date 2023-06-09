@@ -22,7 +22,7 @@ const KNOWLEDGE_ORG_TEMPLATE_PREVIEW_PATH = '/knowledge/organization/template/pr
 const KNOWLEDGE_PROJECT_TEMPLATE_PREVIEW_PATH = '/knowledge/project/template/preview' as const;
 
 // 这也是敏捷那边的不晓得啥
-const ENTERPRISE_ADDRESS = '/iam/enterprise' as const;
+const ENTERPRISE_ADDRESS = '/base/enterprise' as const;
 
 // 敏捷工作日历页面
 const AGILE_WORK_CALENDAR_PATH = '/agile/work-calendar'as const;
