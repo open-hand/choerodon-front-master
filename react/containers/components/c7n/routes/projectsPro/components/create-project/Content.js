@@ -80,6 +80,7 @@ const CreateProject = observer(() => {
   const [expandAdvanced, setExpandAdvanced] = useState(true);
   const [fieldsConfig, setFieldsConfig] = useState([]);
   const [ycloudFlag, setYcloudFlag] = useState(false);
+  const [ycloudUser, setYcloudUser] = useState(true);
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
   const { loading: openTemplateLoading, func: openTemplate } = useExternalFunc('agile', 'agile:openTemplate');
 
@@ -103,11 +104,22 @@ const CreateProject = observer(() => {
   useEffect(() => {
     getChecked();
     getYcloudFlag();
+    getYcloudUserFlag();
   }, []);
 
   useEffect(() => {
     record && initFormDs();
   }, [record]);
+  const getYcloudUserFlag = async () => {
+    try {
+      const res = await projectsApi.getYcloudUser();
+      if (res.length === 0) {
+        setYcloudUser(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getYcloudFlag = async () => {
     try {
       const res = await projectsApi.getYcloudSpace(organizationId);
@@ -803,7 +815,7 @@ const CreateProject = observer(() => {
              <div style={{ marginTop: ycloudFlag ? '15px' : '0' }} className={`${prefixCls}-ycloud`}>
                <Form dataSet={formDs} columns={100}>
                  <Select
-                   name="openSpaceId"
+                   name={ycloudUser ? 'openSpaceId' : 'openSpaceName'}
                    clearButton
                    searchable
                    colSpan={(e) => { e.stopPropagation(); e.preventDefault(); }}

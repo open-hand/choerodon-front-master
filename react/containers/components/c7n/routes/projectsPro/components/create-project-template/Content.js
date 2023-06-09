@@ -85,9 +85,8 @@ const CreateProject = observer(() => {
   const [fieldsConfig, setFieldsConfig] = useState([]);
   const [checkModal, setCheckModal] = useState();
   const [sagaInstanceIds, setSagaInstanceIds] = useState();
-  const [isRetry, setIsRetry] = useState(false);
   const [ycloudFlag, setYcloudFlag] = useState(false);
-
+  const [ycloudUser, setYcloudUser] = useState(true);
   const { loading: haitianMasterLoading, func } = useExternalFunc('haitianMaster', 'haitianMaster:createProjectForm');
   const { loading: openTemplateLoading, func: openTemplate } = useExternalFunc('agile', 'agile:openTemplate');
 
@@ -104,6 +103,7 @@ const CreateProject = observer(() => {
   useEffect(() => {
     getChecked();
     getYcloudFlag();
+    getYcloudUserFlag();
   }, []);
 
   useEffect(() => {
@@ -113,6 +113,18 @@ const CreateProject = observer(() => {
        record?.set('templateClassficationId', ids);
     }
   }, [record]);
+
+  const getYcloudUserFlag = async () => {
+    try {
+      const res = await projectsApi.getYcloudUser();
+      if (res.length === 0) {
+        setYcloudUser(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getYcloudFlag = async () => {
     try {
       const res = await projectsApi.getYcloudSpace(organizationId);
@@ -407,6 +419,7 @@ const CreateProject = observer(() => {
         // 处理燕千云知识空间字段
         if (propsProjectId) {
           const ids = formDs?.current?.get('openSpaceId');
+          console.log('aaaaa项目模板', ids);
           typeof ids === 'object' && formDs?.current?.set('openSpaceId', ids?.id);
         }
         const res = await formDs.submit();
@@ -863,7 +876,7 @@ const CreateProject = observer(() => {
              <div style={{ marginTop: ycloudFlag ? '15px' : '0' }} className={`${prefixCls}-ycloud`}>
                <Form dataSet={formDs} columns={100}>
                  <Select
-                   name="openSpaceId"
+                   name={ycloudUser ? 'openSpaceId' : 'openSpaceName'}
                    clearButton
                    searchable
                    colSpan={50}
