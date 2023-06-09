@@ -302,7 +302,6 @@ export default ({
       {
         name: 'openSpaceName',
         label: '关联知识空间',
-        required: true,
       },
       { name: 'enabled', type: 'boolean', label: '项目状态' },
       { name: 'createUserName', type: 'string', label: '创建人' },
