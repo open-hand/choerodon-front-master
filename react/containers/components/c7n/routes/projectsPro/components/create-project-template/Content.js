@@ -885,7 +885,13 @@ const CreateProject = observer(() => {
         )}
       </div>
       {
-       !showDevopsAdvanced && getYloudLink()
+      (!showDevopsAdvanced && ycloudFlag && propsProjectId) && (
+      <div className={`${prefixCls}-projRelation`}>
+        <div className={`${prefixCls}-projRelation-divided`} />
+        <p className={`${prefixCls}-projRelation-title`}>高级设置</p>
+        {getYloudLink()}
+      </div>
+      )
       }
       {showDevopsAdvanced && (
         <div className={`${prefixCls}-advanced`}>
