@@ -7,6 +7,8 @@ const modulesMapping = {
     'selfCode',
     'resourceOverview',
     'resourceMonitoring',
+    'projectQualityScore',
+    'userQualityScore',
   ],
   agile: [
     'todoQustions', 'myStar', 'myDefect', 'myReport', 'myExecution', 'myhandler', 'userIssue', 'projectProgress',

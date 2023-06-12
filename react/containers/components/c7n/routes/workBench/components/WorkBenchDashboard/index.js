@@ -28,7 +28,7 @@ import QuestionFocus from '../question-focus';
 import QuestionBug from '../question-bug';
 import QuestionReport from '../question-report';
 import ExecutionQuestions from '../question-execution';
-
+import ProjectQualityScore from '../project-quality-score';
 import SelfCode from '../SelfCode';
 import MyHandler from '../my-handler';
 import ResourceOverview from '../ResourceOverview';
@@ -78,6 +78,8 @@ Object.assign(ComponetsObjs, {
   projectVersionProgress: ProjectReleaseSchedule,
   teamLeaderOrder: TeamLeaderOrder,
   developerRank: DevoperSchedule,
+  projectQualityScore: <ProjectQualityScore />,
+
 });
 const componentCodeMapInJectCode = {
   backlogApprove: 'backlog:workBenchApprove',
