@@ -90,7 +90,7 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
   }, [currentOrgData, organizationId, selectState]);
 
   const orgButton = useMemo(() => {
-    const btnCls = classnames(`${prefixCls}-button`);
+    const btnCls = classnames(`${prefixCls}-wrapper-button`);
     // 这里如果出现显示的项目名称 而不是组织名称 多半原因是 下拉组织列表没有返回这个组织id对应的数据
     return (
       <div
@@ -100,11 +100,9 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
         <span>
           {tenantName || '请选择组织'}
         </span>
-        {window.baseBusiness && (
-          <Icon
-            type="expand_more"
-          />
-        )}
+        <Icon
+          type="expand_more"
+        />
       </div>
     );
   }, [tenantName]);
@@ -139,7 +137,9 @@ const OrgSelector:React.FC<OrgSelectorProps> = (props) => {
       placement="bottomCenter"
       trigger={['click']}
     >
-      {orgButton}
+      <div className={`${prefixCls}-wrapper`}>
+        {orgButton}
+      </div>
     </Dropdown>
   );
 
