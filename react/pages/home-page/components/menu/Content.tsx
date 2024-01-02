@@ -65,20 +65,29 @@ const Menu = () => {
   };
 
   const loadMenuData = useCallback(async () => {
-    const menus = await MenuStore.loadMenuData();
-    const tree = { subMenus: menus.slice() };
-    treeReduce({
-      tree,
-      callback: findCurrentRoute,
-    });
-    const displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
-    // todo... 这里逻辑可以拆分为一个hook，监听activeMenu变化而变化，这个逻辑是肯定要拆到全局去的
-    if (activeMenu && activeMenu.route === pathname && pathname !== '/') {
-      // document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${menuType.type !== 'site' ? `${menuType.name} – ` : ''} ${displayTitle}`;
-      document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} –
-        ${getDodumentTitle(menuType.type)} - ${displayTitle}`;
+    async function func(isWorkbench?:boolean) {
+      if (!isWorkbench) {
+        const menus = await MenuStore.loadMenuData();
+        const tree = { subMenus: menus.slice() };
+        treeReduce({
+          tree,
+          callback: findCurrentRoute,
+        });
+      }
+      const displayTitle = getSiteInfo.systemTitle || HEADERER_TITLE || getSiteInfo.defaultTitle;
+      // todo... 这里逻辑可以拆分为一个hook，监听activeMenu变化而变化，这个逻辑是肯定要拆到全局去的
+      if (activeMenu && activeMenu.route === pathname && pathname !== '/') {
+        // document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} – ${menuType.type !== 'site' ? `${menuType.name} – ` : ''} ${displayTitle}`;
+        document.title = `${MenuStore.activeMenu.name || ''} – ${MenuStore.activeMenu.parentName || ''} –
+          ${getDodumentTitle(menuType.type)} - ${displayTitle}`;
+      } else {
+        document.title = displayTitle || '';
+      }
+    }
+    if (window.location.href.includes('workbench')) {
+      func(true);
     } else {
-      document.title = displayTitle;
+      func();
     }
   }, [activeMenu, findCurrentRoute]);
 

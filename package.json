@@ -1,7 +1,7 @@
 {
   "name": "@choerodon/master",
   "routeName": "master",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "description": "A package of Master for Choerodon platform.",
   "main": "./lib/index.js",
   "files": [
